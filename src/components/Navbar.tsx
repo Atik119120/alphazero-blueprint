@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { name: "Home", href: "#home" },
@@ -43,9 +44,11 @@ const Navbar = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href="#home" className="flex items-center gap-2 group">
-              <span className="text-2xl font-display font-bold tracking-tight">
-                Alpha<span className="gradient-text">Zero</span>
-              </span>
+              <img 
+                src={logo} 
+                alt="AlphaZero Logo" 
+                className="h-10 w-auto invert brightness-0 invert"
+              />
             </a>
 
             {/* Desktop Navigation */}

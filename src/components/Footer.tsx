@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
 import { ArrowUp, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -13,9 +13,11 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <span className="text-xl font-display font-bold tracking-tight">
-                Alpha<span className="gradient-text">Zero</span>
-              </span>
+              <img 
+                src={logo} 
+                alt="AlphaZero Logo" 
+                className="h-8 w-auto invert brightness-0 invert"
+              />
             </div>
 
             {/* Copyright */}
