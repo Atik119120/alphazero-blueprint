@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Work", href: "#work" },
-  { name: "Team", href: "#team" },
-  { name: "Contact", href: "#contact" },
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Services", href: "/services" },
+  { name: "Work", href: "/work" },
+  { name: "Team", href: "/team" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,10 +26,8 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNavClick = (href: string) => {
+  const handleNavClick = () => {
     setIsMobileMenuOpen(false);
-    const element = document.querySelector(href);
-    element?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -37,38 +37,44 @@ const Navbar = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : ""
+          isScrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : "bg-background/50 backdrop-blur-sm"
         }`}
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a href="#home" className="flex items-center gap-2 group">
+            <Link to="/" className="flex items-center gap-2 group">
               <img 
                 src={logo} 
                 alt="AlphaZero Logo" 
-                className="h-10 w-auto invert brightness-0 invert"
+                className="h-10 w-auto invert"
               />
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {navLinks.map((link) => (
-                <button
+                <Link
                   key={link.name}
-                  onClick={() => handleNavClick(link.href)}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors relative group"
+                  to={link.href}
+                  className={`text-sm font-medium transition-colors relative group ${
+                    location.pathname === link.href 
+                      ? "text-primary" 
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
                 >
                   {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary transition-all duration-300 group-hover:w-full" />
-                </button>
+                  <span className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
+                    location.pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
+                  }`} />
+                </Link>
               ))}
-              <button
-                onClick={() => handleNavClick("#contact")}
+              <Link
+                to="/contact"
                 className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors box-glow"
               >
                 Start a Project
-              </button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -93,26 +99,36 @@ const Navbar = () => {
           >
             <div className="flex flex-col items-center gap-6 p-8">
               {navLinks.map((link, index) => (
-                <motion.button
+                <motion.div
                   key={link.name}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => handleNavClick(link.href)}
-                  className="text-xl font-display font-medium text-foreground"
                 >
-                  {link.name}
-                </motion.button>
+                  <Link
+                    to={link.href}
+                    onClick={handleNavClick}
+                    className={`text-xl font-display font-medium ${
+                      location.pathname === link.href ? "text-primary" : "text-foreground"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                </motion.div>
               ))}
-              <motion.button
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
-                onClick={() => handleNavClick("#contact")}
-                className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium"
               >
-                Start a Project
-              </motion.button>
+                <Link
+                  to="/contact"
+                  onClick={handleNavClick}
+                  className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium inline-block"
+                >
+                  Start a Project
+                </Link>
+              </motion.div>
             </div>
           </motion.div>
         )}
