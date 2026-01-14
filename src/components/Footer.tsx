@@ -1,4 +1,4 @@
-import { ArrowUp, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { ArrowUp, Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
@@ -6,6 +6,12 @@ const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const socialLinks = [
+    { name: "Instagram", url: "https://www.instagram.com/alphazero.online" },
+    { name: "Facebook", url: "https://www.facebook.com/AlphaZero" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/company/alpha-zero-2248923a5" },
+  ];
 
   return (
     <footer className="py-16 border-t border-border relative bg-card/50">
@@ -19,13 +25,26 @@ const Footer = () => {
                 <img 
                   src={logo} 
                   alt="AlphaZero Logo" 
-                  className="h-10 w-auto invert"
+                  className="h-10 w-auto brightness-0 invert"
                 />
               </Link>
-              <p className="text-muted-foreground max-w-sm">
-                A creative IT agency providing graphic design and web solutions. 
-                Every plan starts from zero. We design, build, and scale.
+              <p className="text-muted-foreground max-w-sm mb-4">
+                AlphaZero is a creative design agency crafting modern visual identities 
+                and brand experiences. From zero to impact.
               </p>
+              <div className="flex gap-3 flex-wrap">
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.name}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-secondary border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-xs"
+                  >
+                    {social.name}
+                  </a>
+                ))}
+              </div>
             </div>
 
             {/* Quick Links */}
@@ -45,15 +64,26 @@ const Footer = () => {
               </ul>
             </div>
 
-            {/* Services */}
+            {/* Contact Info */}
             <div>
-              <h4 className="font-display font-semibold mb-4">Services</h4>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>Logo Design</li>
-                <li>Brand Identity</li>
-                <li>Web Development</li>
-                <li>UI/UX Design</li>
-                <li>Social Media</li>
+              <h4 className="font-display font-semibold mb-4">Contact</h4>
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-center gap-2 text-muted-foreground">
+                  <Phone size={14} className="text-primary" />
+                  <a href="tel:+8801410190019" className="hover:text-primary transition-colors">
+                    +880 1410-190019
+                  </a>
+                </li>
+                <li className="flex items-center gap-2 text-muted-foreground">
+                  <Mail size={14} className="text-primary" />
+                  <a href="mailto:agency.alphazero@gmail.com" className="hover:text-primary transition-colors">
+                    agency.alphazero@gmail.com
+                  </a>
+                </li>
+                <li className="flex items-start gap-2 text-muted-foreground">
+                  <MapPin size={14} className="text-primary flex-shrink-0 mt-0.5" />
+                  <span>Bornali, Rajshahi, Bangladesh – 6000</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -65,19 +95,16 @@ const Footer = () => {
               © {new Date().getFullYear()} AlphaZero. All rights reserved.
             </p>
 
-            {/* Social & Back to Top */}
+            {/* Website & Back to Top */}
             <div className="flex items-center gap-4">
-              <div className="flex gap-2">
-                {[Facebook, Instagram, Twitter, Linkedin].map((Icon, index) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                  >
-                    <Icon size={16} />
-                  </a>
-                ))}
-              </div>
+              <a 
+                href="https://www.alphazero.online" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                alphazero.online
+              </a>
               <button
                 onClick={scrollToTop}
                 className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"

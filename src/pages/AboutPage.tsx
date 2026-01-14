@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Globe, Zap, Target, CheckCircle } from "lucide-react";
+import { Globe, Zap, Target, CheckCircle, Palette, Eye, MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 
 const values = [
@@ -10,21 +11,22 @@ const values = [
   },
   {
     icon: Zap,
-    title: "Zero to Alpha",
-    description: "We start from scratch and build powerful, scalable digital solutions.",
+    title: "Zero to Impact",
+    description: "We start from scratch and build powerful, impactful visual identities.",
   },
   {
     icon: Globe,
     title: "Global Reach",
-    description: "Based in Bangladesh, working worldwide with a remote-first approach.",
+    description: "Based in Bangladesh, delivering design solutions worldwide.",
   },
 ];
 
-const milestones = [
-  { year: "2021", title: "Founded", description: "AlphaZero was born with a vision to create impactful digital experiences." },
-  { year: "2022", title: "First 20 Clients", description: "Delivered successful projects across branding and web development." },
-  { year: "2023", title: "Team Expansion", description: "Grew our team of talented designers and developers." },
-  { year: "2024", title: "Going Global", description: "Started working with international clients worldwide." },
+const whyChoose = [
+  "Clean and modern design approach",
+  "Brand-focused visual strategy",
+  "Detail-oriented workflow",
+  "Client-first communication",
+  "From zero to full identity support",
 ];
 
 const AboutPage = () => {
@@ -32,9 +34,23 @@ const AboutPage = () => {
     <Layout>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
+        <motion.div 
+          className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.15, 0.1]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-glow-secondary/10 rounded-full blur-[120px]"
+          animate={{ 
+            x: [0, 30, 0]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
         
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -57,17 +73,17 @@ const AboutPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              A creative IT agency providing graphic design and web solutions for brands 
-              and individuals. We believe great ideas don't need a big beginning — they 
-              need the right execution.
+              A creative agency focused on graphic design, branding, and visual identity. 
+              We help brands start from scratch and grow with clean, modern, and impactful design solutions.
             </motion.p>
           </div>
         </div>
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-secondary/30">
-        <div className="container mx-auto px-6">
+      <section className="py-20 bg-secondary/30 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -78,17 +94,17 @@ const AboutPage = () => {
                 Our Story
               </h2>
               <p className="text-muted-foreground mb-6">
-                AlphaZero was founded with a simple belief: every great brand starts from nothing. 
-                The name itself represents our philosophy — starting from zero and building something 
-                truly powerful and meaningful.
+                AlphaZero is a creative agency focused on graphic design, branding, and visual identity. 
+                We believe every great brand starts from zero — and with the right vision and execution, 
+                it can make a lasting impact.
               </p>
               <p className="text-muted-foreground mb-6">
-                We're not just another design agency. We're your creative partners who understand 
-                that behind every project is a vision waiting to be realized. From local startups 
-                to international brands, we've helped businesses transform their digital presence.
+                Currently, AlphaZero delivers professional design services while evolving toward IT and 
+                AI-driven digital services. Our goal is to turn ideas into strong visual experiences 
+                that actually work.
               </p>
               <div className="space-y-3">
-                {["Clean and modern design approach", "Brand-focused thinking", "Affordable and scalable solutions"].map((item) => (
+                {whyChoose.map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <CheckCircle size={20} className="text-primary flex-shrink-0" />
                     <span className="text-foreground">{item}</span>
@@ -103,10 +119,22 @@ const AboutPage = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 to-glow-secondary/20 p-8 flex items-center justify-center">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 via-transparent to-glow-secondary/20 p-8 flex items-center justify-center border border-primary/10">
                 <div className="text-center">
-                  <div className="text-8xl font-display font-bold gradient-text mb-4">α0</div>
-                  <p className="text-muted-foreground">From Zero to Alpha</p>
+                  <motion.div 
+                    className="text-8xl font-display font-bold gradient-text mb-4"
+                    animate={{ 
+                      textShadow: [
+                        "0 0 20px hsl(185 100% 50% / 0.3)",
+                        "0 0 40px hsl(185 100% 50% / 0.5)",
+                        "0 0 20px hsl(185 100% 50% / 0.3)"
+                      ]
+                    }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    α0
+                  </motion.div>
+                  <p className="text-primary text-lg font-medium">From Zero to Impact</p>
                 </div>
               </div>
             </motion.div>
@@ -115,8 +143,16 @@ const AboutPage = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      <section className="py-20 relative overflow-hidden">
+        <motion.div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]"
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.05, 0.1, 0.05]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -154,48 +190,32 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
+      {/* Location Section */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <Globe size={48} className="text-primary mx-auto mb-6" />
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
+              Based in Bangladesh
+            </h2>
+            <p className="text-xl text-muted-foreground mb-2">
+              Bornali, Rajshahi, Bangladesh – 6000
+            </p>
+            <p className="text-muted-foreground mb-8">
+              Working with clients worldwide, delivering impactful design solutions remotely.
+            </p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow"
             >
-              <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                Our Journey
-              </h2>
-            </motion.div>
-
-            <div className="relative">
-              <div className="absolute left-8 top-0 bottom-0 w-px bg-border md:left-1/2" />
-              
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={milestone.year}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`relative flex items-center mb-12 ${
-                    index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                  }`}
-                >
-                  <div className={`flex-1 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"} pl-16 md:pl-0`}>
-                    <div className="bg-card border border-border rounded-xl p-6">
-                      <span className="text-primary font-display font-bold text-lg">{milestone.year}</span>
-                      <h3 className="text-xl font-display font-semibold mt-2">{milestone.title}</h3>
-                      <p className="text-muted-foreground mt-2">{milestone.description}</p>
-                    </div>
-                  </div>
-                  <div className="absolute left-8 md:left-1/2 w-4 h-4 rounded-full bg-primary -translate-x-1/2" />
-                  <div className="flex-1 hidden md:block" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
+              Let's Connect
+            </Link>
+          </motion.div>
         </div>
       </section>
     </Layout>

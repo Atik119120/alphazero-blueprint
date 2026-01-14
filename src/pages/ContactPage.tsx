@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, MapPin, Send, Facebook, Instagram, Linkedin, Twitter, Phone, Clock } from "lucide-react";
+import { Mail, MapPin, Send, Phone, Clock } from "lucide-react";
 import Layout from "@/components/Layout";
 
 const ContactPage = () => {
@@ -20,13 +20,33 @@ const ContactPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const socialLinks = [
+    { name: "Instagram", url: "https://www.instagram.com/alphazero.online" },
+    { name: "Facebook", url: "https://www.facebook.com/AlphaZero" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/company/alpha-zero-2248923a5" },
+  ];
+
   return (
     <Layout>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
+        <motion.div 
+          className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.15, 0.1]
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-glow-secondary/10 rounded-full blur-[120px]"
+          animate={{ 
+            x: [0, -30, 0]
+          }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        />
         
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.span
               initial={{ opacity: 0, y: 20 }}
@@ -41,8 +61,7 @@ const ContactPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              Let's build something{" "}
-              <span className="gradient-text">powerful</span>
+              Let's build your <span className="gradient-text">brand</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -50,8 +69,8 @@ const ContactPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              Let's build something powerful from zero. Have a project in mind? 
-              We'd love to hear about it.
+              Ready to transform your ideas into impactful visual experiences? 
+              Get in touch with us today.
             </motion.p>
           </div>
         </div>
@@ -71,32 +90,32 @@ const ContactPage = () => {
               <div>
                 <h2 className="text-3xl font-display font-semibold mb-4">Get in Touch</h2>
                 <p className="text-muted-foreground">
-                  Whether you have a question about our services, pricing, or just want 
-                  to say hello, we're ready to answer all your questions.
+                  Whether you have a question about our services, pricing, or want to 
+                  start a project, we're ready to help you bring your vision to life.
                 </p>
               </div>
 
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Mail size={20} className="text-primary" />
+                    <Phone size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Email us</h3>
-                    <a href="mailto:hello@alphazero.agency" className="text-muted-foreground hover:text-primary transition-colors">
-                      hello@alphazero.agency
+                    <h3 className="font-semibold mb-1">Call us</h3>
+                    <a href="tel:+8801410190019" className="text-muted-foreground hover:text-primary transition-colors">
+                      +880 1410-190019
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Phone size={20} className="text-primary" />
+                    <Mail size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Call us</h3>
-                    <a href="tel:+8801234567890" className="text-muted-foreground hover:text-primary transition-colors">
-                      +880 1234 567 890
+                    <h3 className="font-semibold mb-1">Email us</h3>
+                    <a href="mailto:agency.alphazero@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+                      agency.alphazero@gmail.com
                     </a>
                   </div>
                 </div>
@@ -107,7 +126,7 @@ const ContactPage = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold mb-1">Location</h3>
-                    <p className="text-muted-foreground">Bangladesh • Working Worldwide</p>
+                    <p className="text-muted-foreground">Bornali, Rajshahi, Bangladesh – 6000</p>
                   </div>
                 </div>
 
@@ -125,23 +144,32 @@ const ContactPage = () => {
               {/* Social Links */}
               <div>
                 <p className="font-semibold mb-4">Follow us</p>
-                <div className="flex gap-3">
-                  {[
-                    { icon: Facebook, label: "Facebook" },
-                    { icon: Instagram, label: "Instagram" },
-                    { icon: Twitter, label: "Twitter" },
-                    { icon: Linkedin, label: "LinkedIn" },
-                  ].map(({ icon: Icon, label }) => (
+                <div className="flex gap-3 flex-wrap">
+                  {socialLinks.map((social) => (
                     <a
-                      key={label}
-                      href="#"
-                      aria-label={label}
-                      className="w-11 h-11 rounded-lg bg-secondary border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                      key={social.name}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-lg bg-secondary border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-sm"
                     >
-                      <Icon size={18} />
+                      {social.name}
                     </a>
                   ))}
                 </div>
+              </div>
+
+              {/* Website */}
+              <div className="pt-4 border-t border-border">
+                <p className="text-sm text-muted-foreground mb-2">Visit our website</p>
+                <a 
+                  href="https://www.alphazero.online" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline font-medium"
+                >
+                  www.alphazero.online
+                </a>
               </div>
             </motion.div>
 
@@ -153,6 +181,11 @@ const ContactPage = () => {
               onSubmit={handleSubmit}
               className="space-y-6 p-8 rounded-2xl bg-card border border-border"
             >
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-display font-semibold mb-2">Start Your Project</h3>
+                <p className="text-sm text-muted-foreground">Get a free consultation</p>
+              </div>
+
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -198,7 +231,7 @@ const ContactPage = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-lg bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                  placeholder="Project inquiry"
+                  placeholder="Logo Design Project"
                 />
               </div>
 
@@ -223,7 +256,7 @@ const ContactPage = () => {
                 className="w-full py-4 bg-primary text-primary-foreground rounded-lg font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow flex items-center justify-center gap-2"
               >
                 <Send size={20} />
-                Send Message
+                Contact AlphaZero
               </button>
             </motion.form>
           </div>
