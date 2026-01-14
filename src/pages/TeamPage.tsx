@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Linkedin, Github } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Github, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 
 const teamMembers = [
@@ -38,7 +39,7 @@ const TeamPage = () => {
     <Layout>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-glow-secondary/5 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
         
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto text-center">
@@ -74,7 +75,7 @@ const TeamPage = () => {
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.name}
@@ -84,40 +85,58 @@ const TeamPage = () => {
                   transition={{ delay: index * 0.1 }}
                   className="group"
                 >
-                  <div className="relative mb-5 rounded-2xl overflow-hidden">
-                    <img
+                  <div className="relative mb-6 rounded-2xl overflow-hidden border border-border group-hover:border-primary/30 transition-colors duration-300">
+                    <motion.img
                       src={member.image}
                       alt={member.name}
                       className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-6">
-                      <div className="flex gap-3">
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-6">
+                      <motion.div 
+                        className="flex gap-3"
+                        initial={{ y: 20, opacity: 0 }}
+                        whileHover={{ y: 0, opacity: 1 }}
+                      >
                         {member.socials.facebook && (
-                          <a href={member.socials.facebook} className="p-2.5 rounded-full bg-background/50 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors">
+                          <a 
+                            href={member.socials.facebook} 
+                            className="p-3 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
                             <Facebook size={18} />
                           </a>
                         )}
                         {member.socials.instagram && (
-                          <a href={member.socials.instagram} className="p-2.5 rounded-full bg-background/50 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors">
+                          <a 
+                            href={member.socials.instagram} 
+                            className="p-3 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
                             <Instagram size={18} />
                           </a>
                         )}
                         {member.socials.linkedin && (
-                          <a href={member.socials.linkedin} className="p-2.5 rounded-full bg-background/50 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors">
+                          <a 
+                            href={member.socials.linkedin} 
+                            className="p-3 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
                             <Linkedin size={18} />
                           </a>
                         )}
                         {member.socials.github && (
-                          <a href={member.socials.github} className="p-2.5 rounded-full bg-background/50 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-colors">
+                          <a 
+                            href={member.socials.github} 
+                            className="p-3 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
                             <Github size={18} />
                           </a>
                         )}
-                      </div>
+                      </motion.div>
                     </div>
                   </div>
-                  <h3 className="text-xl font-display font-semibold">{member.name}</h3>
-                  <p className="text-primary text-sm mb-2">{member.role}</p>
-                  <p className="text-muted-foreground text-sm">{member.bio}</p>
+                  <div className="text-center">
+                    <h3 className="text-xl font-display font-semibold mb-1">{member.name}</h3>
+                    <p className="text-primary text-sm font-medium mb-3">{member.role}</p>
+                    <p className="text-muted-foreground text-sm">{member.bio}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -140,12 +159,20 @@ const TeamPage = () => {
             <p className="text-muted-foreground text-lg mb-8">
               We're always looking for talented individuals to join our creative family.
             </p>
-            <a
-              href="mailto:careers@alphazero.agency"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow"
-            >
-              Get in Touch
-            </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="mailto:agency.alphazero@gmail.com"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              >
+                Get in Touch <ArrowRight size={20} />
+              </a>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+              >
+                Contact Us
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

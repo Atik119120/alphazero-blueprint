@@ -1,16 +1,25 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { 
+  Menu, 
+  X, 
+  Home, 
+  Info, 
+  Briefcase, 
+  FolderOpen, 
+  Users, 
+  Phone 
+} from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Work", href: "/work" },
-  { name: "Team", href: "/team" },
-  { name: "Contact", href: "/contact" },
+  { name: "Home", href: "/", icon: Home },
+  { name: "About", href: "/about", icon: Info },
+  { name: "Services", href: "/services", icon: Briefcase },
+  { name: "Work", href: "/work", icon: FolderOpen },
+  { name: "Team", href: "/team", icon: Users },
+  { name: "Contact", href: "/contact", icon: Phone },
 ];
 
 const Navbar = () => {
@@ -37,7 +46,7 @@ const Navbar = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-background/80 backdrop-blur-lg border-b border-border" : "bg-background/50 backdrop-blur-sm"
+          isScrolled ? "bg-background/90 backdrop-blur-lg border-b border-border" : "bg-background/50 backdrop-blur-sm"
         }`}
       >
         <div className="container mx-auto px-6 py-4">
@@ -52,26 +61,24 @@ const Navbar = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.href}
-                  className={`text-sm font-medium transition-colors relative group ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                     location.pathname === link.href 
-                      ? "text-primary" 
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-primary bg-primary/10" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                   }`}
                 >
+                  <link.icon size={16} />
                   {link.name}
-                  <span className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
-                    location.pathname === link.href ? "w-full" : "w-0 group-hover:w-full"
-                  }`} />
                 </Link>
               ))}
               <Link
                 to="/contact"
-                className="px-5 py-2 bg-primary text-primary-foreground rounded-lg font-medium text-sm hover:bg-primary/90 transition-colors box-glow"
+                className="ml-4 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-medium text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
                 Start a Project
               </Link>
@@ -97,7 +104,7 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 z-40 bg-background pt-20 md:hidden"
           >
-            <div className="flex flex-col items-center gap-6 p-8">
+            <div className="flex flex-col items-center gap-4 p-8">
               {navLinks.map((link, index) => (
                 <motion.div
                   key={link.name}
@@ -108,10 +115,13 @@ const Navbar = () => {
                   <Link
                     to={link.href}
                     onClick={handleNavClick}
-                    className={`text-xl font-display font-medium ${
-                      location.pathname === link.href ? "text-primary" : "text-foreground"
+                    className={`flex items-center gap-3 text-xl font-display font-medium px-6 py-3 rounded-xl transition-colors ${
+                      location.pathname === link.href 
+                        ? "text-primary bg-primary/10" 
+                        : "text-foreground hover:bg-secondary"
                     }`}
                   >
+                    <link.icon size={22} />
                     {link.name}
                   </Link>
                 </motion.div>
@@ -124,7 +134,7 @@ const Navbar = () => {
                 <Link
                   to="/contact"
                   onClick={handleNavClick}
-                  className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-lg font-medium inline-block"
+                  className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-xl font-medium inline-block"
                 >
                   Start a Project
                 </Link>
