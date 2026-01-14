@@ -47,7 +47,7 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="AlphaZero Logo" 
-                className="h-10 w-auto invert"
+                className="h-10 w-auto brightness-0 invert"
               />
             </Link>
 
