@@ -8,18 +8,65 @@ import {
   FileText,
   Layout,
   MessageCircle,
-  ArrowRight
+  ArrowRight,
+  Monitor,
+  ShoppingCart,
+  Search,
+  Share2,
+  PenTool,
+  Globe,
+  Code,
+  Zap,
+  CheckCircle
 } from "lucide-react";
 import LayoutComponent from "@/components/Layout";
 
+const allServices = [
+  { 
+    icon: Layout, 
+    title: "UI/UX Design", 
+    description: "Create intuitive, user-centered interfaces that delight users and drive conversions.",
+    features: ["User Research", "Wireframing", "Prototyping", "User Testing"]
+  },
+  { 
+    icon: Search, 
+    title: "SEO Optimization", 
+    description: "Boost your visibility and rank higher on search engines with data-driven strategies.",
+    features: ["Keyword Research", "On-Page SEO", "Technical SEO", "Analytics"]
+  },
+  { 
+    icon: Monitor, 
+    title: "Website Design & Development", 
+    description: "Build fast, responsive, and modern websites that represent your brand perfectly.",
+    features: ["Custom Design", "Responsive Layout", "CMS Integration", "Performance"]
+  },
+  { 
+    icon: ShoppingCart, 
+    title: "E-commerce Website Design", 
+    description: "Launch your online store with powerful, conversion-focused e-commerce solutions.",
+    features: ["Product Catalog", "Payment Gateway", "Inventory System", "Analytics"]
+  },
+  { 
+    icon: Share2, 
+    title: "Social Media Design & Management", 
+    description: "Create engaging content that builds community and drives brand awareness.",
+    features: ["Content Strategy", "Post Design", "Story Templates", "Brand Guidelines"]
+  },
+  { 
+    icon: PenTool, 
+    title: "Branding & Creative Design", 
+    description: "Develop memorable brand identities that stand out in the market.",
+    features: ["Logo Design", "Brand Identity", "Style Guide", "Marketing Materials"]
+  },
+];
+
 const graphicServices = [
-  { icon: Palette, title: "Logo Design", description: "Memorable logos that define your brand identity and leave a lasting impression." },
-  { icon: Layers, title: "Brand Identity", description: "Complete visual systems including colors, typography, and brand guidelines." },
-  { icon: Smartphone, title: "Social Media Design", description: "Engaging content that captures attention and drives engagement across platforms." },
-  { icon: Image, title: "Banner & Poster Design", description: "Eye-catching visuals for print and digital campaigns that stand out." },
-  { icon: FileText, title: "Print Design", description: "Business cards, brochures, and marketing materials that make an impact." },
-  { icon: Layout, title: "UI Design (Basic)", description: "Clean and intuitive interface designs for your digital products." },
-  { icon: MessageCircle, title: "Branding Consultation", description: "Expert guidance to develop and refine your brand strategy." },
+  { icon: Palette, title: "Logo Design", description: "Memorable logos that define your brand identity." },
+  { icon: Layers, title: "Brand Identity", description: "Complete visual systems including colors and typography." },
+  { icon: Smartphone, title: "Social Media Design", description: "Engaging content across all platforms." },
+  { icon: Image, title: "Banner & Poster Design", description: "Eye-catching visuals for campaigns." },
+  { icon: FileText, title: "Print Design", description: "Business cards, brochures, and more." },
+  { icon: MessageCircle, title: "Branding Consultation", description: "Expert guidance for your brand." },
 ];
 
 const ServicesPage = () => {
@@ -27,21 +74,7 @@ const ServicesPage = () => {
     <LayoutComponent>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <motion.div 
-          className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1]
-          }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-glow-secondary/10 rounded-full blur-[120px]"
-          animate={{ 
-            x: [0, -30, 0]
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -58,7 +91,7 @@ const ServicesPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              What we <span className="gradient-text">offer</span>
+              Full-Stack <span className="gradient-text">Creative</span> Services
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -66,17 +99,62 @@ const ServicesPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              Professional graphic design and branding services to help your brand 
-              stand out with clean, modern, and impactful visuals.
+              From design to development, we provide comprehensive solutions to build 
+              and grow your digital presence.
             </motion.p>
           </div>
         </div>
       </section>
 
+      {/* Main Services Grid */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-3xl font-display font-bold mb-4">What We Offer</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Agency-level services designed to take your brand from zero to impact
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {allServices.map((service, index) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500"
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+                    <service.icon size={32} className="text-primary" />
+                  </div>
+                  <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
+                  <p className="text-muted-foreground mb-6">{service.description}</p>
+                  <ul className="space-y-2">
+                    {service.features.map((feature) => (
+                      <li key={feature} className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <CheckCircle size={14} className="text-primary" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Graphic Design Services */}
-      <section className="py-20 bg-secondary/30 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-20">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -85,7 +163,7 @@ const ServicesPage = () => {
               className="flex items-center gap-4 mb-12"
             >
               <span className="w-12 h-px bg-primary" />
-              <h2 className="text-3xl font-display font-bold">Graphic Design</h2>
+              <h2 className="text-3xl font-display font-bold">Graphic Design Services</h2>
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -96,13 +174,15 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300"
+                  className="group flex items-start gap-4 p-6 rounded-xl bg-secondary/50 border border-border hover:border-primary/30 transition-all duration-300"
                 >
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                    <service.icon size={28} className="text-primary" />
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                    <service.icon size={24} className="text-primary" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground">{service.description}</p>
+                  <div>
+                    <h3 className="text-lg font-display font-semibold mb-1">{service.title}</h3>
+                    <p className="text-muted-foreground text-sm">{service.description}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -111,15 +191,8 @@ const ServicesPage = () => {
       </section>
 
       {/* Process Section */}
-      <section className="py-20 relative overflow-hidden">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]"
-          animate={{ 
-            scale: [1, 1.1, 1]
-          }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -137,10 +210,10 @@ const ServicesPage = () => {
 
             <div className="grid md:grid-cols-4 gap-6">
               {[
-                { step: "01", title: "Discover", description: "Understanding your brand, goals, and vision" },
-                { step: "02", title: "Design", description: "Creating concepts and visual solutions" },
-                { step: "03", title: "Refine", description: "Iterating based on your feedback" },
-                { step: "04", title: "Deliver", description: "Final files and brand assets" },
+                { step: "01", title: "Discover", description: "Understanding your brand, goals, and vision", icon: Search },
+                { step: "02", title: "Design", description: "Creating concepts and visual solutions", icon: PenTool },
+                { step: "03", title: "Develop", description: "Building with precision and care", icon: Code },
+                { step: "04", title: "Deliver", description: "Final files and ongoing support", icon: Zap },
               ].map((item, index) => (
                 <motion.div
                   key={item.step}
@@ -148,9 +221,12 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="text-center p-6"
+                  className="text-center p-6 rounded-2xl bg-card border border-border"
                 >
-                  <div className="text-4xl font-display font-bold gradient-text mb-4">{item.step}</div>
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <item.icon size={24} className="text-primary" />
+                  </div>
+                  <div className="text-3xl font-display font-bold gradient-text mb-2">{item.step}</div>
                   <h3 className="text-xl font-display font-semibold mb-2">{item.title}</h3>
                   <p className="text-muted-foreground text-sm">{item.description}</p>
                 </motion.div>
@@ -161,8 +237,8 @@ const ServicesPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-secondary/30 relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-20">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -175,12 +251,22 @@ const ServicesPage = () => {
             <p className="text-muted-foreground text-lg mb-8">
               Let's discuss how we can help bring your vision to life.
             </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow"
-            >
-              Get a Free Consultation <ArrowRight size={20} />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              >
+                Get a Free Consultation <ArrowRight size={20} />
+              </Link>
+              <a
+                href="https://wa.me/8801410190019"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+              >
+                WhatsApp Us
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

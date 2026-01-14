@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Globe, Zap, Target, CheckCircle, Palette, Eye, MessageSquare } from "lucide-react";
+import { Globe, Zap, Target, CheckCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
+import logo from "@/assets/logo.png";
 
 const values = [
   {
@@ -34,21 +35,7 @@ const AboutPage = () => {
     <Layout>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <motion.div 
-          className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px]"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1]
-          }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div 
-          className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-glow-secondary/10 rounded-full blur-[120px]"
-          animate={{ 
-            x: [0, 30, 0]
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -81,9 +68,8 @@ const AboutPage = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-secondary/30 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -119,21 +105,16 @@ const AboutPage = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/20 via-transparent to-glow-secondary/20 p-8 flex items-center justify-center border border-primary/10">
+              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-primary/5 p-8 flex items-center justify-center border border-border">
                 <div className="text-center">
-                  <motion.div 
-                    className="text-8xl font-display font-bold gradient-text mb-4"
-                    animate={{ 
-                      textShadow: [
-                        "0 0 20px hsl(185 100% 50% / 0.3)",
-                        "0 0 40px hsl(185 100% 50% / 0.5)",
-                        "0 0 20px hsl(185 100% 50% / 0.3)"
-                      ]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    α0
-                  </motion.div>
+                  <motion.img
+                    src={logo}
+                    alt="AlphaZero Logo"
+                    className="h-32 md:h-40 w-auto mx-auto brightness-0 invert mb-6"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                  />
                   <p className="text-primary text-lg font-medium">From Zero to Impact</p>
                 </div>
               </div>
@@ -143,16 +124,8 @@ const AboutPage = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-20 relative overflow-hidden">
-        <motion.div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.05, 0.1, 0.05]
-          }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-20">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -176,9 +149,9 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-300"
+                  className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
                     <value.icon size={24} className="text-primary" />
                   </div>
                   <h3 className="text-xl font-display font-semibold mb-3">{value.title}</h3>
@@ -209,12 +182,22 @@ const AboutPage = () => {
             <p className="text-muted-foreground mb-8">
               Working with clients worldwide, delivering impactful design solutions remotely.
             </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow"
-            >
-              Let's Connect
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              >
+                Let's Connect <ArrowRight size={20} />
+              </Link>
+              <a
+                href="https://wa.me/8801410190019"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+              >
+                WhatsApp Us
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>

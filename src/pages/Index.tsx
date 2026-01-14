@@ -1,7 +1,32 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles, CheckCircle, Palette, Eye, Target, MessageSquare, Gem } from "lucide-react";
+import { 
+  ArrowRight, 
+  Sparkles, 
+  Palette, 
+  Eye, 
+  Target, 
+  MessageSquare, 
+  Gem,
+  Layout,
+  Globe,
+  TrendingUp,
+  Share2,
+  PenTool,
+  Monitor,
+  ShoppingCart,
+  Search,
+  Home,
+  Info,
+  Briefcase,
+  FolderOpen,
+  Users,
+  Phone,
+  Star,
+  Quote
+} from "lucide-react";
 import { Link } from "react-router-dom";
-import Layout from "@/components/Layout";
+import LayoutComponent from "@/components/Layout";
+import logo from "@/assets/logo.png";
 
 const whyChooseUs = [
   { icon: Palette, title: "Clean & Modern Design", description: "Fresh, contemporary aesthetics that stand out" },
@@ -11,65 +36,47 @@ const whyChooseUs = [
   { icon: Gem, title: "Zero to Full Identity", description: "Complete brand solutions from scratch" },
 ];
 
+const services = [
+  { icon: Layout, title: "UI/UX Design", description: "Intuitive interfaces that users love" },
+  { icon: Search, title: "SEO Optimization", description: "Get found by your target audience" },
+  { icon: Monitor, title: "Website Design & Development", description: "Fast, responsive, modern websites" },
+  { icon: ShoppingCart, title: "E-commerce Solutions", description: "Sell online with powerful stores" },
+  { icon: Share2, title: "Social Media Design", description: "Engaging content that converts" },
+  { icon: PenTool, title: "Branding & Creative Design", description: "Build memorable brand identity" },
+];
+
+const testimonials = [
+  {
+    name: "Sarah Johnson",
+    role: "CEO, TechStart",
+    content: "AlphaZero transformed our brand completely. Their attention to detail and creative vision exceeded our expectations.",
+    rating: 5
+  },
+  {
+    name: "Michael Chen",
+    role: "Founder, GreenLeaf",
+    content: "Professional, responsive, and incredibly talented. They delivered our website ahead of schedule with stunning results.",
+    rating: 5
+  },
+  {
+    name: "Emily Rodriguez",
+    role: "Marketing Director, Bloom Co",
+    content: "The best design agency we've worked with. Their social media designs increased our engagement by 300%.",
+    rating: 5
+  },
+];
+
+const clientLogos = [
+  "TechStart", "GreenLeaf", "Bloom Co", "NextGen", "Spark Digital", "CloudNine"
+];
+
 const Index = () => {
   return (
-    <Layout>
+    <LayoutComponent>
+      {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
-        {/* Background Effects - Enhanced */}
-        <div className="absolute inset-0">
-          <motion.div 
-            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[150px]"
-            animate={{ 
-              scale: [1, 1.2, 1],
-              opacity: [0.15, 0.25, 0.15]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-glow-secondary/15 rounded-full blur-[120px]"
-            animate={{ 
-              scale: [1, 1.15, 1],
-              x: [0, 30, 0]
-            }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-          <motion.div 
-            className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[100px]"
-            animate={{ 
-              y: [0, -40, 0],
-              opacity: [0.1, 0.2, 0.1]
-            }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-          />
-        </div>
-
-        {/* Grid Pattern */}
+        {/* Subtle grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
-
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 bg-primary/40 rounded-full"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -100, 0],
-                opacity: [0, 1, 0],
-                scale: [0, 1.5, 0]
-              }}
-              transition={{
-                duration: 4 + Math.random() * 3,
-                repeat: Infinity,
-                delay: Math.random() * 3,
-                ease: "easeInOut"
-              }}
-            />
-          ))}
-        </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
@@ -81,7 +88,7 @@ const Index = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-primary/20 mb-8 backdrop-blur-sm"
             >
               <Sparkles size={14} className="text-primary" />
-              <span className="text-sm text-foreground">Creative Graphic Design Agency</span>
+              <span className="text-sm text-foreground">Creative Design & IT Agency</span>
             </motion.div>
 
             {/* Main Heading */}
@@ -92,7 +99,7 @@ const Index = () => {
               className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-6"
             >
               Starting every idea from{" "}
-              <span className="gradient-text text-glow">zero</span>
+              <span className="gradient-text">zero</span>
             </motion.h1>
 
             <motion.p
@@ -110,7 +117,7 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
             >
-              A creative agency focused on graphic design, branding, and visual identity. 
+              A creative IT agency focused on graphic design, web solutions, and visual identity. 
               We help brands start from scratch and grow with clean, modern, and impactful design solutions.
             </motion.p>
 
@@ -123,14 +130,14 @@ const Index = () => {
             >
               <Link
                 to="/contact"
-                className="group px-8 py-4 bg-primary text-primary-foreground rounded-lg font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow flex items-center gap-2"
+                className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2"
               >
                 Start Your Project
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/work"
-                className="px-8 py-4 bg-transparent border border-border text-foreground rounded-lg font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
+                className="px-8 py-4 bg-transparent border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
               >
                 View Our Work
               </Link>
@@ -188,10 +195,64 @@ const Index = () => {
         </div>
       </section>
 
+      {/* What We Do / Our Expertise Section */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+              Our Expertise
+            </span>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+              What we <span className="gradient-text">do</span>
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Full-stack creative services to build and grow your digital presence
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500"
+              >
+                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
+                  <service.icon size={28} className="text-primary" />
+                </div>
+                <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
+                <p className="text-muted-foreground">{service.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mt-12"
+          >
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+            >
+              View All Services <ArrowRight size={18} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Why Choose Us Section */}
-      <section className="py-20 bg-secondary/30 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[150px]" />
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-20">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -214,9 +275,9 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-6 rounded-2xl bg-card/80 border border-border hover:border-primary/30 transition-all duration-300 backdrop-blur-sm"
+                className="group p-6 rounded-2xl bg-card/80 border border-border hover:border-primary/30 transition-all duration-500"
               >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                   <item.icon size={24} className="text-primary" />
                 </div>
                 <h3 className="text-lg font-display font-semibold mb-2">{item.title}</h3>
@@ -227,19 +288,87 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <motion.div 
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[150px]"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              opacity: [0.1, 0.15, 0.1]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          />
+      {/* Testimonials Section */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+              Testimonials
+            </span>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+              What our clients <span className="gradient-text">say</span>
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-8 rounded-2xl bg-card border border-border"
+              >
+                <Quote size={32} className="text-primary/20 mb-4" />
+                <p className="text-foreground mb-6 leading-relaxed">{testimonial.content}</p>
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} size={16} className="text-primary fill-primary" />
+                  ))}
+                </div>
+                <div>
+                  <p className="font-display font-semibold">{testimonial.name}</p>
+                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-        <div className="container mx-auto px-6 relative z-10">
+      </section>
+
+      {/* Client Logos Section */}
+      <section className="py-16 border-t border-border">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-muted-foreground text-sm uppercase tracking-wider">Trusted by innovative brands</p>
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex flex-wrap justify-center items-center gap-8 md:gap-16 max-w-4xl mx-auto"
+          >
+            {clientLogos.map((client, index) => (
+              <motion.div
+                key={client}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="text-xl font-display font-bold text-muted-foreground/50 hover:text-primary/70 transition-colors duration-300"
+              >
+                {client}
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -252,16 +381,26 @@ const Index = () => {
             <p className="text-muted-foreground text-lg mb-8">
               Ready to transform your ideas into powerful visual experiences?
             </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 px-10 py-5 bg-primary text-primary-foreground rounded-xl font-medium text-lg hover:bg-primary/90 transition-all duration-300 box-glow"
-            >
-              Get a Free Consultation <ArrowRight size={20} />
-            </Link>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-10 py-5 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+              >
+                Get a Free Consultation <ArrowRight size={20} />
+              </Link>
+              <a
+                href="https://wa.me/8801410190019"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-10 py-5 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+              >
+                WhatsApp Us
+              </a>
+            </div>
           </motion.div>
         </div>
       </section>
-    </Layout>
+    </LayoutComponent>
   );
 };
 
