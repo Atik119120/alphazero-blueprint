@@ -5,32 +5,32 @@ import Layout from "@/components/Layout";
 
 const teamMembers = [
   {
-    name: "Alex Rahman",
-    role: "Creative Director",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
-    bio: "Visionary leader with 8+ years of experience in creative direction and brand strategy.",
-    socials: { facebook: "#", instagram: "#", linkedin: "#" },
+    name: "Sofiullah Ahammad",
+    role: "Founder, Graphics Designer",
+    image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true",
+    bio: "Visionary leader with 3+ years of experience in creative direction and brand strategy.",
+    socials: { facebook: "https://www.facebook.com/AtikAhmedPeradox", instagram: "https://www.instagram.com/atik_ahmed_69/", linkedin: "https://www.linkedin.com/in/sofiullah-ahammad/", github: "" },
   },
   {
-    name: "Sarah Khan",
+    name: "Adib Sarkar",
     role: "Lead Designer",
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
+    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true",
     bio: "Award-winning designer specializing in brand identity and visual communication.",
-    socials: { facebook: "#", instagram: "#", linkedin: "#" },
+    socials: { facebook: "https://www.facebook.com/share/17kdvEbE5h/", instagram: "https://www.instagram.com/_og_gy?igsh=ZTkydWRrdnk0ZDIw", linkedin: "https://www.linkedin.com/in/mdadibsarkar", github: "" },
   },
   {
-    name: "David Chen",
+    name: "Md. Kamrul Hasan",
     role: "Web Developer",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face",
+    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true",
     bio: "Full-stack developer passionate about creating fast, scalable web applications.",
-    socials: { github: "#", linkedin: "#" },
+    socials: { facebook: "https://www.facebook.com/wlonlinecenter", instagram: "", linkedin: "https://www.linkedin.com/in/md-kamrul-hasan-102228218/", github: "" },
   },
   {
-    name: "Priya Sharma",
-    role: "UI/UX Designer",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop&crop=face",
+    name: "Md. Shafiul Haque",
+    role: "Web Designer",
+    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true",
     bio: "User experience specialist focused on creating intuitive and delightful interfaces.",
-    socials: { instagram: "#", linkedin: "#" },
+    socials: { instagram: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw", facebook: "https://www.facebook.com/itzme.shaurav", linkedin: "", github: "" },
   },
 ];
 
