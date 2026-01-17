@@ -3,34 +3,37 @@ import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart } 
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import logo from "@/assets/logo.png";
-
-const values = [
-  {
-    icon: Target,
-    title: "Brand-Focused",
-    description: "Every design decision serves your brand's unique identity and goals.",
-  },
-  {
-    icon: Zap,
-    title: "Zero to Impact",
-    description: "We start from scratch and build powerful, impactful visual identities.",
-  },
-  {
-    icon: Globe,
-    title: "Global Reach",
-    description: "Based in Bangladesh, delivering design solutions worldwide.",
-  },
-];
-
-const whyChoose = [
-  "Clean and modern design approach",
-  "Brand-focused visual strategy",
-  "Detail-oriented workflow",
-  "Client-first communication",
-  "From zero to full identity support",
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const AboutPage = () => {
+  const { t } = useLanguage();
+
+  const values = [
+    {
+      icon: Target,
+      titleKey: "about.values.brandFocused",
+      descKey: "about.values.brandFocusedDesc",
+    },
+    {
+      icon: Zap,
+      titleKey: "about.values.zeroToImpact",
+      descKey: "about.values.zeroToImpactDesc",
+    },
+    {
+      icon: Globe,
+      titleKey: "about.values.globalReach",
+      descKey: "about.values.globalReachDesc",
+    },
+  ];
+
+  const whyChoose = [
+    "about.why1",
+    "about.why2",
+    "about.why3",
+    "about.why4",
+    "about.why5",
+  ];
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -44,7 +47,7 @@ const AboutPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
             >
-              About Us
+              {t("about.subtitle")}
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -52,7 +55,7 @@ const AboutPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              We are <span className="gradient-text">AlphaZero</span>
+              {t("about.title")} <span className="gradient-text">AlphaZero</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -60,8 +63,7 @@ const AboutPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              A creative agency focused on graphic design, branding, and visual identity. 
-              We help brands start from scratch and grow with clean, modern, and impactful design solutions.
+              {t("about.description")}
             </motion.p>
           </div>
         </div>
@@ -86,10 +88,10 @@ const AboutPage = () => {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
               >
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">Our Journey</span>
+                <span className="text-sm font-medium text-primary">{t("about.story.badge")}</span>
               </motion.div>
               <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
-                The <span className="gradient-text">AlphaZero</span> Story
+                {t("about.story.title")} <span className="gradient-text">AlphaZero</span> {t("about.story.title2")}
               </h2>
             </motion.div>
 
@@ -115,11 +117,9 @@ const AboutPage = () => {
                         <Rocket className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-2">From Zero to Hero</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t("about.story.card1.title")}</h3>
                         <p className="text-muted-foreground">
-                          AlphaZero is a creative agency focused on graphic design, branding, and visual identity. 
-                          We believe every great brand starts from zero — and with the right vision and execution, 
-                          it can make a lasting impact.
+                          {t("about.story.card1.desc")}
                         </p>
                       </div>
                     </div>
@@ -137,11 +137,9 @@ const AboutPage = () => {
                         <Zap className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-2">Evolving Digital Excellence</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t("about.story.card2.title")}</h3>
                         <p className="text-muted-foreground">
-                          Currently, AlphaZero delivers professional design services while evolving toward IT and 
-                          AI-driven digital services. Our goal is to turn ideas into strong visual experiences 
-                          that actually work.
+                          {t("about.story.card2.desc")}
                         </p>
                       </div>
                     </div>
@@ -159,10 +157,9 @@ const AboutPage = () => {
                         <Heart className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-2">Client-First Approach</h3>
+                        <h3 className="text-lg font-semibold mb-2">{t("about.story.card3.title")}</h3>
                         <p className="text-muted-foreground">
-                          We prioritize understanding your vision and delivering solutions that exceed expectations.
-                          Your success is our success.
+                          {t("about.story.card3.desc")}
                         </p>
                       </div>
                     </div>
@@ -202,7 +199,7 @@ const AboutPage = () => {
                         transition={{ delay: 0.3 }}
                         className="text-primary text-xl font-semibold tracking-wide"
                       >
-                        From Zero to Impact
+                        {t("about.tagline")}
                       </motion.p>
                     </div>
                   </motion.div>
@@ -214,7 +211,7 @@ const AboutPage = () => {
                     transition={{ delay: 0.4, type: "spring" }}
                     className="absolute -top-3 -right-3 px-3 py-1.5 rounded-full bg-primary text-primary-foreground font-medium text-xs"
                   >
-                    Creative Agency
+                    {t("about.badge.agency")}
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, scale: 0 }}
@@ -237,12 +234,12 @@ const AboutPage = () => {
                 >
                   <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-primary" />
-                    Why Choose AlphaZero?
+                    {t("about.whyChoose")}
                   </h4>
                   <div className="grid grid-cols-1 gap-3">
-                    {whyChoose.map((item, index) => (
+                    {whyChoose.map((itemKey, index) => (
                       <motion.div 
-                        key={item} 
+                        key={itemKey} 
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -250,7 +247,7 @@ const AboutPage = () => {
                         className="flex items-center gap-3 group"
                       >
                         <div className="w-2 h-2 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
+                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{t(itemKey)}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -272,17 +269,17 @@ const AboutPage = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                Our Values
+                {t("about.values.title")}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                The principles that guide everything we do
+                {t("about.values.subtitle")}
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {values.map((value, index) => (
                 <motion.div
-                  key={value.title}
+                  key={value.titleKey}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -292,8 +289,8 @@ const AboutPage = () => {
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
                     <value.icon size={24} className="text-primary" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold mb-3">{value.title}</h3>
-                  <p className="text-muted-foreground">{value.description}</p>
+                  <h3 className="text-xl font-display font-semibold mb-3">{t(value.titleKey)}</h3>
+                  <p className="text-muted-foreground">{t(value.descKey)}</p>
                 </motion.div>
               ))}
             </div>
@@ -312,20 +309,20 @@ const AboutPage = () => {
           >
             <Globe size={48} className="text-primary mx-auto mb-6" />
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              Based in Bangladesh
+              {t("about.location.title")}
             </h2>
             <p className="text-xl text-muted-foreground mb-2">
-              Bornali, Rajshahi, Bangladesh – 6000
+              {t("about.location.address")}
             </p>
             <p className="text-muted-foreground mb-8">
-              Working with clients worldwide, delivering impactful design solutions remotely.
+              {t("about.location.desc")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                Let's Connect <ArrowRight size={20} />
+                {t("about.location.cta1")} <ArrowRight size={20} />
               </Link>
               <a
                 href="https://wa.me/8801410190019"
@@ -333,7 +330,7 @@ const AboutPage = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
               >
-                WhatsApp Us
+                {t("about.location.cta2")}
               </a>
             </div>
           </motion.div>
