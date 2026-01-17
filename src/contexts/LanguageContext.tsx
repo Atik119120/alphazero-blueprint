@@ -125,6 +125,11 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.quickLinks": "Quick Links",
     "footer.contact": "Contact",
     "footer.rights": "All rights reserved.",
+    "footer.ready": "Ready to create?",
+    "footer.letsCreate": "Let's create something",
+    "footer.together": "amazing together",
+    "footer.navigation": "Navigation",
+    "footer.social": "Social",
     
     // Common
     "common.learnMore": "Learn More",
@@ -407,6 +412,11 @@ const translations: Record<Language, Record<string, string>> = {
     "footer.quickLinks": "দ্রুত লিংক",
     "footer.contact": "যোগাযোগ",
     "footer.rights": "সর্বস্বত্ব সংরক্ষিত।",
+    "footer.ready": "তৈরি করতে প্রস্তুত?",
+    "footer.letsCreate": "আসুন একসাথে কিছু",
+    "footer.together": "অসাধারণ তৈরি করি",
+    "footer.navigation": "নেভিগেশন",
+    "footer.social": "সোশ্যাল",
     
     // Common
     "common.learnMore": "আরও জানুন",
