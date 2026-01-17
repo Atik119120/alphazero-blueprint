@@ -171,7 +171,7 @@ const TeamPage = () => {
                       </div>
                       
                       {/* Role Tags */}
-                      <div className="flex flex-wrap justify-center gap-1.5 mb-4 h-[72px] items-start content-start overflow-hidden">
+                      <div className="flex flex-wrap justify-center gap-1.5 mb-4">
                         {member.role.split(', ').map((role, idx) => (
                           <span 
                             key={idx} 
@@ -183,7 +183,7 @@ const TeamPage = () => {
                       </div>
                       
                       {/* Bio */}
-                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-auto">{member.bio}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed mt-auto">{member.bio}</p>
                     </div>
                   </div>
                 </motion.div>
