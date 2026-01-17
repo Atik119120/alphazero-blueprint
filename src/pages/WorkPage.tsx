@@ -4,138 +4,57 @@ import { ExternalLink, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 
-const categories = ["All", "Web Design", "Social Media", "Branding", "Logo"];
+const categories = ["All", "Web Design"];
 
 const projects = [
-  // Web Design Projects
+  // Our Projects
   {
     id: 1,
-    title: "E-commerce Platform",
+    title: "Atik Ahmed Portfolio",
     category: "Web Design",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    description: "Modern e-commerce website design with seamless user experience.",
+    description: "Personal portfolio website showcasing creative works and services.",
+    link: "https://atikahmed.online/",
   },
   {
     id: 2,
-    title: "SaaS Dashboard",
+    title: "Maariful Quran Academy",
     category: "Web Design",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    description: "Clean analytics dashboard for business intelligence platform.",
+    image: "https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&h=400&fit=crop",
+    description: "Educational platform for Quran learning and Islamic studies.",
+    link: "https://maarifulquranacademy.com/",
   },
   {
     id: 3,
-    title: "Fitness App UI",
+    title: "Alokchitra",
     category: "Web Design",
-    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
-    description: "Mobile app UI/UX design for a fitness and wellness brand.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+    description: "Creative photography and media services website.",
+    link: "https://alokchitra.online/",
   },
   {
     id: 4,
-    title: "Portfolio Website",
+    title: "Dark Aura",
     category: "Web Design",
-    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&h=400&fit=crop",
-    description: "Minimal portfolio website for a creative professional.",
+    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=600&h=400&fit=crop",
+    description: "Modern dark-themed website with stunning visual design.",
+    link: "https://darkaura.online/",
   },
   {
     id: 5,
-    title: "Music Streaming App",
+    title: "Alpha Zero",
     category: "Web Design",
-    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=600&h=400&fit=crop",
-    description: "Sleek dark-themed music streaming app interface design.",
+    image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&h=400&fit=crop",
+    description: "Digital agency website offering creative solutions.",
+    link: "https://alphazero.online/",
   },
   {
     id: 6,
-    title: "Real Estate Platform",
+    title: "Creative Portfolio",
     category: "Web Design",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=400&fit=crop",
-    description: "Property listing platform with advanced search features.",
-  },
-  // Social Media Projects
-  {
-    id: 7,
-    title: "Restaurant Social Campaign",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
-    description: "Social media content strategy and design for restaurant chain.",
-  },
-  {
-    id: 8,
-    title: "Travel Agency Posts",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=600&h=400&fit=crop",
-    description: "Engaging social media content for travel and tourism company.",
-  },
-  {
-    id: 9,
-    title: "Fitness Brand Stories",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&h=400&fit=crop",
-    description: "Dynamic Instagram stories and posts for fitness brand.",
-  },
-  {
-    id: 10,
-    title: "Fashion Collection Launch",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
-    description: "Campaign creatives for seasonal fashion collection launch.",
-  },
-  {
-    id: 11,
-    title: "Tech Startup Socials",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-    description: "Professional social media presence for B2B tech company.",
-  },
-  {
-    id: 12,
-    title: "Food Delivery Campaign",
-    category: "Social Media",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&h=400&fit=crop",
-    description: "Mouth-watering social creatives for food delivery app.",
-  },
-  // Branding Projects
-  {
-    id: 13,
-    title: "Tech Startup Branding",
-    category: "Branding",
-    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop",
-    description: "Complete brand identity for a tech startup including logo, colors, and guidelines.",
-  },
-  {
-    id: 14,
-    title: "Fashion Brand Identity",
-    category: "Branding",
-    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&h=400&fit=crop",
-    description: "Premium fashion brand visual identity and marketing materials.",
-  },
-  {
-    id: 15,
-    title: "Coffee Shop Branding",
-    category: "Branding",
-    image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&h=400&fit=crop",
-    description: "Warm and inviting brand identity for artisan coffee shop.",
-  },
-  // Logo Projects
-  {
-    id: 16,
-    title: "Minimal Logo Collection",
-    category: "Logo",
-    image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop",
-    description: "Minimalist logo designs for various clients across industries.",
-  },
-  {
-    id: 17,
-    title: "Restaurant Logo Suite",
-    category: "Logo",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop",
-    description: "Elegant logo variations for upscale dining establishment.",
-  },
-  {
-    id: 18,
-    title: "Tech Company Logomark",
-    category: "Logo",
-    image: "https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?w=600&h=400&fit=crop",
-    description: "Modern, scalable logomark for innovative tech company.",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop",
+    description: "Interactive portfolio showcasing innovative design work.",
+    link: "https://xxxooxxx.netlify.app/",
   },
 ];
 
@@ -231,9 +150,14 @@ const WorkPage = () => {
                     </span>
                     <h3 className="text-xl font-display font-semibold mb-2">{project.title}</h3>
                     <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
-                    <button className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors">
+                    <a 
+                      href={project.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
+                    >
                       View Project <ExternalLink size={14} />
-                    </button>
+                    </a>
                   </div>
                 </motion.div>
               ))}
