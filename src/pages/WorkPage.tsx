@@ -77,6 +77,34 @@ const designProjects = [
     category: "Print Design",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
   },
+  {
+    id: 5,
+    title: "Business Card Design",
+    description: "Professional business card designs with modern aesthetics.",
+    category: "Print Design",
+    image: "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&h=400&fit=crop",
+  },
+  {
+    id: 6,
+    title: "Poster & Banner Design",
+    description: "Creative posters and banners for events and promotions.",
+    category: "Print Design",
+    image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=600&h=400&fit=crop",
+  },
+  {
+    id: 7,
+    title: "Instagram Post Templates",
+    description: "Customizable Instagram post templates for brands.",
+    category: "Social Media",
+    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=600&h=400&fit=crop",
+  },
+  {
+    id: 8,
+    title: "YouTube Thumbnail Design",
+    description: "Eye-catching thumbnails that increase click-through rates.",
+    category: "Social Media",
+    image: "https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?w=600&h=400&fit=crop",
+  },
 ];
 
 const videoProjects = [
@@ -107,6 +135,34 @@ const videoProjects = [
     description: "Professional event coverage and highlight reels.",
     category: "Events",
     thumbnail: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&h=400&fit=crop",
+  },
+  {
+    id: 5,
+    title: "Product Showcase",
+    description: "Cinematic product videos for e-commerce and marketing.",
+    category: "Product",
+    thumbnail: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
+  },
+  {
+    id: 6,
+    title: "Wedding Films",
+    description: "Beautiful wedding cinematography and highlight films.",
+    category: "Wedding",
+    thumbnail: "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=400&fit=crop",
+  },
+  {
+    id: 7,
+    title: "Music Video Editing",
+    description: "Creative music video editing with visual effects.",
+    category: "Music",
+    thumbnail: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop",
+  },
+  {
+    id: 8,
+    title: "Corporate Videos",
+    description: "Professional corporate and training video production.",
+    category: "Corporate",
+    thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop",
   },
 ];
 
