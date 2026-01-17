@@ -6,31 +6,31 @@ import Layout from "@/components/Layout";
 const teamMembers = [
   {
     name: "Sofiullah Ahammad",
-    role: "Founder, Graphics Designer",
+    role: "Founder,Graphics Designer",
     image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true",
     bio: "Visionary leader with 3+ years of experience in creative direction and brand strategy.",
-    socials: { facebook: "https://www.facebook.com/AtikAhmedPeradox", instagram: "https://www.instagram.com/atik_ahmed_69/", linkedin: "https://www.linkedin.com/in/sofiullah-ahammad/", github: "" },
+    socials: { facebook: "https://www.facebook.com/AtikAhmedPeradox", instagram: "https://www.instagram.com/atik_ahmed_69/", linkedin: "https://www.linkedin.com/in/sofiullah-ahammad/" },
   },
   {
     name: "Adib Sarkar",
     role: "Lead Designer",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true",
     bio: "Award-winning designer specializing in brand identity and visual communication.",
-    socials: { facebook: "https://www.facebook.com/share/17kdvEbE5h/", instagram: "https://www.instagram.com/_og_gy?igsh=ZTkydWRrdnk0ZDIw", linkedin: "https://www.linkedin.com/in/mdadibsarkar", github: "" },
+    socials: { facebook: "https://www.facebook.com/share/17kdvEbE5h/", instagram: "https://www.instagram.com/_og_gy?igsh=ZTkydWRrdnk0ZDIw", linkedin: "https://www.linkedin.com/in/mdadibsarkar" },
   },
   {
-    name: "Md. Kamrul Hasan",
+    name: "Md.Kamrul Hasan",
     role: "Web Developer",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true",
     bio: "Full-stack developer passionate about creating fast, scalable web applications.",
-    socials: { facebook: "https://www.facebook.com/wlonlinecenter", instagram: "", linkedin: "https://www.linkedin.com/in/md-kamrul-hasan-102228218/", github: "" },
+    socials: { facebook: "https://www.facebook.com/wlonlinecenter", instagram: "https://www.linkedin.com/in/md-kamrul-hasan-102228218/" },
   },
   {
-    name: "Md. Shafiul Haque",
+    name: "Md.Shafiul Haque",
     role: "Web Designer",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true",
     bio: "User experience specialist focused on creating intuitive and delightful interfaces.",
-    socials: { instagram: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw", facebook: "https://www.facebook.com/itzme.shaurav", linkedin: "", github: "" },
+    socials: { instagram: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw", facebook: "https://www.facebook.com/itzme.shaurav" },
   },
 ];
 
@@ -121,9 +121,9 @@ const TeamPage = () => {
                             <Linkedin size={18} />
                           </a>
                         )}
-                        {member.socials.github && (
+                        {'github' in member.socials && (member.socials as {github?: string}).github && (
                           <a 
-                            href={member.socials.github} 
+                            href={(member.socials as {github?: string}).github} 
                             className="p-3 rounded-full bg-background/80 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                           >
                             <Github size={18} />
