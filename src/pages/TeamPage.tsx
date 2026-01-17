@@ -6,7 +6,7 @@ import Layout from "@/components/Layout";
 const teamMembers = [
   {
     name: "Sofiullah Ahammad",
-    role: "Founder, Graphics Designer, Vibe Coding Expert",
+    role: "Founder, Graphics Designer, Vibe Coding Expert, Freelance Photographer",
     image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true",
     bio: "Visionary leader with 3+ years of experience in creative direction and brand strategy.",
     socials: { facebook: "https://www.facebook.com/AtikAhmedPeradox", instagram: "https://www.instagram.com/atik_ahmed_69/", linkedin: "https://www.linkedin.com/in/sofiullah-ahammad/" },
@@ -27,7 +27,7 @@ const teamMembers = [
   },
   {
     name: "Md.Shafiul Haque",
-    role: "Web Designer",
+    role: "Web Designer, Video Editor",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true",
     bio: "User experience specialist focused on creating intuitive and delightful interfaces.",
     socials: { instagram: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw", facebook: "https://www.facebook.com/itzme.shaurav" },
