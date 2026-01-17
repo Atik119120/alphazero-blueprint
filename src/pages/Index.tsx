@@ -15,62 +15,65 @@ import {
   Monitor,
   ShoppingCart,
   Search,
-  Home,
-  Info,
-  Briefcase,
-  FolderOpen,
-  Users,
-  Phone,
   Star,
   Quote
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
-import logo from "@/assets/logo.png";
-
-const whyChooseUs = [
-  { icon: Palette, title: "Clean & Modern Design", description: "Fresh, contemporary aesthetics that stand out" },
-  { icon: Eye, title: "Brand-Focused Strategy", description: "Every design serves your brand's unique vision" },
-  { icon: Target, title: "Detail-Oriented", description: "Pixel-perfect execution on every project" },
-  { icon: MessageSquare, title: "Client-First Communication", description: "Clear, responsive, and collaborative process" },
-  { icon: Gem, title: "Zero to Full Identity", description: "Complete brand solutions from scratch" },
-];
-
-const services = [
-  { icon: Layout, title: "UI/UX Design", description: "Intuitive interfaces that users love" },
-  { icon: Search, title: "SEO Optimization", description: "Get found by your target audience" },
-  { icon: Monitor, title: "Website Design & Development", description: "Fast, responsive, modern websites" },
-  { icon: ShoppingCart, title: "E-commerce Solutions", description: "Sell online with powerful stores" },
-  { icon: Share2, title: "Social Media Design", description: "Engaging content that converts" },
-  { icon: PenTool, title: "Branding & Creative Design", description: "Build memorable brand identity" },
-];
-
-const testimonials = [
-  {
-    name: "Sarah Johnson",
-    role: "CEO, TechStart",
-    content: "AlphaZero transformed our brand completely. Their attention to detail and creative vision exceeded our expectations.",
-    rating: 5
-  },
-  {
-    name: "Michael Chen",
-    role: "Founder, GreenLeaf",
-    content: "Professional, responsive, and incredibly talented. They delivered our website ahead of schedule with stunning results.",
-    rating: 5
-  },
-  {
-    name: "Emily Rodriguez",
-    role: "Marketing Director, Bloom Co",
-    content: "The best design agency we've worked with. Their social media designs increased our engagement by 300%.",
-    rating: 5
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const clientLogos = [
   "TechStart", "GreenLeaf", "Bloom Co", "NextGen", "Spark Digital", "CloudNine"
 ];
 
 const Index = () => {
+  const { t } = useLanguage();
+
+  const whyChooseUs = [
+    { icon: Palette, title: t("home.why.clean"), description: t("home.why.cleanDesc") },
+    { icon: Eye, title: t("home.why.brand"), description: t("home.why.brandDesc") },
+    { icon: Target, title: t("home.why.detail"), description: t("home.why.detailDesc") },
+    { icon: MessageSquare, title: t("home.why.client"), description: t("home.why.clientDesc") },
+    { icon: Gem, title: t("home.why.zero"), description: t("home.why.zeroDesc") },
+  ];
+
+  const services = [
+    { icon: Layout, title: t("home.service.uiux"), description: t("home.service.uiuxDesc") },
+    { icon: Search, title: t("home.service.seo"), description: t("home.service.seoDesc") },
+    { icon: Monitor, title: t("home.service.web"), description: t("home.service.webDesc") },
+    { icon: ShoppingCart, title: t("home.service.ecommerce"), description: t("home.service.ecommerceDesc") },
+    { icon: Share2, title: t("home.service.social"), description: t("home.service.socialDesc") },
+    { icon: PenTool, title: t("home.service.branding"), description: t("home.service.brandingDesc") },
+  ];
+
+  const stats = [
+    { value: "50+", label: t("home.stats.projects") },
+    { value: "30+", label: t("home.stats.clients") },
+    { value: "3+", label: t("home.stats.years") },
+    { value: "100%", label: t("home.stats.satisfaction") },
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "CEO, TechStart",
+      content: "AlphaZero transformed our brand completely. Their attention to detail and creative vision exceeded our expectations.",
+      rating: 5
+    },
+    {
+      name: "Michael Chen",
+      role: "Founder, GreenLeaf",
+      content: "Professional, responsive, and incredibly talented. They delivered our website ahead of schedule with stunning results.",
+      rating: 5
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Marketing Director, Bloom Co",
+      content: "The best design agency we've worked with. Their social media designs increased our engagement by 300%.",
+      rating: 5
+    },
+  ];
+
   return (
     <LayoutComponent>
       {/* Hero Section */}
@@ -88,7 +91,7 @@ const Index = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-primary/20 mb-8 backdrop-blur-sm"
             >
               <Sparkles size={14} className="text-primary" />
-              <span className="text-sm text-foreground">Creative Design & IT Agency</span>
+              <span className="text-sm text-foreground">{t("home.badge")}</span>
             </motion.div>
 
             {/* Main Heading */}
@@ -98,8 +101,8 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-6"
             >
-              Starting every idea from{" "}
-              <span className="gradient-text">zero</span>
+              {t("home.title1")}{" "}
+              <span className="gradient-text">{t("home.title2")}</span>
             </motion.h1>
 
             <motion.p
@@ -108,7 +111,7 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium text-primary mb-8"
             >
-              From zero to impact
+              {t("home.tagline")}
             </motion.p>
 
             <motion.p
@@ -117,8 +120,7 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
             >
-              A creative IT agency focused on graphic design, web solutions, and visual identity. 
-              We help brands start from scratch and grow with clean, modern, and impactful design solutions.
+              {t("home.description")}
             </motion.p>
 
             {/* CTA Buttons */}
@@ -132,14 +134,14 @@ const Index = () => {
                 to="/contact"
                 className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2"
               >
-                Start Your Project
+                {t("home.cta1")}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/work"
                 className="px-8 py-4 bg-transparent border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
               >
-                View Our Work
+                {t("home.cta2")}
               </Link>
             </motion.div>
           </div>
@@ -171,12 +173,7 @@ const Index = () => {
             viewport={{ once: true }}
             className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto"
           >
-            {[
-              { value: "50+", label: "Projects Delivered" },
-              { value: "30+", label: "Happy Clients" },
-              { value: "3+", label: "Years Experience" },
-              { value: "100%", label: "Client Satisfaction" },
-            ].map((stat, index) => (
+            {stats.map((stat, index) => (
               <motion.div 
                 key={stat.label} 
                 className="text-center"
@@ -205,13 +202,13 @@ const Index = () => {
             className="text-center mb-16"
           >
             <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
-              Our Expertise
+              {t("home.expertise")}
             </span>
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-              What we <span className="gradient-text">do</span>
+              {t("home.whatWeDo")} <span className="gradient-text">{t("home.do")}</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Full-stack creative services to build and grow your digital presence
+              {t("home.expertiseDesc")}
             </p>
           </motion.div>
 
@@ -244,7 +241,7 @@ const Index = () => {
               to="/services"
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
             >
-              View All Services <ArrowRight size={18} />
+              {t("home.viewAllServices")} <ArrowRight size={18} />
             </Link>
           </motion.div>
         </div>
@@ -260,10 +257,10 @@ const Index = () => {
             className="text-center mb-16"
           >
             <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
-              Why Choose AlphaZero
+              {t("home.whyChoose")}
             </span>
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-              Built for <span className="gradient-text">your success</span>
+              {t("home.builtFor")} <span className="gradient-text">{t("home.yourSuccess")}</span>
             </h2>
           </motion.div>
 
@@ -298,10 +295,10 @@ const Index = () => {
             className="text-center mb-16"
           >
             <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
-              Testimonials
+              {t("home.testimonials")}
             </span>
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-              What our clients <span className="gradient-text">say</span>
+              {t("home.whatClientsSay")} <span className="gradient-text">{t("home.say")}</span>
             </h2>
           </motion.div>
 
@@ -341,7 +338,7 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="text-muted-foreground text-sm uppercase tracking-wider">Trusted by innovative brands</p>
+            <p className="text-muted-foreground text-sm uppercase tracking-wider">{t("home.trustedBy")}</p>
           </motion.div>
           
           <motion.div
@@ -376,17 +373,17 @@ const Index = () => {
             className="max-w-3xl mx-auto text-center"
           >
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6">
-              Let's build your <span className="gradient-text">brand</span>
+              {t("home.letsBuild")} <span className="gradient-text">{t("home.brand")}</span>
             </h2>
             <p className="text-muted-foreground text-lg mb-8">
-              Ready to transform your ideas into powerful visual experiences?
+              {t("home.readyTo")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-10 py-5 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                Get a Free Consultation <ArrowRight size={20} />
+                {t("home.freeConsultation")} <ArrowRight size={20} />
               </Link>
               <a
                 href="https://wa.me/8801410190019"
@@ -394,7 +391,7 @@ const Index = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-10 py-5 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
               >
-                WhatsApp Us
+                {t("home.whatsappUs")}
               </a>
             </div>
           </motion.div>

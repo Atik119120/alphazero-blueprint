@@ -1,8 +1,11 @@
 import { ArrowUp, Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -11,6 +14,14 @@ const Footer = () => {
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online" },
     { name: "Facebook", url: "https://www.facebook.com/AlphaZero" },
     { name: "LinkedIn", url: "https://www.linkedin.com/company/alpha-zero-2248923a5" },
+  ];
+
+  const quickLinks = [
+    { name: t("nav.about"), href: "/about" },
+    { name: t("nav.services"), href: "/services" },
+    { name: t("nav.work"), href: "/work" },
+    { name: t("nav.team"), href: "/team" },
+    { name: t("nav.contact"), href: "/contact" },
   ];
 
   return (
@@ -25,12 +36,11 @@ const Footer = () => {
                 <img 
                   src={logo} 
                   alt="AlphaZero Logo" 
-                  className="h-10 w-auto brightness-0 invert"
+                  className="h-10 w-auto brightness-0 dark:invert"
                 />
               </Link>
               <p className="text-muted-foreground max-w-sm mb-4">
-                AlphaZero is a creative design agency crafting modern visual identities 
-                and brand experiences. From zero to impact.
+                {t("footer.description")}
               </p>
               <div className="flex gap-3 flex-wrap">
                 {socialLinks.map((social) => (
@@ -49,15 +59,15 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="font-display font-semibold mb-4">Quick Links</h4>
+              <h4 className="font-display font-semibold mb-4">{t("footer.quickLinks")}</h4>
               <ul className="space-y-2">
-                {["About", "Services", "Work", "Team", "Contact"].map((item) => (
-                  <li key={item}>
+                {quickLinks.map((item) => (
+                  <li key={item.href}>
                     <Link 
-                      to={`/${item.toLowerCase()}`}
+                      to={item.href}
                       className="text-muted-foreground hover:text-primary transition-colors"
                     >
-                      {item}
+                      {item.name}
                     </Link>
                   </li>
                 ))}
@@ -66,7 +76,7 @@ const Footer = () => {
 
             {/* Contact Info */}
             <div>
-              <h4 className="font-display font-semibold mb-4">Contact</h4>
+              <h4 className="font-display font-semibold mb-4">{t("footer.contact")}</h4>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-center gap-2 text-muted-foreground">
                   <Phone size={14} className="text-primary" />
@@ -82,7 +92,7 @@ const Footer = () => {
                 </li>
                 <li className="flex items-start gap-2 text-muted-foreground">
                   <MapPin size={14} className="text-primary flex-shrink-0 mt-0.5" />
-                  <span>Bornali, Rajshahi, Bangladesh – 6000</span>
+                  <span>{t("about.location.address")}</span>
                 </li>
               </ul>
             </div>
@@ -92,7 +102,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
             {/* Copyright */}
             <p className="text-sm text-muted-foreground text-center">
-              © {new Date().getFullYear()} AlphaZero. All rights reserved.
+              © {new Date().getFullYear()} AlphaZero. {t("footer.rights")}
             </p>
 
             {/* Website & Back to Top */}
