@@ -435,12 +435,6 @@ const CoursesPage = () => {
     <Layout>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        
-        {/* Animated Background Shapes */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-        
         <div className="container mx-auto px-6 relative">
           <div className="max-w-5xl mx-auto text-center">
             <motion.div
