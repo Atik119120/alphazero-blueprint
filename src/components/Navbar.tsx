@@ -26,7 +26,8 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", num: "03" },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.contact"), href: "/contact", num: "06" },
+    { name: "কোর্স", href: "/courses", num: "06" },
+    { name: t("nav.contact"), href: "/contact", num: "07" },
   ];
 
   useEffect(() => {
