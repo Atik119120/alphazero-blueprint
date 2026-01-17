@@ -160,13 +160,30 @@ const courses = [
     nameEn: "Web Coding (HTML, CSS, JavaScript)",
     icon: Code,
     fee: 5000,
-    trainer: trainers.shafiul,
+    trainer: null,
     color: "from-cyan-500 to-blue-500",
     descriptionBn: "HTML, CSS এবং JavaScript দিয়ে ওয়েবসাইট বানানো শিখুন। বেসিক থেকে প্রফেশনাল লেভেল পর্যন্ত।",
     descriptionEn: "Learn to build websites with HTML, CSS and JavaScript. From basic to professional level.",
     featuresBn: ["HTML5 ফান্ডামেন্টালস", "CSS3 ও Flexbox", "JavaScript বেসিক", "রেস্পন্সিভ ডিজাইন"],
     featuresEn: ["HTML5 Fundamentals", "CSS3 & Flexbox", "JavaScript Basics", "Responsive Design"],
-    isUpcoming: true
+    isUpcoming: true,
+    isSpecial: true,
+    specialContentBn: {
+      title: "ওয়েব কোডিং কেন শিখবেন?",
+      points: [
+        "নিজের হাতে প্রফেশনাল ওয়েবসাইট বানান",
+        "ফ্রিল্যান্সিং ও জব মার্কেটে সবচেয়ে চাহিদাসম্পন্ন স্কিল",
+        "ওয়েব ডেভেলপার হিসেবে ক্যারিয়ার শুরু করুন"
+      ]
+    },
+    specialContentEn: {
+      title: "Why Learn Web Coding?",
+      points: [
+        "Build professional websites with your own hands",
+        "Most in-demand skill in freelancing & job market",
+        "Start your career as a web developer"
+      ]
+    }
   },
   {
     id: "motion-graphics",
