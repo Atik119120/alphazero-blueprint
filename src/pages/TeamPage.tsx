@@ -169,12 +169,12 @@ const TeamPage = () => {
               We're always looking for talented individuals to join our creative family.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="mailto:agency.alphazero@gmail.com"
+              <Link
+                to="/join-team"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                Get in Touch <ArrowRight size={20} />
-              </a>
+                Apply Now <ArrowRight size={20} />
+              </Link>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
