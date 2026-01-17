@@ -615,20 +615,22 @@ const CoursesPage = () => {
                     )}
 
                     {/* Trainer with Photo */}
-                    <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-secondary/30 border border-border mb-4 mt-auto">
-                      <img
-                        src={course.trainer.image}
-                        alt={course.trainer.name}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs text-muted-foreground">{t.trainer}</p>
-                        <p className="text-sm font-semibold truncate">{course.trainer.name}</p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {isBn ? course.trainer.qualificationBn : course.trainer.qualificationEn}
-                        </p>
+                    {course.trainer && (
+                      <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-secondary/30 border border-border mb-4 mt-auto">
+                        <img
+                          src={course.trainer.image}
+                          alt={course.trainer.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-muted-foreground">{t.trainer}</p>
+                          <p className="text-sm font-semibold truncate">{course.trainer.name}</p>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {isBn ? course.trainer.qualificationBn : course.trainer.qualificationEn}
+                          </p>
+                        </div>
                       </div>
-                    </div>
+                    )}
 
                     {/* Enroll Button */}
                     <a
