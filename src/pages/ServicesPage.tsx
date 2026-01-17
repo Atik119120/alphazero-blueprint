@@ -25,7 +25,12 @@ import {
   Film,
   Clapperboard,
   Megaphone,
-  Users
+  Users,
+  Laptop,
+  FileSpreadsheet,
+  Presentation,
+  Database,
+  Printer
 } from "lucide-react";
 import LayoutComponent from "@/components/Layout";
 
@@ -78,6 +83,21 @@ const allServices = [
     description: "Grow your business with strategic digital marketing campaigns that drive results.",
     features: ["Social Media Ads", "Google Ads", "Email Marketing", "Content Marketing"]
   },
+  { 
+    icon: Laptop, 
+    title: "Computer Operation", 
+    description: "Expert computer operation services including MS Office, data entry, and document management.",
+    features: ["MS Office Expert", "Data Entry", "Document Formatting", "Spreadsheet Management"]
+  },
+];
+
+const computerServices = [
+  { icon: FileSpreadsheet, title: "Microsoft Excel", description: "Advanced spreadsheets, formulas, and data analysis." },
+  { icon: FileText, title: "Microsoft Word", description: "Professional document formatting and editing." },
+  { icon: Presentation, title: "Microsoft PowerPoint", description: "Engaging presentations and slide designs." },
+  { icon: Database, title: "Data Entry", description: "Fast and accurate data entry services." },
+  { icon: Printer, title: "Document Processing", description: "Scanning, printing, and file management." },
+  { icon: Laptop, title: "Computer Training", description: "Basic to advanced computer skills training." },
 ];
 
 const graphicServices = [
@@ -300,7 +320,46 @@ const ServicesPage = () => {
         </div>
       </section>
 
+      {/* Computer Operation Services */}
       <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 mb-12"
+            >
+              <span className="w-12 h-px bg-primary" />
+              <h2 className="text-3xl font-display font-bold">Computer Operation Services</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {computerServices.map((service, index) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group flex items-start gap-4 p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                    <service.icon size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-semibold mb-1">{service.title}</h3>
+                    <p className="text-muted-foreground text-sm">{service.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section */}
+      <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
