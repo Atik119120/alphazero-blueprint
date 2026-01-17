@@ -4,10 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Abu Sayed Font for Bengali titles */
+/* Sabina Shorolipi Font for Bengali titles */
 @font-face {
-  font-family: 'AbuSayed';
-  src: url('/fonts/AbuSayed.ttf') format('truetype');
+  font-family: 'SabinaShorolipi';
+  src: url('/fonts/SabinaShorolipi.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -53,7 +53,7 @@
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-display-bn: 'AbuSayed', 'Tiro Bangla', 'Hind Siliguri', sans-serif;
+    --font-display-bn: 'SabinaShorolipi', 'Hind Siliguri', sans-serif;
     --font-body-bn: 'Hind Siliguri', 'Tiro Bangla', sans-serif;
   }
 

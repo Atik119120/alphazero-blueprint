@@ -16,7 +16,7 @@ export default {
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
-        'display-bn': ['AbuSayed', 'Tiro Bangla', 'Hind Siliguri', 'sans-serif'],
+        'display-bn': ['SabinaShorolipi', 'Hind Siliguri', 'sans-serif'],
         'body-bn': ['Hind Siliguri', 'Tiro Bangla', 'sans-serif'],
       },
       colors: {
