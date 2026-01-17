@@ -17,7 +17,15 @@ import {
   Globe,
   Code,
   Zap,
-  CheckCircle
+  CheckCircle,
+  Video,
+  TrendingUp,
+  Target,
+  BarChart3,
+  Film,
+  Clapperboard,
+  Megaphone,
+  Users
 } from "lucide-react";
 import LayoutComponent from "@/components/Layout";
 
@@ -58,6 +66,18 @@ const allServices = [
     description: "Develop memorable brand identities that stand out in the market.",
     features: ["Logo Design", "Brand Identity", "Style Guide", "Marketing Materials"]
   },
+  { 
+    icon: Video, 
+    title: "Video Editing", 
+    description: "Professional video editing services for promotional, social media, and corporate content.",
+    features: ["Promotional Videos", "Social Media Reels", "Motion Graphics", "Color Grading"]
+  },
+  { 
+    icon: TrendingUp, 
+    title: "Digital Marketing", 
+    description: "Grow your business with strategic digital marketing campaigns that drive results.",
+    features: ["Social Media Ads", "Google Ads", "Email Marketing", "Content Marketing"]
+  },
 ];
 
 const graphicServices = [
@@ -67,6 +87,20 @@ const graphicServices = [
   { icon: Image, title: "Banner & Poster Design", description: "Eye-catching visuals for campaigns." },
   { icon: FileText, title: "Print Design", description: "Business cards, brochures, and more." },
   { icon: MessageCircle, title: "Branding Consultation", description: "Expert guidance for your brand." },
+];
+
+const videoServices = [
+  { icon: Film, title: "Promotional Videos", description: "Engaging promo videos for brands and products." },
+  { icon: Clapperboard, title: "Social Media Reels", description: "Short-form content for Instagram & TikTok." },
+  { icon: Video, title: "Motion Graphics", description: "Animated graphics and visual effects." },
+  { icon: Zap, title: "Event Highlights", description: "Professional event coverage and highlight reels." },
+];
+
+const digitalMarketingServices = [
+  { icon: Target, title: "Social Media Ads", description: "Targeted ads on Facebook, Instagram & more." },
+  { icon: BarChart3, title: "Google Ads", description: "PPC campaigns that drive qualified traffic." },
+  { icon: Megaphone, title: "Content Marketing", description: "Strategic content that engages audiences." },
+  { icon: Users, title: "Lead Generation", description: "Convert visitors into paying customers." },
 ];
 
 const ServicesPage = () => {
@@ -190,7 +224,82 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Process Section */}
+      {/* Video Editing Services */}
+      <section className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 mb-12"
+            >
+              <span className="w-12 h-px bg-primary" />
+              <h2 className="text-3xl font-display font-bold">Video Editing Services</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {videoServices.map((service, index) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group flex items-start gap-4 p-6 rounded-xl bg-card border border-border hover:border-primary/30 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                    <service.icon size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-semibold mb-1">{service.title}</h3>
+                    <p className="text-muted-foreground text-sm">{service.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Digital Marketing Services */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 mb-12"
+            >
+              <span className="w-12 h-px bg-primary" />
+              <h2 className="text-3xl font-display font-bold">Digital Marketing Services</h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {digitalMarketingServices.map((service, index) => (
+                <motion.div
+                  key={service.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group flex items-start gap-4 p-6 rounded-xl bg-secondary/50 border border-border hover:border-primary/30 transition-all duration-300"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
+                    <service.icon size={24} className="text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-semibold mb-1">{service.title}</h3>
+                    <p className="text-muted-foreground text-sm">{service.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
