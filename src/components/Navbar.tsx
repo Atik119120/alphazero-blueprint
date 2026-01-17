@@ -8,24 +8,36 @@ import {
   Briefcase, 
   FolderOpen, 
   Users, 
-  Phone 
+  Phone,
+  Sun,
+  Moon,
+  Languages
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { useTheme } from "next-themes";
+import { useLanguage } from "@/contexts/LanguageContext";
 import logo from "@/assets/logo.png";
-
-const navLinks = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "About", href: "/about", icon: Info },
-  { name: "Services", href: "/services", icon: Briefcase },
-  { name: "Work", href: "/work", icon: FolderOpen },
-  { name: "Team", href: "/team", icon: Users },
-  { name: "Contact", href: "/contact", icon: Phone },
-];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const location = useLocation();
+  const { theme, setTheme } = useTheme();
+  const { language, setLanguage, t } = useLanguage();
+
+  const navLinks = [
+    { name: t("nav.home"), href: "/", icon: Home },
+    { name: t("nav.about"), href: "/about", icon: Info },
+    { name: t("nav.services"), href: "/services", icon: Briefcase },
+    { name: t("nav.work"), href: "/work", icon: FolderOpen },
+    { name: t("nav.team"), href: "/team", icon: Users },
+    { name: t("nav.contact"), href: "/contact", icon: Phone },
+  ];
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +68,7 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="AlphaZero Logo" 
-                className="h-10 w-auto brightness-0 invert"
+                className="h-10 w-auto brightness-0 dark:invert"
               />
             </Link>
 
@@ -64,7 +76,7 @@ const Navbar = () => {
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
-                  key={link.name}
+                  key={link.href}
                   to={link.href}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                     location.pathname === link.href 
@@ -76,11 +88,31 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              
+              {/* Language Toggle */}
+              <button
+                onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                className="ml-2 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                title={language === "en" ? "বাংলা" : "English"}
+              >
+                <span className="text-sm font-medium">{language === "en" ? "বাং" : "EN"}</span>
+              </button>
+              
+              {/* Theme Toggle */}
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                >
+                  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                </button>
+              )}
+              
               <Link
                 to="/contact"
                 className="ml-4 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-medium text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                Start a Project
+                {t("nav.startProject")}
               </Link>
             </div>
 
@@ -107,7 +139,7 @@ const Navbar = () => {
             <div className="flex flex-col items-center gap-4 p-8">
               {navLinks.map((link, index) => (
                 <motion.div
-                  key={link.name}
+                  key={link.href}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -126,17 +158,42 @@ const Navbar = () => {
                   </Link>
                 </motion.div>
               ))}
+              
+              {/* Mobile Theme & Language Toggles */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
+                className="flex items-center gap-4 mt-4"
+              >
+                <button
+                  onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-secondary text-foreground"
+                >
+                  <Languages size={18} />
+                  {language === "en" ? "বাংলা" : "English"}
+                </button>
+                {mounted && (
+                  <button
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="p-3 rounded-xl bg-secondary text-foreground"
+                  >
+                    {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+                  </button>
+                )}
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
               >
                 <Link
                   to="/contact"
                   onClick={handleNavClick}
                   className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-xl font-medium inline-block"
                 >
-                  Start a Project
+                  {t("nav.startProject")}
                 </Link>
               </motion.div>
             </div>
