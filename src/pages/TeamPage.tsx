@@ -7,7 +7,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const teamMembers = [
   {
     name: "Sofiullah Ahammad",
-    role: "Founder, Graphics Designer, Vibe Coding Expert, Freelance Photographer",
+    role: "Founder, Graphics Designer, Vibe Coding Expert, Freelance Photographer, Google Knowledge Expert",
     image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true",
     bio: "Creative founder with 3+ years of experience in graphics design, vibe coding, and freelance photography.",
     socials: { facebook: "https://www.facebook.com/AtikAhmedPeradox", instagram: "https://www.instagram.com/atik_ahmed_69/", linkedin: "https://www.linkedin.com/in/sofiullah-ahammad/" },
