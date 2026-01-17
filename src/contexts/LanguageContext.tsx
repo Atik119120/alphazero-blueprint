@@ -19,16 +19,63 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.contact": "Contact",
     "nav.startProject": "Start a Project",
     
-    // Home Hero
-    "home.hero.subtitle": "Creative Agency",
-    "home.hero.title1": "We Design",
-    "home.hero.title2": "Brands That",
-    "home.hero.title3": "Stand Out",
-    "home.hero.description": "AlphaZero is a creative agency focused on graphic design, branding, and visual identity. We help brands start from scratch and grow with clean, modern, and impactful design solutions.",
-    "home.hero.cta1": "Start a Project",
-    "home.hero.cta2": "View Our Work",
+    // Home Page
+    "home.badge": "Creative Design & IT Agency",
+    "home.title1": "Starting every idea from",
+    "home.title2": "zero",
+    "home.tagline": "From zero to impact",
+    "home.description": "A creative IT agency focused on graphic design, web solutions, and visual identity. We help brands start from scratch and grow with clean, modern, and impactful design solutions.",
+    "home.cta1": "Start Your Project",
+    "home.cta2": "View Our Work",
+    "home.stats.projects": "Projects Delivered",
+    "home.stats.clients": "Happy Clients",
+    "home.stats.years": "Years Experience",
+    "home.stats.satisfaction": "Client Satisfaction",
+    "home.expertise": "Our Expertise",
+    "home.whatWeDo": "What we",
+    "home.do": "do",
+    "home.expertiseDesc": "Full-stack creative services to build and grow your digital presence",
+    "home.whyChoose": "Why Choose AlphaZero",
+    "home.builtFor": "Built for",
+    "home.yourSuccess": "your success",
+    "home.testimonials": "Testimonials",
+    "home.whatClientsSay": "What our clients",
+    "home.say": "say",
+    "home.trustedBy": "Trusted by innovative brands",
+    "home.letsBuild": "Let's build your",
+    "home.brand": "brand",
+    "home.readyTo": "Ready to transform your ideas into powerful visual experiences?",
+    "home.freeConsultation": "Get a Free Consultation",
+    "home.whatsappUs": "WhatsApp Us",
+    "home.viewAllServices": "View All Services",
     
-    // About
+    // Services
+    "home.service.uiux": "UI/UX Design",
+    "home.service.uiuxDesc": "Intuitive interfaces that users love",
+    "home.service.seo": "SEO Optimization",
+    "home.service.seoDesc": "Get found by your target audience",
+    "home.service.web": "Website Design & Development",
+    "home.service.webDesc": "Fast, responsive, modern websites",
+    "home.service.ecommerce": "E-commerce Solutions",
+    "home.service.ecommerceDesc": "Sell online with powerful stores",
+    "home.service.social": "Social Media Design",
+    "home.service.socialDesc": "Engaging content that converts",
+    "home.service.branding": "Branding & Creative Design",
+    "home.service.brandingDesc": "Build memorable brand identity",
+    
+    // Why Choose Us
+    "home.why.clean": "Clean & Modern Design",
+    "home.why.cleanDesc": "Fresh, contemporary aesthetics that stand out",
+    "home.why.brand": "Brand-Focused Strategy",
+    "home.why.brandDesc": "Every design serves your brand's unique vision",
+    "home.why.detail": "Detail-Oriented",
+    "home.why.detailDesc": "Pixel-perfect execution on every project",
+    "home.why.client": "Client-First Communication",
+    "home.why.clientDesc": "Clear, responsive, and collaborative process",
+    "home.why.zero": "Zero to Full Identity",
+    "home.why.zeroDesc": "Complete brand solutions from scratch",
+    
+    // About Page
     "about.subtitle": "About Us",
     "about.title": "We are",
     "about.description": "A creative agency focused on graphic design, branding, and visual identity. We help brands start from scratch and grow with clean, modern, and impactful design solutions.",
@@ -63,7 +110,7 @@ const translations: Record<Language, Record<string, string>> = {
     "about.location.cta1": "Let's Connect",
     "about.location.cta2": "WhatsApp Us",
     
-    // Team
+    // Team Page
     "team.subtitle": "Our Team",
     "team.title": "Meet the",
     "team.title2": "Creators",
@@ -73,30 +120,15 @@ const translations: Record<Language, Record<string, string>> = {
     "team.join.cta1": "Apply Now",
     "team.join.cta2": "Contact Us",
     
-    // Services
-    "services.subtitle": "What We Do",
-    "services.title": "Our",
-    "services.title2": "Services",
-    "services.description": "From stunning graphics to complete brand identities, we offer comprehensive design solutions that help your business stand out.",
-    
-    // Contact
-    "contact.subtitle": "Get In Touch",
-    "contact.title": "Let's Create Something",
-    "contact.title2": "Amazing",
-    "contact.description": "Ready to bring your vision to life? We're here to help you create something truly special.",
-    
     // Footer
-    "footer.description": "Creative agency focused on graphic design, branding, and visual identity. We help brands start from scratch and grow.",
+    "footer.description": "AlphaZero is a creative design agency crafting modern visual identities and brand experiences. From zero to impact.",
     "footer.quickLinks": "Quick Links",
-    "footer.services": "Services",
-    "footer.connect": "Connect",
+    "footer.contact": "Contact",
     "footer.rights": "All rights reserved.",
     
     // Common
     "common.learnMore": "Learn More",
     "common.viewAll": "View All",
-    "common.submit": "Submit",
-    "common.loading": "Loading...",
   },
   bn: {
     // Navbar
@@ -108,21 +140,68 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.contact": "যোগাযোগ",
     "nav.startProject": "প্রজেক্ট শুরু করুন",
     
-    // Home Hero
-    "home.hero.subtitle": "ক্রিয়েটিভ এজেন্সি",
-    "home.hero.title1": "আমরা ডিজাইন করি",
-    "home.hero.title2": "এমন ব্র্যান্ড যা",
-    "home.hero.title3": "আলাদা",
-    "home.hero.description": "আলফাজিরো একটি ক্রিয়েটিভ এজেন্সি যা গ্রাফিক ডিজাইন, ব্র্যান্ডিং এবং ভিজ্যুয়াল আইডেন্টিটিতে বিশেষজ্ঞ। আমরা ব্র্যান্ডগুলিকে শূন্য থেকে শুরু করে পরিষ্কার, আধুনিক এবং প্রভাবশালী ডিজাইন সলিউশন দিয়ে বৃদ্ধি করতে সাহায্য করি।",
-    "home.hero.cta1": "প্রজেক্ট শুরু করুন",
-    "home.hero.cta2": "আমাদের কাজ দেখুন",
+    // Home Page
+    "home.badge": "ক্রিয়েটিভ ডিজাইন ও আইটি এজেন্সি",
+    "home.title1": "প্রতিটি আইডিয়া শুরু হয়",
+    "home.title2": "শূন্য থেকে",
+    "home.tagline": "শূন্য থেকে প্রভাব",
+    "home.description": "গ্রাফিক ডিজাইন, ওয়েব সলিউশন এবং ভিজ্যুয়াল আইডেন্টিটিতে বিশেষজ্ঞ একটি ক্রিয়েটিভ আইটি এজেন্সি। আমরা ব্র্যান্ডগুলিকে শূন্য থেকে শুরু করে পরিষ্কার, আধুনিক এবং প্রভাবশালী ডিজাইন সলিউশন দিয়ে বৃদ্ধি করতে সাহায্য করি।",
+    "home.cta1": "আপনার প্রজেক্ট শুরু করুন",
+    "home.cta2": "আমাদের কাজ দেখুন",
+    "home.stats.projects": "প্রজেক্ট সম্পন্ন",
+    "home.stats.clients": "সন্তুষ্ট ক্লায়েন্ট",
+    "home.stats.years": "বছরের অভিজ্ঞতা",
+    "home.stats.satisfaction": "ক্লায়েন্ট সন্তুষ্টি",
+    "home.expertise": "আমাদের দক্ষতা",
+    "home.whatWeDo": "আমরা যা",
+    "home.do": "করি",
+    "home.expertiseDesc": "আপনার ডিজিটাল উপস্থিতি তৈরি এবং বৃদ্ধি করতে সম্পূর্ণ ক্রিয়েটিভ সেবা",
+    "home.whyChoose": "কেন আলফাজিরো বেছে নেবেন",
+    "home.builtFor": "তৈরি হয়েছে",
+    "home.yourSuccess": "আপনার সাফল্যের জন্য",
+    "home.testimonials": "প্রশংসাপত্র",
+    "home.whatClientsSay": "আমাদের ক্লায়েন্টরা কি",
+    "home.say": "বলেন",
+    "home.trustedBy": "উদ্ভাবনী ব্র্যান্ডদের বিশ্বস্ত",
+    "home.letsBuild": "চলুন তৈরি করি আপনার",
+    "home.brand": "ব্র্যান্ড",
+    "home.readyTo": "আপনার ধারণাগুলিকে শক্তিশালী ভিজ্যুয়াল অভিজ্ঞতায় রূপান্তর করতে প্রস্তুত?",
+    "home.freeConsultation": "বিনামূল্যে পরামর্শ নিন",
+    "home.whatsappUs": "হোয়াটসঅ্যাপ করুন",
+    "home.viewAllServices": "সব সেবা দেখুন",
     
-    // About
+    // Services
+    "home.service.uiux": "UI/UX ডিজাইন",
+    "home.service.uiuxDesc": "ব্যবহারকারীদের পছন্দের স্বজ্ঞাত ইন্টারফেস",
+    "home.service.seo": "SEO অপ্টিমাইজেশন",
+    "home.service.seoDesc": "আপনার টার্গেট অডিয়েন্স দ্বারা খুঁজে পান",
+    "home.service.web": "ওয়েবসাইট ডিজাইন ও ডেভেলপমেন্ট",
+    "home.service.webDesc": "দ্রুত, রেসপন্সিভ, আধুনিক ওয়েবসাইট",
+    "home.service.ecommerce": "ই-কমার্স সলিউশন",
+    "home.service.ecommerceDesc": "শক্তিশালী স্টোর দিয়ে অনলাইনে বিক্রি করুন",
+    "home.service.social": "সোশ্যাল মিডিয়া ডিজাইন",
+    "home.service.socialDesc": "আকর্ষণীয় কন্টেন্ট যা রূপান্তর করে",
+    "home.service.branding": "ব্র্যান্ডিং ও ক্রিয়েটিভ ডিজাইন",
+    "home.service.brandingDesc": "স্মরণীয় ব্র্যান্ড আইডেন্টিটি তৈরি করুন",
+    
+    // Why Choose Us
+    "home.why.clean": "পরিষ্কার ও আধুনিক ডিজাইন",
+    "home.why.cleanDesc": "তাজা, সমসাময়িক নান্দনিকতা যা আলাদা",
+    "home.why.brand": "ব্র্যান্ড-কেন্দ্রিক কৌশল",
+    "home.why.brandDesc": "প্রতিটি ডিজাইন আপনার ব্র্যান্ডের অনন্য দৃষ্টিভঙ্গি পরিবেশন করে",
+    "home.why.detail": "বিস্তারিত-ভিত্তিক",
+    "home.why.detailDesc": "প্রতিটি প্রজেক্টে পিক্সেল-পারফেক্ট বাস্তবায়ন",
+    "home.why.client": "ক্লায়েন্ট-প্রথম যোগাযোগ",
+    "home.why.clientDesc": "পরিষ্কার, প্রতিক্রিয়াশীল এবং সহযোগিতামূলক প্রক্রিয়া",
+    "home.why.zero": "শূন্য থেকে সম্পূর্ণ আইডেন্টিটি",
+    "home.why.zeroDesc": "শূন্য থেকে সম্পূর্ণ ব্র্যান্ড সলিউশন",
+    
+    // About Page
     "about.subtitle": "আমাদের সম্পর্কে",
     "about.title": "আমরা",
     "about.description": "গ্রাফিক ডিজাইন, ব্র্যান্ডিং এবং ভিজ্যুয়াল আইডেন্টিটিতে বিশেষজ্ঞ একটি ক্রিয়েটিভ এজেন্সি। আমরা ব্র্যান্ডগুলিকে শূন্য থেকে শুরু করে পরিষ্কার, আধুনিক এবং প্রভাবশালী ডিজাইন সলিউশন দিয়ে বৃদ্ধি করতে সাহায্য করি।",
     "about.story.badge": "আমাদের যাত্রা",
-    "about.story.title": "দি",
+    "about.story.title": "আলফাজিরোর",
     "about.story.title2": "গল্প",
     "about.story.card1.title": "শূন্য থেকে হিরো",
     "about.story.card1.desc": "আলফাজিরো একটি ক্রিয়েটিভ এজেন্সি যা গ্রাফিক ডিজাইন, ব্র্যান্ডিং এবং ভিজ্যুয়াল আইডেন্টিটিতে বিশেষজ্ঞ। আমরা বিশ্বাস করি প্রতিটি দুর্দান্ত ব্র্যান্ড শূন্য থেকে শুরু হয় — এবং সঠিক দৃষ্টিভঙ্গি এবং বাস্তবায়নের সাথে, এটি স্থায়ী প্রভাব ফেলতে পারে।",
@@ -152,7 +231,7 @@ const translations: Record<Language, Record<string, string>> = {
     "about.location.cta1": "যোগাযোগ করুন",
     "about.location.cta2": "হোয়াটসঅ্যাপ করুন",
     
-    // Team
+    // Team Page
     "team.subtitle": "আমাদের টিম",
     "team.title": "পরিচয় হোক",
     "team.title2": "নির্মাতাদের",
@@ -162,30 +241,15 @@ const translations: Record<Language, Record<string, string>> = {
     "team.join.cta1": "আবেদন করুন",
     "team.join.cta2": "যোগাযোগ করুন",
     
-    // Services
-    "services.subtitle": "আমরা যা করি",
-    "services.title": "আমাদের",
-    "services.title2": "সেবাসমূহ",
-    "services.description": "অসাধারণ গ্রাফিক্স থেকে সম্পূর্ণ ব্র্যান্ড আইডেন্টিটি পর্যন্ত, আমরা ব্যাপক ডিজাইন সমাধান অফার করি যা আপনার ব্যবসাকে আলাদা করে তোলে।",
-    
-    // Contact
-    "contact.subtitle": "যোগাযোগ করুন",
-    "contact.title": "চলুন তৈরি করি কিছু",
-    "contact.title2": "অসাধারণ",
-    "contact.description": "আপনার দৃষ্টিভঙ্গিকে জীবন্ত করতে প্রস্তুত? আমরা আপনাকে সত্যিই বিশেষ কিছু তৈরি করতে সাহায্য করতে এখানে আছি।",
-    
     // Footer
-    "footer.description": "গ্রাফিক ডিজাইন, ব্র্যান্ডিং এবং ভিজ্যুয়াল আইডেন্টিটিতে বিশেষজ্ঞ ক্রিয়েটিভ এজেন্সি। আমরা ব্র্যান্ডগুলিকে শূন্য থেকে শুরু করে বৃদ্ধি করতে সাহায্য করি।",
+    "footer.description": "আলফাজিরো একটি ক্রিয়েটিভ ডিজাইন এজেন্সি যা আধুনিক ভিজ্যুয়াল আইডেন্টিটি এবং ব্র্যান্ড অভিজ্ঞতা তৈরি করে। শূন্য থেকে প্রভাব।",
     "footer.quickLinks": "দ্রুত লিংক",
-    "footer.services": "সেবাসমূহ",
-    "footer.connect": "যোগাযোগ",
+    "footer.contact": "যোগাযোগ",
     "footer.rights": "সর্বস্বত্ব সংরক্ষিত।",
     
     // Common
     "common.learnMore": "আরও জানুন",
     "common.viewAll": "সব দেখুন",
-    "common.submit": "জমা দিন",
-    "common.loading": "লোড হচ্ছে...",
   },
 };
 

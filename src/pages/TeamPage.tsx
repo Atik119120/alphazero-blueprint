@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Facebook, Instagram, Linkedin, Github, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const teamMembers = [
   {
@@ -35,6 +36,8 @@ const teamMembers = [
 ];
 
 const TeamPage = () => {
+  const { t } = useLanguage();
+
   return (
     <Layout>
       {/* Hero Section */}
@@ -48,7 +51,7 @@ const TeamPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
             >
-              Our Team
+              {t("team.subtitle")}
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -56,7 +59,7 @@ const TeamPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              Meet the <span className="gradient-text">Creators</span>
+              {t("team.title")} <span className="gradient-text">{t("team.title2")}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -64,8 +67,7 @@ const TeamPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              A passionate team of designers and developers dedicated to bringing 
-              your vision to life.
+              {t("team.description")}
             </motion.p>
           </div>
         </div>
@@ -163,23 +165,23 @@ const TeamPage = () => {
             className="max-w-3xl mx-auto text-center"
           >
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
-              Want to join our team?
+              {t("team.join.title")}
             </h2>
             <p className="text-muted-foreground text-lg mb-8">
-              We're always looking for talented individuals to join our creative family.
+              {t("team.join.desc")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/join-team"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                Apply Now <ArrowRight size={20} />
+                {t("team.join.cta1")} <ArrowRight size={20} />
               </Link>
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
               >
-                Contact Us
+                {t("team.join.cta2")}
               </Link>
             </div>
           </motion.div>
