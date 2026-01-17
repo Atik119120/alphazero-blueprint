@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle, Send, FileText, User, Mail, Phone, Briefcase, MessageSquare } from "lucide-react";
+import { ArrowRight, Send, FileText, User, Mail, Phone, Briefcase, MessageSquare, ChevronDown, CheckCircle2 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 const rules = [
   {
@@ -71,6 +72,7 @@ const JoinTeamPage = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [openedRules, setOpenedRules] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -85,13 +87,28 @@ const JoinTeamPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleAccordionChange = (value: string[]) => {
+    setOpenedRules(value);
+  };
+
+  const allRulesOpened = openedRules.length === rules.length;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!allRulesOpened) {
+      toast({
+        title: "Please Read All Rules",
+        description: `You have read ${openedRules.length} of ${rules.length} rules. Please open and read all rules before agreeing.`,
+        variant: "destructive"
+      });
+      return;
+    }
+
     if (!agreedToTerms) {
       toast({
         title: "Agreement Required",
-        description: "Please read and agree to the team member agreement before submitting.",
+        description: "Please check the agreement checkbox to confirm you agree to all terms.",
         variant: "destructive"
       });
       return;
@@ -184,21 +201,68 @@ const JoinTeamPage = () => {
               </h2>
             </motion.div>
 
-            <div className="space-y-6">
+            {/* Progress indicator */}
+            <div className="mb-6 p-4 rounded-xl bg-background border border-border">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium">Reading Progress</span>
+                <span className="text-sm text-primary font-semibold">
+                  {openedRules.length} / {rules.length} rules read
+                </span>
+              </div>
+              <div className="w-full h-2 bg-secondary rounded-full overflow-hidden">
+                <motion.div 
+                  className="h-full bg-primary rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(openedRules.length / rules.length) * 100}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+              {allRulesOpened && (
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-sm text-green-500 mt-2 flex items-center gap-2"
+                >
+                  <CheckCircle2 size={16} /> All rules have been read!
+                </motion.p>
+              )}
+            </div>
+
+            <Accordion 
+              type="multiple" 
+              value={openedRules}
+              onValueChange={handleAccordionChange}
+              className="space-y-3"
+            >
               {rules.map((rule, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className="p-6 rounded-xl bg-background border border-border hover:border-primary/30 transition-colors"
+                  transition={{ delay: index * 0.03 }}
                 >
-                  <h3 className="text-lg font-semibold text-primary mb-3">{rule.title}</h3>
-                  <p className="text-muted-foreground whitespace-pre-line">{rule.content}</p>
+                  <AccordionItem 
+                    value={`rule-${index}`}
+                    className="rounded-xl bg-background border border-border hover:border-primary/30 transition-colors overflow-hidden px-6"
+                  >
+                    <AccordionTrigger className="py-4 hover:no-underline">
+                      <div className="flex items-center gap-3">
+                        {openedRules.includes(`rule-${index}`) ? (
+                          <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                        ) : (
+                          <div className="w-5 h-5 rounded-full border-2 border-muted-foreground flex-shrink-0" />
+                        )}
+                        <span className="text-left font-semibold">{rule.title}</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-4">
+                      <p className="text-muted-foreground whitespace-pre-line pl-8">{rule.content}</p>
+                    </AccordionContent>
+                  </AccordionItem>
                 </motion.div>
               ))}
-            </div>
+            </Accordion>
           </div>
         </div>
       </section>
@@ -312,15 +376,25 @@ const JoinTeamPage = () => {
               </div>
 
               {/* Agreement Checkbox */}
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-background border border-border">
+              <div className={`flex items-start gap-3 p-4 rounded-xl border transition-colors ${
+                allRulesOpened 
+                  ? 'bg-background border-primary/30' 
+                  : 'bg-secondary/50 border-border opacity-60'
+              }`}>
                 <Checkbox
                   id="agreement"
                   checked={agreedToTerms}
                   onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
+                  disabled={!allRulesOpened}
                   className="mt-1"
                 />
-                <label htmlFor="agreement" className="text-sm cursor-pointer">
+                <label htmlFor="agreement" className={`text-sm ${allRulesOpened ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
                   <span className="font-semibold">I have read and agree to all 14 terms and conditions</span> of the Alphazero Team Member Agreement stated above. I understand my responsibilities, rights, and the payment structure.
+                  {!allRulesOpened && (
+                    <span className="block text-xs text-muted-foreground mt-1">
+                      (Please read all {rules.length} rules above to enable this checkbox)
+                    </span>
+                  )}
                 </label>
               </div>
 
