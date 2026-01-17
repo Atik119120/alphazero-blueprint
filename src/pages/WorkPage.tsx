@@ -169,11 +169,11 @@ const WorkPage = () => {
                           {project.title}
                         </h3>
                         <p className="text-sm text-muted-foreground mb-4">{project.description}</p>
-                        <div className="flex flex-wrap justify-center gap-2">
+                        <div className="flex flex-wrap justify-center gap-1.5">
                           {project.tech.map((tech, idx) => (
                             <span 
                               key={idx}
-                              className="px-2 py-1 text-xs rounded-md bg-primary/10 text-primary"
+                              className="inline-block px-3 py-1.5 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 shadow-sm"
                             >
                               {tech}
                             </span>
