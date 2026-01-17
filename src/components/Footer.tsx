@@ -1,4 +1,4 @@
-import { ArrowUp, Phone, Mail, MapPin } from "lucide-react";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -25,102 +25,163 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="py-16 border-t border-border relative bg-card/50">
-      <div className="container mx-auto px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Top Section */}
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            {/* Logo & Description */}
-            <div className="md:col-span-2">
-              <Link to="/" className="inline-block mb-4">
-                <img 
-                  src={logo} 
-                  alt="AlphaZero Logo" 
-                  className="h-10 w-auto brightness-0 dark:invert"
-                />
-              </Link>
-              <p className="text-muted-foreground max-w-sm mb-4">
-                {t("footer.description")}
-              </p>
-              <div className="flex gap-3 flex-wrap">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3 py-1.5 rounded-lg bg-secondary border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-xs"
-                  >
-                    {social.name}
-                  </a>
-                ))}
+    <footer className="relative overflow-hidden">
+      {/* Decorative Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+        <div className="absolute bottom-0 left-0 text-[400px] font-bold text-foreground/[0.015] leading-none tracking-tighter -translate-x-1/4 translate-y-1/4">
+          α
+        </div>
+        <div className="absolute top-10 right-10 text-[100px] font-bold text-foreground/[0.02] leading-none">
+          শূন্য
+        </div>
+      </div>
+
+      {/* Main Footer Content */}
+      <div className="relative border-t border-border">
+        {/* Large CTA Section */}
+        <div className="container mx-auto px-6 py-20">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 items-end">
+              <div>
+                <span className="text-sm text-primary font-medium tracking-wider uppercase mb-4 block">
+                  {t("footer.ready")}
+                </span>
+                <h2 className="text-4xl lg:text-6xl font-display font-bold leading-tight">
+                  {t("footer.letsCreate")}
+                  <br />
+                  <span className="gradient-text">{t("footer.together")}</span>
+                </h2>
+              </div>
+              <div className="flex lg:justify-end">
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-4 text-lg font-medium"
+                >
+                  <span className="px-8 py-4 bg-primary text-primary-foreground rounded-full transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/20">
+                    {t("nav.startProject")}
+                  </span>
+                  <span className="w-14 h-14 rounded-full bg-foreground text-background flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <ArrowUpRight size={24} />
+                  </span>
+                </Link>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-display font-semibold mb-4">{t("footer.quickLinks")}</h4>
-              <ul className="space-y-2">
-                {quickLinks.map((item) => (
-                  <li key={item.href}>
-                    <Link 
-                      to={item.href}
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        {/* Links Grid */}
+        <div className="border-t border-border">
+          <div className="container mx-auto px-6 py-16">
+            <div className="max-w-6xl mx-auto grid md:grid-cols-3 lg:grid-cols-4 gap-12">
+              {/* Brand */}
+              <div className="lg:col-span-1">
+                <Link to="/" className="inline-block mb-6">
+                  <img 
+                    src={logo} 
+                    alt="AlphaZero Logo" 
+                    className="h-8 w-auto brightness-0 dark:invert"
+                  />
+                </Link>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {t("footer.description")}
+                </p>
+              </div>
 
-            {/* Contact Info */}
-            <div>
-              <h4 className="font-display font-semibold mb-4">{t("footer.contact")}</h4>
-              <ul className="space-y-3 text-sm">
-                <li className="flex items-center gap-2 text-muted-foreground">
-                  <Phone size={14} className="text-primary" />
-                  <a href="tel:+8801410190019" className="hover:text-primary transition-colors">
+              {/* Quick Links */}
+              <div>
+                <h4 className="text-xs font-medium tracking-wider uppercase text-muted-foreground mb-6">
+                  {t("footer.navigation")}
+                </h4>
+                <ul className="space-y-3">
+                  {quickLinks.map((item) => (
+                    <li key={item.href}>
+                      <Link 
+                        to={item.href}
+                        className="group flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+                      >
+                        <span className="w-4 h-px bg-border group-hover:bg-primary group-hover:w-6 transition-all" />
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Social */}
+              <div>
+                <h4 className="text-xs font-medium tracking-wider uppercase text-muted-foreground mb-6">
+                  {t("footer.social")}
+                </h4>
+                <ul className="space-y-3">
+                  {socialLinks.map((social) => (
+                    <li key={social.name}>
+                      <a
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-2 text-foreground hover:text-primary transition-colors"
+                      >
+                        <span className="w-4 h-px bg-border group-hover:bg-primary group-hover:w-6 transition-all" />
+                        {social.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Contact */}
+              <div>
+                <h4 className="text-xs font-medium tracking-wider uppercase text-muted-foreground mb-6">
+                  {t("footer.contact")}
+                </h4>
+                <div className="space-y-3 text-sm">
+                  <a 
+                    href="tel:+8801410190019" 
+                    className="block text-foreground hover:text-primary transition-colors"
+                  >
                     +880 1410-190019
                   </a>
-                </li>
-                <li className="flex items-center gap-2 text-muted-foreground">
-                  <Mail size={14} className="text-primary" />
-                  <a href="mailto:agency.alphazero@gmail.com" className="hover:text-primary transition-colors">
+                  <a 
+                    href="mailto:agency.alphazero@gmail.com" 
+                    className="block text-foreground hover:text-primary transition-colors"
+                  >
                     agency.alphazero@gmail.com
                   </a>
-                </li>
-                <li className="flex items-start gap-2 text-muted-foreground">
-                  <MapPin size={14} className="text-primary flex-shrink-0 mt-0.5" />
-                  <span>{t("about.location.address")}</span>
-                </li>
-              </ul>
+                  <p className="text-muted-foreground">
+                    {t("about.location.address")}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* Bottom Section */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-border">
-            {/* Copyright */}
-            <p className="text-sm text-muted-foreground text-center">
-              © {new Date().getFullYear()} AlphaZero. {t("footer.rights")}
-            </p>
-
-            {/* Website & Back to Top */}
-            <div className="flex items-center gap-4">
-              <a 
-                href="https://www.alphazero.online" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                alphazero.online
-              </a>
-              <button
-                onClick={scrollToTop}
-                className="w-10 h-10 rounded-lg bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
-              >
-                <ArrowUp size={18} />
-              </button>
+        {/* Bottom Bar */}
+        <div className="border-t border-border">
+          <div className="container mx-auto px-6 py-6">
+            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <span>© {new Date().getFullYear()} AlphaZero</span>
+                <span className="w-1 h-1 rounded-full bg-border" />
+                <span>{t("footer.rights")}</span>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <a 
+                  href="https://www.alphazero.online" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  alphazero.online
+                </a>
+                <button
+                  onClick={scrollToTop}
+                  className="group w-10 h-10 rounded-full border border-border bg-secondary flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300"
+                >
+                  <ArrowUp size={16} className="group-hover:-translate-y-0.5 transition-transform" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
