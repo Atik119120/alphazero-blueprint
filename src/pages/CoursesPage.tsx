@@ -334,7 +334,7 @@ const CoursesPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {courses.map((course, index) => (
               <motion.div
                 key={course.id}
@@ -344,63 +344,93 @@ const CoursesPage = () => {
                 transition={{ delay: index * 0.05 }}
                 className="group"
               >
-                <div className={`relative h-full p-6 rounded-2xl border border-border bg-card hover:border-primary/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/10 ${course.isSpecial ? 'ring-2 ring-primary/30' : ''}`}>
-                  {/* Special Badge */}
-                  {course.isSpecial && (
-                    <div className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-primary text-primary-foreground text-xs font-bold">
-                      ✨ স্পেশাল কোর্স
+                <div className={`relative h-full rounded-3xl overflow-hidden ${course.isSpecial ? 'ring-2 ring-primary/50' : ''}`}>
+                  {/* Gradient Background Header */}
+                  <div className={`relative h-32 bg-gradient-to-br ${course.color} p-6`}>
+                    {/* Decorative Pattern */}
+                    <div className="absolute inset-0 opacity-20">
+                      <div className="absolute top-4 right-4 w-20 h-20 border-4 border-white/30 rounded-full" />
+                      <div className="absolute bottom-2 left-6 w-12 h-12 border-2 border-white/20 rounded-lg rotate-12" />
                     </div>
-                  )}
-
-                  {/* Icon */}
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${course.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <course.icon className="w-7 h-7 text-white" />
-                  </div>
-
-                  {/* Course Info */}
-                  <h3 className="text-xl font-display font-bold mb-2">{course.name}</h3>
-                  <p className="text-sm text-muted-foreground mb-4">{course.description}</p>
-
-                  {/* Features */}
-                  <div className="space-y-2 mb-4">
-                    {course.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span className="text-muted-foreground">{feature}</span>
+                    
+                    {/* Special Badge */}
+                    {course.isSpecial && (
+                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        স্পেশাল
                       </div>
-                    ))}
+                    )}
+                    
+                    {/* Icon */}
+                    <div className="relative w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <course.icon className="w-8 h-8 text-white" />
+                    </div>
                   </div>
 
-                  {/* Special Content for Vibe Coding & AI Prompt */}
-                  {course.isSpecial && course.specialContent && (
-                    <div className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20">
-                      <h4 className="font-semibold text-primary mb-2">{course.specialContent.title}</h4>
-                      <ul className="space-y-1">
-                        {course.specialContent.points.map((point, idx) => (
-                          <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
-                            <Zap className="w-3 h-3 text-primary mt-0.5 flex-shrink-0" />
-                            {point}
-                          </li>
-                        ))}
-                      </ul>
+                  {/* Card Body */}
+                  <div className="bg-card border border-border border-t-0 rounded-b-3xl p-6">
+                    {/* Course Name & Price Row */}
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <h3 className="text-xl font-display font-bold leading-tight">{course.name}</h3>
+                      <div className="flex-shrink-0 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                        <span className="text-lg font-bold text-primary">৳{course.fee.toLocaleString()}</span>
+                      </div>
                     </div>
-                  )}
+                    
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{course.description}</p>
 
-                  {/* Trainer */}
-                  <div className="mt-4 pt-4 border-t border-border">
-                    <div className="flex items-center gap-2 text-sm">
-                      <User className="w-4 h-4 text-primary" />
-                      <span className="font-medium">ট্রেইনার:</span>
+                    {/* Features Grid */}
+                    <div className="grid grid-cols-2 gap-2 mb-4">
+                      {course.features.slice(0, 4).map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-1.5 text-xs bg-secondary/50 rounded-lg px-2 py-1.5">
+                          <CheckCircle2 className="w-3 h-3 text-primary flex-shrink-0" />
+                          <span className="text-muted-foreground truncate">{feature}</span>
+                        </div>
+                      ))}
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {course.trainer.name} – <span className="text-xs">{course.trainer.qualification}</span>
-                    </p>
-                  </div>
 
-                  {/* Price */}
-                  <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">কোর্স ফি:</span>
-                    <span className="text-2xl font-bold text-primary">৳{course.fee.toLocaleString()}</span>
+                    {/* Special Content for Vibe Coding & AI Prompt */}
+                    {course.isSpecial && course.specialContent && (
+                      <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
+                        <h4 className="font-semibold text-primary text-sm mb-2 flex items-center gap-1">
+                          <Zap className="w-4 h-4" />
+                          {course.specialContent.title}
+                        </h4>
+                        <ul className="space-y-1">
+                          {course.specialContent.points.slice(0, 3).map((point, idx) => (
+                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                              <span className="text-primary mt-0.5">•</span>
+                              {point}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {/* Trainer */}
+                    <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-secondary/30 border border-border mb-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                        <User className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold truncate">{course.trainer.name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{course.trainer.qualification}</p>
+                      </div>
+                    </div>
+
+                    {/* Enroll Button */}
+                    <a
+                      href="#admission"
+                      onClick={() => handleInputChange("course", course.id)}
+                      className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                        course.isSpecial 
+                          ? 'bg-gradient-to-r from-primary to-purple-500 text-white hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02]' 
+                          : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20'
+                      }`}
+                    >
+                      <GraduationCap className="w-4 h-4" />
+                      এখনই ভর্তি হন
+                    </a>
                   </div>
                 </div>
               </motion.div>
