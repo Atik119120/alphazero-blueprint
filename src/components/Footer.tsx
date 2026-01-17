@@ -25,19 +25,9 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative overflow-hidden">
-      {/* Decorative Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        <div className="absolute bottom-0 left-0 text-[400px] font-bold text-foreground/[0.015] leading-none tracking-tighter -translate-x-1/4 translate-y-1/4">
-          α
-        </div>
-        <div className="absolute top-10 right-10 text-[100px] font-bold text-foreground/[0.02] leading-none">
-          শূন্য
-        </div>
-      </div>
-
+    <footer className="relative">
       {/* Main Footer Content */}
-      <div className="relative border-t border-border">
+      <div className="border-t border-border">
         {/* Large CTA Section */}
         <div className="container mx-auto px-6 py-20">
           <div className="max-w-6xl mx-auto">
