@@ -22,7 +22,8 @@ import {
   Zap,
   Target,
   Award,
-  Clock
+  Clock,
+  Wrench
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -238,6 +239,19 @@ const courses = [
         "Master all AI tools: ChatGPT, Claude, Midjourney"
       ]
     }
+  },
+  {
+    id: "it-support",
+    nameBn: "আইটি সাপোর্ট",
+    nameEn: "IT Support & Troubleshooting",
+    icon: Wrench,
+    fee: 3000,
+    trainer: trainers.prantik,
+    color: "from-slate-500 to-zinc-600",
+    descriptionBn: "কম্পিউটার ট্রাবলশুটিং, নেটওয়ার্কিং, হার্ডওয়্যার ও সফটওয়্যার সমস্যা সমাধান শিখুন। IT সাপোর্ট ক্যারিয়ার গড়ুন।",
+    descriptionEn: "Learn computer troubleshooting, networking, hardware & software problem solving. Build an IT support career.",
+    featuresBn: ["কম্পিউটার ট্রাবলশুটিং", "নেটওয়ার্ক সেটআপ", "হার্ডওয়্যার মেইনটেন্যান্স", "সফটওয়্যার ইনস্টলেশন"],
+    featuresEn: ["Computer Troubleshooting", "Network Setup", "Hardware Maintenance", "Software Installation"]
   }
 ];
 
@@ -254,7 +268,7 @@ const translations = {
     aboutDesc: "Alpha Academy teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our",
     coursesTitle: "Courses",
-    coursesSubtitle: "10 Professional Online Courses - Start Your Career Today",
+    coursesSubtitle: "11 Professional Online Courses - Start Your Career Today",
     special: "Special",
     upcoming: "Coming Soon",
     trainer: "Trainer",
@@ -294,7 +308,7 @@ const translations = {
     aboutDesc: "Alpha Academy প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
     ourCourses: "আমাদের",
     coursesTitle: "কোর্সসমূহ",
-    coursesSubtitle: "১০টি প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
+    coursesSubtitle: "১১টি প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
     special: "স্পেশাল",
     upcoming: "আসছে শীঘ্রই",
     trainer: "ট্রেইনার",
