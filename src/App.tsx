@@ -16,6 +16,7 @@ import WorkPage from "./pages/WorkPage";
 import TeamPage from "./pages/TeamPage";
 import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
+import CoursesPage from "./pages/CoursesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,6 +43,7 @@ const App = () => {
                 <Route path="/team" element={<TeamPage />} />
                 <Route path="/join-team" element={<JoinTeamPage />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/courses" element={<CoursesPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
