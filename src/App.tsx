@@ -12,6 +12,7 @@ import AboutPage from "./pages/AboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import WorkPage from "./pages/WorkPage";
 import TeamPage from "./pages/TeamPage";
+import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
 import NotFound from "./pages/NotFound";
 
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/work" element={<WorkPage />} />
             <Route path="/team" element={<TeamPage />} />
+            <Route path="/join-team" element={<JoinTeamPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
