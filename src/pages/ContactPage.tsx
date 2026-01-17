@@ -104,11 +104,6 @@ const ContactPage = () => {
 
       {/* Contact Section */}
       <section className="py-20 relative">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
@@ -210,10 +205,8 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="space-y-6 p-8 rounded-2xl bg-card border border-border relative overflow-hidden"
+              className="space-y-6 p-8 rounded-2xl bg-card border border-border"
             >
-              {/* Form background decoration */}
-              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-2xl" />
               
               <div className="text-center mb-6 relative z-10">
                 <h3 className="text-xl font-display font-semibold mb-2">{t("contact.formTitle")}</h3>
