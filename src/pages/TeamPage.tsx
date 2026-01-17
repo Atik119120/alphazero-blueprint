@@ -84,7 +84,7 @@ const TeamPage = () => {
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.name}
@@ -92,90 +92,39 @@ const TeamPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group h-full"
+                  className="group"
                 >
-                  {/* Card Container */}
-                  <div className="relative h-full flex flex-col bg-gradient-to-b from-secondary/50 to-background rounded-3xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/10">
+                  {/* Card Container - Horizontal Layout */}
+                  <div className="relative flex gap-4 bg-gradient-to-r from-secondary/50 to-background rounded-2xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/10">
                     {/* Member Number Badge */}
-                    <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-lg z-10">
+                    <div className="absolute -top-2 -left-2 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs shadow-lg z-10">
                       {String(index + 1).padStart(2, '0')}
                     </div>
                     
                     {/* Image Container */}
-                    <div className="relative mb-5 rounded-2xl overflow-hidden">
+                    <div className="relative flex-shrink-0 w-28 h-28 rounded-xl overflow-hidden">
                       <motion.img
                         src={member.image}
                         alt={member.name}
-                        className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-60" />
-                      
-                      {/* Social Icons Overlay */}
-                      <div className="absolute inset-0 bg-primary/20 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                        <motion.div 
-                          className="flex gap-3"
-                          initial={{ y: 20, opacity: 0 }}
-                          whileHover={{ y: 0, opacity: 1 }}
-                        >
-                          {member.socials.facebook && (
-                            <a 
-                              href={member.socials.facebook}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-3 rounded-full bg-background/90 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                            >
-                              <Facebook size={18} />
-                            </a>
-                          )}
-                          {member.socials.instagram && (
-                            <a 
-                              href={member.socials.instagram}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-3 rounded-full bg-background/90 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                            >
-                              <Instagram size={18} />
-                            </a>
-                          )}
-                          {member.socials.linkedin && (
-                            <a 
-                              href={member.socials.linkedin}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-3 rounded-full bg-background/90 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110"
-                            >
-                              <Linkedin size={18} />
-                            </a>
-                          )}
-                        </motion.div>
-                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent opacity-40" />
                     </div>
                     
                     {/* Content */}
-                    <div className="text-center px-2 flex-1 flex flex-col">
-                      {/* Name with decorative elements */}
-                      <div className="relative mb-3">
-                        <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-primary/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <h3 className="text-xl font-display font-bold bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text group-hover:text-transparent transition-all duration-500">
-                          {member.name}
-                        </h3>
-                        <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary/30 to-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      </div>
-                      
-                      {/* Decorative line */}
-                      <div className="flex items-center justify-center gap-2 mb-4">
-                        <div className="h-px w-8 bg-gradient-to-r from-transparent to-primary/50" />
-                        <div className="w-2 h-2 rounded-full bg-primary/60" />
-                        <div className="h-px w-8 bg-gradient-to-l from-transparent to-primary/50" />
-                      </div>
+                    <div className="flex-1 min-w-0">
+                      {/* Name */}
+                      <h3 className="text-lg font-display font-bold mb-1 bg-gradient-to-r from-foreground to-primary bg-clip-text group-hover:text-transparent transition-all duration-500 truncate">
+                        {member.name}
+                      </h3>
                       
                       {/* Role Tags */}
-                      <div className="flex flex-wrap justify-center gap-1.5 mb-4">
+                      <div className="flex flex-wrap gap-1 mb-2">
                         {member.role.split(', ').map((role, idx) => (
                           <span 
                             key={idx} 
-                            className="inline-block px-3 py-1.5 text-xs font-semibold rounded-full bg-gradient-to-r from-primary/20 to-primary/5 text-primary border border-primary/30 shadow-sm hover:shadow-primary/20 hover:border-primary/50 transition-all duration-300"
+                            className="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary/15 text-primary border border-primary/25"
                           >
                             {role}
                           </span>
@@ -183,7 +132,41 @@ const TeamPage = () => {
                       </div>
                       
                       {/* Bio */}
-                      <p className="text-muted-foreground text-sm leading-relaxed mt-auto">{member.bio}</p>
+                      <p className="text-muted-foreground text-xs leading-relaxed mb-2">{member.bio}</p>
+                      
+                      {/* Social Icons */}
+                      <div className="flex gap-2">
+                        {member.socials.facebook && (
+                          <a 
+                            href={member.socials.facebook}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
+                            <Facebook size={14} />
+                          </a>
+                        )}
+                        {member.socials.instagram && (
+                          <a 
+                            href={member.socials.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
+                            <Instagram size={14} />
+                          </a>
+                        )}
+                        {member.socials.linkedin && (
+                          <a 
+                            href={member.socials.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                          >
+                            <Linkedin size={14} />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </motion.div>
