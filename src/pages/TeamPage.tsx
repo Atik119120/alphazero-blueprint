@@ -133,8 +133,17 @@ const TeamPage = () => {
                     </div>
                   </div>
                   <div className="text-center">
-                    <h3 className="text-xl font-display font-semibold mb-1">{member.name}</h3>
-                    <p className="text-primary text-sm font-medium mb-3">{member.role}</p>
+                    <h3 className="text-xl font-display font-semibold mb-2">{member.name}</h3>
+                    <div className="flex flex-wrap justify-center gap-2 mb-3">
+                      {member.role.split(', ').map((role, idx) => (
+                        <span 
+                          key={idx} 
+                          className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary border border-primary/20"
+                        >
+                          {role}
+                        </span>
+                      ))}
+                    </div>
                     <p className="text-muted-foreground text-sm">{member.bio}</p>
                   </div>
                 </motion.div>
