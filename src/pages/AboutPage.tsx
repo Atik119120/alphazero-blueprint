@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Globe, Zap, Target, CheckCircle, ArrowRight } from "lucide-react";
+import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import logo from "@/assets/logo.png";
@@ -68,57 +68,213 @@ const AboutPage = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 bg-secondary/30">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+      <section className="py-24 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/3" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            {/* Section Header */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className="text-center mb-16"
             >
-              <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
-                Our Story
+              <motion.div
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", bounce: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
+              >
+                <Sparkles className="w-4 h-4 text-primary" />
+                <span className="text-sm font-medium text-primary">Our Journey</span>
+              </motion.div>
+              <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
+                The <span className="gradient-text">AlphaZero</span> Story
               </h2>
-              <p className="text-muted-foreground mb-6">
-                AlphaZero is a creative agency focused on graphic design, branding, and visual identity. 
-                We believe every great brand starts from zero — and with the right vision and execution, 
-                it can make a lasting impact.
-              </p>
-              <p className="text-muted-foreground mb-6">
-                Currently, AlphaZero delivers professional design services while evolving toward IT and 
-                AI-driven digital services. Our goal is to turn ideas into strong visual experiences 
-                that actually work.
-              </p>
-              <div className="space-y-3">
-                {whyChoose.map((item) => (
-                  <div key={item} className="flex items-center gap-3">
-                    <CheckCircle size={20} className="text-primary flex-shrink-0" />
-                    <span className="text-foreground">{item}</span>
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary/10 via-transparent to-primary/5 p-8 flex items-center justify-center border border-border">
-                <div className="text-center">
-                  <motion.img
-                    src={logo}
-                    alt="AlphaZero Logo"
-                    className="h-32 md:h-40 w-auto mx-auto brightness-0 invert mb-6"
-                    initial={{ opacity: 0, scale: 0.8 }}
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* Left Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Story Cards */}
+                <div className="space-y-6">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 group"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        <Rocket className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold mb-2">From Zero to Hero</h3>
+                        <p className="text-muted-foreground">
+                          AlphaZero is a creative agency focused on graphic design, branding, and visual identity. 
+                          We believe every great brand starts from zero — and with the right vision and execution, 
+                          it can make a lasting impact.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.2 }}
+                    className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 group"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        <Zap className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold mb-2">Evolving Digital Excellence</h3>
+                        <p className="text-muted-foreground">
+                          Currently, AlphaZero delivers professional design services while evolving toward IT and 
+                          AI-driven digital services. Our goal is to turn ideas into strong visual experiences 
+                          that actually work.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 }}
+                    className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 group"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                        <Heart className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold mb-2">Client-First Approach</h3>
+                        <p className="text-muted-foreground">
+                          We prioritize understanding your vision and delivering solutions that exceed expectations.
+                          Your success is our success.
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Right Content - Logo & Features */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="relative"
+              >
+                {/* Main Logo Card */}
+                <div className="relative">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="aspect-square rounded-3xl bg-gradient-to-br from-primary/15 via-card to-primary/5 p-8 flex items-center justify-center border border-primary/20 shadow-2xl shadow-primary/10 overflow-hidden"
+                  >
+                    {/* Animated rings */}
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-8 border border-primary/10 rounded-full"
+                    />
+                    <motion.div
+                      animate={{ rotate: -360 }}
+                      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-16 border border-primary/15 rounded-full"
+                    />
+                    
+                    <div className="text-center relative z-10">
+                      <motion.img
+                        src={logo}
+                        alt="AlphaZero Logo"
+                        className="h-36 md:h-48 w-auto mx-auto brightness-0 invert mb-6 drop-shadow-2xl"
+                        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
+                        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ type: "spring", bounce: 0.4 }}
+                      />
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5 }}
+                        className="text-primary text-xl font-semibold tracking-wide"
+                      >
+                        From Zero to Impact
+                      </motion.p>
+                    </div>
+                  </motion.div>
+
+                  {/* Floating badges */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                  />
-                  <p className="text-primary text-lg font-medium">From Zero to Impact</p>
+                    transition={{ delay: 0.4, type: "spring" }}
+                    className="absolute -top-4 -right-4 px-4 py-2 rounded-full bg-primary text-primary-foreground font-medium text-sm shadow-lg"
+                  >
+                    Creative Agency
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5, type: "spring" }}
+                    className="absolute -bottom-4 -left-4 px-4 py-2 rounded-full bg-card border border-primary/30 font-medium text-sm shadow-lg"
+                  >
+                    🇧🇩 Bangladesh
+                  </motion.div>
                 </div>
-              </div>
-            </motion.div>
+
+                {/* Why Choose List */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.6 }}
+                  className="mt-8 p-6 rounded-2xl bg-card/30 backdrop-blur-sm border border-border"
+                >
+                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-primary" />
+                    Why Choose AlphaZero?
+                  </h4>
+                  <div className="grid grid-cols-1 gap-3">
+                    {whyChoose.map((item, index) => (
+                      <motion.div 
+                        key={item} 
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.7 + index * 0.1 }}
+                        className="flex items-center gap-3 group"
+                      >
+                        <div className="w-2 h-2 rounded-full bg-primary group-hover:scale-150 transition-transform" />
+                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
