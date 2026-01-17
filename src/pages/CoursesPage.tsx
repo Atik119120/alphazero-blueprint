@@ -165,7 +165,8 @@ const courses = [
     descriptionBn: "HTML, CSS এবং JavaScript দিয়ে ওয়েবসাইট বানানো শিখুন। বেসিক থেকে প্রফেশনাল লেভেল পর্যন্ত।",
     descriptionEn: "Learn to build websites with HTML, CSS and JavaScript. From basic to professional level.",
     featuresBn: ["HTML5 ফান্ডামেন্টালস", "CSS3 ও Flexbox", "JavaScript বেসিক", "রেস্পন্সিভ ডিজাইন"],
-    featuresEn: ["HTML5 Fundamentals", "CSS3 & Flexbox", "JavaScript Basics", "Responsive Design"]
+    featuresEn: ["HTML5 Fundamentals", "CSS3 & Flexbox", "JavaScript Basics", "Responsive Design"],
+    isUpcoming: true
   },
   {
     id: "motion-graphics",
@@ -178,7 +179,24 @@ const courses = [
     descriptionBn: "After Effects দিয়ে অ্যানিমেশন ও মোশন গ্রাফিক্স তৈরি করুন। ভিডিও ইন্ট্রো, লোগো অ্যানিমেশন সব শিখুন।",
     descriptionEn: "Create animations and motion graphics with After Effects. Learn video intros, logo animations.",
     featuresBn: ["After Effects বেসিক", "কীফ্রেম অ্যানিমেশন", "টেক্সট অ্যানিমেশন", "ভিজ্যুয়াল ইফেক্টস"],
-    featuresEn: ["After Effects Basics", "Keyframe Animation", "Text Animation", "Visual Effects"]
+    featuresEn: ["After Effects Basics", "Keyframe Animation", "Text Animation", "Visual Effects"],
+    isSpecial: true,
+    specialContentBn: {
+      title: "মোশন গ্রাফিক্স কেন শিখবেন?",
+      points: [
+        "YouTube, Facebook, TikTok-এর জন্য প্রো-লেভেল ভিডিও বানান",
+        "ব্র্যান্ডের জন্য লোগো অ্যানিমেশন ও ইন্ট্রো তৈরি করুন",
+        "ফ্রিল্যান্সিং ও জব মার্কেটে হাই-ডিমান্ড স্কিল"
+      ]
+    },
+    specialContentEn: {
+      title: "Why Learn Motion Graphics?",
+      points: [
+        "Create pro-level videos for YouTube, Facebook, TikTok",
+        "Make logo animations & intros for brands",
+        "High-demand skill in freelancing & job market"
+      ]
+    }
   },
   {
     id: "vibe-coding",
@@ -251,7 +269,24 @@ const courses = [
     descriptionBn: "কম্পিউটার ট্রাবলশুটিং, নেটওয়ার্কিং, হার্ডওয়্যার ও সফটওয়্যার সমস্যা সমাধান শিখুন। IT সাপোর্ট ক্যারিয়ার গড়ুন।",
     descriptionEn: "Learn computer troubleshooting, networking, hardware & software problem solving. Build an IT support career.",
     featuresBn: ["কম্পিউটার ট্রাবলশুটিং", "নেটওয়ার্ক সেটআপ", "হার্ডওয়্যার মেইনটেন্যান্স", "সফটওয়্যার ইনস্টলেশন"],
-    featuresEn: ["Computer Troubleshooting", "Network Setup", "Hardware Maintenance", "Software Installation"]
+    featuresEn: ["Computer Troubleshooting", "Network Setup", "Hardware Maintenance", "Software Installation"],
+    isSpecial: true,
+    specialContentBn: {
+      title: "আইটি সাপোর্ট কেন শিখবেন?",
+      points: [
+        "যেকোনো অফিস বা প্রতিষ্ঠানে IT সাপোর্ট জব পান",
+        "নিজের কম্পিউটার ও নেটওয়ার্ক সমস্যা সমাধান করুন",
+        "ফ্রিল্যান্স টেক সাপোর্ট সার্ভিস দিন"
+      ]
+    },
+    specialContentEn: {
+      title: "Why Learn IT Support?",
+      points: [
+        "Get IT support jobs in any office or organization",
+        "Solve your own computer & network problems",
+        "Provide freelance tech support services"
+      ]
+    }
   }
 ];
 
