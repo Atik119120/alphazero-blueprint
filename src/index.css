@@ -13,10 +13,10 @@
   font-display: swap;
 }
 
-/* Aloka Font for Bengali body text */
+/* Mahin Rafid Font for Bengali subtitles */
 @font-face {
-  font-family: 'Aloka';
-  src: url('/fonts/Aloka.ttf') format('truetype');
+  font-family: 'MahinRafid';
+  src: url('/fonts/MahinRafid.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -71,7 +71,8 @@
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-display-bn: 'SabinaShorolipi', 'Aloka', sans-serif;
+    --font-display-bn: 'SabinaShorolipi', 'MahinRafid', sans-serif;
+    --font-subtitle-bn: 'MahinRafid', 'Aloka', sans-serif;
     --font-body-bn: 'Aloka', 'Hind Siliguri', sans-serif;
   }
 
@@ -124,16 +125,29 @@
     font-family: var(--font-body-bn);
   }
 
-  html.font-bengali h1,
-  html.font-bengali h2,
-  html.font-bengali h3,
-  html.font-bengali h4,
-  html.font-bengali h5,
-  html.font-bengali h6 {
+  /* h1 - Main titles use SabinaShorolipi */
+  html.font-bengali h1 {
     font-family: var(--font-display-bn);
     font-weight: 300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* h2, h3 - Subtitles use MahinRafid */
+  html.font-bengali h2,
+  html.font-bengali h3 {
+    font-family: var(--font-subtitle-bn);
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* h4, h5, h6 - Smaller headings use MahinRafid */
+  html.font-bengali h4,
+  html.font-bengali h5,
+  html.font-bengali h6 {
+    font-family: var(--font-subtitle-bn);
+    font-weight: normal;
   }
 }
 

@@ -16,7 +16,8 @@ export default {
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
-        'display-bn': ['SabinaShorolipi', 'Aloka', 'sans-serif'],
+        'display-bn': ['SabinaShorolipi', 'MahinRafid', 'sans-serif'],
+        'subtitle-bn': ['MahinRafid', 'Aloka', 'sans-serif'],
         'body-bn': ['Aloka', 'Hind Siliguri', 'sans-serif'],
       },
       colors: {
