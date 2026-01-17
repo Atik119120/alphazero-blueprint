@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, MapPin, Send, Phone, Clock, MessageCircle } from "lucide-react";
 import Layout from "@/components/Layout";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ContactPage = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,7 +32,18 @@ const ContactPage = () => {
     <Layout>
       {/* Hero Section */}
       <section className="py-20 lg:py-32 relative overflow-hidden">
+        {/* Background Pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        
+        {/* Decorative Background Text */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-1/4 -left-20 text-[200px] font-bold text-primary/[0.03] leading-none">
+            যোগাযোগ
+          </div>
+          <div className="absolute bottom-1/4 -right-20 text-[150px] font-bold text-primary/[0.03] leading-none">
+            CONTACT
+          </div>
+        </div>
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -39,7 +52,7 @@ const ContactPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
             >
-              Contact Us
+              {t("contact.subtitle")}
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -47,7 +60,7 @@ const ContactPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              Let's build your <span className="gradient-text">brand</span>
+              {t("contact.title")} <span className="gradient-text">{t("contact.title2")}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -55,8 +68,7 @@ const ContactPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              Ready to transform your ideas into impactful visual experiences? 
-              Get in touch with us today.
+              {t("contact.description")}
             </motion.p>
           </div>
         </div>
@@ -75,7 +87,7 @@ const ContactPage = () => {
               className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
             >
               <Mail size={22} />
-              Email Us
+              {t("contact.emailUs")}
             </a>
             <a
               href="https://wa.me/8801410190019"
@@ -84,15 +96,21 @@ const ContactPage = () => {
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-xl font-medium text-lg transition-all duration-300 hover:bg-[#25D366]/90 hover:shadow-lg hover:shadow-[#25D366]/20"
             >
               <MessageCircle size={22} />
-              WhatsApp
+              {t("contact.whatsapp")}
             </a>
           </motion.div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      <section className="py-20 relative">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
             <motion.div
@@ -102,10 +120,9 @@ const ContactPage = () => {
               className="space-y-8"
             >
               <div>
-                <h2 className="text-3xl font-display font-semibold mb-4">Get in Touch</h2>
+                <h2 className="text-3xl font-display font-semibold mb-4">{t("contact.getInTouch")}</h2>
                 <p className="text-muted-foreground">
-                  Whether you have a question about our services, pricing, or want to 
-                  start a project, we're ready to help you bring your vision to life.
+                  {t("contact.getInTouchDesc")}
                 </p>
               </div>
 
@@ -115,7 +132,7 @@ const ContactPage = () => {
                     <Phone size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Call us</h3>
+                    <h3 className="font-semibold mb-1">{t("contact.callUs")}</h3>
                     <a href="tel:+8801410190019" className="text-muted-foreground hover:text-primary transition-colors">
                       +880 1410-190019
                     </a>
@@ -127,7 +144,7 @@ const ContactPage = () => {
                     <Mail size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Email us</h3>
+                    <h3 className="font-semibold mb-1">{t("contact.emailUsLabel")}</h3>
                     <a href="mailto:agency.alphazero@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
                       agency.alphazero@gmail.com
                     </a>
@@ -139,8 +156,8 @@ const ContactPage = () => {
                     <MapPin size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Location</h3>
-                    <p className="text-muted-foreground">Bornali, Rajshahi, Bangladesh – 6000</p>
+                    <h3 className="font-semibold mb-1">{t("contact.location")}</h3>
+                    <p className="text-muted-foreground">{t("contact.locationValue")}</p>
                   </div>
                 </div>
 
@@ -149,15 +166,15 @@ const ContactPage = () => {
                     <Clock size={20} className="text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-semibold mb-1">Working Hours</h3>
-                    <p className="text-muted-foreground">Sat - Thu: 10:00 AM - 8:00 PM</p>
+                    <h3 className="font-semibold mb-1">{t("contact.workingHours")}</h3>
+                    <p className="text-muted-foreground">{t("contact.workingHoursValue")}</p>
                   </div>
                 </div>
               </div>
 
               {/* Social Links */}
               <div>
-                <p className="font-semibold mb-4">Follow us</p>
+                <p className="font-semibold mb-4">{t("contact.followUs")}</p>
                 <div className="flex gap-3 flex-wrap">
                   {socialLinks.map((social) => (
                     <a
@@ -175,7 +192,7 @@ const ContactPage = () => {
 
               {/* Website */}
               <div className="pt-4 border-t border-border">
-                <p className="text-sm text-muted-foreground mb-2">Visit our website</p>
+                <p className="text-sm text-muted-foreground mb-2">{t("contact.visitWebsite")}</p>
                 <a 
                   href="https://www.alphazero.online" 
                   target="_blank" 
@@ -193,17 +210,20 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="space-y-6 p-8 rounded-2xl bg-card border border-border"
+              className="space-y-6 p-8 rounded-2xl bg-card border border-border relative overflow-hidden"
             >
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-display font-semibold mb-2">Start Your Project</h3>
-                <p className="text-sm text-muted-foreground">Get a free consultation</p>
+              {/* Form background decoration */}
+              <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-2xl" />
+              
+              <div className="text-center mb-6 relative z-10">
+                <h3 className="text-xl font-display font-semibold mb-2">{t("contact.formTitle")}</h3>
+                <p className="text-sm text-muted-foreground">{t("contact.formSubtitle")}</p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-2 gap-6 relative z-10">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Your Name
+                    {t("contact.yourName")}
                   </label>
                   <input
                     type="text"
@@ -213,12 +233,12 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder="John Doe"
+                    placeholder={t("contact.namePlaceholder")}
                   />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Your Email
+                    {t("contact.yourEmail")}
                   </label>
                   <input
                     type="email"
@@ -228,14 +248,14 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder="john@example.com"
+                    placeholder={t("contact.emailPlaceholder")}
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="relative z-10">
                 <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                  Subject
+                  {t("contact.subject")}
                 </label>
                 <input
                   type="text"
@@ -245,13 +265,13 @@ const ContactPage = () => {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                  placeholder="Logo Design Project"
+                  placeholder={t("contact.subjectPlaceholder")}
                 />
               </div>
 
-              <div>
+              <div className="relative z-10">
                 <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  Message
+                  {t("contact.message")}
                 </label>
                 <textarea
                   id="message"
@@ -261,16 +281,16 @@ const ContactPage = () => {
                   required
                   rows={6}
                   className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none"
-                  placeholder="Tell us about your project..."
+                  placeholder={t("contact.messagePlaceholder")}
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2"
+                className="relative z-10 w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2"
               >
                 <Send size={20} />
-                Contact AlphaZero
+                {t("contact.submitButton")}
               </button>
             </motion.form>
           </div>

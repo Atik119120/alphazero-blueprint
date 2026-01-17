@@ -71,9 +71,9 @@
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-display-bn: 'SabinaShorolipi', 'MahinRafid', sans-serif;
-    --font-subtitle-bn: 'MahinRafid', 'Aloka', sans-serif;
-    --font-body-bn: 'Aloka', 'Hind Siliguri', sans-serif;
+    --font-display-bn: 'SabinaShorolipi', 'Aloka', sans-serif;
+    --font-subtitle-bn: 'Aloka', 'Hind Siliguri', sans-serif;
+    --font-body-bn: 'MahinRafid', 'Hind Siliguri', sans-serif;
   }
 
   .dark {
