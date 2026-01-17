@@ -113,6 +113,9 @@
   html.font-bengali h5,
   html.font-bengali h6 {
     font-family: var(--font-display-bn);
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
