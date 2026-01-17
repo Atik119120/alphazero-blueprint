@@ -20,7 +20,7 @@ const teamMembers = [
   },
   {
     name: "Md.Kamrul Hasan",
-    role: "Web Developer",
+    role: "Microsoft Office Expert",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true",
     bio: "Full-stack developer passionate about creating fast, scalable web applications.",
     socials: { facebook: "https://www.facebook.com/wlonlinecenter", instagram: "https://www.linkedin.com/in/md-kamrul-hasan-102228218/" },
