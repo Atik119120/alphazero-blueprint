@@ -134,11 +134,11 @@ const TeamPage = () => {
                   </div>
                   <div className="text-center">
                     <h3 className="text-xl font-display font-semibold mb-2">{member.name}</h3>
-                    <div className="flex flex-wrap justify-center gap-2 mb-3">
+                    <div className="flex flex-wrap justify-center gap-1.5 mb-3 min-h-[60px] items-start">
                       {member.role.split(', ').map((role, idx) => (
                         <span 
                           key={idx} 
-                          className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-primary/10 text-primary border border-primary/20"
+                          className="inline-block px-3 py-1.5 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 shadow-sm"
                         >
                           {role}
                         </span>
