@@ -27,7 +27,7 @@ const teamMembers = [
   },
   {
     name: "Md.Shafiul Haque",
-    role: "Web Designer, Video Editor, Content Creator",
+    role: "Web Designer, Video Editor, Content Creator, Cinematographer",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true",
     bio: "User experience specialist focused on creating intuitive and delightful interfaces.",
     socials: { instagram: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw", facebook: "https://www.facebook.com/itzme.shaurav" },
