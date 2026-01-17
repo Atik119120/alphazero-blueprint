@@ -536,6 +536,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     document.documentElement.lang = language;
+    // Apply Bengali fonts when language is Bengali
+    if (language === 'bn') {
+      document.documentElement.classList.add('font-bengali');
+    } else {
+      document.documentElement.classList.remove('font-bengali');
+    }
   }, [language]);
 
   return (

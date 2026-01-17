@@ -16,6 +16,8 @@ export default {
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        'display-bn': ['AbuSayed', 'Bornoporichay', 'sans-serif'],
+        'body-bn': ['Bornoporichay', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -3,7 +3,16 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.maateen.me/bornoporichay/font.css');
 
+/* Abu Sayed Font for Bengali titles */
+@font-face {
+  font-family: 'AbuSayed';
+  src: url('/fonts/AbuSayed.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -44,6 +53,8 @@
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
+    --font-display-bn: 'AbuSayed', 'Bornoporichay', sans-serif;
+    --font-body-bn: 'Bornoporichay', sans-serif;
   }
 
   .dark {
@@ -88,6 +99,20 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+  }
+
+  /* Bengali font styles */
+  html.font-bengali body {
+    font-family: var(--font-body-bn);
+  }
+
+  html.font-bengali h1,
+  html.font-bengali h2,
+  html.font-bengali h3,
+  html.font-bengali h4,
+  html.font-bengali h5,
+  html.font-bengali h6 {
+    font-family: var(--font-display-bn);
   }
 }
 
