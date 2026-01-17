@@ -84,7 +84,7 @@ const TeamPage = () => {
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 auto-rows-fr">
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.name}
