@@ -13,6 +13,24 @@
   font-display: swap;
 }
 
+/* Aloka Font for Bengali body text */
+@font-face {
+  font-family: 'Aloka';
+  src: url('/fonts/Aloka.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Aloka Font for Bengali body text */
+@font-face {
+  font-family: 'Aloka';
+  src: url('/fonts/Aloka.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -53,8 +71,8 @@
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-display-bn: 'SabinaShorolipi', 'Hind Siliguri', sans-serif;
-    --font-body-bn: 'Hind Siliguri', 'Tiro Bangla', sans-serif;
+    --font-display-bn: 'SabinaShorolipi', 'Aloka', sans-serif;
+    --font-body-bn: 'Aloka', 'Hind Siliguri', sans-serif;
   }
 
   .dark {
