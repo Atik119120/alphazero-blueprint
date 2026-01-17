@@ -13,16 +13,16 @@ const teamMembers = [
   },
   {
     name: "Adib Sarkar",
-    role: "Lead Designer",
+    role: "Founder, Lead Designer",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true",
     bio: "Award-winning designer specializing in brand identity and visual communication.",
     socials: { facebook: "https://www.facebook.com/share/17kdvEbE5h/", instagram: "https://www.instagram.com/_og_gy?igsh=ZTkydWRrdnk0ZDIw", linkedin: "https://www.linkedin.com/in/mdadibsarkar" },
   },
   {
     name: "Md.Kamrul Hasan",
-    role: "Microsoft Office Expert",
+    role: "Founder, Microsoft Office Expert",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true",
-    bio: "Full-stack developer passionate about creating fast, scalable web applications.",
+    bio: "Microsoft Office specialist with expertise in Excel, Word, PowerPoint and data management solutions.",
     socials: { facebook: "https://www.facebook.com/wlonlinecenter", instagram: "https://www.linkedin.com/in/md-kamrul-hasan-102228218/" },
   },
   {
