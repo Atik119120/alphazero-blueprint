@@ -62,9 +62,9 @@ const Footer = () => {
         {/* Links Grid */}
         <div className="border-t border-border">
           <div className="container mx-auto px-6 py-16">
-            <div className="max-w-6xl mx-auto grid md:grid-cols-3 lg:grid-cols-4 gap-12">
+            <div className="max-w-6xl mx-auto grid grid-cols-4 gap-6 lg:gap-12">
               {/* Brand */}
-              <div className="lg:col-span-1">
+              <div className="col-span-1">
                 <Link to="/" className="inline-block mb-6">
                   <img 
                     src={logo} 
@@ -149,7 +149,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-border">
           <div className="container mx-auto px-6 py-6">
-            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="max-w-6xl mx-auto flex flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4 text-sm text-muted-foreground">
                 <span>© {new Date().getFullYear()} AlphaZero</span>
                 <span className="w-1 h-1 rounded-full bg-border" />
