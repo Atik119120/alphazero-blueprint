@@ -8,7 +8,7 @@ const teamMembers = [
     name: "Sofiullah Ahammad",
     role: "Founder, Graphics Designer, Vibe Coding Expert, Freelance Photographer",
     image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true",
-    bio: "Visionary leader with 3+ years of experience in creative direction and brand strategy.",
+    bio: "Creative founder with 3+ years of experience in graphics design, vibe coding, and freelance photography.",
     socials: { facebook: "https://www.facebook.com/AtikAhmedPeradox", instagram: "https://www.instagram.com/atik_ahmed_69/", linkedin: "https://www.linkedin.com/in/sofiullah-ahammad/" },
   },
   {
