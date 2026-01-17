@@ -15,7 +15,7 @@ const Layout = ({ children }: LayoutProps) => {
         <img 
           src={logo} 
           alt="" 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-auto opacity-[0.015] dark:opacity-[0.03] dark:invert rotate-[-15deg]"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-auto opacity-[0.04] brightness-0 dark:invert rotate-[-12deg]"
         />
       </div>
       
