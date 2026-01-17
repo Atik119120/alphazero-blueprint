@@ -13,7 +13,7 @@ const teamMembers = [
   },
   {
     name: "Adib Sarkar",
-    role: "Founder, Lead Designer",
+    role: "Founder, Lead Designer, Entrepreneur",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true",
     bio: "Award-winning designer specializing in brand identity and visual communication.",
     socials: { facebook: "https://www.facebook.com/share/17kdvEbE5h/", instagram: "https://www.instagram.com/_og_gy?igsh=ZTkydWRrdnk0ZDIw", linkedin: "https://www.linkedin.com/in/mdadibsarkar" },
