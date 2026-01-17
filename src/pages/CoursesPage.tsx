@@ -523,7 +523,7 @@ const CoursesPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
             {courses.map((course, index) => (
               <motion.div
                 key={course.id}
@@ -533,18 +533,18 @@ const CoursesPage = () => {
                 transition={{ delay: index * 0.05 }}
                 className="group h-full"
               >
-                <div className={`relative h-full flex flex-col rounded-3xl overflow-hidden ${course.isSpecial ? 'ring-2 ring-primary/50' : ''} ${course.isUpcoming ? 'ring-2 ring-amber-500/50' : ''}`}>
+                <div className={`relative h-full flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden ${course.isSpecial ? 'ring-2 ring-primary/50' : ''} ${course.isUpcoming ? 'ring-2 ring-amber-500/50' : ''}`}>
                   {/* Gradient Background Header */}
-                  <div className={`relative h-36 bg-gradient-to-br ${course.color} p-6`}>
+                  <div className={`relative h-28 sm:h-36 bg-gradient-to-br ${course.color} p-4 sm:p-6`}>
                     {/* Decorative Pattern */}
                     <div className="absolute inset-0 opacity-20">
-                      <div className="absolute top-4 right-4 w-20 h-20 border-4 border-white/30 rounded-full" />
-                      <div className="absolute bottom-2 left-6 w-12 h-12 border-2 border-white/20 rounded-lg rotate-12" />
+                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-14 h-14 sm:w-20 sm:h-20 border-4 border-white/30 rounded-full" />
+                      <div className="absolute bottom-2 left-4 sm:left-6 w-8 h-8 sm:w-12 sm:h-12 border-2 border-white/20 rounded-lg rotate-12" />
                     </div>
                     
                     {/* Special Badge */}
                     {course.isSpecial && (
-                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1">
+                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 sm:px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold flex items-center gap-1">
                         <Sparkles className="w-3 h-3" />
                         {t.special}
                       </div>
@@ -552,39 +552,39 @@ const CoursesPage = () => {
 
                     {/* Upcoming Badge */}
                     {course.isUpcoming && (
-                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-amber-500/80 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1">
+                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 sm:px-3 py-1 rounded-full bg-amber-500/80 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold flex items-center gap-1">
                         <Clock className="w-3 h-3" />
                         {t.upcoming}
                       </div>
                     )}
                     
                     {/* Icon */}
-                    <div className="relative w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <course.icon className="w-8 h-8 text-white" />
+                    <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                      <course.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                     </div>
                   </div>
 
                   {/* Card Body */}
-                  <div className="flex-1 flex flex-col bg-card border border-border border-t-0 rounded-b-3xl p-6">
+                  <div className="flex-1 flex flex-col bg-card border border-border border-t-0 rounded-b-2xl sm:rounded-b-3xl p-4 sm:p-6">
                     {/* Course Name & Price Row */}
-                    <div className="flex items-start justify-between gap-2 mb-3">
-                      <h3 className="text-lg font-display font-bold leading-tight">
+                    <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">
+                      <h3 className="text-base sm:text-lg font-display font-bold leading-tight">
                         {isBn ? course.nameBn : course.nameEn}
                       </h3>
-                      <div className="flex-shrink-0 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                        <span className="text-base font-bold text-primary">৳{course.fee.toLocaleString()}</span>
+                      <div className="flex-shrink-0 px-2 sm:px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                        <span className="text-sm sm:text-base font-bold text-primary">৳{course.fee.toLocaleString()}</span>
                       </div>
                     </div>
                     
-                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
                       {isBn ? course.descriptionBn : course.descriptionEn}
                     </p>
 
                     {/* Features Grid */}
-                    <div className="grid grid-cols-2 gap-2 mb-4">
+                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                       {(isBn ? course.featuresBn : course.featuresEn).slice(0, 4).map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-1.5 text-xs bg-secondary/50 rounded-lg px-2 py-1.5">
-                          <CheckCircle2 className="w-3 h-3 text-primary flex-shrink-0" />
+                        <div key={idx} className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
+                          <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
                           <span className="text-muted-foreground truncate">{feature}</span>
                         </div>
                       ))}
@@ -592,14 +592,14 @@ const CoursesPage = () => {
 
                     {/* Special Content for Vibe Coding & AI Prompt */}
                     {course.isSpecial && (
-                      <div className="mb-4 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
-                        <h4 className="font-semibold text-primary text-sm mb-2 flex items-center gap-1">
-                          <Zap className="w-4 h-4" />
+                      <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
+                        <h4 className="font-semibold text-primary text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-1">
+                          <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
                           {isBn ? course.specialContentBn?.title : course.specialContentEn?.title}
                         </h4>
-                        <ul className="space-y-1">
+                        <ul className="space-y-0.5 sm:space-y-1">
                           {(isBn ? course.specialContentBn?.points : course.specialContentEn?.points)?.slice(0, 3).map((point, idx) => (
-                            <li key={idx} className="text-xs text-muted-foreground flex items-start gap-1.5">
+                            <li key={idx} className="text-[10px] sm:text-xs text-muted-foreground flex items-start gap-1 sm:gap-1.5">
                               <span className="text-primary mt-0.5">•</span>
                               {point}
                             </li>
@@ -610,16 +610,16 @@ const CoursesPage = () => {
 
                     {/* Trainer with Photo */}
                     {course.trainer && (
-                      <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-secondary/30 border border-border mb-4 mt-auto">
+                      <div className="flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-secondary/30 border border-border mb-3 sm:mb-4 mt-auto">
                         <img
                           src={course.trainer.image}
                           alt={course.trainer.name}
-                          className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-primary/30"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs text-muted-foreground">{t.trainer}</p>
-                          <p className="text-sm font-semibold truncate">{course.trainer.name}</p>
-                          <p className="text-xs text-muted-foreground truncate">
+                          <p className="text-[10px] sm:text-xs text-muted-foreground">{t.trainer}</p>
+                          <p className="text-xs sm:text-sm font-semibold truncate">{course.trainer.name}</p>
+                          <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
                             {isBn ? course.trainer.qualificationBn : course.trainer.qualificationEn}
                           </p>
                         </div>
@@ -630,7 +630,7 @@ const CoursesPage = () => {
                     <a
                       href="#admission"
                       onClick={() => handleInputChange("course", course.id)}
-                      className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                      className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 ${
                         course.isUpcoming 
                           ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 cursor-not-allowed'
                           : course.isSpecial 
@@ -638,7 +638,7 @@ const CoursesPage = () => {
                             : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20'
                       }`}
                     >
-                      <GraduationCap className="w-4 h-4" />
+                      <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       {course.isUpcoming ? t.upcoming : t.enrollNow}
                     </a>
                   </div>
