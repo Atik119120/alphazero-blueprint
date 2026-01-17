@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ExternalLink, ArrowRight, Globe, Palette, Monitor } from "lucide-react";
+import { ExternalLink, ArrowRight, Globe, Palette, Monitor, Video, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 
@@ -54,24 +54,59 @@ const designProjects = [
     title: "Brand Identity Design",
     description: "Complete brand identity including logo, colors, and guidelines.",
     category: "Branding",
+    image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop",
   },
   {
     id: 2,
     title: "Social Media Graphics",
     description: "Eye-catching social media post designs and templates.",
     category: "Social Media",
+    image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
   },
   {
     id: 3,
     title: "Logo Collection",
     description: "Minimalist and modern logo designs for various clients.",
     category: "Logo Design",
+    image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop",
   },
   {
     id: 4,
     title: "Marketing Materials",
     description: "Flyers, banners, and promotional graphics for businesses.",
     category: "Print Design",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
+  },
+];
+
+const videoProjects = [
+  {
+    id: 1,
+    title: "Promotional Videos",
+    description: "Engaging promotional videos for brands and businesses.",
+    category: "Promo",
+    thumbnail: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&h=400&fit=crop",
+  },
+  {
+    id: 2,
+    title: "Social Media Reels",
+    description: "Short-form video content for Instagram and Facebook.",
+    category: "Reels",
+    thumbnail: "https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600&h=400&fit=crop",
+  },
+  {
+    id: 3,
+    title: "Motion Graphics",
+    description: "Animated graphics and visual effects for videos.",
+    category: "Motion",
+    thumbnail: "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?w=600&h=400&fit=crop",
+  },
+  {
+    id: 4,
+    title: "Event Highlights",
+    description: "Professional event coverage and highlight reels.",
+    category: "Events",
+    thumbnail: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=600&h=400&fit=crop",
   },
 ];
 
@@ -226,17 +261,88 @@ const WorkPage = () => {
                   transition={{ delay: index * 0.1 }}
                   className="group"
                 >
-                  <div className="rounded-xl overflow-hidden border border-border bg-card p-6 hover:border-primary/30 hover:shadow-lg transition-all duration-300 h-full">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-4">
-                      <Palette size={24} className="text-primary" />
+                  <div className="rounded-xl overflow-hidden border border-border bg-card hover:border-primary/30 hover:shadow-lg transition-all duration-300 h-full">
+                    {/* Image */}
+                    <div className="aspect-[4/3] overflow-hidden">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
                     </div>
-                    <span className="text-xs font-medium text-primary uppercase tracking-wider">
-                      {project.category}
-                    </span>
-                    <h3 className="text-lg font-display font-semibold mt-2 mb-2 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">{project.description}</p>
+                    {/* Content */}
+                    <div className="p-4">
+                      <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-2">
+                        {project.category}
+                      </span>
+                      <h3 className="text-lg font-display font-semibold mb-1 group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{project.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Editing Section */}
+      <section className="py-20">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-3 mb-8"
+            >
+              <div className="p-3 rounded-xl bg-primary/10 text-primary">
+                <Video size={24} />
+              </div>
+              <div>
+                <h2 className="text-2xl lg:text-3xl font-display font-bold">Video Editing</h2>
+                <p className="text-muted-foreground">Professional video production and editing</p>
+              </div>
+            </motion.div>
+
+            {/* Video Projects Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {videoProjects.map((project, index) => (
+                <motion.div
+                  key={project.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group cursor-pointer"
+                >
+                  <div className="rounded-xl overflow-hidden border border-border bg-card hover:border-primary/30 hover:shadow-lg transition-all duration-300 h-full">
+                    {/* Thumbnail with Play Button */}
+                    <div className="aspect-video overflow-hidden relative">
+                      <img
+                        src={project.thumbnail}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      {/* Play Button Overlay */}
+                      <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
+                          <Play size={24} className="text-primary-foreground ml-1" fill="currentColor" />
+                        </div>
+                      </div>
+                    </div>
+                    {/* Content */}
+                    <div className="p-4">
+                      <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-2">
+                        {project.category}
+                      </span>
+                      <h3 className="text-lg font-display font-semibold mb-1 group-hover:text-primary transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{project.description}</p>
+                    </div>
                   </div>
                 </motion.div>
               ))}
