@@ -79,7 +79,20 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
         {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:80px_80px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+
+        {/* Decorative Background Text */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-1/4 -left-10 text-[180px] font-bold text-foreground/[0.02] leading-none tracking-tighter">
+            ALPHA
+          </div>
+          <div className="absolute bottom-1/4 -right-10 text-[180px] font-bold text-foreground/[0.02] leading-none tracking-tighter">
+            ZERO
+          </div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[120px] font-bold text-foreground/[0.015] leading-none">
+            ডিজাইন
+          </div>
+        </div>
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
@@ -193,7 +206,16 @@ const Index = () => {
       </section>
 
       {/* What We Do / Our Expertise Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-20 bg-secondary/30 relative overflow-hidden">
+        {/* Decorative Background Text */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-10 -right-20 text-[200px] font-bold text-foreground/[0.015] leading-none tracking-tighter rotate-12">
+            CREATIVE
+          </div>
+          <div className="absolute bottom-10 -left-10 text-[150px] font-bold text-foreground/[0.02] leading-none">
+            সৃজনশীল
+          </div>
+        </div>
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -248,8 +270,17 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      <section className="py-20 relative overflow-hidden">
+        {/* Decorative Background Text */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-20 left-1/4 text-[250px] font-bold text-foreground/[0.015] leading-none tracking-tighter -rotate-6">
+            WHY
+          </div>
+          <div className="absolute bottom-20 right-1/4 text-[120px] font-bold text-foreground/[0.02] leading-none">
+            কেন
+          </div>
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -286,8 +317,17 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-secondary/30">
-        <div className="container mx-auto px-6">
+      <section className="py-20 bg-secondary/30 relative overflow-hidden">
+        {/* Decorative Background Text */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-1/2 -translate-y-1/2 -left-20 text-[180px] font-bold text-foreground/[0.015] leading-none tracking-tighter">
+            REVIEWS
+          </div>
+          <div className="absolute bottom-10 right-10 text-[100px] font-bold text-foreground/[0.02] leading-none rotate-3">
+            মতামত
+          </div>
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -364,8 +404,17 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden">
+        {/* Decorative Background Text */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[300px] font-bold text-foreground/[0.01] leading-none tracking-tighter">
+            GO
+          </div>
+          <div className="absolute bottom-5 left-10 text-[80px] font-bold text-foreground/[0.02] leading-none">
+            শুরু করুন
+          </div>
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
