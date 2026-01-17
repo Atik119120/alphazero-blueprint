@@ -50,7 +50,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
             <motion.img
               src={logo}
               alt="AlphaZero"
-              className="h-28 md:h-36 w-auto brightness-0 invert"
+              className="h-28 md:h-36 w-auto brightness-0"
               animate={{ 
                 opacity: [1, 0.8, 1]
               }}
