@@ -184,7 +184,7 @@ const ServicesPage = () => {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
               {allServices.map((service, index) => (
                 <motion.div
                   key={service.titleKey}
@@ -228,7 +228,7 @@ const ServicesPage = () => {
               <h2 className="text-3xl font-display font-bold">{t("services.graphicDesign")}</h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
               {graphicServices.map((service, index) => (
                 <motion.div
                   key={service.titleKey}
@@ -266,7 +266,7 @@ const ServicesPage = () => {
               <h2 className="text-3xl font-display font-bold">{t("services.videoEditing")}</h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
               {videoServices.map((service, index) => (
                 <motion.div
                   key={service.titleKey}
@@ -304,7 +304,7 @@ const ServicesPage = () => {
               <h2 className="text-3xl font-display font-bold">{t("services.digitalMarketing")}</h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
               {digitalMarketingServices.map((service, index) => (
                 <motion.div
                   key={service.titleKey}
@@ -342,7 +342,7 @@ const ServicesPage = () => {
               <h2 className="text-3xl font-display font-bold">{t("services.computerOperation")}</h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
               {computerServices.map((service, index) => (
                 <motion.div
                   key={service.titleKey}
@@ -384,7 +384,7 @@ const ServicesPage = () => {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
               {processSteps.map((item, index) => (
                 <motion.div
                   key={item.step}
