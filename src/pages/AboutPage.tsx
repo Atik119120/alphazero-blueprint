@@ -68,13 +68,8 @@ const AboutPage = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-24 relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/3" />
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 bg-secondary/30">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {/* Section Header */}
             <motion.div
@@ -98,7 +93,7 @@ const AboutPage = () => {
               </h2>
             </motion.div>
 
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
               {/* Left Content */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
@@ -188,27 +183,15 @@ const AboutPage = () => {
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 300 }}
-                    className="aspect-square rounded-3xl bg-gradient-to-br from-primary/15 via-card to-primary/5 p-8 flex items-center justify-center border border-primary/20 shadow-2xl shadow-primary/10 overflow-hidden"
+                    className="aspect-square rounded-2xl bg-card p-8 flex items-center justify-center border border-border"
                   >
-                    {/* Animated rings */}
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                      className="absolute inset-8 border border-primary/10 rounded-full"
-                    />
-                    <motion.div
-                      animate={{ rotate: -360 }}
-                      transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                      className="absolute inset-16 border border-primary/15 rounded-full"
-                    />
-                    
-                    <div className="text-center relative z-10">
+                    <div className="text-center">
                       <motion.img
                         src={logo}
                         alt="AlphaZero Logo"
-                        className="h-36 md:h-48 w-auto mx-auto brightness-0 invert mb-6 drop-shadow-2xl"
-                        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-                        whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                        className="h-32 md:h-40 w-auto mx-auto brightness-0 invert mb-6"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ type: "spring", bounce: 0.4 }}
                       />
@@ -216,21 +199,20 @@ const AboutPage = () => {
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.5 }}
+                        transition={{ delay: 0.3 }}
                         className="text-primary text-xl font-semibold tracking-wide"
                       >
                         From Zero to Impact
                       </motion.p>
                     </div>
                   </motion.div>
-
                   {/* Floating badges */}
                   <motion.div
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4, type: "spring" }}
-                    className="absolute -top-4 -right-4 px-4 py-2 rounded-full bg-primary text-primary-foreground font-medium text-sm shadow-lg"
+                    className="absolute -top-3 -right-3 px-3 py-1.5 rounded-full bg-primary text-primary-foreground font-medium text-xs"
                   >
                     Creative Agency
                   </motion.div>
@@ -239,7 +221,7 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.5, type: "spring" }}
-                    className="absolute -bottom-4 -left-4 px-4 py-2 rounded-full bg-card border border-primary/30 font-medium text-sm shadow-lg"
+                    className="absolute -bottom-3 -left-3 px-3 py-1.5 rounded-full bg-card border border-border font-medium text-xs"
                   >
                     🇧🇩 Bangladesh
                   </motion.div>
@@ -250,8 +232,8 @@ const AboutPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.6 }}
-                  className="mt-8 p-6 rounded-2xl bg-card/30 backdrop-blur-sm border border-border"
+                  transition={{ delay: 0.3 }}
+                  className="mt-6 p-5 rounded-xl bg-card border border-border"
                 >
                   <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-primary" />
