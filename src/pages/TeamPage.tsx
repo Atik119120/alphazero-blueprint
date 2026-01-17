@@ -92,10 +92,10 @@ const TeamPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group"
+                  className="group h-full"
                 >
                   {/* Card Container */}
-                  <div className="relative bg-gradient-to-b from-secondary/50 to-background rounded-3xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/10">
+                  <div className="relative h-full flex flex-col bg-gradient-to-b from-secondary/50 to-background rounded-3xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary/10">
                     {/* Member Number Badge */}
                     <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-lg z-10">
                       {String(index + 1).padStart(2, '0')}
@@ -153,7 +153,7 @@ const TeamPage = () => {
                     </div>
                     
                     {/* Content */}
-                    <div className="text-center px-2">
+                    <div className="text-center px-2 flex-1 flex flex-col">
                       {/* Name with decorative elements */}
                       <div className="relative mb-3">
                         <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-primary/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -171,7 +171,7 @@ const TeamPage = () => {
                       </div>
                       
                       {/* Role Tags */}
-                      <div className="flex flex-wrap justify-center gap-1.5 mb-4 min-h-[60px] items-start">
+                      <div className="flex flex-wrap justify-center gap-1.5 mb-4 h-[72px] items-start content-start overflow-hidden">
                         {member.role.split(', ').map((role, idx) => (
                           <span 
                             key={idx} 
@@ -183,7 +183,7 @@ const TeamPage = () => {
                       </div>
                       
                       {/* Bio */}
-                      <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 mt-auto">{member.bio}</p>
                     </div>
                   </div>
                 </motion.div>
