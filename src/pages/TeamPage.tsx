@@ -33,6 +33,13 @@ const teamMembers = [
     bio: "User experience specialist focused on creating intuitive and delightful interfaces.",
     socials: { instagram: "https://www.instagram.com/myself_shaurav?igsh=eWV3MjhuM29oeXpw", facebook: "https://www.facebook.com/itzme.shaurav" },
   },
+  {
+    name: "Prantik Saha",
+    role: "Graphics Designer, Microsoft Office Expert, IT Support Specialist",
+    image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true",
+    bio: "Skilled graphics designer and IT support specialist with expertise in Microsoft Office solutions.",
+    socials: { instagram: "https://www.instagram.com/spoide_kid_/?utm_source=qr&igsh=cWZhd21sN292OXdk#", facebook: "https://www.facebook.com/share/175txVkBJq/", linkedin: "https://www.linkedin.com/in/prantik-saha-9225a2350/" },
+  },
 ];
 
 const TeamPage = () => {
