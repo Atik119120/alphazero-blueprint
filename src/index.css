@@ -1,9 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Hind+Siliguri:wght@300;400;500;600;700&family=Tiro+Bangla:ital@0;1&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-@import url('https://fonts.maateen.me/bornoporichay/font.css');
 
 /* Abu Sayed Font for Bengali titles */
 @font-face {
@@ -13,6 +12,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -53,8 +53,8 @@
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-display-bn: 'AbuSayed', 'Bornoporichay', sans-serif;
-    --font-body-bn: 'Bornoporichay', sans-serif;
+    --font-display-bn: 'AbuSayed', 'Tiro Bangla', 'Hind Siliguri', sans-serif;
+    --font-body-bn: 'Hind Siliguri', 'Tiro Bangla', sans-serif;
   }
 
   .dark {

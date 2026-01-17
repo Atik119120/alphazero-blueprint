@@ -16,8 +16,8 @@ export default {
       fontFamily: {
         display: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
-        'display-bn': ['AbuSayed', 'Bornoporichay', 'sans-serif'],
-        'body-bn': ['Bornoporichay', 'sans-serif'],
+        'display-bn': ['AbuSayed', 'Tiro Bangla', 'Hind Siliguri', 'sans-serif'],
+        'body-bn': ['Hind Siliguri', 'Tiro Bangla', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
