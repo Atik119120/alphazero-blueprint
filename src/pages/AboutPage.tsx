@@ -178,18 +178,18 @@ const AboutPage = () => {
                 transition={{ duration: 0.6 }}
                 className="relative"
               >
-                {/* Main Logo Card */}
+                {/* Main Logo Card with Glow */}
                 <div className="relative">
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 300 }}
-                    className="aspect-square rounded-2xl bg-card p-8 flex items-center justify-center border border-border"
+                    className="aspect-square rounded-2xl bg-card p-8 flex items-center justify-center border border-border box-glow"
                   >
                     <div className="text-center">
                       <motion.img
                         src={logo}
                         alt="AlphaZero Logo"
-                        className="h-32 md:h-40 w-auto mx-auto brightness-0 invert mb-6"
+                        className="h-32 md:h-40 w-auto mx-auto brightness-0 dark:invert mb-6"
                         initial={{ opacity: 0, scale: 0.8 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
