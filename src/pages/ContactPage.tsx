@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, MapPin, Send, Phone, Clock, MessageCircle } from "lucide-react";
+import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Linkedin } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -23,9 +23,10 @@ const ContactPage = () => {
   };
 
   const socialLinks = [
-    { name: "Instagram", url: "https://www.instagram.com/alphazero.online" },
-    { name: "Facebook", url: "https://www.facebook.com/AlphaZero" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/alpha-zero-2248923a5" },
+    { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, comingSoon: false },
+    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
+    { name: "Instagram", url: "#", icon: Instagram, comingSoon: true },
+    { name: "LinkedIn", url: "#", icon: Linkedin, comingSoon: true },
   ];
 
   return (
@@ -79,7 +80,7 @@ const ContactPage = () => {
               {t("contact.emailUs")}
             </a>
             <a
-              href="https://wa.me/8801410190019"
+              href="https://wa.me/8801846484200"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-xl font-medium text-lg transition-all duration-300 hover:bg-[#25D366]/90 hover:shadow-lg hover:shadow-[#25D366]/20"
@@ -161,15 +162,30 @@ const ContactPage = () => {
                 <p className="font-semibold mb-4">{t("contact.followUs")}</p>
                 <div className="flex gap-3 flex-wrap">
                   {socialLinks.map((social) => (
-                    <a
-                      key={social.name}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-2.5 rounded-xl bg-secondary border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-sm font-medium"
-                    >
-                      {social.name}
-                    </a>
+                    social.comingSoon ? (
+                      <div
+                        key={social.name}
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary/50 border border-border text-muted-foreground cursor-not-allowed text-sm font-medium"
+                      >
+                        <social.icon size={16} />
+                        {social.name}
+                        <span className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                          <Clock size={10} />
+                          Soon
+                        </span>
+                      </div>
+                    ) : (
+                      <a
+                        key={social.name}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-sm font-medium"
+                      >
+                        <social.icon size={16} />
+                        {social.name}
+                      </a>
+                    )
                   ))}
                 </div>
               </div>
