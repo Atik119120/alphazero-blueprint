@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
+import AIChatbot from "@/components/AIChatbot";
 
 import Index from "./pages/Index";
 import AboutPage from "./pages/AboutPage";
@@ -34,6 +35,7 @@ const App = () => {
             {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
             <BrowserRouter>
               <ScrollToTop />
+              <AIChatbot />
               
               <Routes>
                 <Route path="/" element={<Index />} />

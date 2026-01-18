@@ -5,17 +5,20 @@ import {
   X, 
   Sun,
   Moon,
-  ArrowUpRight
+  ArrowUpRight,
+  Search
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import logo from "@/assets/logo.png";
+import SearchModal from "./SearchModal";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
@@ -92,6 +95,15 @@ const Navbar = () => {
               
               {/* Controls */}
               <div className="flex items-center gap-2 ml-4">
+                {/* Search Button */}
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="relative w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-secondary/80 transition-colors group"
+                  title={language === "bn" ? "সার্চ করুন" : "Search"}
+                >
+                  <Search size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                </button>
+
                 {/* Language Toggle - Creative */}
                 <button
                   onClick={() => setLanguage(language === "en" ? "bn" : "en")}
@@ -323,6 +335,9 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
+
+      {/* Search Modal */}
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
   );
 };
