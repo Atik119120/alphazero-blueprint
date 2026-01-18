@@ -96,11 +96,11 @@ const TeamPage = () => {
                 >
                   {/* Card Container - Horizontal Layout */}
                   <div className="relative h-full flex gap-4 bg-gradient-to-r from-secondary/50 to-background rounded-2xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/10">
-                    {/* Active Status Dot - Like Facebook */}
-                    <div className="absolute -top-1 -right-1 z-20">
+                    {/* Active Status Dot */}
+                    <div className="absolute -top-1 -left-1 z-20">
                       <span className="relative flex h-4 w-4">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-background"></span>
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-background"></span>
                       </span>
                     </div>
                     
