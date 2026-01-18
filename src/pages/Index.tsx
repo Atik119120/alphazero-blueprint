@@ -22,7 +22,8 @@ import {
   Linkedin,
   MessageCircle,
   Mail,
-  Clock
+  Clock,
+  Twitter
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
@@ -187,6 +188,14 @@ const Index = () => {
                 className="group w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-gradient-to-br hover:from-[#833AB4] hover:via-[#E1306C] hover:to-[#F77737] hover:border-transparent hover:text-white transition-all duration-300"
               >
                 <Instagram size={20} className="group-hover:scale-110 transition-transform" />
+              </a>
+              <a
+                href="https://x.com/AgencyAlphazero"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-black hover:border-transparent hover:text-white transition-all duration-300"
+              >
+                <Twitter size={20} className="group-hover:scale-110 transition-transform" />
               </a>
               <div className="relative group w-12 h-12 rounded-full bg-secondary/50 border border-border flex items-center justify-center cursor-not-allowed">
                 <Linkedin size={20} className="text-muted-foreground" />
