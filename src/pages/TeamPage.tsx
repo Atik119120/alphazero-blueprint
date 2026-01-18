@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Linkedin, Github, ArrowRight, Sparkles, Zap, Star, Diamond, Flame } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Github, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -96,18 +96,13 @@ const TeamPage = () => {
                 >
                   {/* Card Container - Horizontal Layout */}
                   <div className="relative h-full flex gap-4 bg-gradient-to-r from-secondary/50 to-background rounded-2xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/10">
-                    {/* Member Symbol Badge */}
-                    <motion.div 
-                      className="absolute -top-2 -left-2 w-8 h-8 rounded-full bg-gradient-to-br from-primary to-primary/70 text-primary-foreground flex items-center justify-center shadow-lg shadow-primary/30 z-10"
-                      whileHover={{ scale: 1.2, rotate: 15 }}
-                      transition={{ type: "spring", stiffness: 400 }}
-                    >
-                      {index === 0 && <Sparkles size={14} />}
-                      {index === 1 && <Diamond size={14} />}
-                      {index === 2 && <Star size={14} />}
-                      {index === 3 && <Flame size={14} />}
-                      {index === 4 && <Zap size={14} />}
-                    </motion.div>
+                    {/* Active Status Dot - Like Facebook */}
+                    <div className="absolute -top-1 -right-1 z-20">
+                      <span className="relative flex h-4 w-4">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-background"></span>
+                      </span>
+                    </div>
                     
                     {/* Image Container */}
                     <div className="relative flex-shrink-0 w-28 h-28 rounded-xl overflow-hidden">
