@@ -298,6 +298,17 @@ const Navbar = () => {
                     transition={{ delay: 0.1, duration: 0.15 }}
                     className="flex items-center gap-2"
                   >
+                    {/* Search Button - Mobile */}
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        setIsSearchOpen(true);
+                      }}
+                      className="w-11 h-11 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center"
+                    >
+                      <Search size={16} className="text-primary" />
+                    </button>
+
                     {/* Language */}
                     <button
                       onClick={() => setLanguage(language === "en" ? "bn" : "en")}
