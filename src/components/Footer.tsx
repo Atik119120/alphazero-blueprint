@@ -13,7 +13,7 @@ const Footer = () => {
   const socialLinks = [
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, comingSoon: false },
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
-    { name: "Instagram", url: "#", icon: Instagram, comingSoon: true },
+    { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram, comingSoon: false },
     { name: "LinkedIn", url: "#", icon: Linkedin, comingSoon: true },
   ];
 
