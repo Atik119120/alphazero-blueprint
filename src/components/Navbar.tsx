@@ -149,7 +149,7 @@ const Navbar = () => {
                   scale: isMobileMenuOpen ? 1.1 : 1,
                   rotate: isMobileMenuOpen ? 90 : 0 
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.15 }}
               />
               <motion.div className="relative z-10 flex flex-col items-center justify-center gap-1.5">
                 <motion.span 
@@ -159,7 +159,7 @@ const Navbar = () => {
                     y: isMobileMenuOpen ? 4 : 0,
                     width: isMobileMenuOpen ? 24 : 24
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                 />
                 <motion.span 
                   className="w-6 h-0.5 bg-foreground rounded-full"
@@ -167,7 +167,7 @@ const Navbar = () => {
                     opacity: isMobileMenuOpen ? 0 : 1,
                     scaleX: isMobileMenuOpen ? 0 : 1
                   }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.1 }}
                 />
                 <motion.span 
                   className="w-6 h-0.5 bg-foreground rounded-full origin-center"
@@ -176,7 +176,7 @@ const Navbar = () => {
                     y: isMobileMenuOpen ? -4 : 0,
                     width: isMobileMenuOpen ? 24 : 16
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                 />
               </motion.div>
             </button>
@@ -199,10 +199,10 @@ const Navbar = () => {
 
             {/* Floating Menu Card */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: -20 }}
+              initial={{ opacity: 0, scale: 0.95, y: -10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: -20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              exit={{ opacity: 0, scale: 0.95, y: -10 }}
+              transition={{ type: "spring", damping: 30, stiffness: 500, duration: 0.15 }}
               className="fixed top-20 left-4 right-4 z-50 lg:hidden"
             >
               <div className="relative bg-background/80 backdrop-blur-2xl rounded-3xl border border-border/50 shadow-2xl shadow-primary/5 overflow-hidden">
@@ -232,9 +232,9 @@ const Navbar = () => {
                     {navLinks.map((link, index) => (
                       <motion.div
                         key={link.href}
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.05 + index * 0.04 }}
+                        transition={{ delay: index * 0.02, duration: 0.15 }}
                       >
                         <Link
                           to={link.href}
@@ -281,9 +281,9 @@ const Navbar = () => {
 
                   {/* Controls Row */}
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
+                    transition={{ delay: 0.1, duration: 0.15 }}
                     className="flex items-center gap-2"
                   >
                     {/* Language */}
