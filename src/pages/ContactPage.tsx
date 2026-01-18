@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Linkedin } from "lucide-react";
+import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -26,6 +26,7 @@ const ContactPage = () => {
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, comingSoon: false },
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram, comingSoon: false },
+    { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter, comingSoon: false },
     { name: "LinkedIn", url: "#", icon: Linkedin, comingSoon: true },
   ];
 
