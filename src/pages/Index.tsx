@@ -16,7 +16,13 @@ import {
   ShoppingCart,
   Search,
   Star,
-  Quote
+  Quote,
+  Facebook,
+  Instagram,
+  Linkedin,
+  MessageCircle,
+  Mail,
+  Clock
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
@@ -143,6 +149,49 @@ const Index = () => {
               >
                 {t("home.cta2")}
               </Link>
+            </motion.div>
+
+            {/* Social Icons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex items-center justify-center gap-3 mt-10"
+            >
+              <a
+                href="https://www.facebook.com/share/1Zm7yMhPtk/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300"
+              >
+                <Facebook size={20} className="group-hover:scale-110 transition-transform" />
+              </a>
+              <a
+                href="https://wa.me/8801846484200"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] hover:text-white transition-all duration-300"
+              >
+                <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
+              </a>
+              <a
+                href="mailto:agency.alphazero@gmail.com"
+                className="group w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300"
+              >
+                <Mail size={20} className="group-hover:scale-110 transition-transform" />
+              </a>
+              <div className="relative group w-12 h-12 rounded-full bg-secondary/50 border border-border flex items-center justify-center cursor-not-allowed">
+                <Instagram size={20} className="text-muted-foreground" />
+                <span className="absolute -top-1 -right-1 flex items-center gap-0.5 text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
+                  <Clock size={8} />
+                </span>
+              </div>
+              <div className="relative group w-12 h-12 rounded-full bg-secondary/50 border border-border flex items-center justify-center cursor-not-allowed">
+                <Linkedin size={20} className="text-muted-foreground" />
+                <span className="absolute -top-1 -right-1 flex items-center gap-0.5 text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
+                  <Clock size={8} />
+                </span>
+              </div>
             </motion.div>
           </div>
 
@@ -386,11 +435,12 @@ const Index = () => {
                 {t("home.freeConsultation")} <ArrowRight size={20} />
               </Link>
               <a
-                href="https://wa.me/8801410190019"
+                href="https://wa.me/8801846484200"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-10 py-5 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
               >
+                <MessageCircle size={20} />
                 {t("home.whatsappUs")}
               </a>
             </div>
