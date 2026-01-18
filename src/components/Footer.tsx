@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowUpRight } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Facebook, Instagram, Linkedin, MessageCircle, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -11,9 +11,10 @@ const Footer = () => {
   };
 
   const socialLinks = [
-    { name: "Instagram", url: "https://www.instagram.com/alphazero.online" },
-    { name: "Facebook", url: "https://www.facebook.com/AlphaZero" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/alpha-zero-2248923a5" },
+    { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, comingSoon: false },
+    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
+    { name: "Instagram", url: "#", icon: Instagram, comingSoon: true },
+    { name: "LinkedIn", url: "#", icon: Linkedin, comingSoon: true },
   ];
 
   const quickLinks = [
@@ -105,15 +106,26 @@ const Footer = () => {
                 <ul className="space-y-3">
                   {socialLinks.map((social) => (
                     <li key={social.name}>
-                      <a
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center gap-2 text-foreground hover:text-primary transition-colors"
-                      >
-                        <span className="w-4 h-px bg-border group-hover:bg-primary group-hover:w-6 transition-all" />
-                        {social.name}
-                      </a>
+                      {social.comingSoon ? (
+                        <div className="group flex items-center gap-3 text-muted-foreground cursor-not-allowed">
+                          <social.icon size={18} />
+                          <span>{social.name}</span>
+                          <span className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                            <Clock size={10} />
+                            Soon
+                          </span>
+                        </div>
+                      ) : (
+                        <a
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group flex items-center gap-3 text-foreground hover:text-primary transition-colors"
+                        >
+                          <social.icon size={18} className="group-hover:scale-110 transition-transform" />
+                          {social.name}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
