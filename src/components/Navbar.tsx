@@ -158,95 +158,147 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu - Full Screen Unconventional */}
+      {/* Mobile Menu - Ultra Creative Side Panel */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-background lg:hidden overflow-hidden"
-          >
-            {/* Background decorative text */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-              <div className="absolute -top-20 -right-20 text-[300px] font-bold text-foreground/[0.02] leading-none">
-                মেনু
-              </div>
-            </div>
+          <>
+            {/* Backdrop with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-background/60 backdrop-blur-md lg:hidden"
+            />
+            
+            {/* Side Panel */}
+            <motion.div
+              initial={{ x: "100%", opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: "100%", opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-sm bg-background/95 backdrop-blur-xl lg:hidden overflow-hidden border-l border-border/50 shadow-2xl"
+            >
+              {/* Decorative gradient orb */}
+              <div className="absolute -top-32 -right-32 w-64 h-64 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+              
+              {/* Close Button */}
+              <motion.button
+                initial={{ opacity: 0, rotate: -90 }}
+                animate={{ opacity: 1, rotate: 0 }}
+                transition={{ delay: 0.2 }}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="absolute top-6 right-6 w-10 h-10 rounded-full bg-secondary/80 border border-border flex items-center justify-center z-10"
+              >
+                <X size={20} />
+              </motion.button>
 
-            <div className="relative h-full flex flex-col pt-24 pb-10 px-8">
-              {/* Navigation Links */}
-              <div className="flex-1 flex flex-col justify-center">
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.08 }}
-                    className="border-b border-border/30"
-                  >
-                    <Link
-                      to={link.href}
-                      onClick={handleNavClick}
-                      className={`flex items-center justify-between py-5 group ${
-                        location.pathname === link.href 
-                          ? "text-primary" 
-                          : "text-foreground"
-                      }`}
+              <div className="relative h-full flex flex-col pt-20 pb-8 px-6">
+                {/* Logo in menu */}
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="mb-8"
+                >
+                  <img 
+                    src={logo} 
+                    alt="AlphaZero Logo" 
+                    className="h-8 w-auto brightness-0 dark:invert"
+                  />
+                </motion.div>
+
+                {/* Navigation Links - Card Style */}
+                <div className="flex-1 space-y-2 overflow-y-auto">
+                  {navLinks.map((link, index) => (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.15 + index * 0.05 }}
                     >
-                      <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-muted-foreground font-mono">{link.num}</span>
-                        <span className="text-3xl font-display font-medium group-hover:translate-x-2 transition-transform">
+                      <Link
+                        to={link.href}
+                        onClick={handleNavClick}
+                        className={`flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group ${
+                          location.pathname === link.href 
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
+                            : "bg-secondary/50 hover:bg-secondary text-foreground"
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-xs font-mono font-bold ${
+                          location.pathname === link.href 
+                            ? "bg-primary-foreground/20 text-primary-foreground" 
+                            : "bg-primary/10 text-primary"
+                        }`}>
+                          {link.num}
+                        </div>
+                        <span className="text-lg font-medium flex-1">
                           {link.name}
                         </span>
-                      </div>
-                      <ArrowUpRight 
-                        size={24} 
-                        className="text-muted-foreground group-hover:text-primary group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" 
-                      />
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-              
-              {/* Bottom Controls */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  {/* Language */}
-                  <button
-                    onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                    className="px-4 py-2 rounded-full bg-secondary border border-border text-sm font-medium"
-                  >
-                    {language === "en" ? "বাংলা" : "English"}
-                  </button>
-                  
-                  {/* Theme */}
-                  {mounted && (
-                    <button
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center"
-                    >
-                      {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-                    </button>
-                  )}
+                        <ArrowUpRight 
+                          size={18} 
+                          className={`transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 ${
+                            location.pathname === link.href 
+                              ? "text-primary-foreground/70" 
+                              : "text-muted-foreground"
+                          }`}
+                        />
+                      </Link>
+                    </motion.div>
+                  ))}
                 </div>
                 
-                <Link
-                  to="/contact"
-                  onClick={handleNavClick}
-                  className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-medium flex items-center gap-2"
+                {/* Bottom Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="space-y-4 pt-6 border-t border-border/50"
                 >
-                  {t("nav.startProject")}
-                  <ArrowUpRight size={18} />
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
+                  {/* Controls Row */}
+                  <div className="flex items-center gap-3">
+                    {/* Language Toggle */}
+                    <button
+                      onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                      className="flex-1 px-4 py-3 rounded-xl bg-secondary/80 border border-border/50 text-sm font-medium flex items-center justify-center gap-2"
+                    >
+                      <span className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">
+                        {language === "en" ? "বা" : "EN"}
+                      </span>
+                      {language === "en" ? "বাংলা" : "English"}
+                    </button>
+                    
+                    {/* Theme Toggle */}
+                    {mounted && (
+                      <button
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="w-12 h-12 rounded-xl bg-secondary/80 border border-border/50 flex items-center justify-center"
+                      >
+                        <motion.div
+                          animate={{ rotate: theme === "dark" ? 0 : 180 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          {theme === "dark" ? <Sun size={20} className="text-primary" /> : <Moon size={20} className="text-primary" />}
+                        </motion.div>
+                      </button>
+                    )}
+                  </div>
+                  
+                  {/* CTA Button */}
+                  <Link
+                    to="/contact"
+                    onClick={handleNavClick}
+                    className="w-full py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+                  >
+                    {t("nav.startProject")}
+                    <ArrowUpRight size={18} />
+                  </Link>
+                </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
