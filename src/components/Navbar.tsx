@@ -184,245 +184,143 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu - Full Screen Immersive Experience */}
+      {/* Mobile Menu - Glassmorphism Floating Card */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ clipPath: "circle(0% at calc(100% - 40px) 40px)" }}
-            animate={{ clipPath: "circle(150% at calc(100% - 40px) 40px)" }}
-            exit={{ clipPath: "circle(0% at calc(100% - 40px) 40px)" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 lg:hidden overflow-hidden"
-          >
-            {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/10" />
-            
-            {/* Animated Background Pattern */}
-            <div className="absolute inset-0 overflow-hidden">
-              <motion.div
-                animate={{ 
-                  rotate: 360,
-                  scale: [1, 1.2, 1]
-                }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                className="absolute -top-1/2 -right-1/2 w-full h-full"
-              >
-                <div className="w-full h-full border border-primary/5 rounded-full" />
-              </motion.div>
-              <motion.div
-                animate={{ 
-                  rotate: -360,
-                  scale: [1.2, 1, 1.2]
-                }}
-                transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute -bottom-1/2 -left-1/2 w-full h-full"
-              >
-                <div className="w-full h-full border border-primary/5 rounded-full" />
-              </motion.div>
-            </div>
-
-            {/* Floating Orbs */}
+          <>
+            {/* Backdrop */}
             <motion.div
-              animate={{ 
-                y: [0, -30, 0],
-                x: [0, 20, 0]
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-20 right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl"
-            />
-            <motion.div
-              animate={{ 
-                y: [0, 20, 0],
-                x: [0, -15, 0]
-              }}
-              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-40 left-5 w-40 h-40 bg-primary/10 rounded-full blur-3xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-background/40 backdrop-blur-sm lg:hidden"
             />
 
-            {/* Content Container */}
-            <div className="relative h-full flex flex-col px-8 pt-24 pb-10">
-              
-              {/* Header with Logo */}
-              <motion.div
-                initial={{ opacity: 0, y: -30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="flex items-center justify-between mb-12"
-              >
-                <img 
-                  src={logo} 
-                  alt="AlphaZero Logo" 
-                  className="h-10 w-auto brightness-0 dark:invert"
-                />
-                <div className="flex items-center gap-2">
-                  <motion.span 
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-2 h-2 bg-primary rounded-full"
-                  />
-                  <span className="text-xs text-muted-foreground uppercase tracking-widest">Menu</span>
-                </div>
-              </motion.div>
-
-              {/* Navigation Links - Staggered Big Text */}
-              <div className="flex-1 flex flex-col justify-center -mt-10">
-                {navLinks.map((link, index) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, x: -100, rotateX: -90 }}
-                    animate={{ opacity: 1, x: 0, rotateX: 0 }}
-                    transition={{ 
-                      delay: 0.2 + index * 0.08,
-                      type: "spring",
-                      stiffness: 100
-                    }}
-                    className="overflow-hidden"
-                  >
-                    <Link
-                      to={link.href}
-                      onClick={handleNavClick}
-                      className="group flex items-center gap-4 py-3"
+            {/* Floating Menu Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: -20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="fixed top-20 left-4 right-4 z-50 lg:hidden"
+            >
+              <div className="relative bg-background/80 backdrop-blur-2xl rounded-3xl border border-border/50 shadow-2xl shadow-primary/5 overflow-hidden">
+                {/* Decorative Elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+                
+                {/* Content */}
+                <div className="relative p-6">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                      <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-medium">Navigation</span>
+                    </div>
+                    <motion.button
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-8 h-8 rounded-full bg-secondary/80 flex items-center justify-center"
                     >
-                      {/* Animated Line */}
-                      <motion.div 
-                        className={`h-[2px] rounded-full transition-all duration-500 ${
-                          location.pathname === link.href 
-                            ? "w-8 bg-primary" 
-                            : "w-0 group-hover:w-6 bg-muted-foreground"
-                        }`}
-                      />
-                      
-                      {/* Number */}
-                      <span className={`text-xs font-mono transition-colors duration-300 ${
-                        location.pathname === link.href 
-                          ? "text-primary" 
-                          : "text-muted-foreground group-hover:text-primary"
-                      }`}>
-                        {link.num}
-                      </span>
-                      
-                      {/* Link Text */}
-                      <span className={`text-3xl sm:text-4xl font-display font-bold tracking-tight transition-all duration-300 ${
-                        location.pathname === link.href 
-                          ? "text-primary translate-x-2" 
-                          : "text-foreground group-hover:text-primary group-hover:translate-x-2"
-                      }`}>
-                        {link.name}
-                      </span>
-                      
-                      {/* Active Dot */}
-                      {location.pathname === link.href && (
-                        <motion.div
-                          layoutId="activeDot"
-                          className="w-2 h-2 bg-primary rounded-full ml-auto"
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                        />
-                      )}
+                      <X size={14} />
+                    </motion.button>
+                  </div>
+
+                  {/* Navigation Grid */}
+                  <div className="grid grid-cols-2 gap-2 mb-6">
+                    {navLinks.map((link, index) => (
+                      <motion.div
+                        key={link.href}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.05 + index * 0.04 }}
+                      >
+                        <Link
+                          to={link.href}
+                          onClick={handleNavClick}
+                          className={`relative flex flex-col p-4 rounded-2xl transition-all duration-300 group overflow-hidden ${
+                            location.pathname === link.href 
+                              ? "bg-primary text-primary-foreground" 
+                              : "bg-secondary/50 hover:bg-secondary text-foreground"
+                          }`}
+                        >
+                          {/* Hover Glow */}
+                          <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
+                            location.pathname === link.href ? "" : "bg-gradient-to-br from-primary/5 to-transparent"
+                          }`} />
+                          
+                          {/* Number */}
+                          <span className={`text-[10px] font-mono mb-1 relative z-10 ${
+                            location.pathname === link.href 
+                              ? "text-primary-foreground/60" 
+                              : "text-primary/60"
+                          }`}>
+                            {link.num}
+                          </span>
+                          
+                          {/* Name */}
+                          <span className="text-sm font-semibold relative z-10 leading-tight">
+                            {link.name}
+                          </span>
+
+                          {/* Active Indicator */}
+                          {location.pathname === link.href && (
+                            <motion.div
+                              layoutId="activeCard"
+                              className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary-foreground"
+                            />
+                          )}
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Divider */}
+                  <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4" />
+
+                  {/* Controls Row */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="flex items-center gap-2"
+                  >
+                    {/* Language */}
+                    <button
+                      onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                      className="flex-1 h-11 px-4 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center gap-2 text-sm font-medium"
+                    >
+                      <span className={`transition-colors ${language === "en" ? "text-primary" : "text-muted-foreground"}`}>EN</span>
+                      <span className="text-border">/</span>
+                      <span className={`transition-colors ${language === "bn" ? "text-primary" : "text-muted-foreground"}`}>বা</span>
+                    </button>
+                    
+                    {/* Theme */}
+                    {mounted && (
+                      <motion.button
+                        whileTap={{ rotate: 180 }}
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="w-11 h-11 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center"
+                      >
+                        {theme === "dark" ? <Sun size={16} className="text-primary" /> : <Moon size={16} className="text-primary" />}
+                      </motion.button>
+                    )}
+                    
+                    {/* CTA */}
+                    <Link
+                      to="/contact"
+                      onClick={handleNavClick}
+                      className="flex-1 h-11 px-4 bg-foreground text-background rounded-xl font-medium text-sm flex items-center justify-center gap-1.5"
+                    >
+                      {t("nav.startProject")}
+                      <ArrowUpRight size={14} />
                     </Link>
                   </motion.div>
-                ))}
+                </div>
               </div>
-
-              {/* Bottom Section - Controls & CTA */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="space-y-6"
-              >
-                {/* Divider with text */}
-                <div className="flex items-center gap-4">
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                  <span className="text-[10px] text-muted-foreground uppercase tracking-[0.3em]">Settings</span>
-                  <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-                </div>
-
-                {/* Controls */}
-                <div className="flex items-center justify-center gap-4">
-                  {/* Language Toggle - Pill Style */}
-                  <motion.button
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                    className="relative h-12 px-6 rounded-full bg-secondary/50 border border-border/50 backdrop-blur-sm overflow-hidden group"
-                  >
-                    <div className="flex items-center gap-3">
-                      <motion.div
-                        animate={{ 
-                          backgroundColor: language === "en" ? "hsl(var(--primary))" : "transparent",
-                        }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center border border-border/50"
-                      >
-                        <span className={`text-xs font-bold ${language === "en" ? "text-primary-foreground" : "text-muted-foreground"}`}>EN</span>
-                      </motion.div>
-                      <motion.div
-                        animate={{ 
-                          backgroundColor: language === "bn" ? "hsl(var(--primary))" : "transparent",
-                        }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center border border-border/50"
-                      >
-                        <span className={`text-xs font-bold ${language === "bn" ? "text-primary-foreground" : "text-muted-foreground"}`}>বা</span>
-                      </motion.div>
-                    </div>
-                  </motion.button>
-
-                  {/* Theme Toggle - Creative */}
-                  {mounted && (
-                    <motion.button
-                      whileTap={{ scale: 0.9, rotate: 180 }}
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="relative w-12 h-12 rounded-full bg-secondary/50 border border-border/50 backdrop-blur-sm flex items-center justify-center overflow-hidden"
-                    >
-                      <motion.div
-                        initial={false}
-                        animate={{ 
-                          rotate: theme === "dark" ? 0 : 180,
-                          scale: theme === "dark" ? 1 : 0.8
-                        }}
-                        transition={{ duration: 0.5, type: "spring" }}
-                      >
-                        {theme === "dark" ? (
-                          <Sun size={20} className="text-primary" />
-                        ) : (
-                          <Moon size={20} className="text-primary" />
-                        )}
-                      </motion.div>
-                    </motion.button>
-                  )}
-                </div>
-
-                {/* CTA Button - Full Width Gradient */}
-                <motion.div whileTap={{ scale: 0.98 }}>
-                  <Link
-                    to="/contact"
-                    onClick={handleNavClick}
-                    className="relative w-full py-5 flex items-center justify-center gap-3 rounded-2xl overflow-hidden group"
-                  >
-                    {/* Animated Gradient Background */}
-                    <motion.div 
-                      className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary"
-                      animate={{ 
-                        backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"]
-                      }}
-                      transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                      style={{ backgroundSize: "200% 200%" }}
-                    />
-                    
-                    <span className="relative z-10 text-primary-foreground font-bold text-lg tracking-wide">
-                      {t("nav.startProject")}
-                    </span>
-                    <motion.div
-                      animate={{ x: [0, 5, 0], y: [0, -5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                      className="relative z-10"
-                    >
-                      <ArrowUpRight size={22} className="text-primary-foreground" />
-                    </motion.div>
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
