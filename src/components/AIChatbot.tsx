@@ -206,14 +206,10 @@ const AIChatbot = () => {
         onClick={() => setIsOpen(true)}
         className={`fixed bottom-6 right-6 z-50 group ${isOpen ? 'hidden' : ''}`}
       >
-        <div className="relative">
-          {/* Subtle glow */}
-          <div className="absolute inset-0 bg-primary/30 rounded-full blur-xl group-hover:bg-primary/50 transition-colors" />
-          
+      <div className="relative">
           {/* Glass button */}
-          <div className="relative w-16 h-16 rounded-full bg-background/80 backdrop-blur-xl border border-primary/30 flex items-center justify-center shadow-xl group-hover:border-primary/60 group-hover:scale-105 transition-all duration-300">
-            <div className="absolute inset-1 rounded-full bg-gradient-to-br from-primary/10 to-transparent" />
-            <img src={logo} alt="Alpha One" className="w-9 h-9 object-contain brightness-0 invert relative z-10" />
+          <div className="relative w-16 h-16 rounded-full bg-background/80 backdrop-blur-xl border border-primary/30 flex items-center justify-center shadow-lg group-hover:border-primary/60 group-hover:scale-105 transition-all duration-300">
+            <img src={logo} alt="Alpha One" className="w-9 h-9 object-contain brightness-0 invert" />
           </div>
           
           {/* Online indicator */}
