@@ -5,6 +5,74 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Rate limiting: Simple in-memory store (resets on function restart)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT = 20; // requests per window
+const RATE_WINDOW = 60 * 1000; // 1 minute in milliseconds
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_WINDOW });
+    return true;
+  }
+  
+  if (record.count >= RATE_LIMIT) {
+    return false;
+  }
+  
+  record.count++;
+  return true;
+}
+
+// Input validation
+function validateMessages(messages: unknown): { valid: boolean; error?: string } {
+  if (!Array.isArray(messages)) {
+    return { valid: false, error: "Messages must be an array" };
+  }
+  
+  if (messages.length === 0) {
+    return { valid: false, error: "Messages cannot be empty" };
+  }
+  
+  if (messages.length > 50) {
+    return { valid: false, error: "Too many messages (max 50)" };
+  }
+  
+  for (let i = 0; i < messages.length; i++) {
+    const msg = messages[i];
+    
+    if (!msg || typeof msg !== 'object') {
+      return { valid: false, error: `Invalid message at index ${i}` };
+    }
+    
+    if (!msg.role || typeof msg.role !== 'string') {
+      return { valid: false, error: `Missing or invalid role at index ${i}` };
+    }
+    
+    if (!['user', 'assistant', 'system'].includes(msg.role)) {
+      return { valid: false, error: `Invalid role "${msg.role}" at index ${i}` };
+    }
+    
+    if (!msg.content || typeof msg.content !== 'string') {
+      return { valid: false, error: `Missing or invalid content at index ${i}` };
+    }
+    
+    if (msg.content.length > 4000) {
+      return { valid: false, error: `Message too long at index ${i} (max 4000 chars)` };
+    }
+    
+    // Basic sanitization - remove potential injection attempts
+    if (msg.content.includes('<script>') || msg.content.includes('javascript:')) {
+      return { valid: false, error: "Invalid content detected" };
+    }
+  }
+  
+  return { valid: true };
+}
+
 // AlphaZero website knowledge base
 const websiteKnowledge = `
 আপনি AlphaZero-এর AI সহকারী। AlphaZero একটি ক্রিয়েটিভ ডিজাইন ও আইটি এজেন্সি যা বাংলাদেশের রাজশাহীতে অবস্থিত।
@@ -77,7 +145,45 @@ serve(async (req) => {
   }
 
   try {
-    const { messages } = await req.json();
+    // Get client IP for rate limiting
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                     req.headers.get('x-real-ip') || 
+                     'unknown';
+    
+    // Check rate limit
+    if (!checkRateLimit(clientIP)) {
+      console.log(`Rate limit exceeded for IP: ${clientIP}`);
+      return new Response(JSON.stringify({ 
+        error: "অনেক বেশি রিকোয়েস্ট। একটু পরে আবার চেষ্টা করুন।" 
+      }), {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Parse request body
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(JSON.stringify({ error: "Invalid JSON body" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const { messages } = body;
+
+    // Validate messages
+    const validation = validateMessages(messages);
+    if (!validation.valid) {
+      console.log(`Validation failed: ${validation.error}`);
+      return new Response(JSON.stringify({ error: validation.error }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -85,7 +191,7 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log("Processing AI assistant request with messages:", messages.length);
+    console.log(`Processing AI assistant request with ${messages.length} messages from IP: ${clientIP}`);
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
