@@ -88,7 +88,9 @@ export default function CertificatePage() {
     }
 
     const issuedDate = new Date(certificate.issued_at);
-    const formattedDate = issuedDate.toLocaleDateString('bn-BD', {
+    
+    // Format date in English
+    const formattedDate = issuedDate.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -106,7 +108,7 @@ export default function CertificatePage() {
       <head>
         <title>Certificate - ${certificate.certificate_id}</title>
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
           
           * {
             margin: 0;
@@ -114,9 +116,14 @@ export default function CertificatePage() {
             box-sizing: border-box;
           }
           
+          @page {
+            size: A4 landscape;
+            margin: 0;
+          }
+          
           body {
-            font-family: 'Inter', 'Noto Sans Bengali', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -124,275 +131,256 @@ export default function CertificatePage() {
             padding: 20px;
           }
           
-          .certificate {
-            width: 1000px;
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
-            border-radius: 20px;
-            padding: 50px 60px;
+          .certificate-wrapper {
+            width: 1100px;
+            height: 780px;
+            background: linear-gradient(135deg, #fefefe 0%, #f8f6f0 100%);
             position: relative;
-            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
           }
           
-          .certificate::before {
-            content: '';
+          /* Golden ornate border */
+          .border-outer {
             position: absolute;
-            inset: 12px;
-            border: 4px solid transparent;
-            border-image: linear-gradient(135deg, #00d4ff, #7c3aed, #f97316, #00d4ff) 1;
-            border-radius: 12px;
-            pointer-events: none;
+            inset: 8px;
+            border: 3px solid #c9a227;
           }
           
-          .certificate::after {
-            content: '';
+          .border-inner {
             position: absolute;
-            inset: 20px;
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            border-radius: 8px;
-            pointer-events: none;
+            inset: 18px;
+            border: 1px solid #c9a227;
           }
           
-          .watermark {
+          /* Corner decorations */
+          .corner {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 200px;
-            font-weight: 900;
-            color: rgba(124, 58, 237, 0.03);
-            pointer-events: none;
-            white-space: nowrap;
+            width: 80px;
+            height: 80px;
+            border: 3px solid #c9a227;
           }
           
-          .header {
-            text-align: center;
-            margin-bottom: 30px;
+          .corner-tl { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+          .corner-tr { top: 30px; right: 30px; border-left: none; border-bottom: none; }
+          .corner-bl { bottom: 30px; left: 30px; border-right: none; border-top: none; }
+          .corner-br { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+          
+          .content {
+            position: absolute;
+            inset: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 60px;
           }
           
+          /* Logo Section */
           .logo-section {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
           }
           
           .logo {
-            width: 90px;
-            height: 90px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid transparent;
-            background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #7c3aed, #00d4ff) border-box;
-            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3);
-          }
-          
-          .academy-info {
-            text-align: left;
+            border: 4px solid #c9a227;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.3);
+            background: white;
           }
           
           .academy-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #7c3aed 0%, #0ea5e9 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+            color: #1a1a2e;
+            letter-spacing: 4px;
+            margin-top: 12px;
+            text-transform: uppercase;
           }
           
           .academy-tagline {
-            font-size: 14px;
-            color: #64748b;
-            letter-spacing: 3px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: #c9a227;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            margin-top: 2px;
+            margin-top: 4px;
+            font-weight: 500;
           }
           
-          .divider {
-            width: 200px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #7c3aed, #00d4ff, transparent);
-            margin: 25px auto;
-            border-radius: 2px;
+          /* Decorative line */
+          .decorative-line {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
           }
           
+          .line {
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c9a227, transparent);
+          }
+          
+          .diamond {
+            width: 10px;
+            height: 10px;
+            background: #c9a227;
+            transform: rotate(45deg);
+          }
+          
+          /* Certificate Title */
           .title {
-            font-family: 'Playfair Display', serif;
-            font-size: 52px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Cinzel', serif;
+            font-size: 56px;
+            font-weight: 600;
+            color: #1a1a2e;
+            letter-spacing: 12px;
+            text-transform: uppercase;
             margin-bottom: 5px;
-            letter-spacing: 3px;
           }
           
           .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: #666;
+            font-style: italic;
+            letter-spacing: 4px;
+          }
+          
+          /* Main Content */
+          .presented-text {
+            font-family: 'Cormorant Garamond', serif;
             font-size: 16px;
-            color: #7c3aed;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            font-weight: 600;
-          }
-          
-          .content {
-            text-align: center;
-            margin: 40px 0;
-          }
-          
-          .presented-to {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 12px;
-            letter-spacing: 2px;
+            color: #555;
+            margin-top: 25px;
+            letter-spacing: 3px;
             text-transform: uppercase;
           }
           
           .student-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 52px;
             font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 25px;
-            position: relative;
-            display: inline-block;
-          }
-          
-          .student-name::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 4px;
-            background: linear-gradient(90deg, #7c3aed, #00d4ff);
-            border-radius: 2px;
+            color: #1a1a2e;
+            margin: 10px 0 20px;
+            font-style: italic;
           }
           
           .description {
-            font-size: 17px;
-            color: #475569;
-            line-height: 2;
-            max-width: 650px;
-            margin: 0 auto;
-          }
-          
-          .course-name {
-            font-weight: 700;
-            font-size: 20px;
-            color: #7c3aed;
-            display: block;
-            margin: 10px 0;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 212, 255, 0.1));
-            border-radius: 8px;
-            display: inline-block;
-          }
-          
-          .footer {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 30px;
-            margin-top: 50px;
-            padding-top: 30px;
-            border-top: 2px dashed rgba(124, 58, 237, 0.2);
-          }
-          
-          .info-block {
-            text-align: center;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(0, 212, 255, 0.05));
-            border-radius: 12px;
-          }
-          
-          .info-label {
-            font-size: 11px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-          }
-          
-          .info-value {
+            font-family: 'Montserrat', sans-serif;
             font-size: 14px;
-            color: #1e293b;
+            color: #555;
+            text-align: center;
+            line-height: 1.8;
+            max-width: 650px;
+          }
+          
+          .course-highlight {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
             font-weight: 600;
+            color: #c9a227;
+            margin: 15px 0;
+            padding: 12px 40px;
+            border: 2px solid #c9a227;
+            letter-spacing: 2px;
           }
           
-          .registration-number {
-            font-family: monospace;
-            font-size: 12px;
-            background: linear-gradient(135deg, #7c3aed, #0ea5e9);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
+          /* Footer Section */
+          .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 25px;
+          }
+          
+          .footer-block {
             text-align: center;
-            margin-top: 25px;
-            display: inline-block;
-            letter-spacing: 1px;
+            min-width: 180px;
           }
           
-          .registration-section {
-            text-align: center;
-            margin-top: 30px;
-          }
-          
-          .reg-label {
-            font-size: 11px;
-            color: #94a3b8;
+          .footer-label {
+            font-size: 10px;
+            color: #888;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 8px;
           }
           
+          .footer-value {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            color: #333;
+            font-weight: 500;
+          }
+          
+          .signature-line {
+            width: 180px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 8px;
+          }
+          
+          /* Registration Number */
+          .registration {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            color: #c9a227;
+            letter-spacing: 2px;
+            padding: 8px 25px;
+            border: 1px solid #c9a227;
+            margin-top: 5px;
+          }
+          
+          /* Seal */
           .seal {
             position: absolute;
-            bottom: 80px;
-            right: 60px;
-            width: 100px;
-            height: 100px;
-            border: 3px solid #7c3aed;
+            bottom: 60px;
+            right: 80px;
+            width: 90px;
+            height: 90px;
+            border: 3px solid #c9a227;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(0, 212, 255, 0.1));
+            background: linear-gradient(135deg, rgba(201, 162, 39, 0.1), rgba(255, 215, 0, 0.05));
+          }
+          
+          .seal-icon {
+            font-size: 24px;
+            color: #c9a227;
           }
           
           .seal-text {
-            font-size: 10px;
-            color: #7c3aed;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8px;
+            color: #c9a227;
             text-transform: uppercase;
-            font-weight: 600;
             letter-spacing: 1px;
+            margin-top: 3px;
+            font-weight: 600;
           }
           
-          .seal-check {
-            font-size: 28px;
-            color: #7c3aed;
-          }
-          
-          .decorative {
+          /* Watermark */
+          .watermark {
             position: absolute;
-            width: 200px;
-            height: 200px;
-            opacity: 0.08;
-          }
-          
-          .decorative-tl {
-            top: 0;
-            left: 0;
-            background: radial-gradient(circle, #7c3aed 0%, transparent 70%);
-          }
-          
-          .decorative-br {
-            bottom: 0;
-            right: 0;
-            background: radial-gradient(circle, #00d4ff 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cinzel', serif;
+            font-size: 300px;
+            font-weight: 700;
+            color: rgba(201, 162, 39, 0.03);
+            pointer-events: none;
+            z-index: 0;
           }
           
           @media print {
@@ -402,69 +390,79 @@ export default function CertificatePage() {
               -webkit-print-color-adjust: exact;
               print-color-adjust: exact;
             }
-            .certificate {
+            .certificate-wrapper {
               box-shadow: none;
               width: 100%;
-              max-width: none;
+              height: 100vh;
             }
           }
         </style>
       </head>
       <body>
-        <div class="certificate">
-          <div class="decorative decorative-tl"></div>
-          <div class="decorative decorative-br"></div>
+        <div class="certificate-wrapper">
+          <div class="border-outer"></div>
+          <div class="border-inner"></div>
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
           <div class="watermark">AZ</div>
           
-          <div class="header">
+          <div class="content">
+            <!-- Logo Section -->
             <div class="logo-section">
               <img src="${window.location.origin}/logo.png" alt="AlphaZero Academy" class="logo" onerror="this.style.display='none'" />
-              <div class="academy-info">
-                <h2 class="academy-name">AlphaZero Academy</h2>
-                <p class="academy-tagline">Excellence in Learning</p>
+              <h2 class="academy-name">AlphaZero Academy</h2>
+              <p class="academy-tagline">Excellence in Learning</p>
+            </div>
+            
+            <div class="decorative-line">
+              <div class="line"></div>
+              <div class="diamond"></div>
+              <div class="line"></div>
+            </div>
+            
+            <!-- Certificate Title -->
+            <h1 class="title">Certificate</h1>
+            <p class="subtitle">of Achievement</p>
+            
+            <!-- Main Content -->
+            <p class="presented-text">This is to certify that</p>
+            <h2 class="student-name">${certificate.student_name}</h2>
+            
+            <p class="description">
+              has successfully completed the training program and demonstrated 
+              exceptional dedication and commitment to learning excellence in
+            </p>
+            
+            <div class="course-highlight">${certificate.course_name}</div>
+            
+            <!-- Footer -->
+            <div class="footer">
+              <div class="footer-block">
+                <p class="footer-label">Date of Issue</p>
+                <p class="footer-value">${formattedDate}</p>
+              </div>
+              
+              <div class="footer-block">
+                <div class="signature-line"></div>
+                <p class="footer-label">Authorized Signature</p>
+                <p class="footer-value" style="font-weight: 600;">AlphaZero Academy</p>
+              </div>
+              
+              <div class="footer-block">
+                <p class="footer-label">Certificate ID</p>
+                <p class="footer-value" style="font-family: monospace;">${certificate.certificate_id}</p>
+                <div class="registration">${registrationNumber}</div>
               </div>
             </div>
             
-            <div class="divider"></div>
-            
-            <h1 class="title">CERTIFICATE</h1>
-            <p class="subtitle">of Completion</p>
-          </div>
-          
-          <div class="content">
-            <p class="presented-to">This is to certify that</p>
-            <h2 class="student-name">${certificate.student_name}</h2>
-            <p class="description">
-              has successfully completed the course
-              <span class="course-name">${certificate.course_name}</span>
-              demonstrating exceptional dedication and commitment to learning excellence.
-            </p>
-          </div>
-          
-          <div class="footer">
-            <div class="info-block">
-              <p class="info-label">Issue Date</p>
-              <p class="info-value">${formattedDate}</p>
-              <p style="font-size: 11px; color: #94a3b8; margin-top: 4px;">${year}-${month}-${day}</p>
+            <!-- Verification Seal -->
+            <div class="seal">
+              <span class="seal-icon">✓</span>
+              <span class="seal-text">Verified</span>
+              <span class="seal-text">Authentic</span>
             </div>
-            <div class="info-block">
-              <p class="info-label">Certificate ID</p>
-              <p class="info-value" style="font-family: monospace; font-size: 12px;">${certificate.certificate_id}</p>
-            </div>
-            <div class="info-block">
-              <p class="info-label">Verification</p>
-              <p class="info-value" style="color: #10b981;">✓ Verified & Authentic</p>
-            </div>
-          </div>
-          
-          <div class="registration-section">
-            <p class="reg-label">Registration Number</p>
-            <div class="registration-number">${registrationNumber}</div>
-          </div>
-          
-          <div class="seal">
-            <span class="seal-check">✓</span>
-            <span class="seal-text">Verified</span>
           </div>
         </div>
         

@@ -114,21 +114,39 @@ export default function StudentDashboard() {
     // Check if course is complete
     const completedCount = selectedCourse.videos.filter(v => v.progress?.is_completed || v.id === selectedVideo.id).length;
     if (completedCount === selectedCourse.total_videos) {
-      // Generate certificate
-      const certId = `CERT-${Date.now().toString(36).toUpperCase()}`;
-      await supabase.from('certificates').insert({
-        certificate_id: certId,
-        user_id: user!.id,
-        course_id: selectedCourse.id,
-        student_name: profile?.full_name || '',
-        course_name: selectedCourse.title,
-      });
-      await supabase.from('course_completions').insert({
-        user_id: user!.id,
-        course_id: selectedCourse.id,
-        certificate_id: certId,
-      });
-      toast.success('🎉 কোর্স সম্পূর্ণ! সার্টিফিকেট তৈরি হয়েছে!');
+      // Check if certificate already exists for this course
+      const { data: existingCert } = await supabase
+        .from('certificates')
+        .select('certificate_id')
+        .eq('user_id', user!.id)
+        .eq('course_id', selectedCourse.id)
+        .maybeSingle();
+
+      if (existingCert) {
+        // Certificate already exists, just show success
+        toast.success('🎉 কোর্স সম্পূর্ণ! আপনার সার্টিফিকেট আগেই তৈরি হয়েছে।');
+      } else {
+        // Generate new certificate with unique ID
+        const randomPart = Math.random().toString(36).substring(2, 10).toUpperCase();
+        const certId = `CERT-${randomPart}`;
+        
+        const { error: certError } = await supabase.from('certificates').insert({
+          certificate_id: certId,
+          user_id: user!.id,
+          course_id: selectedCourse.id,
+          student_name: profile?.full_name || '',
+          course_name: selectedCourse.title,
+        });
+        
+        if (!certError) {
+          await supabase.from('course_completions').insert({
+            user_id: user!.id,
+            course_id: selectedCourse.id,
+            certificate_id: certId,
+          });
+          toast.success('🎉 কোর্স সম্পূর্ণ! সার্টিফিকেট তৈরি হয়েছে!');
+        }
+      }
     }
 
     refetch();
