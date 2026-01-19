@@ -65,7 +65,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="mt-10 text-xl md:text-2xl text-foreground font-display tracking-wide font-medium"
           >
-            Starting every idea from <span className="text-primary">zero</span>
+            From <span className="text-primary">zero</span> to impact
           </motion.p>
 
           {/* Progress bar */}
