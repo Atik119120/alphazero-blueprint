@@ -97,6 +97,65 @@ export default function AdminDashboard() {
   // Search state
   const [studentSearch, setStudentSearch] = useState('');
 
+  // Admin list state
+  const [admins, setAdmins] = useState<Array<{
+    id: string;
+    user_id: string;
+    full_name: string;
+    email: string;
+    avatar_url: string | null;
+    created_at: string | null;
+  }>>([]);
+  const [loadingAdmins, setLoadingAdmins] = useState(false);
+
+  // Fetch all admins
+  const fetchAdmins = async () => {
+    setLoadingAdmins(true);
+    try {
+      // Get all user_ids with admin role
+      const { data: adminRoles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('user_id')
+        .eq('role', 'admin');
+
+      if (rolesError) {
+        console.error('Error fetching admin roles:', rolesError);
+        return;
+      }
+
+      if (!adminRoles || adminRoles.length === 0) {
+        setAdmins([]);
+        return;
+      }
+
+      const adminUserIds = adminRoles.map(r => r.user_id);
+
+      // Get profiles for these users
+      const { data: adminProfiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, user_id, full_name, email, avatar_url, created_at')
+        .in('user_id', adminUserIds);
+
+      if (profilesError) {
+        console.error('Error fetching admin profiles:', profilesError);
+        return;
+      }
+
+      setAdmins(adminProfiles || []);
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+    } finally {
+      setLoadingAdmins(false);
+    }
+  };
+
+  // Fetch admins on mount
+  useEffect(() => {
+    if (user && isAdmin) {
+      fetchAdmins();
+    }
+  }, [user, isAdmin]);
+
   // Filter students by search
   const filteredStudents = passCodes.filter(pc => {
     if (!pc.student) return false;
@@ -348,6 +407,8 @@ export default function AdminDashboard() {
       setShowAddAdminDialog(false);
       setNewAdminName('');
       setNewAdminEmail('');
+      // Refresh admin list
+      fetchAdmins();
       setNewAdminPassword('');
     } catch (error) {
       console.error('Add admin error:', error);
@@ -989,6 +1050,90 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Admin List */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg flex items-center gap-2">
+                      <Shield className="w-5 h-5" />
+                      সকল Admin ({admins.length})
+                    </CardTitle>
+                    <CardDescription>
+                      যারা এই প্ল্যাটফর্ম ম্যানেজ করতে পারে
+                    </CardDescription>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={fetchAdmins}
+                    disabled={loadingAdmins}
+                    className="gap-2"
+                  >
+                    {loadingAdmins ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+                    ) : (
+                      <TrendingUp className="w-4 h-4" />
+                    )}
+                    রিফ্রেশ
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {loadingAdmins ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
+                  </div>
+                ) : admins.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                    <p>কোনো Admin পাওয়া যায়নি</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {admins.map((admin) => (
+                      <div 
+                        key={admin.id}
+                        className={`flex items-center gap-3 p-4 rounded-lg border ${
+                          admin.user_id === user?.id 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-border hover:bg-muted/50'
+                        } transition-colors`}
+                      >
+                        {admin.avatar_url ? (
+                          <img 
+                            src={admin.avatar_url} 
+                            alt={admin.full_name}
+                            className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center flex-shrink-0">
+                            <span className="text-lg font-bold text-white">
+                              {admin.full_name?.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium truncate flex items-center gap-2">
+                            {admin.full_name}
+                            {admin.user_id === user?.id && (
+                              <Badge variant="secondary" className="text-xs">আপনি</Badge>
+                            )}
+                          </p>
+                          <p className="text-sm text-muted-foreground truncate">{admin.email}</p>
+                          {admin.created_at && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              যোগদান: {new Date(admin.created_at).toLocaleDateString('bn-BD')}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </main>
