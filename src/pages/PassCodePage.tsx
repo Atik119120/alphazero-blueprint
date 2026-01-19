@@ -22,7 +22,7 @@ export default function PassCodePage() {
 
   useEffect(() => {
     if (!user) {
-      navigate('/auth');
+      navigate('/student/login');
       return;
     }
 

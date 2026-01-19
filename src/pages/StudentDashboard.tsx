@@ -23,7 +23,7 @@ export default function StudentDashboard() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate('/auth');
+      navigate('/student/login');
     }
   }, [user, authLoading, navigate]);
 
