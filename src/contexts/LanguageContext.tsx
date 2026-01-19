@@ -358,6 +358,24 @@ const translations: Record<Language, Record<string, string>> = {
     "enroll.alreadyEnrolled": "Already Enrolled",
     "enroll.requestSent": "Enrollment request sent!",
     "enroll.noCourses": "No courses available",
+    
+    // Certificate Page
+    "cert.back": "Back",
+    "cert.verified": "Verified Certificate",
+    "cert.title": "Certificate of Completion",
+    "cert.presented": "This Certificate is Proudly Presented To",
+    "cert.for": "For successfully completing the course",
+    "cert.certify": "This is to certify that the above named individual has demonstrated exceptional dedication and successfully completed all requirements of the course at AlphaZero Academy.",
+    "cert.issued": "Issued",
+    "cert.instructor": "Instructor",
+    "cert.director": "Director",
+    "cert.download": "Download Certificate",
+    "cert.loginToDownload": "Login to your account to download this certificate",
+    "cert.notFound": "Certificate not found",
+    "cert.checkId": "Please check if the Certificate ID is correct",
+    "cert.holder": "[Certificate Holder]",
+    "cert.validCertificate": "This certificate is valid and verified",
+    "cert.downloading": "Generating PDF...",
   },
   bn: {
     // Navbar
@@ -708,6 +726,24 @@ const translations: Record<Language, Record<string, string>> = {
     "enroll.alreadyEnrolled": "ইতিমধ্যে এনরোল করা",
     "enroll.requestSent": "এনরোলমেন্ট রিকোয়েস্ট পাঠানো হয়েছে!",
     "enroll.noCourses": "কোনো কোর্স নেই",
+    
+    // Certificate Page
+    "cert.back": "ফিরে যান",
+    "cert.verified": "যাচাইকৃত সার্টিফিকেট",
+    "cert.title": "সার্টিফিকেট অফ কমপ্লিশন",
+    "cert.presented": "এই সার্টিফিকেট গর্বের সাথে প্রদান করা হলো",
+    "cert.for": "কোর্সটি সফলভাবে সম্পন্ন করার জন্য",
+    "cert.certify": "এই সার্টিফিকেট প্রমাণ করে যে উপরোক্ত ব্যক্তি আলফাজিরো একাডেমিতে এই কোর্সের সকল প্রয়োজনীয়তা সফলভাবে পূরণ করেছেন।",
+    "cert.issued": "ইস্যু তারিখ",
+    "cert.instructor": "ইন্সট্রাক্টর",
+    "cert.director": "ডিরেক্টর",
+    "cert.download": "সার্টিফিকেট ডাউনলোড করুন",
+    "cert.loginToDownload": "সার্টিফিকেট ডাউনলোড করতে লগইন করুন",
+    "cert.notFound": "সার্টিফিকেট পাওয়া যায়নি",
+    "cert.checkId": "সার্টিফিকেট আইডি সঠিক কিনা দেখুন",
+    "cert.holder": "[সার্টিফিকেট হোল্ডার]",
+    "cert.validCertificate": "এই সার্টিফিকেট বৈধ এবং যাচাইকৃত",
+    "cert.downloading": "পিডিএফ তৈরি হচ্ছে...",
   },
 };
 
