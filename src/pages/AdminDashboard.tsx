@@ -30,7 +30,10 @@ import {
   Mail,
   UserPlus,
   Search,
-  TrendingUp
+  TrendingUp,
+  Shield,
+  Camera,
+  Edit
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -76,6 +79,20 @@ export default function AdminDashboard() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
+
+  // Add admin state
+  const [showAddAdminDialog, setShowAddAdminDialog] = useState(false);
+  const [newAdminName, setNewAdminName] = useState('');
+  const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [addingAdmin, setAddingAdmin] = useState(false);
+
+  // Edit profile state
+  const [showEditProfileDialog, setShowEditProfileDialog] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [updatingProfile, setUpdatingProfile] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
   // Search state
   const [studentSearch, setStudentSearch] = useState('');
@@ -291,6 +308,154 @@ export default function AdminDashboard() {
       toast.error('কিছু ভুল হয়েছে');
     } finally {
       setChangingPassword(false);
+    }
+  };
+
+  // Add admin handler
+  const handleAddAdmin = async () => {
+    if (!newAdminName.trim() || !newAdminEmail.trim() || !newAdminPassword.trim()) {
+      toast.error('সব তথ্য দিন');
+      return;
+    }
+
+    if (newAdminPassword.length < 6) {
+      toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      return;
+    }
+
+    setAddingAdmin(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('create-admin', {
+        body: {
+          full_name: newAdminName.trim(),
+          email: newAdminEmail.trim(),
+          password: newAdminPassword,
+        },
+      });
+
+      if (error) {
+        toast.error(error.message || 'Admin তৈরি করতে সমস্যা হয়েছে');
+        return;
+      }
+
+      if (data?.error) {
+        toast.error(data.error);
+        return;
+      }
+
+      toast.success('নতুন Admin সফলভাবে যোগ হয়েছে!');
+      setShowAddAdminDialog(false);
+      setNewAdminName('');
+      setNewAdminEmail('');
+      setNewAdminPassword('');
+    } catch (error) {
+      console.error('Add admin error:', error);
+      toast.error('কিছু ভুল হয়েছে');
+    } finally {
+      setAddingAdmin(false);
+    }
+  };
+
+  // Update profile handler
+  const handleUpdateProfile = async () => {
+    if (!editName.trim()) {
+      toast.error('নাম দিন');
+      return;
+    }
+
+    setUpdatingProfile(true);
+
+    try {
+      // Update profile in database
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ full_name: editName.trim() })
+        .eq('user_id', user?.id);
+
+      if (profileError) {
+        toast.error(profileError.message);
+        return;
+      }
+
+      // Update email if changed
+      if (editEmail.trim() !== profile?.email) {
+        const { error: emailError } = await supabase.auth.updateUser({
+          email: editEmail.trim(),
+        });
+
+        if (emailError) {
+          toast.error(emailError.message);
+          return;
+        }
+        toast.info('ইমেইল আপডেট করতে নতুন ইমেইলে confirm করুন');
+      }
+
+      toast.success('প্রোফাইল আপডেট হয়েছে!');
+      setShowEditProfileDialog(false);
+      window.location.reload();
+    } catch (error) {
+      console.error('Update profile error:', error);
+      toast.error('কিছু ভুল হয়েছে');
+    } finally {
+      setUpdatingProfile(false);
+    }
+  };
+
+  // Avatar upload handler
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('শুধু ইমেজ ফাইল আপলোড করুন');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('ফাইল সাইজ ২MB এর কম হতে হবে');
+      return;
+    }
+
+    setUploadingAvatar(true);
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${user?.id}/avatar.${fileExt}`;
+
+      // Upload to storage
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) {
+        toast.error(uploadError.message);
+        return;
+      }
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      // Update profile with avatar URL
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('user_id', user?.id);
+
+      if (profileError) {
+        toast.error(profileError.message);
+        return;
+      }
+
+      toast.success('প্রোফাইল ছবি আপলোড হয়েছে!');
+      window.location.reload();
+    } catch (error) {
+      console.error('Avatar upload error:', error);
+      toast.error('কিছু ভুল হয়েছে');
+    } finally {
+      setUploadingAvatar(false);
     }
   };
 
@@ -710,10 +875,17 @@ export default function AdminDashboard() {
 
           {/* Profile Tab */}
           <TabsContent value="profile" className="space-y-6">
-            <h2 className="text-xl font-semibold">Admin প্রোফাইল</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">Admin প্রোফাইল</h2>
+              <Button onClick={() => setShowAddAdminDialog(true)} className="gap-2">
+                <Shield className="w-4 h-4" />
+                নতুন Admin যোগ
+              </Button>
+            </div>
             
-            <div className="grid gap-6 md:grid-cols-2">
-              <Card>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {/* Profile Info Card */}
+              <Card className="md:col-span-2 lg:col-span-1">
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <User className="w-5 h-5" />
@@ -721,27 +893,66 @@ export default function AdminDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                      <User className="w-8 h-8 text-primary" />
+                  <div className="flex flex-col items-center text-center">
+                    <div className="relative group">
+                      {(profile as any)?.avatar_url ? (
+                        <img 
+                          src={(profile as any).avatar_url} 
+                          alt={profile?.full_name}
+                          className="w-24 h-24 rounded-full object-cover border-4 border-primary/20"
+                        />
+                      ) : (
+                        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                          <span className="text-3xl font-bold text-white">
+                            {profile?.full_name?.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
+                      <label className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="hidden"
+                          onChange={handleAvatarUpload}
+                          disabled={uploadingAvatar}
+                        />
+                        {uploadingAvatar ? (
+                          <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent" />
+                        ) : (
+                          <Camera className="w-6 h-6 text-white" />
+                        )}
+                      </label>
                     </div>
-                    <div>
+                    <div className="mt-4">
                       <p className="font-semibold text-lg">{profile?.full_name}</p>
                       <p className="text-sm text-muted-foreground">{profile?.email}</p>
-                      <Badge className="mt-2">Admin</Badge>
+                      <Badge className="mt-2 bg-gradient-to-r from-primary to-cyan-600">Admin</Badge>
                     </div>
                   </div>
+                  <Button 
+                    onClick={() => {
+                      setEditName(profile?.full_name || '');
+                      setEditEmail(profile?.email || '');
+                      setShowEditProfileDialog(true);
+                    }} 
+                    variant="outline"
+                    className="w-full gap-2"
+                  >
+                    <Edit className="w-4 h-4" />
+                    প্রোফাইল এডিট করুন
+                  </Button>
                 </CardContent>
               </Card>
 
+              {/* Password Change Card */}
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <Lock className="w-5 h-5" />
-                    পাসওয়ার্ড পরিবর্তন
+                    পাসওয়ার্ড
                   </CardTitle>
                   <CardDescription>
-                    আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন
+                    অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -751,7 +962,29 @@ export default function AdminDashboard() {
                     className="w-full gap-2"
                   >
                     <Lock className="w-4 h-4" />
-                    পাসওয়ার্ড পরিবর্তন করুন
+                    পাসওয়ার্ড পরিবর্তন
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Add Admin Card */}
+              <Card className="border-dashed border-2">
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Shield className="w-5 h-5" />
+                    নতুন Admin
+                  </CardTitle>
+                  <CardDescription>
+                    আরেকজন Admin যোগ করুন যারা সব ম্যানেজ করতে পারবে
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    onClick={() => setShowAddAdminDialog(true)} 
+                    className="w-full gap-2"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Admin যোগ করুন
                   </Button>
                 </CardContent>
               </Card>
@@ -966,30 +1199,156 @@ export default function AdminDashboard() {
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="w-10 h-10 text-primary" />
-              </div>
+              {(profile as any)?.avatar_url ? (
+                <img 
+                  src={(profile as any).avatar_url} 
+                  alt={profile?.full_name}
+                  className="w-20 h-20 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                  <span className="text-2xl font-bold text-white">
+                    {profile?.full_name?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+              )}
               <div>
                 <p className="font-semibold text-xl">{profile?.full_name}</p>
                 <p className="text-muted-foreground">{profile?.email}</p>
                 <Badge className="mt-2">Admin</Badge>
               </div>
             </div>
-            <Button 
-              onClick={() => {
-                setShowProfileDialog(false);
-                setShowPasswordDialog(true);
-              }} 
-              variant="outline"
-              className="w-full gap-2"
-            >
-              <Lock className="w-4 h-4" />
-              পাসওয়ার্ড পরিবর্তন করুন
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                onClick={() => {
+                  setShowProfileDialog(false);
+                  setEditName(profile?.full_name || '');
+                  setEditEmail(profile?.email || '');
+                  setShowEditProfileDialog(true);
+                }} 
+                variant="outline"
+                className="flex-1 gap-2"
+              >
+                <Edit className="w-4 h-4" />
+                এডিট
+              </Button>
+              <Button 
+                onClick={() => {
+                  setShowProfileDialog(false);
+                  setShowPasswordDialog(true);
+                }} 
+                variant="outline"
+                className="flex-1 gap-2"
+              >
+                <Lock className="w-4 h-4" />
+                পাসওয়ার্ড
+              </Button>
+            </div>
           </div>
           <DialogFooter>
             <Button onClick={() => setShowProfileDialog(false)}>
               বন্ধ করুন
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Profile Dialog */}
+      <Dialog open={showEditProfileDialog} onOpenChange={setShowEditProfileDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Edit className="w-5 h-5" />
+              প্রোফাইল এডিট
+            </DialogTitle>
+            <DialogDescription>
+              আপনার নাম এবং ইমেইল পরিবর্তন করুন
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-name">নাম</Label>
+              <Input
+                id="edit-name"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                placeholder="আপনার নাম"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-email">ইমেইল</Label>
+              <Input
+                id="edit-email"
+                type="email"
+                value={editEmail}
+                onChange={(e) => setEditEmail(e.target.value)}
+                placeholder="আপনার ইমেইল"
+              />
+              <p className="text-xs text-muted-foreground">
+                ইমেইল পরিবর্তন করলে নতুন ইমেইলে confirm করতে হবে
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowEditProfileDialog(false)}>
+              বাতিল
+            </Button>
+            <Button onClick={handleUpdateProfile} disabled={updatingProfile}>
+              {updatingProfile ? 'আপডেট হচ্ছে...' : 'আপডেট করুন'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Admin Dialog */}
+      <Dialog open={showAddAdminDialog} onOpenChange={setShowAddAdminDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Shield className="w-5 h-5" />
+              নতুন Admin যোগ করুন
+            </DialogTitle>
+            <DialogDescription>
+              নতুন Admin এর তথ্য দিন
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="admin-name">নাম</Label>
+              <Input
+                id="admin-name"
+                value={newAdminName}
+                onChange={(e) => setNewAdminName(e.target.value)}
+                placeholder="Admin এর নাম"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="admin-email">ইমেইল</Label>
+              <Input
+                id="admin-email"
+                type="email"
+                value={newAdminEmail}
+                onChange={(e) => setNewAdminEmail(e.target.value)}
+                placeholder="admin@example.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="admin-password">পাসওয়ার্ড</Label>
+              <Input
+                id="admin-password"
+                type="password"
+                value={newAdminPassword}
+                onChange={(e) => setNewAdminPassword(e.target.value)}
+                placeholder="কমপক্ষে ৬ অক্ষর"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddAdminDialog(false)}>
+              বাতিল
+            </Button>
+            <Button onClick={handleAddAdmin} disabled={addingAdmin}>
+              {addingAdmin ? 'যোগ হচ্ছে...' : 'Admin যোগ করুন'}
             </Button>
           </DialogFooter>
         </DialogContent>
