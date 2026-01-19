@@ -121,10 +121,16 @@ export default function StudentDashboard() {
               <p className="text-sm text-muted-foreground">{profile?.full_name}</p>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
-            <LogOut className="w-4 h-4" />
-            লগ আউট
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => navigate('/my-certificates')} className="gap-2">
+              <Award className="w-4 h-4" />
+              সার্টিফিকেট
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+              <LogOut className="w-4 h-4" />
+              লগ আউট
+            </Button>
+          </div>
         </div>
       </header>
 
