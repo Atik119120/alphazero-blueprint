@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from 'next-themes';
 import { useCourses } from '@/hooks/useCourses';
 import { usePassCodes } from '@/hooks/usePassCodes';
 import { supabase } from '@/integrations/supabase/client';
@@ -35,13 +37,24 @@ import {
   Camera,
   Edit,
   DollarSign,
-  Banknote
+  Banknote,
+  Moon,
+  Sun,
+  Languages,
+  BarChart3,
+  PieChart
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
+
+// Chart colors
+const CHART_COLORS = ['#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#22c55e', '#84cc16', '#eab308', '#f97316', '#ef4444', '#ec4899'];
 
 export default function AdminDashboard() {
   const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
+  const { language, setLanguage } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const { courses, isLoading: coursesLoading, refetch: refetchCourses } = useCourses();
   const { 
     passCodes, 
@@ -529,10 +542,24 @@ export default function AdminDashboard() {
     }
   };
 
+  // Prepare chart data for enrollment
+  const enrollmentChartData = courseEnrollmentStats.slice(0, 6).map(course => ({
+    name: course.title.length > 12 ? course.title.slice(0, 12) + '...' : course.title,
+    students: course.enrollmentCount,
+    sales: course.totalSales
+  }));
+
+  // Pie chart data for course distribution
+  const pieChartData = courseEnrollmentStats.filter(c => c.enrollmentCount > 0).map((course, index) => ({
+    name: course.title,
+    value: course.enrollmentCount,
+    color: CHART_COLORS[index % CHART_COLORS.length]
+  }));
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
       {/* Header */}
-      <header className="border-b border-border bg-white/80 dark:bg-slate-900/80 sticky top-0 z-50">
+      <header className="border-b border-border bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="bg-gradient-to-br from-primary to-cyan-600 p-2.5 rounded-2xl">
@@ -543,14 +570,37 @@ export default function AdminDashboard() {
               />
             </div>
             <div>
-              <h1 className="font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">Alpha Academy</h1>
-              <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-emerald-500 rounded-full" />
+              <h1 className={`font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
+                {language === 'bn' ? 'আলফা একাডেমি' : 'Alpha Academy'}
+              </h1>
+              <p className={`text-sm text-muted-foreground flex items-center gap-1.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                 {profile?.full_name}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            {/* Language Toggle */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+              className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
+            >
+              <Languages className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'bn' ? 'EN' : 'বাং'}</span>
+            </Button>
+            
+            {/* Theme Toggle */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
+            
             <Button 
               variant="outline" 
               size="sm" 
@@ -558,7 +608,7 @@ export default function AdminDashboard() {
               className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
             >
               <User className="w-4 h-4" />
-              <span className="hidden sm:inline">প্রোফাইল</span>
+              <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
             </Button>
             <Button 
               variant="ghost" 
@@ -567,7 +617,7 @@ export default function AdminDashboard() {
               className="gap-2 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950 transition-colors"
             >
               <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">লগ আউট</span>
+              <span className="hidden sm:inline">{language === 'bn' ? 'লগ আউট' : 'Logout'}</span>
             </Button>
           </div>
         </div>
@@ -634,13 +684,20 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm">
+          <TabsList className="grid w-full max-w-3xl grid-cols-5 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm">
             <TabsTrigger 
               value="courses" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <BookOpen className="w-4 h-4" />
-              <span className="hidden sm:inline">কোর্স</span>
+              <span className="hidden sm:inline">{language === 'bn' ? 'কোর্স' : 'Courses'}</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="analytics" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
+            >
+              <BarChart3 className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'bn' ? 'এনালাইটিক্স' : 'Analytics'}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="passcodes" 
@@ -654,14 +711,14 @@ export default function AdminDashboard() {
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">ছাত্র</span>
+              <span className="hidden sm:inline">{language === 'bn' ? 'ছাত্র' : 'Students'}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="profile" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <User className="w-4 h-4" />
-              <span className="hidden sm:inline">প্রোফাইল</span>
+              <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
             </TabsTrigger>
           </TabsList>
 
@@ -672,6 +729,213 @@ export default function AdminDashboard() {
               coursesLoading={coursesLoading}
               refetchCourses={refetchCourses}
             />
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                {language === 'bn' ? 'এনালাইটিক্স ড্যাশবোর্ড' : 'Analytics Dashboard'}
+              </h2>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Enrollment Bar Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                    <BarChart3 className="w-5 h-5 text-primary" />
+                    {language === 'bn' ? 'কোর্স অনুযায়ী ছাত্র' : 'Students by Course'}
+                  </CardTitle>
+                  <CardDescription>
+                    {language === 'bn' ? 'প্রতিটি কোর্সে কতজন ছাত্র এনরোল করেছে' : 'Number of students enrolled in each course'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {enrollmentChartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={250}>
+                      <BarChart data={enrollmentChartData}>
+                        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                        <XAxis 
+                          dataKey="name" 
+                          tick={{ fontSize: 10 }} 
+                          className="text-muted-foreground"
+                        />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'hsl(var(--card))', 
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: '8px'
+                          }}
+                        />
+                        <Bar dataKey="students" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[250px] flex items-center justify-center text-muted-foreground">
+                      {language === 'bn' ? 'কোনো ডাটা নেই' : 'No data available'}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Course Distribution Pie Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                    <PieChart className="w-5 h-5 text-primary" />
+                    {language === 'bn' ? 'ছাত্র বন্টন' : 'Student Distribution'}
+                  </CardTitle>
+                  <CardDescription>
+                    {language === 'bn' ? 'কোন কোর্সে কত শতাংশ ছাত্র' : 'Percentage of students per course'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {pieChartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={250}>
+                      <RechartsPieChart>
+                        <Pie
+                          data={pieChartData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={80}
+                          paddingAngle={3}
+                          dataKey="value"
+                        >
+                          {pieChartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'hsl(var(--card))', 
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: '8px'
+                          }}
+                          formatter={(value: number, name: string) => [
+                            `${value} ${language === 'bn' ? 'জন ছাত্র' : 'students'}`,
+                            name
+                          ]}
+                        />
+                      </RechartsPieChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[250px] flex items-center justify-center text-muted-foreground">
+                      {language === 'bn' ? 'কোনো ডাটা নেই' : 'No data available'}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Sales Bar Chart */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                    <Banknote className="w-5 h-5 text-amber-500" />
+                    {language === 'bn' ? 'কোর্স অনুযায়ী বিক্রি' : 'Sales by Course'}
+                  </CardTitle>
+                  <CardDescription>
+                    {language === 'bn' ? 'প্রতিটি কোর্স থেকে কত টাকা আয় হয়েছে' : 'Revenue generated from each course'}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {enrollmentChartData.some(d => d.sales > 0) ? (
+                    <ResponsiveContainer width="100%" height={250}>
+                      <BarChart data={enrollmentChartData}>
+                        <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                        <XAxis 
+                          dataKey="name" 
+                          tick={{ fontSize: 10 }} 
+                          className="text-muted-foreground"
+                        />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: 'hsl(var(--card))', 
+                            border: '1px solid hsl(var(--border))',
+                            borderRadius: '8px'
+                          }}
+                          formatter={(value: number) => [`৳${value.toLocaleString()}`, language === 'bn' ? 'বিক্রি' : 'Sales']}
+                        />
+                        <Bar dataKey="sales" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="h-[250px] flex items-center justify-center text-muted-foreground flex-col gap-2">
+                      <Banknote className="w-12 h-12 opacity-50" />
+                      <p>{language === 'bn' ? 'এখনো কোনো বিক্রি নেই' : 'No sales yet'}</p>
+                      <p className="text-xs">{language === 'bn' ? 'কোর্সে দাম সেট করুন এবং ছাত্র এনরোল করুন' : 'Set course prices and enroll students'}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Quick Stats */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                    <TrendingUp className="w-5 h-5 text-emerald-500" />
+                    {language === 'bn' ? 'দ্রুত পরিসংখ্যান' : 'Quick Stats'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gradient-to-br from-primary/10 to-cyan-500/10 rounded-xl p-4 text-center">
+                      <p className="text-3xl font-bold text-primary">{passCodes.filter(p => p.student).length}</p>
+                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                        {language === 'bn' ? 'মোট ছাত্র' : 'Total Students'}
+                      </p>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 rounded-xl p-4 text-center">
+                      <p className="text-3xl font-bold text-emerald-600">{courses.filter(c => c.is_published).length}</p>
+                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                        {language === 'bn' ? 'প্রকাশিত কোর্স' : 'Published Courses'}
+                      </p>
+                    </div>
+                    <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-4 text-center">
+                      <p className="text-3xl font-bold text-amber-600">৳{totalRevenue.toLocaleString()}</p>
+                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                        {language === 'bn' ? 'মোট আয়' : 'Total Revenue'}
+                      </p>
+                    </div>
+                    <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-xl p-4 text-center">
+                      <p className="text-3xl font-bold text-violet-600">
+                        {courses.length > 0 ? Math.round((passCodes.filter(p => p.student).length / Math.max(courses.length, 1)) * 10) / 10 : 0}
+                      </p>
+                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                        {language === 'bn' ? 'গড় ছাত্র/কোর্স' : 'Avg Students/Course'}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Top Courses */}
+                  <div className="pt-4 border-t">
+                    <h4 className={`text-sm font-medium mb-3 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                      {language === 'bn' ? 'জনপ্রিয় কোর্স' : 'Top Courses'}
+                    </h4>
+                    <div className="space-y-2">
+                      {courseEnrollmentStats.slice(0, 3).map((course, index) => (
+                        <div key={course.id} className="flex items-center justify-between p-2 bg-muted/50 rounded-lg">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                              index === 0 ? 'bg-amber-500 text-white' : 
+                              index === 1 ? 'bg-slate-400 text-white' : 
+                              'bg-amber-700 text-white'
+                            }`}>
+                              {index + 1}
+                            </span>
+                            <span className="text-sm truncate max-w-[150px]">{course.title}</span>
+                          </div>
+                          <Badge variant="secondary">{course.enrollmentCount} {language === 'bn' ? 'জন' : ''}</Badge>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           {/* Pass Codes Tab */}
