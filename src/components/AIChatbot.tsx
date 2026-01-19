@@ -280,8 +280,8 @@ const AIChatbot = () => {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-center py-6"
                 >
-                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center mx-auto mb-4 p-3">
-                    <img src={logo} alt="Alpha One" className="w-full h-full object-contain" />
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center mx-auto mb-4 p-4">
+                    <img src={logo} alt="Alpha One" className="w-full h-full object-contain brightness-0 invert" />
                   </div>
                   <h4 className="font-bold text-foreground text-lg mb-2">
                     {language === "bn" ? "আসসালামু আলাইকুম! 👋" : "Hello! 👋"}
@@ -316,8 +316,8 @@ const AIChatbot = () => {
                       className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                     >
                       {msg.role === "assistant" && (
-                        <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center mr-2 shrink-0 mt-1">
-                          <img src={logo} alt="" className="w-5 h-5 object-contain" />
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center mr-2 shrink-0 mt-1">
+                          <img src={logo} alt="" className="w-4 h-4 object-contain brightness-0 invert" />
                         </div>
                       )}
                       <div
@@ -362,8 +362,8 @@ const AIChatbot = () => {
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center mr-2 shrink-0">
-                    <img src={logo} alt="" className="w-5 h-5 object-contain" />
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center mr-2 shrink-0">
+                    <img src={logo} alt="" className="w-4 h-4 object-contain brightness-0 invert" />
                   </div>
                   <div className="bg-secondary px-4 py-3 rounded-2xl rounded-bl-md flex items-center gap-2">
                     <div className="flex gap-1">
