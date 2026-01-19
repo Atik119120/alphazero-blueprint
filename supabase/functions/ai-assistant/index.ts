@@ -1,5 +1,4 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -191,50 +190,14 @@ serve(async (req) => {
   }
 
   try {
-    // Authentication check
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
-      console.log('Missing or invalid authorization header');
-      return new Response(JSON.stringify({ 
-        error: "Authentication required. Please log in to use the AI assistant." 
-      }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    // Verify the JWT token
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    
-    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } }
-    });
-
-    const token = authHeader.replace('Bearer ', '');
-    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
-    
-    if (claimsError || !claimsData?.claims) {
-      console.log('Invalid or expired token:', claimsError?.message);
-      return new Response(JSON.stringify({ 
-        error: "Invalid or expired session. Please log in again." 
-      }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
-    }
-
-    const userId = claimsData.claims.sub;
-    console.log(`Authenticated request from user: ${userId}`);
-
-    // Get client IP for rate limiting (per-user rate limiting is more secure)
-    const clientIP = userId || req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+    // Get client IP for rate limiting
+    const clientIP = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
                      req.headers.get('x-real-ip') || 
                      'unknown';
     
     // Check rate limit
     if (!checkRateLimit(clientIP)) {
-      console.log(`Rate limit exceeded for user: ${userId}`);
+      console.log(`Rate limit exceeded for IP: ${clientIP}`);
       return new Response(JSON.stringify({ 
         error: "অনেক বেশি রিকোয়েস্ট। একটু পরে আবার চেষ্টা করুন।" 
       }), {
@@ -273,7 +236,7 @@ serve(async (req) => {
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    console.log(`Processing AI assistant request with ${messages.length} messages from user: ${userId}`);
+    console.log(`Processing AI assistant request with ${messages.length} messages from IP: ${clientIP}`);
 
     const systemPrompt = `${websiteKnowledge}
 
