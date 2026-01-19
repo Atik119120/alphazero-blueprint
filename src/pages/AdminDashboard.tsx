@@ -199,11 +199,11 @@ export default function AdminDashboard() {
     if (!value) return false;
     const created = new Date(value).getTime();
     if (Number.isNaN(created)) return false;
-    return Date.now() - created  24 * 60 * 60 * 1000;
+    return Date.now() - created < 24 * 60 * 60 * 1000;
   };
 
   const unassignedStudents = filteredStudents.filter(pc => pc.courses.length === 0);
-  const assignedStudents = filteredStudents.filter(pc => pc.courses.length  0);
+  const assignedStudents = filteredStudents.filter(pc => pc.courses.length > 0);
 
   // Calculate course enrollment stats with sales
   const courseEnrollmentStats = courses.map(course => {
