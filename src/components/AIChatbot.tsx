@@ -1,19 +1,50 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Loader2, Sparkles, Zap } from "lucide-react";
+import { X, Send, Loader2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
 }
 
+// Suggested follow-up questions based on context
+const getFollowUpQuestions = (lastMessage: string, language: string): string[] => {
+  const lowerMsg = lastMessage.toLowerCase();
+  
+  if (language === "bn") {
+    if (lowerMsg.includes("কোর্স") || lowerMsg.includes("course")) {
+      return ["ভর্তি কিভাবে করবো?", "কোন কোর্স সবচেয়ে জনপ্রিয়?"];
+    }
+    if (lowerMsg.includes("সার্ভিস") || lowerMsg.includes("service")) {
+      return ["প্রাইসিং কেমন?", "কাজ দেখতে চাই"];
+    }
+    if (lowerMsg.includes("যোগাযোগ") || lowerMsg.includes("contact")) {
+      return ["কাজের সময় কখন?", "অফিসের ঠিকানা কোথায়?"];
+    }
+    return ["আপনাদের কোর্সগুলো কি কি?", "যোগাযোগ করতে চাই"];
+  } else {
+    if (lowerMsg.includes("course")) {
+      return ["How to enroll?", "Which course is most popular?"];
+    }
+    if (lowerMsg.includes("service")) {
+      return ["What's the pricing?", "Show me your work"];
+    }
+    if (lowerMsg.includes("contact")) {
+      return ["What are your working hours?", "Where is your office?"];
+    }
+    return ["What courses do you offer?", "How to contact you?"];
+  }
+};
+
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [followUpQuestions, setFollowUpQuestions] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
   const navigate = useNavigate();
@@ -24,11 +55,18 @@ const AIChatbot = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, followUpQuestions]);
+
+  // Update follow-up questions when assistant responds
+  useEffect(() => {
+    if (messages.length > 0 && messages[messages.length - 1].role === "assistant") {
+      const lastAssistantMsg = messages[messages.length - 1].content;
+      setFollowUpQuestions(getFollowUpQuestions(lastAssistantMsg, language));
+    }
+  }, [messages, language]);
 
   // Parse links from assistant messages
   const parseMessageWithLinks = (content: string) => {
-    // Match patterns like "/courses", "/contact", "/services" etc.
     const linkPattern = /(\/[a-z-]+)/g;
     const parts = content.split(linkPattern);
     
@@ -56,6 +94,7 @@ const AIChatbot = () => {
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
     setInput("");
+    setFollowUpQuestions([]);
 
     let assistantContent = "";
 
@@ -159,7 +198,7 @@ const AIChatbot = () => {
 
   return (
     <>
-      {/* Floating Chat Button - Modern Gradient Design */}
+      {/* Floating Chat Button with Logo */}
       <motion.button
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
@@ -172,9 +211,11 @@ const AIChatbot = () => {
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 animate-spin-slow opacity-75 blur-md" />
           <div className="absolute inset-1 rounded-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 opacity-50" />
           
-          {/* Main button */}
-          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary via-purple-600 to-pink-500 flex items-center justify-center shadow-2xl shadow-primary/30 group-hover:shadow-primary/50 transition-all duration-300 group-hover:scale-110">
-            <Zap size={28} className="text-white" />
+          {/* Main button with logo */}
+          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary via-purple-600 to-pink-500 flex items-center justify-center shadow-2xl shadow-primary/30 group-hover:shadow-primary/50 transition-all duration-300 group-hover:scale-110 p-1">
+            <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+              <img src={logo} alt="Alpha One" className="w-10 h-10 object-contain" />
+            </div>
           </div>
           
           {/* Online indicator */}
@@ -186,11 +227,11 @@ const AIChatbot = () => {
         
         {/* Tooltip */}
         <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-foreground text-background text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-          {language === "bn" ? "জিরোর সাথে চ্যাট করুন!" : "Chat with Zero!"}
+          {language === "bn" ? "Alpha One এর সাথে চ্যাট করুন!" : "Chat with Alpha One!"}
         </div>
       </motion.button>
 
-      {/* Chat Window - Modern Glass Design */}
+      {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -198,27 +239,27 @@ const AIChatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.9 }}
             transition={{ duration: 0.3, type: "spring" }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] h-[520px] rounded-3xl overflow-hidden shadow-2xl"
+            className="fixed bottom-6 right-6 z-50 w-[380px] h-[550px] rounded-3xl overflow-hidden shadow-2xl flex flex-col"
             style={{
               background: 'linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%)',
               border: '1px solid hsl(var(--border))',
             }}
           >
-            {/* Header - Gradient with Glass Effect */}
-            <div className="relative overflow-hidden">
+            {/* Header with Logo */}
+            <div className="relative overflow-hidden shrink-0">
               <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-600 to-pink-500" />
               <div className="absolute inset-0 bg-black/10" />
               
               <div className="relative p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <Sparkles size={24} className="text-white" />
+                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center p-1.5">
+                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain" />
                     </div>
                     <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white text-lg">জিরো</h3>
+                    <h3 className="font-bold text-white text-lg">Alpha One</h3>
                     <p className="text-xs text-white/80">
                       {language === "bn" ? "AlphaZero AI সহকারী" : "AlphaZero AI Assistant"}
                     </p>
@@ -234,23 +275,23 @@ const AIChatbot = () => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 h-[340px] overflow-y-auto p-4 space-y-3">
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.length === 0 ? (
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-center py-6"
                 >
-                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center mx-auto mb-4">
-                    <Sparkles size={36} className="text-primary" />
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center mx-auto mb-4 p-3">
+                    <img src={logo} alt="Alpha One" className="w-full h-full object-contain" />
                   </div>
                   <h4 className="font-bold text-foreground text-lg mb-2">
                     {language === "bn" ? "আসসালামু আলাইকুম! 👋" : "Hello! 👋"}
                   </h4>
                   <p className="text-sm text-muted-foreground mb-5 px-4">
                     {language === "bn" 
-                      ? "আমি জিরো! AlphaZero সম্পর্কে কিছু জানতে চাইলে জিজ্ঞেস করুন।"
-                      : "I'm Zero! Ask me anything about AlphaZero."}
+                      ? "আমি Alpha One! AlphaZero সম্পর্কে কিছু জানতে চাইলে জিজ্ঞেস করুন।"
+                      : "I'm Alpha One! Ask me anything about AlphaZero."}
                   </p>
                   <div className="space-y-2 px-2">
                     {quickQuestions.map((q, i) => (
@@ -268,34 +309,64 @@ const AIChatbot = () => {
                   </div>
                 </motion.div>
               ) : (
-                messages.map((msg, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-[85%] px-4 py-3 text-sm ${
-                        msg.role === "user"
-                          ? "bg-gradient-to-br from-primary to-purple-600 text-white rounded-2xl rounded-br-md shadow-lg shadow-primary/20"
-                          : "bg-secondary text-foreground rounded-2xl rounded-bl-md border border-border/50"
-                      }`}
+                <>
+                  {messages.map((msg, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                     >
-                      {msg.role === "assistant" 
-                        ? <div className="whitespace-pre-line leading-relaxed">{parseMessageWithLinks(msg.content)}</div>
-                        : msg.content
-                      }
-                    </div>
-                  </motion.div>
-                ))
+                      {msg.role === "assistant" && (
+                        <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center mr-2 shrink-0 mt-1">
+                          <img src={logo} alt="" className="w-5 h-5 object-contain" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[80%] px-4 py-3 text-sm ${
+                          msg.role === "user"
+                            ? "bg-gradient-to-br from-primary to-purple-600 text-white rounded-2xl rounded-br-md shadow-lg shadow-primary/20"
+                            : "bg-secondary text-foreground rounded-2xl rounded-bl-md border border-border/50"
+                        }`}
+                      >
+                        {msg.role === "assistant" 
+                          ? <div className="whitespace-pre-line leading-relaxed">{parseMessageWithLinks(msg.content)}</div>
+                          : msg.content
+                        }
+                      </div>
+                    </motion.div>
+                  ))}
+                  
+                  {/* Follow-up Questions */}
+                  {!isLoading && followUpQuestions.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex flex-wrap gap-2 mt-3 pl-9"
+                    >
+                      {followUpQuestions.map((q, i) => (
+                        <button
+                          key={i}
+                          onClick={() => streamChat(q)}
+                          className="text-xs px-3 py-1.5 rounded-full bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20 transition-all hover:scale-105"
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </>
               )}
+              
               {isLoading && messages[messages.length - 1]?.role === "user" && (
                 <motion.div 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
+                  <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center mr-2 shrink-0">
+                    <img src={logo} alt="" className="w-5 h-5 object-contain" />
+                  </div>
                   <div className="bg-secondary px-4 py-3 rounded-2xl rounded-bl-md flex items-center gap-2">
                     <div className="flex gap-1">
                       <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -308,8 +379,8 @@ const AIChatbot = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area - Modern Design */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border/50 bg-background/50 backdrop-blur-sm">
+            {/* Input Area */}
+            <form onSubmit={handleSubmit} className="p-4 border-t border-border/50 bg-background/50 backdrop-blur-sm shrink-0">
               <div className="flex gap-2">
                 <input
                   type="text"
