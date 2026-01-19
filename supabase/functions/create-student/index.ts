@@ -168,9 +168,12 @@ Deno.serve(async (req) => {
       console.error("Role error:", roleInsertError);
     }
 
-    // Link pass code if provided
+    // Link pass code if provided, otherwise create new one
     let passCodeLinked = false;
+    let newPassCode = "";
+    
     if (pass_code && pass_code.trim()) {
+      // Try to link existing pass code
       const { data: passCodeData, error: pcError } = await adminClient
         .from("pass_codes")
         .select("id, student_id")
@@ -186,8 +189,35 @@ Deno.serve(async (req) => {
 
         if (!linkError) {
           passCodeLinked = true;
+          newPassCode = pass_code.trim().toUpperCase();
           console.log("Pass code linked:", pass_code);
         }
+      }
+    }
+    
+    // If no pass code was linked, create a new one for the student
+    if (!passCodeLinked) {
+      // Generate unique pass code
+      const { data: generatedCode, error: genError } = await adminClient.rpc('generate_pass_code');
+      
+      if (!genError && generatedCode) {
+        const { error: createPcError } = await adminClient
+          .from("pass_codes")
+          .insert({
+            code: generatedCode,
+            student_id: profileData.id,
+            is_active: true,
+            created_by: callerUser.id,
+          });
+
+        if (!createPcError) {
+          newPassCode = generatedCode;
+          console.log("Pass code created:", generatedCode);
+        } else {
+          console.error("Create pass code error:", createPcError);
+        }
+      } else {
+        console.error("Generate pass code error:", genError);
       }
     }
 
@@ -196,6 +226,7 @@ Deno.serve(async (req) => {
         success: true,
         user_id: newUserId,
         profile_id: profileData.id,
+        pass_code: newPassCode,
         pass_code_linked: passCodeLinked,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
