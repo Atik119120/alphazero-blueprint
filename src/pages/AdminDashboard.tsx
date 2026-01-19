@@ -267,32 +267,22 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
-      {/* Decorative Background Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-accent/10 rounded-full blur-3xl" />
-      </div>
-
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       {/* Header */}
-      <header className="relative border-b border-border/50 bg-card/80 backdrop-blur-xl sticky top-0 z-50 shadow-lg shadow-primary/5">
+      <header className="border-b border-border bg-white/80 dark:bg-slate-900/80 sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-              <div className="relative bg-gradient-to-br from-primary to-primary/80 p-2.5 rounded-2xl">
-                <img 
-                  src="/logo.png" 
-                  alt="Alpha Academy" 
-                  className="w-8 h-8 object-contain brightness-0 invert"
-                />
-              </div>
+            <div className="bg-gradient-to-br from-primary to-cyan-600 p-2.5 rounded-2xl">
+              <img 
+                src="/logo.png" 
+                alt="Alpha Academy" 
+                className="w-8 h-8 object-contain brightness-0 invert"
+              />
             </div>
             <div>
-              <h1 className="font-bold text-xl tracking-tight gradient-text">Alpha Academy</h1>
+              <h1 className="font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">Alpha Academy</h1>
               <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="w-2 h-2 bg-emerald-500 rounded-full" />
                 {profile?.full_name}
               </p>
             </div>
@@ -302,7 +292,7 @@ export default function AdminDashboard() {
               variant="outline" 
               size="sm" 
               onClick={() => setShowProfileDialog(true)} 
-              className="gap-2 bg-card/50 backdrop-blur-sm border-border/50 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
+              className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
             >
               <User className="w-4 h-4" />
               <span className="hidden sm:inline">প্রোফাইল</span>
@@ -311,7 +301,7 @@ export default function AdminDashboard() {
               variant="ghost" 
               size="sm" 
               onClick={handleLogout} 
-              className="gap-2 hover:bg-destructive/10 hover:text-destructive transition-all duration-300"
+              className="gap-2 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950 transition-colors"
             >
               <LogOut className="w-4 h-4" />
               <span className="hidden sm:inline">লগ আউট</span>
@@ -320,49 +310,49 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      <main className="relative container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8">
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+          <div className="bg-gradient-to-br from-primary/5 to-cyan-500/5 border border-primary/20 rounded-2xl p-4 hover:border-primary/40 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-primary/10 rounded-xl">
-                <BookOpen className="w-5 h-5 text-primary" />
+              <div className="p-2.5 bg-gradient-to-br from-primary to-cyan-600 rounded-xl">
+                <BookOpen className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{courses.length}</p>
+                <p className="text-2xl font-bold text-foreground">{courses.length}</p>
                 <p className="text-xs text-muted-foreground">মোট কোর্স</p>
               </div>
             </div>
           </div>
-          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+          <div className="bg-gradient-to-br from-emerald-500/5 to-green-500/5 border border-emerald-500/20 rounded-2xl p-4 hover:border-emerald-500/40 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-green-500/10 rounded-xl">
-                <Key className="w-5 h-5 text-green-500" />
+              <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl">
+                <Key className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{passCodes.filter(p => p.is_active).length}</p>
+                <p className="text-2xl font-bold text-foreground">{passCodes.filter(p => p.is_active).length}</p>
                 <p className="text-xs text-muted-foreground">সক্রিয় Pass Code</p>
               </div>
             </div>
           </div>
-          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+          <div className="bg-gradient-to-br from-blue-500/5 to-indigo-500/5 border border-blue-500/20 rounded-2xl p-4 hover:border-blue-500/40 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-blue-500/10 rounded-xl">
-                <Users className="w-5 h-5 text-blue-500" />
+              <div className="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl">
+                <Users className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{passCodes.filter(p => p.student).length}</p>
+                <p className="text-2xl font-bold text-foreground">{passCodes.filter(p => p.student).length}</p>
                 <p className="text-xs text-muted-foreground">মোট ছাত্র</p>
               </div>
             </div>
           </div>
-          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+          <div className="bg-gradient-to-br from-violet-500/5 to-purple-500/5 border border-violet-500/20 rounded-2xl p-4 hover:border-violet-500/40 transition-colors">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-purple-500/10 rounded-xl">
-                <Check className="w-5 h-5 text-purple-500" />
+              <div className="p-2.5 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl">
+                <Check className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{courses.filter(c => c.is_published).length}</p>
+                <p className="text-2xl font-bold text-foreground">{courses.filter(c => c.is_published).length}</p>
                 <p className="text-xs text-muted-foreground">প্রকাশিত</p>
               </div>
             </div>
@@ -370,31 +360,31 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-card/60 backdrop-blur-sm border border-border/50 p-1.5 rounded-2xl h-auto">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm">
             <TabsTrigger 
               value="courses" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">কোর্স</span>
             </TabsTrigger>
             <TabsTrigger 
               value="passcodes" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <Key className="w-4 h-4" />
               <span className="hidden sm:inline">Pass Code</span>
             </TabsTrigger>
             <TabsTrigger 
               value="students" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">ছাত্র</span>
             </TabsTrigger>
             <TabsTrigger 
               value="profile" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
               <User className="w-4 h-4" />
               <span className="hidden sm:inline">প্রোফাইল</span>
