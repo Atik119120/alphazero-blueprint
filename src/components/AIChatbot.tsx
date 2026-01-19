@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, X, Send, Loader2, MessageSquare, Sparkles } from "lucide-react";
+import { X, Send, Loader2, Sparkles, Zap } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
 
 interface Message {
   role: "user" | "assistant";
@@ -15,6 +16,7 @@ const AIChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
+  const navigate = useNavigate();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -23,6 +25,31 @@ const AIChatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Parse links from assistant messages
+  const parseMessageWithLinks = (content: string) => {
+    // Match patterns like "/courses", "/contact", "/services" etc.
+    const linkPattern = /(\/[a-z-]+)/g;
+    const parts = content.split(linkPattern);
+    
+    return parts.map((part, index) => {
+      if (part.match(/^\/[a-z-]+$/)) {
+        return (
+          <button
+            key={index}
+            onClick={() => {
+              navigate(part);
+              setIsOpen(false);
+            }}
+            className="text-primary underline hover:text-primary/80 font-medium"
+          >
+            {part}
+          </button>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
 
   const streamChat = async (userMessage: string) => {
     const userMsg: Message = { role: "user", content: userMessage };
@@ -120,136 +147,187 @@ const AIChatbot = () => {
 
   const quickQuestions = language === "bn" 
     ? [
-        "আপনাদের সার্ভিসগুলো কি কি?",
-        "কিভাবে যোগাযোগ করবো?",
-        "প্রাইসিং সম্পর্কে জানতে চাই"
+        "আপনাদের কোর্সগুলো কি কি?",
+        "গ্রাফিক ডিজাইন কোর্সের দাম কত?",
+        "কিভাবে যোগাযোগ করবো?"
       ]
     : [
-        "What services do you offer?",
-        "How can I contact you?",
-        "Tell me about pricing"
+        "What courses do you offer?",
+        "How much is Graphic Design course?",
+        "How can I contact you?"
       ];
 
   return (
     <>
-      {/* Chat Button */}
+      {/* Floating Chat Button - Modern Gradient Design */}
       <motion.button
-        initial={{ scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 1, type: "spring" }}
+        initial={{ scale: 0, rotate: -180 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ delay: 1, type: "spring", stiffness: 200 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 ${isOpen ? 'hidden' : ''}`}
+        className={`fixed bottom-6 right-6 z-50 group ${isOpen ? 'hidden' : ''}`}
       >
-        <Bot size={24} />
-        <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-background animate-pulse" />
+        <div className="relative">
+          {/* Animated rings */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 animate-spin-slow opacity-75 blur-md" />
+          <div className="absolute inset-1 rounded-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 opacity-50" />
+          
+          {/* Main button */}
+          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary via-purple-600 to-pink-500 flex items-center justify-center shadow-2xl shadow-primary/30 group-hover:shadow-primary/50 transition-all duration-300 group-hover:scale-110">
+            <Zap size={28} className="text-white" />
+          </div>
+          
+          {/* Online indicator */}
+          <span className="absolute -top-1 -right-1 flex h-5 w-5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-5 w-5 bg-green-500 border-2 border-background" />
+          </span>
+        </div>
+        
+        {/* Tooltip */}
+        <div className="absolute bottom-full right-0 mb-2 px-3 py-1.5 bg-foreground text-background text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          {language === "bn" ? "জিরোর সাথে চ্যাট করুন!" : "Chat with Zero!"}
+        </div>
       </motion.button>
 
-      {/* Chat Window */}
+      {/* Chat Window - Modern Glass Design */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-50 w-[360px] h-[500px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            transition={{ duration: 0.3, type: "spring" }}
+            className="fixed bottom-6 right-6 z-50 w-[380px] h-[520px] rounded-3xl overflow-hidden shadow-2xl"
+            style={{
+              background: 'linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%)',
+              border: '1px solid hsl(var(--border))',
+            }}
           >
-            {/* Header */}
-            <div className="bg-primary text-primary-foreground p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-                  <Sparkles size={20} />
+            {/* Header - Gradient with Glass Effect */}
+            <div className="relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-600 to-pink-500" />
+              <div className="absolute inset-0 bg-black/10" />
+              
+              <div className="relative p-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <Sparkles size={24} className="text-white" />
+                    </div>
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-lg">জিরো</h3>
+                    <p className="text-xs text-white/80">
+                      {language === "bn" ? "AlphaZero AI সহকারী" : "AlphaZero AI Assistant"}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-sm">AlphaZero AI</h3>
-                  <p className="text-xs text-primary-foreground/70">
-                    {language === "bn" ? "আপনার সহকারী" : "Your Assistant"}
-                  </p>
-                </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+                >
+                  <X size={20} className="text-white" />
+                </button>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center hover:bg-primary-foreground/30 transition-colors"
-              >
-                <X size={16} />
-              </button>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Messages Area */}
+            <div className="flex-1 h-[340px] overflow-y-auto p-4 space-y-3">
               {messages.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <MessageSquare size={28} className="text-primary" />
+                <motion.div 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center py-6"
+                >
+                  <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center mx-auto mb-4">
+                    <Sparkles size={36} className="text-primary" />
                   </div>
-                  <h4 className="font-medium text-foreground mb-2">
+                  <h4 className="font-bold text-foreground text-lg mb-2">
                     {language === "bn" ? "আসসালামু আলাইকুম! 👋" : "Hello! 👋"}
                   </h4>
-                  <p className="text-sm text-muted-foreground mb-4">
+                  <p className="text-sm text-muted-foreground mb-5 px-4">
                     {language === "bn" 
-                      ? "আমি AlphaZero-এর AI সহকারী। আপনাকে কিভাবে সাহায্য করতে পারি?"
-                      : "I'm AlphaZero's AI assistant. How can I help you?"}
+                      ? "আমি জিরো! AlphaZero সম্পর্কে কিছু জানতে চাইলে জিজ্ঞেস করুন।"
+                      : "I'm Zero! Ask me anything about AlphaZero."}
                   </p>
-                  <div className="space-y-2">
+                  <div className="space-y-2 px-2">
                     {quickQuestions.map((q, i) => (
-                      <button
+                      <motion.button
                         key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.1 }}
                         onClick={() => streamChat(q)}
-                        className="w-full text-left text-sm px-3 py-2 rounded-lg bg-secondary hover:bg-secondary/80 transition-colors"
+                        className="w-full text-left text-sm px-4 py-3 rounded-2xl bg-secondary/80 hover:bg-secondary border border-border/50 transition-all hover:scale-[1.02] hover:shadow-md"
                       >
                         {q}
-                      </button>
+                      </motion.button>
                     ))}
                   </div>
-                </div>
+                </motion.div>
               ) : (
                 messages.map((msg, i) => (
-                  <div
+                  <motion.div
                     key={i}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[80%] px-4 py-2 rounded-2xl text-sm ${
+                      className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
                         msg.role === "user"
-                          ? "bg-primary text-primary-foreground rounded-br-md"
-                          : "bg-secondary text-foreground rounded-bl-md"
+                          ? "bg-gradient-to-br from-primary to-purple-600 text-white rounded-2xl rounded-br-md shadow-lg shadow-primary/20"
+                          : "bg-secondary text-foreground rounded-2xl rounded-bl-md border border-border/50"
                       }`}
                     >
-                      {msg.content}
+                      {msg.role === "assistant" 
+                        ? parseMessageWithLinks(msg.content)
+                        : msg.content
+                      }
                     </div>
-                  </div>
+                  </motion.div>
                 ))
               )}
               {isLoading && messages[messages.length - 1]?.role === "user" && (
-                <div className="flex justify-start">
-                  <div className="bg-secondary px-4 py-2 rounded-2xl rounded-bl-md">
-                    <Loader2 size={16} className="animate-spin text-muted-foreground" />
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-start"
+                >
+                  <div className="bg-secondary px-4 py-3 rounded-2xl rounded-bl-md flex items-center gap-2">
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
                   </div>
-                </div>
+                </motion.div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border">
+            {/* Input Area - Modern Design */}
+            <form onSubmit={handleSubmit} className="p-4 border-t border-border/50 bg-background/50 backdrop-blur-sm">
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder={language === "bn" ? "আপনার প্রশ্ন লিখুন..." : "Type your question..."}
-                  className="flex-1 px-4 py-2 rounded-full bg-secondary border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  className="flex-1 px-4 py-3 rounded-2xl bg-secondary border border-border/50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 transition-all"
                   disabled={isLoading}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-purple-600 text-white flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg hover:shadow-primary/30 transition-all hover:scale-105"
                 >
                   {isLoading ? (
-                    <Loader2 size={18} className="animate-spin" />
+                    <Loader2 size={20} className="animate-spin" />
                   ) : (
-                    <Send size={18} />
+                    <Send size={20} />
                   )}
                 </button>
               </div>
