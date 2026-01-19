@@ -183,6 +183,28 @@ export default function AdminDashboard() {
     );
   });
 
+  const formatDateTime = (value: string | null | undefined) => {
+    if (!value) return '';
+    const locale = language === 'bn' ? 'bn-BD' : 'en-US';
+    return new Date(value).toLocaleString(locale, {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const isRecent = (value: string | null | undefined) => {
+    if (!value) return false;
+    const created = new Date(value).getTime();
+    if (Number.isNaN(created)) return false;
+    return Date.now() - created  24 * 60 * 60 * 1000;
+  };
+
+  const unassignedStudents = filteredStudents.filter(pc => pc.courses.length === 0);
+  const assignedStudents = filteredStudents.filter(pc => pc.courses.length  0);
+
   // Calculate course enrollment stats with sales
   const courseEnrollmentStats = courses.map(course => {
     const enrollmentCount = passCodes.filter(pc => 
@@ -1180,8 +1202,8 @@ export default function AdminDashboard() {
                 <CardContent className="py-12 text-center">
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">
-                    {studentSearch 
-                      ? (language === 'bn' ? 'কোনো ছাত্র পাওয়া যায়নি' : 'No students found') 
+                    {studentSearch
+                      ? (language === 'bn' ? 'কোনো ছাত্র পাওয়া যায়নি' : 'No students found')
                       : (language === 'bn' ? 'কোনো ছাত্র নেই' : 'No students')}
                   </p>
                   {!studentSearch && (
@@ -1193,72 +1215,178 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             ) : (
-              <>
-                <p className="text-sm text-muted-foreground">
-                  {studentSearch && (language === 'bn' 
-                    ? `${filteredStudents.length} জন ছাত্র পাওয়া গেছে` 
-                    : `${filteredStudents.length} students found`)}
-                </p>
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {filteredStudents.map((passCode) => (
-                    <Card key={passCode.id} className="overflow-hidden hover:border-primary/50 transition-colors">
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">
-                              {passCode.student?.full_name?.charAt(0).toUpperCase()}
+              <div className="space-y-6">
+                {studentSearch && (
+                  <p className="text-sm text-muted-foreground">
+                    {language === 'bn'
+                      ? `${filteredStudents.length} জন ছাত্র পাওয়া গেছে`
+                      : `${filteredStudents.length} students found`}
+                  </p>
+                )}
+
+                {/* New / Unassigned */}
+                {!studentSearch && unassignedStudents.length > 0 && (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                        {language === 'bn' ? 'নতুন / কোর্স দেওয়া হয়নি' : 'New / Unassigned'}
+                      </h3>
+                      <Badge variant="outline">{unassignedStudents.length}</Badge>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                      {unassignedStudents.map((passCode) => (
+                        <Card
+                          key={passCode.id}
+                          className="overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors"
+                        >
+                          <CardHeader className="pb-2">
+                            <div className="flex items-center gap-3">
+                              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                                <span className="text-white font-bold text-lg">
+                                  {passCode.student?.full_name?.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
+                                  {isRecent(passCode.created_at) && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      {language === 'bn' ? 'নতুন' : 'New'}
+                                    </Badge>
+                                  )}
+                                </div>
+                                <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="pt-0 space-y-3">
+                            <div className="flex items-center gap-2">
+                              <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
+                                {passCode.code}
+                              </code>
+                              <Button variant="ghost" size="sm" onClick={() => copyPassCode(passCode.code)}>
+                                {copiedCode === passCode.code ? (
+                                  <Check className="w-3 h-3 text-primary" />
+                                ) : (
+                                  <Copy className="w-3 h-3" />
+                                )}
+                              </Button>
+                            </div>
+
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-muted-foreground">
+                                {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <Badge variant="outline" className="text-xs">
+                                  {language === 'bn' ? 'কোর্স নেই' : 'No course'}
+                                </Badge>
+                                <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
+                                  {passCode.is_active
+                                    ? language === 'bn'
+                                      ? 'সক্রিয়'
+                                      : 'Active'
+                                    : language === 'bn'
+                                      ? 'নিষ্ক্রিয়'
+                                      : 'Inactive'}
+                                </Badge>
+                              </div>
+                            </div>
+
+                            <p className="text-xs text-muted-foreground">
+                              {language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(passCode.created_at)}
+                            </p>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Assigned */}
+                <div className="space-y-3">
+                  {!studentSearch && (
+                    <div className="flex items-center justify-between">
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                        {language === 'bn' ? 'কোর্স দেওয়া আছে' : 'Assigned'}
+                      </h3>
+                      <Badge variant="outline">{assignedStudents.length}</Badge>
+                    </div>
+                  )}
+
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {(studentSearch ? filteredStudents : assignedStudents).map((passCode) => (
+                      <Card key={passCode.id} className="overflow-hidden hover:border-primary/50 transition-colors">
+                        <CardHeader className="pb-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                              <span className="text-white font-bold text-lg">
+                                {passCode.student?.full_name?.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
+                                {isRecent(passCode.created_at) && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    {language === 'bn' ? 'নতুন' : 'New'}
+                                  </Badge>
+                                )}
+                              </div>
+                              <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-0 space-y-3">
+                          <div className="flex items-center gap-2">
+                            <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
+                              {passCode.code}
+                            </code>
+                            <Button variant="ghost" size="sm" onClick={() => copyPassCode(passCode.code)}>
+                              {copiedCode === passCode.code ? (
+                                <Check className="w-3 h-3 text-primary" />
+                              ) : (
+                                <Copy className="w-3 h-3" />
+                              )}
+                            </Button>
+                          </div>
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">
+                              {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
                             </span>
+                            <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
+                              {passCode.is_active
+                                ? language === 'bn'
+                                  ? 'সক্রিয়'
+                                  : 'Active'
+                                : language === 'bn'
+                                  ? 'নিষ্ক্রিয়'
+                                  : 'Inactive'}
+                            </Badge>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
-                            <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="pt-0 space-y-3">
-                        <div className="flex items-center gap-2">
-                          <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
-                            {passCode.code}
-                          </code>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyPassCode(passCode.code)}
-                          >
-                            {copiedCode === passCode.code ? (
-                              <Check className="w-3 h-3 text-primary" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
-                          </Button>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">
-                            {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
-                          </span>
-                          <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                            {passCode.is_active ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive')}
-                          </Badge>
-                        </div>
-                        {passCode.courses.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {passCode.courses.slice(0, 3).map((course) => (
-                              <Badge key={course.id} variant="outline" className="text-xs">
-                                {course.title.length > 15 ? course.title.slice(0, 15) + '...' : course.title}
-                              </Badge>
-                            ))}
-                            {passCode.courses.length > 3 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{passCode.courses.length - 3}
-                              </Badge>
-                            )}
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
+                          {passCode.courses.length > 0 && (
+                            <div className="flex flex-wrap gap-1">
+                              {passCode.courses.slice(0, 3).map((course) => (
+                                <Badge key={course.id} variant="outline" className="text-xs">
+                                  {course.title.length > 15 ? course.title.slice(0, 15) + '...' : course.title}
+                                </Badge>
+                              ))}
+                              {passCode.courses.length > 3 && (
+                                <Badge variant="outline" className="text-xs">
+                                  +{passCode.courses.length - 3}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+                          <p className="text-xs text-muted-foreground">
+                            {language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(passCode.created_at)}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-              </>
+              </div>
             )}
           </TabsContent>
 

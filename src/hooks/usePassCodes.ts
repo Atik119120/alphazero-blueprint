@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { PassCode, PassCodeWithCourses, Course, Profile } from '@/types/lms';
 import { useAuth } from '@/contexts/AuthContext';
@@ -9,13 +9,14 @@ export function usePassCodes() {
   const [error, setError] = useState<string | null>(null);
   const { isAdmin } = useAuth();
 
-  const fetchPassCodes = async () => {
+  const fetchPassCodes = useCallback(async () => {
     if (!isAdmin) {
       setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
+    setError(null);
     try {
       // Fetch all pass codes
       const { data: passCodesData, error: passCodesError } = await supabase
@@ -81,11 +82,57 @@ export function usePassCodes() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isAdmin]);
 
+  // Initial fetch
   useEffect(() => {
     fetchPassCodes();
-  }, [isAdmin]);
+  }, [fetchPassCodes]);
+
+  // Realtime auto-refresh (so admin doesn't need to manually refresh)
+  const refreshTimerRef = useRef<number | null>(null);
+
+  const scheduleRefetch = useCallback(() => {
+    if (!isAdmin) return;
+
+    if (refreshTimerRef.current) {
+      window.clearTimeout(refreshTimerRef.current);
+    }
+
+    refreshTimerRef.current = window.setTimeout(() => {
+      fetchPassCodes();
+    }, 250);
+  }, [fetchPassCodes, isAdmin]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const channel = supabase
+      .channel('admin-passcodes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pass_codes' },
+        () => scheduleRefetch()
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'pass_code_courses' },
+        () => scheduleRefetch()
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'profiles' },
+        () => scheduleRefetch()
+      )
+      .subscribe();
+
+    return () => {
+      if (refreshTimerRef.current) {
+        window.clearTimeout(refreshTimerRef.current);
+      }
+      supabase.removeChannel(channel);
+    };
+  }, [isAdmin, scheduleRefetch]);
 
   const generatePassCode = async (): Promise<string | null> => {
     const { data, error } = await supabase.rpc('generate_pass_code');
