@@ -28,7 +28,9 @@ import {
   User,
   Lock,
   Mail,
-  UserPlus
+  UserPlus,
+  Search,
+  TrendingUp
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -74,6 +76,32 @@ export default function AdminDashboard() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
+
+  // Search state
+  const [studentSearch, setStudentSearch] = useState('');
+
+  // Filter students by search
+  const filteredStudents = passCodes.filter(pc => {
+    if (!pc.student) return false;
+    if (!studentSearch.trim()) return true;
+    const searchLower = studentSearch.toLowerCase();
+    return (
+      pc.student.full_name.toLowerCase().includes(searchLower) ||
+      pc.student.email.toLowerCase().includes(searchLower) ||
+      pc.code.toLowerCase().includes(searchLower)
+    );
+  });
+
+  // Calculate course enrollment stats
+  const courseEnrollmentStats = courses.map(course => {
+    const enrollmentCount = passCodes.filter(pc => 
+      pc.courses.some(c => c.id === course.id) && pc.student
+    ).length;
+    return {
+      ...course,
+      enrollmentCount
+    };
+  }).sort((a, b) => b.enrollmentCount - a.enrollmentCount);
 
   // Redirect non-admin users
   useEffect(() => {
@@ -552,67 +580,131 @@ export default function AdminDashboard() {
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className="text-xl font-semibold">ছাত্র তালিকা</h2>
-              <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2">
-                <UserPlus className="w-4 h-4" />
-                নতুন ছাত্র যোগ
-              </Button>
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <div className="relative flex-1 sm:flex-initial">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    placeholder="নাম, ইমেইল বা Pass Code..."
+                    value={studentSearch}
+                    onChange={(e) => setStudentSearch(e.target.value)}
+                    className="pl-9 w-full sm:w-64"
+                  />
+                </div>
+                <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2 whitespace-nowrap">
+                  <UserPlus className="w-4 h-4" />
+                  <span className="hidden sm:inline">নতুন ছাত্র</span>
+                </Button>
+              </div>
             </div>
+
+            {/* Course Enrollment Stats */}
+            <Card className="bg-gradient-to-r from-primary/5 to-cyan-500/5 border-primary/20">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-primary" />
+                  কোর্স এনরোলমেন্ট পরিসংখ্যান
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {courseEnrollmentStats.slice(0, 10).map((course) => (
+                    <div 
+                      key={course.id} 
+                      className="bg-white dark:bg-slate-800 rounded-xl p-3 border border-border hover:border-primary/50 transition-colors"
+                    >
+                      <p className="text-2xl font-bold text-primary">{course.enrollmentCount}</p>
+                      <p className="text-xs text-muted-foreground truncate" title={course.title}>
+                        {course.title}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                {courseEnrollmentStats.length === 0 && (
+                  <p className="text-sm text-muted-foreground text-center py-4">কোনো কোর্স নেই</p>
+                )}
+              </CardContent>
+            </Card>
             
-            {passCodes.filter(pc => pc.student).length === 0 ? (
+            {filteredStudents.length === 0 ? (
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">কোনো ছাত্র নেই</p>
-                  <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
-                    <UserPlus className="w-4 h-4" />
-                    প্রথম ছাত্র যোগ করুন
-                  </Button>
+                  <p className="text-muted-foreground">
+                    {studentSearch ? 'কোনো ছাত্র পাওয়া যায়নি' : 'কোনো ছাত্র নেই'}
+                  </p>
+                  {!studentSearch && (
+                    <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
+                      <UserPlus className="w-4 h-4" />
+                      প্রথম ছাত্র যোগ করুন
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {passCodes.filter(pc => pc.student).map((passCode) => (
-                  <Card key={passCode.id} className="overflow-hidden">
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                          <User className="w-6 h-6 text-primary" />
+              <>
+                <p className="text-sm text-muted-foreground">
+                  {studentSearch && `${filteredStudents.length} জন ছাত্র পাওয়া গেছে`}
+                </p>
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {filteredStudents.map((passCode) => (
+                    <Card key={passCode.id} className="overflow-hidden hover:border-primary/50 transition-colors">
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                            <span className="text-white font-bold text-lg">
+                              {passCode.student?.full_name?.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
+                            <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                          </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
-                          <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="pt-0 space-y-3">
+                        <div className="flex items-center gap-2">
+                          <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
+                            {passCode.code}
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => copyPassCode(passCode.code)}
+                          >
+                            {copiedCode === passCode.code ? (
+                              <Check className="w-3 h-3 text-primary" />
+                            ) : (
+                              <Copy className="w-3 h-3" />
+                            )}
+                          </Button>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0 space-y-3">
-                      <div className="flex items-center gap-2">
-                        <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
-                          {passCode.code}
-                        </code>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyPassCode(passCode.code)}
-                        >
-                          {copiedCode === passCode.code ? (
-                            <Check className="w-3 h-3 text-primary" />
-                          ) : (
-                            <Copy className="w-3 h-3" />
-                          )}
-                        </Button>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">{passCode.courses.length} কোর্স</span>
-                        <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                          {passCode.is_active ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">{passCode.courses.length} কোর্স</span>
+                          <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
+                            {passCode.is_active ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                          </Badge>
+                        </div>
+                        {passCode.courses.length > 0 && (
+                          <div className="flex flex-wrap gap-1">
+                            {passCode.courses.slice(0, 3).map((course) => (
+                              <Badge key={course.id} variant="outline" className="text-xs">
+                                {course.title.length > 15 ? course.title.slice(0, 15) + '...' : course.title}
+                              </Badge>
+                            ))}
+                            {passCode.courses.length > 3 && (
+                              <Badge variant="outline" className="text-xs">
+                                +{passCode.courses.length - 3}
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </>
             )}
           </TabsContent>
 
