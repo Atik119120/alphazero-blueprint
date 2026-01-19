@@ -538,105 +538,146 @@ export default function CertificatePage() {
   const canDownload = !!certificate; // Only if user owns it
   const studentName = certificate?.student_name;
 
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-      </div>
+  // Format date for display
+  const formattedDate = displayData ? new Date(displayData.issued_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }) : '';
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
+  return (
+    <div className="min-h-screen bg-[#4a5568] py-8 px-4">
+      <div className="container mx-auto">
         <Link 
           to={user ? '/student' : '/'} 
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors"
+          className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          ফিরে যান
+          Back
         </Link>
 
         {displayData ? (
-          <div className="max-w-2xl mx-auto">
-            <Card className="border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden">
-              {/* Decorative header */}
-              <div className="h-32 bg-gradient-to-r from-primary via-accent to-primary relative overflow-hidden">
-                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvZz48L3N2Zz4=')] opacity-50" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <Award className="w-10 h-10 text-white" />
+          <div className="max-w-4xl mx-auto">
+            {/* Certificate Preview - Matching the reference design */}
+            <div className="relative bg-[#e8e8e8] p-4 shadow-2xl">
+              <div className="bg-white relative overflow-hidden" style={{ aspectRatio: '1.414' }}>
+                {/* Gold Border */}
+                <div className="absolute inset-5 border-[3px] border-[#c9a227]" />
+                
+                {/* Top Left Dark Corner */}
+                <div 
+                  className="absolute top-0 left-0 w-[180px] h-[120px] bg-[#1a3a4a]"
+                  style={{ clipPath: 'polygon(0 0, 100% 0, 70% 100%, 0 100%)' }}
+                >
+                  <div className="absolute bottom-5 left-8 w-16 h-0.5 bg-white/80 -rotate-[30deg]" />
+                </div>
+                
+                {/* Bottom Right Dark Corner */}
+                <div 
+                  className="absolute bottom-0 right-0 w-[200px] h-[140px] bg-[#1a3a4a]"
+                  style={{ clipPath: 'polygon(30% 0, 100% 0, 100% 100%, 0 100%)' }}
+                >
+                  <div className="absolute top-6 right-10 w-20 h-0.5 bg-white/80 -rotate-[30deg]" />
+                </div>
+                
+                {/* Content */}
+                <div className="absolute inset-10 flex flex-col p-6 md:p-10">
+                  {/* Header */}
+                  <div className="flex justify-between items-start mb-6">
+                    <div>
+                      <h1 className="text-3xl md:text-5xl font-bold text-[#1a3a4a] tracking-wider" style={{ fontFamily: 'Playfair Display, serif' }}>
+                        CERTIFICATE
+                      </h1>
+                      <p className="text-xl md:text-2xl text-[#c9a227] mt-1" style={{ fontFamily: 'cursive' }}>
+                        of Completion
+                      </p>
+                    </div>
+                    
+                    {/* Badge */}
+                    <div className="w-20 h-20 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-[#c9a227] via-[#f0d875] to-[#c9a227] p-1 shadow-lg flex-shrink-0">
+                      <div className="w-full h-full rounded-full bg-gradient-to-br from-[#1a3a4a] to-[#2d5a6a] border-2 border-[#c9a227] flex flex-col items-center justify-center">
+                        <span className="text-[#c9a227] text-[8px] md:text-[10px]">★ ★ ★ ★ ★</span>
+                        <span className="text-[#c9a227] font-bold text-xs md:text-sm" style={{ fontFamily: 'Playfair Display, serif' }}>ALPHA</span>
+                        <span className="text-[#c9a227] font-bold text-xs md:text-sm" style={{ fontFamily: 'Playfair Display, serif' }}>ZERO</span>
+                        <span className="text-[#c9a227] text-[8px] md:text-[10px]">★ ★ ★ ★ ★</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Main Content */}
+                  <div className="flex-1 flex flex-col justify-center">
+                    <p className="text-xs md:text-sm text-gray-500 uppercase tracking-widest mb-3">
+                      This Certificate is Proudly Presented To
+                    </p>
+                    
+                    {studentName ? (
+                      <h2 className="text-2xl md:text-4xl text-[#1a3a4a] border-b-2 border-[#c9a227] pb-3 mb-4 inline-block" style={{ fontFamily: 'cursive' }}>
+                        {studentName}
+                      </h2>
+                    ) : (
+                      <div className="text-lg text-gray-500 border-b-2 border-[#c9a227] pb-3 mb-4 inline-block">
+                        [Certificate Holder]
+                      </div>
+                    )}
+                    
+                    <p className="text-sm md:text-base text-gray-700 font-medium mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                      For successfully completing the course: {displayData.course_name}
+                    </p>
+                    
+                    <p className="text-xs md:text-sm text-gray-500 max-w-xl leading-relaxed">
+                      This is to certify that the above named individual has demonstrated exceptional dedication 
+                      and successfully completed all requirements of the course at AlphaZero Academy.
+                    </p>
+                  </div>
+                  
+                  {/* Footer */}
+                  <div className="flex justify-between items-end pt-6 border-t border-gray-200 mt-auto">
+                    <div className="text-center">
+                      <div className="w-28 md:w-36 h-px bg-[#1a3a4a] mb-2" />
+                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest">Instructor</p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <div className="w-28 md:w-36 h-px bg-[#1a3a4a] mb-2" />
+                      <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-widest">Director</p>
+                    </div>
+                    
+                    <div className="text-right">
+                      <p className="text-[10px] md:text-xs text-gray-500 mb-1">Issued: {formattedDate}</p>
+                      <p className="text-[10px] md:text-xs text-[#1a3a4a] font-mono bg-gray-100 px-2 py-1 rounded">
+                        {displayData.certificate_id}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <CardHeader className="text-center pt-8">
-                <div className="flex items-center justify-center gap-2 mb-4">
-                  <CheckCircle className="w-5 h-5 text-primary" />
-                  <Badge variant="default" className="gap-1">
-                    যাচাইকৃত সার্টিফিকেট
-                  </Badge>
-                </div>
-                <CardTitle className="text-3xl gradient-text">
-                  সার্টিফিকেট অফ কমপ্লিশন
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent className="space-y-8 pb-8">
-                {/* Only show student name if user owns the certificate */}
-                {studentName && (
-                  <div className="text-center space-y-2">
-                    <p className="text-muted-foreground">এই সার্টিফিকেট প্রদান করা হলো</p>
-                    <h2 className="text-2xl font-bold">{studentName}</h2>
-                  </div>
-                )}
-
-                {/* For public verification, show a privacy-respecting message */}
-                {!studentName && (
-                  <div className="text-center space-y-2">
-                    <p className="text-muted-foreground">এই সার্টিফিকেট বৈধ এবং যাচাইকৃত</p>
-                  </div>
-                )}
-
-                <div className={`grid gap-4 ${studentName ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-                  <div className="p-4 bg-muted/50 rounded-lg text-center">
-                    <BookOpen className="w-5 h-5 text-primary mx-auto mb-2" />
-                    <p className="text-xs text-muted-foreground">কোর্স</p>
-                    <p className="font-medium text-sm">{displayData.course_name}</p>
-                  </div>
-                  <div className="p-4 bg-muted/50 rounded-lg text-center">
-                    <Calendar className="w-5 h-5 text-primary mx-auto mb-2" />
-                    <p className="text-xs text-muted-foreground">তারিখ</p>
-                    <p className="font-medium text-sm">
-                      {new Date(displayData.issued_at).toLocaleDateString('bn-BD')}
-                    </p>
-                  </div>
-                  {studentName && (
-                    <div className="p-4 bg-muted/50 rounded-lg text-center">
-                      <Award className="w-5 h-5 text-primary mx-auto mb-2" />
-                      <p className="text-xs text-muted-foreground">Certificate ID</p>
-                      <p className="font-medium text-xs font-mono">{displayData.certificate_id}</p>
-                    </div>
-                  )}
-                </div>
-
-                {canDownload ? (
-                  <Button onClick={downloadCertificate} className="w-full gap-2">
-                    <Download className="w-4 h-4" />
-                    সার্টিফিকেট ডাউনলোড করুন
-                  </Button>
-                ) : (
-                  <div className="text-center text-sm text-muted-foreground">
-                    <p>সার্টিফিকেট ডাউনলোড করতে নিজের অ্যাকাউন্টে লগইন করুন</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            </div>
+            
+            {/* Verification Badge */}
+            <div className="flex items-center justify-center gap-2 mt-6">
+              <CheckCircle className="w-5 h-5 text-green-500" />
+              <span className="text-white font-medium">Verified Certificate</span>
+            </div>
+            
+            {/* Download Button */}
+            {canDownload ? (
+              <Button onClick={downloadCertificate} className="w-full mt-6 gap-2 bg-[#c9a227] hover:bg-[#b8922a] text-white">
+                <Download className="w-4 h-4" />
+                Download Certificate
+              </Button>
+            ) : (
+              <div className="text-center text-sm text-white/70 mt-6">
+                <p>Login to your account to download this certificate</p>
+              </div>
+            )}
           </div>
         ) : (
-          <Card className="max-w-md mx-auto border-dashed">
+          <Card className="max-w-md mx-auto border-dashed bg-white/10 border-white/20">
             <CardContent className="py-12 text-center">
-              <Award className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <p className="text-muted-foreground">সার্টিফিকেট পাওয়া যায়নি</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Certificate ID সঠিক কিনা দেখুন
+              <Award className="w-12 h-12 text-white/50 mx-auto mb-4" />
+              <p className="text-white/70">Certificate not found</p>
+              <p className="text-sm text-white/50 mt-2">
+                Please check if the Certificate ID is correct
               </p>
             </CardContent>
           </Card>
