@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCourses } from '@/hooks/useCourses';
@@ -76,6 +76,13 @@ export default function AdminDashboard() {
   const [assigningPassCode, setAssigningPassCode] = useState<PassCodeWithCourses | null>(null);
   const [selectedCourseToAssign, setSelectedCourseToAssign] = useState('');
 
+  // Redirect non-admin users
+  useEffect(() => {
+    if (!authLoading && (!user || !isAdmin)) {
+      navigate('/auth');
+    }
+  }, [user, isAdmin, authLoading, navigate]);
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -85,8 +92,11 @@ export default function AdminDashboard() {
   }
 
   if (!user || !isAdmin) {
-    navigate('/auth');
-    return null;
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
   }
 
   const handleLogout = async () => {
