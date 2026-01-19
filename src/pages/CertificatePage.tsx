@@ -108,7 +108,7 @@ export default function CertificatePage() {
       <head>
         <title>Certificate - ${certificate.certificate_id}</title>
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Raleway:wght@300;400;500&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap');
           
           * {
             margin: 0;
@@ -123,97 +123,205 @@ export default function CertificatePage() {
           
           body {
             font-family: 'Raleway', sans-serif;
-            background: #1a1a1a;
+            background: #4a5568;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px;
           }
           
           .certificate {
             width: 1100px;
             height: 780px;
-            background: #fff;
+            background: #ffffff;
             position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4);
           }
           
-          /* Simple elegant border */
-          .border {
+          /* Outer light gray frame */
+          .outer-frame {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+            padding: 15px;
+          }
+          
+          /* White certificate body */
+          .certificate-body {
+            background: #ffffff;
+            width: 100%;
+            height: 100%;
+            position: relative;
+          }
+          
+          /* Gold border */
+          .gold-border {
             position: absolute;
             inset: 20px;
-            border: 2px solid #2c2c2c;
+            border: 3px solid #c9a227;
           }
           
-          .border-inner {
+          /* Top-left dark corner */
+          .corner-top-left {
             position: absolute;
-            inset: 28px;
-            border: 1px solid #d4af37;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 140px;
+            background: #1a3a4a;
+            clip-path: polygon(0 0, 100% 0, 70% 100%, 0 100%);
           }
           
+          .corner-top-left::after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            width: 80px;
+            height: 2px;
+            background: white;
+            transform: rotate(-30deg);
+          }
+          
+          /* Bottom-right dark corner */
+          .corner-bottom-right {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 220px;
+            height: 160px;
+            background: #1a3a4a;
+            clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
+          }
+          
+          .corner-bottom-right::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: 40px;
+            width: 100px;
+            height: 2px;
+            background: white;
+            transform: rotate(-30deg);
+          }
+          
+          /* Small accent corner top-right */
+          .corner-accent-tr {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-top: 50px solid #e8e8e8;
+          }
+          
+          /* Small accent corner bottom-left */
+          .corner-accent-bl {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-right: 50px solid transparent;
+            border-bottom: 50px solid #e8e8e8;
+          }
+          
+          /* Content area */
           .content {
             position: absolute;
-            inset: 50px;
+            inset: 40px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+          }
+          
+          /* Header */
+          .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+          }
+          
+          .title-section {
+            text-align: left;
+          }
+          
+          .certificate-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            font-weight: 600;
+            color: #1a3a4a;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            line-height: 1;
+          }
+          
+          .certificate-subtitle {
+            font-family: 'Great Vibes', cursive;
+            font-size: 32px;
+            color: #c9a227;
+            margin-top: 5px;
+            margin-left: 10px;
+          }
+          
+          /* Academy Badge */
+          .academy-badge {
+            width: 120px;
+            height: 120px;
+            position: relative;
+          }
+          
+          .badge-outer {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #c9a227 0%, #f0d875 50%, #c9a227 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+          }
+          
+          .badge-inner {
+            width: 95px;
+            height: 95px;
+            background: linear-gradient(135deg, #1a3a4a 0%, #2d5a6a 100%);
+            border-radius: 50%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 40px 80px;
+            justify-content: center;
+            border: 3px solid #c9a227;
           }
           
-          /* Logo - Full display, no cropping */
-          .logo {
-            width: 120px;
-            height: auto;
-            max-height: 120px;
-            object-fit: contain;
+          .badge-stars {
+            color: #c9a227;
+            font-size: 10px;
+            letter-spacing: 2px;
           }
           
-          .header {
-            text-align: center;
-          }
-          
-          .academy-name {
+          .badge-text {
+            color: #c9a227;
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 600;
-            color: #2c2c2c;
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            margin-top: 15px;
-          }
-          
-          /* Minimal divider */
-          .divider {
-            width: 60px;
-            height: 1px;
-            background: #d4af37;
-            margin: 25px 0;
-          }
-          
-          /* Certificate Title */
-          .title {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            font-weight: 400;
-            color: #2c2c2c;
-            letter-spacing: 15px;
-            text-transform: uppercase;
-          }
-          
-          .subtitle {
-            font-family: 'Lora', serif;
+            font-weight: 700;
             font-size: 14px;
-            color: #666;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-top: 8px;
+            text-align: center;
+            line-height: 1.2;
           }
           
-          /* Main Content */
+          .badge-text-sub {
+            color: #c9a227;
+            font-family: 'Raleway', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1px;
+          }
+          
+          /* Main content */
           .main-content {
-            text-align: center;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -222,37 +330,38 @@ export default function CertificatePage() {
           }
           
           .presented-text {
-            font-family: 'Lora', serif;
-            font-size: 13px;
-            color: #888;
-            letter-spacing: 3px;
+            font-family: 'Raleway', sans-serif;
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            margin-bottom: 15px;
           }
           
           .student-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 44px;
-            font-weight: 500;
-            color: #2c2c2c;
-            margin: 15px 0;
-            font-style: italic;
+            font-family: 'Great Vibes', cursive;
+            font-size: 56px;
+            color: #1a3a4a;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #c9a227;
+            padding-bottom: 15px;
+            display: inline-block;
           }
           
-          .completion-text {
+          .course-description {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 15px;
+          }
+          
+          .course-details {
             font-family: 'Raleway', sans-serif;
             font-size: 13px;
             color: #666;
-            letter-spacing: 1px;
-            margin-top: 10px;
-          }
-          
-          .course-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 600;
-            color: #d4af37;
-            margin-top: 15px;
-            letter-spacing: 2px;
+            line-height: 1.8;
+            max-width: 700px;
           }
           
           /* Footer */
@@ -260,85 +369,68 @@ export default function CertificatePage() {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            width: 100%;
             padding-top: 30px;
-            border-top: 1px solid #eee;
+            margin-top: auto;
           }
           
-          .footer-item {
+          .signature-box {
             text-align: center;
-            min-width: 200px;
-          }
-          
-          .footer-label {
-            font-size: 9px;
-            color: #999;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
-          }
-          
-          .footer-value {
-            font-family: 'Raleway', sans-serif;
-            font-size: 12px;
-            color: #2c2c2c;
-            font-weight: 500;
+            min-width: 180px;
           }
           
           .signature-line {
             width: 150px;
             height: 1px;
-            background: #2c2c2c;
-            margin: 0 auto 10px;
+            background: #1a3a4a;
+            margin: 0 auto 8px;
+          }
+          
+          .signature-title {
+            font-family: 'Raleway', sans-serif;
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+          }
+          
+          .cert-info {
+            text-align: right;
+          }
+          
+          .cert-date {
+            font-family: 'Raleway', sans-serif;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
           }
           
           .cert-id {
             font-family: monospace;
             font-size: 10px;
-            color: #999;
-            letter-spacing: 1px;
+            color: #1a3a4a;
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 3px;
           }
           
           .reg-number {
             font-family: monospace;
             font-size: 9px;
-            color: #d4af37;
+            color: #c9a227;
             margin-top: 5px;
-            padding: 4px 12px;
-            border: 1px solid #d4af37;
+            padding: 3px 8px;
+            border: 1px solid #c9a227;
             display: inline-block;
           }
           
-          /* Verified badge - minimal */
-          .verified {
+          /* Logo watermark */
+          .logo-watermark {
             position: absolute;
-            bottom: 40px;
-            right: 50px;
-            text-align: center;
-          }
-          
-          .verified-circle {
-            width: 70px;
-            height: 70px;
-            border: 2px solid #d4af37;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-          }
-          
-          .verified-icon {
-            font-size: 20px;
-            color: #d4af37;
-          }
-          
-          .verified-text {
-            font-size: 7px;
-            color: #d4af37;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 2px;
+            bottom: 80px;
+            left: 60px;
+            opacity: 0.08;
+            width: 200px;
+            height: auto;
           }
           
           @media print {
@@ -358,58 +450,68 @@ export default function CertificatePage() {
       </head>
       <body>
         <div class="certificate">
-          <div class="border"></div>
-          <div class="border-inner"></div>
-          
-          <div class="content">
-            <!-- Header with Logo -->
-            <div class="header">
-              <img src="${window.location.origin}/logo.png" alt="AlphaZero Academy" class="logo" onerror="this.style.display='none'" />
-              <h2 class="academy-name">AlphaZero Academy</h2>
-            </div>
-            
-            <div class="divider"></div>
-            
-            <!-- Title -->
-            <h1 class="title">Certificate</h1>
-            <p class="subtitle">of Completion</p>
-            
-            <!-- Main Content -->
-            <div class="main-content">
-              <p class="presented-text">This is to certify that</p>
-              <h2 class="student-name">${certificate.student_name}</h2>
-              <p class="completion-text">has successfully completed the course</p>
-              <h3 class="course-name">${certificate.course_name}</h3>
-            </div>
-            
-            <!-- Footer -->
-            <div class="footer">
-              <div class="footer-item">
-                <p class="footer-label">Date Issued</p>
-                <p class="footer-value">${formattedDate}</p>
-              </div>
+          <div class="outer-frame">
+            <div class="certificate-body">
+              <div class="gold-border"></div>
+              <div class="corner-top-left"></div>
+              <div class="corner-bottom-right"></div>
+              <div class="corner-accent-tr"></div>
+              <div class="corner-accent-bl"></div>
               
-              <div class="footer-item">
-                <div class="signature-line"></div>
-                <p class="footer-label">Authorized Signature</p>
-              </div>
+              <img src="${window.location.origin}/logo.png" alt="" class="logo-watermark" onerror="this.style.display='none'" />
               
-              <div class="footer-item">
-                <p class="footer-label">Certificate ID</p>
-                <p class="cert-id">${certificate.certificate_id}</p>
-                <div class="reg-number">${registrationNumber}</div>
+              <div class="content">
+                <!-- Header -->
+                <div class="header">
+                  <div class="title-section">
+                    <h1 class="certificate-title">Certificate</h1>
+                    <p class="certificate-subtitle">of Completion</p>
+                  </div>
+                  
+                  <div class="academy-badge">
+                    <div class="badge-outer">
+                      <div class="badge-inner">
+                        <span class="badge-stars">★ ★ ★ ★ ★</span>
+                        <span class="badge-text">ALPHA</span>
+                        <span class="badge-text">ZERO</span>
+                        <span class="badge-stars">★ ★ ★ ★ ★</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="main-content">
+                  <p class="presented-text">This Certificate is Proudly Presented To</p>
+                  <h2 class="student-name">${certificate.student_name}</h2>
+                  <p class="course-description">For successfully completing the course: ${certificate.course_name}</p>
+                  <p class="course-details">
+                    This is to certify that the above named individual has demonstrated exceptional dedication 
+                    and successfully completed all requirements of the course at AlphaZero Academy.
+                  </p>
+                </div>
+                
+                <!-- Footer -->
+                <div class="footer">
+                  <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <p class="signature-title">Instructor</p>
+                  </div>
+                  
+                  <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <p class="signature-title">Director</p>
+                  </div>
+                  
+                  <div class="cert-info">
+                    <p class="cert-date">Issued: ${formattedDate}</p>
+                    <p class="cert-id">${certificate.certificate_id}</p>
+                    <div class="reg-number">${registrationNumber}</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          
-          <!-- Verified Badge -->
-          <div class="verified">
-            <div class="verified-circle">
-              <span class="verified-icon">✓</span>
-              <span class="verified-text">Verified</span>
-            </div>
-          </div>
-        </div>
         </div>
         
         <script>
