@@ -11,7 +11,7 @@ export default function DashboardPage() {
     if (isLoading) return;
 
     if (!user) {
-      navigate('/auth');
+      navigate('/student/login');
       return;
     }
 
