@@ -239,6 +239,50 @@ export type Database = {
         }
         Relationships: []
       }
+      video_materials: {
+        Row: {
+          created_at: string
+          id: string
+          material_type: string
+          material_url: string | null
+          note_content: string | null
+          order_index: number
+          title: string
+          updated_at: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          material_type?: string
+          material_url?: string | null
+          note_content?: string | null
+          order_index?: number
+          title: string
+          updated_at?: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          material_type?: string
+          material_url?: string | null
+          note_content?: string | null
+          order_index?: number
+          title?: string
+          updated_at?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_materials_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_progress: {
         Row: {
           id: string

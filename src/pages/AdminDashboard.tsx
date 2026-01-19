@@ -7,7 +7,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
@@ -22,19 +21,17 @@ import {
   Users, 
   Plus, 
   Trash2, 
-  Edit, 
-  Video as VideoIcon,
   LogOut,
   Copy,
   Check,
   X,
-  GripVertical,
   User,
   Lock,
   Mail,
   UserPlus
 } from 'lucide-react';
-import { Course, Video, PassCodeWithCourses } from '@/types/lms';
+import { PassCodeWithCourses } from '@/types/lms';
+import CourseManagement from '@/components/admin/CourseManagement';
 
 export default function AdminDashboard() {
   const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
@@ -52,23 +49,6 @@ export default function AdminDashboard() {
   
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('courses');
-
-  // Course form state
-  const [showCourseDialog, setShowCourseDialog] = useState(false);
-  const [editingCourse, setEditingCourse] = useState<Course | null>(null);
-  const [courseTitle, setCourseTitle] = useState('');
-  const [courseDescription, setCourseDescription] = useState('');
-  const [courseThumbnail, setCourseThumbnail] = useState('');
-
-  // Video form state
-  const [showVideoDialog, setShowVideoDialog] = useState(false);
-  const [selectedCourseForVideo, setSelectedCourseForVideo] = useState<Course | null>(null);
-  const [videoTitle, setVideoTitle] = useState('');
-  const [videoUrl, setVideoUrl] = useState('');
-  const [videoType, setVideoType] = useState('youtube');
-  const [videoDuration, setVideoDuration] = useState('');
-  const [courseVideos, setCourseVideos] = useState<Video[]>([]);
-  const [loadingVideos, setLoadingVideos] = useState(false);
 
   // Pass code form state
   const [showPassCodeDialog, setShowPassCodeDialog] = useState(false);
@@ -91,7 +71,6 @@ export default function AdminDashboard() {
   // Admin profile state
   const [showProfileDialog, setShowProfileDialog] = useState(false);
   const [showPasswordDialog, setShowPasswordDialog] = useState(false);
-  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
@@ -122,173 +101,6 @@ export default function AdminDashboard() {
   const handleLogout = async () => {
     await signOut();
     navigate('/');
-  };
-
-  // Course CRUD
-  const openCourseDialog = (course?: Course) => {
-    if (course) {
-      setEditingCourse(course);
-      setCourseTitle(course.title);
-      setCourseDescription(course.description || '');
-      setCourseThumbnail(course.thumbnail_url || '');
-    } else {
-      setEditingCourse(null);
-      setCourseTitle('');
-      setCourseDescription('');
-      setCourseThumbnail('');
-    }
-    setShowCourseDialog(true);
-  };
-
-  const saveCourse = async () => {
-    if (!courseTitle.trim()) {
-      toast.error('কোর্সের নাম দিন');
-      return;
-    }
-
-    if (editingCourse) {
-      const { error } = await supabase
-        .from('courses')
-        .update({
-          title: courseTitle,
-          description: courseDescription || null,
-          thumbnail_url: courseThumbnail || null,
-        })
-        .eq('id', editingCourse.id);
-
-      if (error) {
-        toast.error('আপডেট করতে সমস্যা হয়েছে');
-        return;
-      }
-      toast.success('কোর্স আপডেট হয়েছে');
-    } else {
-      const { error } = await supabase
-        .from('courses')
-        .insert({
-          title: courseTitle,
-          description: courseDescription || null,
-          thumbnail_url: courseThumbnail || null,
-        });
-
-      if (error) {
-        toast.error('কোর্স তৈরি করতে সমস্যা হয়েছে');
-        return;
-      }
-      toast.success('কোর্স তৈরি হয়েছে');
-    }
-
-    setShowCourseDialog(false);
-    refetchCourses();
-  };
-
-  const deleteCourse = async (courseId: string) => {
-    if (!confirm('এই কোর্স মুছতে চান?')) return;
-
-    const { error } = await supabase
-      .from('courses')
-      .delete()
-      .eq('id', courseId);
-
-    if (error) {
-      toast.error('মুছতে সমস্যা হয়েছে');
-      return;
-    }
-    toast.success('কোর্স মুছে ফেলা হয়েছে');
-    refetchCourses();
-  };
-
-  const toggleCoursePublish = async (course: Course) => {
-    const { error } = await supabase
-      .from('courses')
-      .update({ is_published: !course.is_published })
-      .eq('id', course.id);
-
-    if (error) {
-      toast.error('আপডেট করতে সমস্যা হয়েছে');
-      return;
-    }
-    toast.success(course.is_published ? 'কোর্স আনপাবলিশ হয়েছে' : 'কোর্স পাবলিশ হয়েছে');
-    refetchCourses();
-  };
-
-  // Video CRUD
-  const openVideoDialog = async (course: Course) => {
-    setSelectedCourseForVideo(course);
-    setVideoTitle('');
-    setVideoUrl('');
-    setVideoType('youtube');
-    setVideoDuration('');
-    setShowVideoDialog(true);
-    
-    // Load existing videos
-    setLoadingVideos(true);
-    const { data, error } = await supabase
-      .from('videos')
-      .select('*')
-      .eq('course_id', course.id)
-      .order('order_index', { ascending: true });
-    
-    if (!error) {
-      setCourseVideos((data || []) as Video[]);
-    }
-    setLoadingVideos(false);
-  };
-
-  const addVideo = async () => {
-    if (!selectedCourseForVideo || !videoTitle.trim() || !videoUrl.trim()) {
-      toast.error('সব তথ্য দিন');
-      return;
-    }
-
-    const nextOrder = courseVideos.length + 1;
-    const durationSeconds = videoDuration ? parseInt(videoDuration) * 60 : 0;
-
-    const { error } = await supabase
-      .from('videos')
-      .insert({
-        course_id: selectedCourseForVideo.id,
-        title: videoTitle,
-        video_url: videoUrl,
-        video_type: videoType,
-        duration_seconds: durationSeconds,
-        order_index: nextOrder,
-      });
-
-    if (error) {
-      toast.error('ভিডিও যোগ করতে সমস্যা হয়েছে');
-      return;
-    }
-
-    toast.success('ভিডিও যোগ হয়েছে');
-    setVideoTitle('');
-    setVideoUrl('');
-    setVideoDuration('');
-
-    // Reload videos
-    const { data } = await supabase
-      .from('videos')
-      .select('*')
-      .eq('course_id', selectedCourseForVideo.id)
-      .order('order_index', { ascending: true });
-    
-    if (data) {
-      setCourseVideos(data as Video[]);
-    }
-  };
-
-  const deleteVideo = async (videoId: string) => {
-    const { error } = await supabase
-      .from('videos')
-      .delete()
-      .eq('id', videoId);
-
-    if (error) {
-      toast.error('মুছতে সমস্যা হয়েছে');
-      return;
-    }
-    
-    setCourseVideos(prev => prev.filter(v => v.id !== videoId));
-    toast.success('ভিডিও মুছে ফেলা হয়েছে');
   };
 
   // Pass code
@@ -484,7 +296,6 @@ export default function AdminDashboard() {
 
       toast.success('পাসওয়ার্ড পরিবর্তন হয়েছে!');
       setShowPasswordDialog(false);
-      setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
@@ -541,100 +352,14 @@ export default function AdminDashboard() {
               প্রোফাইল
             </TabsTrigger>
           </TabsList>
+
           {/* Courses Tab */}
           <TabsContent value="courses" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">সব কোর্স</h2>
-              <Button onClick={() => openCourseDialog()} className="gap-2">
-                <Plus className="w-4 h-4" />
-                নতুন কোর্স
-              </Button>
-            </div>
-
-            {coursesLoading ? (
-              <div className="flex justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              </div>
-            ) : courses.length === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-12 text-center">
-                  <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">কোনো কোর্স নেই</p>
-                  <Button onClick={() => openCourseDialog()} className="mt-4 gap-2">
-                    <Plus className="w-4 h-4" />
-                    প্রথম কোর্স তৈরি করুন
-                  </Button>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {courses.map((course) => (
-                  <Card key={course.id} className="overflow-hidden">
-                    <div className="aspect-video bg-muted relative">
-                      {course.thumbnail_url ? (
-                        <img 
-                          src={course.thumbnail_url} 
-                          alt={course.title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <BookOpen className="w-12 h-12 text-muted-foreground" />
-                        </div>
-                      )}
-                      <Badge 
-                        className="absolute top-2 right-2"
-                        variant={course.is_published ? 'default' : 'secondary'}
-                      >
-                        {course.is_published ? 'পাবলিশড' : 'ড্রাফট'}
-                      </Badge>
-                    </div>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
-                      {course.description && (
-                        <CardDescription className="line-clamp-2">
-                          {course.description}
-                        </CardDescription>
-                      )}
-                    </CardHeader>
-                    <CardContent className="pt-0 space-y-3">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">পাবলিশ</span>
-                        <Switch
-                          checked={course.is_published}
-                          onCheckedChange={() => toggleCoursePublish(course)}
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="flex-1 gap-1"
-                          onClick={() => openVideoDialog(course)}
-                        >
-                          <VideoIcon className="w-3 h-3" />
-                          ভিডিও
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => openCourseDialog(course)}
-                        >
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => deleteCourse(course.id)}
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
+            <CourseManagement 
+              courses={courses}
+              coursesLoading={coursesLoading}
+              refetchCourses={refetchCourses}
+            />
           </TabsContent>
 
           {/* Pass Codes Tab */}
@@ -904,166 +629,6 @@ export default function AdminDashboard() {
           </TabsContent>
         </Tabs>
       </main>
-
-      {/* Course Dialog */}
-      <Dialog open={showCourseDialog} onOpenChange={setShowCourseDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>{editingCourse ? 'কোর্স এডিট' : 'নতুন কোর্স'}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="course-title">কোর্সের নাম</Label>
-              <Input
-                id="course-title"
-                value={courseTitle}
-                onChange={(e) => setCourseTitle(e.target.value)}
-                placeholder="কোর্সের নাম লিখুন"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="course-desc">বিবরণ</Label>
-              <Textarea
-                id="course-desc"
-                value={courseDescription}
-                onChange={(e) => setCourseDescription(e.target.value)}
-                placeholder="কোর্সের বিবরণ"
-                rows={3}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="course-thumb">থাম্বনেইল URL</Label>
-              <Input
-                id="course-thumb"
-                value={courseThumbnail}
-                onChange={(e) => setCourseThumbnail(e.target.value)}
-                placeholder="https://..."
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCourseDialog(false)}>
-              বাতিল
-            </Button>
-            <Button onClick={saveCourse}>
-              {editingCourse ? 'আপডেট' : 'তৈরি করুন'}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Video Dialog */}
-      <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>
-              {selectedCourseForVideo?.title} - ভিডিও ম্যানেজ
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-6 py-4">
-            {/* Add Video Form */}
-            <div className="grid gap-4 p-4 border rounded-lg">
-              <h4 className="font-medium">নতুন ভিডিও যোগ করুন</h4>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>ভিডিও টাইটেল</Label>
-                  <Input
-                    value={videoTitle}
-                    onChange={(e) => setVideoTitle(e.target.value)}
-                    placeholder="ভিডিও ১"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>ভিডিও টাইপ</Label>
-                  <Select value={videoType} onValueChange={setVideoType}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="youtube">YouTube</SelectItem>
-                      <SelectItem value="vimeo">Vimeo</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label>ভিডিও URL</Label>
-                  <Input
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                    placeholder="https://..."
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>সময়কাল (মিনিট)</Label>
-                  <Input
-                    type="number"
-                    value={videoDuration}
-                    onChange={(e) => setVideoDuration(e.target.value)}
-                    placeholder="10"
-                  />
-                </div>
-              </div>
-              <Button onClick={addVideo} className="w-full gap-2">
-                <Plus className="w-4 h-4" />
-                ভিডিও যোগ করুন
-              </Button>
-            </div>
-
-            {/* Video List */}
-            <div className="space-y-2">
-              <h4 className="font-medium">ভিডিও তালিকা</h4>
-              {loadingVideos ? (
-                <div className="flex justify-center py-4">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary" />
-                </div>
-              ) : courseVideos.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  কোনো ভিডিও নেই
-                </p>
-              ) : (
-                <div className="space-y-2 max-h-64 overflow-y-auto">
-                  {courseVideos.map((video, index) => (
-                    <div 
-                      key={video.id}
-                      className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg"
-                    >
-                      <GripVertical className="w-4 h-4 text-muted-foreground" />
-                      <span className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium">
-                        {index + 1}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{video.title}</p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {video.video_url}
-                        </p>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {video.video_type}
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => deleteVideo(video.id)}
-                      >
-                        <Trash2 className="w-4 h-4 text-destructive" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <DialogFooter>
-            <Button onClick={() => setShowVideoDialog(false)}>
-              সম্পন্ন
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Assign Course Dialog */}
       <Dialog open={showAssignDialog} onOpenChange={setShowAssignDialog}>
