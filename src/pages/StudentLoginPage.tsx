@@ -34,12 +34,17 @@ export default function StudentLoginPage() {
 
   // Redirect if already logged in
   useEffect(() => {
-    if (!authLoading && user && role) {
-      if (role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/passcode');
-      }
+    if (!authLoading && user) {
+      // Give a moment for role to load, then redirect
+      const timer = setTimeout(() => {
+        if (role === 'admin') {
+          navigate('/admin');
+        } else {
+          // Students go to passcode page
+          navigate('/passcode');
+        }
+      }, 100);
+      return () => clearTimeout(timer);
     }
   }, [user, role, authLoading, navigate]);
 
