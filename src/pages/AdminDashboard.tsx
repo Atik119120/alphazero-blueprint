@@ -633,7 +633,9 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{courses.length}</p>
-                <p className="text-xs text-muted-foreground">মোট কোর্স</p>
+                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? 'মোট কোর্স' : 'Total Courses'}
+                </p>
               </div>
             </div>
           </div>
@@ -644,7 +646,9 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{passCodes.filter(p => p.is_active).length}</p>
-                <p className="text-xs text-muted-foreground">সক্রিয় Pass Code</p>
+                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? 'সক্রিয় Pass Code' : 'Active Pass Codes'}
+                </p>
               </div>
             </div>
           </div>
@@ -655,7 +659,9 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{passCodes.filter(p => p.student).length}</p>
-                <p className="text-xs text-muted-foreground">মোট ছাত্র</p>
+                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? 'মোট ছাত্র' : 'Total Students'}
+                </p>
               </div>
             </div>
           </div>
@@ -666,7 +672,9 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{courses.filter(c => c.is_published).length}</p>
-                <p className="text-xs text-muted-foreground">প্রকাশিত</p>
+                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? 'প্রকাশিত' : 'Published'}
+                </p>
               </div>
             </div>
           </div>
@@ -676,8 +684,12 @@ export default function AdminDashboard() {
                 <Banknote className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">৳{totalRevenue.toLocaleString('bn-BD')}</p>
-                <p className="text-xs text-muted-foreground">মোট বিক্রি</p>
+                <p className="text-2xl font-bold text-foreground">
+                  {language === 'bn' ? `৳${totalRevenue.toLocaleString('bn-BD')}` : `৳${totalRevenue.toLocaleString()}`}
+                </p>
+                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? 'মোট বিক্রি' : 'Total Sales'}
+                </p>
               </div>
             </div>
           </div>
@@ -941,24 +953,26 @@ export default function AdminDashboard() {
           {/* Pass Codes Tab */}
           <TabsContent value="passcodes" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">সব Pass Code</h2>
+              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                {language === 'bn' ? 'সব Pass Code' : 'All Pass Codes'}
+              </h2>
               <Dialog open={showPassCodeDialog} onOpenChange={setShowPassCodeDialog}>
                 <DialogTrigger asChild>
                   <Button className="gap-2">
                     <Plus className="w-4 h-4" />
-                    নতুন Pass Code
+                    {language === 'bn' ? 'নতুন Pass Code' : 'New Pass Code'}
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>নতুন Pass Code তৈরি</DialogTitle>
+                    <DialogTitle>{language === 'bn' ? 'নতুন Pass Code তৈরি' : 'Create New Pass Code'}</DialogTitle>
                     <DialogDescription>
-                      কোর্স সিলেক্ট করুন যা এই Pass Code এ থাকবে
+                      {language === 'bn' ? 'কোর্স সিলেক্ট করুন যা এই Pass Code এ থাকবে' : 'Select courses to include in this Pass Code'}
                     </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4 py-4">
                     <div className="space-y-2">
-                      <Label>কোর্স সিলেক্ট করুন</Label>
+                      <Label>{language === 'bn' ? 'কোর্স সিলেক্ট করুন' : 'Select Courses'}</Label>
                       <div className="space-y-2 max-h-48 overflow-y-auto">
                         {courses.filter(c => c.is_published).map((course) => (
                           <label 
@@ -985,10 +999,10 @@ export default function AdminDashboard() {
                   </div>
                   <DialogFooter>
                     <Button variant="outline" onClick={() => setShowPassCodeDialog(false)}>
-                      বাতিল
+                      {language === 'bn' ? 'বাতিল' : 'Cancel'}
                     </Button>
                     <Button onClick={handleCreatePassCode}>
-                      তৈরি করুন
+                      {language === 'bn' ? 'তৈরি করুন' : 'Create'}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
@@ -1003,7 +1017,7 @@ export default function AdminDashboard() {
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <Key className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">কোনো Pass Code নেই</p>
+                  <p className="text-muted-foreground">{language === 'bn' ? 'কোনো Pass Code নেই' : 'No Pass Codes'}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -1029,13 +1043,13 @@ export default function AdminDashboard() {
                               )}
                             </Button>
                             <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                              {passCode.is_active ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                              {passCode.is_active ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive')}
                             </Badge>
                           </div>
                           
                           {passCode.student && (
                             <p className="text-sm text-muted-foreground">
-                              ছাত্র: {passCode.student.full_name} ({passCode.student.email})
+                              {language === 'bn' ? 'ছাত্র' : 'Student'}: {passCode.student.full_name} ({passCode.student.email})
                             </p>
                           )}
                           
@@ -1062,7 +1076,7 @@ export default function AdminDashboard() {
                               onClick={() => openAssignDialog(passCode)}
                             >
                               <Plus className="w-3 h-3" />
-                              কোর্স যোগ
+                              {language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
                             </Button>
                           </div>
                         </div>
@@ -1091,12 +1105,14 @@ export default function AdminDashboard() {
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h2 className="text-xl font-semibold">ছাত্র তালিকা</h2>
+              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                {language === 'bn' ? 'ছাত্র তালিকা' : 'Student List'}
+              </h2>
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder="নাম, ইমেইল বা Pass Code..."
+                    placeholder={language === 'bn' ? 'নাম, ইমেইল বা Pass Code...' : 'Name, email or Pass Code...'}
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
                     className="pl-9 w-full sm:w-64"
@@ -1104,7 +1120,7 @@ export default function AdminDashboard() {
                 </div>
                 <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2 whitespace-nowrap">
                   <UserPlus className="w-4 h-4" />
-                  <span className="hidden sm:inline">নতুন ছাত্র</span>
+                  <span className="hidden sm:inline">{language === 'bn' ? 'নতুন ছাত্র' : 'New Student'}</span>
                 </Button>
               </div>
             </div>
@@ -1113,13 +1129,15 @@ export default function AdminDashboard() {
             <Card className="bg-gradient-to-r from-primary/5 to-cyan-500/5 border-primary/20">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base flex items-center gap-2">
+                  <CardTitle className={`text-base flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <TrendingUp className="w-5 h-5 text-primary" />
-                    কোর্স এনরোলমেন্ট ও বিক্রি
+                    {language === 'bn' ? 'কোর্স এনরোলমেন্ট ও বিক্রি' : 'Course Enrollment & Sales'}
                   </CardTitle>
                   <div className="flex items-center gap-2 text-sm">
                     <Banknote className="w-4 h-4 text-amber-500" />
-                    <span className="font-semibold text-amber-600">মোট: ৳{totalRevenue.toLocaleString('bn-BD')}</span>
+                    <span className="font-semibold text-amber-600">
+                      {language === 'bn' ? `মোট: ৳${totalRevenue.toLocaleString('bn-BD')}` : `Total: ৳${totalRevenue.toLocaleString()}`}
+                    </span>
                   </div>
                 </div>
               </CardHeader>
@@ -1143,14 +1161,16 @@ export default function AdminDashboard() {
                       </p>
                       {course.totalSales > 0 && (
                         <p className="text-xs font-medium text-amber-600 mt-1">
-                          বিক্রি: ৳{course.totalSales.toLocaleString('bn-BD')}
+                          {language === 'bn' ? `বিক্রি: ৳${course.totalSales.toLocaleString('bn-BD')}` : `Sales: ৳${course.totalSales.toLocaleString()}`}
                         </p>
                       )}
                     </div>
                   ))}
                 </div>
                 {courseEnrollmentStats.length === 0 && (
-                  <p className="text-sm text-muted-foreground text-center py-4">কোনো কোর্স নেই</p>
+                  <p className="text-sm text-muted-foreground text-center py-4">
+                    {language === 'bn' ? 'কোনো কোর্স নেই' : 'No courses'}
+                  </p>
                 )}
               </CardContent>
             </Card>
@@ -1160,12 +1180,14 @@ export default function AdminDashboard() {
                 <CardContent className="py-12 text-center">
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">
-                    {studentSearch ? 'কোনো ছাত্র পাওয়া যায়নি' : 'কোনো ছাত্র নেই'}
+                    {studentSearch 
+                      ? (language === 'bn' ? 'কোনো ছাত্র পাওয়া যায়নি' : 'No students found') 
+                      : (language === 'bn' ? 'কোনো ছাত্র নেই' : 'No students')}
                   </p>
                   {!studentSearch && (
                     <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
                       <UserPlus className="w-4 h-4" />
-                      প্রথম ছাত্র যোগ করুন
+                      {language === 'bn' ? 'প্রথম ছাত্র যোগ করুন' : 'Add First Student'}
                     </Button>
                   )}
                 </CardContent>
@@ -1173,7 +1195,9 @@ export default function AdminDashboard() {
             ) : (
               <>
                 <p className="text-sm text-muted-foreground">
-                  {studentSearch && `${filteredStudents.length} জন ছাত্র পাওয়া গেছে`}
+                  {studentSearch && (language === 'bn' 
+                    ? `${filteredStudents.length} জন ছাত্র পাওয়া গেছে` 
+                    : `${filteredStudents.length} students found`)}
                 </p>
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                   {filteredStudents.map((passCode) => (
@@ -1209,9 +1233,11 @@ export default function AdminDashboard() {
                           </Button>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">{passCode.courses.length} কোর্স</span>
+                          <span className="text-muted-foreground">
+                            {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
+                          </span>
                           <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                            {passCode.is_active ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                            {passCode.is_active ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive')}
                           </Badge>
                         </div>
                         {passCode.courses.length > 0 && (
@@ -1239,10 +1265,12 @@ export default function AdminDashboard() {
           {/* Profile Tab */}
           <TabsContent value="profile" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Admin প্রোফাইল</h2>
+              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                {language === 'bn' ? 'Admin প্রোফাইল' : 'Admin Profile'}
+              </h2>
               <Button onClick={() => setShowAddAdminDialog(true)} className="gap-2">
                 <Shield className="w-4 h-4" />
-                নতুন Admin যোগ
+                {language === 'bn' ? 'নতুন Admin যোগ' : 'Add New Admin'}
               </Button>
             </div>
             
@@ -1250,9 +1278,9 @@ export default function AdminDashboard() {
               {/* Profile Info Card */}
               <Card className="md:col-span-2 lg:col-span-1">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <User className="w-5 h-5" />
-                    প্রোফাইল তথ্য
+                    {language === 'bn' ? 'প্রোফাইল তথ্য' : 'Profile Info'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1302,7 +1330,7 @@ export default function AdminDashboard() {
                     className="w-full gap-2"
                   >
                     <Edit className="w-4 h-4" />
-                    প্রোফাইল এডিট করুন
+                    {language === 'bn' ? 'প্রোফাইল এডিট করুন' : 'Edit Profile'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1310,12 +1338,12 @@ export default function AdminDashboard() {
               {/* Password Change Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <Lock className="w-5 h-5" />
-                    পাসওয়ার্ড
+                    {language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}
                   </CardTitle>
                   <CardDescription>
-                    অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন
+                    {language === 'bn' ? 'অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন' : 'Change password to keep your account secure'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1325,7 +1353,7 @@ export default function AdminDashboard() {
                     className="w-full gap-2"
                   >
                     <Lock className="w-4 h-4" />
-                    পাসওয়ার্ড পরিবর্তন
+                    {language === 'bn' ? 'পাসওয়ার্ড পরিবর্তন' : 'Change Password'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1333,12 +1361,12 @@ export default function AdminDashboard() {
               {/* Add Admin Card */}
               <Card className="border-dashed border-2">
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center gap-2">
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <Shield className="w-5 h-5" />
-                    নতুন Admin
+                    {language === 'bn' ? 'নতুন Admin' : 'New Admin'}
                   </CardTitle>
                   <CardDescription>
-                    আরেকজন Admin যোগ করুন যারা সব ম্যানেজ করতে পারবে
+                    {language === 'bn' ? 'আরেকজন Admin যোগ করুন যারা সব ম্যানেজ করতে পারবে' : 'Add another admin who can manage everything'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1347,7 +1375,7 @@ export default function AdminDashboard() {
                     className="w-full gap-2"
                   >
                     <Plus className="w-4 h-4" />
-                    Admin যোগ করুন
+                    {language === 'bn' ? 'Admin যোগ করুন' : 'Add Admin'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1358,12 +1386,12 @@ export default function AdminDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                       <Shield className="w-5 h-5" />
-                      সকল Admin ({admins.length})
+                      {language === 'bn' ? `সকল Admin (${admins.length})` : `All Admins (${admins.length})`}
                     </CardTitle>
                     <CardDescription>
-                      যারা এই প্ল্যাটফর্ম ম্যানেজ করতে পারে
+                      {language === 'bn' ? 'যারা এই প্ল্যাটফর্ম ম্যানেজ করতে পারে' : 'Those who can manage this platform'}
                     </CardDescription>
                   </div>
                   <Button 
@@ -1378,7 +1406,7 @@ export default function AdminDashboard() {
                     ) : (
                       <TrendingUp className="w-4 h-4" />
                     )}
-                    রিফ্রেশ
+                    {language === 'bn' ? 'রিফ্রেশ' : 'Refresh'}
                   </Button>
                 </div>
               </CardHeader>
@@ -1390,7 +1418,7 @@ export default function AdminDashboard() {
                 ) : admins.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>কোনো Admin পাওয়া যায়নি</p>
+                    <p>{language === 'bn' ? 'কোনো Admin পাওয়া যায়নি' : 'No admins found'}</p>
                   </div>
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -1420,13 +1448,15 @@ export default function AdminDashboard() {
                           <p className="font-medium truncate flex items-center gap-2">
                             {admin.full_name}
                             {admin.user_id === user?.id && (
-                              <Badge variant="secondary" className="text-xs">আপনি</Badge>
+                              <Badge variant="secondary" className="text-xs">
+                                {language === 'bn' ? 'আপনি' : 'You'}
+                              </Badge>
                             )}
                           </p>
                           <p className="text-sm text-muted-foreground truncate">{admin.email}</p>
                           {admin.created_at && (
                             <p className="text-xs text-muted-foreground mt-1">
-                              যোগদান: {new Date(admin.created_at).toLocaleDateString('bn-BD')}
+                              {language === 'bn' ? 'যোগদান' : 'Joined'}: {new Date(admin.created_at).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
                             </p>
                           )}
                         </div>
@@ -1444,16 +1474,21 @@ export default function AdminDashboard() {
       <Dialog open={showAssignDialog} onOpenChange={setShowAssignDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>কোর্স যোগ করুন</DialogTitle>
+            <DialogTitle>{language === 'bn' ? 'কোর্স যোগ করুন' : 'Add Course'}</DialogTitle>
             <DialogDescription>
-              <code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন
+              {language === 'bn' 
+                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন</>
+                : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code></>
+              }
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
             {availableCoursesForAssign.length === 0 ? (
               <div className="text-center py-8">
                 <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">সব কোর্স ইতিমধ্যে অ্যাসাইন করা হয়েছে</p>
+                <p className="text-muted-foreground">
+                  {language === 'bn' ? 'সব কোর্স ইতিমধ্যে অ্যাসাইন করা হয়েছে' : 'All courses are already assigned'}
+                </p>
               </div>
             ) : (
               <div className="grid gap-3 max-h-[400px] overflow-y-auto">
@@ -1502,10 +1537,10 @@ export default function AdminDashboard() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAssignDialog(false)}>
-              বাতিল
+              {language === 'bn' ? 'বাতিল' : 'Cancel'}
             </Button>
             <Button onClick={handleAssignCourse} disabled={!selectedCourseToAssign}>
-              যোগ করুন
+              {language === 'bn' ? 'যোগ করুন' : 'Add'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1517,28 +1552,28 @@ export default function AdminDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UserPlus className="w-5 h-5" />
-              নতুন ছাত্র যোগ করুন
+              {language === 'bn' ? 'নতুন ছাত্র যোগ করুন' : 'Add New Student'}
             </DialogTitle>
             <DialogDescription>
-              ছাত্রের তথ্য দিন এবং পাসকোড অ্যাসাইন করুন
+              {language === 'bn' ? 'ছাত্রের তথ্য দিন এবং পাসকোড অ্যাসাইন করুন' : 'Enter student details and assign a passcode'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="student-name">পুরো নাম</Label>
+              <Label htmlFor="student-name">{language === 'bn' ? 'পুরো নাম' : 'Full Name'}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="student-name"
                   value={newStudentName}
                   onChange={(e) => setNewStudentName(e.target.value)}
-                  placeholder="ছাত্রের নাম"
+                  placeholder={language === 'bn' ? 'ছাত্রের নাম' : 'Student name'}
                   className="pl-10"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-email">ইমেইল</Label>
+              <Label htmlFor="student-email">{language === 'bn' ? 'ইমেইল' : 'Email'}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -1552,7 +1587,7 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-password">পাসওয়ার্ড</Label>
+              <Label htmlFor="student-password">{language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -1560,34 +1595,34 @@ export default function AdminDashboard() {
                   type="password"
                   value={newStudentPassword}
                   onChange={(e) => setNewStudentPassword(e.target.value)}
-                  placeholder="কমপক্ষে ৬ অক্ষর"
+                  placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
                   className="pl-10"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-passcode">Pass Code (ঐচ্ছিক)</Label>
+              <Label htmlFor="student-passcode">{language === 'bn' ? 'Pass Code (ঐচ্ছিক)' : 'Pass Code (Optional)'}</Label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="student-passcode"
                   value={newStudentPassCode}
                   onChange={(e) => setNewStudentPassCode(e.target.value.toUpperCase())}
-                  placeholder="বিদ্যমান Pass Code"
+                  placeholder={language === 'bn' ? 'বিদ্যমান Pass Code' : 'Existing Pass Code'}
                   className="pl-10 font-mono"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                বিদ্যমান Pass Code দিলে ছাত্র সেটার সাথে লিংক হবে
+                {language === 'bn' ? 'বিদ্যমান Pass Code দিলে ছাত্র সেটার সাথে লিংক হবে' : 'If provided, student will be linked to this Pass Code'}
               </p>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddStudentDialog(false)}>
-              বাতিল
+              {language === 'bn' ? 'বাতিল' : 'Cancel'}
             </Button>
             <Button onClick={handleAddStudent} disabled={addingStudent}>
-              {addingStudent ? 'যোগ হচ্ছে...' : 'ছাত্র যোগ করুন'}
+              {addingStudent ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'ছাত্র যোগ করুন' : 'Add Student')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1599,40 +1634,40 @@ export default function AdminDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Lock className="w-5 h-5" />
-              পাসওয়ার্ড পরিবর্তন
+              {language === 'bn' ? 'পাসওয়ার্ড পরিবর্তন' : 'Change Password'}
             </DialogTitle>
             <DialogDescription>
-              নতুন পাসওয়ার্ড দিন
+              {language === 'bn' ? 'নতুন পাসওয়ার্ড দিন' : 'Enter your new password'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="new-password">নতুন পাসওয়ার্ড</Label>
+              <Label htmlFor="new-password">{language === 'bn' ? 'নতুন পাসওয়ার্ড' : 'New Password'}</Label>
               <Input
                 id="new-password"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="কমপক্ষে ৬ অক্ষর"
+                placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirm-password">পাসওয়ার্ড নিশ্চিত করুন</Label>
+              <Label htmlFor="confirm-password">{language === 'bn' ? 'পাসওয়ার্ড নিশ্চিত করুন' : 'Confirm Password'}</Label>
               <Input
                 id="confirm-password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="আবার পাসওয়ার্ড দিন"
+                placeholder={language === 'bn' ? 'আবার পাসওয়ার্ড দিন' : 'Re-enter password'}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowPasswordDialog(false)}>
-              বাতিল
+              {language === 'bn' ? 'বাতিল' : 'Cancel'}
             </Button>
             <Button onClick={handleChangePassword} disabled={changingPassword}>
-              {changingPassword ? 'পরিবর্তন হচ্ছে...' : 'পাসওয়ার্ড পরিবর্তন'}
+              {changingPassword ? (language === 'bn' ? 'পরিবর্তন হচ্ছে...' : 'Changing...') : (language === 'bn' ? 'পাসওয়ার্ড পরিবর্তন' : 'Change Password')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1642,7 +1677,7 @@ export default function AdminDashboard() {
       <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Admin প্রোফাইল</DialogTitle>
+            <DialogTitle>{language === 'bn' ? 'Admin প্রোফাইল' : 'Admin Profile'}</DialogTitle>
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div className="flex items-center gap-4">
@@ -1677,7 +1712,7 @@ export default function AdminDashboard() {
                 className="flex-1 gap-2"
               >
                 <Edit className="w-4 h-4" />
-                এডিট
+                {language === 'bn' ? 'এডিট' : 'Edit'}
               </Button>
               <Button 
                 onClick={() => {
@@ -1688,13 +1723,13 @@ export default function AdminDashboard() {
                 className="flex-1 gap-2"
               >
                 <Lock className="w-4 h-4" />
-                পাসওয়ার্ড
+                {language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}
               </Button>
             </div>
           </div>
           <DialogFooter>
             <Button onClick={() => setShowProfileDialog(false)}>
-              বন্ধ করুন
+              {language === 'bn' ? 'বন্ধ করুন' : 'Close'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1706,42 +1741,42 @@ export default function AdminDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Edit className="w-5 h-5" />
-              প্রোফাইল এডিট
+              {language === 'bn' ? 'প্রোফাইল এডিট' : 'Edit Profile'}
             </DialogTitle>
             <DialogDescription>
-              আপনার নাম এবং ইমেইল পরিবর্তন করুন
+              {language === 'bn' ? 'আপনার নাম এবং ইমেইল পরিবর্তন করুন' : 'Change your name and email'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-name">নাম</Label>
+              <Label htmlFor="edit-name">{language === 'bn' ? 'নাম' : 'Name'}</Label>
               <Input
                 id="edit-name"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                placeholder="আপনার নাম"
+                placeholder={language === 'bn' ? 'আপনার নাম' : 'Your name'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-email">ইমেইল</Label>
+              <Label htmlFor="edit-email">{language === 'bn' ? 'ইমেইল' : 'Email'}</Label>
               <Input
                 id="edit-email"
                 type="email"
                 value={editEmail}
                 onChange={(e) => setEditEmail(e.target.value)}
-                placeholder="আপনার ইমেইল"
+                placeholder={language === 'bn' ? 'আপনার ইমেইল' : 'Your email'}
               />
               <p className="text-xs text-muted-foreground">
-                ইমেইল পরিবর্তন করলে নতুন ইমেইলে confirm করতে হবে
+                {language === 'bn' ? 'ইমেইল পরিবর্তন করলে নতুন ইমেইলে confirm করতে হবে' : 'Email change requires confirmation on new email'}
               </p>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowEditProfileDialog(false)}>
-              বাতিল
+              {language === 'bn' ? 'বাতিল' : 'Cancel'}
             </Button>
             <Button onClick={handleUpdateProfile} disabled={updatingProfile}>
-              {updatingProfile ? 'আপডেট হচ্ছে...' : 'আপডেট করুন'}
+              {updatingProfile ? (language === 'bn' ? 'আপডেট হচ্ছে...' : 'Updating...') : (language === 'bn' ? 'আপডেট করুন' : 'Update')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1753,24 +1788,24 @@ export default function AdminDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Shield className="w-5 h-5" />
-              নতুন Admin যোগ করুন
+              {language === 'bn' ? 'নতুন Admin যোগ করুন' : 'Add New Admin'}
             </DialogTitle>
             <DialogDescription>
-              নতুন Admin এর তথ্য দিন
+              {language === 'bn' ? 'নতুন Admin এর তথ্য দিন' : 'Enter new admin details'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="admin-name">নাম</Label>
+              <Label htmlFor="admin-name">{language === 'bn' ? 'নাম' : 'Name'}</Label>
               <Input
                 id="admin-name"
                 value={newAdminName}
                 onChange={(e) => setNewAdminName(e.target.value)}
-                placeholder="Admin এর নাম"
+                placeholder={language === 'bn' ? 'Admin এর নাম' : 'Admin name'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="admin-email">ইমেইল</Label>
+              <Label htmlFor="admin-email">{language === 'bn' ? 'ইমেইল' : 'Email'}</Label>
               <Input
                 id="admin-email"
                 type="email"
@@ -1780,22 +1815,22 @@ export default function AdminDashboard() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="admin-password">পাসওয়ার্ড</Label>
+              <Label htmlFor="admin-password">{language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}</Label>
               <Input
                 id="admin-password"
                 type="password"
                 value={newAdminPassword}
                 onChange={(e) => setNewAdminPassword(e.target.value)}
-                placeholder="কমপক্ষে ৬ অক্ষর"
+                placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddAdminDialog(false)}>
-              বাতিল
+              {language === 'bn' ? 'বাতিল' : 'Cancel'}
             </Button>
             <Button onClick={handleAddAdmin} disabled={addingAdmin}>
-              {addingAdmin ? 'যোগ হচ্ছে...' : 'Admin যোগ করুন'}
+              {addingAdmin ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'Admin যোগ করুন' : 'Add Admin')}
             </Button>
           </DialogFooter>
         </DialogContent>
