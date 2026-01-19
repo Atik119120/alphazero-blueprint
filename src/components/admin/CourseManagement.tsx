@@ -738,12 +738,40 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   // Render courses list
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <h2 className="text-xl font-semibold">সব কোর্স</h2>
-        <Button onClick={() => openCourseDialog()} className="gap-2">
-          <Plus className="w-4 h-4" />
-          নতুন কোর্স
-        </Button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {/* Quick Course Selector Dropdown */}
+          {courses.length > 0 && (
+            <Select onValueChange={(courseId) => {
+              const course = courses.find(c => c.id === courseId);
+              if (course) setSelectedCourse(course);
+            }}>
+              <SelectTrigger className="w-full sm:w-[250px] bg-card">
+                <SelectValue placeholder="কোর্স সিলেক্ট করুন" />
+              </SelectTrigger>
+              <SelectContent className="bg-card border-border z-50">
+                {courses.map((course) => (
+                  <SelectItem key={course.id} value={course.id} className="cursor-pointer">
+                    <div className="flex items-center gap-2">
+                      <BookOpen className="w-4 h-4 text-muted-foreground" />
+                      <span className="truncate">{course.title}</span>
+                      {course.is_published ? (
+                        <Badge variant="default" className="ml-auto text-[10px] px-1.5">পাবলিশড</Badge>
+                      ) : (
+                        <Badge variant="secondary" className="ml-auto text-[10px] px-1.5">ড্রাফট</Badge>
+                      )}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+          <Button onClick={() => openCourseDialog()} className="gap-2 whitespace-nowrap">
+            <Plus className="w-4 h-4" />
+            নতুন কোর্স
+          </Button>
+        </div>
       </div>
 
       {coursesLoading ? (
