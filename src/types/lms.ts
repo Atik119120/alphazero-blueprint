@@ -105,3 +105,19 @@ export interface CourseWithProgress extends Course {
   progress_percent: number;
   is_completed: boolean;
 }
+
+export interface VideoMaterial {
+  id: string;
+  video_id: string;
+  title: string;
+  material_type: 'pdf' | 'doc' | 'note';
+  material_url: string | null;
+  note_content: string | null;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface VideoWithMaterials extends Video {
+  materials: VideoMaterial[];
+}
