@@ -36,24 +36,8 @@ export default function StudentDashboard() {
     }
   }, [user, authLoading, navigate]);
 
-  // Check if user has valid pass code
-  useEffect(() => {
-    if (!authLoading && user && profile && !isLoading) {
-      const checkPassCode = async () => {
-        const { data } = await supabase
-          .from('pass_codes')
-          .select('id')
-          .eq('student_id', profile.id)
-          .eq('is_active', true)
-          .maybeSingle();
-        
-        if (!data) {
-          navigate('/passcode');
-        }
-      };
-      checkPassCode();
-    }
-  }, [user, authLoading, navigate, profile, isLoading]);
+  // Pass codes are now auto-created, so just show a message if no courses assigned
+  // No need to redirect to passcode page
 
   // Fetch materials when video is selected
   useEffect(() => {
