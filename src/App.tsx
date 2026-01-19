@@ -24,6 +24,8 @@ import NotFound from "./pages/NotFound";
 
 // LMS pages
 import AuthPage from "./pages/AuthPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import StudentLoginPage from "./pages/StudentLoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import PassCodePage from "./pages/PassCodePage";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -63,6 +65,8 @@ const App = () => {
                   
                   {/* LMS routes */}
                   <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/admin/login" element={<AdminLoginPage />} />
+                  <Route path="/student/login" element={<StudentLoginPage />} />
                   <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="/passcode" element={<PassCodePage />} />
                   <Route path="/admin" element={<AdminDashboard />} />

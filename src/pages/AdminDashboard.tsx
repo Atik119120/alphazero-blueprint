@@ -79,7 +79,7 @@ export default function AdminDashboard() {
   // Redirect non-admin users
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
-      navigate('/auth');
+      navigate('/admin/login');
     }
   }, [user, isAdmin, authLoading, navigate]);
 
