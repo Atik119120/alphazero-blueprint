@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -37,6 +37,7 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const handlePreloaderComplete = useCallback(() => setIsLoading(false), []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -46,7 +47,7 @@ const App = () => {
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              {isLoading && <Preloader onComplete={() => setIsLoading(false)} />}
+              {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
               <BrowserRouter>
                 <ScrollToTop />
                 <AIChatbot />

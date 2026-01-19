@@ -34,9 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('user_id', userId)
         .maybeSingle();
 
-      if (profileData) {
-        setProfile(profileData as Profile);
-      }
+      setProfile(profileData ? (profileData as Profile) : null);
 
       // Fetch role
       const { data: roleData } = await supabase
@@ -45,40 +43,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('user_id', userId)
         .maybeSingle();
 
-      if (roleData) {
-        setRole(roleData.role as AppRole);
-      }
+      setRole(roleData ? (roleData.role as AppRole) : null);
     } catch (error) {
       console.error('Error fetching user data:', error);
+      setProfile(null);
+      setRole(null);
     }
   };
 
   useEffect(() => {
     // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-
-        if (session?.user) {
-          // Fetch user data before setting loading to false
-          await fetchUserData(session.user.id);
-        } else {
-          setProfile(null);
-          setRole(null);
-        }
-        setIsLoading(false);
-      }
-    );
-
-    // THEN check for existing session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+
       if (session?.user) {
-        await fetchUserData(session.user.id);
+        // Keep auth callback synchronous to avoid deadlocks
+        setIsLoading(true);
+        setTimeout(() => {
+          fetchUserData(session.user.id)
+            .catch((error) => console.error('Error fetching user data:', error))
+            .finally(() => setIsLoading(false));
+        }, 0);
+      } else {
+        setProfile(null);
+        setRole(null);
+        setIsLoading(false);
       }
-      setIsLoading(false);
+    });
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      if (session?.user) {
+        setIsLoading(true);
+        fetchUserData(session.user.id)
+          .catch((error) => console.error('Error fetching user data:', error))
+          .finally(() => setIsLoading(false));
+      } else {
+        setProfile(null);
+        setRole(null);
+        setIsLoading(false);
+      }
     });
 
     return () => subscription.unsubscribe();
