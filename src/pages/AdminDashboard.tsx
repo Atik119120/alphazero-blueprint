@@ -593,26 +593,63 @@ export default function AdminDashboard() {
 
       {/* Assign Course Dialog */}
       <Dialog open={showAssignDialog} onOpenChange={setShowAssignDialog}>
-        <DialogContent>
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>কোর্স যোগ করুন</DialogTitle>
             <DialogDescription>
-              {assigningPassCode?.code} এ নতুন কোর্স যোগ করুন
+              <code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন
             </DialogDescription>
           </DialogHeader>
           <div className="py-4">
-            <Select value={selectedCourseToAssign} onValueChange={setSelectedCourseToAssign}>
-              <SelectTrigger>
-                <SelectValue placeholder="কোর্স সিলেক্ট করুন" />
-              </SelectTrigger>
-              <SelectContent>
+            {availableCoursesForAssign.length === 0 ? (
+              <div className="text-center py-8">
+                <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">সব কোর্স ইতিমধ্যে অ্যাসাইন করা হয়েছে</p>
+              </div>
+            ) : (
+              <div className="grid gap-3 max-h-[400px] overflow-y-auto">
                 {availableCoursesForAssign.map((course) => (
-                  <SelectItem key={course.id} value={course.id}>
-                    {course.title}
-                  </SelectItem>
+                  <div
+                    key={course.id}
+                    onClick={() => setSelectedCourseToAssign(course.id)}
+                    className={`flex items-center gap-4 p-3 rounded-lg border cursor-pointer transition-all ${
+                      selectedCourseToAssign === course.id 
+                        ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
+                        : 'border-border hover:bg-muted/50'
+                    }`}
+                  >
+                    <div className="w-16 h-12 rounded-md bg-muted overflow-hidden flex-shrink-0">
+                      {course.thumbnail_url ? (
+                        <img 
+                          src={course.thumbnail_url} 
+                          alt={course.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <BookOpen className="w-6 h-6 text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{course.title}</p>
+                      {course.description && (
+                        <p className="text-xs text-muted-foreground line-clamp-1">{course.description}</p>
+                      )}
+                    </div>
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                      selectedCourseToAssign === course.id 
+                        ? 'border-primary bg-primary' 
+                        : 'border-muted-foreground'
+                    }`}>
+                      {selectedCourseToAssign === course.id && (
+                        <Check className="w-3 h-3 text-primary-foreground" />
+                      )}
+                    </div>
+                  </div>
                 ))}
-              </SelectContent>
-            </Select>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAssignDialog(false)}>
