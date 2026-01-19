@@ -22,9 +22,9 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Home Page
     "home.badge": "Creative Design & IT Agency",
-    "home.title1": "Starting every idea from",
+    "home.title1": "From",
     "home.title2": "zero",
-    "home.tagline": "From zero to impact",
+    "home.tagline": "to impact",
     "home.description": "A creative IT agency focused on graphic design, web solutions, and visual identity. We help brands start from scratch and grow with clean, modern, and impactful design solutions.",
     "home.cta1": "Start Your Project",
     "home.cta2": "View Our Work",
@@ -310,9 +310,9 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Home Page
     "home.badge": "ক্রিয়েটিভ ডিজাইন ও আইটি এজেন্সি",
-    "home.title1": "প্রতিটি আইডিয়া শুরু হয়",
-    "home.title2": "শূন্য থেকে",
-    "home.tagline": "শূন্য থেকে প্রভাব",
+    "home.title1": "শূন্য",
+    "home.title2": "থেকে",
+    "home.tagline": "প্রভাব পর্যন্ত",
     "home.description": "গ্রাফিক ডিজাইন, ওয়েব সলিউশন এবং ভিজ্যুয়াল আইডেন্টিটিতে বিশেষজ্ঞ একটি ক্রিয়েটিভ আইটি এজেন্সি। আমরা ব্র্যান্ডগুলিকে শূন্য থেকে শুরু করে পরিষ্কার, আধুনিক এবং প্রভাবশালী ডিজাইন সলিউশন দিয়ে বৃদ্ধি করতে সাহায্য করি।",
     "home.cta1": "আপনার প্রজেক্ট শুরু করুন",
     "home.cta2": "আমাদের কাজ দেখুন",
