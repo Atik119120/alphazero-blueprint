@@ -6,41 +6,79 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Award, Download, CheckCircle, ArrowLeft, Calendar, User, BookOpen } from 'lucide-react';
+import { Award, Download, CheckCircle, ArrowLeft, Calendar, BookOpen } from 'lucide-react';
 import { Certificate } from '@/types/lms';
+
+// Public certificate data (from Edge Function - no student_name for privacy)
+interface PublicCertificateData {
+  certificate_id: string;
+  course_name: string;
+  issued_at: string;
+  is_valid: boolean;
+}
 
 export default function CertificatePage() {
   const { certificateId } = useParams<{ certificateId: string }>();
   const [certificate, setCertificate] = useState<Certificate | null>(null);
+  const [publicCertData, setPublicCertData] = useState<PublicCertificateData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVerified, setIsVerified] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
     fetchCertificate();
-  }, [certificateId]);
+  }, [certificateId, user]);
 
   const fetchCertificate = async () => {
     if (!certificateId) return;
 
     setIsLoading(true);
-    const { data, error } = await supabase
-      .from('certificates')
-      .select('*')
-      .eq('certificate_id', certificateId)
-      .maybeSingle();
 
-    if (error) {
-      toast.error('সার্টিফিকেট লোড করতে সমস্যা');
-    } else if (data) {
-      setCertificate(data as Certificate);
-      setIsVerified(true);
+    // If user is logged in, try to fetch their own certificate with full details
+    if (user) {
+      const { data, error } = await supabase
+        .from('certificates')
+        .select('*')
+        .eq('certificate_id', certificateId)
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!error && data) {
+        setCertificate(data as Certificate);
+        setIsVerified(true);
+        setIsLoading(false);
+        return;
+      }
     }
+
+    // For public verification (or if user doesn't own this certificate),
+    // use the secure Edge Function that only returns public data
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-certificate', {
+        body: { certificate_id: certificateId }
+      });
+
+      if (error) {
+        console.error('Verification error:', error);
+        toast.error('সার্টিফিকেট যাচাই করতে সমস্যা');
+      } else if (data && data.is_valid) {
+        setPublicCertData(data as PublicCertificateData);
+        setIsVerified(true);
+      }
+    } catch (err) {
+      console.error('Edge function error:', err);
+      toast.error('সার্টিফিকেট লোড করতে সমস্যা');
+    }
+
     setIsLoading(false);
   };
 
   const downloadCertificate = () => {
-    if (!certificate) return;
+    // Only allow download if user owns the certificate
+    if (!certificate) {
+      toast.error('সার্টিফিকেট ডাউনলোড করতে লগইন করুন');
+      return;
+    }
 
     // Create printable certificate
     const printWindow = window.open('', '_blank');
@@ -310,6 +348,11 @@ export default function CertificatePage() {
     );
   }
 
+  // Determine what data to display
+  const displayData = certificate || publicCertData;
+  const canDownload = !!certificate; // Only if user owns it
+  const studentName = certificate?.student_name;
+
   return (
     <div className="min-h-screen bg-background">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -326,7 +369,7 @@ export default function CertificatePage() {
           ফিরে যান
         </Link>
 
-        {certificate ? (
+        {displayData ? (
           <div className="max-w-2xl mx-auto">
             <Card className="border-border/50 bg-card/80 backdrop-blur-sm overflow-hidden">
               {/* Decorative header */}
@@ -352,35 +395,53 @@ export default function CertificatePage() {
               </CardHeader>
 
               <CardContent className="space-y-8 pb-8">
-                <div className="text-center space-y-2">
-                  <p className="text-muted-foreground">এই সার্টিফিকেট প্রদান করা হলো</p>
-                  <h2 className="text-2xl font-bold">{certificate.student_name}</h2>
-                </div>
+                {/* Only show student name if user owns the certificate */}
+                {studentName && (
+                  <div className="text-center space-y-2">
+                    <p className="text-muted-foreground">এই সার্টিফিকেট প্রদান করা হলো</p>
+                    <h2 className="text-2xl font-bold">{studentName}</h2>
+                  </div>
+                )}
 
-                <div className="grid gap-4 md:grid-cols-3">
+                {/* For public verification, show a privacy-respecting message */}
+                {!studentName && (
+                  <div className="text-center space-y-2">
+                    <p className="text-muted-foreground">এই সার্টিফিকেট বৈধ এবং যাচাইকৃত</p>
+                  </div>
+                )}
+
+                <div className={`grid gap-4 ${studentName ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
                   <div className="p-4 bg-muted/50 rounded-lg text-center">
                     <BookOpen className="w-5 h-5 text-primary mx-auto mb-2" />
                     <p className="text-xs text-muted-foreground">কোর্স</p>
-                    <p className="font-medium text-sm">{certificate.course_name}</p>
+                    <p className="font-medium text-sm">{displayData.course_name}</p>
                   </div>
                   <div className="p-4 bg-muted/50 rounded-lg text-center">
                     <Calendar className="w-5 h-5 text-primary mx-auto mb-2" />
                     <p className="text-xs text-muted-foreground">তারিখ</p>
                     <p className="font-medium text-sm">
-                      {new Date(certificate.issued_at).toLocaleDateString('bn-BD')}
+                      {new Date(displayData.issued_at).toLocaleDateString('bn-BD')}
                     </p>
                   </div>
-                  <div className="p-4 bg-muted/50 rounded-lg text-center">
-                    <User className="w-5 h-5 text-primary mx-auto mb-2" />
-                    <p className="text-xs text-muted-foreground">Certificate ID</p>
-                    <p className="font-medium text-xs font-mono">{certificate.certificate_id}</p>
-                  </div>
+                  {studentName && (
+                    <div className="p-4 bg-muted/50 rounded-lg text-center">
+                      <Award className="w-5 h-5 text-primary mx-auto mb-2" />
+                      <p className="text-xs text-muted-foreground">Certificate ID</p>
+                      <p className="font-medium text-xs font-mono">{displayData.certificate_id}</p>
+                    </div>
+                  )}
                 </div>
 
-                <Button onClick={downloadCertificate} className="w-full gap-2">
-                  <Download className="w-4 h-4" />
-                  সার্টিফিকেট ডাউনলোড করুন
-                </Button>
+                {canDownload ? (
+                  <Button onClick={downloadCertificate} className="w-full gap-2">
+                    <Download className="w-4 h-4" />
+                    সার্টিফিকেট ডাউনলোড করুন
+                  </Button>
+                ) : (
+                  <div className="text-center text-sm text-muted-foreground">
+                    <p>সার্টিফিকেট ডাউনলোড করতে নিজের অ্যাকাউন্টে লগইন করুন</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
