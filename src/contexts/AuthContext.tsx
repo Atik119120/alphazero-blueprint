@@ -51,6 +51,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const ensureOnboarding = async () => {
+    try {
+      const { data, error } = await supabase.functions.invoke('ensure-student-onboarding', {
+        body: {},
+      });
+
+      if (error) {
+        console.error('ensure-student-onboarding error:', error);
+        return;
+      }
+
+      if (data?.error) {
+        console.error('ensure-student-onboarding failed:', data.error);
+      }
+    } catch (e) {
+      console.error('ensure-student-onboarding unexpected error:', e);
+    }
+  };
+
   useEffect(() => {
     // Set up auth state listener FIRST
     const {
@@ -63,9 +82,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Keep auth callback synchronous to avoid deadlocks
         setIsLoading(true);
         setTimeout(() => {
-          fetchUserData(session.user.id)
-            .catch((error) => console.error('Error fetching user data:', error))
-            .finally(() => setIsLoading(false));
+          ensureOnboarding()
+            .catch((error) => console.error('Error ensuring onboarding:', error))
+            .finally(() => {
+              fetchUserData(session.user.id)
+                .catch((error) => console.error('Error fetching user data:', error))
+                .finally(() => setIsLoading(false));
+            });
         }, 0);
       } else {
         setProfile(null);
@@ -81,9 +104,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (session?.user) {
         setIsLoading(true);
-        fetchUserData(session.user.id)
-          .catch((error) => console.error('Error fetching user data:', error))
-          .finally(() => setIsLoading(false));
+        ensureOnboarding()
+          .catch((error) => console.error('Error ensuring onboarding:', error))
+          .finally(() => {
+            fetchUserData(session.user!.id)
+              .catch((error) => console.error('Error fetching user data:', error))
+              .finally(() => setIsLoading(false));
+          });
       } else {
         setProfile(null);
         setRole(null);
