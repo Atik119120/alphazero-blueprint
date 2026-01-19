@@ -276,14 +276,14 @@ const AIChatbot = () => {
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[85%] px-4 py-3 text-sm leading-relaxed ${
+                      className={`max-w-[85%] px-4 py-3 text-sm ${
                         msg.role === "user"
                           ? "bg-gradient-to-br from-primary to-purple-600 text-white rounded-2xl rounded-br-md shadow-lg shadow-primary/20"
                           : "bg-secondary text-foreground rounded-2xl rounded-bl-md border border-border/50"
                       }`}
                     >
                       {msg.role === "assistant" 
-                        ? parseMessageWithLinks(msg.content)
+                        ? <div className="whitespace-pre-line leading-relaxed">{parseMessageWithLinks(msg.content)}</div>
                         : msg.content
                       }
                     </div>
