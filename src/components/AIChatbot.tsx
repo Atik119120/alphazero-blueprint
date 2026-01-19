@@ -212,10 +212,8 @@ const AIChatbot = () => {
           <div className="absolute inset-1 rounded-full bg-gradient-to-r from-primary via-purple-500 to-pink-500 opacity-50" />
           
           {/* Main button with logo */}
-          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary via-purple-600 to-pink-500 flex items-center justify-center shadow-2xl shadow-primary/30 group-hover:shadow-primary/50 transition-all duration-300 group-hover:scale-110 p-1">
-            <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
-              <img src={logo} alt="Alpha One" className="w-10 h-10 object-contain" />
-            </div>
+          <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-primary via-purple-600 to-pink-500 flex items-center justify-center shadow-2xl shadow-primary/30 group-hover:shadow-primary/50 transition-all duration-300 group-hover:scale-110">
+            <img src={logo} alt="Alpha One" className="w-10 h-10 object-contain brightness-0 invert" />
           </div>
           
           {/* Online indicator */}
@@ -254,7 +252,7 @@ const AIChatbot = () => {
                 <div className="flex items-center gap-3">
                   <div className="relative">
                     <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center p-1.5">
-                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain" />
+                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain brightness-0 invert" />
                     </div>
                     <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 rounded-full border-2 border-white" />
                   </div>
