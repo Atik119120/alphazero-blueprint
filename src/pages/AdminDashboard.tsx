@@ -173,7 +173,7 @@ export default function AdminDashboard() {
     ? courses.filter(c => !assigningPassCode.courses.some(ac => ac.id === c.id))
     : [];
 
-  // Add student handler
+  // Add student handler - using Edge Function to avoid session switch
   const handleAddStudent = async () => {
     if (!newStudentName.trim() || !newStudentEmail.trim() || !newStudentPassword.trim()) {
       toast.error('সব তথ্য দিন');
@@ -188,76 +188,37 @@ export default function AdminDashboard() {
     setAddingStudent(true);
 
     try {
-      // Create user via Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: newStudentEmail,
-        password: newStudentPassword,
-        options: {
-          emailRedirectTo: `${window.location.origin}/`,
-          data: {
-            full_name: newStudentName,
-          },
+      // Use Edge Function to create student without affecting admin session
+      const { data, error } = await supabase.functions.invoke('create-student', {
+        body: {
+          full_name: newStudentName.trim(),
+          email: newStudentEmail.trim(),
+          password: newStudentPassword,
+          pass_code: newStudentPassCode.trim() || undefined,
         },
       });
 
-      if (authError) {
-        if (authError.message.includes('User already registered')) {
-          toast.error('এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে');
-        } else {
-          toast.error(authError.message);
-        }
+      if (error) {
+        toast.error(error.message || 'ছাত্র তৈরি করতে সমস্যা হয়েছে');
         setAddingStudent(false);
         return;
       }
 
-      if (authData.user) {
-        // Create profile
-        await supabase.from('profiles').insert({
-          user_id: authData.user.id,
-          full_name: newStudentName,
-          email: newStudentEmail,
-        });
-
-        // Assign student role
-        await supabase.from('user_roles').insert({
-          user_id: authData.user.id,
-          role: 'student',
-        });
-
-        // If passcode provided, link it
-        if (newStudentPassCode.trim()) {
-          const { data: profileData } = await supabase
-            .from('profiles')
-            .select('id')
-            .eq('user_id', authData.user.id)
-            .single();
-
-          if (profileData) {
-            const { data: passCodeData } = await supabase
-              .from('pass_codes')
-              .select('id')
-              .eq('code', newStudentPassCode.toUpperCase().trim())
-              .eq('is_active', true)
-              .maybeSingle();
-
-            if (passCodeData) {
-              await supabase
-                .from('pass_codes')
-                .update({ student_id: profileData.id })
-                .eq('id', passCodeData.id);
-            }
-          }
-        }
-
-        toast.success('ছাত্র সফলভাবে যোগ হয়েছে!');
-        setShowAddStudentDialog(false);
-        setNewStudentName('');
-        setNewStudentEmail('');
-        setNewStudentPassword('');
-        setNewStudentPassCode('');
-        refetchPassCodes();
+      if (data?.error) {
+        toast.error(data.error);
+        setAddingStudent(false);
+        return;
       }
+
+      toast.success('ছাত্র সফলভাবে যোগ হয়েছে!');
+      setShowAddStudentDialog(false);
+      setNewStudentName('');
+      setNewStudentEmail('');
+      setNewStudentPassword('');
+      setNewStudentPassCode('');
+      refetchPassCodes();
     } catch (error) {
+      console.error('Add student error:', error);
       toast.error('কিছু ভুল হয়েছে');
     } finally {
       setAddingStudent(false);
