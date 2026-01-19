@@ -32,10 +32,13 @@ export default function StudentDashboard() {
   useEffect(() => {
     if (!authLoading && !user) {
       navigate('/student/login');
+      return;
     }
-    // If user has no pass code linked, redirect to passcode page
+  }, [user, authLoading, navigate]);
+
+  // Check if user has valid pass code
+  useEffect(() => {
     if (!authLoading && user && profile && !isLoading) {
-      // Check if user has a valid pass code
       const checkPassCode = async () => {
         const { data } = await supabase
           .from('pass_codes')
@@ -44,13 +47,13 @@ export default function StudentDashboard() {
           .eq('is_active', true)
           .maybeSingle();
         
-        if (!data && courses.length === 0) {
+        if (!data) {
           navigate('/passcode');
         }
       };
       checkPassCode();
     }
-  }, [user, authLoading, navigate, profile, isLoading, courses]);
+  }, [user, authLoading, navigate, profile, isLoading]);
 
   // Fetch materials when video is selected
   useEffect(() => {

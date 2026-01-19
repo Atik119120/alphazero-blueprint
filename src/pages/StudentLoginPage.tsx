@@ -39,11 +39,12 @@ export default function StudentLoginPage() {
       const timer = setTimeout(() => {
         if (role === 'admin') {
           navigate('/admin');
-        } else {
-          // Students go to passcode page
+        } else if (role === 'student') {
+          // Students go to passcode page first
           navigate('/passcode');
         }
-      }, 100);
+        // If role is null/undefined, wait for it to load
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [user, role, authLoading, navigate]);
