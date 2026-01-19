@@ -1,0 +1,107 @@
+export type AppRole = 'admin' | 'student';
+
+export interface Profile {
+  id: string;
+  user_id: string;
+  full_name: string;
+  email: string;
+  pass_code: string | null;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UserRole {
+  id: string;
+  user_id: string;
+  role: AppRole;
+}
+
+export interface Course {
+  id: string;
+  title: string;
+  description: string | null;
+  thumbnail_url: string | null;
+  is_published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Video {
+  id: string;
+  course_id: string;
+  title: string;
+  video_url: string;
+  video_type: string;
+  duration_seconds: number;
+  order_index: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PassCode {
+  id: string;
+  code: string;
+  student_id: string | null;
+  is_active: boolean;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PassCodeCourse {
+  id: string;
+  pass_code_id: string;
+  course_id: string;
+  assigned_at: string;
+}
+
+export interface VideoProgress {
+  id: string;
+  user_id: string;
+  video_id: string;
+  progress_percent: number;
+  is_completed: boolean;
+  last_watched_at: string;
+}
+
+export interface CourseCompletion {
+  id: string;
+  user_id: string;
+  course_id: string;
+  completed_at: string;
+  certificate_id: string;
+}
+
+export interface Certificate {
+  id: string;
+  certificate_id: string;
+  user_id: string;
+  course_id: string;
+  student_name: string;
+  course_name: string;
+  issued_at: string;
+}
+
+// Extended types with relations
+export interface CourseWithVideos extends Course {
+  videos: Video[];
+}
+
+export interface PassCodeWithCourses extends PassCode {
+  courses: Course[];
+  student?: Profile;
+}
+
+export interface VideoWithProgress extends Video {
+  progress?: VideoProgress;
+  is_locked: boolean;
+}
+
+export interface CourseWithProgress extends Course {
+  videos: VideoWithProgress[];
+  total_videos: number;
+  completed_videos: number;
+  progress_percent: number;
+  is_completed: boolean;
+}
