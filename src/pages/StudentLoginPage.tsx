@@ -40,8 +40,8 @@ export default function StudentLoginPage() {
         if (role === 'admin') {
           navigate('/admin');
         } else if (role === 'student') {
-          // Students go to passcode page first
-          navigate('/passcode');
+          // Students now go directly to dashboard (auto pass code is created)
+          navigate('/student');
         }
         // If role is null/undefined, wait for it to load
       }, 200);
@@ -249,7 +249,7 @@ export default function StudentLoginPage() {
 
           <CardFooter className="text-center text-sm text-muted-foreground">
             <p className="w-full">
-              সাইন আপ করলে Pass Code দিয়ে কোর্স অ্যাক্সেস পাবেন
+              সাইন আপ করলে অটো Pass Code পাবেন এবং Admin কোর্স অ্যাসাইন করবে
             </p>
           </CardFooter>
         </Card>
