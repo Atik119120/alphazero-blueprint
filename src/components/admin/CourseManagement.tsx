@@ -22,7 +22,8 @@ import {
   FileIcon,
   Link as LinkIcon,
   ChevronRight,
-  GripVertical
+  GripVertical,
+  DollarSign
 } from 'lucide-react';
 import { Course, Video, VideoMaterial } from '@/types/lms';
 
@@ -43,6 +44,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [courseTitle, setCourseTitle] = useState('');
   const [courseDescription, setCourseDescription] = useState('');
   const [courseThumbnail, setCourseThumbnail] = useState('');
+  const [coursePrice, setCoursePrice] = useState('');
 
   // Video form state
   const [showVideoDialog, setShowVideoDialog] = useState(false);
@@ -112,11 +114,13 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseTitle(course.title);
       setCourseDescription(course.description || '');
       setCourseThumbnail(course.thumbnail_url || '');
+      setCoursePrice(course.price ? String(course.price) : '');
     } else {
       setEditingCourse(null);
       setCourseTitle('');
       setCourseDescription('');
       setCourseThumbnail('');
+      setCoursePrice('');
     }
     setShowCourseDialog(true);
   };
@@ -134,6 +138,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           title: courseTitle,
           description: courseDescription || null,
           thumbnail_url: courseThumbnail || null,
+          price: coursePrice ? parseFloat(coursePrice) : 0,
         })
         .eq('id', editingCourse.id);
 
@@ -149,6 +154,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           title: courseTitle,
           description: courseDescription || null,
           thumbnail_url: courseThumbnail || null,
+          price: coursePrice ? parseFloat(coursePrice) : 0,
         });
 
       if (error) {
@@ -720,6 +726,20 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   placeholder="https://..."
                 />
               </div>
+              <div className="space-y-2">
+                <Label>মূল্য (টাকা)</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    type="number"
+                    value={coursePrice}
+                    onChange={(e) => setCoursePrice(e.target.value)}
+                    placeholder="0"
+                    className="pl-10"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">ফ্রি কোর্সের জন্য ০ রাখুন</p>
+              </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setShowCourseDialog(false)}>
@@ -815,9 +835,23 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 >
                   {course.is_published ? 'পাবলিশড' : 'ড্রাফট'}
                 </Badge>
+                {course.price > 0 && (
+                  <Badge 
+                    className="absolute top-2 left-2 bg-amber-500 hover:bg-amber-600"
+                  >
+                    ৳{course.price.toLocaleString('bn-BD')}
+                  </Badge>
+                )}
               </div>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
+                  {course.price > 0 ? (
+                    <span className="text-sm font-semibold text-amber-600">৳{course.price.toLocaleString('bn-BD')}</span>
+                  ) : (
+                    <Badge variant="secondary" className="text-xs">ফ্রি</Badge>
+                  )}
+                </div>
                 {course.description && (
                   <CardDescription className="line-clamp-2">
                     {course.description}
@@ -909,6 +943,20 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 onChange={(e) => setCourseThumbnail(e.target.value)}
                 placeholder="https://..."
               />
+            </div>
+            <div className="space-y-2">
+              <Label>মূল্য (টাকা)</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="number"
+                  value={coursePrice}
+                  onChange={(e) => setCoursePrice(e.target.value)}
+                  placeholder="0"
+                  className="pl-10"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">ফ্রি কোর্সের জন্য ০ রাখুন</p>
             </div>
           </div>
           <DialogFooter>

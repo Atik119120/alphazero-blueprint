@@ -33,7 +33,9 @@ import {
   TrendingUp,
   Shield,
   Camera,
-  Edit
+  Edit,
+  DollarSign,
+  Banknote
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -168,16 +170,23 @@ export default function AdminDashboard() {
     );
   });
 
-  // Calculate course enrollment stats
+  // Calculate course enrollment stats with sales
   const courseEnrollmentStats = courses.map(course => {
     const enrollmentCount = passCodes.filter(pc => 
       pc.courses.some(c => c.id === course.id) && pc.student
     ).length;
+    const coursePrice = (course as any).price || 0;
+    const totalSales = enrollmentCount * coursePrice;
     return {
       ...course,
-      enrollmentCount
+      enrollmentCount,
+      price: coursePrice,
+      totalSales
     };
   }).sort((a, b) => b.enrollmentCount - a.enrollmentCount);
+
+  // Calculate total revenue
+  const totalRevenue = courseEnrollmentStats.reduce((sum, course) => sum + course.totalSales, 0);
 
   // Redirect non-admin users
   useEffect(() => {
@@ -566,7 +575,7 @@ export default function AdminDashboard() {
 
       <main className="container mx-auto px-4 py-8">
         {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           <div className="bg-gradient-to-br from-primary/5 to-cyan-500/5 border border-primary/20 rounded-2xl p-4 hover:border-primary/40 transition-colors">
             <div className="flex items-center gap-3">
               <div className="p-2.5 bg-gradient-to-br from-primary to-cyan-600 rounded-xl">
@@ -608,6 +617,17 @@ export default function AdminDashboard() {
               <div>
                 <p className="text-2xl font-bold text-foreground">{courses.filter(c => c.is_published).length}</p>
                 <p className="text-xs text-muted-foreground">প্রকাশিত</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-amber-500/5 to-orange-500/5 border border-amber-500/20 rounded-2xl p-4 hover:border-amber-500/40 transition-colors col-span-2 md:col-span-1">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl">
+                <Banknote className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-foreground">৳{totalRevenue.toLocaleString('bn-BD')}</p>
+                <p className="text-xs text-muted-foreground">মোট বিক্রি</p>
               </div>
             </div>
           </div>
@@ -825,13 +845,19 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Course Enrollment Stats */}
+            {/* Course Enrollment & Sales Stats */}
             <Card className="bg-gradient-to-r from-primary/5 to-cyan-500/5 border-primary/20">
               <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-primary" />
-                  কোর্স এনরোলমেন্ট পরিসংখ্যান
-                </CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-primary" />
+                    কোর্স এনরোলমেন্ট ও বিক্রি
+                  </CardTitle>
+                  <div className="flex items-center gap-2 text-sm">
+                    <Banknote className="w-4 h-4 text-amber-500" />
+                    <span className="font-semibold text-amber-600">মোট: ৳{totalRevenue.toLocaleString('bn-BD')}</span>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -840,10 +866,22 @@ export default function AdminDashboard() {
                       key={course.id} 
                       className="bg-white dark:bg-slate-800 rounded-xl p-3 border border-border hover:border-primary/50 transition-colors"
                     >
-                      <p className="text-2xl font-bold text-primary">{course.enrollmentCount}</p>
+                      <div className="flex items-center justify-between mb-1">
+                        <p className="text-2xl font-bold text-primary">{course.enrollmentCount}</p>
+                        {course.price > 0 && (
+                          <Badge variant="outline" className="text-xs text-amber-600 border-amber-300">
+                            ৳{course.price}
+                          </Badge>
+                        )}
+                      </div>
                       <p className="text-xs text-muted-foreground truncate" title={course.title}>
                         {course.title}
                       </p>
+                      {course.totalSales > 0 && (
+                        <p className="text-xs font-medium text-amber-600 mt-1">
+                          বিক্রি: ৳{course.totalSales.toLocaleString('bn-BD')}
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>
