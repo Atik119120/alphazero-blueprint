@@ -298,7 +298,7 @@ export default function StudentDashboard() {
             <img 
               src="/logo.png" 
               alt="AlphaZero Academy" 
-              className="w-10 h-10 object-contain"
+              className="w-10 h-10 object-contain dark:invert"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}

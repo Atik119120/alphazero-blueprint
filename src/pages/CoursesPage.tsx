@@ -23,7 +23,9 @@ import {
   Target,
   Award,
   Clock,
-  Wrench
+  Wrench,
+  Lock,
+  Loader2
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -38,6 +40,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { supabase } from "@/integrations/supabase/client";
 
 // Trainers based on existing team members with images
 const trainers = {
@@ -400,6 +403,7 @@ const CoursesPage = () => {
     name: "",
     mobile: "",
     email: "",
+    password: "",
     course: "",
     paymentType: ""
   });
@@ -416,19 +420,65 @@ const CoursesPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.mobile || !formData.email || !formData.course || !formData.paymentType) {
+    if (!formData.name || !formData.mobile || !formData.email || !formData.password || !formData.course || !formData.paymentType) {
       toast.error(t.fillAll);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error(isBn ? "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে" : "Password must be at least 6 characters");
       return;
     }
 
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    toast.success(t.success);
-    setFormData({ name: "", mobile: "", email: "", course: "", paymentType: "" });
-    setIsSubmitting(false);
+    try {
+      // Create student account using the edge function
+      const { data: studentData, error: studentError } = await supabase.functions.invoke('create-student', {
+        body: {
+          email: formData.email,
+          password: formData.password,
+          full_name: formData.name,
+        }
+      });
+
+      if (studentError) {
+        console.error('Student creation error:', studentError);
+        toast.error(isBn ? "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে" : "Failed to create account");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // If account created successfully, create enrollment request
+      if (studentData?.user?.id) {
+        // Get the course UUID from published courses
+        const { data: courseData } = await supabase
+          .from('courses')
+          .select('id')
+          .eq('is_published', true)
+          .ilike('title', `%${selectedCourse?.nameEn || formData.course}%`)
+          .maybeSingle();
+
+        if (courseData) {
+          await supabase.from('enrollment_requests').insert({
+            user_id: studentData.user.id,
+            course_id: courseData.id,
+            student_name: formData.name,
+            student_email: formData.email,
+            message: `Mobile: ${formData.mobile}, Payment: ${formData.paymentType}`,
+            status: 'pending',
+          });
+        }
+      }
+      
+      toast.success(t.success);
+      setFormData({ name: "", mobile: "", email: "", password: "", course: "", paymentType: "" });
+    } catch (error) {
+      console.error('Enrollment error:', error);
+      toast.error(isBn ? "কিছু সমস্যা হয়েছে" : "Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -665,7 +715,23 @@ const CoursesPage = () => {
               <p className="text-muted-foreground">
                 {t.admissionDesc}
               </p>
-            </div>
+                </div>
+
+                {/* Password */}
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-primary" />
+                    {isBn ? "পাসওয়ার্ড" : "Password"}
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder={isBn ? "কমপক্ষে ৬ অক্ষর" : "At least 6 characters"}
+                    value={formData.password}
+                    onChange={(e) => handleInputChange("password", e.target.value)}
+                    className="h-12"
+                  />
+                </div>
 
             <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-8 shadow-xl">
               <div className="space-y-6">
