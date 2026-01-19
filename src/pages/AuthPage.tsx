@@ -32,9 +32,9 @@ export default function AuthPage() {
   const { user, role, isLoading: authLoading, signIn, signUp } = useAuth();
   const navigate = useNavigate();
 
-  // Redirect if already logged in
+  // Redirect if already logged in and role is loaded
   useEffect(() => {
-    if (!authLoading && user) {
+    if (!authLoading && user && role) {
       if (role === 'admin') {
         navigate('/admin');
       } else {
@@ -66,7 +66,7 @@ export default function AuthPage() {
     }
 
     toast.success('সফলভাবে লগইন হয়েছে!');
-    navigate('/dashboard');
+    // Let useEffect handle the redirect after role is loaded
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -95,8 +95,8 @@ export default function AuthPage() {
       return;
     }
 
-    toast.success('অ্যাকাউন্ট তৈরি হয়েছে! এখন আপনার Pass Code দিয়ে লগইন করুন।');
-    navigate('/dashboard');
+    toast.success('অ্যাকাউন্ট তৈরি হয়েছে!');
+    // Let useEffect handle the redirect after role is loaded
   };
 
   return (
