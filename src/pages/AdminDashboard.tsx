@@ -267,52 +267,137 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      {/* Decorative Background Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 -left-40 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 right-1/3 w-72 h-72 bg-accent/10 rounded-full blur-3xl" />
+      </div>
+
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="relative border-b border-border/50 bg-card/80 backdrop-blur-xl sticky top-0 z-50 shadow-lg shadow-primary/5">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/logo.png" 
-              alt="Alpha Academy" 
-              className="w-10 h-10 rounded-xl object-contain"
-            />
+          <div className="flex items-center gap-4">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
+              <div className="relative bg-gradient-to-br from-primary to-primary/80 p-2.5 rounded-2xl">
+                <img 
+                  src="/logo.png" 
+                  alt="Alpha Academy" 
+                  className="w-8 h-8 object-contain brightness-0 invert"
+                />
+              </div>
+            </div>
             <div>
-              <h1 className="font-semibold text-lg">Alpha Academy</h1>
-              <p className="text-sm text-muted-foreground">{profile?.full_name}</p>
+              <h1 className="font-bold text-xl tracking-tight gradient-text">Alpha Academy</h1>
+              <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                {profile?.full_name}
+              </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => setShowProfileDialog(true)} className="gap-2">
+          <div className="flex items-center gap-3">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setShowProfileDialog(true)} 
+              className="gap-2 bg-card/50 backdrop-blur-sm border-border/50 hover:bg-primary/10 hover:border-primary/50 transition-all duration-300"
+            >
               <User className="w-4 h-4" />
-              প্রোফাইল
+              <span className="hidden sm:inline">প্রোফাইল</span>
             </Button>
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleLogout} 
+              className="gap-2 hover:bg-destructive/10 hover:text-destructive transition-all duration-300"
+            >
               <LogOut className="w-4 h-4" />
-              লগ আউট
+              <span className="hidden sm:inline">লগ আউট</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="relative container mx-auto px-4 py-8">
+        {/* Stats Overview */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-primary/10 rounded-xl">
+                <BookOpen className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{courses.length}</p>
+                <p className="text-xs text-muted-foreground">মোট কোর্স</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-green-500/10 rounded-xl">
+                <Key className="w-5 h-5 text-green-500" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{passCodes.filter(p => p.is_active).length}</p>
+                <p className="text-xs text-muted-foreground">সক্রিয় Pass Code</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-blue-500/10 rounded-xl">
+                <Users className="w-5 h-5 text-blue-500" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{passCodes.filter(p => p.student).length}</p>
+                <p className="text-xs text-muted-foreground">মোট ছাত্র</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-4 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 bg-purple-500/10 rounded-xl">
+                <Check className="w-5 h-5 text-purple-500" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{courses.filter(c => c.is_published).length}</p>
+                <p className="text-xs text-muted-foreground">প্রকাশিত</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-4">
-            <TabsTrigger value="courses" className="gap-2">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-card/60 backdrop-blur-sm border border-border/50 p-1.5 rounded-2xl h-auto">
+            <TabsTrigger 
+              value="courses" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+            >
               <BookOpen className="w-4 h-4" />
-              কোর্স
+              <span className="hidden sm:inline">কোর্স</span>
             </TabsTrigger>
-            <TabsTrigger value="passcodes" className="gap-2">
+            <TabsTrigger 
+              value="passcodes" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+            >
               <Key className="w-4 h-4" />
-              Pass Code
+              <span className="hidden sm:inline">Pass Code</span>
             </TabsTrigger>
-            <TabsTrigger value="students" className="gap-2">
+            <TabsTrigger 
+              value="students" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+            >
               <Users className="w-4 h-4" />
-              ছাত্র
+              <span className="hidden sm:inline">ছাত্র</span>
             </TabsTrigger>
-            <TabsTrigger value="profile" className="gap-2">
+            <TabsTrigger 
+              value="profile" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-lg transition-all duration-300"
+            >
               <User className="w-4 h-4" />
-              প্রোফাইল
+              <span className="hidden sm:inline">প্রোফাইল</span>
             </TabsTrigger>
           </TabsList>
 
