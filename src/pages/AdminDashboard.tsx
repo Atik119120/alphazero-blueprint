@@ -28,7 +28,11 @@ import {
   Copy,
   Check,
   X,
-  GripVertical
+  GripVertical,
+  User,
+  Lock,
+  Mail,
+  UserPlus
 } from 'lucide-react';
 import { Course, Video, PassCodeWithCourses } from '@/types/lms';
 
@@ -75,6 +79,22 @@ export default function AdminDashboard() {
   const [showAssignDialog, setShowAssignDialog] = useState(false);
   const [assigningPassCode, setAssigningPassCode] = useState<PassCodeWithCourses | null>(null);
   const [selectedCourseToAssign, setSelectedCourseToAssign] = useState('');
+
+  // Add student form state
+  const [showAddStudentDialog, setShowAddStudentDialog] = useState(false);
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudentEmail, setNewStudentEmail] = useState('');
+  const [newStudentPassword, setNewStudentPassword] = useState('');
+  const [newStudentPassCode, setNewStudentPassCode] = useState('');
+  const [addingStudent, setAddingStudent] = useState(false);
+
+  // Admin profile state
+  const [showProfileDialog, setShowProfileDialog] = useState(false);
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [changingPassword, setChangingPassword] = useState(false);
 
   // Redirect non-admin users
   useEffect(() => {
@@ -341,6 +361,139 @@ export default function AdminDashboard() {
     ? courses.filter(c => !assigningPassCode.courses.some(ac => ac.id === c.id))
     : [];
 
+  // Add student handler
+  const handleAddStudent = async () => {
+    if (!newStudentName.trim() || !newStudentEmail.trim() || !newStudentPassword.trim()) {
+      toast.error('সব তথ্য দিন');
+      return;
+    }
+
+    if (newStudentPassword.length < 6) {
+      toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      return;
+    }
+
+    setAddingStudent(true);
+
+    try {
+      // Create user via Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: newStudentEmail,
+        password: newStudentPassword,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            full_name: newStudentName,
+          },
+        },
+      });
+
+      if (authError) {
+        if (authError.message.includes('User already registered')) {
+          toast.error('এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে');
+        } else {
+          toast.error(authError.message);
+        }
+        setAddingStudent(false);
+        return;
+      }
+
+      if (authData.user) {
+        // Create profile
+        await supabase.from('profiles').insert({
+          user_id: authData.user.id,
+          full_name: newStudentName,
+          email: newStudentEmail,
+        });
+
+        // Assign student role
+        await supabase.from('user_roles').insert({
+          user_id: authData.user.id,
+          role: 'student',
+        });
+
+        // If passcode provided, link it
+        if (newStudentPassCode.trim()) {
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id')
+            .eq('user_id', authData.user.id)
+            .single();
+
+          if (profileData) {
+            const { data: passCodeData } = await supabase
+              .from('pass_codes')
+              .select('id')
+              .eq('code', newStudentPassCode.toUpperCase().trim())
+              .eq('is_active', true)
+              .maybeSingle();
+
+            if (passCodeData) {
+              await supabase
+                .from('pass_codes')
+                .update({ student_id: profileData.id })
+                .eq('id', passCodeData.id);
+            }
+          }
+        }
+
+        toast.success('ছাত্র সফলভাবে যোগ হয়েছে!');
+        setShowAddStudentDialog(false);
+        setNewStudentName('');
+        setNewStudentEmail('');
+        setNewStudentPassword('');
+        setNewStudentPassCode('');
+        refetchPassCodes();
+      }
+    } catch (error) {
+      toast.error('কিছু ভুল হয়েছে');
+    } finally {
+      setAddingStudent(false);
+    }
+  };
+
+  // Change password handler
+  const handleChangePassword = async () => {
+    if (!newPassword.trim() || !confirmPassword.trim()) {
+      toast.error('সব তথ্য দিন');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      toast.error('পাসওয়ার্ড মিলছে না');
+      return;
+    }
+
+    setChangingPassword(true);
+
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        setChangingPassword(false);
+        return;
+      }
+
+      toast.success('পাসওয়ার্ড পরিবর্তন হয়েছে!');
+      setShowPasswordDialog(false);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (error) {
+      toast.error('কিছু ভুল হয়েছে');
+    } finally {
+      setChangingPassword(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -355,16 +508,22 @@ export default function AdminDashboard() {
               <p className="text-sm text-muted-foreground">{profile?.full_name}</p>
             </div>
           </div>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
-            <LogOut className="w-4 h-4" />
-            লগ আউট
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={() => setShowProfileDialog(true)} className="gap-2">
+              <User className="w-4 h-4" />
+              প্রোফাইল
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2">
+              <LogOut className="w-4 h-4" />
+              লগ আউট
+            </Button>
+          </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsList className="grid w-full max-w-lg grid-cols-4">
             <TabsTrigger value="courses" className="gap-2">
               <BookOpen className="w-4 h-4" />
               কোর্স
@@ -377,8 +536,11 @@ export default function AdminDashboard() {
               <Users className="w-4 h-4" />
               ছাত্র
             </TabsTrigger>
+            <TabsTrigger value="profile" className="gap-2">
+              <User className="w-4 h-4" />
+              প্রোফাইল
+            </TabsTrigger>
           </TabsList>
-
           {/* Courses Tab */}
           <TabsContent value="courses" className="space-y-6">
             <div className="flex items-center justify-between">
@@ -627,33 +789,59 @@ export default function AdminDashboard() {
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
-            <h2 className="text-xl font-semibold">ছাত্র তালিকা</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold">ছাত্র তালিকা</h2>
+              <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2">
+                <UserPlus className="w-4 h-4" />
+                নতুন ছাত্র যোগ
+              </Button>
+            </div>
             
             {passCodes.filter(pc => pc.student).length === 0 ? (
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">কোনো ছাত্র নেই</p>
+                  <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
+                    <UserPlus className="w-4 h-4" />
+                    প্রথম ছাত্র যোগ করুন
+                  </Button>
                 </CardContent>
               </Card>
             ) : (
-              <div className="space-y-4">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {passCodes.filter(pc => pc.student).map((passCode) => (
-                  <Card key={passCode.id}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <p className="font-medium">{passCode.student?.full_name}</p>
-                          <p className="text-sm text-muted-foreground">{passCode.student?.email}</p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <code className="text-xs font-mono bg-muted px-2 py-0.5 rounded">
-                              {passCode.code}
-                            </code>
-                            <span className="text-xs text-muted-foreground">
-                              {passCode.courses.length} কোর্স
-                            </span>
-                          </div>
+                  <Card key={passCode.id} className="overflow-hidden">
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <User className="w-6 h-6 text-primary" />
                         </div>
+                        <div className="flex-1 min-w-0">
+                          <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
+                          <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
+                          {passCode.code}
+                        </code>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyPassCode(passCode.code)}
+                        >
+                          {copiedCode === passCode.code ? (
+                            <Check className="w-3 h-3 text-primary" />
+                          ) : (
+                            <Copy className="w-3 h-3" />
+                          )}
+                        </Button>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">{passCode.courses.length} কোর্স</span>
                         <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
                           {passCode.is_active ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
                         </Badge>
@@ -663,6 +851,56 @@ export default function AdminDashboard() {
                 ))}
               </div>
             )}
+          </TabsContent>
+
+          {/* Profile Tab */}
+          <TabsContent value="profile" className="space-y-6">
+            <h2 className="text-xl font-semibold">Admin প্রোফাইল</h2>
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    প্রোফাইল তথ্য
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="w-8 h-8 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-lg">{profile?.full_name}</p>
+                      <p className="text-sm text-muted-foreground">{profile?.email}</p>
+                      <Badge className="mt-2">Admin</Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Lock className="w-5 h-5" />
+                    পাসওয়ার্ড পরিবর্তন
+                  </CardTitle>
+                  <CardDescription>
+                    আপনার অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button 
+                    onClick={() => setShowPasswordDialog(true)} 
+                    variant="outline"
+                    className="w-full gap-2"
+                  >
+                    <Lock className="w-4 h-4" />
+                    পাসওয়ার্ড পরিবর্তন করুন
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </main>
@@ -856,6 +1094,170 @@ export default function AdminDashboard() {
             </Button>
             <Button onClick={handleAssignCourse} disabled={!selectedCourseToAssign}>
               যোগ করুন
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Student Dialog */}
+      <Dialog open={showAddStudentDialog} onOpenChange={setShowAddStudentDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="w-5 h-5" />
+              নতুন ছাত্র যোগ করুন
+            </DialogTitle>
+            <DialogDescription>
+              ছাত্রের তথ্য দিন এবং পাসকোড অ্যাসাইন করুন
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="student-name">পুরো নাম</Label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="student-name"
+                  value={newStudentName}
+                  onChange={(e) => setNewStudentName(e.target.value)}
+                  placeholder="ছাত্রের নাম"
+                  className="pl-10"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="student-email">ইমেইল</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="student-email"
+                  type="email"
+                  value={newStudentEmail}
+                  onChange={(e) => setNewStudentEmail(e.target.value)}
+                  placeholder="student@email.com"
+                  className="pl-10"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="student-password">পাসওয়ার্ড</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="student-password"
+                  type="password"
+                  value={newStudentPassword}
+                  onChange={(e) => setNewStudentPassword(e.target.value)}
+                  placeholder="কমপক্ষে ৬ অক্ষর"
+                  className="pl-10"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="student-passcode">Pass Code (ঐচ্ছিক)</Label>
+              <div className="relative">
+                <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  id="student-passcode"
+                  value={newStudentPassCode}
+                  onChange={(e) => setNewStudentPassCode(e.target.value.toUpperCase())}
+                  placeholder="বিদ্যমান Pass Code"
+                  className="pl-10 font-mono"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                বিদ্যমান Pass Code দিলে ছাত্র সেটার সাথে লিংক হবে
+              </p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowAddStudentDialog(false)}>
+              বাতিল
+            </Button>
+            <Button onClick={handleAddStudent} disabled={addingStudent}>
+              {addingStudent ? 'যোগ হচ্ছে...' : 'ছাত্র যোগ করুন'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Password Change Dialog */}
+      <Dialog open={showPasswordDialog} onOpenChange={setShowPasswordDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="w-5 h-5" />
+              পাসওয়ার্ড পরিবর্তন
+            </DialogTitle>
+            <DialogDescription>
+              নতুন পাসওয়ার্ড দিন
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="new-password">নতুন পাসওয়ার্ড</Label>
+              <Input
+                id="new-password"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="কমপক্ষে ৬ অক্ষর"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">পাসওয়ার্ড নিশ্চিত করুন</Label>
+              <Input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="আবার পাসওয়ার্ড দিন"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowPasswordDialog(false)}>
+              বাতিল
+            </Button>
+            <Button onClick={handleChangePassword} disabled={changingPassword}>
+              {changingPassword ? 'পরিবর্তন হচ্ছে...' : 'পাসওয়ার্ড পরিবর্তন'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Profile Dialog */}
+      <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Admin প্রোফাইল</DialogTitle>
+          </DialogHeader>
+          <div className="py-4 space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="w-10 h-10 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-xl">{profile?.full_name}</p>
+                <p className="text-muted-foreground">{profile?.email}</p>
+                <Badge className="mt-2">Admin</Badge>
+              </div>
+            </div>
+            <Button 
+              onClick={() => {
+                setShowProfileDialog(false);
+                setShowPasswordDialog(true);
+              }} 
+              variant="outline"
+              className="w-full gap-2"
+            >
+              <Lock className="w-4 h-4" />
+              পাসওয়ার্ড পরিবর্তন করুন
+            </Button>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => setShowProfileDialog(false)}>
+              বন্ধ করুন
             </Button>
           </DialogFooter>
         </DialogContent>
