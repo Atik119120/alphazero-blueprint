@@ -123,6 +123,20 @@ export default function AdminDashboard() {
   }>>([]);
   const [loadingAdmins, setLoadingAdmins] = useState(false);
 
+  // Enrollment requests state
+  const [enrollmentRequests, setEnrollmentRequests] = useState<Array<{
+    id: string;
+    user_id: string;
+    course_id: string;
+    student_name: string;
+    student_email: string;
+    status: string;
+    message: string | null;
+    created_at: string;
+    course?: { title: string };
+  }>>([]);
+  const [loadingRequests, setLoadingRequests] = useState(false);
+
   // Fetch all admins
   const fetchAdmins = async () => {
     setLoadingAdmins(true);
@@ -164,10 +178,119 @@ export default function AdminDashboard() {
     }
   };
 
-  // Fetch admins on mount
+  // Fetch enrollment requests
+  const fetchEnrollmentRequests = async () => {
+    setLoadingRequests(true);
+    try {
+      const { data, error } = await supabase
+        .from('enrollment_requests')
+        .select(`
+          *,
+          course:courses(title)
+        `)
+        .order('created_at', { ascending: false });
+
+      if (!error) {
+        setEnrollmentRequests((data || []) as any);
+      }
+    } catch (error) {
+      console.error('Error fetching enrollment requests:', error);
+    } finally {
+      setLoadingRequests(false);
+    }
+  };
+
+  // Approve enrollment request
+  const approveEnrollment = async (request: typeof enrollmentRequests[0]) => {
+    try {
+      // Get the student's profile
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('user_id', request.user_id)
+        .single();
+
+      if (!profile) {
+        toast.error('Student profile not found');
+        return;
+      }
+
+      // Get or create pass code for the student
+      let passCode = passCodes.find(pc => pc.student?.user_id === request.user_id);
+      
+      if (!passCode) {
+        // Create a new pass code
+        const newCode = Math.random().toString(36).substring(2, 10).toUpperCase();
+        const { data: newPassCode, error: pcError } = await supabase
+          .from('pass_codes')
+          .insert({
+            code: newCode,
+            student_id: profile.id,
+            is_active: true,
+            created_by: user!.id,
+          })
+          .select()
+          .single();
+
+        if (pcError) {
+          toast.error('Error creating pass code');
+          return;
+        }
+        passCode = { ...newPassCode, courses: [], student: null } as any;
+      }
+
+      // Assign the course to the pass code
+      const { error: assignError } = await supabase
+        .from('pass_code_courses')
+        .insert({
+          pass_code_id: passCode.id,
+          course_id: request.course_id,
+        });
+
+      if (assignError) {
+        if (assignError.code === '23505') {
+          toast.error('Course already assigned');
+        } else {
+          toast.error('Error assigning course');
+        }
+        return;
+      }
+
+      // Update request status
+      await supabase
+        .from('enrollment_requests')
+        .update({ status: 'approved' })
+        .eq('id', request.id);
+
+      toast.success(language === 'bn' ? 'অনুমোদিত হয়েছে' : 'Enrollment approved!');
+      fetchEnrollmentRequests();
+      refetchPassCodes();
+    } catch (error) {
+      console.error('Error approving enrollment:', error);
+      toast.error('Error approving enrollment');
+    }
+  };
+
+  // Reject enrollment request
+  const rejectEnrollment = async (requestId: string) => {
+    const { error } = await supabase
+      .from('enrollment_requests')
+      .update({ status: 'rejected' })
+      .eq('id', requestId);
+
+    if (error) {
+      toast.error('Error rejecting request');
+    } else {
+      toast.success(language === 'bn' ? 'প্রত্যাখ্যান করা হয়েছে' : 'Request rejected');
+      fetchEnrollmentRequests();
+    }
+  };
+
+  // Fetch admins and enrollment requests on mount
   useEffect(() => {
     if (user && isAdmin) {
       fetchAdmins();
+      fetchEnrollmentRequests();
     }
   }, [user, isAdmin]);
 
@@ -718,7 +841,7 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-3xl grid-cols-5 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm">
+          <TabsList className="grid w-full max-w-4xl grid-cols-6 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm">
             <TabsTrigger 
               value="courses" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
@@ -734,6 +857,18 @@ export default function AdminDashboard() {
               <span className="hidden sm:inline">{language === 'bn' ? 'এনালাইটিক্স' : 'Analytics'}</span>
             </TabsTrigger>
             <TabsTrigger 
+              value="requests" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all relative"
+            >
+              <Mail className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'bn' ? 'রিকোয়েস্ট' : 'Requests'}</span>
+              {enrollmentRequests.filter(r => r.status === 'pending').length > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                  {enrollmentRequests.filter(r => r.status === 'pending').length}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger 
               value="passcodes" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
@@ -747,7 +882,7 @@ export default function AdminDashboard() {
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">{language === 'bn' ? 'ছাত্র' : 'Students'}</span>
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="profile" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
             >
