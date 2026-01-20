@@ -246,14 +246,11 @@ const Navbar = () => {
               className="fixed top-0 right-0 bottom-0 w-[85%] max-w-[320px] z-50 lg:hidden"
             >
               <div className="h-full relative overflow-hidden flex flex-col">
-                {/* Glass Background */}
-                <div className="absolute inset-0 bg-background/70 backdrop-blur-2xl" />
+                {/* Glass Background - Clean, no glow */}
+                <div className="absolute inset-0 bg-background/80 backdrop-blur-2xl" />
                 
-                {/* Gradient Overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
-                
-                {/* Border glow effect */}
-                <div className="absolute left-0 top-0 bottom-0 w-px bg-gradient-to-b from-primary/30 via-border/50 to-primary/30" />
+                {/* Simple Border */}
+                <div className="absolute left-0 top-0 bottom-0 w-px bg-border/50" />
                 
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col">
