@@ -4,34 +4,42 @@ import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const AboutPage = () => {
   const { t } = useLanguage();
+  const { getContent } = usePageContent('about');
+
+  // Helper to get content with translation fallback
+  const c = (key: string, translationKey: string) => {
+    const dbContent = getContent(key);
+    return dbContent || t(translationKey);
+  };
 
   const values = [
     {
       icon: Target,
-      titleKey: "about.values.brandFocused",
-      descKey: "about.values.brandFocusedDesc",
+      title: c("values.brandFocused", "about.values.brandFocused"),
+      desc: c("values.brandFocusedDesc", "about.values.brandFocusedDesc"),
     },
     {
       icon: Zap,
-      titleKey: "about.values.zeroToImpact",
-      descKey: "about.values.zeroToImpactDesc",
+      title: c("values.zeroToImpact", "about.values.zeroToImpact"),
+      desc: c("values.zeroToImpactDesc", "about.values.zeroToImpactDesc"),
     },
     {
       icon: Globe,
-      titleKey: "about.values.globalReach",
-      descKey: "about.values.globalReachDesc",
+      title: c("values.globalReach", "about.values.globalReach"),
+      desc: c("values.globalReachDesc", "about.values.globalReachDesc"),
     },
   ];
 
   const whyChoose = [
-    "about.why1",
-    "about.why2",
-    "about.why3",
-    "about.why4",
-    "about.why5",
+    c("why1", "about.why1"),
+    c("why2", "about.why2"),
+    c("why3", "about.why3"),
+    c("why4", "about.why4"),
+    c("why5", "about.why5"),
   ];
 
   return (
@@ -47,7 +55,7 @@ const AboutPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
             >
-              {t("about.subtitle")}
+              {c("subtitle", "about.subtitle")}
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -55,7 +63,7 @@ const AboutPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              {t("about.title")} <span className="gradient-text">AlphaZero</span>
+              {c("title", "about.title")} <span className="gradient-text">AlphaZero</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -63,7 +71,7 @@ const AboutPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              {t("about.description")}
+              {c("description", "about.description")}
             </motion.p>
           </div>
         </div>
@@ -88,10 +96,10 @@ const AboutPage = () => {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
               >
                 <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">{t("about.story.badge")}</span>
+                <span className="text-sm font-medium text-primary">{c("story.badge", "about.story.badge")}</span>
               </motion.div>
               <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
-                {t("about.story.title")} <span className="gradient-text">AlphaZero</span> {t("about.story.title2")}
+                {c("story.title", "about.story.title")} <span className="gradient-text">AlphaZero</span> {c("story.title2", "about.story.title2")}
               </h2>
             </motion.div>
 
@@ -117,9 +125,9 @@ const AboutPage = () => {
                         <Rocket className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-2">{t("about.story.card1.title")}</h3>
+                        <h3 className="text-lg font-semibold mb-2">{c("story.card1.title", "about.story.card1.title")}</h3>
                         <p className="text-muted-foreground">
-                          {t("about.story.card1.desc")}
+                          {c("story.card1.desc", "about.story.card1.desc")}
                         </p>
                       </div>
                     </div>
@@ -137,9 +145,9 @@ const AboutPage = () => {
                         <Zap className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-2">{t("about.story.card2.title")}</h3>
+                        <h3 className="text-lg font-semibold mb-2">{c("story.card2.title", "about.story.card2.title")}</h3>
                         <p className="text-muted-foreground">
-                          {t("about.story.card2.desc")}
+                          {c("story.card2.desc", "about.story.card2.desc")}
                         </p>
                       </div>
                     </div>
@@ -157,9 +165,9 @@ const AboutPage = () => {
                         <Heart className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold mb-2">{t("about.story.card3.title")}</h3>
+                        <h3 className="text-lg font-semibold mb-2">{c("story.card3.title", "about.story.card3.title")}</h3>
                         <p className="text-muted-foreground">
-                          {t("about.story.card3.desc")}
+                          {c("story.card3.desc", "about.story.card3.desc")}
                         </p>
                       </div>
                     </div>
@@ -199,7 +207,7 @@ const AboutPage = () => {
                         transition={{ delay: 0.3 }}
                         className="text-primary text-xl font-semibold tracking-wide"
                       >
-                        {t("about.tagline")}
+                        {c("tagline", "about.tagline")}
                       </motion.p>
                     </div>
                   </motion.div>
@@ -211,7 +219,7 @@ const AboutPage = () => {
                     transition={{ delay: 0.4, type: "spring" }}
                     className="absolute -top-3 -right-3 px-3 py-1.5 rounded-full bg-primary text-primary-foreground font-medium text-xs"
                   >
-                    {t("about.badge.agency")}
+                    {c("badge.agency", "about.badge.agency")}
                   </motion.div>
                   <motion.div
                     initial={{ opacity: 0, scale: 0 }}
@@ -234,12 +242,12 @@ const AboutPage = () => {
                 >
                   <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-primary" />
-                    {t("about.whyChoose")}
+                    {c("whyChoose", "about.whyChoose")}
                   </h4>
                   <div className="grid grid-cols-1 gap-3">
-                    {whyChoose.map((itemKey, index) => (
+                    {whyChoose.map((item, index) => (
                       <motion.div 
-                        key={itemKey} 
+                        key={index} 
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
@@ -247,7 +255,7 @@ const AboutPage = () => {
                         className="flex items-center gap-3 group"
                       >
                         <div className="w-2 h-2 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{t(itemKey)}</span>
+                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -269,17 +277,17 @@ const AboutPage = () => {
               className="text-center mb-16"
             >
               <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                {t("about.values.title")}
+                {c("values.title", "about.values.title")}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                {t("about.values.subtitle")}
+                {c("values.subtitle", "about.values.subtitle")}
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {values.map((value, index) => (
                 <motion.div
-                  key={value.titleKey}
+                  key={value.title}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -289,8 +297,8 @@ const AboutPage = () => {
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
                     <value.icon size={24} className="text-primary" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold mb-3">{t(value.titleKey)}</h3>
-                  <p className="text-muted-foreground">{t(value.descKey)}</p>
+                  <h3 className="text-xl font-display font-semibold mb-3">{value.title}</h3>
+                  <p className="text-muted-foreground">{value.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -309,20 +317,20 @@ const AboutPage = () => {
           >
             <Globe size={48} className="text-primary mx-auto mb-6" />
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {t("about.location.title")}
+              {c("location.title", "about.location.title")}
             </h2>
             <p className="text-xl text-muted-foreground mb-2">
-              {t("about.location.address")}
+              {c("location.address", "about.location.address")}
             </p>
             <p className="text-muted-foreground mb-8">
-              {t("about.location.desc")}
+              {c("location.desc", "about.location.desc")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                {t("about.location.cta1")} <ArrowRight size={20} />
+                {c("location.cta1", "about.location.cta1")} <ArrowRight size={20} />
               </Link>
               <a
                 href="https://wa.me/8801410190019"
@@ -330,7 +338,7 @@ const AboutPage = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
               >
-                {t("about.location.cta2")}
+                {c("location.cta2", "about.location.cta2")}
               </a>
             </div>
           </motion.div>

@@ -34,6 +34,7 @@ const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?:
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const clientLogos = [
   "TechStart", "GreenLeaf", "Bloom Co", "NextGen", "Spark Digital", "CloudNine"
@@ -41,48 +42,55 @@ const clientLogos = [
 
 const Index = () => {
   const { t } = useLanguage();
+  const { getContent } = usePageContent('home');
+
+  // Helper to get content with translation fallback
+  const c = (key: string, translationKey: string) => {
+    const dbContent = getContent(key);
+    return dbContent || t(translationKey);
+  };
 
   const whyChooseUs = [
-    { icon: Palette, title: t("home.why.clean"), description: t("home.why.cleanDesc") },
-    { icon: Eye, title: t("home.why.brand"), description: t("home.why.brandDesc") },
-    { icon: Target, title: t("home.why.detail"), description: t("home.why.detailDesc") },
-    { icon: MessageSquare, title: t("home.why.client"), description: t("home.why.clientDesc") },
-    { icon: Gem, title: t("home.why.zero"), description: t("home.why.zeroDesc") },
+    { icon: Palette, title: c("why.clean", "home.why.clean"), description: c("why.cleanDesc", "home.why.cleanDesc") },
+    { icon: Eye, title: c("why.brand", "home.why.brand"), description: c("why.brandDesc", "home.why.brandDesc") },
+    { icon: Target, title: c("why.detail", "home.why.detail"), description: c("why.detailDesc", "home.why.detailDesc") },
+    { icon: MessageSquare, title: c("why.client", "home.why.client"), description: c("why.clientDesc", "home.why.clientDesc") },
+    { icon: Gem, title: c("why.zero", "home.why.zero"), description: c("why.zeroDesc", "home.why.zeroDesc") },
   ];
 
   const services = [
-    { icon: Layout, title: t("home.service.uiux"), description: t("home.service.uiuxDesc") },
-    { icon: Search, title: t("home.service.seo"), description: t("home.service.seoDesc") },
-    { icon: Monitor, title: t("home.service.web"), description: t("home.service.webDesc") },
-    { icon: ShoppingCart, title: t("home.service.ecommerce"), description: t("home.service.ecommerceDesc") },
-    { icon: Share2, title: t("home.service.social"), description: t("home.service.socialDesc") },
-    { icon: PenTool, title: t("home.service.branding"), description: t("home.service.brandingDesc") },
+    { icon: Layout, title: c("service.uiux", "home.service.uiux"), description: c("service.uiuxDesc", "home.service.uiuxDesc") },
+    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc") },
+    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc") },
+    { icon: ShoppingCart, title: c("service.ecommerce", "home.service.ecommerce"), description: c("service.ecommerceDesc", "home.service.ecommerceDesc") },
+    { icon: Share2, title: c("service.social", "home.service.social"), description: c("service.socialDesc", "home.service.socialDesc") },
+    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc") },
   ];
 
   const stats = [
-    { value: "50+", label: t("home.stats.projects") },
-    { value: "30+", label: t("home.stats.clients") },
-    { value: "3+", label: t("home.stats.years") },
-    { value: "100%", label: t("home.stats.satisfaction") },
+    { value: c("stats.projectsValue", "home.stats.projects") || "50+", label: c("stats.projectsLabel", "home.stats.projects") },
+    { value: c("stats.clientsValue", "home.stats.clients") || "30+", label: c("stats.clientsLabel", "home.stats.clients") },
+    { value: c("stats.yearsValue", "home.stats.years") || "3+", label: c("stats.yearsLabel", "home.stats.years") },
+    { value: c("stats.satisfactionValue", "home.stats.satisfaction") || "100%", label: c("stats.satisfactionLabel", "home.stats.satisfaction") },
   ];
 
   const testimonials = [
     {
-      name: t("home.testimonial1.name"),
-      role: t("home.testimonial1.role"),
-      content: t("home.testimonial1.content"),
+      name: c("testimonial1.name", "home.testimonial1.name"),
+      role: c("testimonial1.role", "home.testimonial1.role"),
+      content: c("testimonial1.content", "home.testimonial1.content"),
       rating: 5
     },
     {
-      name: t("home.testimonial2.name"),
-      role: t("home.testimonial2.role"),
-      content: t("home.testimonial2.content"),
+      name: c("testimonial2.name", "home.testimonial2.name"),
+      role: c("testimonial2.role", "home.testimonial2.role"),
+      content: c("testimonial2.content", "home.testimonial2.content"),
       rating: 5
     },
     {
-      name: t("home.testimonial3.name"),
-      role: t("home.testimonial3.role"),
-      content: t("home.testimonial3.content"),
+      name: c("testimonial3.name", "home.testimonial3.name"),
+      role: c("testimonial3.role", "home.testimonial3.role"),
+      content: c("testimonial3.content", "home.testimonial3.content"),
       rating: 5
     },
   ];
@@ -104,7 +112,7 @@ const Index = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-primary/20 mb-8 backdrop-blur-sm"
             >
               <Sparkles size={14} className="text-primary" />
-              <span className="text-sm text-foreground">{t("home.badge")}</span>
+              <span className="text-sm text-foreground">{c("badge", "home.badge")}</span>
             </motion.div>
 
             {/* Main Heading */}
@@ -114,8 +122,8 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-6"
             >
-              {t("home.title1")}{" "}
-              <span className="gradient-text">{t("home.title2")}</span>
+              {c("title1", "home.title1")}{" "}
+              <span className="gradient-text">{c("title2", "home.title2")}</span>
             </motion.h1>
 
             <motion.p
@@ -124,7 +132,7 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium text-primary mb-8"
             >
-              {t("home.tagline")}
+              {c("tagline", "home.tagline")}
             </motion.p>
 
             <motion.p
@@ -133,7 +141,7 @@ const Index = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
             >
-              {t("home.description")}
+              {c("description", "home.description")}
             </motion.p>
 
             {/* CTA Buttons */}
@@ -147,14 +155,14 @@ const Index = () => {
                 to="/contact"
                 className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2"
               >
-                {t("home.cta1")}
+                {c("cta1", "home.cta1")}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/work"
                 className="px-8 py-4 bg-transparent border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
               >
-                {t("home.cta2")}
+                {c("cta2", "home.cta2")}
               </Link>
             </motion.div>
 
@@ -276,13 +284,13 @@ const Index = () => {
             className="text-center mb-10"
           >
             <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
-              {t("home.expertise")}
+              {c("expertise", "home.expertise")}
             </span>
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
-              {t("home.whatWeDo")} <span className="gradient-text">{t("home.do")}</span>
+              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-sm lg:text-base">
-              {t("home.expertiseDesc")}
+              {c("expertiseDesc", "home.expertiseDesc")}
             </p>
           </motion.div>
 
@@ -315,7 +323,7 @@ const Index = () => {
               to="/services"
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
             >
-              {t("home.viewAllServices")} <ArrowRight size={18} />
+              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={18} />
             </Link>
           </motion.div>
         </div>
@@ -331,10 +339,10 @@ const Index = () => {
             className="text-center mb-10"
           >
             <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
-              {t("home.whyChoose")}
+              {c("whyChoose", "home.whyChoose")}
             </span>
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
-              {t("home.builtFor")} <span className="gradient-text">{t("home.yourSuccess")}</span>
+              {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
           </motion.div>
 
@@ -369,10 +377,10 @@ const Index = () => {
             className="text-center mb-10"
           >
             <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
-              {t("home.testimonials")}
+              {c("testimonials", "home.testimonials")}
             </span>
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
-              {t("home.whatClientsSay")} <span className="gradient-text">{t("home.say")}</span>
+              {c("whatClientsSay", "home.whatClientsSay")} <span className="gradient-text">{c("say", "home.say")}</span>
             </h2>
           </motion.div>
 
@@ -412,7 +420,7 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <p className="text-muted-foreground text-sm uppercase tracking-wider">{t("home.trustedBy")}</p>
+            <p className="text-muted-foreground text-sm uppercase tracking-wider">{c("trustedBy", "home.trustedBy")}</p>
           </motion.div>
           
           <motion.div
@@ -447,17 +455,17 @@ const Index = () => {
             className="max-w-3xl mx-auto text-center p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-card/80 to-accent/5 backdrop-blur-sm border border-primary/20"
           >
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {t("home.letsBuild")} <span className="gradient-text">{t("home.brand")}</span>
+              {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
             </h2>
             <p className="text-muted-foreground mb-6">
-              {t("home.readyTo")}
+              {c("readyTo", "home.readyTo")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                {t("home.freeConsultation")} <ArrowRight size={18} />
+                {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
               </Link>
               <a
                 href="https://wa.me/8801846484200"
@@ -466,7 +474,7 @@ const Index = () => {
                 className="inline-flex items-center gap-2 px-8 py-4 bg-background border border-border text-foreground rounded-xl font-medium hover:bg-secondary/80 transition-all duration-300"
               >
                 <MessageCircle size={18} />
-                {t("home.whatsappUs")}
+                {c("whatsappUs", "home.whatsappUs")}
               </a>
             </div>
           </motion.div>
