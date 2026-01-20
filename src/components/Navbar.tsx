@@ -6,7 +6,8 @@ import {
   Sun,
   Moon,
   ArrowUpRight,
-  Search
+  Search,
+  User
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
@@ -103,6 +104,15 @@ const Navbar = () => {
                 >
                   <Search size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
                 </button>
+
+                {/* Login Button */}
+                <Link
+                  to="/student/login"
+                  className="relative w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-secondary/80 transition-colors group"
+                  title={language === "bn" ? "লগইন" : "Login"}
+                >
+                  <User size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                </Link>
 
                 {/* Language Toggle - Creative */}
                 <button
@@ -308,6 +318,16 @@ const Navbar = () => {
                     >
                       <Search size={16} className="text-primary" />
                     </button>
+
+                    {/* Login Button - Mobile */}
+                    <Link
+                      to="/student/login"
+                      onClick={handleNavClick}
+                      className="w-11 h-11 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center"
+                      title={language === "bn" ? "লগইন" : "Login"}
+                    >
+                      <User size={16} className="text-primary" />
+                    </Link>
 
                     {/* Language */}
                     <button
