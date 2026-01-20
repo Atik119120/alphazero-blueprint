@@ -239,18 +239,18 @@ const Index = () => {
       </section>
 
       {/* Quick Stats Section */}
-      <section className="py-20 border-t border-border">
+      <section className="py-12 lg:py-16 border-t border-border/50">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
           >
             {stats.map((stat, index) => (
               <motion.div 
                 key={stat.label} 
-                className="text-center"
+                className="text-center p-4 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -267,26 +267,26 @@ const Index = () => {
       </section>
 
       {/* What We Do / Our Expertise Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-12 lg:py-16 bg-card/40 backdrop-blur-sm border-y border-border/30">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
               {t("home.expertise")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
               {t("home.whatWeDo")} <span className="gradient-text">{t("home.do")}</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-muted-foreground max-w-2xl mx-auto text-sm lg:text-base">
               {t("home.expertiseDesc")}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
@@ -294,13 +294,13 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500"
+                className="group p-5 lg:p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500"
               >
-                <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
-                  <service.icon size={28} className="text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                  <service.icon size={24} className="text-primary" />
                 </div>
-                <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
-                <p className="text-muted-foreground">{service.description}</p>
+                <h3 className="text-lg font-display font-semibold mb-2">{service.title}</h3>
+                <p className="text-muted-foreground text-sm">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -309,7 +309,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mt-12"
+            className="text-center mt-8"
           >
             <Link
               to="/services"
@@ -322,23 +322,23 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20">
+      <section className="py-12 lg:py-16">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
               {t("home.whyChoose")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
               {t("home.builtFor")} <span className="gradient-text">{t("home.yourSuccess")}</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
             {whyChooseUs.map((item, index) => (
               <motion.div
                 key={item.title}
@@ -346,12 +346,12 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-6 rounded-2xl bg-card/80 border border-border hover:border-primary/30 transition-all duration-500"
+                className="group p-5 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500"
               >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                  <item.icon size={24} className="text-primary" />
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors duration-300">
+                  <item.icon size={20} className="text-primary" />
                 </div>
-                <h3 className="text-lg font-display font-semibold mb-2">{item.title}</h3>
+                <h3 className="text-base font-display font-semibold mb-2">{item.title}</h3>
                 <p className="text-muted-foreground text-sm">{item.description}</p>
               </motion.div>
             ))}
@@ -360,23 +360,23 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-12 lg:py-16 bg-card/40 backdrop-blur-sm border-y border-border/30">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
               {t("home.testimonials")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
               {t("home.whatClientsSay")} <span className="gradient-text">{t("home.say")}</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-4 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.name}
@@ -384,18 +384,18 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-8 rounded-2xl bg-card border border-border"
+                className="p-5 lg:p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
               >
-                <Quote size={32} className="text-primary/20 mb-4" />
-                <p className="text-foreground mb-6 leading-relaxed">{testimonial.content}</p>
-                <div className="flex items-center gap-1 mb-4">
+                <Quote size={24} className="text-primary/30 mb-3" />
+                <p className="text-foreground mb-4 leading-relaxed text-sm">{testimonial.content}</p>
+                <div className="flex items-center gap-1 mb-3">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={16} className="text-primary fill-primary" />
+                    <Star key={i} size={14} className="text-primary fill-primary" />
                   ))}
                 </div>
                 <div>
-                  <p className="font-display font-semibold">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                  <p className="font-display font-semibold text-sm">{testimonial.name}</p>
+                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
                 </div>
               </motion.div>
             ))}
@@ -404,13 +404,13 @@ const Index = () => {
       </section>
 
       {/* Client Logos Section */}
-      <section className="py-16 border-t border-border">
+      <section className="py-10 border-t border-border/30">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-8"
           >
             <p className="text-muted-foreground text-sm uppercase tracking-wider">{t("home.trustedBy")}</p>
           </motion.div>
@@ -419,7 +419,7 @@ const Index = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="flex flex-wrap justify-center items-center gap-8 md:gap-16 max-w-4xl mx-auto"
+            className="flex flex-wrap justify-center items-center gap-6 md:gap-12 max-w-4xl mx-auto"
           >
             {clientLogos.map((client, index) => (
               <motion.div
@@ -428,7 +428,7 @@ const Index = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="text-xl font-display font-bold text-muted-foreground/50 hover:text-primary/70 transition-colors duration-300"
+                className="text-lg font-display font-bold text-muted-foreground/40 hover:text-primary/70 transition-colors duration-300"
               >
                 {client}
               </motion.div>
@@ -438,34 +438,34 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24">
+      <section className="py-16 lg:py-20">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            className="max-w-3xl mx-auto text-center p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-card/80 to-accent/5 backdrop-blur-sm border border-primary/20"
           >
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6">
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
               {t("home.letsBuild")} <span className="gradient-text">{t("home.brand")}</span>
             </h2>
-            <p className="text-muted-foreground text-lg mb-8">
+            <p className="text-muted-foreground mb-6">
               {t("home.readyTo")}
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-10 py-5 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                {t("home.freeConsultation")} <ArrowRight size={20} />
+                {t("home.freeConsultation")} <ArrowRight size={18} />
               </Link>
               <a
                 href="https://wa.me/8801846484200"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-10 py-5 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-background border border-border text-foreground rounded-xl font-medium hover:bg-secondary/80 transition-all duration-300"
               >
-                <MessageCircle size={20} />
+                <MessageCircle size={18} />
                 {t("home.whatsappUs")}
               </a>
             </div>
