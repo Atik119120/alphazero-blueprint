@@ -111,7 +111,7 @@ export default function StudentLoginPage() {
       if (data?.otp) {
         setGeneratedOtp(data.otp);
         setShowOtpVerification(true);
-        setOtpTimer(600); // 10 minutes
+        setOtpTimer(120); // 2 minutes
         setOtp(['', '', '', '', '', '']);
         toast.success('✉️ ভেরিফিকেশন কোড আপনার ইমেইলে পাঠানো হয়েছে');
         
@@ -203,8 +203,8 @@ export default function StudentLoginPage() {
   };
 
   const resendOtp = async () => {
-    if (otpTimer > 540) { // Can resend after 1 minute (600 - 60 = 540)
-      toast.error('১ মিনিট পর আবার চেষ্টা করুন');
+    if (otpTimer > 90) { // Can resend after 30 seconds (120 - 30 = 90)
+      toast.error('৩০ সেকেন্ড পর আবার চেষ্টা করুন');
       return;
     }
     await sendOtp();
@@ -354,7 +354,7 @@ export default function StudentLoginPage() {
                     variant="ghost" 
                     size="sm"
                     onClick={resendOtp}
-                    disabled={sendingOtp || otpTimer > 540}
+                    disabled={sendingOtp || otpTimer > 90}
                     className="gap-1"
                   >
                     {sendingOtp ? (

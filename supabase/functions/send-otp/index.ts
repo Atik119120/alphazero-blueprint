@@ -79,7 +79,7 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
             
             <p style="color: #9ca3af; font-size: 13px; margin: 0 0 10px 0; text-align: center;">
-              ⏰ এই কোডটি ১০ মিনিটের মধ্যে মেয়াদ উত্তীর্ণ হবে
+              ⏰ এই কোডটি ২ মিনিটের মধ্যে মেয়াদ উত্তীর্ণ হবে
             </p>
             
             <div style="border-top: 1px solid #e5e7eb; margin: 25px 0; padding-top: 20px;">
