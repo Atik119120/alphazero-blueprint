@@ -280,6 +280,87 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          created_at: string
+          description: string | null
+          features: string[] | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          order_index: number | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          features?: string[] | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          features?: string[] | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          order_index?: number | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          bio: string | null
+          created_at: string
+          facebook_url: string | null
+          id: string
+          image_url: string | null
+          instagram_url: string | null
+          is_active: boolean | null
+          linkedin_url: string | null
+          name: string
+          order_index: number | null
+          role: string
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          facebook_url?: string | null
+          id?: string
+          image_url?: string | null
+          instagram_url?: string | null
+          is_active?: boolean | null
+          linkedin_url?: string | null
+          name: string
+          order_index?: number | null
+          role: string
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          facebook_url?: string | null
+          id?: string
+          image_url?: string | null
+          instagram_url?: string | null
+          is_active?: boolean | null
+          linkedin_url?: string | null
+          name?: string
+          order_index?: number | null
+          role?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -420,6 +501,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      works: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          order_index: number | null
+          project_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          order_index?: number | null
+          project_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          order_index?: number | null
+          project_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {

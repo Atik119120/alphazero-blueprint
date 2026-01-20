@@ -43,10 +43,16 @@ import {
   Sun,
   Languages,
   BarChart3,
-  PieChart
+  PieChart,
+  Briefcase,
+  UsersRound,
+  Wrench
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
+import { WorksManagement } from '@/components/admin/WorksManagement';
+import { TeamManagement } from '@/components/admin/TeamManagement';
+import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
 // Chart colors
@@ -804,7 +810,7 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-4xl grid-cols-6 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm">
+          <TabsList className="grid w-full max-w-6xl grid-cols-9 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm overflow-x-auto">
             <TabsTrigger 
               value="courses" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
@@ -844,6 +850,27 @@ export default function AdminDashboard() {
             >
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">{language === 'bn' ? 'ছাত্র' : 'Students'}</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="works" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
+            >
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">Works</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="team" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
+            >
+              <UsersRound className="w-4 h-4" />
+              <span className="hidden sm:inline">Team</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="services" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
+            >
+              <Wrench className="w-4 h-4" />
+              <span className="hidden sm:inline">Services</span>
             </TabsTrigger>
             <TabsTrigger
               value="profile" 
@@ -1636,6 +1663,21 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+          </TabsContent>
+
+          {/* Works Tab */}
+          <TabsContent value="works" className="space-y-6">
+            <WorksManagement />
+          </TabsContent>
+
+          {/* Team Tab */}
+          <TabsContent value="team" className="space-y-6">
+            <TeamManagement />
+          </TabsContent>
+
+          {/* Services Tab */}
+          <TabsContent value="services" className="space-y-6">
+            <ServicesManagement />
           </TabsContent>
 
           {/* Profile Tab */}
