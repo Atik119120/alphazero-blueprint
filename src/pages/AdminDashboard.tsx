@@ -207,71 +207,30 @@ export default function AdminDashboard() {
   // Approve enrollment request
   const approveEnrollment = async (request: typeof enrollmentRequests[0]) => {
     try {
-      // Get the student's profile
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('user_id', request.user_id)
-        .single();
-
-      if (!profile) {
-        toast.error('Student profile not found');
-        return;
-      }
-
-      // Get or create pass code for the student
-      let passCode = passCodes.find(pc => pc.student?.user_id === request.user_id);
+      toast.loading(language === 'bn' ? 'অনুমোদন করা হচ্ছে...' : 'Approving...', { id: 'approve' });
       
-      if (!passCode) {
-        // Create a new pass code
-        const newCode = Math.random().toString(36).substring(2, 10).toUpperCase();
-        const { data: newPassCode, error: pcError } = await supabase
-          .from('pass_codes')
-          .insert({
-            code: newCode,
-            student_id: profile.id,
-            is_active: true,
-            created_by: user!.id,
-          })
-          .select()
-          .single();
+      // Call approve-enrollment edge function
+      const { data, error } = await supabase.functions.invoke('approve-enrollment', {
+        body: { enrollment_id: request.id }
+      });
 
-        if (pcError) {
-          toast.error('Error creating pass code');
-          return;
-        }
-        passCode = { ...newPassCode, courses: [], student: null } as any;
-      }
-
-      // Assign the course to the pass code
-      const { error: assignError } = await supabase
-        .from('pass_code_courses')
-        .insert({
-          pass_code_id: passCode.id,
-          course_id: request.course_id,
-        });
-
-      if (assignError) {
-        if (assignError.code === '23505') {
-          toast.error('Course already assigned');
-        } else {
-          toast.error('Error assigning course');
-        }
+      if (error) {
+        console.error('Approve error:', error);
+        toast.error(language === 'bn' ? 'অনুমোদন করতে সমস্যা হয়েছে' : 'Error approving enrollment', { id: 'approve' });
         return;
       }
 
-      // Update request status
-      await supabase
-        .from('enrollment_requests')
-        .update({ status: 'approved' })
-        .eq('id', request.id);
+      if (data?.error) {
+        toast.error(data.error, { id: 'approve' });
+        return;
+      }
 
-      toast.success(language === 'bn' ? 'অনুমোদিত হয়েছে' : 'Enrollment approved!');
+      toast.success(language === 'bn' ? 'অনুমোদিত! Student account তৈরি হয়েছে।' : 'Approved! Student account created.', { id: 'approve' });
       fetchEnrollmentRequests();
       refetchPassCodes();
     } catch (error) {
       console.error('Error approving enrollment:', error);
-      toast.error('Error approving enrollment');
+      toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error approving enrollment', { id: 'approve' });
     }
   };
 
