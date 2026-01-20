@@ -806,37 +806,46 @@ export default function AdminDashboard() {
           </div>
         </nav>
 
-        {/* Footer Actions */}
-        <div className="p-2 md:p-3 border-t border-border/50 space-y-1">
-          <div className="flex md:flex-col gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-              className="flex-1 md:w-full justify-center md:justify-start gap-2 h-8 text-xs"
-            >
-              <Languages className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">{language === 'bn' ? 'English' : 'বাংলা'}</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="flex-1 md:w-full justify-center md:justify-start gap-2 h-8 text-xs"
-            >
-              {theme === 'dark' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-              <span className="hidden md:inline">{theme === 'dark' ? 'Light' : 'Dark'}</span>
-            </Button>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleLogout}
-            className="w-full justify-center md:justify-start gap-2 h-8 text-xs text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+        {/* Footer Actions - Language, Theme, Logout */}
+        <div className="p-2 md:p-3 border-t border-border/50 space-y-2">
+          {/* Language Toggle */}
+          <button
+            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+            className="w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400"
           >
-            <LogOut className="w-3.5 h-3.5" />
-            <span className="hidden md:inline">{language === 'bn' ? 'লগ আউট' : 'Logout'}</span>
-          </Button>
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+              <Languages className="w-4 h-4 text-white" />
+            </div>
+            <span className="hidden md:inline font-semibold">
+              {language === 'bn' ? 'English' : 'বাংলা'}
+            </span>
+          </button>
+          
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border border-amber-500/20 text-amber-600 dark:text-amber-400"
+          >
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-white" /> : <Moon className="w-4 h-4 text-white" />}
+            </div>
+            <span className="hidden md:inline font-semibold">
+              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </span>
+          </button>
+          
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-red-500/10 to-rose-500/10 hover:from-red-500/20 hover:to-rose-500/20 border border-red-500/20 text-red-600 dark:text-red-400"
+          >
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center flex-shrink-0">
+              <LogOut className="w-4 h-4 text-white" />
+            </div>
+            <span className="hidden md:inline font-semibold">
+              {language === 'bn' ? 'লগ আউট' : 'Logout'}
+            </span>
+          </button>
         </div>
       </aside>
 
