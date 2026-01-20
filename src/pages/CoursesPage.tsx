@@ -515,41 +515,34 @@ const CoursesPage = () => {
     setIsSubmitting(true);
     
     try {
-      const { data: studentData, error: studentError } = await supabase.functions.invoke('create-student', {
+      // Use public-enrollment edge function to create student and enrollment request
+      const { data, error } = await supabase.functions.invoke('public-enrollment', {
         body: {
+          full_name: formData.name,
           email: formData.email,
           password: formData.password,
-          full_name: formData.name,
+          phone_number: formData.mobile,
+          course_id: formData.course,
+          payment_method: formData.paymentMethod,
+          transaction_id: formData.transactionId,
+          payment_type: formData.paymentType,
         }
       });
 
-      if (studentError) {
-        console.error('Student creation error:', studentError);
-        toast.error(isBn ? "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে" : "Failed to create account");
+      if (error) {
+        console.error('Enrollment error:', error);
+        toast.error(isBn ? "সমস্যা হয়েছে, আবার চেষ্টা করুন" : "Something went wrong, please try again");
         setIsSubmitting(false);
         return;
       }
 
-      if (studentData?.user?.id && selectedCourse) {
-        const { error: enrollmentError } = await supabase.from('enrollment_requests').insert({
-          user_id: studentData.user.id,
-          course_id: selectedCourse.id,
-          student_name: formData.name,
-          student_email: formData.email,
-          phone_number: formData.mobile,
-          payment_method: formData.paymentMethod,
-          transaction_id: formData.transactionId,
-          message: `Payment Type: ${formData.paymentType}`,
-          status: 'pending',
-        });
-
-        if (enrollmentError) {
-          console.error('Enrollment request error:', enrollmentError);
-          // Still show success since account was created, admin will see the student
-        }
+      if (data?.error) {
+        toast.error(data.error);
+        setIsSubmitting(false);
+        return;
       }
       
-      toast.success(t.success);
+      toast.success(data?.message || t.success);
       setFormData({ name: "", mobile: "", email: "", password: "", course: "", paymentType: "", paymentMethod: "", transactionId: "" });
     } catch (error) {
       console.error('Enrollment error:', error);
