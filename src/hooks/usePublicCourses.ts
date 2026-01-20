@@ -1,15 +1,33 @@
-import { useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Course } from '@/types/lms';
+import { useEffect } from 'react';
 
 export function usePublicCourses() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const fetchPublicCourses = async () => {
-    setIsLoading(true);
-    try {
+  // Set up realtime subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('courses-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'courses' },
+        () => {
+          // Invalidate and refetch when data changes
+          queryClient.invalidateQueries({ queryKey: ['public-courses'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
+  const { data: courses = [], isLoading, error, refetch } = useQuery({
+    queryKey: ['public-courses'],
+    queryFn: async () => {
       const { data, error } = await supabase
         .from('courses')
         .select('*')
@@ -17,17 +35,16 @@ export function usePublicCourses() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setCourses((data || []) as Course[]);
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+      return (data || []) as Course[];
+    },
+    staleTime: 0, // Always refetch for realtime updates
+    refetchOnWindowFocus: true,
+  });
+
+  return { 
+    courses, 
+    isLoading, 
+    error: error ? (error instanceof Error ? error.message : 'An error occurred') : null, 
+    refetch 
   };
-
-  useEffect(() => {
-    fetchPublicCourses();
-  }, []);
-
-  return { courses, isLoading, error, refetch: fetchPublicCourses };
 }

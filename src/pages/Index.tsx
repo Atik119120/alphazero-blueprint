@@ -68,21 +68,21 @@ const Index = () => {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "CEO, TechStart",
-      content: "AlphaZero transformed our brand completely. Their attention to detail and creative vision exceeded our expectations.",
+      name: t("home.testimonial1.name"),
+      role: t("home.testimonial1.role"),
+      content: t("home.testimonial1.content"),
       rating: 5
     },
     {
-      name: "Michael Chen",
-      role: "Founder, GreenLeaf",
-      content: "Professional, responsive, and incredibly talented. They delivered our website ahead of schedule with stunning results.",
+      name: t("home.testimonial2.name"),
+      role: t("home.testimonial2.role"),
+      content: t("home.testimonial2.content"),
       rating: 5
     },
     {
-      name: "Emily Rodriguez",
-      role: "Marketing Director, Bloom Co",
-      content: "The best design agency we've worked with. Their social media designs increased our engagement by 300%.",
+      name: t("home.testimonial3.name"),
+      role: t("home.testimonial3.role"),
+      content: t("home.testimonial3.content"),
       rating: 5
     },
   ];

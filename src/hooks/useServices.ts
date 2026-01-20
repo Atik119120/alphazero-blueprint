@@ -46,6 +46,7 @@ export function useServices() {
       if (error) throw error;
       return data as Service[];
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0, // Always refetch for realtime updates
+    refetchOnWindowFocus: true,
   });
 }
