@@ -1,9 +1,9 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -35,10 +35,78 @@ import VerifyCertificatePage from "./pages/VerifyCertificatePage";
 
 const queryClient = new QueryClient();
 
-const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const handlePreloaderComplete = useCallback(() => setIsLoading(false), []);
+// LMS routes where preloader should be skipped
+const LMS_ROUTES = [
+  '/admin/login',
+  '/student/login',
+  '/auth',
+  '/dashboard',
+  '/passcode',
+  '/admin',
+  '/student',
+  '/my-certificates',
+  '/certificate',
+  '/verify-certificate'
+];
 
+function AppContent() {
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [preloaderShown, setPreloaderShown] = useState(false);
+  
+  const handlePreloaderComplete = useCallback(() => {
+    setIsLoading(false);
+    setPreloaderShown(true);
+  }, []);
+
+  // Check if current route is an LMS route
+  const isLmsRoute = LMS_ROUTES.some(route => location.pathname.startsWith(route));
+
+  // Skip preloader for LMS routes or if already shown
+  useEffect(() => {
+    if (isLmsRoute || preloaderShown) {
+      setIsLoading(false);
+    }
+  }, [isLmsRoute, preloaderShown]);
+
+  const showPreloader = isLoading && !isLmsRoute && !preloaderShown;
+
+  return (
+    <>
+      {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
+      <ScrollToTop />
+      <AIChatbot />
+      
+      <Routes>
+        {/* Main site routes */}
+        <Route path="/" element={<Index />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/work" element={<WorkPage />} />
+        <Route path="/team" element={<TeamPage />} />
+        <Route path="/join-team" element={<JoinTeamPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        
+        {/* LMS routes */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/student/login" element={<StudentLoginPage />} />
+        <Route path="/auth" element={<StudentLoginPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/passcode" element={<PassCodePage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/my-certificates" element={<MyCertificatesPage />} />
+        <Route path="/certificate/:certificateId" element={<CertificatePage />} />
+        <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
+  );
+}
+
+const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
@@ -47,36 +115,8 @@ const App = () => {
             <TooltipProvider>
               <Toaster />
               <Sonner />
-              {isLoading && <Preloader onComplete={handlePreloaderComplete} />}
               <BrowserRouter>
-                <ScrollToTop />
-                <AIChatbot />
-                
-                <Routes>
-                  {/* Main site routes */}
-                  <Route path="/" element={<Index />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/services" element={<ServicesPage />} />
-                  <Route path="/work" element={<WorkPage />} />
-                  <Route path="/team" element={<TeamPage />} />
-                  <Route path="/join-team" element={<JoinTeamPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/courses" element={<CoursesPage />} />
-                  
-                  {/* LMS routes */}
-                  <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route path="/student/login" element={<StudentLoginPage />} />
-                  <Route path="/auth" element={<StudentLoginPage />} /> {/* Fallback for old /auth route */}
-                  <Route path="/dashboard" element={<DashboardPage />} />
-                  <Route path="/passcode" element={<PassCodePage />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/student" element={<StudentDashboard />} />
-                  <Route path="/my-certificates" element={<MyCertificatesPage />} />
-                  <Route path="/certificate/:certificateId" element={<CertificatePage />} />
-                  <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
-                  
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                <AppContent />
               </BrowserRouter>
             </TooltipProvider>
           </AuthProvider>
