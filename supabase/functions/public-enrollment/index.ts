@@ -154,33 +154,44 @@ Deno.serve(async (req) => {
 
     if (telegramBotToken && telegramChatId) {
       try {
-        const message = `🎓 *নতুন এনরোলমেন্ট রিকোয়েস্ট!*
+        console.log("Sending Telegram notification to chat_id:", telegramChatId);
+        
+        const message = `🎓 নতুন এনরোলমেন্ট রিকোয়েস্ট!
 
-👤 *নাম:* ${full_name.trim()}
-📧 *ইমেইল:* ${email.trim().toLowerCase()}
-📱 *মোবাইল:* ${phone_number.trim()}
-📚 *কোর্স:* ${courseData.title}
-💰 *মূল্য:* ৳${courseData.price || 0}
-💳 *পেমেন্ট:* ${payment_method}
-🔢 *Transaction ID:* ${transaction_id.trim()}
-📋 *পেমেন্ট টাইপ:* ${payment_type}
+👤 নাম: ${full_name.trim()}
+📧 ইমেইল: ${email.trim().toLowerCase()}
+📱 মোবাইল: ${phone_number.trim()}
+📚 কোর্স: ${courseData.title}
+💰 মূল্য: ৳${courseData.price || 0}
+💳 পেমেন্ট: ${payment_method}
+🔢 Transaction ID: ${transaction_id.trim()}
+📋 পেমেন্ট টাইপ: ${payment_type}
 
 ✅ Admin Panel-এ গিয়ে approve করুন।`;
 
-        await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+        const telegramResponse = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: telegramChatId,
             text: message,
-            parse_mode: "Markdown",
           }),
         });
-        console.log("Telegram notification sent");
+        
+        const telegramResult = await telegramResponse.json();
+        console.log("Telegram API response:", JSON.stringify(telegramResult));
+        
+        if (!telegramResult.ok) {
+          console.error("Telegram error:", telegramResult.description);
+        } else {
+          console.log("Telegram notification sent successfully");
+        }
       } catch (telegramError) {
         console.error("Telegram notification failed:", telegramError);
         // Don't fail the request if notification fails
       }
+    } else {
+      console.log("Telegram not configured. Token:", !!telegramBotToken, "ChatId:", !!telegramChatId);
     }
 
     return new Response(
