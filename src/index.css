@@ -116,36 +116,44 @@
     font-family: var(--font-body);
   }
 
-  /* Light mode texture - more visible */
+  /* Light mode premium background */
   :root body {
-    background-image: 
-      radial-gradient(circle at 15% 15%, hsl(185 100% 50% / 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 85% 20%, hsl(200 100% 50% / 0.06) 0%, transparent 35%),
-      radial-gradient(circle at 75% 75%, hsl(185 100% 45% / 0.07) 0%, transparent 45%),
-      radial-gradient(circle at 25% 80%, hsl(200 100% 55% / 0.05) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, hsl(185 100% 40% / 0.04) 0%, transparent 60%);
+    background: 
+      linear-gradient(135deg, hsl(210 30% 97%) 0%, hsl(185 20% 96%) 50%, hsl(200 25% 97%) 100%);
     background-attachment: fixed;
   }
 
-  /* Light mode grid pattern - more visible */
+  /* Light mode decorative elements */
   :root body::before {
     content: '';
     position: fixed;
     inset: 0;
     background-image: 
-      linear-gradient(hsl(185 50% 75% / 0.4) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(185 50% 75% / 0.4) 1px, transparent 1px);
-    background-size: 50px 50px;
+      radial-gradient(ellipse 80% 50% at 20% 40%, hsl(185 100% 50% / 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 60%, hsl(200 100% 55% / 0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 30% at 50% 90%, hsl(185 80% 60% / 0.04) 0%, transparent 50%);
     pointer-events: none;
     z-index: -1;
   }
 
-  .dark body::before {
+  /* Light mode subtle dot pattern */
+  :root body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(circle at center, hsl(185 50% 50% / 0.08) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .dark body::before,
+  .dark body::after {
     display: none;
   }
   
   .dark body {
-    background-image: none;
+    background: hsl(var(--background));
   }
 
   h1, h2, h3, h4, h5, h6 {
