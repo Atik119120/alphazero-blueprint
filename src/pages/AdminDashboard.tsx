@@ -48,7 +48,8 @@ import {
   UsersRound,
   Wrench,
   Settings,
-  FileText
+  FileText,
+  Link2
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -57,6 +58,7 @@ import { TeamManagement } from '@/components/admin/TeamManagement';
 import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
+import FooterManagement from '@/components/admin/FooterManagement';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
 // Chart colors
@@ -814,7 +816,7 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-7xl grid-cols-11 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm overflow-x-auto">
+          <TabsList className="grid w-full max-w-7xl grid-cols-12 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm overflow-x-auto">
             <TabsTrigger 
               value="courses" 
               className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
@@ -882,6 +884,13 @@ export default function AdminDashboard() {
             >
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">{language === 'bn' ? 'কনটেন্ট' : 'Content'}</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="footer" 
+              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
+            >
+              <Link2 className="w-4 h-4" />
+              <span className="hidden sm:inline">{language === 'bn' ? 'ফুটার' : 'Footer'}</span>
             </TabsTrigger>
             <TabsTrigger 
               value="settings" 
@@ -1701,6 +1710,11 @@ export default function AdminDashboard() {
           {/* Content Tab */}
           <TabsContent value="content" className="space-y-6">
             <PageContentManagement />
+          </TabsContent>
+
+          {/* Footer Tab */}
+          <TabsContent value="footer" className="space-y-6">
+            <FooterManagement />
           </TabsContent>
 
           {/* Settings Tab */}
