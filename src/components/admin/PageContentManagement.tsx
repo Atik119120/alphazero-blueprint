@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "sonner";
-import { FileText, Home, Info, Phone, Plus, Save, Loader2, Trash2, Pencil } from "lucide-react";
+import { FileText, Home, Info, Phone, Plus, Save, Loader2, Trash2, Pencil, Briefcase, Users, Wrench } from "lucide-react";
 
 interface PageContent {
   id: string;
@@ -18,6 +19,15 @@ interface PageContent {
   content_en: string | null;
   content_bn: string | null;
 }
+
+const PAGES = [
+  { id: 'home', label: 'হোম', labelEn: 'Home', icon: Home },
+  { id: 'about', label: 'অ্যাবাউট', labelEn: 'About', icon: Info },
+  { id: 'contact', label: 'কন্টাক্ট', labelEn: 'Contact', icon: Phone },
+  { id: 'services', label: 'সার্ভিসেস', labelEn: 'Services', icon: Wrench },
+  { id: 'work', label: 'ওয়ার্ক', labelEn: 'Work', icon: Briefcase },
+  { id: 'team', label: 'টিম', labelEn: 'Team', icon: Users },
+];
 
 const PageContentManagement = () => {
   const queryClient = useQueryClient();
@@ -133,30 +143,29 @@ const PageContentManagement = () => {
     resetForm();
   };
 
-  const getPageIcon = (page: string) => {
-    switch (page) {
-      case 'home':
-        return <Home className="h-4 w-4" />;
-      case 'about':
-        return <Info className="h-4 w-4" />;
-      case 'contact':
-        return <Phone className="h-4 w-4" />;
-      default:
-        return <FileText className="h-4 w-4" />;
+  const getPageIcon = (pageId: string) => {
+    const page = PAGES.find(p => p.id === pageId);
+    if (page) {
+      const IconComp = page.icon;
+      return <IconComp className="h-4 w-4" />;
     }
+    return <FileText className="h-4 w-4" />;
   };
 
-  const getPageLabel = (page: string) => {
-    const labels: Record<string, string> = {
-      'home': 'হোম পেজ',
-      'about': 'অ্যাবাউট পেজ',
-      'contact': 'কন্টাক্ট পেজ'
-    };
-    return labels[page] || page;
+  const getPageLabel = (pageId: string) => {
+    const page = PAGES.find(p => p.id === pageId);
+    return page ? page.label : pageId;
   };
 
   const filteredContents = contents?.filter(c => c.page_name === selectedPage) || [];
-  const pages = ['home', 'about', 'contact'];
+
+  // Group content by section (e.g., hero, stats, etc.)
+  const groupedContents = filteredContents.reduce((acc, content) => {
+    const section = content.content_key.split('.')[0];
+    if (!acc[section]) acc[section] = [];
+    acc[section].push(content);
+    return acc;
+  }, {} as Record<string, PageContent[]>);
 
   if (isLoading) {
     return (
@@ -225,17 +234,17 @@ const PageContentManagement = () => {
       </div>
 
       <Tabs value={selectedPage} onValueChange={setSelectedPage}>
-        <TabsList className="grid grid-cols-3 w-full max-w-md">
-          {pages.map(page => (
-            <TabsTrigger key={page} value={page} className="flex items-center gap-2">
-              {getPageIcon(page)}
-              {getPageLabel(page)}
+        <TabsList className="grid grid-cols-6 w-full max-w-2xl">
+          {PAGES.map(page => (
+            <TabsTrigger key={page.id} value={page.id} className="flex items-center gap-2">
+              {getPageIcon(page.id)}
+              <span className="hidden sm:inline">{page.label}</span>
             </TabsTrigger>
           ))}
         </TabsList>
 
-        {pages.map(page => (
-          <TabsContent key={page} value={page} className="mt-6">
+        {PAGES.map(page => (
+          <TabsContent key={page.id} value={page.id} className="mt-6">
             <div className="space-y-4">
               {filteredContents.length === 0 ? (
                 <Card className="border-dashed">
