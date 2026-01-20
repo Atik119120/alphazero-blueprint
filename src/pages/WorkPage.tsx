@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
-import { ExternalLink, ArrowRight, Globe, Palette, Monitor, Video, Play, Loader2 } from "lucide-react";
+import { ExternalLink, ArrowRight, Globe, Palette, Video, Play, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useWorksByCategory } from "@/hooks/useWorks";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const WorkPage = () => {
   const { webProjects, designProjects, videoProjects, isLoading } = useWorksByCategory();
+  const { t } = useLanguage();
 
   return (
     <Layout>
@@ -20,7 +22,7 @@ const WorkPage = () => {
               animate={{ opacity: 1, y: 0 }}
               className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
             >
-              Our Work
+              {t("work.subtitle")}
             </motion.span>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -28,7 +30,7 @@ const WorkPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-6"
             >
-              Selected <span className="gradient-text">Projects</span>
+              {t("work.title")} <span className="gradient-text">{t("work.title2")}</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -36,7 +38,7 @@ const WorkPage = () => {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto"
             >
-              A showcase of our best work across web development and graphic design.
+              {t("work.description")}
             </motion.p>
           </div>
         </div>
@@ -63,8 +65,8 @@ const WorkPage = () => {
                       <Globe size={24} />
                     </div>
                     <div>
-                      <h2 className="text-2xl lg:text-3xl font-display font-bold">Web Development</h2>
-                      <p className="text-muted-foreground">Websites we've built for our clients</p>
+                      <h2 className="text-2xl lg:text-3xl font-display font-bold">{t("work.webDev")}</h2>
+                      <p className="text-muted-foreground">{t("work.webDevDesc")}</p>
                     </div>
                   </motion.div>
 
@@ -102,7 +104,7 @@ const WorkPage = () => {
                           {/* Website Preview Area */}
                           <div className="aspect-[4/3] bg-gradient-to-br from-primary/5 via-background to-secondary/20 flex items-center justify-center relative overflow-hidden">
                             <div className="text-center p-6">
-                              <Monitor size={48} className="mx-auto mb-4 text-primary/40" />
+                              <Globe size={48} className="mx-auto mb-4 text-primary/40" />
                               <h3 className="text-lg font-display font-semibold mb-2 group-hover:text-primary transition-colors">
                                 {project.title}
                               </h3>
@@ -112,7 +114,7 @@ const WorkPage = () => {
                             {/* Hover Overlay */}
                             <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                               <div className="bg-primary text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 font-medium">
-                                Visit Website <ExternalLink size={16} />
+                                {t("work.visitWebsite")} <ExternalLink size={16} />
                               </div>
                             </div>
                           </div>
@@ -140,8 +142,8 @@ const WorkPage = () => {
                       <Palette size={24} />
                     </div>
                     <div>
-                      <h2 className="text-2xl lg:text-3xl font-display font-bold">Graphic Design</h2>
-                      <p className="text-muted-foreground">Creative designs and branding work</p>
+                      <h2 className="text-2xl lg:text-3xl font-display font-bold">{t("work.graphicDesign")}</h2>
+                      <p className="text-muted-foreground">{t("work.graphicDesignDesc")}</p>
                     </div>
                   </motion.div>
 
@@ -168,7 +170,7 @@ const WorkPage = () => {
                           {/* Content */}
                           <div className="p-4">
                             <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-2">
-                              Design
+                              {t("work.graphicDesign")}
                             </span>
                             <h3 className="text-lg font-display font-semibold mb-1 group-hover:text-primary transition-colors">
                               {project.title}
@@ -199,8 +201,8 @@ const WorkPage = () => {
                       <Video size={24} />
                     </div>
                     <div>
-                      <h2 className="text-2xl lg:text-3xl font-display font-bold">Video Editing</h2>
-                      <p className="text-muted-foreground">Professional video production and editing</p>
+                      <h2 className="text-2xl lg:text-3xl font-display font-bold">{t("work.videoEditing")}</h2>
+                      <p className="text-muted-foreground">{t("work.videoEditingDesc")}</p>
                     </div>
                   </motion.div>
 
@@ -233,7 +235,7 @@ const WorkPage = () => {
                           {/* Content */}
                           <div className="p-4">
                             <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-2">
-                              Video
+                              {t("work.videoEditing")}
                             </span>
                             <h3 className="text-lg font-display font-semibold mb-1 group-hover:text-primary transition-colors">
                               {project.title}
@@ -261,17 +263,17 @@ const WorkPage = () => {
             className="max-w-3xl mx-auto text-center"
           >
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
-              Like what you see?
+              {t("work.likeWhatYouSee")}
             </h2>
             <p className="text-muted-foreground text-lg mb-8">
-              Let's create something amazing together.
+              {t("work.letsCreate")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
-                Start a Project <ArrowRight size={20} />
+                {t("work.startProject")} <ArrowRight size={20} />
               </Link>
               <a
                 href="https://wa.me/8801712345678"
@@ -279,7 +281,7 @@ const WorkPage = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
               >
-                WhatsApp Us
+                {t("work.whatsappUs")}
               </a>
             </div>
           </motion.div>

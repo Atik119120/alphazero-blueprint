@@ -397,6 +397,28 @@ const translations: Record<Language, Record<string, string>> = {
     "login.invalidCredentials": "Invalid email or password",
     "login.userExists": "An account with this email already exists",
     "login.autoPassCode": "After signup you'll get an auto Pass Code and Admin will assign courses",
+    
+    // Work Page
+    "work.subtitle": "Our Work",
+    "work.title": "Selected",
+    "work.title2": "Projects",
+    "work.description": "A showcase of our best work across web development and graphic design.",
+    "work.webDev": "Web Development",
+    "work.webDevDesc": "Websites we've built for our clients",
+    "work.graphicDesign": "Graphic Design",
+    "work.graphicDesignDesc": "Creative designs and branding work",
+    "work.videoEditing": "Video Editing",
+    "work.videoEditingDesc": "Professional video production and editing",
+    "work.visitWebsite": "Visit Website",
+    "work.likeWhatYouSee": "Like what you see?",
+    "work.letsCreate": "Let's create something amazing together.",
+    "work.startProject": "Start a Project",
+    "work.whatsappUs": "WhatsApp Us",
+    "work.noWorks": "No projects found",
+
+    // Services Page CTA
+    "services.cta.btn1": "Get a Free Consultation",
+    "services.cta.btn2": "WhatsApp Us",
   },
   bn: {
     // Navbar
@@ -786,6 +808,28 @@ const translations: Record<Language, Record<string, string>> = {
     "login.invalidCredentials": "ইমেইল বা পাসওয়ার্ড ভুল",
     "login.userExists": "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে",
     "login.autoPassCode": "সাইন আপ করলে অটো পাস কোড পাবেন এবং অ্যাডমিন কোর্স অ্যাসাইন করবে",
+    
+    // Work Page
+    "work.subtitle": "আমাদের কাজ",
+    "work.title": "নির্বাচিত",
+    "work.title2": "প্রজেক্ট",
+    "work.description": "ওয়েব ডেভেলপমেন্ট এবং গ্রাফিক ডিজাইন জুড়ে আমাদের সেরা কাজের প্রদর্শনী।",
+    "work.webDev": "ওয়েব ডেভেলপমেন্ট",
+    "work.webDevDesc": "আমাদের ক্লায়েন্টদের জন্য তৈরি ওয়েবসাইট",
+    "work.graphicDesign": "গ্রাফিক ডিজাইন",
+    "work.graphicDesignDesc": "ক্রিয়েটিভ ডিজাইন এবং ব্র্যান্ডিং কাজ",
+    "work.videoEditing": "ভিডিও এডিটিং",
+    "work.videoEditingDesc": "পেশাদার ভিডিও প্রোডাকশন এবং এডিটিং",
+    "work.visitWebsite": "ওয়েবসাইট দেখুন",
+    "work.likeWhatYouSee": "পছন্দ হয়েছে?",
+    "work.letsCreate": "আসুন একসাথে অসাধারণ কিছু তৈরি করি।",
+    "work.startProject": "প্রজেক্ট শুরু করুন",
+    "work.whatsappUs": "হোয়াটসঅ্যাপ করুন",
+    "work.noWorks": "কোনো প্রজেক্ট পাওয়া যায়নি",
+
+    // Services Page CTA
+    "services.cta.btn1": "বিনামূল্যে পরামর্শ নিন",
+    "services.cta.btn2": "হোয়াটসঅ্যাপ করুন",
   },
 };
 
