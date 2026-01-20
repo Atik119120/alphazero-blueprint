@@ -8,16 +8,15 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { 
-  CreditCard, 
   CheckCircle, 
-  Smartphone,
-  Wallet,
   ArrowRight,
   Loader2,
   Copy,
   BookOpen
 } from 'lucide-react';
 import { Course } from '@/types/lms';
+import bkashLogo from '@/assets/bkash-logo.png';
+import nagadLogo from '@/assets/nagad-logo.png';
 
 interface CourseEnrollmentModalProps {
   isOpen: boolean;
@@ -214,9 +213,11 @@ export default function CourseEnrollmentModal({
                     }`}
                   >
                     <RadioGroupItem value="bkash" className="sr-only" />
-                    <div className="w-10 h-10 rounded-lg bg-pink-500 flex items-center justify-center">
-                      <Smartphone className="w-5 h-5 text-white" />
-                    </div>
+                    <img 
+                      src={bkashLogo} 
+                      alt="bKash" 
+                      className="w-10 h-10 rounded-lg object-contain"
+                    />
                     <div>
                       <p className="font-semibold text-sm">{t.bkash}</p>
                       <p className="text-[10px] text-muted-foreground">Send Money</p>
@@ -231,9 +232,11 @@ export default function CourseEnrollmentModal({
                     }`}
                   >
                     <RadioGroupItem value="nagad" className="sr-only" />
-                    <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center">
-                      <Wallet className="w-5 h-5 text-white" />
-                    </div>
+                    <img 
+                      src={nagadLogo} 
+                      alt="Nagad" 
+                      className="w-10 h-10 rounded-lg object-contain"
+                    />
                     <div>
                       <p className="font-semibold text-sm">{t.nagad}</p>
                       <p className="text-[10px] text-muted-foreground">Send Money</p>
