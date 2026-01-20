@@ -142,15 +142,15 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm"
           />
 
-          {/* Modal */}
+          {/* Modal - Centered */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed top-[10%] left-1/2 -translate-x-1/2 z-[101] w-full max-w-lg"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="fixed inset-x-4 top-[15%] md:top-[10%] md:left-1/2 md:-translate-x-1/2 md:inset-x-auto z-[101] w-auto md:w-full md:max-w-lg"
           >
-            <div className="bg-background border border-border rounded-2xl shadow-2xl overflow-hidden mx-4">
+            <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden">
               {/* Search Input */}
               <div className="flex items-center gap-3 p-4 border-b border-border">
                 <Search size={20} className="text-muted-foreground" />
