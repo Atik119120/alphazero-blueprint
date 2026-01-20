@@ -474,20 +474,16 @@ const CoursesPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Merge database courses with fallback courses
-  // Use database courses if available, otherwise use fallback
+  // Use database courses - all courses are now in the database
   const displayCourses = useMemo(() => {
-    if (dbCourses.length > 0) {
-      return dbCourses.map(course => ({
-        id: course.id,
-        title: course.title,
-        titleBn: course.title, // Database doesn't have Bengali titles yet
-        description: course.description || '',
-        descriptionBn: course.description || '',
-        price: course.price || 0
-      }));
-    }
-    return fallbackCourses;
+    return dbCourses.map(course => ({
+      id: course.id,
+      title: course.title,
+      titleBn: course.title,
+      description: course.description || '',
+      descriptionBn: course.description || '',
+      price: course.price || 0
+    }));
   }, [dbCourses]);
 
   const selectedCourse = useMemo(() => {
@@ -535,7 +531,7 @@ const CoursesPage = () => {
       }
 
       if (studentData?.user?.id && selectedCourse) {
-        await supabase.from('enrollment_requests').insert({
+        const { error: enrollmentError } = await supabase.from('enrollment_requests').insert({
           user_id: studentData.user.id,
           course_id: selectedCourse.id,
           student_name: formData.name,
@@ -546,6 +542,11 @@ const CoursesPage = () => {
           message: `Payment Type: ${formData.paymentType}`,
           status: 'pending',
         });
+
+        if (enrollmentError) {
+          console.error('Enrollment request error:', enrollmentError);
+          // Still show success since account was created, admin will see the student
+        }
       }
       
       toast.success(t.success);
