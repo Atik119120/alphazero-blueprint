@@ -419,6 +419,17 @@ const translations: Record<Language, Record<string, string>> = {
     // Services Page CTA
     "services.cta.btn1": "Get a Free Consultation",
     "services.cta.btn2": "WhatsApp Us",
+    
+    // Testimonials
+    "home.testimonial1.name": "Sarah Johnson",
+    "home.testimonial1.role": "CEO, TechStart",
+    "home.testimonial1.content": "AlphaZero transformed our brand completely. Their attention to detail and creative vision exceeded our expectations.",
+    "home.testimonial2.name": "Michael Chen",
+    "home.testimonial2.role": "Founder, GreenLeaf",
+    "home.testimonial2.content": "Professional, responsive, and incredibly talented. They delivered our website ahead of schedule with stunning results.",
+    "home.testimonial3.name": "Emily Rodriguez",
+    "home.testimonial3.role": "Marketing Director, Bloom Co",
+    "home.testimonial3.content": "The best design agency we've worked with. Their social media designs increased our engagement by 300%.",
   },
   bn: {
     // Navbar
@@ -830,6 +841,17 @@ const translations: Record<Language, Record<string, string>> = {
     // Services Page CTA
     "services.cta.btn1": "বিনামূল্যে পরামর্শ নিন",
     "services.cta.btn2": "হোয়াটসঅ্যাপ করুন",
+    
+    // Testimonials
+    "home.testimonial1.name": "সারাহ জনসন",
+    "home.testimonial1.role": "সিইও, টেকস্টার্ট",
+    "home.testimonial1.content": "আলফাজিরো আমাদের ব্র্যান্ডকে সম্পূর্ণরূপে রূপান্তরিত করেছে। তাদের বিস্তারিত মনোযোগ এবং সৃজনশীল দৃষ্টিভঙ্গি আমাদের প্রত্যাশা ছাড়িয়ে গেছে।",
+    "home.testimonial2.name": "মাইকেল চেন",
+    "home.testimonial2.role": "প্রতিষ্ঠাতা, গ্রিনলিফ",
+    "home.testimonial2.content": "পেশাদার, প্রতিক্রিয়াশীল এবং অবিশ্বাস্যভাবে প্রতিভাবান। তারা আমাদের ওয়েবসাইট নির্ধারিত সময়ের আগেই চমৎকার ফলাফল সহ ডেলিভার করেছে।",
+    "home.testimonial3.name": "এমিলি রদ্রিগেজ",
+    "home.testimonial3.role": "মার্কেটিং ডিরেক্টর, ব্লুম কো",
+    "home.testimonial3.content": "আমরা যে সেরা ডিজাইন এজেন্সির সাথে কাজ করেছি। তাদের সোশ্যাল মিডিয়া ডিজাইন আমাদের এনগেজমেন্ট ৩০০% বাড়িয়েছে।",
   },
 };
 

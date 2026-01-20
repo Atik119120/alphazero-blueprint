@@ -48,7 +48,8 @@ export function useWorks() {
       if (error) throw error;
       return data as Work[];
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 0, // Always refetch for realtime updates
+    refetchOnWindowFocus: true,
   });
 }
 
