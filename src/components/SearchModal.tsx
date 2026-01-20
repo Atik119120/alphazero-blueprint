@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, ArrowRight, Layout, Users, Briefcase, Phone, BookOpen, Info, Sparkles, Loader2 } from "lucide-react";
+import { Search, X, ArrowRight, Layout, Users, Briefcase, Phone, BookOpen, Info, Sparkles, Loader2, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,9 +18,11 @@ interface SearchItem {
   path: string;
   icon: React.ElementType;
   keywords: string[];
+  category?: string;
 }
 
-const searchData: SearchItem[] = [
+// Static pages data
+const staticPages: SearchItem[] = [
   {
     title: "Home",
     titleBn: "হোম",
@@ -28,7 +30,8 @@ const searchData: SearchItem[] = [
     descriptionBn: "AlphaZero-এ স্বাগতম - ক্রিয়েটিভ ডিজাইন এজেন্সি",
     path: "/",
     icon: Layout,
-    keywords: ["home", "main", "landing", "welcome", "alphazero", "alpha", "zero", "agency", "এজেন্সি", "হোম", "প্রধান", "স্বাগতম", "আলফাজিরো", "আলফা"]
+    keywords: ["home", "main", "landing", "welcome", "alphazero", "alpha", "zero", "agency", "এজেন্সি", "হোম", "প্রধান", "স্বাগতম", "আলফাজিরো", "আলফা"],
+    category: "page"
   },
   {
     title: "About Us",
@@ -37,7 +40,8 @@ const searchData: SearchItem[] = [
     descriptionBn: "AlphaZero-এর যাত্রা, মিশন, ভিশন এবং মূল্যবোধ সম্পর্কে জানুন",
     path: "/about",
     icon: Info,
-    keywords: ["about", "story", "values", "mission", "vision", "history", "company", "who", "we", "are", "journey", "আমাদের", "সম্পর্কে", "গল্প", "মিশন", "ভিশন", "কোম্পানি", "যাত্রা", "ইতিহাস"]
+    keywords: ["about", "story", "values", "mission", "vision", "history", "company", "who", "we", "are", "journey", "আমাদের", "সম্পর্কে", "গল্প", "মিশন", "ভিশন", "কোম্পানি", "যাত্রা", "ইতিহাস"],
+    category: "page"
   },
   {
     title: "Our Services",
@@ -46,7 +50,8 @@ const searchData: SearchItem[] = [
     descriptionBn: "গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট, ভিডিও এডিটিং, ডিজিটাল মার্কেটিং, লোগো, ব্র্যান্ডিং",
     path: "/services",
     icon: Briefcase,
-    keywords: ["services", "service", "design", "web", "website", "seo", "marketing", "digital", "graphic", "video", "editing", "development", "developer", "logo", "branding", "brand", "poster", "banner", "flyer", "social", "media", "thumbnail", "youtube", "facebook", "instagram", "সেবা", "ডিজাইন", "ওয়েব", "ওয়েবসাইট", "মার্কেটিং", "লোগো", "ব্র্যান্ডিং", "গ্রাফিক", "ভিডিও", "এডিটিং", "ডেভেলপমেন্ট", "পোস্টার", "ব্যানার", "থাম্বনেইল", "ফেসবুক", "ইউটিউব"]
+    keywords: ["services", "service", "design", "web", "website", "seo", "marketing", "digital", "graphic", "video", "editing", "development", "developer", "logo", "branding", "brand", "poster", "banner", "flyer", "social", "media", "thumbnail", "youtube", "facebook", "instagram", "সেবা", "ডিজাইন", "ওয়েব", "ওয়েবসাইট", "মার্কেটিং", "লোগো", "ব্র্যান্ডিং", "গ্রাফিক", "ভিডিও", "এডিটিং", "ডেভেলপমেন্ট", "পোস্টার", "ব্যানার", "থাম্বনেইল", "ফেসবুক", "ইউটিউব", "motion", "animation", "ui", "ux", "app", "mobile", "responsive"],
+    category: "page"
   },
   {
     title: "Our Work",
@@ -55,16 +60,18 @@ const searchData: SearchItem[] = [
     descriptionBn: "আমাদের পোর্টফোলিও, সম্পন্ন প্রজেক্ট এবং কেস স্টাডি দেখুন",
     path: "/work",
     icon: Layout,
-    keywords: ["work", "portfolio", "projects", "project", "case", "study", "gallery", "showcase", "examples", "sample", "কাজ", "পোর্টফোলিও", "প্রজেক্ট", "গ্যালারি", "নমুনা", "উদাহরণ"]
+    keywords: ["work", "portfolio", "projects", "project", "case", "study", "gallery", "showcase", "examples", "sample", "কাজ", "পোর্টফোলিও", "প্রজেক্ট", "গ্যালারি", "নমুনা", "উদাহরণ"],
+    category: "page"
   },
   {
     title: "Our Team",
     titleBn: "আমাদের টিম",
-    description: "Meet the creative minds behind AlphaZero",
+    description: "Meet the creative minds behind AlphaZero - Designers, Developers",
     descriptionBn: "AlphaZero-এর পেছনের ক্রিয়েটিভ মানুষদের সাথে পরিচিত হন",
     path: "/team",
     icon: Users,
-    keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "employee", "crew", "join", "career", "টিম", "সদস্য", "মানুষ", "ফাউন্ডার", "ডিজাইনার", "ডেভেলপার", "কর্মী"]
+    keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "employee", "crew", "join", "career", "টিম", "সদস্য", "মানুষ", "ফাউন্ডার", "ডিজাইনার", "ডেভেলপার", "কর্মী", "trainer", "instructor", "ট্রেইনার"],
+    category: "page"
   },
   {
     title: "Courses",
@@ -73,16 +80,18 @@ const searchData: SearchItem[] = [
     descriptionBn: "ডিজাইন এবং ডেভেলপমেন্ট শিখুন - গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট কোর্স",
     path: "/courses",
     icon: BookOpen,
-    keywords: ["courses", "course", "training", "learn", "learning", "class", "tutorial", "education", "skill", "study", "enroll", "admission", "certificate", "কোর্স", "ট্রেনিং", "শিখুন", "শেখা", "ক্লাস", "টিউটোরিয়াল", "শিক্ষা", "ভর্তি", "সার্টিফিকেট"]
+    keywords: ["courses", "course", "training", "learn", "learning", "class", "tutorial", "education", "skill", "study", "enroll", "admission", "certificate", "কোর্স", "ট্রেনিং", "শিখুন", "শেখা", "ক্লাস", "টিউটোরিয়াল", "শিক্ষা", "ভর্তি", "সার্টিফিকেট", "photoshop", "illustrator", "figma", "canva"],
+    category: "page"
   },
   {
     title: "Contact Us",
     titleBn: "যোগাযোগ করুন",
-    description: "Get in touch with us - Email, Phone, WhatsApp, Location",
-    descriptionBn: "আমাদের সাথে যোগাযোগ করুন - ইমেইল, ফোন, হোয়াটসঅ্যাপ, লোকেশন",
+    description: "Get in touch - Email: contact@alphazero.com, Phone: +880 1779-277603",
+    descriptionBn: "যোগাযোগ করুন - ইমেইল, ফোন: +৮৮০ ১৭৭৯-২৭৭৬০৩, হোয়াটসঅ্যাপ",
     path: "/contact",
     icon: Phone,
-    keywords: ["contact", "email", "phone", "whatsapp", "message", "call", "reach", "location", "address", "help", "support", "inquiry", "quote", "price", "যোগাযোগ", "ইমেইল", "ফোন", "হোয়াটসঅ্যাপ", "মেসেজ", "কল", "ঠিকানা", "লোকেশন", "সাহায্য", "দাম"]
+    keywords: ["contact", "email", "phone", "whatsapp", "message", "call", "reach", "location", "address", "help", "support", "inquiry", "quote", "price", "যোগাযোগ", "ইমেইল", "ফোন", "হোয়াটসঅ্যাপ", "মেসেজ", "কল", "ঠিকানা", "লোকেশন", "সাহায্য", "দাম", "01779277603", "1779277603", "০১৭৭৯২৭৭৬০৩"],
+    category: "page"
   },
   {
     title: "Join Our Team",
@@ -91,7 +100,8 @@ const searchData: SearchItem[] = [
     descriptionBn: "AlphaZero-তে ক্যারিয়ারের সুযোগ - এখনই আবেদন করুন",
     path: "/join-team",
     icon: Users,
-    keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "vacancy", "recruitment", "যোগ", "চাকরি", "আবেদন", "নিয়োগ", "ক্যারিয়ার", "সুযোগ"]
+    keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "vacancy", "recruitment", "যোগ", "চাকরি", "আবেদন", "নিয়োগ", "ক্যারিয়ার", "সুযোগ"],
+    category: "page"
   },
   {
     title: "Student Login",
@@ -100,7 +110,8 @@ const searchData: SearchItem[] = [
     descriptionBn: "আপনার কোর্স এবং ড্যাশবোর্ড অ্যাক্সেস করতে লগইন করুন",
     path: "/student-login",
     icon: BookOpen,
-    keywords: ["student", "login", "signin", "sign", "account", "dashboard", "my", "courses", "স্টুডেন্ট", "লগইন", "একাউন্ট", "ড্যাশবোর্ড", "আমার"]
+    keywords: ["student", "login", "signin", "sign", "account", "dashboard", "my", "courses", "স্টুডেন্ট", "লগইন", "একাউন্ট", "ড্যাশবোর্ড", "আমার"],
+    category: "page"
   },
   {
     title: "Verify Certificate",
@@ -109,45 +120,94 @@ const searchData: SearchItem[] = [
     descriptionBn: "আপনার AlphaZero সার্টিফিকেটের সত্যতা যাচাই করুন",
     path: "/verify-certificate",
     icon: BookOpen,
-    keywords: ["verify", "certificate", "check", "validate", "authenticity", "সার্টিফিকেট", "যাচাই", "চেক", "ভেরিফাই"]
+    keywords: ["verify", "certificate", "check", "validate", "authenticity", "সার্টিফিকেট", "যাচাই", "চেক", "ভেরিফাই"],
+    category: "page"
   },
 ];
 
 // Highlight matching text
-const highlightMatch = (text: string, query: string) => {
+const highlightMatch = (text: string, query: string): React.ReactNode => {
   if (!query.trim()) return text;
   
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-  const parts = text.split(regex);
-  
-  return parts.map((part, index) => 
-    regex.test(part) ? (
-      <mark key={index} className="bg-primary/30 text-primary-foreground rounded px-0.5">
-        {part}
-      </mark>
-    ) : part
-  );
+  try {
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedQuery})`, 'gi');
+    const parts = text.split(regex);
+    
+    return parts.map((part, index) => 
+      regex.test(part) ? (
+        <mark key={index} className="bg-primary/40 text-foreground font-semibold rounded px-0.5">
+          {part}
+        </mark>
+      ) : part
+    );
+  } catch {
+    return text;
+  }
 };
 
 const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   const [query, setQuery] = useState("");
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [isAiLoading, setIsAiLoading] = useState(false);
+  const [dynamicData, setDynamicData] = useState<SearchItem[]>([]);
   const navigate = useNavigate();
   const { language } = useLanguage();
 
+  // Load courses from database
+  useEffect(() => {
+    const loadCourses = async () => {
+      try {
+        const { data: courses } = await supabase
+          .from('courses')
+          .select('id, title, description')
+          .eq('is_published', true);
+
+        if (courses) {
+          const courseItems: SearchItem[] = courses.map(course => ({
+            title: course.title,
+            titleBn: course.title,
+            description: course.description || "Learn with AlphaZero",
+            descriptionBn: course.description || "AlphaZero-এর সাথে শিখুন",
+            path: "/courses",
+            icon: GraduationCap,
+            keywords: [course.title.toLowerCase(), "course", "কোর্স", "training", "ট্রেনিং"],
+            category: "course"
+          }));
+          setDynamicData(courseItems);
+        }
+      } catch (error) {
+        console.error('Error loading courses:', error);
+      }
+    };
+
+    if (isOpen) {
+      loadCourses();
+    }
+  }, [isOpen]);
+
+  // Combined search data
+  const allSearchData = useMemo(() => [...staticPages, ...dynamicData], [dynamicData]);
+
   const filteredResults = useMemo(() => {
-    if (!query.trim()) return searchData;
+    if (!query.trim()) return staticPages.slice(0, 7); // Show first 7 pages when empty
     
-    const searchTerm = query.toLowerCase();
-    return searchData.filter(item => 
-      item.title.toLowerCase().includes(searchTerm) ||
-      item.titleBn.includes(searchTerm) ||
-      item.description.toLowerCase().includes(searchTerm) ||
-      item.descriptionBn.includes(searchTerm) ||
-      item.keywords.some(k => k.toLowerCase().includes(searchTerm))
-    );
-  }, [query]);
+    const searchTerm = query.toLowerCase().trim();
+    const terms = searchTerm.split(/\s+/);
+    
+    return allSearchData.filter(item => {
+      const searchableText = [
+        item.title.toLowerCase(),
+        item.titleBn.toLowerCase(),
+        item.description.toLowerCase(),
+        item.descriptionBn.toLowerCase(),
+        ...item.keywords.map(k => k.toLowerCase())
+      ].join(' ');
+      
+      // Check if all terms are found
+      return terms.every(term => searchableText.includes(term));
+    }).slice(0, 10); // Limit to 10 results
+  }, [query, allSearchData]);
 
   const handleSelect = (path: string) => {
     navigate(path);
@@ -167,7 +227,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
     try {
       const { data, error } = await supabase.functions.invoke('ai-assistant', {
         body: {
-          message: `User is searching for "${searchQuery}" on AlphaZero website. AlphaZero is a creative design agency offering: Graphic Design, Web Development, Video Editing, Digital Marketing, Logo Design, Branding, and also provides courses. 
+          message: `User is searching for "${searchQuery}" on AlphaZero website. AlphaZero is a creative design agency offering: Graphic Design, Web Development, Video Editing, Digital Marketing, Logo Design, Branding, and also provides courses. Contact: +880 1779-277603.
           
 Based on their search, suggest which page they should visit in 1 short sentence. Available pages: Home, About Us, Services, Our Work/Portfolio, Team, Courses, Contact, Join Team, Student Login, Verify Certificate.
 
@@ -218,30 +278,38 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
     };
   }, [isOpen, onClose]);
 
+  // Reset on close
+  useEffect(() => {
+    if (!isOpen) {
+      setQuery("");
+      setAiSuggestion(null);
+    }
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - Pure blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] backdrop-blur-xl bg-background/40"
           />
 
           {/* Modal - Centered */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="fixed inset-x-4 top-[15%] md:top-[10%] md:left-1/2 md:-translate-x-1/2 md:inset-x-auto z-[101] w-auto md:w-full md:max-w-lg"
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 350 }}
+            className="fixed inset-x-4 top-[12%] md:top-[10%] md:left-1/2 md:-translate-x-1/2 md:inset-x-auto z-[101] w-auto md:w-full md:max-w-lg"
           >
-            <div className="bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl overflow-hidden">
+            <div className="bg-background border border-border rounded-2xl shadow-2xl overflow-hidden">
               {/* Search Input with AI Badge */}
-              <div className="flex items-center gap-3 p-4 border-b border-border">
+              <div className="flex items-center gap-3 p-4 border-b border-border bg-secondary/30">
                 <div className="relative">
                   <Search size={20} className="text-primary" />
                   <Sparkles size={10} className="absolute -top-1 -right-1 text-primary animate-pulse" />
@@ -250,7 +318,7 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder={language === "bn" ? "🔍 AI দিয়ে খুঁজুন..." : "🔍 Search with AI..."}
+                  placeholder={language === "bn" ? "পেজ, কোর্স বা সার্ভিস খুঁজুন..." : "Search pages, courses or services..."}
                   className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
                   autoFocus
                 />
@@ -300,10 +368,21 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
 
               {/* Results */}
               <div className="max-h-[350px] overflow-y-auto p-2">
+                {query.trim() && (
+                  <div className="px-3 py-1.5 text-xs text-muted-foreground">
+                    {language === "bn" 
+                      ? `"${query}" এর জন্য ${filteredResults.length}টি ফলাফল` 
+                      : `${filteredResults.length} results for "${query}"`}
+                  </div>
+                )}
+                
                 {filteredResults.length > 0 ? (
-                  filteredResults.map((item) => (
-                    <button
-                      key={item.path}
+                  filteredResults.map((item, index) => (
+                    <motion.button
+                      key={`${item.path}-${index}`}
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.03 }}
                       onClick={() => handleSelect(item.path)}
                       className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-secondary/70 transition-colors text-left group"
                     >
@@ -311,15 +390,22 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
                         <item.icon size={20} className="text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-foreground truncate">
-                          {highlightMatch(language === "bn" ? item.titleBn : item.title, query)}
-                        </h4>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-medium text-foreground truncate">
+                            {highlightMatch(language === "bn" ? item.titleBn : item.title, query)}
+                          </h4>
+                          {item.category === "course" && (
+                            <span className="text-[10px] px-1.5 py-0.5 bg-primary/20 text-primary rounded-full">
+                              {language === "bn" ? "কোর্স" : "Course"}
+                            </span>
+                          )}
+                        </div>
                         <p className="text-sm text-muted-foreground truncate">
                           {highlightMatch(language === "bn" ? item.descriptionBn : item.description, query)}
                         </p>
                       </div>
                       <ArrowRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-                    </button>
+                    </motion.button>
                   ))
                 ) : (
                   <div className="text-center py-8 text-muted-foreground">
@@ -333,7 +419,7 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
               </div>
 
               {/* Footer hint */}
-              <div className="p-3 border-t border-border bg-gradient-to-r from-primary/5 to-secondary/30">
+              <div className="p-3 border-t border-border bg-secondary/30">
                 <div className="flex items-center justify-center gap-2">
                   <Sparkles size={12} className="text-primary" />
                   <p className="text-xs text-muted-foreground">

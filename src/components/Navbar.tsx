@@ -225,13 +225,13 @@ const Navbar = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
+            {/* Backdrop - Pure blur without dark overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-40 backdrop-blur-xl bg-background/30 lg:hidden"
             />
 
             {/* Right Side Drawer - Glassmorphism */}
@@ -240,14 +240,14 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-[320px] z-50 lg:hidden"
+              className="fixed top-0 right-0 bottom-0 w-[85%] max-w-[320px] z-50 lg:hidden overflow-hidden"
             >
-              <div className="h-full relative overflow-hidden flex flex-col">
-                {/* Glass Background - Clean, no glow */}
-                <div className="absolute inset-0 bg-background/80 backdrop-blur-2xl" />
+              <div className="h-full relative flex flex-col">
+                {/* Solid Background - No transparency */}
+                <div className="absolute inset-0 bg-background" />
                 
-                {/* Simple Border */}
-                <div className="absolute left-0 top-0 bottom-0 w-px bg-border/50" />
+                {/* Border */}
+                <div className="absolute left-0 top-0 bottom-0 w-px bg-border" />
                 
                 {/* Content */}
                 <div className="relative z-10 h-full flex flex-col">
@@ -283,9 +283,9 @@ const Navbar = () => {
                     </button>
                   </div>
 
-                  {/* Navigation Links */}
-                  <nav className="flex-1 px-5 py-2 overflow-y-auto">
-                    <div className="space-y-1">
+                  {/* Navigation Links - Fixed height with proper scrolling */}
+                  <nav className="flex-1 px-5 py-2 overflow-y-auto min-h-0">
+                    <div className="space-y-1 pb-4">
                       {navLinksWithIcons.map((link, index) => {
                         const IconComponent = link.icon;
                         return (
