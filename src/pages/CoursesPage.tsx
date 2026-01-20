@@ -25,7 +25,8 @@ import {
   Clock,
   Wrench,
   Lock,
-  Loader2
+  Loader2,
+  LucideIcon
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
@@ -41,273 +42,39 @@ import {
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
+import { usePublicCourses } from "@/hooks/usePublicCourses";
+import { Course } from "@/types/lms";
 
-// Trainers based on existing team members with images
-const trainers = {
-  sofiullah: {
-    name: "Sofiullah Ahammad",
-    qualificationEn: "Graphics Designer, Vibe Coding Expert, Google Knowledge Expert, Freelance Photographer",
-    qualificationBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট, গুগল নলেজ এক্সপার্ট, ফ্রিল্যান্স ফটোগ্রাফার",
-    image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true"
-  },
-  adib: {
-    name: "Adib Sarkar",
-    qualificationEn: "Lead Designer, Entrepreneur",
-    qualificationBn: "লিড ডিজাইনার, উদ্যোক্তা",
-    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true"
-  },
-  kamrul: {
-    name: "Md. Kamrul Hasan",
-    qualificationEn: "Microsoft Office Expert, Graphics Designer",
-    qualificationBn: "মাইক্রোসফট অফিস এক্সপার্ট, গ্রাফিক্স ডিজাইনার",
-    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true"
-  },
-  shafiul: {
-    name: "Md. Shafiul Haque",
-    qualificationEn: "Web Designer, Video Editor, Cinematographer",
-    qualificationBn: "ওয়েব ডিজাইনার, ভিডিও এডিটর, সিনেমাটোগ্রাফার",
-    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true"
-  },
-  prantik: {
-    name: "Prantik Saha",
-    qualificationEn: "Graphics Designer, Microsoft Office Expert, IT Support",
-    qualificationBn: "গ্রাফিক্স ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
-    image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
-  }
+// Default icon mapping for courses based on title keywords
+const getIconForCourse = (title: string): LucideIcon => {
+  const lowerTitle = title.toLowerCase();
+  if (lowerTitle.includes('google') || lowerTitle.includes('knowledge')) return Globe;
+  if (lowerTitle.includes('microsoft') || lowerTitle.includes('office')) return Monitor;
+  if (lowerTitle.includes('graphic') || lowerTitle.includes('design')) return Palette;
+  if (lowerTitle.includes('video') || lowerTitle.includes('editing')) return Video;
+  if (lowerTitle.includes('photo')) return Camera;
+  if (lowerTitle.includes('seo') || lowerTitle.includes('marketing')) return TrendingUp;
+  if (lowerTitle.includes('web') || lowerTitle.includes('coding') || lowerTitle.includes('html')) return Code;
+  if (lowerTitle.includes('motion') || lowerTitle.includes('after effects')) return Sparkles;
+  if (lowerTitle.includes('ai') || lowerTitle.includes('prompt')) return Bot;
+  if (lowerTitle.includes('vibe')) return Zap;
+  if (lowerTitle.includes('it') || lowerTitle.includes('support')) return Wrench;
+  return BookOpen;
 };
 
-// Course data with trainer assignments and bilingual support
-const courses = [
-  {
-    id: "google-knowledge",
-    nameBn: "গুগল নলেজ প্যানেল ক্রিয়েশন",
-    nameEn: "Google Knowledge Panel Creation",
-    icon: Globe,
-    fee: 3000,
-    trainer: trainers.sofiullah,
-    color: "from-blue-500 to-cyan-500",
-    descriptionBn: "গুগলে আপনার ব্র্যান্ড বা ব্যক্তিগত প্রোফাইলের জন্য নলেজ প্যানেল তৈরি করুন। অনলাইনে আপনার পরিচিতি বাড়ান।",
-    descriptionEn: "Create a Knowledge Panel for your brand or personal profile on Google. Increase your online presence.",
-    featuresBn: ["গুগল সার্চ অপ্টিমাইজেশন", "ব্র্যান্ড ভেরিফিকেশন", "উইকিপিডিয়া এন্ট্রি গাইড", "সোশ্যাল প্রোফাইল সেটআপ"],
-    featuresEn: ["Google Search Optimization", "Brand Verification", "Wikipedia Entry Guide", "Social Profile Setup"]
-  },
-  {
-    id: "microsoft-office",
-    nameBn: "মাইক্রোসফট অফিস",
-    nameEn: "Microsoft Office (Word, Excel, PowerPoint)",
-    icon: Monitor,
-    fee: 2000,
-    trainer: trainers.kamrul,
-    color: "from-orange-500 to-red-500",
-    descriptionBn: "Word, Excel, PowerPoint-এ সম্পূর্ণ দক্ষতা অর্জন করুন। অফিস কাজের জন্য প্রয়োজনীয় সব স্কিল শিখুন।",
-    descriptionEn: "Master Word, Excel, PowerPoint completely. Learn all skills needed for office work.",
-    featuresBn: ["MS Word মাস্টারি", "Excel ফর্মুলা ও ডাটা এনালাইসিস", "PowerPoint প্রেজেন্টেশন", "অফিস অটোমেশন"],
-    featuresEn: ["MS Word Mastery", "Excel Formulas & Data Analysis", "PowerPoint Presentations", "Office Automation"]
-  },
-  {
-    id: "graphic-design",
-    nameBn: "গ্রাফিক ডিজাইন",
-    nameEn: "Graphic Design",
-    icon: Palette,
-    fee: 4000,
-    trainer: trainers.adib,
-    color: "from-purple-500 to-pink-500",
-    descriptionBn: "প্রফেশনাল গ্রাফিক ডিজাইন শিখুন। লোগো, ব্যানার, সোশ্যাল মিডিয়া পোস্ট থেকে শুরু করে সম্পূর্ণ ব্র্যান্ড আইডেন্টিটি।",
-    descriptionEn: "Learn professional graphic design. From logos, banners, social media posts to complete brand identity.",
-    featuresBn: ["Adobe Photoshop", "Adobe Illustrator", "লোগো ও ব্র্যান্ডিং", "সোশ্যাল মিডিয়া ডিজাইন"],
-    featuresEn: ["Adobe Photoshop", "Adobe Illustrator", "Logo & Branding", "Social Media Design"]
-  },
-  {
-    id: "video-editing",
-    nameBn: "ভিডিও এডিটিং",
-    nameEn: "Video Editing",
-    icon: Video,
-    fee: 4500,
-    trainer: trainers.shafiul,
-    color: "from-red-500 to-orange-500",
-    descriptionBn: "প্রফেশনাল ভিডিও এডিটিং শিখুন। YouTube, Reels, TikTok-এর জন্য আকর্ষণীয় ভিডিও তৈরি করুন।",
-    descriptionEn: "Learn professional video editing. Create engaging videos for YouTube, Reels, TikTok.",
-    featuresBn: ["Adobe Premiere Pro", "কালার গ্রেডিং", "সাউন্ড ডিজাইন", "সোশ্যাল মিডিয়া ভিডিও"],
-    featuresEn: ["Adobe Premiere Pro", "Color Grading", "Sound Design", "Social Media Videos"]
-  },
-  {
-    id: "photography",
-    nameBn: "ফটোগ্রাফি",
-    nameEn: "Photography",
-    icon: Camera,
-    fee: 2500,
-    trainer: trainers.sofiullah,
-    color: "from-amber-500 to-yellow-500",
-    descriptionBn: "ক্যামেরা হ্যান্ডলিং থেকে শুরু করে প্রফেশনাল ফটোগ্রাফি পর্যন্ত সব শিখুন। মোবাইল ও DSLR দুটোতেই দক্ষ হন।",
-    descriptionEn: "Learn everything from camera handling to professional photography. Master both mobile and DSLR.",
-    featuresBn: ["ক্যামেরা বেসিক", "লাইটিং টেকনিক", "ফটো এডিটিং", "পোর্টফোলিও বিল্ডিং"],
-    featuresEn: ["Camera Basics", "Lighting Techniques", "Photo Editing", "Portfolio Building"]
-  },
-  {
-    id: "seo-digital-marketing",
-    nameBn: "SEO ও ডিজিটাল মার্কেটিং",
-    nameEn: "SEO & Digital Marketing",
-    icon: TrendingUp,
-    fee: 4000,
-    trainer: trainers.sofiullah,
-    color: "from-green-500 to-emerald-500",
-    descriptionBn: "গুগল র‍্যাঙ্কিং, ফেসবুক মার্কেটিং, এড ক্যাম্পেইন সব শিখুন। আপনার বিজনেস অনলাইনে গ্রো করুন।",
-    descriptionEn: "Learn Google ranking, Facebook marketing, ad campaigns. Grow your business online.",
-    featuresBn: ["অন-পেজ ও অফ-পেজ SEO", "গুগল অ্যাডস", "ফেসবুক ও ইনস্টাগ্রাম মার্কেটিং", "এনালিটিক্স ও রিপোর্টিং"],
-    featuresEn: ["On-Page & Off-Page SEO", "Google Ads", "Facebook & Instagram Marketing", "Analytics & Reporting"],
-    isUpcoming: true
-  },
-  {
-    id: "web-coding",
-    nameBn: "ওয়েব কোডিং",
-    nameEn: "Web Coding (HTML, CSS, JavaScript)",
-    icon: Code,
-    fee: 5000,
-    trainer: null,
-    color: "from-cyan-500 to-blue-500",
-    descriptionBn: "HTML, CSS এবং JavaScript দিয়ে ওয়েবসাইট বানানো শিখুন। বেসিক থেকে প্রফেশনাল লেভেল পর্যন্ত।",
-    descriptionEn: "Learn to build websites with HTML, CSS and JavaScript. From basic to professional level.",
-    featuresBn: ["HTML5 ফান্ডামেন্টালস", "CSS3 ও Flexbox", "JavaScript বেসিক", "রেস্পন্সিভ ডিজাইন"],
-    featuresEn: ["HTML5 Fundamentals", "CSS3 & Flexbox", "JavaScript Basics", "Responsive Design"],
-    isUpcoming: true,
-    isSpecial: true,
-    specialContentBn: {
-      title: "ওয়েব কোডিং কেন শিখবেন?",
-      points: [
-        "নিজের হাতে প্রফেশনাল ওয়েবসাইট বানান",
-        "ফ্রিল্যান্সিং ও জব মার্কেটে সবচেয়ে চাহিদাসম্পন্ন স্কিল",
-        "ওয়েব ডেভেলপার হিসেবে ক্যারিয়ার শুরু করুন"
-      ]
-    },
-    specialContentEn: {
-      title: "Why Learn Web Coding?",
-      points: [
-        "Build professional websites with your own hands",
-        "Most in-demand skill in freelancing & job market",
-        "Start your career as a web developer"
-      ]
-    }
-  },
-  {
-    id: "motion-graphics",
-    nameBn: "মোশন গ্রাফিক্স",
-    nameEn: "Motion Graphics (After Effects)",
-    icon: Sparkles,
-    fee: 5500,
-    trainer: trainers.shafiul,
-    color: "from-violet-500 to-purple-500",
-    descriptionBn: "After Effects দিয়ে অ্যানিমেশন ও মোশন গ্রাফিক্স তৈরি করুন। ভিডিও ইন্ট্রো, লোগো অ্যানিমেশন সব শিখুন।",
-    descriptionEn: "Create animations and motion graphics with After Effects. Learn video intros, logo animations.",
-    featuresBn: ["After Effects বেসিক", "কীফ্রেম অ্যানিমেশন", "টেক্সট অ্যানিমেশন", "ভিজ্যুয়াল ইফেক্টস"],
-    featuresEn: ["After Effects Basics", "Keyframe Animation", "Text Animation", "Visual Effects"],
-    isSpecial: true,
-    specialContentBn: {
-      title: "মোশন গ্রাফিক্স কেন শিখবেন?",
-      points: [
-        "YouTube, Facebook, TikTok-এর জন্য প্রো-লেভেল ভিডিও বানান",
-        "ব্র্যান্ডের জন্য লোগো অ্যানিমেশন ও ইন্ট্রো তৈরি করুন",
-        "ফ্রিল্যান্সিং ও জব মার্কেটে হাই-ডিমান্ড স্কিল"
-      ]
-    },
-    specialContentEn: {
-      title: "Why Learn Motion Graphics?",
-      points: [
-        "Create pro-level videos for YouTube, Facebook, TikTok",
-        "Make logo animations & intros for brands",
-        "High-demand skill in freelancing & job market"
-      ]
-    }
-  },
-  {
-    id: "vibe-coding",
-    nameBn: "ভাইব কোডিং",
-    nameEn: "Vibe Coding (AI-Powered Website Building)",
-    icon: Zap,
-    fee: 4500,
-    trainer: trainers.sofiullah,
-    color: "from-pink-500 to-rose-500",
-    descriptionBn: "কোডিং না জেনেও AI দিয়ে প্রফেশনাল ওয়েবসাইট বানান! AI টুলস ব্যবহার করে সব জেনারেট করুন।",
-    descriptionEn: "Build professional websites with AI without knowing coding! Generate everything using AI tools.",
-    featuresBn: ["AI ওয়েবসাইট বিল্ডার", "প্রম্পট টু ডিজাইন", "নো-কোড ডেভেলপমেন্ট", "হোস্টিং ও পাবলিশিং"],
-    featuresEn: ["AI Website Builder", "Prompt to Design", "No-Code Development", "Hosting & Publishing"],
-    isSpecial: true,
-    specialContentBn: {
-      title: "ভাইব কোডিং কি?",
-      points: [
-        "কোডিং না জেনেও সম্পূর্ণ ওয়েবসাইট তৈরি করুন",
-        "AI টুলস ব্যবহার করে HTML, CSS, ডিজাইন জেনারেট করুন",
-        "আইডিয়া → প্রম্পট → ওয়েবসাইট - এই সিম্পল ওয়ার্কফ্লো শিখুন"
-      ]
-    },
-    specialContentEn: {
-      title: "What is Vibe Coding?",
-      points: [
-        "Create complete websites without knowing coding",
-        "Generate HTML, CSS, design using AI tools",
-        "Learn the simple workflow: Idea → Prompt → Website"
-      ]
-    }
-  },
-  {
-    id: "ai-prompt",
-    nameBn: "AI প্রম্পট ইঞ্জিনিয়ারিং",
-    nameEn: "AI Prompt Engineering",
-    icon: Bot,
-    fee: 3500,
-    trainer: trainers.sofiullah,
-    color: "from-indigo-500 to-blue-500",
-    descriptionBn: "AI টুলস থেকে সেরা আউটপুট পেতে শিখুন। ChatGPT, Midjourney, Claude সহ সব AI-এর জন্য ইফেক্টিভ প্রম্পট লিখুন।",
-    descriptionEn: "Learn to get the best output from AI tools. Write effective prompts for ChatGPT, Midjourney, Claude.",
-    featuresBn: ["প্রম্পট স্ট্রাকচার", "রোল প্রম্পটিং", "টাস্ক-বেজড প্রম্পট", "AI অটোমেশন"],
-    featuresEn: ["Prompt Structure", "Role Prompting", "Task-Based Prompts", "AI Automation"],
-    isSpecial: true,
-    specialContentBn: {
-      title: "AI প্রম্পট ইঞ্জিনিয়ারিং কি শেখায়?",
-      points: [
-        "AI টুলসের জন্য ইফেক্টিভ প্রম্পট লেখা শিখুন",
-        "ডিজাইন, কোডিং, মার্কেটিং, কন্টেন্টে AI ব্যবহার",
-        "ChatGPT, Claude, Midjourney সব AI মাস্টার করুন"
-      ]
-    },
-    specialContentEn: {
-      title: "What does AI Prompt Engineering teach?",
-      points: [
-        "Learn to write effective prompts for AI tools",
-        "Use AI for design, coding, marketing, content",
-        "Master all AI tools: ChatGPT, Claude, Midjourney"
-      ]
-    }
-  },
-  {
-    id: "it-support",
-    nameBn: "আইটি সাপোর্ট",
-    nameEn: "IT Support & Troubleshooting",
-    icon: Wrench,
-    fee: 3000,
-    trainer: trainers.prantik,
-    color: "from-slate-500 to-zinc-600",
-    descriptionBn: "কম্পিউটার ট্রাবলশুটিং, নেটওয়ার্কিং, হার্ডওয়্যার ও সফটওয়্যার সমস্যা সমাধান শিখুন। IT সাপোর্ট ক্যারিয়ার গড়ুন।",
-    descriptionEn: "Learn computer troubleshooting, networking, hardware & software problem solving. Build an IT support career.",
-    featuresBn: ["কম্পিউটার ট্রাবলশুটিং", "নেটওয়ার্ক সেটআপ", "হার্ডওয়্যার মেইনটেন্যান্স", "সফটওয়্যার ইনস্টলেশন"],
-    featuresEn: ["Computer Troubleshooting", "Network Setup", "Hardware Maintenance", "Software Installation"],
-    isSpecial: true,
-    specialContentBn: {
-      title: "আইটি সাপোর্ট কেন শিখবেন?",
-      points: [
-        "যেকোনো অফিস বা প্রতিষ্ঠানে IT সাপোর্ট জব পান",
-        "নিজের কম্পিউটার ও নেটওয়ার্ক সমস্যা সমাধান করুন",
-        "ফ্রিল্যান্স টেক সাপোর্ট সার্ভিস দিন"
-      ]
-    },
-    specialContentEn: {
-      title: "Why Learn IT Support?",
-      points: [
-        "Get IT support jobs in any office or organization",
-        "Solve your own computer & network problems",
-        "Provide freelance tech support services"
-      ]
-    }
-  }
+// Default gradient colors based on course index
+const gradientColors = [
+  "from-blue-500 to-cyan-500",
+  "from-orange-500 to-red-500",
+  "from-purple-500 to-pink-500",
+  "from-red-500 to-orange-500",
+  "from-amber-500 to-yellow-500",
+  "from-green-500 to-emerald-500",
+  "from-cyan-500 to-blue-500",
+  "from-violet-500 to-purple-500",
+  "from-pink-500 to-rose-500",
+  "from-indigo-500 to-blue-500",
+  "from-slate-500 to-zinc-600",
 ];
 
 // Translations
@@ -323,9 +90,7 @@ const translations = {
     aboutDesc: "Alpha Academy teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our",
     coursesTitle: "Courses",
-    coursesSubtitle: "11 Professional Online Courses - Start Your Career Today",
-    special: "Special",
-    upcoming: "Coming Soon",
+    coursesSubtitle: "Professional Online Courses - Start Your Career Today",
     trainer: "Trainer",
     courseFee: "Course Fee",
     enrollNow: "Enroll Now",
@@ -350,7 +115,10 @@ const translations = {
     enrollButton: "Enroll Now",
     whatsappContact: "WhatsApp Contact",
     fillAll: "Please fill all fields",
-    success: "Your enrollment has been submitted successfully! We will contact you soon."
+    success: "Your enrollment has been submitted successfully! We will contact you soon.",
+    noCourses: "No courses available yet",
+    noCoursesDesc: "Please check back later for new courses.",
+    loading: "Loading courses..."
   },
   bn: {
     badge: "১০০% অনলাইন-ভিত্তিক কোর্স",
@@ -363,9 +131,7 @@ const translations = {
     aboutDesc: "Alpha Academy প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
     ourCourses: "আমাদের",
     coursesTitle: "কোর্সসমূহ",
-    coursesSubtitle: "১১টি প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
-    special: "স্পেশাল",
-    upcoming: "আসছে শীঘ্রই",
+    coursesSubtitle: "প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
     trainer: "ট্রেইনার",
     courseFee: "কোর্স ফি",
     enrollNow: "এখনই ভর্তি হন",
@@ -390,7 +156,10 @@ const translations = {
     enrollButton: "এখনই ভর্তি হন",
     whatsappContact: "WhatsApp-এ যোগাযোগ",
     fillAll: "সব ফিল্ড পূরণ করুন",
-    success: "আপনার ভর্তি আবেদন সফলভাবে জমা হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।"
+    success: "আপনার ভর্তি আবেদন সফলভাবে জমা হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।",
+    noCourses: "এখনো কোনো কোর্স নেই",
+    noCoursesDesc: "নতুন কোর্সের জন্য পরে আবার দেখুন।",
+    loading: "কোর্স লোড হচ্ছে..."
   }
 };
 
@@ -398,6 +167,9 @@ const CoursesPage = () => {
   const { language } = useLanguage();
   const t = translations[language];
   const isBn = language === "bn";
+
+  // Fetch published courses from database
+  const { courses: dbCourses, isLoading: coursesLoading } = usePublicCourses();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -410,8 +182,8 @@ const CoursesPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const selectedCourse = useMemo(() => {
-    return courses.find(c => c.id === formData.course);
-  }, [formData.course]);
+    return dbCourses.find(c => c.id === formData.course);
+  }, [formData.course, dbCourses]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -450,25 +222,15 @@ const CoursesPage = () => {
       }
 
       // If account created successfully, create enrollment request
-      if (studentData?.user?.id) {
-        // Get the course UUID from published courses
-        const { data: courseData } = await supabase
-          .from('courses')
-          .select('id')
-          .eq('is_published', true)
-          .ilike('title', `%${selectedCourse?.nameEn || formData.course}%`)
-          .maybeSingle();
-
-        if (courseData) {
-          await supabase.from('enrollment_requests').insert({
-            user_id: studentData.user.id,
-            course_id: courseData.id,
-            student_name: formData.name,
-            student_email: formData.email,
-            message: `Mobile: ${formData.mobile}, Payment: ${formData.paymentType}`,
-            status: 'pending',
-          });
-        }
+      if (studentData?.user?.id && selectedCourse) {
+        await supabase.from('enrollment_requests').insert({
+          user_id: studentData.user.id,
+          course_id: selectedCourse.id,
+          student_name: formData.name,
+          student_email: formData.email,
+          message: `Mobile: ${formData.mobile}, Payment: ${formData.paymentType}`,
+          status: 'pending',
+        });
       }
       
       toast.success(t.success);
@@ -573,129 +335,124 @@ const CoursesPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
-            {courses.map((course, index) => (
-              <motion.div
-                key={course.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="group h-full"
-              >
-                <div className={`relative h-full flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden ${course.isSpecial ? 'ring-2 ring-primary/50' : ''} ${course.isUpcoming ? 'ring-2 ring-amber-500/50' : ''}`}>
-                  {/* Gradient Background Header */}
-                  <div className={`relative h-28 sm:h-36 bg-gradient-to-br ${course.color} p-4 sm:p-6`}>
-                    {/* Decorative Pattern */}
-                    <div className="absolute inset-0 opacity-20">
-                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-14 h-14 sm:w-20 sm:h-20 border-4 border-white/30 rounded-full" />
-                      <div className="absolute bottom-2 left-4 sm:left-6 w-8 h-8 sm:w-12 sm:h-12 border-2 border-white/20 rounded-lg rotate-12" />
-                    </div>
-                    
-                    {/* Special Badge */}
-                    {course.isSpecial && (
-                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 sm:px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        {t.special}
-                      </div>
-                    )}
+          {/* Loading State */}
+          {coursesLoading && (
+            <div className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-12 h-12 text-primary animate-spin mb-4" />
+              <p className="text-muted-foreground">{t.loading}</p>
+            </div>
+          )}
 
-                    {/* Upcoming Badge */}
-                    {course.isUpcoming && (
-                      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 sm:px-3 py-1 rounded-full bg-amber-500/80 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {t.upcoming}
-                      </div>
-                    )}
-                    
-                    {/* Icon */}
-                    <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                      <course.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-                    </div>
-                  </div>
+          {/* No Courses State */}
+          {!coursesLoading && dbCourses.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-20">
+              <BookOpen className="w-16 h-16 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-semibold mb-2">{t.noCourses}</h3>
+              <p className="text-muted-foreground">{t.noCoursesDesc}</p>
+            </div>
+          )}
 
-                  {/* Card Body */}
-                  <div className="flex-1 flex flex-col bg-card border border-border border-t-0 rounded-b-2xl sm:rounded-b-3xl p-4 sm:p-6">
-                    {/* Course Name & Price Row */}
-                    <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">
-                      <h3 className="text-base sm:text-lg font-display font-bold leading-tight">
-                        {isBn ? course.nameBn : course.nameEn}
-                      </h3>
-                      <div className="flex-shrink-0 px-2 sm:px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                        <span className="text-sm sm:text-base font-bold text-primary">৳{course.fee.toLocaleString()}</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
-                      {isBn ? course.descriptionBn : course.descriptionEn}
-                    </p>
-
-                    {/* Features Grid */}
-                    <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-                      {(isBn ? course.featuresBn : course.featuresEn).slice(0, 4).map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
-                          <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
-                          <span className="text-muted-foreground truncate">{feature}</span>
+          {/* Courses Grid */}
+          {!coursesLoading && dbCourses.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
+              {dbCourses.map((course, index) => {
+                const CourseIcon = getIconForCourse(course.title);
+                const gradientColor = gradientColors[index % gradientColors.length];
+                
+                return (
+                  <motion.div
+                    key={course.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.05 }}
+                    className="group h-full"
+                  >
+                    <div className="relative h-full flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden">
+                      {/* Gradient Background Header */}
+                      <div className={`relative h-28 sm:h-36 bg-gradient-to-br ${gradientColor} p-4 sm:p-6`}>
+                        {/* Decorative Pattern */}
+                        <div className="absolute inset-0 opacity-20">
+                          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-14 h-14 sm:w-20 sm:h-20 border-4 border-white/30 rounded-full" />
+                          <div className="absolute bottom-2 left-4 sm:left-6 w-8 h-8 sm:w-12 sm:h-12 border-2 border-white/20 rounded-lg rotate-12" />
                         </div>
-                      ))}
-                    </div>
-
-                    {/* Special Content for Vibe Coding & AI Prompt */}
-                    {course.isSpecial && (
-                      <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
-                        <h4 className="font-semibold text-primary text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-1">
-                          <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
-                          {isBn ? course.specialContentBn?.title : course.specialContentEn?.title}
-                        </h4>
-                        <ul className="space-y-0.5 sm:space-y-1">
-                          {(isBn ? course.specialContentBn?.points : course.specialContentEn?.points)?.slice(0, 3).map((point, idx) => (
-                            <li key={idx} className="text-[10px] sm:text-xs text-muted-foreground flex items-start gap-1 sm:gap-1.5">
-                              <span className="text-primary mt-0.5">•</span>
-                              {point}
-                            </li>
-                          ))}
-                        </ul>
+                        
+                        {/* Thumbnail if available */}
+                        {course.thumbnail_url && (
+                          <div className="absolute inset-0">
+                            <img 
+                              src={course.thumbnail_url} 
+                              alt={course.title}
+                              className="w-full h-full object-cover opacity-30"
+                            />
+                          </div>
+                        )}
+                        
+                        {/* Icon */}
+                        <div className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                          <CourseIcon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                        </div>
                       </div>
-                    )}
 
-                    {/* Trainer with Photo */}
-                    {course.trainer && (
-                      <div className="flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-secondary/30 border border-border mb-3 sm:mb-4 mt-auto">
-                        <img
-                          src={course.trainer.image}
-                          alt={course.trainer.name}
-                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-primary/30"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-[10px] sm:text-xs text-muted-foreground">{t.trainer}</p>
-                          <p className="text-xs sm:text-sm font-semibold truncate">{course.trainer.name}</p>
-                          <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
-                            {isBn ? course.trainer.qualificationBn : course.trainer.qualificationEn}
+                      {/* Card Body */}
+                      <div className="flex-1 flex flex-col bg-card border border-border border-t-0 rounded-b-2xl sm:rounded-b-3xl p-4 sm:p-6">
+                        {/* Course Name & Price Row */}
+                        <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">
+                          <h3 className="text-base sm:text-lg font-display font-bold leading-tight">
+                            {course.title}
+                          </h3>
+                          {course.price !== null && course.price > 0 && (
+                            <div className="flex-shrink-0 px-2 sm:px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+                              <span className="text-sm sm:text-base font-bold text-primary">৳{course.price.toLocaleString()}</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {course.description && (
+                          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-3">
+                            {course.description}
                           </p>
-                        </div>
-                      </div>
-                    )}
+                        )}
 
-                    {/* Enroll Button */}
-                    <a
-                      href="#admission"
-                      onClick={() => handleInputChange("course", course.id)}
-                      className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 ${
-                        course.isUpcoming 
-                          ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 cursor-not-allowed'
-                          : course.isSpecial 
-                            ? 'bg-gradient-to-r from-primary to-purple-500 text-white hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02]' 
-                            : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20'
-                      }`}
-                    >
-                      <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                      {course.isUpcoming ? t.upcoming : t.enrollNow}
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                        {/* Features - show some generic features */}
+                        <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
+                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
+                            <span className="text-muted-foreground truncate">{isBn ? "অনলাইন ক্লাস" : "Online Classes"}</span>
+                          </div>
+                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
+                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
+                            <span className="text-muted-foreground truncate">{isBn ? "সার্টিফিকেট" : "Certificate"}</span>
+                          </div>
+                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
+                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
+                            <span className="text-muted-foreground truncate">{isBn ? "লাইফটাইম অ্যাক্সেস" : "Lifetime Access"}</span>
+                          </div>
+                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
+                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
+                            <span className="text-muted-foreground truncate">{isBn ? "সাপোর্ট" : "Support"}</span>
+                          </div>
+                        </div>
+
+                        {/* Spacer */}
+                        <div className="flex-1" />
+
+                        {/* Enroll Button */}
+                        <a
+                          href="#admission"
+                          onClick={() => handleInputChange("course", course.id)}
+                          className="w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                        >
+                          <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                          {t.enrollNow}
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
@@ -715,23 +472,7 @@ const CoursesPage = () => {
               <p className="text-muted-foreground">
                 {t.admissionDesc}
               </p>
-                </div>
-
-                {/* Password */}
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="flex items-center gap-2">
-                    <Lock className="w-4 h-4 text-primary" />
-                    {isBn ? "পাসওয়ার্ড" : "Password"}
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder={isBn ? "কমপক্ষে ৬ অক্ষর" : "At least 6 characters"}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
-                    className="h-12"
-                  />
-                </div>
+            </div>
 
             <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-8 shadow-xl">
               <div className="space-y-6">
@@ -782,6 +523,22 @@ const CoursesPage = () => {
                   />
                 </div>
 
+                {/* Password */}
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-primary" />
+                    {isBn ? "পাসওয়ার্ড" : "Password"}
+                  </Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder={isBn ? "কমপক্ষে ৬ অক্ষর" : "At least 6 characters"}
+                    value={formData.password}
+                    onChange={(e) => handleInputChange("password", e.target.value)}
+                    className="h-12"
+                  />
+                </div>
+
                 {/* Course Selection */}
                 <div className="space-y-2">
                   <Label className="flex items-center gap-2">
@@ -793,16 +550,16 @@ const CoursesPage = () => {
                       <SelectValue placeholder={t.coursePlaceholder} />
                     </SelectTrigger>
                     <SelectContent>
-                      {courses.filter(c => !c.isUpcoming).map((course) => (
+                      {dbCourses.map((course) => (
                         <SelectItem key={course.id} value={course.id}>
-                          {isBn ? course.nameBn : course.nameEn} - ৳{course.fee.toLocaleString()}
+                          {course.title} {course.price ? `- ৳${course.price.toLocaleString()}` : ''}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                {/* Trainer Info (Auto-filled) */}
+                {/* Selected Course Info */}
                 {selectedCourse && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
@@ -810,17 +567,14 @@ const CoursesPage = () => {
                     className="p-4 rounded-xl bg-primary/5 border border-primary/20"
                   >
                     <div className="flex items-center gap-3">
-                      <img
-                        src={selectedCourse.trainer.image}
-                        alt={selectedCourse.trainer.name}
-                        className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
-                      />
+                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                        <BookOpen className="w-6 h-6 text-primary" />
+                      </div>
                       <div>
-                        <p className="text-xs text-muted-foreground">{t.trainer}</p>
-                        <p className="text-sm font-semibold">{selectedCourse.trainer.name}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {isBn ? selectedCourse.trainer.qualificationBn : selectedCourse.trainer.qualificationEn}
-                        </p>
+                        <p className="text-sm font-semibold">{selectedCourse.title}</p>
+                        {selectedCourse.price && (
+                          <p className="text-xs text-primary font-medium">৳{selectedCourse.price.toLocaleString()}</p>
+                        )}
                       </div>
                     </div>
                   </motion.div>
@@ -848,7 +602,7 @@ const CoursesPage = () => {
                   type="submit"
                   size="lg"
                   className="w-full h-14 text-lg font-semibold"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || coursesLoading}
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
