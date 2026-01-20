@@ -213,11 +213,13 @@ export default function CourseEnrollmentModal({
                     }`}
                   >
                     <RadioGroupItem value="bkash" className="sr-only" />
-                    <img 
-                      src={bkashLogo} 
-                      alt="bKash" 
-                      className="w-10 h-10 rounded-lg object-contain"
-                    />
+                    <div className="w-12 h-12 rounded-xl bg-white p-1.5 shadow-sm border border-pink-100">
+                      <img 
+                        src={bkashLogo} 
+                        alt="bKash" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                     <div>
                       <p className="font-semibold text-sm">{t.bkash}</p>
                       <p className="text-[10px] text-muted-foreground">Send Money</p>
@@ -232,11 +234,13 @@ export default function CourseEnrollmentModal({
                     }`}
                   >
                     <RadioGroupItem value="nagad" className="sr-only" />
-                    <img 
-                      src={nagadLogo} 
-                      alt="Nagad" 
-                      className="w-10 h-10 rounded-lg object-contain"
-                    />
+                    <div className="w-12 h-12 rounded-xl bg-white p-1.5 shadow-sm border border-orange-100">
+                      <img 
+                        src={nagadLogo} 
+                        alt="Nagad" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                     <div>
                       <p className="font-semibold text-sm">{t.nagad}</p>
                       <p className="text-[10px] text-muted-foreground">Send Money</p>
