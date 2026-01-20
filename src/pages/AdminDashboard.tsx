@@ -30,6 +30,7 @@ import {
   User,
   Lock,
   Mail,
+  Phone,
   UserPlus,
   Search,
   TrendingUp,
@@ -132,6 +133,9 @@ export default function AdminDashboard() {
     student_email: string;
     status: string;
     message: string | null;
+    phone_number: string | null;
+    payment_method: string | null;
+    transaction_id: string | null;
     created_at: string;
     course?: { title: string };
   }>>([]);
@@ -1105,6 +1109,156 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Requests Tab */}
+          <TabsContent value="requests" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                {language === 'bn' ? 'এনরোলমেন্ট রিকোয়েস্ট' : 'Enrollment Requests'}
+              </h2>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={fetchEnrollmentRequests}
+                disabled={loadingRequests}
+                className="gap-2"
+              >
+                {loadingRequests ? (
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary border-t-transparent" />
+                ) : (
+                  <TrendingUp className="w-4 h-4" />
+                )}
+                {language === 'bn' ? 'রিফ্রেশ' : 'Refresh'}
+              </Button>
+            </div>
+
+            {loadingRequests ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
+              </div>
+            ) : enrollmentRequests.length === 0 ? (
+              <Card className="border-dashed">
+                <CardContent className="py-12 text-center">
+                  <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">{language === 'bn' ? 'কোনো রিকোয়েস্ট নেই' : 'No enrollment requests'}</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {enrollmentRequests.map((request) => (
+                  <Card key={request.id} className={`overflow-hidden ${request.status === 'pending' ? 'border-amber-500/50' : request.status === 'approved' ? 'border-green-500/50' : 'border-red-500/50'}`}>
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                            request.status === 'pending' ? 'bg-amber-500/20' : 
+                            request.status === 'approved' ? 'bg-green-500/20' : 'bg-red-500/20'
+                          }`}>
+                            <span className={`font-bold ${
+                              request.status === 'pending' ? 'text-amber-600' : 
+                              request.status === 'approved' ? 'text-green-600' : 'text-red-600'
+                            }`}>
+                              {request.student_name?.charAt(0).toUpperCase()}
+                            </span>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <CardTitle className="text-base truncate">{request.student_name}</CardTitle>
+                            <CardDescription className="truncate">{request.student_email}</CardDescription>
+                          </div>
+                        </div>
+                        <Badge variant={request.status === 'pending' ? 'secondary' : request.status === 'approved' ? 'default' : 'destructive'}>
+                          {request.status === 'pending' ? (language === 'bn' ? 'পেন্ডিং' : 'Pending') : 
+                           request.status === 'approved' ? (language === 'bn' ? 'অনুমোদিত' : 'Approved') : 
+                           (language === 'bn' ? 'প্রত্যাখ্যাত' : 'Rejected')}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0 space-y-3">
+                      {/* Course Info */}
+                      <div className="flex items-center gap-2 text-sm">
+                        <BookOpen className="w-4 h-4 text-primary" />
+                        <span className="truncate">{request.course?.title || 'Unknown Course'}</span>
+                      </div>
+
+                      {/* Phone Number */}
+                      {request.phone_number && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Mail className="w-4 h-4 text-muted-foreground" />
+                          <span className="font-medium">{language === 'bn' ? 'ফোন:' : 'Phone:'}</span>
+                          <span>{request.phone_number}</span>
+                        </div>
+                      )}
+
+                      {/* Payment Method */}
+                      {request.payment_method && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <Banknote className="w-4 h-4 text-muted-foreground" />
+                          <span className="font-medium">{language === 'bn' ? 'পেমেন্ট:' : 'Payment:'}</span>
+                          <Badge variant="outline" className="text-xs">
+                            {request.payment_method === 'bkash' ? 'বিকাশ' : 'নগদ'}
+                          </Badge>
+                        </div>
+                      )}
+
+                      {/* Transaction ID */}
+                      {request.transaction_id && (
+                        <div className="flex items-center gap-2 text-sm bg-muted/50 p-2 rounded-lg">
+                          <span className="font-medium text-primary">{language === 'bn' ? 'TxID:' : 'TxID:'}</span>
+                          <code className="text-xs font-mono flex-1">{request.transaction_id}</code>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={() => {
+                              navigator.clipboard.writeText(request.transaction_id || '');
+                              toast.success(language === 'bn' ? 'কপি হয়েছে' : 'Copied!');
+                            }}
+                          >
+                            <Copy className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      )}
+
+                      {/* Payment Type Message */}
+                      {request.message && (
+                        <p className="text-xs text-muted-foreground bg-secondary/50 p-2 rounded">
+                          {request.message}
+                        </p>
+                      )}
+
+                      {/* Date */}
+                      <p className="text-xs text-muted-foreground">
+                        {language === 'bn' ? 'তারিখ:' : 'Date:'} {formatDateTime(request.created_at)}
+                      </p>
+
+                      {/* Action Buttons */}
+                      {request.status === 'pending' && (
+                        <div className="flex gap-2 pt-2">
+                          <Button 
+                            size="sm" 
+                            className="flex-1 gap-1"
+                            onClick={() => approveEnrollment(request)}
+                          >
+                            <Check className="w-3 h-3" />
+                            {language === 'bn' ? 'অনুমোদন' : 'Approve'}
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="destructive"
+                            className="flex-1 gap-1"
+                            onClick={() => rejectEnrollment(request.id)}
+                          >
+                            <X className="w-3 h-3" />
+                            {language === 'bn' ? 'প্রত্যাখ্যান' : 'Reject'}
+                          </Button>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           {/* Pass Codes Tab */}
