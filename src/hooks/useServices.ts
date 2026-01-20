@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
 
 export interface Service {
   id: string;
@@ -12,6 +13,27 @@ export interface Service {
 }
 
 export function useServices() {
+  const queryClient = useQueryClient();
+
+  // Set up realtime subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('services-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'services' },
+        () => {
+          // Invalidate and refetch when data changes
+          queryClient.invalidateQueries({ queryKey: ['public-services'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   return useQuery({
     queryKey: ['public-services'],
     queryFn: async () => {
