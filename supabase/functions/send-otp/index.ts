@@ -107,6 +107,8 @@ const handler = async (req: Request): Promise<Response> => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        // IMPORTANT: Change this to your verified domain email, e.g., "AlphaZero Academy <noreply@yourdomain.com>"
+        // Currently using resend.dev which only works for the account owner's email
         from: "AlphaZero Academy <onboarding@resend.dev>",
         to: [email],
         subject: "আপনার ইমেইল ভেরিফিকেশন কোড - AlphaZero Academy",
