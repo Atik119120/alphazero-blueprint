@@ -277,7 +277,7 @@ const Navbar = () => {
                     <button
                       onClick={() => {
                         setIsMobileMenuOpen(false);
-                        setIsSearchOpen(true);
+                        setTimeout(() => setIsSearchOpen(true), 150);
                       }}
                       className="w-full flex items-center gap-3 px-4 py-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-muted-foreground hover:bg-white/20 transition-colors"
                     >
