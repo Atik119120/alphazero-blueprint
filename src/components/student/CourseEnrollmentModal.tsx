@@ -8,13 +8,12 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { 
-  CheckCircle, 
+  CheckCircle2, 
   ArrowRight,
   Loader2,
   Copy,
   GraduationCap,
-  Info,
-  Sparkles
+  Info
 } from 'lucide-react';
 import { Course } from '@/types/lms';
 import bkashLogo from '@/assets/bkash-logo.png';
@@ -33,62 +32,46 @@ interface CourseEnrollmentModalProps {
 
 const translations = {
   en: {
-    title: 'Enroll in Course',
-    coursePrice: 'Course Price',
     paymentMethod: 'Select Payment Method',
     bkash: 'bKash',
     nagad: 'Nagad',
     sendMoneyTo: 'Send Money to this number',
     copyNumber: 'Copy',
     copied: 'Copied!',
-    transactionId: 'Transaction ID',
+    transactionId: 'Enter Transaction ID',
     transactionPlaceholder: 'e.g. 8N7X2K4M9P',
-    howToPay: 'How to pay?',
-    steps: {
-      step1: 'Open bKash/Nagad app',
-      step2: 'Tap "Send Money"',
-      step3: 'Enter the number',
-      step4: 'Send ৳',
-      step5: 'Copy Transaction ID',
-      step6: 'Paste it below',
-    },
+    howToPay: 'Steps:',
+    steps: ['Open App', 'Send Money', 'Enter Number', 'Amount: ৳', 'Get TxID', 'Paste Below'],
     confirmEnrollment: 'Confirm Enrollment',
     processing: 'Processing...',
     success: 'Request sent! Admin will approve shortly.',
-    error: 'Failed to send request. Please try again.',
-    alreadyRequested: 'You have already requested this course.',
-    note: 'Your course access will be activated after admin approval.',
+    error: 'Failed to send request.',
+    alreadyRequested: 'Already requested this course.',
+    note: 'Course access will activate after admin approval.',
     free: 'Free',
     amount: 'Amount',
+    courseFee: 'Course Fee',
   },
   bn: {
-    title: 'কোর্সে এনরোল করুন',
-    coursePrice: 'কোর্সের মূল্য',
     paymentMethod: 'পেমেন্ট পদ্ধতি বাছুন',
     bkash: 'বিকাশ',
     nagad: 'নগদ',
     sendMoneyTo: 'এই নম্বরে সেন্ড মানি করুন',
     copyNumber: 'কপি',
     copied: 'কপি হয়েছে!',
-    transactionId: 'ট্রানজেকশন আইডি',
+    transactionId: 'ট্রানজেকশন আইডি দিন',
     transactionPlaceholder: 'যেমন: 8N7X2K4M9P',
-    howToPay: 'কিভাবে পেমেন্ট করবেন?',
-    steps: {
-      step1: 'বিকাশ/নগদ অ্যাপ খুলুন',
-      step2: '"সেন্ড মানি" ট্যাপ করুন',
-      step3: 'নম্বরটি দিন',
-      step4: '৳ পাঠান',
-      step5: 'ট্রানজেকশন আইডি কপি করুন',
-      step6: 'নিচে পেস্ট করুন',
-    },
+    howToPay: 'ধাপ:',
+    steps: ['অ্যাপ খুলুন', 'সেন্ড মানি', 'নম্বর দিন', 'পরিমাণ: ৳', 'TxID নিন', 'নিচে দিন'],
     confirmEnrollment: 'এনরোলমেন্ট নিশ্চিত করুন',
     processing: 'প্রসেসিং...',
-    success: 'রিকুয়েস্ট পাঠানো হয়েছে! অ্যাডমিন শীঘ্রই অনুমোদন করবেন।',
-    error: 'রিকুয়েস্ট পাঠাতে ব্যর্থ। আবার চেষ্টা করুন।',
-    alreadyRequested: 'আপনি ইতিমধ্যে এই কোর্সের জন্য রিকুয়েস্ট করেছেন।',
-    note: 'অ্যাডমিন অনুমোদনের পর কোর্স অ্যাক্সেস সক্রিয় হবে।',
+    success: 'রিকুয়েস্ট পাঠানো হয়েছে!',
+    error: 'রিকুয়েস্ট পাঠাতে ব্যর্থ।',
+    alreadyRequested: 'ইতিমধ্যে রিকুয়েস্ট করা হয়েছে।',
+    note: 'অ্যাডমিন অনুমোদনের পর কোর্স অ্যাক্সেস পাবেন।',
     free: 'ফ্রি',
     amount: 'পরিমাণ',
+    courseFee: 'কোর্স ফি',
   }
 };
 
@@ -178,86 +161,75 @@ export default function CourseEnrollmentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[420px] p-0 overflow-hidden gap-0 border-0 shadow-2xl">
+      <DialogContent className="max-w-md p-0 overflow-hidden gap-0 rounded-3xl border border-border/50 shadow-2xl">
         {/* Header */}
-        <div className="relative bg-gradient-to-br from-primary via-cyan-600 to-primary p-6 text-white overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-1/2 translate-x-1/2" />
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-1/2 -translate-x-1/2" />
-          </div>
-          
-          <div className="relative">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <GraduationCap className="w-5 h-5" />
-              </div>
-              <Badge className="bg-white/20 backdrop-blur-sm text-white border-0 text-xs">
-                <Sparkles className="w-3 h-3 mr-1" />
-                {language === 'bn' ? 'এনরোলমেন্ট' : 'Enrollment'}
-              </Badge>
+        <div className="bg-slate-900 dark:bg-slate-950 p-6 text-white">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+              <GraduationCap className="w-6 h-6" />
             </div>
-            
-            <DialogTitle className="text-xl font-bold text-white leading-tight line-clamp-2 mb-3">
-              {course.title}
-            </DialogTitle>
-            
-            {/* Price Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2">
-              <span className="text-xs opacity-80">{t.amount}:</span>
-              <span className="text-xl font-bold">
-                {isFree ? t.free : `৳${coursePrice.toLocaleString()}`}
-              </span>
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-lg font-bold text-white leading-tight line-clamp-2">
+                {course.title}
+              </DialogTitle>
+              <div className="mt-3 flex items-center gap-3">
+                <span className="text-xs text-white/60">{t.courseFee}</span>
+                <Badge className="bg-emerald-500 text-white border-0 text-base px-3 py-0.5 font-bold">
+                  {isFree ? t.free : `৳${coursePrice.toLocaleString()}`}
+                </Badge>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="p-5 space-y-4 bg-background">
+        <div className="p-5 space-y-5 bg-white dark:bg-slate-900">
           {!isFree && (
             <>
-              {/* Payment Method Selection */}
-              <div className="space-y-2.5">
-                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              {/* Payment Method */}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium text-foreground">
                   {t.paymentMethod}
                 </Label>
                 <RadioGroup 
                   value={paymentMethod} 
                   onValueChange={(v) => setPaymentMethod(v as 'bkash' | 'nagad')}
-                  className="grid grid-cols-2 gap-2"
+                  className="grid grid-cols-2 gap-3"
                 >
+                  {/* bKash */}
                   <label 
-                    className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
+                    className={`relative flex flex-col items-center gap-3 p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
                       paymentMethod === 'bkash' 
-                        ? 'border-[#E2136E] bg-[#E2136E]/5 shadow-lg shadow-[#E2136E]/10' 
-                        : 'border-border/50 hover:border-[#E2136E]/30 hover:bg-muted/30'
+                        ? 'bg-pink-50 dark:bg-pink-950/30 ring-2 ring-pink-500' 
+                        : 'bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
                     <RadioGroupItem value="bkash" className="sr-only" />
                     {paymentMethod === 'bkash' && (
                       <div className="absolute top-2 right-2">
-                        <CheckCircle className="w-4 h-4 text-[#E2136E]" />
+                        <CheckCircle2 className="w-5 h-5 text-pink-500 fill-pink-500" />
                       </div>
                     )}
-                    <div className="w-14 h-14 rounded-2xl bg-white p-2 shadow-md border border-[#E2136E]/10">
+                    <div className="w-16 h-16 rounded-2xl bg-white p-2 shadow-lg">
                       <img src={bkashLogo} alt="bKash" className="w-full h-full object-contain" />
                     </div>
                     <span className="font-semibold text-sm">{t.bkash}</span>
                   </label>
                   
+                  {/* Nagad */}
                   <label 
-                    className={`relative flex flex-col items-center gap-2 p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
+                    className={`relative flex flex-col items-center gap-3 p-4 rounded-2xl cursor-pointer transition-all duration-200 ${
                       paymentMethod === 'nagad' 
-                        ? 'border-[#F6921E] bg-[#F6921E]/5 shadow-lg shadow-[#F6921E]/10' 
-                        : 'border-border/50 hover:border-[#F6921E]/30 hover:bg-muted/30'
+                        ? 'bg-orange-50 dark:bg-orange-950/30 ring-2 ring-orange-500' 
+                        : 'bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800'
                     }`}
                   >
                     <RadioGroupItem value="nagad" className="sr-only" />
                     {paymentMethod === 'nagad' && (
                       <div className="absolute top-2 right-2">
-                        <CheckCircle className="w-4 h-4 text-[#F6921E]" />
+                        <CheckCircle2 className="w-5 h-5 text-orange-500 fill-orange-500" />
                       </div>
                     )}
-                    <div className="w-14 h-14 rounded-2xl bg-white p-2 shadow-md border border-[#F6921E]/10">
+                    <div className="w-16 h-16 rounded-2xl bg-white p-2 shadow-lg">
                       <img src={nagadLogo} alt="Nagad" className="w-full h-full object-contain" />
                     </div>
                     <span className="font-semibold text-sm">{t.nagad}</span>
@@ -265,27 +237,26 @@ export default function CourseEnrollmentModal({
                 </RadioGroup>
               </div>
 
-              {/* Payment Number Card */}
-              <div className={`rounded-2xl p-4 border-2 ${
-                paymentMethod === 'bkash' 
-                  ? 'bg-gradient-to-br from-[#E2136E]/5 to-[#E2136E]/10 border-[#E2136E]/20' 
-                  : 'bg-gradient-to-br from-[#F6921E]/5 to-[#F6921E]/10 border-[#F6921E]/20'
-              }`}>
-                <p className="text-xs font-medium text-muted-foreground mb-2">{t.sendMoneyTo}</p>
+              {/* Payment Number */}
+              <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 space-y-3">
+                <p className="text-sm font-medium text-foreground">{t.sendMoneyTo}</p>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-white dark:bg-slate-900 rounded-xl px-4 py-3 shadow-sm border">
-                    <span className="font-mono text-xl font-bold tracking-widest">{PAYMENT_NUMBER}</span>
+                  <div className="flex-1 bg-white dark:bg-slate-900 rounded-xl px-4 py-3 border border-border">
+                    <span className="font-mono text-xl font-bold tracking-widest text-foreground">
+                      {PAYMENT_NUMBER}
+                    </span>
                   </div>
                   <Button 
                     size="sm" 
-                    variant={copied ? "default" : "outline"}
                     onClick={copyNumber}
-                    className={`shrink-0 h-12 px-4 rounded-xl transition-all ${
-                      copied ? 'bg-emerald-500 hover:bg-emerald-600 text-white' : ''
+                    className={`shrink-0 h-12 px-4 rounded-xl ${
+                      copied 
+                        ? 'bg-emerald-500 hover:bg-emerald-600' 
+                        : 'bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 dark:hover:bg-slate-600'
                     }`}
                   >
                     {copied ? (
-                      <CheckCircle className="w-4 h-4" />
+                      <CheckCircle2 className="w-5 h-5" />
                     ) : (
                       <>
                         <Copy className="w-4 h-4 mr-1.5" />
@@ -296,59 +267,53 @@ export default function CourseEnrollmentModal({
                 </div>
                 
                 {/* Quick Steps */}
-                <div className="mt-3 pt-3 border-t border-current/10">
-                  <p className="text-[10px] font-medium text-muted-foreground mb-2 flex items-center gap-1">
+                <div className="pt-2">
+                  <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
                     <Info className="w-3 h-3" />
                     {t.howToPay}
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    {Object.values(t.steps).map((step, index) => (
+                    {t.steps.map((step, index) => (
                       <span 
                         key={index} 
-                        className="inline-flex items-center gap-1 text-[10px] bg-white/80 dark:bg-slate-800 px-2 py-1 rounded-full"
+                        className="inline-flex items-center gap-1.5 text-xs bg-white dark:bg-slate-900 border border-border px-2.5 py-1.5 rounded-lg"
                       >
-                        <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white ${
-                          paymentMethod === 'bkash' ? 'bg-[#E2136E]' : 'bg-[#F6921E]'
-                        }`}>
+                        <span className="w-4 h-4 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-[10px] font-bold">
                           {index + 1}
                         </span>
-                        {step}{index === 3 ? coursePrice : ''}
+                        <span className="text-foreground">
+                          {step}{index === 3 ? coursePrice : ''}
+                        </span>
                       </span>
                     ))}
                   </div>
                 </div>
               </div>
 
-              {/* Transaction ID Input */}
+              {/* Transaction ID */}
               <div className="space-y-2">
-                <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+                <Label className="text-sm font-medium text-foreground">
                   {t.transactionId}
                 </Label>
                 <Input
                   value={transactionId}
                   onChange={(e) => setTransactionId(e.target.value.toUpperCase())}
                   placeholder={t.transactionPlaceholder}
-                  className="h-14 text-lg font-mono font-bold tracking-wider text-center rounded-xl border-2 focus:border-primary"
+                  className="h-14 text-lg font-mono font-bold tracking-wider text-center rounded-xl border-2 border-border bg-slate-50 dark:bg-slate-800/50 focus:border-primary focus:bg-white dark:focus:bg-slate-900"
                 />
               </div>
             </>
           )}
 
           {/* Note */}
-          <div className="flex items-start gap-2.5 p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800/50">
-            <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-            <p className="text-xs text-emerald-700 dark:text-emerald-300">{t.note}</p>
+          <div className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-900/50">
+            <Info className="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0" />
+            <p className="text-sm text-blue-700 dark:text-blue-300">{t.note}</p>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <Button 
-            className={`w-full h-14 text-sm font-bold gap-2 rounded-xl shadow-lg transition-all ${
-              paymentMethod === 'bkash' && !isFree
-                ? 'bg-gradient-to-r from-[#E2136E] to-[#C2185B] hover:from-[#C2185B] hover:to-[#E2136E] shadow-[#E2136E]/25'
-                : paymentMethod === 'nagad' && !isFree
-                  ? 'bg-gradient-to-r from-[#F6921E] to-[#E65100] hover:from-[#E65100] hover:to-[#F6921E] shadow-[#F6921E]/25'
-                  : ''
-            }`}
+            className="w-full h-14 text-base font-bold gap-2 rounded-xl"
             onClick={handleSubmit}
             disabled={isSubmitting || (!isFree && !transactionId.trim())}
           >
