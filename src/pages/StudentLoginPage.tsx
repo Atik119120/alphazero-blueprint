@@ -1,25 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { GraduationCap, ArrowLeft, Mail, Lock, User } from 'lucide-react';
+import { GraduationCap, ArrowLeft, Mail, Lock, User, Sun, Moon, Globe } from 'lucide-react';
 import { z } from 'zod';
-
-const loginSchema = z.object({
-  email: z.string().email('সঠিক ইমেইল দিন'),
-  password: z.string().min(6, 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে'),
-});
-
-const signupSchema = z.object({
-  fullName: z.string().min(2, 'নাম কমপক্ষে ২ অক্ষরের হতে হবে'),
-  email: z.string().email('সঠিক ইমেইল দিন'),
-  password: z.string().min(6, 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে'),
-});
 
 export default function StudentLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,20 +21,30 @@ export default function StudentLoginPage() {
   const [signupPassword, setSignupPassword] = useState('');
   
   const { user, role, isLoading: authLoading, signIn, signUp } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
+  const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+
+  const loginSchema = z.object({
+    email: z.string().email(t('login.invalidEmail')),
+    password: z.string().min(6, t('login.passwordMin')),
+  });
+
+  const signupSchema = z.object({
+    fullName: z.string().min(2, t('login.nameMin')),
+    email: z.string().email(t('login.invalidEmail')),
+    password: z.string().min(6, t('login.passwordMin')),
+  });
 
   // Redirect if already logged in
   useEffect(() => {
     if (!authLoading && user) {
-      // Give a moment for role to load, then redirect
       const timer = setTimeout(() => {
         if (role === 'admin') {
           navigate('/admin');
         } else if (role === 'student') {
-          // Students now go directly to dashboard (auto pass code is created)
           navigate('/student');
         }
-        // If role is null/undefined, wait for it to load
       }, 200);
       return () => clearTimeout(timer);
     }
@@ -64,15 +65,14 @@ export default function StudentLoginPage() {
 
     if (error) {
       if (error.message.includes('Invalid login credentials')) {
-        toast.error('ইমেইল বা পাসওয়ার্ড ভুল');
+        toast.error(t('login.invalidCredentials'));
       } else {
         toast.error(error.message);
       }
       return;
     }
 
-    toast.success('সফলভাবে লগইন হয়েছে!');
-    // useEffect will handle redirect after role is loaded
+    toast.success(t('login.loginSuccess'));
   };
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -94,15 +94,14 @@ export default function StudentLoginPage() {
 
     if (error) {
       if (error.message.includes('User already registered')) {
-        toast.error('এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে');
+        toast.error(t('login.userExists'));
       } else {
         toast.error(error.message);
       }
       return;
     }
 
-    toast.success('অ্যাকাউন্ট তৈরি হয়েছে!');
-    // useEffect will handle redirect after role is loaded
+    toast.success(t('login.accountCreated'));
   };
 
   if (authLoading) {
@@ -115,44 +114,71 @@ export default function StudentLoginPage() {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -left-20 w-64 sm:w-96 h-64 sm:h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 w-64 sm:w-96 h-64 sm:h-96 bg-primary/10 rounded-full blur-3xl" />
       </div>
 
       <div className="w-full max-w-md relative z-10">
-        <Link 
-          to="/" 
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          হোমে ফিরুন
-        </Link>
+        {/* Top Bar with Navigation and Controls */}
+        <div className="flex items-center justify-between mb-6">
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden xs:inline">{t('login.backHome')}</span>
+          </Link>
+          
+          <div className="flex items-center gap-2">
+            {/* Theme Toggle */}
+            <Button 
+              variant="ghost" 
+              size="icon"
+              className="h-9 w-9"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            >
+              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </Button>
+            
+            {/* Language Toggle */}
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
+              className="gap-1 h-9"
+            >
+              <Globe className="w-4 h-4" />
+              {language === 'en' ? 'বাং' : 'EN'}
+            </Button>
+          </div>
+        </div>
 
         <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-          <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
-              <GraduationCap className="w-8 h-8 text-primary" />
+          <CardHeader className="text-center space-y-4 pb-4">
+            <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <GraduationCap className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
             </div>
             <div>
-              <CardTitle className="text-2xl gradient-text">শিক্ষার্থী পোর্টাল</CardTitle>
-              <CardDescription className="text-muted-foreground mt-2">
-                আপনার শেখার যাত্রা শুরু করুন
+              <CardTitle className="text-xl sm:text-2xl gradient-text">{t('login.studentPortal')}</CardTitle>
+              <CardDescription className="text-muted-foreground mt-2 text-sm">
+                {t('login.startJourney')}
               </CardDescription>
             </div>
           </CardHeader>
 
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">লগইন</TabsTrigger>
-                <TabsTrigger value="signup">সাইন আপ</TabsTrigger>
+                <TabsTrigger value="login" className="text-sm">{t('login.login')}</TabsTrigger>
+                <TabsTrigger value="signup" className="text-sm">{t('login.signup')}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="login">
                 <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="login-email">ইমেইল</Label>
+                    <Label htmlFor="login-email" className="text-sm">{t('login.email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
@@ -161,14 +187,14 @@ export default function StudentLoginPage() {
                         placeholder="your@email.com"
                         value={loginEmail}
                         onChange={(e) => setLoginEmail(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 h-11"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="login-password">পাসওয়ার্ড</Label>
+                    <Label htmlFor="login-password" className="text-sm">{t('login.password')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
@@ -177,14 +203,14 @@ export default function StudentLoginPage() {
                         placeholder="••••••••"
                         value={loginPassword}
                         onChange={(e) => setLoginPassword(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 h-11"
                         required
                       />
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'লগইন হচ্ছে...' : 'লগইন'}
+                  <Button type="submit" className="w-full h-11" disabled={isLoading}>
+                    {isLoading ? t('login.loggingIn') : t('login.login')}
                   </Button>
                 </form>
               </TabsContent>
@@ -192,23 +218,23 @@ export default function StudentLoginPage() {
               <TabsContent value="signup">
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">পুরো নাম</Label>
+                    <Label htmlFor="signup-name" className="text-sm">{t('login.fullName')}</Label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="signup-name"
                         type="text"
-                        placeholder="আপনার নাম"
+                        placeholder={t('login.namePlaceholder')}
                         value={signupName}
                         onChange={(e) => setSignupName(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 h-11"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-email">ইমেইল</Label>
+                    <Label htmlFor="signup-email" className="text-sm">{t('login.email')}</Label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
@@ -217,14 +243,14 @@ export default function StudentLoginPage() {
                         placeholder="your@email.com"
                         value={signupEmail}
                         onChange={(e) => setSignupEmail(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 h-11"
                         required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">পাসওয়ার্ড</Label>
+                    <Label htmlFor="signup-password" className="text-sm">{t('login.password')}</Label>
                     <div className="relative">
                       <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
@@ -233,23 +259,23 @@ export default function StudentLoginPage() {
                         placeholder="••••••••"
                         value={signupPassword}
                         onChange={(e) => setSignupPassword(e.target.value)}
-                        className="pl-10"
+                        className="pl-10 h-11"
                         required
                       />
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? 'অ্যাকাউন্ট তৈরি হচ্ছে...' : 'সাইন আপ'}
+                  <Button type="submit" className="w-full h-11" disabled={isLoading}>
+                    {isLoading ? t('login.signingUp') : t('login.signup')}
                   </Button>
                 </form>
               </TabsContent>
             </Tabs>
           </CardContent>
 
-          <CardFooter className="text-center text-sm text-muted-foreground">
+          <CardFooter className="text-center text-xs sm:text-sm text-muted-foreground px-4 sm:px-6">
             <p className="w-full">
-              সাইন আপ করলে অটো Pass Code পাবেন এবং Admin কোর্স অ্যাসাইন করবে
+              {t('login.autoPassCode')}
             </p>
           </CardFooter>
         </Card>
