@@ -237,6 +237,12 @@ export default function AdminDashboard() {
         return;
       }
 
+      // Delete the request after successful approval
+      await supabase
+        .from('enrollment_requests')
+        .delete()
+        .eq('id', request.id);
+
       toast.success(language === 'bn' ? 'অনুমোদিত! Student account তৈরি হয়েছে।' : 'Approved! Student account created.', { id: 'approve' });
       fetchEnrollmentRequests();
       refetchPassCodes();
@@ -246,11 +252,11 @@ export default function AdminDashboard() {
     }
   };
 
-  // Reject enrollment request
+  // Reject enrollment request - delete instead of updating status
   const rejectEnrollment = async (requestId: string) => {
     const { error } = await supabase
       .from('enrollment_requests')
-      .update({ status: 'rejected' })
+      .delete()
       .eq('id', requestId);
 
     if (error) {
