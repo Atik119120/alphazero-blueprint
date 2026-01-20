@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowUpRight, Facebook, Instagram, Linkedin, MessageCircle, Clock, Twitter } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Facebook, Instagram, Linkedin, MessageCircle, Clock, Twitter, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,6 +15,7 @@ const Footer = () => {
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram, comingSoon: false },
     { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter, comingSoon: false },
+    { name: "Discord", url: "https://discord.gg/uq9akRQpS", icon: MessageSquare, comingSoon: false },
     { name: "LinkedIn", url: "#", icon: Linkedin, comingSoon: true },
   ];
 
