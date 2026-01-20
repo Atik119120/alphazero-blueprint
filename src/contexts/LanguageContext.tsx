@@ -135,6 +135,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Common
     "common.learnMore": "Learn More",
     "common.viewAll": "View All",
+    "common.soon": "Soon",
     
     // Services Page
     "services.subtitle": "Our Services",
@@ -557,6 +558,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Common
     "common.learnMore": "আরও জানুন",
     "common.viewAll": "সব দেখুন",
+    "common.soon": "শীঘ্রই",
     
     // Services Page
     "services.subtitle": "আমাদের সেবাসমূহ",
