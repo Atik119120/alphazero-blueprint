@@ -816,97 +816,131 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full max-w-7xl grid-cols-12 bg-white dark:bg-slate-800 border border-border p-1.5 rounded-2xl h-auto shadow-sm overflow-x-auto">
-            <TabsTrigger 
-              value="courses" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <BookOpen className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'কোর্স' : 'Courses'}</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="analytics" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <BarChart3 className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'এনালাইটিক্স' : 'Analytics'}</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="requests" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all relative"
-            >
-              <Mail className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'রিকোয়েস্ট' : 'Requests'}</span>
-              {enrollmentRequests.filter(r => r.status === 'pending').length > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {enrollmentRequests.filter(r => r.status === 'pending').length}
-                </span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger 
-              value="passcodes" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <Key className="w-4 h-4" />
-              <span className="hidden sm:inline">Pass Code</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="students" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <Users className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'ছাত্র' : 'Students'}</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="works" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <Briefcase className="w-4 h-4" />
-              <span className="hidden sm:inline">Works</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="team" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <UsersRound className="w-4 h-4" />
-              <span className="hidden sm:inline">Team</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="services" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <Wrench className="w-4 h-4" />
-              <span className="hidden sm:inline">Services</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="content" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <FileText className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'কনটেন্ট' : 'Content'}</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="footer" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <Link2 className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'ফুটার' : 'Footer'}</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="settings" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <Settings className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'সেটিংস' : 'Settings'}</span>
-            </TabsTrigger>
-            <TabsTrigger
-              value="profile" 
-              className="gap-2 py-3 rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white transition-all"
-            >
-              <User className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
-            </TabsTrigger>
-          </TabsList>
+          {/* Redesigned Tab Navigation */}
+          <div className="bg-white dark:bg-slate-800/50 border border-border rounded-2xl p-4 shadow-sm">
+            {/* Category Labels and Tab Groups */}
+            <div className="space-y-4">
+              {/* LMS Section */}
+              <div>
+                <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-1 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? '📚 এলএমএস' : '📚 LMS'}
+                </p>
+                <TabsList className="flex flex-wrap gap-2 bg-transparent h-auto p-0">
+                  <TabsTrigger 
+                    value="courses" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
+                  >
+                    <BookOpen className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'কোর্স' : 'Courses'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="students" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
+                  >
+                    <Users className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'ছাত্র' : 'Students'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="passcodes" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
+                  >
+                    <Key className="w-4 h-4" />
+                    <span>Pass Code</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="requests" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all relative"
+                  >
+                    <Mail className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'রিকোয়েস্ট' : 'Requests'}</span>
+                    {enrollmentRequests.filter(r => r.status === 'pending').length > 0 && (
+                      <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium animate-pulse">
+                        {enrollmentRequests.filter(r => r.status === 'pending').length}
+                      </span>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="analytics" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
+                  >
+                    <BarChart3 className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'এনালাইটিক্স' : 'Analytics'}</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              <div className="border-t border-border/50" />
+
+              {/* Website CMS Section */}
+              <div>
+                <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-1 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? '🌐 ওয়েবসাইট' : '🌐 Website CMS'}
+                </p>
+                <TabsList className="flex flex-wrap gap-2 bg-transparent h-auto p-0">
+                  <TabsTrigger 
+                    value="content" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
+                  >
+                    <FileText className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'পেজ কনটেন্ট' : 'Page Content'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="works" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
+                  >
+                    <Briefcase className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'ওয়ার্কস' : 'Works'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="team" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
+                  >
+                    <UsersRound className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'টিম' : 'Team'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="services" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
+                  >
+                    <Wrench className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'সার্ভিস' : 'Services'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="footer" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
+                  >
+                    <Link2 className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'ফুটার' : 'Footer'}</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+
+              <div className="border-t border-border/50" />
+
+              {/* Settings Section */}
+              <div>
+                <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-1 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                  {language === 'bn' ? '⚙️ সেটিংস' : '⚙️ Settings'}
+                </p>
+                <TabsList className="flex flex-wrap gap-2 bg-transparent h-auto p-0">
+                  <TabsTrigger 
+                    value="settings" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:border-amber-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-amber-500/20 transition-all"
+                  >
+                    <Settings className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'সাইট সেটিংস' : 'Site Settings'}</span>
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="profile" 
+                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:border-amber-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-amber-500/20 transition-all"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>{language === 'bn' ? 'প্রোফাইল ও এডমিন' : 'Profile & Admins'}</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </div>
+          </div>
 
           {/* Courses Tab */}
           <TabsContent value="courses" className="space-y-6">
