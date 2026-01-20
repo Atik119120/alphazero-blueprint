@@ -7,7 +7,15 @@ import {
   Moon,
   ArrowUpRight,
   Search,
-  User
+  User,
+  Home,
+  Info,
+  Briefcase,
+  FolderOpen,
+  Users,
+  GraduationCap,
+  Mail,
+  Phone
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
@@ -32,6 +40,16 @@ const Navbar = () => {
     { name: t("nav.team"), href: "/team", num: "05" },
     { name: t("nav.courses"), href: "/courses", num: "06" },
     { name: t("nav.contact"), href: "/contact", num: "07" },
+  ];
+
+  const navLinksWithIcons = [
+    { name: t("nav.home"), href: "/", icon: Home },
+    { name: t("nav.about"), href: "/about", icon: Info },
+    { name: t("nav.services"), href: "/services", icon: Briefcase },
+    { name: t("nav.work"), href: "/work", icon: FolderOpen },
+    { name: t("nav.team"), href: "/team", icon: Users },
+    { name: t("nav.courses"), href: "/courses", icon: GraduationCap },
+    { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
 
   useEffect(() => {
@@ -206,7 +224,7 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile Menu - Glassmorphism Floating Card */}
+      {/* Mobile Menu - Left Side Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -216,150 +234,160 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-background/40 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
             />
 
-            {/* Floating Menu Card */}
+            {/* Left Side Drawer */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -10 }}
-              transition={{ type: "spring", damping: 30, stiffness: 500, duration: 0.15 }}
-              className="fixed top-20 left-4 right-4 z-50 lg:hidden"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] z-50 lg:hidden"
             >
-              <div className="relative bg-background/80 backdrop-blur-2xl rounded-3xl border border-border/50 shadow-2xl shadow-primary/5 overflow-hidden">
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-primary/10 to-transparent rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
-                
-                {/* Content */}
-                <div className="relative p-6">
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-medium">Navigation</span>
-                    </div>
-                    <motion.button
-                      whileTap={{ scale: 0.9 }}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="w-8 h-8 rounded-full bg-secondary/80 flex items-center justify-center"
-                    >
-                      <X size={14} />
-                    </motion.button>
-                  </div>
+              <div className="h-full bg-background/95 backdrop-blur-2xl border-r border-border/50 shadow-2xl overflow-hidden flex flex-col">
+                {/* Header with Logo and Close Button */}
+                <div className="flex items-center justify-between p-5 border-b border-border/30">
+                  <Link to="/" onClick={handleNavClick} className="flex items-center gap-2">
+                    <img 
+                      src={logo} 
+                      alt="AlphaZero Logo" 
+                      className="h-8 w-auto brightness-0 dark:invert"
+                    />
+                  </Link>
+                  <motion.button
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-10 h-10 rounded-xl bg-secondary/80 flex items-center justify-center border border-border/30"
+                  >
+                    <X size={18} />
+                  </motion.button>
+                </div>
 
-                  {/* Navigation Grid */}
-                  <div className="grid grid-cols-2 gap-2 mb-6">
-                    {navLinks.map((link, index) => (
-                      <motion.div
-                        key={link.href}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.02, duration: 0.15 }}
-                      >
-                        <Link
-                          to={link.href}
-                          onClick={handleNavClick}
-                          className={`relative flex flex-col p-4 rounded-2xl transition-all duration-300 group overflow-hidden ${
-                            location.pathname === link.href 
-                              ? "bg-primary text-primary-foreground" 
-                              : "bg-secondary/50 hover:bg-secondary text-foreground"
-                          }`}
+                {/* Search Bar */}
+                <div className="px-5 py-4">
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setIsSearchOpen(true);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 bg-secondary/50 rounded-xl border border-border/30 text-muted-foreground hover:bg-secondary/80 transition-colors"
+                  >
+                    <Search size={18} className="text-primary" />
+                    <span className="text-sm">{language === "bn" ? "সার্চ করুন..." : "Search..."}</span>
+                  </button>
+                </div>
+
+                {/* Navigation Links */}
+                <nav className="flex-1 px-5 py-2 overflow-y-auto">
+                  <div className="space-y-1">
+                    {navLinksWithIcons.map((link, index) => {
+                      const IconComponent = link.icon;
+                      return (
+                        <motion.div
+                          key={link.href}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.05, duration: 0.2 }}
                         >
-                          {/* Hover Glow */}
-                          <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                            location.pathname === link.href ? "" : "bg-gradient-to-br from-primary/5 to-transparent"
-                          }`} />
-                          
-                          {/* Number */}
-                          <span className={`text-[10px] font-mono mb-1 relative z-10 ${
-                            location.pathname === link.href 
-                              ? "text-primary-foreground/60" 
-                              : "text-primary/60"
-                          }`}>
-                            {link.num}
-                          </span>
-                          
-                          {/* Name */}
-                          <span className="text-sm font-semibold relative z-10 leading-tight">
-                            {link.name}
-                          </span>
-
-                          {/* Active Indicator */}
-                          {location.pathname === link.href && (
-                            <motion.div
-                              layoutId="activeCard"
-                              className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-primary-foreground"
+                          <Link
+                            to={link.href}
+                            onClick={handleNavClick}
+                            className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all duration-200 group ${
+                              location.pathname === link.href 
+                                ? "bg-primary/10 text-primary" 
+                                : "text-foreground hover:bg-secondary/60"
+                            }`}
+                          >
+                            <IconComponent 
+                              size={20} 
+                              className={location.pathname === link.href ? "text-primary" : "text-primary/70"} 
                             />
-                          )}
-                        </Link>
-                      </motion.div>
-                    ))}
+                            <span className="text-[15px] font-medium">
+                              {link.name}
+                            </span>
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
                   </div>
 
                   {/* Divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent mb-4" />
+                  <div className="h-px bg-gradient-to-r from-border via-border/50 to-transparent my-4" />
 
-                  {/* Controls Row */}
+                  {/* Login Link */}
                   <motion.div
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1, duration: 0.15 }}
-                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.35, duration: 0.2 }}
                   >
-                    {/* Search Button - Mobile */}
-                    <button
-                      onClick={() => {
-                        setIsMobileMenuOpen(false);
-                        setIsSearchOpen(true);
-                      }}
-                      className="w-11 h-11 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center"
-                    >
-                      <Search size={16} className="text-primary" />
-                    </button>
-
-                    {/* Login Button - Mobile */}
                     <Link
                       to="/student/login"
                       onClick={handleNavClick}
-                      className="w-11 h-11 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center"
-                      title={language === "bn" ? "লগইন" : "Login"}
+                      className="flex items-center gap-4 px-4 py-3.5 rounded-xl text-foreground hover:bg-secondary/60 transition-all duration-200"
                     >
-                      <User size={16} className="text-primary" />
+                      <User size={20} className="text-primary/70" />
+                      <span className="text-[15px] font-medium">
+                        {language === "bn" ? "লগইন" : "Sign In"}
+                      </span>
                     </Link>
+                  </motion.div>
 
-                    {/* Language */}
+                  {/* WhatsApp Support */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4, duration: 0.2 }}
+                  >
+                    <a
+                      href="https://wa.me/8801779277603"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleNavClick}
+                      className="flex items-center gap-4 px-4 py-3.5 rounded-xl text-foreground hover:bg-secondary/60 transition-all duration-200"
+                    >
+                      <Phone size={20} className="text-primary/70" />
+                      <span className="text-[15px] font-medium">
+                        {language === "bn" ? "হোয়াটসঅ্যাপ সাপোর্ট" : "WhatsApp Support"}
+                      </span>
+                    </a>
+                  </motion.div>
+                </nav>
+
+                {/* Bottom Controls */}
+                <div className="p-5 border-t border-border/30">
+                  <div className="flex items-center gap-3 mb-4">
+                    {/* Language Toggle */}
                     <button
                       onClick={() => setLanguage(language === "en" ? "bn" : "en")}
                       className="flex-1 h-11 px-4 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center gap-2 text-sm font-medium"
                     >
                       <span className={`transition-colors ${language === "en" ? "text-primary" : "text-muted-foreground"}`}>EN</span>
                       <span className="text-border">/</span>
-                      <span className={`transition-colors ${language === "bn" ? "text-primary" : "text-muted-foreground"}`}>বা</span>
+                      <span className={`transition-colors ${language === "bn" ? "text-primary" : "text-muted-foreground"}`}>বাং</span>
                     </button>
                     
-                    {/* Theme */}
+                    {/* Theme Toggle */}
                     {mounted && (
                       <motion.button
-                        whileTap={{ rotate: 180 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                         className="w-11 h-11 rounded-xl bg-secondary/60 border border-border/30 flex items-center justify-center"
                       >
-                        {theme === "dark" ? <Sun size={16} className="text-primary" /> : <Moon size={16} className="text-primary" />}
+                        {theme === "dark" ? <Sun size={18} className="text-primary" /> : <Moon size={18} className="text-primary" />}
                       </motion.button>
                     )}
-                    
-                    {/* CTA */}
-                    <Link
-                      to="/contact"
-                      onClick={handleNavClick}
-                      className="flex-1 h-11 px-4 bg-foreground text-background rounded-xl font-medium text-sm flex items-center justify-center gap-1.5"
-                    >
-                      {t("nav.startProject")}
-                      <ArrowUpRight size={14} />
-                    </Link>
-                  </motion.div>
+                  </div>
+
+                  {/* CTA Button */}
+                  <Link
+                    to="/contact"
+                    onClick={handleNavClick}
+                    className="w-full h-12 bg-primary text-primary-foreground rounded-xl font-medium text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
+                  >
+                    {t("nav.startProject")}
+                    <ArrowUpRight size={16} />
+                  </Link>
                 </div>
               </div>
             </motion.div>
