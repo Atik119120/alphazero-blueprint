@@ -24,6 +24,7 @@ import { useTheme } from 'next-themes';
 import StudentIDCard from '@/components/student/StudentIDCard';
 import ProfilePhotoUpload from '@/components/student/ProfilePhotoUpload';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import CourseEnrollmentModal from '@/components/student/CourseEnrollmentModal';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
@@ -50,6 +51,8 @@ export default function StudentDashboard() {
   const [allCourses, setAllCourses] = useState<Course[]>([]);
   const [enrollmentRequests, setEnrollmentRequests] = useState<any[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(false);
+  const [selectedEnrollCourse, setSelectedEnrollCourse] = useState<Course | null>(null);
+  const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -247,27 +250,13 @@ export default function StudentDashboard() {
     }
   };
 
-  const requestEnrollment = async (course: Course) => {
-    if (!user || !profile) return;
-    
-    const { error } = await supabase.from('enrollment_requests').insert({
-      user_id: user.id,
-      course_id: course.id,
-      student_name: profile.full_name,
-      student_email: profile.email,
-      status: 'pending',
-    });
+  const openEnrollmentModal = (course: Course) => {
+    setSelectedEnrollCourse(course);
+    setShowEnrollmentModal(true);
+  };
 
-    if (error) {
-      if (error.code === '23505') {
-        toast.error('Request already exists');
-      } else {
-        toast.error('Error sending request');
-      }
-    } else {
-      toast.success(t('enroll.requestSent'));
-      fetchEnrollmentRequests();
-    }
+  const handleEnrollmentSuccess = () => {
+    fetchEnrollmentRequests();
   };
 
   const isEnrolled = (courseId: string) => {
@@ -653,8 +642,9 @@ export default function StudentDashboard() {
                                 <Clock className="w-3 h-3 mr-1" /> Pending
                               </Badge>
                             ) : (
-                              <Button size="sm" className="w-full text-xs h-8" onClick={() => requestEnrollment(course)}>
-                                Request Enrollment
+                              <Button size="sm" className="w-full text-xs h-8 gap-1" onClick={() => openEnrollmentModal(course)}>
+                                <CreditCard className="w-3 h-3" />
+                                {language === 'bn' ? 'এনরোল করুন' : 'Enroll Now'}
                               </Button>
                             )}
                           </div>
@@ -836,6 +826,21 @@ export default function StudentDashboard() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Course Enrollment Modal */}
+      <CourseEnrollmentModal
+        isOpen={showEnrollmentModal}
+        onClose={() => {
+          setShowEnrollmentModal(false);
+          setSelectedEnrollCourse(null);
+        }}
+        course={selectedEnrollCourse}
+        userId={user?.id || ''}
+        userEmail={profile?.email || ''}
+        userName={profile?.full_name || ''}
+        onSuccess={handleEnrollmentSuccess}
+        language={language as 'en' | 'bn'}
+      />
     </div>
   );
 }
