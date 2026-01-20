@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, ArrowRight, Layout, Users, Briefcase, Phone, BookOpen, Info, Sparkles, Loader2, GraduationCap } from "lucide-react";
+import { Search, X, ArrowRight, Layout, Users, Briefcase, Phone, BookOpen, Info, Sparkles, Loader2, GraduationCap, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,6 +20,45 @@ interface SearchItem {
   keywords: string[];
   category?: string;
 }
+
+// Team members data for search
+const teamMembers = [
+  {
+    name: "Sofiullah Ahammad",
+    nameBn: "সফিউল্লাহ আহাম্মদ",
+    role: "Founder, Graphics Designer, Vibe Coding Expert, Freelance Photographer",
+    roleBn: "প্রতিষ্ঠাতা, গ্রাফিক ডিজাইনার, ভাইব কোডিং এক্সপার্ট",
+    keywords: ["sofiullah", "ahammad", "atik", "founder", "graphics", "designer", "photographer", "সফিউল্লাহ", "আতিক", "ফাউন্ডার", "ডিজাইনার"]
+  },
+  {
+    name: "Adib Sarkar",
+    nameBn: "আদিব সরকার",
+    role: "Founder, Lead Designer, Entrepreneur",
+    roleBn: "প্রতিষ্ঠাতা, লিড ডিজাইনার, উদ্যোক্তা",
+    keywords: ["adib", "sarkar", "founder", "lead", "designer", "entrepreneur", "আদিব", "সরকার", "লিড", "উদ্যোক্তা"]
+  },
+  {
+    name: "Md.Kamrul Hasan",
+    nameBn: "মো. কামরুল হাসান",
+    role: "Founder, Microsoft Office Expert, Graphics Designer",
+    roleBn: "প্রতিষ্ঠাতা, মাইক্রোসফট অফিস এক্সপার্ট, গ্রাফিক ডিজাইনার",
+    keywords: ["kamrul", "hasan", "microsoft", "office", "excel", "word", "powerpoint", "কামরুল", "হাসান", "মাইক্রোসফট", "অফিস"]
+  },
+  {
+    name: "Md.Shafiul Haque",
+    nameBn: "মো. শফিউল হক",
+    role: "Web Designer, Video Editor, Content Creator, Cinematographer",
+    roleBn: "ওয়েব ডিজাইনার, ভিডিও এডিটর, কন্টেন্ট ক্রিয়েটর",
+    keywords: ["shafiul", "haque", "shaurav", "web", "video", "editor", "cinematographer", "content", "শফিউল", "হক", "ভিডিও", "এডিটর"]
+  },
+  {
+    name: "Prantik Saha",
+    nameBn: "প্রান্তিক সাহা",
+    role: "Graphics Designer, Microsoft Office Expert, IT Support",
+    roleBn: "গ্রাফিক ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
+    keywords: ["prantik", "saha", "graphics", "it", "support", "প্রান্তিক", "সাহা", "আইটি", "সাপোর্ট"]
+  },
+];
 
 // Static pages data
 const staticPages: SearchItem[] = [
@@ -154,35 +193,55 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
   const navigate = useNavigate();
   const { language } = useLanguage();
 
-  // Load courses from database
+  // Load courses from database and combine with team members
   useEffect(() => {
-    const loadCourses = async () => {
+    const loadDynamicData = async () => {
       try {
         const { data: courses } = await supabase
           .from('courses')
           .select('id, title, description')
           .eq('is_published', true);
 
+        const dynamicItems: SearchItem[] = [];
+
+        // Add courses
         if (courses) {
-          const courseItems: SearchItem[] = courses.map(course => ({
-            title: course.title,
-            titleBn: course.title,
-            description: course.description || "Learn with AlphaZero",
-            descriptionBn: course.description || "AlphaZero-এর সাথে শিখুন",
-            path: "/courses",
-            icon: GraduationCap,
-            keywords: [course.title.toLowerCase(), "course", "কোর্স", "training", "ট্রেনিং"],
-            category: "course"
-          }));
-          setDynamicData(courseItems);
+          courses.forEach(course => {
+            dynamicItems.push({
+              title: course.title,
+              titleBn: course.title,
+              description: course.description || "Learn with AlphaZero",
+              descriptionBn: course.description || "AlphaZero-এর সাথে শিখুন",
+              path: "/courses",
+              icon: GraduationCap,
+              keywords: [course.title.toLowerCase(), "course", "কোর্স", "training", "ট্রেনিং"],
+              category: "course"
+            });
+          });
         }
+
+        // Add team members
+        teamMembers.forEach(member => {
+          dynamicItems.push({
+            title: member.name,
+            titleBn: member.nameBn,
+            description: member.role,
+            descriptionBn: member.roleBn,
+            path: "/team",
+            icon: User,
+            keywords: [...member.keywords, "team", "member", "trainer", "টিম", "ট্রেইনার", "মেম্বার"],
+            category: "team"
+          });
+        });
+
+        setDynamicData(dynamicItems);
       } catch (error) {
-        console.error('Error loading courses:', error);
+        console.error('Error loading dynamic data:', error);
       }
     };
 
     if (isOpen) {
-      loadCourses();
+      loadDynamicData();
     }
   }, [isOpen]);
 
@@ -318,7 +377,7 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder={language === "bn" ? "পেজ, কোর্স বা সার্ভিস খুঁজুন..." : "Search pages, courses or services..."}
+                  placeholder={language === "bn" ? "পেজ, কোর্স, টিম মেম্বার খুঁজুন..." : "Search pages, courses, team..."}
                   className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
                   autoFocus
                 />
@@ -390,13 +449,18 @@ Reply in ${language === 'bn' ? 'Bengali' : 'English'} only. Keep it very short (
                         <item.icon size={20} className="text-primary" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <h4 className="font-medium text-foreground truncate">
                             {highlightMatch(language === "bn" ? item.titleBn : item.title, query)}
                           </h4>
                           {item.category === "course" && (
-                            <span className="text-[10px] px-1.5 py-0.5 bg-primary/20 text-primary rounded-full">
+                            <span className="text-[10px] px-1.5 py-0.5 bg-primary/20 text-primary rounded-full shrink-0">
                               {language === "bn" ? "কোর্স" : "Course"}
+                            </span>
+                          )}
+                          {item.category === "team" && (
+                            <span className="text-[10px] px-1.5 py-0.5 bg-green-500/20 text-green-600 dark:text-green-400 rounded-full shrink-0">
+                              {language === "bn" ? "টিম মেম্বার" : "Team"}
                             </span>
                           )}
                         </div>
