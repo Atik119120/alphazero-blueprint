@@ -123,9 +123,12 @@ export type Database = {
           created_at: string
           id: string
           message: string | null
+          payment_method: string | null
+          phone_number: string | null
           status: string
           student_email: string
           student_name: string
+          transaction_id: string | null
           updated_at: string
           user_id: string
         }
@@ -134,9 +137,12 @@ export type Database = {
           created_at?: string
           id?: string
           message?: string | null
+          payment_method?: string | null
+          phone_number?: string | null
           status?: string
           student_email: string
           student_name: string
+          transaction_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -145,9 +151,12 @@ export type Database = {
           created_at?: string
           id?: string
           message?: string | null
+          payment_method?: string | null
+          phone_number?: string | null
           status?: string
           student_email?: string
           student_name?: string
+          transaction_id?: string | null
           updated_at?: string
           user_id?: string
         }

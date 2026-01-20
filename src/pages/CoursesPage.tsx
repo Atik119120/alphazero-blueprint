@@ -468,7 +468,9 @@ const CoursesPage = () => {
     email: "",
     password: "",
     course: "",
-    paymentType: ""
+    paymentType: "",
+    paymentMethod: "",
+    transactionId: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -504,7 +506,7 @@ const CoursesPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.mobile || !formData.email || !formData.password || !formData.course || !formData.paymentType) {
+    if (!formData.name || !formData.mobile || !formData.email || !formData.password || !formData.course || !formData.paymentType || !formData.paymentMethod || !formData.transactionId) {
       toast.error(t.fillAll);
       return;
     }
@@ -538,13 +540,16 @@ const CoursesPage = () => {
           course_id: selectedCourse.id,
           student_name: formData.name,
           student_email: formData.email,
-          message: `Mobile: ${formData.mobile}, Payment: ${formData.paymentType}`,
+          phone_number: formData.mobile,
+          payment_method: formData.paymentMethod,
+          transaction_id: formData.transactionId,
+          message: `Payment Type: ${formData.paymentType}`,
           status: 'pending',
         });
       }
       
       toast.success(t.success);
-      setFormData({ name: "", mobile: "", email: "", password: "", course: "", paymentType: "" });
+      setFormData({ name: "", mobile: "", email: "", password: "", course: "", paymentType: "", paymentMethod: "", transactionId: "" });
     } catch (error) {
       console.error('Enrollment error:', error);
       toast.error(isBn ? "কিছু সমস্যা হয়েছে" : "Something went wrong");
@@ -935,6 +940,72 @@ const CoursesPage = () => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {/* Payment Method (bKash/Nagad) */}
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">
+                    <CreditCard className="w-4 h-4 text-primary" />
+                    {isBn ? "পেমেন্ট মাধ্যম" : "Payment Method"}
+                  </Label>
+                  <Select value={formData.paymentMethod} onValueChange={(value) => handleInputChange("paymentMethod", value)}>
+                    <SelectTrigger className="h-12">
+                      <SelectValue placeholder={isBn ? "পেমেন্ট মাধ্যম সিলেক্ট করুন" : "Select payment method"} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="bkash">বিকাশ (bKash)</SelectItem>
+                      <SelectItem value="nagad">নগদ (Nagad)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Payment Instructions */}
+                {formData.paymentMethod && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="p-4 rounded-xl bg-green-500/10 border border-green-500/30"
+                  >
+                    <p className="text-sm font-medium text-green-600 dark:text-green-400 mb-2">
+                      {isBn ? "পেমেন্ট নির্দেশনা:" : "Payment Instructions:"}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {formData.paymentMethod === 'bkash' 
+                        ? (isBn ? "বিকাশ নাম্বার: 01776965533 - এই নাম্বারে টাকা পাঠান" : "bKash Number: 01776965533 - Send money to this number")
+                        : (isBn ? "নগদ নাম্বার: 01776965533 - এই নাম্বারে টাকা পাঠান" : "Nagad Number: 01776965533 - Send money to this number")
+                      }
+                    </p>
+                    {selectedCourse && (
+                      <p className="text-sm font-bold text-primary mt-2">
+                        {isBn ? `পাঠাতে হবে: ৳${selectedCourse.price.toLocaleString()}` : `Amount: ৳${selectedCourse.price.toLocaleString()}`}
+                        {formData.paymentType === 'installment' && (
+                          <span className="text-muted-foreground font-normal">
+                            {isBn ? ` (প্রথম কিস্তি: ৳${Math.ceil(selectedCourse.price / 2).toLocaleString()})` : ` (First installment: ৳${Math.ceil(selectedCourse.price / 2).toLocaleString()})`}
+                          </span>
+                        )}
+                      </p>
+                    )}
+                  </motion.div>
+                )}
+
+                {/* Transaction ID */}
+                {formData.paymentMethod && (
+                  <div className="space-y-2">
+                    <Label htmlFor="transactionId" className="flex items-center gap-2">
+                      <CreditCard className="w-4 h-4 text-primary" />
+                      {isBn ? "ট্রানজেকশন আইডি" : "Transaction ID"}
+                    </Label>
+                    <Input
+                      id="transactionId"
+                      placeholder={isBn ? "যেমন: 8N7X9K2M5P" : "e.g., 8N7X9K2M5P"}
+                      value={formData.transactionId}
+                      onChange={(e) => handleInputChange("transactionId", e.target.value)}
+                      className="h-12"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {isBn ? "টাকা পাঠানোর পর যে ট্রানজেকশন আইডি পাবেন সেটি এখানে দিন" : "Enter the transaction ID you received after sending money"}
+                    </p>
+                  </div>
+                )}
 
                 {/* Submit Button */}
                 <Button
