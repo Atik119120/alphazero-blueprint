@@ -120,7 +120,7 @@ const Footer = () => {
                           <span>{social.name}</span>
                           <span className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
                             <Clock size={10} />
-                            Soon
+                            {t("common.soon")}
                           </span>
                         </div>
                       ) : (
