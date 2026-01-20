@@ -189,7 +189,7 @@ export default function StudentLoginPage() {
 
     // OTP verified, proceed with signup
     setIsLoading(true);
-    const { error } = await signUp(signupEmail, signupPassword, signupName);
+    const { error } = await signUp(signupEmail, signupPassword, signupName, signupPhone);
     setIsLoading(false);
 
     if (error) {

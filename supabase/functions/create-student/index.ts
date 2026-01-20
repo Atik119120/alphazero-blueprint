@@ -10,6 +10,7 @@ interface CreateStudentRequest {
   email: string;
   password: string;
   pass_code?: string;
+  phone_number?: string;
 }
 
 Deno.serve(async (req) => {
@@ -73,7 +74,7 @@ Deno.serve(async (req) => {
 
     // Parse request body
     const body: CreateStudentRequest = await req.json();
-    const { full_name, email, password, pass_code } = body;
+    const { full_name, email, password, pass_code, phone_number } = body;
 
     // Validate input
     if (!full_name || typeof full_name !== "string" || full_name.trim().length < 2) {
@@ -140,6 +141,7 @@ Deno.serve(async (req) => {
         user_id: newUserId,
         full_name: full_name.trim(),
         email: email.trim().toLowerCase(),
+        phone_number: phone_number?.trim() || null,
       })
       .select("id")
       .single();
