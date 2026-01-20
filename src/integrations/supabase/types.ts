@@ -170,6 +170,36 @@ export type Database = {
           },
         ]
       }
+      page_content: {
+        Row: {
+          content_bn: string | null
+          content_en: string | null
+          content_key: string
+          created_at: string
+          id: string
+          page_name: string
+          updated_at: string
+        }
+        Insert: {
+          content_bn?: string | null
+          content_en?: string | null
+          content_key: string
+          created_at?: string
+          id?: string
+          page_name: string
+          updated_at?: string
+        }
+        Update: {
+          content_bn?: string | null
+          content_en?: string | null
+          content_key?: string
+          created_at?: string
+          id?: string
+          page_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pass_code_courses: {
         Row: {
           assigned_at: string | null
@@ -312,6 +342,33 @@ export type Database = {
           is_active?: boolean | null
           order_index?: number | null
           title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          created_at: string
+          id: string
+          setting_key: string
+          setting_type: string
+          setting_value: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          setting_key: string
+          setting_type?: string
+          setting_value?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          setting_key?: string
+          setting_type?: string
+          setting_value?: string | null
           updated_at?: string
         }
         Relationships: []
