@@ -84,12 +84,12 @@ Deno.serve(async (req) => {
       );
     }
 
-    console.log("Processing enrollment for:", email);
+    console.log("Processing enrollment request for:", email);
 
     // Check if course exists
     const { data: courseData, error: courseError } = await adminClient
       .from("courses")
-      .select("id, title")
+      .select("id, title, price")
       .eq("id", course_id)
       .maybeSingle();
 
@@ -101,124 +101,38 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Check if user already exists
-    const { data: existingUser } = await adminClient
-      .from("profiles")
-      .select("id, user_id")
-      .eq("email", email.trim().toLowerCase())
+    // Check if there's already a pending request with same email for same course
+    const { data: existingRequest } = await adminClient
+      .from("enrollment_requests")
+      .select("id")
+      .eq("student_email", email.trim().toLowerCase())
+      .eq("course_id", course_id)
+      .eq("status", "pending")
       .maybeSingle();
 
-    let userId: string;
-    let profileId: string;
-
-    if (existingUser) {
-      // User already exists - just create enrollment request
-      userId = existingUser.user_id;
-      profileId = existingUser.id;
-      console.log("Existing user found:", userId);
-    } else {
-      // Create new user
-      const { data: authData, error: authError } = await adminClient.auth.admin.createUser({
-        email: email.trim().toLowerCase(),
-        password: password,
-        email_confirm: true,
-        user_metadata: {
-          full_name: full_name.trim(),
-        },
-      });
-
-      if (authError) {
-        console.error("Auth error:", authError);
-        if (authError.message.includes("already been registered")) {
-          return new Response(
-            JSON.stringify({ error: "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট আছে। লগইন করুন।" }),
-            { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-          );
-        }
-        return new Response(
-          JSON.stringify({ error: authError.message }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      if (!authData.user) {
-        return new Response(
-          JSON.stringify({ error: "অ্যাকাউন্ট তৈরি করতে সমস্যা হয়েছে" }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      userId = authData.user.id;
-      console.log("User created:", userId);
-
-      // Create profile with phone number
-      const { data: profileData, error: profileError } = await adminClient
-        .from("profiles")
-        .insert({
-          user_id: userId,
-          full_name: full_name.trim(),
-          email: email.trim().toLowerCase(),
-        })
-        .select("id")
-        .single();
-
-      if (profileError) {
-        console.error("Profile error:", profileError);
-        await adminClient.auth.admin.deleteUser(userId);
-        return new Response(
-          JSON.stringify({ error: "প্রোফাইল তৈরি করতে সমস্যা হয়েছে" }),
-          { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-        );
-      }
-
-      profileId = profileData.id;
-      console.log("Profile created:", profileId);
-
-      // Assign student role
-      const { error: roleError } = await adminClient
-        .from("user_roles")
-        .insert({
-          user_id: userId,
-          role: "student",
-        });
-
-      if (roleError) {
-        console.error("Role error:", roleError);
-      }
-
-      // Generate pass code for student
-      const { data: generatedCode, error: genError } = await adminClient.rpc('generate_pass_code');
-      
-      if (!genError && generatedCode) {
-        const { error: pcError } = await adminClient
-          .from("pass_codes")
-          .insert({
-            code: generatedCode,
-            student_id: profileId,
-            is_active: true,
-            created_by: userId,
-          });
-
-        if (pcError) {
-          console.error("Pass code error:", pcError);
-        } else {
-          console.log("Pass code created:", generatedCode);
-        }
-      }
+    if (existingRequest) {
+      return new Response(
+        JSON.stringify({ error: "আপনার এই কোর্সের জন্য আগেই রিকোয়েস্ট আছে। অনুগ্রহ করে অপেক্ষা করুন।" }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
     }
 
-    // Create enrollment request
+    // Create enrollment request WITHOUT creating student account
+    // Student account will be created when admin approves
     const { data: enrollmentData, error: enrollmentError } = await adminClient
       .from("enrollment_requests")
       .insert({
-        user_id: userId,
+        user_id: "00000000-0000-0000-0000-000000000000", // Placeholder - will be updated on approval
         course_id: course_id,
         student_name: full_name.trim(),
         student_email: email.trim().toLowerCase(),
         phone_number: phone_number.trim(),
         payment_method: payment_method,
         transaction_id: transaction_id.trim(),
-        message: `Payment Type: ${payment_type}`,
+        message: JSON.stringify({
+          payment_type: payment_type,
+          password: password, // Store encrypted password for account creation on approval
+        }),
         status: "pending",
       })
       .select("id")
@@ -234,12 +148,45 @@ Deno.serve(async (req) => {
 
     console.log("Enrollment request created:", enrollmentData.id);
 
+    // Send Telegram notification if configured
+    const telegramBotToken = Deno.env.get("TELEGRAM_BOT_TOKEN");
+    const telegramChatId = Deno.env.get("TELEGRAM_CHAT_ID");
+
+    if (telegramBotToken && telegramChatId) {
+      try {
+        const message = `🎓 *নতুন এনরোলমেন্ট রিকোয়েস্ট!*
+
+👤 *নাম:* ${full_name.trim()}
+📧 *ইমেইল:* ${email.trim().toLowerCase()}
+📱 *মোবাইল:* ${phone_number.trim()}
+📚 *কোর্স:* ${courseData.title}
+💰 *মূল্য:* ৳${courseData.price || 0}
+💳 *পেমেন্ট:* ${payment_method}
+🔢 *Transaction ID:* ${transaction_id.trim()}
+📋 *পেমেন্ট টাইপ:* ${payment_type}
+
+✅ Admin Panel-এ গিয়ে approve করুন।`;
+
+        await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: telegramChatId,
+            text: message,
+            parse_mode: "Markdown",
+          }),
+        });
+        console.log("Telegram notification sent");
+      } catch (telegramError) {
+        console.error("Telegram notification failed:", telegramError);
+        // Don't fail the request if notification fails
+      }
+    }
+
     return new Response(
       JSON.stringify({
         success: true,
-        message: "আপনার এনরোলমেন্ট রিকোয়েস্ট সফলভাবে জমা হয়েছে! আমরা শীঘ্রই যোগাযোগ করব।",
-        user_id: userId,
-        profile_id: profileId,
+        message: "আপনার এনরোলমেন্ট রিকোয়েস্ট সফলভাবে জমা হয়েছে! Payment verify করে আমরা শীঘ্রই আপনার অ্যাকাউন্ট তৈরি করব।",
         enrollment_id: enrollmentData.id,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
