@@ -152,46 +152,89 @@ Deno.serve(async (req) => {
     const telegramBotToken = Deno.env.get("TELEGRAM_BOT_TOKEN");
     const telegramChatId = Deno.env.get("TELEGRAM_CHAT_ID");
 
-    if (telegramBotToken && telegramChatId) {
+    if (telegramBotToken) {
       try {
-        console.log("Sending Telegram notification to chat_id:", telegramChatId);
-        
-        const message = `🎓 নতুন এনরোলমেন্ট রিকোয়েস্ট!
+        const botId = telegramBotToken.split(":")[0];
+        const configuredChatId = telegramChatId?.trim();
 
-👤 নাম: ${full_name.trim()}
-📧 ইমেইল: ${email.trim().toLowerCase()}
-📱 মোবাইল: ${phone_number.trim()}
-📚 কোর্স: ${courseData.title}
-💰 মূল্য: ৳${courseData.price || 0}
-💳 পেমেন্ট: ${payment_method}
-🔢 Transaction ID: ${transaction_id.trim()}
-📋 পেমেন্ট টাইপ: ${payment_type}
+        // Common mistake: TELEGRAM_CHAT_ID is set to the bot's own id (same as token prefix)
+        const isConfiguredChatIdInvalid = !configuredChatId || configuredChatId === botId;
 
-✅ Admin Panel-এ গিয়ে approve করুন।`;
+        let resolvedChatId: string | null = isConfiguredChatIdInvalid ? null : configuredChatId;
 
-        const telegramResponse = await fetch(`https://api.telegram.org/bot${telegramBotToken}/sendMessage`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: telegramChatId,
-            text: message,
-          }),
-        });
-        
-        const telegramResult = await telegramResponse.json();
-        console.log("Telegram API response:", JSON.stringify(telegramResult));
-        
-        if (!telegramResult.ok) {
-          console.error("Telegram error:", telegramResult.description);
+        if (!resolvedChatId) {
+          console.log(
+            "TELEGRAM_CHAT_ID missing/invalid (looks like bot id). Trying auto-detect via getUpdates..."
+          );
+
+          const updatesRes = await fetch(
+            `https://api.telegram.org/bot${telegramBotToken}/getUpdates`,
+            { method: "GET" }
+          );
+          const updatesJson = await updatesRes.json().catch(() => null);
+
+          if (!updatesJson?.ok) {
+            console.error(
+              "Telegram getUpdates failed:",
+              updatesRes.status,
+              JSON.stringify(updatesJson)
+            );
+          } else {
+            const result = Array.isArray(updatesJson.result) ? updatesJson.result : [];
+            // Pick the latest private chat that has interacted with the bot.
+            for (let i = result.length - 1; i >= 0; i--) {
+              const upd = result[i];
+              const chat = upd?.message?.chat || upd?.my_chat_member?.chat || upd?.chat_member?.chat;
+              if (chat?.id && chat?.type === "private") {
+                resolvedChatId = String(chat.id);
+                break;
+              }
+            }
+          }
+        }
+
+        if (!resolvedChatId) {
+          console.error(
+            "Telegram chat id not found. Please open the bot in Telegram and press /start once."
+          );
         } else {
-          console.log("Telegram notification sent successfully");
+          console.log("Sending Telegram notification to chat_id:", resolvedChatId);
+
+          const message = `🎓 নতুন এনরোলমেন্ট রিকোয়েস্ট!\n\n👤 নাম: ${full_name.trim()}\n📧 ইমেইল: ${email
+            .trim()
+            .toLowerCase()}\n📱 মোবাইল: ${phone_number.trim()}\n📚 কোর্স: ${courseData.title}\n💰 মূল্য: ৳${courseData.price || 0}\n💳 পেমেন্ট: ${payment_method}\n🔢 Transaction ID: ${transaction_id.trim()}\n📋 পেমেন্ট টাইপ: ${payment_type}\n\n✅ Admin Panel-এ গিয়ে approve করুন।`;
+
+          const telegramResponse = await fetch(
+            `https://api.telegram.org/bot${telegramBotToken}/sendMessage`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                chat_id: resolvedChatId,
+                text: message,
+              }),
+            }
+          );
+
+          const telegramResult = await telegramResponse.json().catch(() => null);
+          console.log(
+            "Telegram API response:",
+            telegramResponse.status,
+            JSON.stringify(telegramResult)
+          );
+
+          if (!telegramResult?.ok) {
+            console.error("Telegram error:", telegramResult?.description || "unknown");
+          } else {
+            console.log("Telegram notification sent successfully");
+          }
         }
       } catch (telegramError) {
         console.error("Telegram notification failed:", telegramError);
         // Don't fail the request if notification fails
       }
     } else {
-      console.log("Telegram not configured. Token:", !!telegramBotToken, "ChatId:", !!telegramChatId);
+      console.log("Telegram not configured. Token:", !!telegramBotToken);
     }
 
     return new Response(
