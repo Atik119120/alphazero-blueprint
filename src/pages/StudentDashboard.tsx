@@ -321,20 +321,37 @@ export default function StudentDashboard() {
       {/* Minimal Floating Sidebar */}
       <aside className="fixed left-3 top-3 bottom-3 w-14 md:w-52 bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-xl shadow-black/5 z-50 flex flex-col overflow-hidden">
         {/* Logo & Brand */}
-        <div className="p-3 border-b border-border/50">
-          <div className="flex items-center gap-2.5">
+        <div className="p-3 border-b border-border/50 space-y-3">
+          {/* Logo & Academy Name */}
+          <div className="flex items-center gap-2">
             <img 
               src="/logo.png" 
               alt="AlphaZero Academy" 
-              className="w-9 h-9 rounded-xl object-contain"
+              className="w-8 h-8 rounded-lg object-contain dark:invert"
             />
-            <div className="hidden md:block flex-1 min-w-0">
+            <div className="hidden md:block">
               <p className="text-xs font-bold bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">
                 AlphaZero Academy
               </p>
+              <p className="text-[10px] text-muted-foreground">
+                Student Dashboard
+              </p>
+            </div>
+          </div>
+          
+          {/* Student Profile */}
+          <div className="flex items-center gap-2">
+            <Avatar className="w-8 h-8 border-2 border-primary/20">
+              <AvatarImage src={profile?.avatar_url || ''} />
+              <AvatarFallback className="bg-gradient-to-br from-primary to-cyan-600 text-white text-[10px] font-bold">
+                {profile?.full_name?.charAt(0) || 'S'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="hidden md:block flex-1 min-w-0">
+              <p className="text-xs font-semibold truncate">{profile?.full_name}</p>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                {profile?.full_name}
+                Student
               </p>
             </div>
           </div>
