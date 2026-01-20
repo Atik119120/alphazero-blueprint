@@ -142,6 +142,22 @@ export default function CourseEnrollmentModal({
           toast.error(t.error);
         }
       } else {
+        // Send Telegram notification
+        try {
+          await supabase.functions.invoke('student-enrollment-notify', {
+            body: {
+              studentName: userName,
+              studentEmail: userEmail,
+              courseName: course.title,
+              coursePrice: course.price || 0,
+              paymentMethod: paymentMethod,
+              transactionId: transactionId.trim(),
+            }
+          });
+        } catch (notifyError) {
+          console.error('Failed to send notification:', notifyError);
+        }
+
         toast.success(t.success);
         setTransactionId('');
         onSuccess();
