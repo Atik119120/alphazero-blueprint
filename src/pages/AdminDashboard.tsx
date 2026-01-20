@@ -676,271 +676,238 @@ export default function AdminDashboard() {
     color: CHART_COLORS[index % CHART_COLORS.length]
   }));
 
+  // Navigation items configuration
+  const navItems = [
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses', category: 'lms' },
+    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students', category: 'lms' },
+    { id: 'passcodes', icon: Key, label: 'Pass Code', category: 'lms' },
+    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', category: 'lms', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
+    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
+    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
+    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
+    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
+    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', category: 'cms' },
+    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', category: 'cms' },
+    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', category: 'settings' },
+    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', category: 'settings' },
+  ];
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'lms': return 'from-sky-500 to-cyan-500';
+      case 'cms': return 'from-violet-500 to-purple-500';
+      case 'settings': return 'from-amber-500 to-orange-500';
+      default: return 'from-primary to-cyan-600';
+    }
+  };
+
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
-      {/* Header */}
-      <header className="border-b border-border bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-br from-primary to-cyan-600 p-2.5 rounded-2xl">
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
+      {/* Minimal Floating Sidebar */}
+      <aside className="fixed left-4 top-4 bottom-4 w-16 md:w-56 bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-xl shadow-black/5 z-50 flex flex-col overflow-hidden">
+        {/* Logo */}
+        <div className="p-3 md:p-4 border-b border-border/50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0">
               <img 
                 src="/logo.png" 
-                alt="Alpha Academy" 
-                className="w-8 h-8 object-contain brightness-0 invert"
+                alt="Logo" 
+                className="w-6 h-6 object-contain brightness-0 invert"
               />
             </div>
-            <div>
-              <h1 className={`font-bold text-xl tracking-tight bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
+            <div className="hidden md:block">
+              <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
                 {language === 'bn' ? 'আলফা একাডেমি' : 'Alpha Academy'}
               </h1>
-              <p className={`text-sm text-muted-foreground flex items-center gap-1.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                {profile?.full_name}
+              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                Admin Panel
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {/* Language Toggle */}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-2 md:p-3 space-y-1 overflow-y-auto scrollbar-none">
+          {/* LMS Section */}
+          <div className="mb-3">
+            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-2">
+              {language === 'bn' ? 'এলএমএস' : 'LMS'}
+            </p>
+            <div className="space-y-0.5">
+              {navItems.filter(item => item.category === 'lms').map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
+                    activeTab === item.id
+                      ? `bg-gradient-to-r ${getCategoryColor(item.category)} text-white shadow-lg`
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+                  }`}
+                >
+                  <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
+                  <span className="hidden md:inline truncate">{item.label}</span>
+                  {item.badge && item.badge > 0 && (
+                    <span className={`absolute top-1 right-1 md:static md:ml-auto min-w-4 h-4 px-1 text-[10px] rounded-full flex items-center justify-center font-bold ${
+                      activeTab === item.id ? 'bg-white/25 text-white' : 'bg-red-500 text-white animate-pulse'
+                    }`}>
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* CMS Section */}
+          <div className="mb-3">
+            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-2">
+              {language === 'bn' ? 'ওয়েবসাইট' : 'Website'}
+            </p>
+            <div className="space-y-0.5">
+              {navItems.filter(item => item.category === 'cms').map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
+                    activeTab === item.id
+                      ? `bg-gradient-to-r ${getCategoryColor(item.category)} text-white shadow-lg`
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+                  }`}
+                >
+                  <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
+                  <span className="hidden md:inline truncate">{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Settings Section */}
+          <div>
+            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-2">
+              {language === 'bn' ? 'সেটিংস' : 'Settings'}
+            </p>
+            <div className="space-y-0.5">
+              {navItems.filter(item => item.category === 'settings').map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
+                    activeTab === item.id
+                      ? `bg-gradient-to-r ${getCategoryColor(item.category)} text-white shadow-lg`
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+                  }`}
+                >
+                  <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
+                  <span className="hidden md:inline truncate">{item.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </nav>
+
+        {/* Footer Actions */}
+        <div className="p-2 md:p-3 border-t border-border/50 space-y-1">
+          <div className="flex md:flex-col gap-1">
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-              className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
+              className="flex-1 md:w-full justify-center md:justify-start gap-2 h-8 text-xs"
             >
-              <Languages className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'EN' : 'বাং'}</span>
+              <Languages className="w-3.5 h-3.5" />
+              <span className="hidden md:inline">{language === 'bn' ? 'English' : 'বাংলা'}</span>
             </Button>
-            
-            {/* Theme Toggle */}
             <Button
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
+              className="flex-1 md:w-full justify-center md:justify-start gap-2 h-8 text-xs"
             >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {theme === 'dark' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+              <span className="hidden md:inline">{theme === 'dark' ? 'Light' : 'Dark'}</span>
             </Button>
-            
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            className="w-full justify-center md:justify-start gap-2 h-8 text-xs text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden md:inline">{language === 'bn' ? 'লগ আউট' : 'Logout'}</span>
+          </Button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <main className="ml-24 md:ml-64 p-4 md:p-6 min-h-screen">
+        {/* Top Bar with Stats */}
+        <div className="mb-6">
+          {/* Greeting */}
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className={`text-2xl font-bold text-foreground ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
+                {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {language === 'bn' ? 'আজ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
+              </p>
+            </div>
             <Button 
               variant="outline" 
               size="sm" 
-              onClick={() => setShowProfileDialog(true)} 
-              className="gap-2 hover:bg-primary/10 hover:border-primary transition-colors"
+              onClick={() => setShowProfileDialog(true)}
+              className="gap-2"
             >
-              <User className="w-4 h-4" />
+              {profile?.avatar_url ? (
+                <img src={profile.avatar_url} alt="" className="w-5 h-5 rounded-full object-cover" />
+              ) : (
+                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center text-[10px] font-bold text-white">
+                  {profile?.full_name?.charAt(0)}
+                </div>
+              )}
               <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
             </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleLogout} 
-              className="gap-2 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950 transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">{language === 'bn' ? 'লগ আউট' : 'Logout'}</span>
-            </Button>
           </div>
-        </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-8">
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-          <div className="bg-gradient-to-br from-primary/5 to-cyan-500/5 border border-primary/20 rounded-2xl p-4 hover:border-primary/40 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-primary to-cyan-600 rounded-xl">
-                <BookOpen className="w-5 h-5 text-white" />
+          {/* Quick Stats - Minimal Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+            {[
+              { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'কোর্স' : 'Courses', color: 'text-sky-500' },
+              { icon: Users, value: passCodes.filter(p => p.student).length, label: language === 'bn' ? 'ছাত্র' : 'Students', color: 'text-emerald-500' },
+              { icon: Key, value: passCodes.filter(p => p.is_active).length, label: language === 'bn' ? 'Pass Code' : 'Active Codes', color: 'text-violet-500' },
+              { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500' },
+              { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
+            ].map((stat, index) => (
+              <div 
+                key={index}
+                className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-border transition-colors group"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <p className={`text-2xl font-bold ${stat.color}`}>
+                      {stat.value}
+                    </p>
+                    <p className={`text-xs text-muted-foreground mt-0.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                      {stat.label}
+                    </p>
+                  </div>
+                  <stat.icon className={`w-5 h-5 ${stat.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{courses.length}</p>
-                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? 'মোট কোর্স' : 'Total Courses'}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-emerald-500/5 to-green-500/5 border border-emerald-500/20 rounded-2xl p-4 hover:border-emerald-500/40 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl">
-                <Key className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{passCodes.filter(p => p.is_active).length}</p>
-                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? 'সক্রিয় Pass Code' : 'Active Pass Codes'}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-blue-500/5 to-indigo-500/5 border border-blue-500/20 rounded-2xl p-4 hover:border-blue-500/40 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl">
-                <Users className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{passCodes.filter(p => p.student).length}</p>
-                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? 'মোট ছাত্র' : 'Total Students'}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-violet-500/5 to-purple-500/5 border border-violet-500/20 rounded-2xl p-4 hover:border-violet-500/40 transition-colors">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl">
-                <Check className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">{courses.filter(c => c.is_published).length}</p>
-                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? 'প্রকাশিত' : 'Published'}
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-gradient-to-br from-amber-500/5 to-orange-500/5 border border-amber-500/20 rounded-2xl p-4 hover:border-amber-500/40 transition-colors col-span-2 md:col-span-1">
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl">
-                <Banknote className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-foreground">
-                  {language === 'bn' ? `৳${totalRevenue.toLocaleString('bn-BD')}` : `৳${totalRevenue.toLocaleString()}`}
-                </p>
-                <p className={`text-xs text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? 'মোট বিক্রি' : 'Total Sales'}
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 
+        {/* Content Area */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          {/* Redesigned Tab Navigation */}
-          <div className="bg-white dark:bg-slate-800/50 border border-border rounded-2xl p-4 shadow-sm">
-            {/* Category Labels and Tab Groups */}
-            <div className="space-y-4">
-              {/* LMS Section */}
-              <div>
-                <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-1 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? '📚 এলএমএস' : '📚 LMS'}
-                </p>
-                <TabsList className="flex flex-wrap gap-2 bg-transparent h-auto p-0">
-                  <TabsTrigger 
-                    value="courses" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
-                  >
-                    <BookOpen className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'কোর্স' : 'Courses'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="students" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
-                  >
-                    <Users className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'ছাত্র' : 'Students'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="passcodes" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
-                  >
-                    <Key className="w-4 h-4" />
-                    <span>Pass Code</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="requests" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all relative"
-                  >
-                    <Mail className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'রিকোয়েস্ট' : 'Requests'}</span>
-                    {enrollmentRequests.filter(r => r.status === 'pending').length > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 min-w-5 h-5 px-1 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-medium animate-pulse">
-                        {enrollmentRequests.filter(r => r.status === 'pending').length}
-                      </span>
-                    )}
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="analytics" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:border-primary/20 data-[state=active]:shadow-lg data-[state=active]:shadow-primary/20 transition-all"
-                  >
-                    <BarChart3 className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'এনালাইটিক্স' : 'Analytics'}</span>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-
-              <div className="border-t border-border/50" />
-
-              {/* Website CMS Section */}
-              <div>
-                <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-1 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? '🌐 ওয়েবসাইট' : '🌐 Website CMS'}
-                </p>
-                <TabsList className="flex flex-wrap gap-2 bg-transparent h-auto p-0">
-                  <TabsTrigger 
-                    value="content" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
-                  >
-                    <FileText className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'পেজ কনটেন্ট' : 'Page Content'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="works" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
-                  >
-                    <Briefcase className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'ওয়ার্কস' : 'Works'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="team" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
-                  >
-                    <UsersRound className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'টিম' : 'Team'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="services" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
-                  >
-                    <Wrench className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'সার্ভিস' : 'Services'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="footer" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-violet-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:border-violet-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-violet-500/20 transition-all"
-                  >
-                    <Link2 className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'ফুটার' : 'Footer'}</span>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-
-              <div className="border-t border-border/50" />
-
-              {/* Settings Section */}
-              <div>
-                <p className={`text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2 px-1 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                  {language === 'bn' ? '⚙️ সেটিংস' : '⚙️ Settings'}
-                </p>
-                <TabsList className="flex flex-wrap gap-2 bg-transparent h-auto p-0">
-                  <TabsTrigger 
-                    value="settings" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:border-amber-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-amber-500/20 transition-all"
-                  >
-                    <Settings className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'সাইট সেটিংস' : 'Site Settings'}</span>
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="profile" 
-                    className="gap-2 px-4 py-2.5 rounded-xl border border-transparent bg-secondary/50 hover:bg-secondary data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-orange-600 data-[state=active]:text-white data-[state=active]:border-amber-500/20 data-[state=active]:shadow-lg data-[state=active]:shadow-amber-500/20 transition-all"
-                  >
-                    <User className="w-4 h-4" />
-                    <span>{language === 'bn' ? 'প্রোফাইল ও এডমিন' : 'Profile & Admins'}</span>
-                  </TabsTrigger>
-                </TabsList>
-              </div>
-            </div>
-          </div>
+          {/* Hidden TabsList - controlled by sidebar */}
+          <TabsList className="hidden">
+            {navItems.map(item => (
+              <TabsTrigger key={item.id} value={item.id}>{item.label}</TabsTrigger>
+            ))}
+          </TabsList>
 
           {/* Courses Tab */}
           <TabsContent value="courses" className="space-y-6">
