@@ -8,22 +8,22 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { 
   BookOpen, Play, Lock, CheckCircle, LogOut, Award, ArrowLeft, 
-  FileText, Clock, PlayCircle, User, Sun, Moon, Globe,
-  StickyNote, File, Send, GraduationCap, Sparkles, TrendingUp,
-  Calendar, CreditCard, Star
+  FileText, Clock, PlayCircle, User, Sun, Moon, Languages,
+  StickyNote, File, GraduationCap, Sparkles,
+  CreditCard, IdCard, TrendingUp, Home, Search, Calendar
 } from 'lucide-react';
 import { CourseWithProgress, VideoWithProgress, VideoMaterial, Course } from '@/types/lms';
 import { useTheme } from 'next-themes';
 import StudentIDCard from '@/components/student/StudentIDCard';
 import ProfilePhotoUpload from '@/components/student/ProfilePhotoUpload';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
@@ -227,7 +227,7 @@ export default function StudentDashboard() {
     setUpdatingProfile(false);
   };
 
-  const handlePhotoUpdated = async (newUrl: string) => {
+  const handlePhotoUpdated = async () => {
     await refreshProfile();
   };
 
@@ -292,590 +292,476 @@ export default function StudentDashboard() {
     const totalSeconds = videos.reduce((acc, v) => acc + (v.duration_seconds || 0), 0);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
-    if (hours > 0) return `${hours} ${t('student.hours')} ${minutes} ${t('student.minutes')}`;
-    return `${minutes} ${t('student.minutes')}`;
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
   };
+
+  // Navigation items
+  const navItems = [
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
+    { id: 'explore', icon: Search, label: language === 'bn' ? 'ব্রাউজ' : 'Browse' },
+    { id: 'certificates', icon: Award, label: language === 'bn' ? 'সনদ' : 'Certificates' },
+    { id: 'id-card', icon: IdCard, label: language === 'bn' ? 'আইডি' : 'ID Card' },
+    { id: 'profile', icon: User, label: language === 'bn' ? 'প্রোফাইল' : 'Profile' },
+  ];
 
   if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-purple-500/5 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <div className="relative">
-            <div className="w-16 h-16 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
-            <Sparkles className="absolute inset-0 m-auto w-6 h-6 text-primary animate-pulse" />
-          </div>
-          <p className="text-muted-foreground animate-pulse">Loading...</p>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+          <p className="text-xs text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-purple-500/5">
-      {/* Animated Header */}
-      <header className="border-b border-border/50 bg-card/80 backdrop-blur-xl sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <img 
-                src="/logo.png" 
-                alt="AlphaZero Academy" 
-                className="w-10 h-10 object-contain dark:invert"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-card animate-pulse" />
-            </div>
-            <div>
-              <h1 className="font-bold text-lg bg-gradient-to-r from-primary via-purple-500 to-primary bg-clip-text text-transparent">
-                {t('student.academyName')}
-              </h1>
-              <p className="text-xs text-muted-foreground flex items-center gap-1">
-                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                {t('student.welcome')}, {profile?.full_name}
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
+      {/* Minimal Floating Sidebar */}
+      <aside className="fixed left-3 top-3 bottom-3 w-14 md:w-52 bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-xl shadow-black/5 z-50 flex flex-col overflow-hidden">
+        {/* Logo & Profile */}
+        <div className="p-3 border-b border-border/50">
+          <div className="flex items-center gap-2.5">
+            <Avatar className="w-9 h-9 border-2 border-primary/20">
+              <AvatarImage src={profile?.avatar_url || ''} />
+              <AvatarFallback className="bg-gradient-to-br from-primary to-cyan-600 text-white text-xs font-bold">
+                {profile?.full_name?.charAt(0) || 'S'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="hidden md:block flex-1 min-w-0">
+              <p className="text-xs font-semibold truncate">{profile?.full_name}</p>
+              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                Student
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="rounded-full"
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
-              className="gap-1 rounded-full"
-            >
-              <Globe className="w-4 h-4" />
-              {language === 'en' ? 'বাং' : 'EN'}
-            </Button>
-
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => navigate('/my-certificates')} 
-              className="gap-2 hidden sm:flex rounded-full bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/20 hover:border-yellow-500/40"
-            >
-              <Award className="w-4 h-4 text-yellow-500" />
-              <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent font-medium">
-                {t('student.certificates')}
-              </span>
-            </Button>
-            <Button variant="ghost" size="sm" onClick={handleLogout} className="gap-2 rounded-full">
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">{t('student.logout')}</span>
-            </Button>
-          </div>
         </div>
-      </header>
 
-      <main className="container mx-auto px-4 py-6">
+        {/* Navigation */}
+        <nav className="flex-1 p-2 space-y-1 overflow-y-auto scrollbar-none">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => {
+                if (item.id === 'certificates') {
+                  navigate('/my-certificates');
+                } else {
+                  setActiveTab(item.id);
+                  setSelectedCourse(null);
+                }
+              }}
+              className={`w-full flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl text-xs font-medium transition-all duration-200 group ${
+                activeTab === item.id
+                  ? 'bg-gradient-to-r from-primary to-cyan-600 text-white shadow-lg shadow-primary/25'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+              }`}
+            >
+              <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
+              <span className="hidden md:inline">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        {/* Footer Actions */}
+        <div className="p-2 border-t border-border/50 space-y-1.5">
+          {/* Home */}
+          <button
+            onClick={() => navigate('/')}
+            className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium transition-all bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-muted-foreground"
+          >
+            <Home className="w-4 h-4" />
+            <span className="hidden md:inline">Home</span>
+          </button>
+          
+          {/* Language */}
+          <button
+            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+            className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium transition-all bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+          >
+            <Languages className="w-4 h-4" />
+            <span className="hidden md:inline">{language === 'bn' ? 'EN' : 'বাং'}</span>
+          </button>
+          
+          {/* Theme */}
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium transition-all bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border border-amber-500/20 text-amber-600 dark:text-amber-400"
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            <span className="hidden md:inline">{theme === 'dark' ? 'Light' : 'Dark'}</span>
+          </button>
+          
+          {/* Logout */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium transition-all bg-gradient-to-r from-red-500/10 to-rose-500/10 hover:from-red-500/20 hover:to-rose-500/20 border border-red-500/20 text-red-600 dark:text-red-400"
+          >
+            <LogOut className="w-4 h-4" />
+            <span className="hidden md:inline">Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="pl-20 md:pl-60 pr-4 py-4 min-h-screen">
         {selectedCourse ? (
           /* Course Detail View */
-          <div className="space-y-6">
-            <Button variant="ghost" onClick={() => setSelectedCourse(null)} className="gap-2 -ml-2 rounded-full">
+          <div className="max-w-4xl mx-auto space-y-4">
+            <button 
+              onClick={() => setSelectedCourse(null)} 
+              className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" />
               {t('student.backToCourses')}
-            </Button>
+            </button>
 
             {/* Course Header */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-primary/20 via-purple-500/10 to-pink-500/20 p-6 rounded-3xl border border-primary/20">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-5 shadow-sm">
+              <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-bold">{selectedCourse.title}</h2>
+                  <div className="flex items-center gap-2">
+                    {selectedCourse.is_completed && (
+                      <Badge className="bg-emerald-500 text-white text-[10px] gap-1">
+                        <CheckCircle className="w-3 h-3" /> Complete
+                      </Badge>
+                    )}
+                  </div>
+                  <h1 className="text-xl font-bold">{selectedCourse.title}</h1>
                   {selectedCourse.description && (
-                    <p className="text-muted-foreground">{selectedCourse.description}</p>
+                    <p className="text-sm text-muted-foreground">{selectedCourse.description}</p>
                   )}
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1 bg-card/50 px-3 py-1 rounded-full">
-                      <PlayCircle className="w-4 h-4 text-primary" />
-                      {selectedCourse.total_videos} {t('student.classes')}
+                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <PlayCircle className="w-3.5 h-3.5" />
+                      {selectedCourse.total_videos} classes
                     </span>
-                    <span className="flex items-center gap-1 bg-card/50 px-3 py-1 rounded-full">
-                      <Clock className="w-4 h-4 text-purple-500" />
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
                       {getTotalDuration(selectedCourse.videos)}
                     </span>
                   </div>
                 </div>
-                {selectedCourse.is_completed && (
-                  <Badge className="gap-1 h-10 px-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-lg shadow-green-500/25">
-                    <Award className="w-5 h-5" />
-                    {t('student.completed')}
-                  </Badge>
-                )}
-              </div>
-              <div className="relative mt-4 space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span>{t('student.progress')}</span>
-                  <span className="font-bold text-primary">{selectedCourse.completed_videos}/{selectedCourse.total_videos} {t('student.classesCompleted')}</span>
+                <div className="text-right">
+                  <p className="text-3xl font-bold text-primary">{Math.round(selectedCourse.progress_percent)}%</p>
+                  <p className="text-xs text-muted-foreground">{selectedCourse.completed_videos}/{selectedCourse.total_videos} done</p>
                 </div>
-                <Progress value={selectedCourse.progress_percent} className="h-3 bg-card/50" />
               </div>
+              <Progress value={selectedCourse.progress_percent} className="h-1.5 mt-4" />
             </div>
 
             {/* Video List */}
-            <div className="space-y-3">
-              <h3 className="font-semibold text-lg flex items-center gap-2">
-                <BookOpen className="w-5 h-5 text-primary" />
-                {t('student.courseContent')}
-              </h3>
-              {selectedCourse.videos.map((video, index) => (
-                <Card 
-                  key={video.id} 
-                  className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                    video.is_locked 
-                      ? 'opacity-60 cursor-not-allowed bg-muted/20' 
-                      : video.progress?.is_completed 
-                        ? 'border-green-500/30 bg-gradient-to-r from-green-500/5 to-emerald-500/5 hover:border-green-500/50' 
-                        : 'hover:border-primary hover:shadow-primary/10'
-                  }`}
-                  onClick={() => playVideo(video)}
-                >
-                  <CardContent className="p-4 flex items-center gap-4">
-                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-all ${
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 overflow-hidden shadow-sm">
+              <div className="p-4 border-b border-border/50">
+                <h2 className="font-semibold text-sm">{t('student.courseContent')}</h2>
+              </div>
+              <div className="divide-y divide-border/50">
+                {selectedCourse.videos.map((video, index) => (
+                  <button 
+                    key={video.id} 
+                    onClick={() => playVideo(video)}
+                    disabled={video.is_locked}
+                    className={`w-full flex items-center gap-3 p-4 text-left transition-colors ${
+                      video.is_locked 
+                        ? 'opacity-50 cursor-not-allowed' 
+                        : video.progress?.is_completed 
+                          ? 'bg-emerald-50 dark:bg-emerald-950/20 hover:bg-emerald-100 dark:hover:bg-emerald-950/30' 
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                    }`}
+                  >
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
                       video.progress?.is_completed 
-                        ? 'bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/25' 
+                        ? 'bg-emerald-500 text-white' 
                         : video.is_locked 
-                          ? 'bg-muted text-muted-foreground'
-                          : 'bg-gradient-to-br from-primary/20 to-purple-500/20 text-primary'
+                          ? 'bg-slate-200 dark:bg-slate-800 text-muted-foreground'
+                          : 'bg-primary/10 text-primary'
                     }`}>
                       {video.is_locked ? (
-                        <Lock className="w-5 h-5" />
+                        <Lock className="w-4 h-4" />
                       ) : video.progress?.is_completed ? (
-                        <CheckCircle className="w-6 h-6" />
+                        <CheckCircle className="w-4 h-4" />
                       ) : (
-                        <Play className="w-5 h-5" />
+                        <Play className="w-4 h-4" />
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">{t('student.class')} {index + 1}</span>
-                        {video.progress?.is_completed && (
-                          <Badge variant="outline" className="text-xs border-green-500/30 text-green-600">{t('student.completedBadge')}</Badge>
-                        )}
-                      </div>
-                      <p className="font-medium truncate mt-1">{video.title}</p>
-                      {video.progress && !video.progress.is_completed && video.progress.progress_percent > 0 && (
-                        <Progress value={video.progress.progress_percent} className="h-1 mt-2 w-32" />
-                      )}
+                      <p className="text-xs text-muted-foreground">Class {index + 1}</p>
+                      <p className="text-sm font-medium truncate">{video.title}</p>
                     </div>
-                    <div className="shrink-0 text-muted-foreground">
-                      {video.duration_seconds ? (
-                        <span className="text-sm bg-muted px-3 py-1 rounded-full">{Math.floor(video.duration_seconds / 60)} {t('student.minutes')}</span>
-                      ) : null}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    {video.duration_seconds && (
+                      <span className="text-xs text-muted-foreground">{Math.floor(video.duration_seconds / 60)}m</span>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         ) : (
-          /* Main Dashboard View */
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:inline-flex bg-card/50 backdrop-blur-sm p-1 rounded-full">
-              <TabsTrigger value="courses" className="gap-2 rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-purple-600 data-[state=active]:text-white">
-                <BookOpen className="w-4 h-4" />
-                <span className="hidden sm:inline">{t('student.myCourses')}</span>
-              </TabsTrigger>
-              <TabsTrigger value="explore" className="gap-2 rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-purple-600 data-[state=active]:text-white">
-                <GraduationCap className="w-4 h-4" />
-                <span className="hidden sm:inline">{t('student.exploreCourses')}</span>
-              </TabsTrigger>
-              <TabsTrigger value="profile" className="gap-2 rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary data-[state=active]:to-purple-600 data-[state=active]:text-white">
-                <User className="w-4 h-4" />
-                <span className="hidden sm:inline">{t('student.profile')}</span>
-              </TabsTrigger>
-            </TabsList>
-
-            {/* My Courses Tab */}
-            <TabsContent value="courses" className="space-y-6">
-              {courses.length === 0 ? (
-                <Card className="border-dashed max-w-md mx-auto bg-gradient-to-br from-card to-muted/20">
-                  <CardContent className="py-16 text-center">
-                    <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                      <BookOpen className="w-10 h-10 text-primary" />
+          /* Main Dashboard Tabs */
+          <div className="max-w-5xl mx-auto space-y-5">
+            {/* Tab: My Courses */}
+            {activeTab === 'courses' && (
+              <>
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {[
+                    { label: 'Enrolled', value: courses.length, icon: BookOpen, color: 'from-blue-500 to-cyan-500' },
+                    { label: 'Completed', value: courses.filter(c => c.is_completed).length, icon: CheckCircle, color: 'from-emerald-500 to-green-500' },
+                    { label: 'Classes', value: courses.reduce((a, c) => a + c.total_videos, 0), icon: PlayCircle, color: 'from-orange-500 to-amber-500' },
+                    { label: 'Certificates', value: courses.filter(c => c.is_completed).length, icon: Award, color: 'from-purple-500 to-pink-500' },
+                  ].map((stat) => (
+                    <div key={stat.label} className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-4 shadow-sm">
+                      <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center mb-2`}>
+                        <stat.icon className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-2xl font-bold">{stat.value}</p>
+                      <p className="text-xs text-muted-foreground">{stat.label}</p>
                     </div>
-                    <h3 className="font-bold text-xl mb-2">{t('student.noCourses')}</h3>
-                    <p className="text-muted-foreground mb-6">{t('student.noCoursesDesc')}</p>
-                    <div className="flex gap-2 justify-center">
-                      <Button onClick={() => setActiveTab('explore')} className="rounded-full gap-2 bg-gradient-to-r from-primary to-purple-600">
-                        <GraduationCap className="w-4 h-4" />
-                        {t('student.exploreCourses')}
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : (
-                <>
-                  {/* Colorful Stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card className="bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-transparent border-blue-500/20 hover:border-blue-500/40 transition-colors overflow-hidden relative group">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/0 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <CardContent className="p-4 text-center relative">
-                        <div className="w-12 h-12 bg-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                          <BookOpen className="w-6 h-6 text-blue-500" />
-                        </div>
-                        <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{courses.length}</p>
-                        <p className="text-sm text-muted-foreground">{t('student.totalCourses')}</p>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-gradient-to-br from-green-500/20 via-green-500/10 to-transparent border-green-500/20 hover:border-green-500/40 transition-colors overflow-hidden relative group">
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-500/0 to-green-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <CardContent className="p-4 text-center relative">
-                        <div className="w-12 h-12 bg-green-500/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                          <CheckCircle className="w-6 h-6 text-green-500" />
-                        </div>
-                        <p className="text-3xl font-bold text-green-600 dark:text-green-400">{courses.filter(c => c.is_completed).length}</p>
-                        <p className="text-sm text-muted-foreground">{t('student.completed')}</p>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-gradient-to-br from-orange-500/20 via-orange-500/10 to-transparent border-orange-500/20 hover:border-orange-500/40 transition-colors overflow-hidden relative group">
-                      <div className="absolute inset-0 bg-gradient-to-r from-orange-500/0 to-orange-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <CardContent className="p-4 text-center relative">
-                        <div className="w-12 h-12 bg-orange-500/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                          <PlayCircle className="w-6 h-6 text-orange-500" />
-                        </div>
-                        <p className="text-3xl font-bold text-orange-600 dark:text-orange-400">
-                          {courses.reduce((acc, c) => acc + c.total_videos, 0)}
-                        </p>
-                        <p className="text-sm text-muted-foreground">{t('student.totalClasses')}</p>
-                      </CardContent>
-                    </Card>
-                    <Card className="bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-transparent border-purple-500/20 hover:border-purple-500/40 transition-colors overflow-hidden relative group">
-                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/0 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <CardContent className="p-4 text-center relative">
-                        <div className="w-12 h-12 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                          <Award className="w-6 h-6 text-purple-500" />
-                        </div>
-                        <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{courses.filter(c => c.is_completed).length}</p>
-                        <p className="text-sm text-muted-foreground">{t('student.certificatesEarned')}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
+                  ))}
+                </div>
 
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5 text-primary" />
-                      {t('student.myCourses')}
-                    </h2>
+                {/* Courses Grid */}
+                {courses.length === 0 ? (
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-border p-12 text-center">
+                    <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                      <BookOpen className="w-8 h-8 text-muted-foreground" />
+                    </div>
+                    <h3 className="font-semibold mb-1">{t('student.noCourses')}</h3>
+                    <p className="text-sm text-muted-foreground mb-4">{t('student.noCoursesDesc')}</p>
+                    <Button size="sm" onClick={() => setActiveTab('explore')} className="gap-2">
+                      <Search className="w-4 h-4" />
+                      Browse Courses
+                    </Button>
                   </div>
-                  
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {courses.map((course) => (
-                      <Card 
-                        key={course.id} 
-                        className="cursor-pointer hover:border-primary transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 overflow-hidden group bg-card/50 backdrop-blur-sm"
+                      <div
+                        key={course.id}
                         onClick={() => openCourse(course)}
+                        className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 overflow-hidden shadow-sm hover:shadow-md hover:border-primary/30 transition-all cursor-pointer group"
                       >
-                        <div className="aspect-video bg-muted relative overflow-hidden">
+                        <div className="aspect-video bg-slate-100 dark:bg-slate-800 relative overflow-hidden">
                           {course.thumbnail_url ? (
-                            <img 
-                              src={course.thumbnail_url} 
-                              alt={course.title}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
-                            />
+                            <img src={course.thumbnail_url} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 via-purple-500/10 to-pink-500/20">
-                              <BookOpen className="w-12 h-12 text-primary/50" />
+                            <div className="w-full h-full flex items-center justify-center">
+                              <BookOpen className="w-10 h-10 text-muted-foreground/30" />
                             </div>
                           )}
                           {course.is_completed && (
-                            <div className="absolute top-3 right-3">
-                              <Badge className="gap-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white border-0 shadow-lg">
-                                <Award className="w-3 h-3" />
-                                {t('student.completed')}
+                            <div className="absolute top-2 right-2">
+                              <Badge className="bg-emerald-500 text-white text-[10px]">
+                                <CheckCircle className="w-3 h-3 mr-1" /> Done
                               </Badge>
                             </div>
                           )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-6">
-                            <Button size="sm" className="gap-2 bg-white text-black hover:bg-white/90 shadow-xl">
-                              <Play className="w-4 h-4" />
-                              {t('student.start')}
-                            </Button>
+                          <div className="absolute bottom-2 left-2 right-2">
+                            <div className="bg-black/60 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center justify-between">
+                              <span className="text-[10px] text-white">{course.completed_videos}/{course.total_videos}</span>
+                              <span className="text-[10px] font-bold text-white">{Math.round(course.progress_percent)}%</span>
+                            </div>
                           </div>
                         </div>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
-                          <CardDescription className="flex items-center gap-2">
-                            <span className="flex items-center gap-1 text-primary font-medium">
-                              <PlayCircle className="w-3 h-3" />
-                              {course.completed_videos}/{course.total_videos}
-                            </span>
-                            {t('student.classesCompleted')}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="relative">
-                            <Progress value={course.progress_percent} className="h-2" />
-                            <span className="absolute right-0 -top-5 text-xs font-bold text-primary">{Math.round(course.progress_percent)}%</span>
-                          </div>
-                        </CardContent>
-                      </Card>
+                        <div className="p-3">
+                          <h3 className="font-medium text-sm line-clamp-1">{course.title}</h3>
+                          <Progress value={course.progress_percent} className="h-1 mt-2" />
+                        </div>
+                      </div>
                     ))}
                   </div>
-                </>
-              )}
-            </TabsContent>
+                )}
+              </>
+            )}
 
-            {/* Explore Courses Tab */}
-            <TabsContent value="explore" className="space-y-6">
-              <div className="bg-gradient-to-r from-primary/10 via-purple-500/5 to-pink-500/10 p-6 rounded-3xl border border-primary/20">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <Sparkles className="w-6 h-6 text-primary" />
-                  {t('enroll.title')}
-                </h2>
-                <p className="text-muted-foreground mt-1">{t('enroll.desc')}</p>
-              </div>
-              
-              {loadingCourses ? (
-                <div className="flex justify-center py-12">
-                  <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin" />
+            {/* Tab: Explore */}
+            {activeTab === 'explore' && (
+              <div className="space-y-4">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-5 shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="font-bold">{t('enroll.title')}</h2>
+                      <p className="text-xs text-muted-foreground">{t('enroll.desc')}</p>
+                    </div>
+                  </div>
                 </div>
-              ) : allCourses.length === 0 ? (
-                <Card className="border-dashed bg-gradient-to-br from-card to-muted/20">
-                  <CardContent className="py-12 text-center">
-                    <GraduationCap className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">{t('enroll.noCourses')}</p>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {allCourses.map((course) => {
-                    const enrolled = isEnrolled(course.id);
-                    const status = getEnrollmentStatus(course.id);
-                    
-                    return (
-                      <Card key={course.id} className="overflow-hidden bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                        <div className="aspect-video bg-muted relative overflow-hidden">
-                          {course.thumbnail_url ? (
-                            <img 
-                              src={course.thumbnail_url} 
-                              alt={course.title}
-                              className="w-full h-full object-cover" 
-                            />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 via-purple-500/10 to-pink-500/20">
-                              <BookOpen className="w-12 h-12 text-primary/50" />
-                            </div>
-                          )}
-                          {(course as any).price_bdt && (
-                            <div className="absolute top-3 left-3">
-                              <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-0 gap-1">
-                                <CreditCard className="w-3 h-3" />
+
+                {loadingCourses ? (
+                  <div className="flex justify-center py-12">
+                    <div className="w-8 h-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+                  </div>
+                ) : allCourses.length === 0 ? (
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-border p-12 text-center">
+                    <GraduationCap className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
+                    <p className="text-sm text-muted-foreground">{t('enroll.noCourses')}</p>
+                  </div>
+                ) : (
+                  <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {allCourses.map((course) => {
+                      const enrolled = isEnrolled(course.id);
+                      const status = getEnrollmentStatus(course.id);
+                      
+                      return (
+                        <div key={course.id} className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 overflow-hidden shadow-sm">
+                          <div className="aspect-video bg-slate-100 dark:bg-slate-800 relative">
+                            {course.thumbnail_url ? (
+                              <img src={course.thumbnail_url} alt={course.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center">
+                                <BookOpen className="w-10 h-10 text-muted-foreground/30" />
+                              </div>
+                            )}
+                            {(course as any).price_bdt && (
+                              <Badge className="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] border-0">
                                 ৳{(course as any).price_bdt}
                               </Badge>
-                            </div>
-                          )}
+                            )}
+                          </div>
+                          <div className="p-3 space-y-2">
+                            <h3 className="font-medium text-sm line-clamp-1">{course.title}</h3>
+                            {course.description && (
+                              <p className="text-xs text-muted-foreground line-clamp-2">{course.description}</p>
+                            )}
+                            {enrolled ? (
+                              <Badge variant="outline" className="w-full justify-center text-xs py-1.5 border-emerald-500/30 text-emerald-600 bg-emerald-50 dark:bg-emerald-950/20">
+                                <CheckCircle className="w-3 h-3 mr-1" /> Enrolled
+                              </Badge>
+                            ) : status === 'pending' ? (
+                              <Badge variant="secondary" className="w-full justify-center text-xs py-1.5 bg-amber-50 dark:bg-amber-950/20 text-amber-600 border-amber-500/30">
+                                <Clock className="w-3 h-3 mr-1" /> Pending
+                              </Badge>
+                            ) : (
+                              <Button size="sm" className="w-full text-xs h-8" onClick={() => requestEnrollment(course)}>
+                                Request Enrollment
+                              </Button>
+                            )}
+                          </div>
                         </div>
-                        <CardHeader className="pb-2">
-                          <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
-                          {course.description && (
-                            <CardDescription className="line-clamp-2">{course.description}</CardDescription>
-                          )}
-                        </CardHeader>
-                        <CardContent>
-                          {enrolled ? (
-                            <Badge variant="outline" className="w-full justify-center py-2 border-green-500/30 text-green-600 bg-green-500/10">
-                              <CheckCircle className="w-4 h-4 mr-2" />
-                              {t('enroll.alreadyEnrolled')}
-                            </Badge>
-                          ) : status === 'pending' ? (
-                            <Badge variant="secondary" className="w-full justify-center py-2 bg-yellow-500/10 text-yellow-600 border-yellow-500/30">
-                              <Clock className="w-4 h-4 mr-2" />
-                              {t('enroll.pending')}
-                            </Badge>
-                          ) : (
-                            <Button 
-                              className="w-full gap-2 bg-gradient-to-r from-primary to-purple-600 hover:opacity-90 rounded-full" 
-                              onClick={() => requestEnrollment(course)}
-                            >
-                              <Send className="w-4 h-4" />
-                              {t('enroll.requestEnroll')}
-                            </Button>
-                          )}
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              )}
-            </TabsContent>
-
-            {/* Profile Tab */}
-            <TabsContent value="profile" className="space-y-6">
-              <div className="bg-gradient-to-r from-primary/10 via-purple-500/5 to-pink-500/10 p-6 rounded-3xl border border-primary/20">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <User className="w-6 h-6 text-primary" />
-                  {t('profile.title')}
-                </h2>
-                <p className="text-muted-foreground mt-1">Manage your profile and download your ID card</p>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-              
-              <div className="grid gap-6 lg:grid-cols-2">
-                {/* Left Column - Profile Info & Photo */}
-                <div className="space-y-6">
-                  {/* Profile Photo & Info Card */}
-                  <Card className="bg-gradient-to-br from-card via-card to-primary/5 overflow-hidden">
-                    <div className="h-24 bg-gradient-to-r from-primary via-purple-500 to-pink-500" />
-                    <CardContent className="-mt-14 relative">
-                      {profile && (
-                        <ProfilePhotoUpload 
-                          profile={profile} 
-                          onPhotoUpdated={handlePhotoUpdated} 
-                        />
-                      )}
-                      <div className="text-center mt-4 space-y-1">
-                        <h3 className="text-xl font-bold">{profile?.full_name}</h3>
-                        <p className="text-muted-foreground text-sm">{profile?.email}</p>
-                        {passCode && (
-                          <Badge variant="outline" className="mt-2 font-mono">
-                            Pass Code: {passCode}
-                          </Badge>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
+            )}
 
-                  {/* Edit Profile */}
-                  <Card className="bg-card/50 backdrop-blur-sm">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <User className="w-5 h-5 text-primary" />
-                        {t('profile.title')}
-                      </CardTitle>
-                      <CardDescription>{t('profile.nameNote')}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>{t('profile.fullName')}</Label>
-                        <Input 
-                          value={profileName} 
-                          onChange={(e) => setProfileName(e.target.value)}
-                          className="rounded-xl"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>{t('profile.email')}</Label>
-                        <Input value={profile?.email || ''} disabled className="rounded-xl" />
-                      </div>
-                      <Button 
-                        onClick={updateProfile} 
-                        disabled={updatingProfile}
-                        className="w-full rounded-full bg-gradient-to-r from-primary to-purple-600"
-                      >
-                        {t('profile.updateProfile')}
-                      </Button>
-                    </CardContent>
-                  </Card>
+            {/* Tab: ID Card */}
+            {activeTab === 'id-card' && profile && (
+              <div className="max-w-lg mx-auto space-y-4">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-5 shadow-sm">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
+                      <IdCard className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="font-bold">Student ID Card</h2>
+                      <p className="text-xs text-muted-foreground">Download your official ID</p>
+                    </div>
+                  </div>
+                  <StudentIDCard profile={profile} passCode={passCode} />
+                </div>
+              </div>
+            )}
+
+            {/* Tab: Profile */}
+            {activeTab === 'profile' && profile && (
+              <div className="max-w-2xl mx-auto space-y-4">
+                {/* Profile Header */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 overflow-hidden shadow-sm">
+                  <div className="h-20 bg-gradient-to-r from-primary via-cyan-600 to-primary" />
+                  <div className="px-5 pb-5 -mt-10">
+                    <ProfilePhotoUpload profile={profile} onPhotoUpdated={handlePhotoUpdated} />
+                    <div className="text-center mt-3">
+                      <h2 className="font-bold text-lg">{profile.full_name}</h2>
+                      <p className="text-sm text-muted-foreground">{profile.email}</p>
+                      {passCode && (
+                        <Badge variant="outline" className="mt-2 font-mono text-xs">
+                          {passCode}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Right Column - ID Card & Password */}
-                <div className="space-y-6">
-                  {/* Student ID Card */}
-                  <Card className="bg-card/50 backdrop-blur-sm">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <CreditCard className="w-5 h-5 text-primary" />
-                        Student ID Card
-                      </CardTitle>
-                      <CardDescription>Download your official student ID card</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {profile && <StudentIDCard profile={profile} passCode={passCode} />}
-                    </CardContent>
-                  </Card>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Edit Profile */}
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-4 shadow-sm space-y-3">
+                    <h3 className="font-semibold text-sm flex items-center gap-2">
+                      <User className="w-4 h-4 text-primary" />
+                      Edit Profile
+                    </h3>
+                    <div className="space-y-2">
+                      <Label className="text-xs">{t('profile.fullName')}</Label>
+                      <Input value={profileName} onChange={(e) => setProfileName(e.target.value)} className="h-9 text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">{t('profile.email')}</Label>
+                      <Input value={profile.email || ''} disabled className="h-9 text-sm" />
+                    </div>
+                    <Button size="sm" className="w-full" onClick={updateProfile} disabled={updatingProfile}>
+                      {t('profile.updateProfile')}
+                    </Button>
+                  </div>
 
                   {/* Change Password */}
-                  <Card className="bg-card/50 backdrop-blur-sm">
-                    <CardHeader>
-                      <CardTitle className="text-lg flex items-center gap-2">
-                        <Lock className="w-5 h-5 text-primary" />
-                        {t('profile.changePassword')}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <Label>{t('profile.newPassword')}</Label>
-                        <Input 
-                          type="password"
-                          value={newPassword} 
-                          onChange={(e) => setNewPassword(e.target.value)}
-                          className="rounded-xl"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>{t('profile.confirmPassword')}</Label>
-                        <Input 
-                          type="password"
-                          value={confirmPassword} 
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          className="rounded-xl"
-                        />
-                      </div>
-                      <Button 
-                        onClick={changePassword}
-                        disabled={!newPassword || !confirmPassword}
-                        className="w-full rounded-full"
-                        variant="outline"
-                      >
-                        {t('profile.changePassword')}
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-4 shadow-sm space-y-3">
+                    <h3 className="font-semibold text-sm flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-primary" />
+                      {t('profile.changePassword')}
+                    </h3>
+                    <div className="space-y-2">
+                      <Label className="text-xs">{t('profile.newPassword')}</Label>
+                      <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="h-9 text-sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">{t('profile.confirmPassword')}</Label>
+                      <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="h-9 text-sm" />
+                    </div>
+                    <Button size="sm" variant="outline" className="w-full" onClick={changePassword} disabled={!newPassword || !confirmPassword}>
+                      {t('profile.changePassword')}
+                    </Button>
+                  </div>
+                </div>
 
-                  {/* Quick Stats */}
-                  <Card className="bg-gradient-to-br from-primary/10 via-purple-500/5 to-pink-500/10 border-primary/20">
-                    <CardContent className="p-6">
-                      <h4 className="font-semibold mb-4 flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4 text-primary" />
-                        Your Progress
-                      </h4>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-3 bg-card/50 rounded-2xl">
-                          <p className="text-2xl font-bold text-primary">{courses.length}</p>
-                          <p className="text-xs text-muted-foreground">Enrolled</p>
-                        </div>
-                        <div className="text-center p-3 bg-card/50 rounded-2xl">
-                          <p className="text-2xl font-bold text-green-500">{courses.filter(c => c.is_completed).length}</p>
-                          <p className="text-xs text-muted-foreground">Completed</p>
-                        </div>
-                        <div className="text-center p-3 bg-card/50 rounded-2xl">
-                          <p className="text-2xl font-bold text-orange-500">{courses.reduce((acc, c) => acc + c.completed_videos, 0)}</p>
-                          <p className="text-xs text-muted-foreground">Videos Watched</p>
-                        </div>
-                        <div className="text-center p-3 bg-card/50 rounded-2xl">
-                          <p className="text-2xl font-bold text-purple-500">{courses.filter(c => c.is_completed).length}</p>
-                          <p className="text-xs text-muted-foreground">Certificates</p>
-                        </div>
+                {/* Quick Stats */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-border/50 p-4 shadow-sm">
+                  <h3 className="font-semibold text-sm flex items-center gap-2 mb-3">
+                    <TrendingUp className="w-4 h-4 text-primary" />
+                    Your Progress
+                  </h3>
+                  <div className="grid grid-cols-4 gap-3">
+                    {[
+                      { label: 'Enrolled', value: courses.length },
+                      { label: 'Completed', value: courses.filter(c => c.is_completed).length },
+                      { label: 'Watched', value: courses.reduce((a, c) => a + c.completed_videos, 0) },
+                      { label: 'Certs', value: courses.filter(c => c.is_completed).length },
+                    ].map((s) => (
+                      <div key={s.label} className="text-center p-2 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                        <p className="text-lg font-bold text-primary">{s.value}</p>
+                        <p className="text-[10px] text-muted-foreground">{s.label}</p>
                       </div>
-                      {profile?.created_at && (
-                        <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                          <Calendar className="w-4 h-4" />
-                          Member since {new Date(profile.created_at).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
+                    ))}
+                  </div>
+                  {profile.created_at && (
+                    <p className="text-xs text-muted-foreground text-center mt-3 flex items-center justify-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      Member since {new Date(profile.created_at).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' })}
+                    </p>
+                  )}
                 </div>
               </div>
-            </TabsContent>
-          </Tabs>
+            )}
+          </div>
         )}
       </main>
 
       {/* Video Player Dialog */}
       <Dialog open={showVideoPlayer} onOpenChange={setShowVideoPlayer}>
-        <DialogContent className="max-w-5xl p-0 overflow-hidden rounded-2xl">
+        <DialogContent className="max-w-4xl p-0 overflow-hidden rounded-2xl">
           <div className="grid md:grid-cols-3">
-            {/* Video Section */}
             <div className="md:col-span-2">
               {selectedVideo && (
                 <>
@@ -887,9 +773,9 @@ export default function StudentDashboard() {
                       allowFullScreen
                     />
                   </div>
-                  <div className="p-4 border-t bg-gradient-to-r from-primary/5 to-purple-500/5">
-                    <h3 className="font-semibold mb-3">{selectedVideo.title}</h3>
-                    <Button onClick={markVideoComplete} className="w-full gap-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 hover:opacity-90">
+                  <div className="p-4 border-t bg-white dark:bg-slate-900">
+                    <h3 className="font-semibold text-sm mb-3">{selectedVideo.title}</h3>
+                    <Button onClick={markVideoComplete} className="w-full gap-2" size="sm">
                       <CheckCircle className="w-4 h-4" />
                       {t('student.markComplete')}
                     </Button>
@@ -897,46 +783,33 @@ export default function StudentDashboard() {
                 </>
               )}
             </div>
-            
-            {/* Materials Section */}
-            <div className="border-l bg-card/50">
-              <div className="p-4 border-b bg-gradient-to-r from-primary/10 to-purple-500/10">
-                <h4 className="font-semibold flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-primary" />
-                  {t('student.materials')}
-                </h4>
+            <div className="border-l bg-slate-50 dark:bg-slate-900">
+              <div className="p-3 border-b">
+                <h4 className="font-semibold text-sm">{t('student.materials')}</h4>
               </div>
-              <ScrollArea className="h-[300px] md:h-[400px]">
+              <ScrollArea className="h-[300px] md:h-[350px]">
                 {loadingMaterials ? (
                   <div className="flex justify-center py-8">
-                    <div className="w-8 h-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+                    <div className="w-6 h-6 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
                   </div>
                 ) : videoMaterials.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <FileText className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                  <div className="text-center py-8 text-muted-foreground text-xs">
                     {t('student.noMaterials')}
                   </div>
                 ) : (
-                  <div className="p-4 space-y-2">
+                  <div className="p-3 space-y-2">
                     {videoMaterials.map((material) => (
-                      <Card key={material.id} className="p-3 hover:bg-muted/50 transition-colors">
-                        <div className="flex items-center gap-3">
+                      <div key={material.id} className="p-2 bg-white dark:bg-slate-800 rounded-lg border border-border/50">
+                        <div className="flex items-center gap-2">
                           {getMaterialIcon(material.material_type)}
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{material.title}</p>
-                          </div>
+                          <span className="text-xs font-medium flex-1 truncate">{material.title}</span>
                           {material.material_url && (
-                            <Button size="sm" variant="ghost" asChild className="rounded-full">
-                              <a href={material.material_url} target="_blank" rel="noopener noreferrer">
-                                <FileText className="w-4 h-4" />
-                              </a>
-                            </Button>
+                            <a href={material.material_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                              <FileText className="w-3 h-3" />
+                            </a>
                           )}
                         </div>
-                        {material.note_content && (
-                          <p className="text-xs text-muted-foreground mt-2">{material.note_content}</p>
-                        )}
-                      </Card>
+                      </div>
                     ))}
                   </div>
                 )}
