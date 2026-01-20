@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { GraduationCap, ArrowLeft, Mail, Lock, User, Sun, Moon, Globe, ShieldCheck, Loader2, RefreshCw } from 'lucide-react';
+import { GraduationCap, ArrowLeft, Mail, Lock, User, Sun, Moon, Globe, ShieldCheck, Loader2, RefreshCw, Phone } from 'lucide-react';
 import { z } from 'zod';
 
 export default function StudentLoginPage() {
@@ -20,6 +20,7 @@ export default function StudentLoginPage() {
   const [signupName, setSignupName] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
+  const [signupPhone, setSignupPhone] = useState('');
   
   // OTP States
   const [showOtpVerification, setShowOtpVerification] = useState(false);
@@ -43,6 +44,7 @@ export default function StudentLoginPage() {
     fullName: z.string().min(2, t('login.nameMin')),
     email: z.string().email(t('login.invalidEmail')),
     password: z.string().min(6, t('login.passwordMin')),
+    phone: z.string().min(11, 'সঠিক মোবাইল নম্বর দিন').max(14, 'সঠিক মোবাইল নম্বর দিন'),
   });
 
   // OTP timer countdown
@@ -93,7 +95,8 @@ export default function StudentLoginPage() {
     const validation = signupSchema.safeParse({ 
       fullName: signupName, 
       email: signupEmail, 
-      password: signupPassword 
+      password: signupPassword,
+      phone: signupPhone
     });
     if (!validation.success) {
       toast.error(validation.error.errors[0].message);
@@ -421,6 +424,22 @@ export default function StudentLoginPage() {
                           placeholder={t('login.namePlaceholder')}
                           value={signupName}
                           onChange={(e) => setSignupName(e.target.value)}
+                          className="pl-10 h-11"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-phone" className="text-sm">মোবাইল নম্বর</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="signup-phone"
+                          type="tel"
+                          placeholder="01XXXXXXXXX"
+                          value={signupPhone}
+                          onChange={(e) => setSignupPhone(e.target.value)}
                           className="pl-10 h-11"
                           required
                         />
