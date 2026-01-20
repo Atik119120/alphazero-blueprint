@@ -36,17 +36,15 @@ export default function StudentLoginPage() {
     password: z.string().min(6, t('login.passwordMin')),
   });
 
-  // Redirect if already logged in
+  // Redirect if already logged in - wait for role to be fetched
   useEffect(() => {
-    if (!authLoading && user) {
-      const timer = setTimeout(() => {
-        if (role === 'admin') {
-          navigate('/admin');
-        } else if (role === 'student') {
-          navigate('/student');
-        }
-      }, 200);
-      return () => clearTimeout(timer);
+    // Only redirect when we have both user AND role loaded (not null)
+    if (!authLoading && user && role) {
+      if (role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else if (role === 'student') {
+        navigate('/student', { replace: true });
+      }
     }
   }, [user, role, authLoading, navigate]);
 
