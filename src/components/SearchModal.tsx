@@ -27,34 +27,34 @@ const searchData: SearchItem[] = [
     descriptionBn: "AlphaZero-এ স্বাগতম - ক্রিয়েটিভ ডিজাইন এজেন্সি",
     path: "/",
     icon: Layout,
-    keywords: ["home", "main", "হোম", "প্রধান"]
+    keywords: ["home", "main", "landing", "welcome", "alphazero", "alpha", "zero", "agency", "এজেন্সি", "হোম", "প্রধান", "স্বাগতম", "আলফাজিরো", "আলফা"]
   },
   {
     title: "About Us",
     titleBn: "আমাদের সম্পর্কে",
-    description: "Learn about AlphaZero's journey and values",
-    descriptionBn: "AlphaZero-এর যাত্রা এবং মূল্যবোধ সম্পর্কে জানুন",
+    description: "Learn about AlphaZero's journey, mission, vision and values",
+    descriptionBn: "AlphaZero-এর যাত্রা, মিশন, ভিশন এবং মূল্যবোধ সম্পর্কে জানুন",
     path: "/about",
     icon: Info,
-    keywords: ["about", "story", "values", "আমাদের", "সম্পর্কে", "গল্প"]
+    keywords: ["about", "story", "values", "mission", "vision", "history", "company", "who", "we", "are", "journey", "আমাদের", "সম্পর্কে", "গল্প", "মিশন", "ভিশন", "কোম্পানি", "যাত্রা", "ইতিহাস"]
   },
   {
     title: "Our Services",
     titleBn: "আমাদের সেবাসমূহ",
-    description: "Graphic Design, Web Development, Video Editing, Digital Marketing",
-    descriptionBn: "গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট, ভিডিও এডিটিং, ডিজিটাল মার্কেটিং",
+    description: "Graphic Design, Web Development, Video Editing, Digital Marketing, Logo, Branding",
+    descriptionBn: "গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট, ভিডিও এডিটিং, ডিজিটাল মার্কেটিং, লোগো, ব্র্যান্ডিং",
     path: "/services",
     icon: Briefcase,
-    keywords: ["services", "design", "web", "seo", "marketing", "সেবা", "ডিজাইন", "ওয়েব", "মার্কেটিং", "লোগো", "logo", "branding", "ব্র্যান্ডিং"]
+    keywords: ["services", "service", "design", "web", "website", "seo", "marketing", "digital", "graphic", "video", "editing", "development", "developer", "logo", "branding", "brand", "poster", "banner", "flyer", "social", "media", "thumbnail", "youtube", "facebook", "instagram", "সেবা", "ডিজাইন", "ওয়েব", "ওয়েবসাইট", "মার্কেটিং", "লোগো", "ব্র্যান্ডিং", "গ্রাফিক", "ভিডিও", "এডিটিং", "ডেভেলপমেন্ট", "পোস্টার", "ব্যানার", "থাম্বনেইল", "ফেসবুক", "ইউটিউব"]
   },
   {
     title: "Our Work",
     titleBn: "আমাদের কাজ",
-    description: "View our portfolio and completed projects",
-    descriptionBn: "আমাদের পোর্টফোলিও এবং সম্পন্ন প্রজেক্ট দেখুন",
+    description: "View our portfolio, completed projects and case studies",
+    descriptionBn: "আমাদের পোর্টফোলিও, সম্পন্ন প্রজেক্ট এবং কেস স্টাডি দেখুন",
     path: "/work",
     icon: Layout,
-    keywords: ["work", "portfolio", "projects", "কাজ", "পোর্টফোলিও", "প্রজেক্ট"]
+    keywords: ["work", "portfolio", "projects", "project", "case", "study", "gallery", "showcase", "examples", "sample", "কাজ", "পোর্টফোলিও", "প্রজেক্ট", "গ্যালারি", "নমুনা", "উদাহরণ"]
   },
   {
     title: "Our Team",
@@ -63,25 +63,52 @@ const searchData: SearchItem[] = [
     descriptionBn: "AlphaZero-এর পেছনের ক্রিয়েটিভ মানুষদের সাথে পরিচিত হন",
     path: "/team",
     icon: Users,
-    keywords: ["team", "members", "people", "টিম", "সদস্য", "মানুষ"]
+    keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "employee", "crew", "join", "career", "টিম", "সদস্য", "মানুষ", "ফাউন্ডার", "ডিজাইনার", "ডেভেলপার", "কর্মী"]
   },
   {
     title: "Courses",
     titleBn: "কোর্সসমূহ",
-    description: "Learn design and development skills with us",
-    descriptionBn: "আমাদের সাথে ডিজাইন এবং ডেভেলপমেন্ট শিখুন",
+    description: "Learn design and development skills - Graphic Design, Web Development courses",
+    descriptionBn: "ডিজাইন এবং ডেভেলপমেন্ট শিখুন - গ্রাফিক ডিজাইন, ওয়েব ডেভেলপমেন্ট কোর্স",
     path: "/courses",
     icon: BookOpen,
-    keywords: ["courses", "training", "learn", "কোর্স", "ট্রেনিং", "শিখুন"]
+    keywords: ["courses", "course", "training", "learn", "learning", "class", "tutorial", "education", "skill", "study", "enroll", "admission", "certificate", "কোর্স", "ট্রেনিং", "শিখুন", "শেখা", "ক্লাস", "টিউটোরিয়াল", "শিক্ষা", "ভর্তি", "সার্টিফিকেট"]
   },
   {
     title: "Contact Us",
     titleBn: "যোগাযোগ করুন",
-    description: "Get in touch with us for your project",
-    descriptionBn: "আপনার প্রজেক্টের জন্য আমাদের সাথে যোগাযোগ করুন",
+    description: "Get in touch with us - Email, Phone, WhatsApp, Location",
+    descriptionBn: "আমাদের সাথে যোগাযোগ করুন - ইমেইল, ফোন, হোয়াটসঅ্যাপ, লোকেশন",
     path: "/contact",
     icon: Phone,
-    keywords: ["contact", "email", "phone", "whatsapp", "যোগাযোগ", "ইমেইল", "ফোন", "হোয়াটসঅ্যাপ"]
+    keywords: ["contact", "email", "phone", "whatsapp", "message", "call", "reach", "location", "address", "help", "support", "inquiry", "quote", "price", "যোগাযোগ", "ইমেইল", "ফোন", "হোয়াটসঅ্যাপ", "মেসেজ", "কল", "ঠিকানা", "লোকেশন", "সাহায্য", "দাম"]
+  },
+  {
+    title: "Join Our Team",
+    titleBn: "টিমে যোগ দিন",
+    description: "Career opportunities at AlphaZero - Apply now",
+    descriptionBn: "AlphaZero-তে ক্যারিয়ারের সুযোগ - এখনই আবেদন করুন",
+    path: "/join-team",
+    icon: Users,
+    keywords: ["join", "career", "job", "jobs", "apply", "hiring", "work", "opportunity", "vacancy", "recruitment", "যোগ", "চাকরি", "আবেদন", "নিয়োগ", "ক্যারিয়ার", "সুযোগ"]
+  },
+  {
+    title: "Student Login",
+    titleBn: "স্টুডেন্ট লগইন",
+    description: "Login to access your courses and dashboard",
+    descriptionBn: "আপনার কোর্স এবং ড্যাশবোর্ড অ্যাক্সেস করতে লগইন করুন",
+    path: "/student-login",
+    icon: BookOpen,
+    keywords: ["student", "login", "signin", "sign", "account", "dashboard", "my", "courses", "স্টুডেন্ট", "লগইন", "একাউন্ট", "ড্যাশবোর্ড", "আমার"]
+  },
+  {
+    title: "Verify Certificate",
+    titleBn: "সার্টিফিকেট যাচাই",
+    description: "Verify your AlphaZero certificate authenticity",
+    descriptionBn: "আপনার AlphaZero সার্টিফিকেটের সত্যতা যাচাই করুন",
+    path: "/verify-certificate",
+    icon: BookOpen,
+    keywords: ["verify", "certificate", "check", "validate", "authenticity", "সার্টিফিকেট", "যাচাই", "চেক", "ভেরিফাই"]
   },
 ];
 
