@@ -79,6 +79,107 @@ const trainers = {
   }
 };
 
+// Hardcoded fallback courses with all original information
+interface FallbackCourse {
+  id: string;
+  title: string;
+  titleBn: string;
+  description: string;
+  descriptionBn: string;
+  price: number;
+}
+
+const fallbackCourses: FallbackCourse[] = [
+  {
+    id: "google-knowledge",
+    title: "Google Knowledge Panel Creation",
+    titleBn: "গুগল নলেজ প্যানেল ক্রিয়েশন",
+    description: "Learn how to create verified Google Knowledge Panels for brands and individuals. Build your digital presence on Google.",
+    descriptionBn: "গুগলে ব্র্যান্ড/ব্যক্তিগত প্রোফাইলের নলেজ প্যানেল তৈরি শিখুন। আপনার ডিজিটাল উপস্থিতি গড়ে তুলুন।",
+    price: 3000
+  },
+  {
+    id: "microsoft-office",
+    title: "Microsoft Office (Word, Excel, PowerPoint)",
+    titleBn: "মাইক্রোসফট অফিস (Word, Excel, PowerPoint)",
+    description: "Master complete MS Office skills for office work. Become proficient in Word, Excel, and PowerPoint.",
+    descriptionBn: "অফিস কাজের জন্য সম্পূর্ণ MS Office দক্ষতা অর্জন করুন। Word, Excel, PowerPoint-এ পারদর্শী হন।",
+    price: 2000
+  },
+  {
+    id: "graphic-design",
+    title: "Graphic Design",
+    titleBn: "গ্রাফিক ডিজাইন",
+    description: "Learn professional graphic design with Adobe Photoshop and Illustrator. Create logos, branding, and social media designs.",
+    descriptionBn: "Adobe Photoshop ও Illustrator দিয়ে প্রফেশনাল গ্রাফিক ডিজাইন শিখুন। লোগো, ব্র্যান্ডিং ও সোশ্যাল মিডিয়া ডিজাইন তৈরি করুন।",
+    price: 4000
+  },
+  {
+    id: "video-editing",
+    title: "Video Editing",
+    titleBn: "ভিডিও এডিটিং",
+    description: "Master video editing with Adobe Premiere Pro. Learn color grading, sound design, and create social media videos.",
+    descriptionBn: "Adobe Premiere Pro দিয়ে ভিডিও এডিটিং মাস্টার করুন। কালার গ্রেডিং, সাউন্ড ডিজাইন ও সোশ্যাল মিডিয়া ভিডিও তৈরি করুন।",
+    price: 4500
+  },
+  {
+    id: "photography",
+    title: "Photography",
+    titleBn: "ফটোগ্রাফি",
+    description: "Learn camera basics, lighting techniques, photo editing and build your professional portfolio.",
+    descriptionBn: "ক্যামেরা বেসিক, লাইটিং টেকনিক, ফটো এডিটিং শিখুন এবং প্রফেশনাল পোর্টফোলিও তৈরি করুন।",
+    price: 2500
+  },
+  {
+    id: "seo-marketing",
+    title: "SEO & Digital Marketing",
+    titleBn: "SEO ও ডিজিটাল মার্কেটিং",
+    description: "Learn on-page & off-page SEO, Google Ads, Facebook & Instagram marketing, analytics and reporting.",
+    descriptionBn: "অন-পেজ ও অফ-পেজ SEO, গুগল অ্যাডস, ফেসবুক ও ইনস্টাগ্রাম মার্কেটিং, এনালিটিক্স ও রিপোর্টিং শিখুন।",
+    price: 4000
+  },
+  {
+    id: "web-coding",
+    title: "Web Coding (HTML, CSS, JavaScript)",
+    titleBn: "ওয়েব কোডিং (HTML, CSS, JavaScript)",
+    description: "Learn HTML5 fundamentals, CSS3 & Flexbox, JavaScript basics and responsive web design.",
+    descriptionBn: "HTML5 ফান্ডামেন্টালস, CSS3 ও Flexbox, JavaScript বেসিক এবং রেস্পন্সিভ ওয়েব ডিজাইন শিখুন।",
+    price: 5000
+  },
+  {
+    id: "motion-graphics",
+    title: "Motion Graphics (After Effects)",
+    titleBn: "মোশন গ্রাফিক্স (After Effects)",
+    description: "Learn After Effects basics, keyframe animation, text animation and visual effects.",
+    descriptionBn: "After Effects বেসিক, কীফ্রেম অ্যানিমেশন, টেক্সট অ্যানিমেশন এবং ভিজ্যুয়াল ইফেক্টস শিখুন।",
+    price: 5500
+  },
+  {
+    id: "vibe-coding",
+    title: "Vibe Coding (AI Website Builder)",
+    titleBn: "ভাইব কোডিং (AI দিয়ে ওয়েবসাইট তৈরি)",
+    description: "Create complete websites without coding using AI tools. Learn prompt to design workflow.",
+    descriptionBn: "কোডিং না জেনে AI টুলস দিয়ে সম্পূর্ণ ওয়েবসাইট তৈরি করুন। প্রম্পট থেকে ডিজাইন ওয়ার্কফ্লো শিখুন।",
+    price: 4500
+  },
+  {
+    id: "ai-prompt",
+    title: "AI Prompt Engineering",
+    titleBn: "AI প্রম্পট ইঞ্জিনিয়ারিং",
+    description: "Learn to write effective prompts for AI tools. Master ChatGPT, Claude, Midjourney and more.",
+    descriptionBn: "AI টুলসের জন্য ইফেক্টিভ প্রম্পট লেখা শিখুন। ChatGPT, Claude, Midjourney মাস্টার করুন।",
+    price: 3500
+  },
+  {
+    id: "it-support",
+    title: "IT Support",
+    titleBn: "আইটি সাপোর্ট",
+    description: "Learn computer troubleshooting, network setup, hardware maintenance and software installation.",
+    descriptionBn: "কম্পিউটার ট্রাবলশুটিং, নেটওয়ার্ক সেটআপ, হার্ডওয়্যার মেইনটেন্যান্স এবং সফটওয়্যার ইনস্টলেশন শিখুন।",
+    price: 3000
+  }
+];
+
 // Course metadata mapping (for rich UI display)
 interface CourseMetadata {
   icon: LucideIcon;
@@ -371,9 +472,25 @@ const CoursesPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Merge database courses with fallback courses
+  // Use database courses if available, otherwise use fallback
+  const displayCourses = useMemo(() => {
+    if (dbCourses.length > 0) {
+      return dbCourses.map(course => ({
+        id: course.id,
+        title: course.title,
+        titleBn: course.title, // Database doesn't have Bengali titles yet
+        description: course.description || '',
+        descriptionBn: course.description || '',
+        price: course.price || 0
+      }));
+    }
+    return fallbackCourses;
+  }, [dbCourses]);
+
   const selectedCourse = useMemo(() => {
-    return dbCourses.find(c => c.id === formData.course);
-  }, [formData.course, dbCourses]);
+    return displayCourses.find(c => c.id === formData.course);
+  }, [formData.course, displayCourses]);
 
   const selectedCourseMetadata = useMemo(() => {
     if (!selectedCourse) return null;
@@ -536,19 +653,10 @@ const CoursesPage = () => {
             </div>
           )}
 
-          {/* No Courses State */}
-          {!coursesLoading && dbCourses.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-20">
-              <BookOpen className="w-16 h-16 text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{t.noCourses}</h3>
-              <p className="text-muted-foreground">{t.noCoursesDesc}</p>
-            </div>
-          )}
-
-          {/* Courses Grid */}
-          {!coursesLoading && dbCourses.length > 0 && (
+          {/* Courses Grid - Always show with fallback */}
+          {!coursesLoading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
-              {dbCourses.map((course, index) => {
+              {displayCourses.map((course, index) => {
                 const metadata = getCourseMetadata(course.title);
                 const CourseIcon = metadata.icon;
                 
@@ -597,9 +705,9 @@ const CoursesPage = () => {
                         {/* Course Name & Price Row */}
                         <div className="flex items-start justify-between gap-2 mb-2 sm:mb-3">
                           <h3 className="text-base sm:text-lg font-display font-bold leading-tight">
-                            {course.title}
+                            {isBn ? course.titleBn : course.title}
                           </h3>
-                          {course.price !== null && course.price > 0 && (
+                          {course.price > 0 && (
                             <div className="flex-shrink-0 px-2 sm:px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
                               <span className="text-sm sm:text-base font-bold text-primary">৳{course.price.toLocaleString()}</span>
                             </div>
@@ -607,7 +715,7 @@ const CoursesPage = () => {
                         </div>
                         
                         <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
-                          {course.description || (isBn ? "এই কোর্সে প্র্যাক্টিক্যাল স্কিল শিখুন।" : "Learn practical skills in this course.")}
+                          {isBn ? course.descriptionBn : course.description}
                         </p>
 
                         {/* Features Grid */}
@@ -778,9 +886,9 @@ const CoursesPage = () => {
                       <SelectValue placeholder={t.coursePlaceholder} />
                     </SelectTrigger>
                     <SelectContent>
-                      {dbCourses.filter(c => !getCourseMetadata(c.title).isUpcoming).map((course) => (
+                      {displayCourses.filter(c => !getCourseMetadata(c.title).isUpcoming).map((course) => (
                         <SelectItem key={course.id} value={course.id}>
-                          {course.title} {course.price ? `- ৳${course.price.toLocaleString()}` : ''}
+                          {isBn ? course.titleBn : course.title} {course.price ? `- ৳${course.price.toLocaleString()}` : ''}
                         </SelectItem>
                       ))}
                     </SelectContent>
