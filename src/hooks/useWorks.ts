@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useEffect } from 'react';
 
 export interface Work {
   id: string;
@@ -14,6 +15,27 @@ export interface Work {
 }
 
 export function useWorks() {
+  const queryClient = useQueryClient();
+
+  // Set up realtime subscription
+  useEffect(() => {
+    const channel = supabase
+      .channel('works-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'works' },
+        () => {
+          // Invalidate and refetch when data changes
+          queryClient.invalidateQueries({ queryKey: ['public-works'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+
   return useQuery({
     queryKey: ['public-works'],
     queryFn: async () => {
