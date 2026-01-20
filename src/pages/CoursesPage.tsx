@@ -45,37 +45,223 @@ import { supabase } from "@/integrations/supabase/client";
 import { usePublicCourses } from "@/hooks/usePublicCourses";
 import { Course } from "@/types/lms";
 
-// Default icon mapping for courses based on title keywords
-const getIconForCourse = (title: string): LucideIcon => {
-  const lowerTitle = title.toLowerCase();
-  if (lowerTitle.includes('google') || lowerTitle.includes('knowledge')) return Globe;
-  if (lowerTitle.includes('microsoft') || lowerTitle.includes('office')) return Monitor;
-  if (lowerTitle.includes('graphic') || lowerTitle.includes('design')) return Palette;
-  if (lowerTitle.includes('video') || lowerTitle.includes('editing')) return Video;
-  if (lowerTitle.includes('photo')) return Camera;
-  if (lowerTitle.includes('seo') || lowerTitle.includes('marketing')) return TrendingUp;
-  if (lowerTitle.includes('web') || lowerTitle.includes('coding') || lowerTitle.includes('html')) return Code;
-  if (lowerTitle.includes('motion') || lowerTitle.includes('after effects')) return Sparkles;
-  if (lowerTitle.includes('ai') || lowerTitle.includes('prompt')) return Bot;
-  if (lowerTitle.includes('vibe')) return Zap;
-  if (lowerTitle.includes('it') || lowerTitle.includes('support')) return Wrench;
-  return BookOpen;
+// Trainers based on existing team members with images
+const trainers = {
+  sofiullah: {
+    name: "Sofiullah Ahammad",
+    qualificationEn: "Graphics Designer, Vibe Coding Expert, Google Knowledge Expert, Freelance Photographer",
+    qualificationBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট, গুগল নলেজ এক্সপার্ট, ফ্রিল্যান্স ফটোগ্রাফার",
+    image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true"
+  },
+  adib: {
+    name: "Adib Sarkar",
+    qualificationEn: "Lead Designer, Entrepreneur",
+    qualificationBn: "লিড ডিজাইনার, উদ্যোক্তা",
+    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true"
+  },
+  kamrul: {
+    name: "Md. Kamrul Hasan",
+    qualificationEn: "Microsoft Office Expert, Graphics Designer",
+    qualificationBn: "মাইক্রোসফট অফিস এক্সপার্ট, গ্রাফিক্স ডিজাইনার",
+    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true"
+  },
+  shafiul: {
+    name: "Md. Shafiul Haque",
+    qualificationEn: "Web Designer, Video Editor, Cinematographer",
+    qualificationBn: "ওয়েব ডিজাইনার, ভিডিও এডিটর, সিনেমাটোগ্রাফার",
+    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true"
+  },
+  prantik: {
+    name: "Prantik Saha",
+    qualificationEn: "Graphics Designer, Microsoft Office Expert, IT Support",
+    qualificationBn: "গ্রাফিক্স ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
+    image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
+  }
 };
 
-// Default gradient colors based on course index
-const gradientColors = [
-  "from-blue-500 to-cyan-500",
-  "from-orange-500 to-red-500",
-  "from-purple-500 to-pink-500",
-  "from-red-500 to-orange-500",
-  "from-amber-500 to-yellow-500",
-  "from-green-500 to-emerald-500",
-  "from-cyan-500 to-blue-500",
-  "from-violet-500 to-purple-500",
-  "from-pink-500 to-rose-500",
-  "from-indigo-500 to-blue-500",
-  "from-slate-500 to-zinc-600",
-];
+// Course metadata mapping (for rich UI display)
+interface CourseMetadata {
+  icon: LucideIcon;
+  color: string;
+  trainer: typeof trainers.sofiullah | null;
+  featuresBn: string[];
+  featuresEn: string[];
+  isSpecial?: boolean;
+  isUpcoming?: boolean;
+  specialContentBn?: { title: string; points: string[] };
+  specialContentEn?: { title: string; points: string[] };
+}
+
+// Default metadata for courses based on keywords
+const getCourseMetadata = (title: string): CourseMetadata => {
+  const lowerTitle = title.toLowerCase();
+  
+  if (lowerTitle.includes('google') || lowerTitle.includes('knowledge')) {
+    return {
+      icon: Globe,
+      color: "from-blue-500 to-cyan-500",
+      trainer: trainers.sofiullah,
+      featuresBn: ["গুগল সার্চ অপ্টিমাইজেশন", "ব্র্যান্ড ভেরিফিকেশন", "উইকিপিডিয়া এন্ট্রি গাইড", "সোশ্যাল প্রোফাইল সেটআপ"],
+      featuresEn: ["Google Search Optimization", "Brand Verification", "Wikipedia Entry Guide", "Social Profile Setup"]
+    };
+  }
+  
+  if (lowerTitle.includes('microsoft') || lowerTitle.includes('office')) {
+    return {
+      icon: Monitor,
+      color: "from-orange-500 to-red-500",
+      trainer: trainers.kamrul,
+      featuresBn: ["MS Word মাস্টারি", "Excel ফর্মুলা ও ডাটা এনালাইসিস", "PowerPoint প্রেজেন্টেশন", "অফিস অটোমেশন"],
+      featuresEn: ["MS Word Mastery", "Excel Formulas & Data Analysis", "PowerPoint Presentations", "Office Automation"]
+    };
+  }
+  
+  if (lowerTitle.includes('graphic') || lowerTitle.includes('গ্রাফিক')) {
+    return {
+      icon: Palette,
+      color: "from-purple-500 to-pink-500",
+      trainer: trainers.adib,
+      featuresBn: ["Adobe Photoshop", "Adobe Illustrator", "লোগো ও ব্র্যান্ডিং", "সোশ্যাল মিডিয়া ডিজাইন"],
+      featuresEn: ["Adobe Photoshop", "Adobe Illustrator", "Logo & Branding", "Social Media Design"]
+    };
+  }
+  
+  if (lowerTitle.includes('video') || lowerTitle.includes('ভিডিও')) {
+    return {
+      icon: Video,
+      color: "from-red-500 to-orange-500",
+      trainer: trainers.shafiul,
+      featuresBn: ["Adobe Premiere Pro", "কালার গ্রেডিং", "সাউন্ড ডিজাইন", "সোশ্যাল মিডিয়া ভিডিও"],
+      featuresEn: ["Adobe Premiere Pro", "Color Grading", "Sound Design", "Social Media Videos"]
+    };
+  }
+  
+  if (lowerTitle.includes('photo') || lowerTitle.includes('ফটো')) {
+    return {
+      icon: Camera,
+      color: "from-amber-500 to-yellow-500",
+      trainer: trainers.sofiullah,
+      featuresBn: ["ক্যামেরা বেসিক", "লাইটিং টেকনিক", "ফটো এডিটিং", "পোর্টফোলিও বিল্ডিং"],
+      featuresEn: ["Camera Basics", "Lighting Techniques", "Photo Editing", "Portfolio Building"]
+    };
+  }
+  
+  if (lowerTitle.includes('seo') || lowerTitle.includes('marketing')) {
+    return {
+      icon: TrendingUp,
+      color: "from-green-500 to-emerald-500",
+      trainer: trainers.sofiullah,
+      featuresBn: ["অন-পেজ ও অফ-পেজ SEO", "গুগল অ্যাডস", "ফেসবুক ও ইনস্টাগ্রাম মার্কেটিং", "এনালিটিক্স ও রিপোর্টিং"],
+      featuresEn: ["On-Page & Off-Page SEO", "Google Ads", "Facebook & Instagram Marketing", "Analytics & Reporting"],
+      isUpcoming: true
+    };
+  }
+  
+  if (lowerTitle.includes('web') && (lowerTitle.includes('coding') || lowerTitle.includes('html'))) {
+    return {
+      icon: Code,
+      color: "from-cyan-500 to-blue-500",
+      trainer: null,
+      featuresBn: ["HTML5 ফান্ডামেন্টালস", "CSS3 ও Flexbox", "JavaScript বেসিক", "রেস্পন্সিভ ডিজাইন"],
+      featuresEn: ["HTML5 Fundamentals", "CSS3 & Flexbox", "JavaScript Basics", "Responsive Design"],
+      isUpcoming: true,
+      isSpecial: true,
+      specialContentBn: {
+        title: "ওয়েব কোডিং কেন শিখবেন?",
+        points: ["নিজের হাতে প্রফেশনাল ওয়েবসাইট বানান", "ফ্রিল্যান্সিং ও জব মার্কেটে সবচেয়ে চাহিদাসম্পন্ন স্কিল", "ওয়েব ডেভেলপার হিসেবে ক্যারিয়ার শুরু করুন"]
+      },
+      specialContentEn: {
+        title: "Why Learn Web Coding?",
+        points: ["Build professional websites with your own hands", "Most in-demand skill in freelancing & job market", "Start your career as a web developer"]
+      }
+    };
+  }
+  
+  if (lowerTitle.includes('motion') || lowerTitle.includes('after effects')) {
+    return {
+      icon: Sparkles,
+      color: "from-violet-500 to-purple-500",
+      trainer: trainers.shafiul,
+      featuresBn: ["After Effects বেসিক", "কীফ্রেম অ্যানিমেশন", "টেক্সট অ্যানিমেশন", "ভিজ্যুয়াল ইফেক্টস"],
+      featuresEn: ["After Effects Basics", "Keyframe Animation", "Text Animation", "Visual Effects"],
+      isSpecial: true,
+      specialContentBn: {
+        title: "মোশন গ্রাফিক্স কেন শিখবেন?",
+        points: ["YouTube, Facebook, TikTok-এর জন্য প্রো-লেভেল ভিডিও বানান", "ব্র্যান্ডের জন্য লোগো অ্যানিমেশন ও ইন্ট্রো তৈরি করুন", "ফ্রিল্যান্সিং ও জব মার্কেটে হাই-ডিমান্ড স্কিল"]
+      },
+      specialContentEn: {
+        title: "Why Learn Motion Graphics?",
+        points: ["Create pro-level videos for YouTube, Facebook, TikTok", "Make logo animations & intros for brands", "High-demand skill in freelancing & job market"]
+      }
+    };
+  }
+  
+  if (lowerTitle.includes('vibe') || lowerTitle.includes('ভাইব')) {
+    return {
+      icon: Zap,
+      color: "from-pink-500 to-rose-500",
+      trainer: trainers.sofiullah,
+      featuresBn: ["AI ওয়েবসাইট বিল্ডার", "প্রম্পট টু ডিজাইন", "নো-কোড ডেভেলপমেন্ট", "হোস্টিং ও পাবলিশিং"],
+      featuresEn: ["AI Website Builder", "Prompt to Design", "No-Code Development", "Hosting & Publishing"],
+      isSpecial: true,
+      specialContentBn: {
+        title: "ভাইব কোডিং কি?",
+        points: ["কোডিং না জেনেও সম্পূর্ণ ওয়েবসাইট তৈরি করুন", "AI টুলস ব্যবহার করে HTML, CSS, ডিজাইন জেনারেট করুন", "আইডিয়া → প্রম্পট → ওয়েবসাইট - এই সিম্পল ওয়ার্কফ্লো শিখুন"]
+      },
+      specialContentEn: {
+        title: "What is Vibe Coding?",
+        points: ["Create complete websites without knowing coding", "Generate HTML, CSS, design using AI tools", "Learn the simple workflow: Idea → Prompt → Website"]
+      }
+    };
+  }
+  
+  if (lowerTitle.includes('ai') || lowerTitle.includes('prompt')) {
+    return {
+      icon: Bot,
+      color: "from-indigo-500 to-blue-500",
+      trainer: trainers.sofiullah,
+      featuresBn: ["প্রম্পট স্ট্রাকচার", "রোল প্রম্পটিং", "টাস্ক-বেজড প্রম্পট", "AI অটোমেশন"],
+      featuresEn: ["Prompt Structure", "Role Prompting", "Task-Based Prompts", "AI Automation"],
+      isSpecial: true,
+      specialContentBn: {
+        title: "AI প্রম্পট ইঞ্জিনিয়ারিং কি শেখায়?",
+        points: ["AI টুলসের জন্য ইফেক্টিভ প্রম্পট লেখা শিখুন", "ডিজাইন, কোডিং, মার্কেটিং, কন্টেন্টে AI ব্যবহার", "ChatGPT, Claude, Midjourney সব AI মাস্টার করুন"]
+      },
+      specialContentEn: {
+        title: "What does AI Prompt Engineering teach?",
+        points: ["Learn to write effective prompts for AI tools", "Use AI for design, coding, marketing, content", "Master all AI tools: ChatGPT, Claude, Midjourney"]
+      }
+    };
+  }
+  
+  if (lowerTitle.includes('it') || lowerTitle.includes('support') || lowerTitle.includes('সাপোর্ট')) {
+    return {
+      icon: Wrench,
+      color: "from-slate-500 to-zinc-600",
+      trainer: trainers.prantik,
+      featuresBn: ["কম্পিউটার ট্রাবলশুটিং", "নেটওয়ার্ক সেটআপ", "হার্ডওয়্যার মেইনটেন্যান্স", "সফটওয়্যার ইনস্টলেশন"],
+      featuresEn: ["Computer Troubleshooting", "Network Setup", "Hardware Maintenance", "Software Installation"],
+      isSpecial: true,
+      specialContentBn: {
+        title: "আইটি সাপোর্ট কেন শিখবেন?",
+        points: ["যেকোনো অফিস বা প্রতিষ্ঠানে IT সাপোর্ট জব পান", "নিজের কম্পিউটার ও নেটওয়ার্ক সমস্যা সমাধান করুন", "ফ্রিল্যান্স টেক সাপোর্ট সার্ভিস দিন"]
+      },
+      specialContentEn: {
+        title: "Why Learn IT Support?",
+        points: ["Get IT support jobs in any office or organization", "Solve your own computer & network problems", "Provide freelance tech support services"]
+      }
+    };
+  }
+  
+  // Default metadata
+  return {
+    icon: BookOpen,
+    color: "from-primary to-purple-500",
+    trainer: null,
+    featuresBn: ["অনলাইন ক্লাস", "সার্টিফিকেট", "লাইফটাইম অ্যাক্সেস", "সাপোর্ট"],
+    featuresEn: ["Online Classes", "Certificate", "Lifetime Access", "Support"]
+  };
+};
 
 // Translations
 const translations = {
@@ -91,6 +277,8 @@ const translations = {
     ourCourses: "Our",
     coursesTitle: "Courses",
     coursesSubtitle: "Professional Online Courses - Start Your Career Today",
+    special: "Special",
+    upcoming: "Coming Soon",
     trainer: "Trainer",
     courseFee: "Course Fee",
     enrollNow: "Enroll Now",
@@ -132,6 +320,8 @@ const translations = {
     ourCourses: "আমাদের",
     coursesTitle: "কোর্সসমূহ",
     coursesSubtitle: "প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
+    special: "স্পেশাল",
+    upcoming: "আসছে শীঘ্রই",
     trainer: "ট্রেইনার",
     courseFee: "কোর্স ফি",
     enrollNow: "এখনই ভর্তি হন",
@@ -185,6 +375,11 @@ const CoursesPage = () => {
     return dbCourses.find(c => c.id === formData.course);
   }, [formData.course, dbCourses]);
 
+  const selectedCourseMetadata = useMemo(() => {
+    if (!selectedCourse) return null;
+    return getCourseMetadata(selectedCourse.title);
+  }, [selectedCourse]);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -205,7 +400,6 @@ const CoursesPage = () => {
     setIsSubmitting(true);
     
     try {
-      // Create student account using the edge function
       const { data: studentData, error: studentError } = await supabase.functions.invoke('create-student', {
         body: {
           email: formData.email,
@@ -221,7 +415,6 @@ const CoursesPage = () => {
         return;
       }
 
-      // If account created successfully, create enrollment request
       if (studentData?.user?.id && selectedCourse) {
         await supabase.from('enrollment_requests').insert({
           user_id: studentData.user.id,
@@ -356,8 +549,8 @@ const CoursesPage = () => {
           {!coursesLoading && dbCourses.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
               {dbCourses.map((course, index) => {
-                const CourseIcon = getIconForCourse(course.title);
-                const gradientColor = gradientColors[index % gradientColors.length];
+                const metadata = getCourseMetadata(course.title);
+                const CourseIcon = metadata.icon;
                 
                 return (
                   <motion.div
@@ -368,23 +561,28 @@ const CoursesPage = () => {
                     transition={{ delay: index * 0.05 }}
                     className="group h-full"
                   >
-                    <div className="relative h-full flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden">
+                    <div className={`relative h-full flex flex-col rounded-2xl sm:rounded-3xl overflow-hidden ${metadata.isSpecial ? 'ring-2 ring-primary/50' : ''} ${metadata.isUpcoming ? 'ring-2 ring-amber-500/50' : ''}`}>
                       {/* Gradient Background Header */}
-                      <div className={`relative h-28 sm:h-36 bg-gradient-to-br ${gradientColor} p-4 sm:p-6`}>
+                      <div className={`relative h-28 sm:h-36 bg-gradient-to-br ${metadata.color} p-4 sm:p-6`}>
                         {/* Decorative Pattern */}
                         <div className="absolute inset-0 opacity-20">
                           <div className="absolute top-3 right-3 sm:top-4 sm:right-4 w-14 h-14 sm:w-20 sm:h-20 border-4 border-white/30 rounded-full" />
                           <div className="absolute bottom-2 left-4 sm:left-6 w-8 h-8 sm:w-12 sm:h-12 border-2 border-white/20 rounded-lg rotate-12" />
                         </div>
                         
-                        {/* Thumbnail if available */}
-                        {course.thumbnail_url && (
-                          <div className="absolute inset-0">
-                            <img 
-                              src={course.thumbnail_url} 
-                              alt={course.title}
-                              className="w-full h-full object-cover opacity-30"
-                            />
+                        {/* Special Badge */}
+                        {metadata.isSpecial && (
+                          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 sm:px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold flex items-center gap-1">
+                            <Sparkles className="w-3 h-3" />
+                            {t.special}
+                          </div>
+                        )}
+
+                        {/* Upcoming Badge */}
+                        {metadata.isUpcoming && (
+                          <div className="absolute top-3 right-3 sm:top-4 sm:right-4 px-2 sm:px-3 py-1 rounded-full bg-amber-500/80 backdrop-blur-sm text-white text-[10px] sm:text-xs font-bold flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {t.upcoming}
                           </div>
                         )}
                         
@@ -408,43 +606,73 @@ const CoursesPage = () => {
                           )}
                         </div>
                         
-                        {course.description && (
-                          <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-3">
-                            {course.description}
-                          </p>
-                        )}
+                        <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4 line-clamp-2">
+                          {course.description || (isBn ? "এই কোর্সে প্র্যাক্টিক্যাল স্কিল শিখুন।" : "Learn practical skills in this course.")}
+                        </p>
 
-                        {/* Features - show some generic features */}
+                        {/* Features Grid */}
                         <div className="grid grid-cols-2 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
-                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
-                            <span className="text-muted-foreground truncate">{isBn ? "অনলাইন ক্লাস" : "Online Classes"}</span>
-                          </div>
-                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
-                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
-                            <span className="text-muted-foreground truncate">{isBn ? "সার্টিফিকেট" : "Certificate"}</span>
-                          </div>
-                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
-                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
-                            <span className="text-muted-foreground truncate">{isBn ? "লাইফটাইম অ্যাক্সেস" : "Lifetime Access"}</span>
-                          </div>
-                          <div className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
-                            <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
-                            <span className="text-muted-foreground truncate">{isBn ? "সাপোর্ট" : "Support"}</span>
-                          </div>
+                          {(isBn ? metadata.featuresBn : metadata.featuresEn).slice(0, 4).map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-xs bg-secondary/50 rounded-lg px-1.5 sm:px-2 py-1 sm:py-1.5">
+                              <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-primary flex-shrink-0" />
+                              <span className="text-muted-foreground truncate">{feature}</span>
+                            </div>
+                          ))}
                         </div>
 
-                        {/* Spacer */}
-                        <div className="flex-1" />
+                        {/* Special Content */}
+                        {metadata.isSpecial && metadata.specialContentBn && metadata.specialContentEn && (
+                          <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary/5 to-purple-500/5 border border-primary/20">
+                            <h4 className="font-semibold text-primary text-xs sm:text-sm mb-1.5 sm:mb-2 flex items-center gap-1">
+                              <Zap className="w-3 h-3 sm:w-4 sm:h-4" />
+                              {isBn ? metadata.specialContentBn.title : metadata.specialContentEn.title}
+                            </h4>
+                            <ul className="space-y-0.5 sm:space-y-1">
+                              {(isBn ? metadata.specialContentBn.points : metadata.specialContentEn.points).slice(0, 3).map((point, idx) => (
+                                <li key={idx} className="text-[10px] sm:text-xs text-muted-foreground flex items-start gap-1 sm:gap-1.5">
+                                  <span className="text-primary mt-0.5">•</span>
+                                  {point}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Trainer with Photo */}
+                        {metadata.trainer && (
+                          <div className="flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-secondary/30 border border-border mb-3 sm:mb-4 mt-auto">
+                            <img
+                              src={metadata.trainer.image}
+                              alt={metadata.trainer.name}
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-primary/30"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-[10px] sm:text-xs text-muted-foreground">{t.trainer}</p>
+                              <p className="text-xs sm:text-sm font-semibold truncate">{metadata.trainer.name}</p>
+                              <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
+                                {isBn ? metadata.trainer.qualificationBn : metadata.trainer.qualificationEn}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Spacer if no trainer */}
+                        {!metadata.trainer && <div className="flex-1" />}
 
                         {/* Enroll Button */}
                         <a
                           href="#admission"
                           onClick={() => handleInputChange("course", course.id)}
-                          className="w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                          className={`w-full flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all duration-300 ${
+                            metadata.isUpcoming 
+                              ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 cursor-not-allowed'
+                              : metadata.isSpecial 
+                                ? 'bg-gradient-to-r from-primary to-purple-500 text-white hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02]' 
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20'
+                          }`}
                         >
                           <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                          {t.enrollNow}
+                          {metadata.isUpcoming ? t.upcoming : t.enrollNow}
                         </a>
                       </div>
                     </div>
@@ -550,7 +778,7 @@ const CoursesPage = () => {
                       <SelectValue placeholder={t.coursePlaceholder} />
                     </SelectTrigger>
                     <SelectContent>
-                      {dbCourses.map((course) => (
+                      {dbCourses.filter(c => !getCourseMetadata(c.title).isUpcoming).map((course) => (
                         <SelectItem key={course.id} value={course.id}>
                           {course.title} {course.price ? `- ৳${course.price.toLocaleString()}` : ''}
                         </SelectItem>
@@ -559,22 +787,25 @@ const CoursesPage = () => {
                   </Select>
                 </div>
 
-                {/* Selected Course Info */}
-                {selectedCourse && (
+                {/* Trainer Info (Auto-filled) */}
+                {selectedCourse && selectedCourseMetadata?.trainer && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     className="p-4 rounded-xl bg-primary/5 border border-primary/20"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-                        <BookOpen className="w-6 h-6 text-primary" />
-                      </div>
+                      <img
+                        src={selectedCourseMetadata.trainer.image}
+                        alt={selectedCourseMetadata.trainer.name}
+                        className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+                      />
                       <div>
-                        <p className="text-sm font-semibold">{selectedCourse.title}</p>
-                        {selectedCourse.price && (
-                          <p className="text-xs text-primary font-medium">৳{selectedCourse.price.toLocaleString()}</p>
-                        )}
+                        <p className="text-xs text-muted-foreground">{t.trainer}</p>
+                        <p className="text-sm font-semibold">{selectedCourseMetadata.trainer.name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {isBn ? selectedCourseMetadata.trainer.qualificationBn : selectedCourseMetadata.trainer.qualificationEn}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
