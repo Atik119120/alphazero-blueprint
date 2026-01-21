@@ -21,7 +21,9 @@ export interface UserRole {
 export interface Course {
   id: string;
   title: string;
+  title_en: string | null;
   description: string | null;
+  description_en: string | null;
   thumbnail_url: string | null;
   is_published: boolean;
   price: number;

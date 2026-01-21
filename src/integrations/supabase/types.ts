@@ -88,31 +88,37 @@ export type Database = {
         Row: {
           created_at: string | null
           description: string | null
+          description_en: string | null
           id: string
           is_published: boolean | null
           price: number | null
           thumbnail_url: string | null
           title: string
+          title_en: string | null
           updated_at: string | null
         }
         Insert: {
           created_at?: string | null
           description?: string | null
+          description_en?: string | null
           id?: string
           is_published?: boolean | null
           price?: number | null
           thumbnail_url?: string | null
           title: string
+          title_en?: string | null
           updated_at?: string | null
         }
         Update: {
           created_at?: string | null
           description?: string | null
+          description_en?: string | null
           id?: string
           is_published?: boolean | null
           price?: number | null
           thumbnail_url?: string | null
           title?: string
+          title_en?: string | null
           updated_at?: string | null
         }
         Relationships: []
