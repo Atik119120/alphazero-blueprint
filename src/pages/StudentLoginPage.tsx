@@ -223,13 +223,7 @@ export default function StudentLoginPage() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (authLoading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-      </div>
-    );
-  }
+  // No loading screen - login page loads directly
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
