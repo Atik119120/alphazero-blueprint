@@ -24,30 +24,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [role, setRole] = useState<AppRole | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const fetchUserData = async (userId: string) => {
+  const fetchUserData = async (userId: string): Promise<{ profile: Profile | null; role: AppRole | null }> => {
     try {
-      // Fetch profile
-      const { data: profileData } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', userId)
-        .maybeSingle();
+      // Fetch profile and role in parallel
+      const [profileResult, roleResult] = await Promise.all([
+        supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', userId)
+          .maybeSingle(),
+        supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', userId)
+          .maybeSingle()
+      ]);
 
-      setProfile(profileData ? (profileData as Profile) : null);
+      const fetchedProfile = profileResult.data ? (profileResult.data as Profile) : null;
+      const fetchedRole = roleResult.data ? (roleResult.data.role as AppRole) : null;
 
-      // Fetch role
-      const { data: roleData } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .maybeSingle();
-
-      setRole(roleData ? (roleData.role as AppRole) : null);
+      return { profile: fetchedProfile, role: fetchedRole };
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setProfile(null);
-      setRole(null);
+      return { profile: null, role: null };
     }
   };
 
@@ -71,55 +72,74 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    let isMounted = true;
+
+    const initializeAuth = async (currentSession: Session | null) => {
+      if (!isMounted) return;
+
+      if (currentSession?.user) {
+        try {
+          // Run onboarding first
+          await ensureOnboarding();
+          
+          // Then fetch user data
+          const { profile: fetchedProfile, role: fetchedRole } = await fetchUserData(currentSession.user.id);
+          
+          if (isMounted) {
+            setProfile(fetchedProfile);
+            setRole(fetchedRole);
+          }
+        } catch (error) {
+          console.error('Error initializing auth:', error);
+          if (isMounted) {
+            setProfile(null);
+            setRole(null);
+          }
+        }
+      } else {
+        if (isMounted) {
+          setProfile(null);
+          setRole(null);
+        }
+      }
+
+      if (isMounted) {
+        setIsLoading(false);
+        setIsInitialized(true);
+      }
+    };
+
     // Set up auth state listener FIRST
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
+      // Update session and user synchronously
       setSession(session);
       setUser(session?.user ?? null);
 
-      if (session?.user) {
-        // Keep auth callback synchronous to avoid deadlocks
+      // Only set loading true if we're initialized (not during initial load)
+      if (isInitialized) {
         setIsLoading(true);
-        setTimeout(() => {
-          ensureOnboarding()
-            .catch((error) => console.error('Error ensuring onboarding:', error))
-            .finally(() => {
-              fetchUserData(session.user.id)
-                .catch((error) => console.error('Error fetching user data:', error))
-                .finally(() => setIsLoading(false));
-            });
-        }, 0);
-      } else {
-        setProfile(null);
-        setRole(null);
-        setIsLoading(false);
       }
+
+      // Handle auth changes with setTimeout to avoid deadlocks
+      setTimeout(() => {
+        initializeAuth(session);
+      }, 0);
     });
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-
-      if (session?.user) {
-        setIsLoading(true);
-        ensureOnboarding()
-          .catch((error) => console.error('Error ensuring onboarding:', error))
-          .finally(() => {
-            fetchUserData(session.user!.id)
-              .catch((error) => console.error('Error fetching user data:', error))
-              .finally(() => setIsLoading(false));
-          });
-      } else {
-        setProfile(null);
-        setRole(null);
-        setIsLoading(false);
-      }
+      initializeAuth(session);
     });
 
-    return () => subscription.unsubscribe();
-  }, []);
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, [isInitialized]);
 
   const signUp = async (email: string, password: string, fullName: string, phoneNumber?: string) => {
     const redirectUrl = `${window.location.origin}/`;

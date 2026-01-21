@@ -55,9 +55,13 @@ export default function StudentLoginPage() {
     }
   }, [otpTimer]);
 
-  // Redirect if already logged in
+  // Redirect if already logged in - wait for both user AND role to be loaded
   useEffect(() => {
-    if (!authLoading && user && role) {
+    // Don't redirect while auth is still loading
+    if (authLoading) return;
+    
+    // Only redirect if we have both user AND role confirmed
+    if (user && role) {
       if (role === 'admin') {
         navigate('/admin', { replace: true });
       } else if (role === 'student') {
