@@ -100,17 +100,6 @@ Deno.serve(async (req) => {
 
     console.log("Approving enrollment for:", enrollment.student_email);
 
-    // Parse message to get password
-    let password = "Student@123"; // Default password
-    try {
-      const messageData = JSON.parse(enrollment.message || "{}");
-      if (messageData.password) {
-        password = messageData.password;
-      }
-    } catch (e) {
-      console.log("Could not parse message, using default password");
-    }
-
     // Check if user already exists
     const { data: existingProfile } = await adminClient
       .from("profiles")
@@ -120,16 +109,22 @@ Deno.serve(async (req) => {
 
     let userId: string;
     let profileId: string;
+    let isNewUser = false;
 
     if (existingProfile) {
       userId = existingProfile.user_id;
       profileId = existingProfile.id;
       console.log("Existing user found:", userId);
     } else {
-      // Create new user
+      isNewUser = true;
+      
+      // SECURITY FIX: Create user WITHOUT password
+      // Generate a secure random temporary password that user can never use
+      const tempPassword = crypto.randomUUID() + crypto.randomUUID();
+      
       const { data: authData, error: authError } = await adminClient.auth.admin.createUser({
         email: enrollment.student_email,
-        password: password,
+        password: tempPassword, // Random password - user will set via reset link
         email_confirm: true,
         user_metadata: {
           full_name: enrollment.student_name,
@@ -154,13 +149,14 @@ Deno.serve(async (req) => {
       userId = authData.user.id;
       console.log("User created:", userId);
 
-      // Create profile
+      // Create profile with phone number
       const { data: profileData, error: profileError } = await adminClient
         .from("profiles")
         .insert({
           user_id: userId,
           full_name: enrollment.student_name,
           email: enrollment.student_email,
+          phone_number: enrollment.phone_number,
         })
         .select("id")
         .single();
@@ -222,15 +218,97 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Update enrollment request status and user_id
+    // SECURITY FIX: Send password reset link instead of using stored password
+    if (isNewUser) {
+      // Determine the site URL for redirect
+      const origin = req.headers.get("origin") || supabaseUrl.replace(".supabase.co", ".lovable.app");
+      const siteUrl = origin.includes("localhost") ? origin : origin.replace("http://", "https://");
+      
+      const { error: resetError } = await adminClient.auth.admin.generateLink({
+        type: 'recovery',
+        email: enrollment.student_email,
+        options: {
+          redirectTo: `${siteUrl}/student/login`,
+        }
+      });
+
+      if (resetError) {
+        console.error("Password reset link error:", resetError);
+        // Don't fail - user can still request reset manually
+      } else {
+        console.log("Password reset link generated for:", enrollment.student_email);
+        
+        // Send email via Resend if configured
+        const resendApiKey = Deno.env.get("RESEND_API_KEY");
+        if (resendApiKey) {
+          try {
+            // Generate the actual reset link
+            const { data: linkData } = await adminClient.auth.admin.generateLink({
+              type: 'recovery',
+              email: enrollment.student_email,
+              options: {
+                redirectTo: `${siteUrl}/student/login`,
+              }
+            });
+
+            if (linkData?.properties?.action_link) {
+              const emailResponse = await fetch("https://api.resend.com/emails", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${resendApiKey}`,
+                },
+                body: JSON.stringify({
+                  from: "AlphaZero LMS <noreply@alphazero00.lovable.app>",
+                  to: enrollment.student_email,
+                  subject: "🎉 আপনার অ্যাকাউন্ট তৈরি হয়েছে - পাসওয়ার্ড সেট করুন",
+                  html: `
+                    <div style="font-family: 'Hind Siliguri', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                      <h2 style="color: #10b981;">🎓 স্বাগতম, ${enrollment.student_name}!</h2>
+                      <p>আপনার এনরোলমেন্ট রিকোয়েস্ট অ্যাপ্রুভ হয়েছে এবং আপনার অ্যাকাউন্ট তৈরি হয়েছে।</p>
+                      <p>নিচের বাটনে ক্লিক করে আপনার পাসওয়ার্ড সেট করুন:</p>
+                      <div style="text-align: center; margin: 30px 0;">
+                        <a href="${linkData.properties.action_link}" 
+                           style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                                  color: white; 
+                                  padding: 14px 28px; 
+                                  text-decoration: none; 
+                                  border-radius: 8px; 
+                                  display: inline-block;
+                                  font-weight: bold;">
+                          পাসওয়ার্ড সেট করুন
+                        </a>
+                      </div>
+                      <p style="color: #666; font-size: 14px;">এই লিংকটি ২৪ ঘণ্টার জন্য বৈধ।</p>
+                      <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                      <p style="color: #999; font-size: 12px;">AlphaZero Learning Platform</p>
+                    </div>
+                  `,
+                }),
+              });
+
+              if (emailResponse.ok) {
+                console.log("Password setup email sent successfully");
+              } else {
+                const emailError = await emailResponse.text();
+                console.error("Email send error:", emailError);
+              }
+            }
+          } catch (emailError) {
+            console.error("Email sending failed:", emailError);
+            // Don't fail the approval
+          }
+        }
+      }
+    }
+
+    // Update enrollment request status and user_id (no password to hide anymore)
     await adminClient
       .from("enrollment_requests")
       .update({ 
         status: "approved",
         user_id: userId,
-        message: enrollment.message ? 
-          JSON.stringify({ ...JSON.parse(enrollment.message), password: "[HIDDEN]" }) : 
-          enrollment.message
+        message: null // Clear any old message data
       })
       .eq("id", enrollment_id);
 
@@ -239,9 +317,12 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: "Student account created and course assigned successfully!",
+        message: isNewUser 
+          ? "Student account created! Password setup link sent to email." 
+          : "Course assigned to existing student!",
         user_id: userId,
         profile_id: profileId,
+        is_new_user: isNewUser,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

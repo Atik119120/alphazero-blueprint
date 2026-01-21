@@ -466,7 +466,6 @@ const CoursesPage = () => {
     name: "",
     mobile: "",
     email: "",
-    password: "",
     course: "",
     paymentType: "",
     paymentMethod: "",
@@ -502,13 +501,9 @@ const CoursesPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.mobile || !formData.email || !formData.password || !formData.course || !formData.paymentType || !formData.paymentMethod || !formData.transactionId) {
+    // SECURITY: Password removed - user will set via email link after approval
+    if (!formData.name || !formData.mobile || !formData.email || !formData.course || !formData.paymentType || !formData.paymentMethod || !formData.transactionId) {
       toast.error(t.fillAll);
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      toast.error(isBn ? "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে" : "Password must be at least 6 characters");
       return;
     }
 
@@ -516,11 +511,11 @@ const CoursesPage = () => {
     
     try {
       // Use public-enrollment edge function to create student and enrollment request
+      // SECURITY: No password sent - user will set via email link after admin approval
       const { data, error } = await supabase.functions.invoke('public-enrollment', {
         body: {
           full_name: formData.name,
           email: formData.email,
-          password: formData.password,
           phone_number: formData.mobile,
           course_id: formData.course,
           payment_method: formData.paymentMethod,
@@ -543,7 +538,7 @@ const CoursesPage = () => {
       }
       
       toast.success(data?.message || t.success);
-      setFormData({ name: "", mobile: "", email: "", password: "", course: "", paymentType: "", paymentMethod: "", transactionId: "" });
+      setFormData({ name: "", mobile: "", email: "", course: "", paymentType: "", paymentMethod: "", transactionId: "" });
     } catch (error) {
       console.error('Enrollment error:', error);
       toast.error(isBn ? "কিছু সমস্যা হয়েছে" : "Something went wrong");
@@ -858,20 +853,13 @@ const CoursesPage = () => {
                   />
                 </div>
 
-                {/* Password */}
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="flex items-center gap-2">
-                    <Lock className="w-4 h-4 text-primary" />
-                    {isBn ? "পাসওয়ার্ড" : "Password"}
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    placeholder={isBn ? "কমপক্ষে ৬ অক্ষর" : "At least 6 characters"}
-                    value={formData.password}
-                    onChange={(e) => handleInputChange("password", e.target.value)}
-                    className="h-12"
-                  />
+                {/* Info about password */}
+                <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/30">
+                  <p className="text-sm text-blue-600 dark:text-blue-400">
+                    {isBn 
+                      ? "🔐 আপনার অ্যাকাউন্ট অ্যাপ্রুভ হলে ইমেইলে পাসওয়ার্ড সেট করার লিংক পাবেন।" 
+                      : "🔐 You will receive a password setup link via email after approval."}
+                  </p>
                 </div>
 
                 {/* Course Selection */}
