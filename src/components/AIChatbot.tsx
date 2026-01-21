@@ -209,7 +209,7 @@ const AIChatbot = () => {
       <div className="relative">
           {/* Glass button */}
           <div className="relative w-16 h-16 rounded-full bg-background/80 backdrop-blur-xl border border-primary/30 flex items-center justify-center shadow-lg group-hover:border-primary/60 group-hover:scale-105 transition-all duration-300">
-            <img src={logo} alt="Alpha One" className="w-9 h-9 object-contain brightness-0 invert" />
+            <img src={logo} alt="Alpha One" className="w-9 h-9 object-contain dark:brightness-0 dark:invert" />
           </div>
           
           {/* Online indicator */}
@@ -247,7 +247,7 @@ const AIChatbot = () => {
                   {/* Avatar */}
                   <div className="relative">
                     <div className="w-11 h-11 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center p-2">
-                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain brightness-0 invert" />
+                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain dark:brightness-0 dark:invert" />
                     </div>
                     <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-background" />
                   </div>
@@ -286,7 +286,7 @@ const AIChatbot = () => {
                   {/* Welcome Logo */}
                   <div className="relative inline-block mb-4">
                     <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center p-3 mx-auto">
-                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain brightness-0 invert" />
+                      <img src={logo} alt="Alpha One" className="w-full h-full object-contain dark:brightness-0 dark:invert" />
                     </div>
                   </div>
                   
@@ -329,7 +329,7 @@ const AIChatbot = () => {
                     >
                       {msg.role === "assistant" && (
                         <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mr-2 shrink-0 mt-1">
-                          <img src={logo} alt="" className="w-4 h-4 object-contain brightness-0 invert" />
+                          <img src={logo} alt="" className="w-4 h-4 object-contain dark:brightness-0 dark:invert" />
                         </div>
                       )}
                       <div
@@ -376,7 +376,7 @@ const AIChatbot = () => {
                   className="flex justify-start"
                 >
                   <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center mr-2 shrink-0">
-                    <img src={logo} alt="" className="w-4 h-4 object-contain brightness-0 invert" />
+                    <img src={logo} alt="" className="w-4 h-4 object-contain dark:brightness-0 dark:invert" />
                   </div>
                   <div className="bg-secondary/80 px-4 py-3 rounded-2xl rounded-bl-md flex items-center gap-1.5 border border-border/50">
                     <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
