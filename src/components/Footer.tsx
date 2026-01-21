@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowUpRight, Facebook, Instagram, Linkedin, MessageCircle, Clock, Twitter, Youtube, Github, Globe, Mail, Phone, LucideIcon } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Facebook, Instagram, MessageCircle, Clock, Twitter, Youtube, Github, Globe, Mail, Phone, LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -15,7 +15,6 @@ type IconComponent = LucideIcon | typeof DiscordIcon;
 const ICON_MAP: Record<string, IconComponent> = {
   Facebook,
   Instagram,
-  Linkedin,
   MessageCircle,
   Twitter,
   Youtube,
@@ -51,8 +50,7 @@ const Footer = () => {
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: "MessageCircle" },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: "Instagram" },
     { name: "X", url: "https://x.com/AgencyAlphazero", icon: "Twitter" },
-    { name: "Discord", url: "https://discord.gg/uq9akRQpS", icon: "Discord" },
-    { name: "LinkedIn", url: "#", icon: "Linkedin", comingSoon: true },
+    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
   ];
 
   const displaySocialLinks = socialLinks.length > 0 

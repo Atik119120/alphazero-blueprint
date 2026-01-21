@@ -97,7 +97,7 @@ AlphaZero একটি ক্রিয়েটিভ ডিজাইন ও আ
 - Facebook: facebook.com/share/1Zm7yMhPtk
 - Instagram: instagram.com/alphazero.online
 - Twitter/X: x.com/AgencyAlphazero
-- Discord: discord.gg/uq9akRQpS
+- Discord: discord.gg/uerwPXFf5
 
 ## ওয়েবসাইটের পেজ
 - হোম: /

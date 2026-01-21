@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Linkedin, ArrowRight, Loader2 } from "lucide-react";
+import { Facebook, Instagram, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -132,16 +132,6 @@ const TeamPage = () => {
                               className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                             >
                               <Instagram size={14} />
-                            </a>
-                          )}
-                          {member.linkedin_url && (
-                            <a 
-                              href={member.linkedin_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                            >
-                              <Linkedin size={14} />
                             </a>
                           )}
                         </div>

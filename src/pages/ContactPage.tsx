@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter } from "lucide-react";
 
 const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -33,8 +33,7 @@ const ContactPage = () => {
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram, comingSoon: false },
     { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter, comingSoon: false },
-    { name: "Discord", url: "https://discord.gg/uq9akRQpS", icon: DiscordIcon, comingSoon: false },
-    { name: "LinkedIn", url: "#", icon: Linkedin, comingSoon: true },
+    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon, comingSoon: false },
   ];
 
   return (

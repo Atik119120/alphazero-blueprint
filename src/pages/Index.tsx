@@ -19,10 +19,8 @@ import {
   Quote,
   Facebook,
   Instagram,
-  Linkedin,
   MessageCircle,
   Mail,
-  Clock,
   Twitter
 } from "lucide-react";
 
@@ -212,19 +210,13 @@ const Index = () => {
                 <Twitter size={20} className="group-hover:scale-110 transition-transform" />
               </a>
               <a
-                href="https://discord.gg/uq9akRQpS"
+                href="https://discord.gg/uerwPXFf5"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group w-12 h-12 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-[#5865F2] hover:border-[#5865F2] hover:text-white transition-all duration-300"
               >
                 <DiscordIcon size={20} className="group-hover:scale-110 transition-transform" />
               </a>
-              <div className="relative group w-12 h-12 rounded-full bg-secondary/50 border border-border flex items-center justify-center cursor-not-allowed">
-                <Linkedin size={20} className="text-muted-foreground" />
-                <span className="absolute -top-1 -right-1 flex items-center gap-0.5 text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full">
-                  <Clock size={8} />
-                </span>
-              </div>
             </motion.div>
           </div>
 
