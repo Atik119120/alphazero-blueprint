@@ -26,6 +26,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  const isRefreshTokenNotFoundError = (err: unknown) => {
+    const anyErr = err as any;
+    const code = String(anyErr?.code ?? '').toLowerCase();
+    const message = String(anyErr?.message ?? '').toLowerCase();
+    return (
+      code === 'refresh_token_not_found' ||
+      message.includes('refresh token not found') ||
+      message.includes('invalid refresh token')
+    );
+  };
+
   const fetchUserData = async (userId: string): Promise<{ profile: Profile | null; role: AppRole | null }> => {
     try {
       // Fetch profile and role in parallel
@@ -129,7 +140,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      // If browser has an old/invalid refresh token cached, clear it so login pages can load.
+      if (error && isRefreshTokenNotFoundError(error)) {
+        console.warn('Clearing invalid cached session (refresh token not found)');
+        setSession(null);
+        setUser(null);
+
+        // Defer signOut to avoid any potential auth callback deadlocks
+        setTimeout(() => {
+          supabase.auth
+            .signOut()
+            .catch(() => {
+              // ignore
+            })
+            .finally(() => {
+              initializeAuth(null);
+            });
+        }, 0);
+        return;
+      }
+
       setSession(session);
       setUser(session?.user ?? null);
       initializeAuth(session);
