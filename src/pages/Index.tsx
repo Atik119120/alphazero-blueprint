@@ -68,10 +68,10 @@ const Index = () => {
   ];
 
   const stats = [
-    { value: c("stats.projectsValue", "home.stats.projects") || "50+", label: c("stats.projectsLabel", "home.stats.projects") },
-    { value: c("stats.clientsValue", "home.stats.clients") || "30+", label: c("stats.clientsLabel", "home.stats.clients") },
-    { value: c("stats.yearsValue", "home.stats.years") || "3+", label: c("stats.yearsLabel", "home.stats.years") },
-    { value: c("stats.satisfactionValue", "home.stats.satisfaction") || "100%", label: c("stats.satisfactionLabel", "home.stats.satisfaction") },
+    { value: c("stats.projects", "home.stats.projects") || "50+", label: c("stats.projects_label", "home.stats.projects") },
+    { value: c("stats.clients", "home.stats.clients") || "30+", label: c("stats.clients_label", "home.stats.clients") },
+    { value: c("stats.years", "home.stats.years") || "3+", label: c("stats.years_label", "home.stats.years") },
+    { value: c("stats.satisfaction", "home.stats.satisfaction") || "100%", label: c("stats.satisfaction_label", "home.stats.satisfaction") },
   ];
 
   const testimonials = [
