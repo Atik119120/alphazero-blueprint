@@ -32,6 +32,8 @@ import StudentDashboard from "./pages/StudentDashboard";
 import CertificatePage from "./pages/CertificatePage";
 import MyCertificatesPage from "./pages/MyCertificatesPage";
 import VerifyCertificatePage from "./pages/VerifyCertificatePage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 const queryClient = new QueryClient();
 
@@ -46,7 +48,9 @@ const LMS_ROUTES = [
   '/student',
   '/my-certificates',
   '/certificate',
-  '/verify-certificate'
+  '/verify-certificate',
+  '/forgot-password',
+  '/reset-password'
 ];
 
 function AppContent() {
@@ -99,6 +103,8 @@ function AppContent() {
         <Route path="/my-certificates" element={<MyCertificatesPage />} />
         <Route path="/certificate/:certificateId" element={<CertificatePage />} />
         <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
