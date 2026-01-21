@@ -8,7 +8,6 @@ const corsHeaders = {
 interface EnrollmentRequest {
   full_name: string;
   email: string;
-  password: string;
   phone_number: string;
   course_id: string;
   payment_method: string;
@@ -39,7 +38,7 @@ Deno.serve(async (req) => {
 
     // Parse request body
     const body: EnrollmentRequest = await req.json();
-    const { full_name, email, password, phone_number, course_id, payment_method, transaction_id, payment_type } = body;
+    const { full_name, email, phone_number, course_id, payment_method, transaction_id, payment_type } = body;
 
     // Validate input
     if (!full_name || typeof full_name !== "string" || full_name.trim().length < 2) {
@@ -56,12 +55,8 @@ Deno.serve(async (req) => {
       );
     }
 
-    if (!password || typeof password !== "string" || password.length < 6) {
-      return new Response(
-        JSON.stringify({ error: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    // SECURITY: Password is no longer accepted here
+    // User will set password via reset link after approval
 
     if (!phone_number || typeof phone_number !== "string" || phone_number.trim().length < 10) {
       return new Response(
@@ -117,8 +112,8 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Create enrollment request WITHOUT creating student account
-    // Student account will be created when admin approves
+    // Create enrollment request WITHOUT password (SECURE)
+    // Student will set password via reset link after admin approval
     const { data: enrollmentData, error: enrollmentError } = await adminClient
       .from("enrollment_requests")
       .insert({
@@ -131,7 +126,7 @@ Deno.serve(async (req) => {
         transaction_id: transaction_id.trim(),
         message: JSON.stringify({
           payment_type: payment_type,
-          password: password, // Store encrypted password for account creation on approval
+          // NO PASSWORD STORED - user will set via reset link
         }),
         status: "pending",
       })
@@ -240,7 +235,7 @@ Deno.serve(async (req) => {
     return new Response(
       JSON.stringify({
         success: true,
-        message: "আপনার এনরোলমেন্ট রিকোয়েস্ট সফলভাবে জমা হয়েছে! Payment verify করে আমরা শীঘ্রই আপনার অ্যাকাউন্ট তৈরি করব।",
+        message: "আপনার এনরোলমেন্ট রিকোয়েস্ট সফলভাবে জমা হয়েছে! Payment verify করে আপনার ইমেইলে পাসওয়ার্ড সেট করার লিংক পাঠানো হবে।",
         enrollment_id: enrollmentData.id,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
