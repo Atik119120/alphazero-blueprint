@@ -294,16 +294,7 @@ export default function StudentDashboard() {
     { id: 'profile', icon: User, label: language === 'bn' ? 'প্রোফাইল' : 'Profile' },
   ];
 
-  if (authLoading || isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
-          <p className="text-xs text-muted-foreground">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  // No loading screen - dashboard loads directly
 
   return (
     <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
