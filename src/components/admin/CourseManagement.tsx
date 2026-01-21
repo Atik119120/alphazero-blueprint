@@ -42,7 +42,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [showCourseDialog, setShowCourseDialog] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [courseTitle, setCourseTitle] = useState('');
+  const [courseTitleEn, setCourseTitleEn] = useState('');
   const [courseDescription, setCourseDescription] = useState('');
+  const [courseDescriptionEn, setCourseDescriptionEn] = useState('');
   const [courseThumbnail, setCourseThumbnail] = useState('');
   const [coursePrice, setCoursePrice] = useState('');
 
@@ -112,13 +114,17 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
     if (course) {
       setEditingCourse(course);
       setCourseTitle(course.title);
+      setCourseTitleEn(course.title_en || '');
       setCourseDescription(course.description || '');
+      setCourseDescriptionEn(course.description_en || '');
       setCourseThumbnail(course.thumbnail_url || '');
       setCoursePrice(course.price ? String(course.price) : '');
     } else {
       setEditingCourse(null);
       setCourseTitle('');
+      setCourseTitleEn('');
       setCourseDescription('');
+      setCourseDescriptionEn('');
       setCourseThumbnail('');
       setCoursePrice('');
     }
@@ -136,7 +142,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         .from('courses')
         .update({
           title: courseTitle,
+          title_en: courseTitleEn || null,
           description: courseDescription || null,
+          description_en: courseDescriptionEn || null,
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
         })
@@ -152,7 +160,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         .from('courses')
         .insert({
           title: courseTitle,
+          title_en: courseTitleEn || null,
           description: courseDescription || null,
+          description_en: courseDescriptionEn || null,
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
         });
@@ -918,24 +928,49 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           <DialogHeader>
             <DialogTitle>{editingCourse ? 'কোর্স এডিট' : 'নতুন কোর্স'}</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4 py-4">
+          <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+            {/* Bengali Title */}
             <div className="space-y-2">
-              <Label>কোর্সের নাম</Label>
+              <Label>কোর্সের নাম (বাংলা) *</Label>
               <Input
                 value={courseTitle}
                 onChange={(e) => setCourseTitle(e.target.value)}
-                placeholder="কোর্সের নাম লিখুন"
+                placeholder="বাংলায় কোর্সের নাম লিখুন"
               />
             </div>
+            
+            {/* English Title */}
             <div className="space-y-2">
-              <Label>বিবরণ</Label>
+              <Label>Course Title (English)</Label>
+              <Input
+                value={courseTitleEn}
+                onChange={(e) => setCourseTitleEn(e.target.value)}
+                placeholder="Enter course title in English"
+              />
+            </div>
+            
+            {/* Bengali Description */}
+            <div className="space-y-2">
+              <Label>বিবরণ (বাংলা)</Label>
               <Textarea
                 value={courseDescription}
                 onChange={(e) => setCourseDescription(e.target.value)}
-                placeholder="কোর্সের বিস্তারিত বিবরণ লিখুন..."
-                rows={4}
+                placeholder="বাংলায় কোর্সের বিবরণ লিখুন..."
+                rows={3}
               />
             </div>
+            
+            {/* English Description */}
+            <div className="space-y-2">
+              <Label>Description (English)</Label>
+              <Textarea
+                value={courseDescriptionEn}
+                onChange={(e) => setCourseDescriptionEn(e.target.value)}
+                placeholder="Enter course description in English..."
+                rows={3}
+              />
+            </div>
+            
             <div className="space-y-2">
               <Label>থাম্বনেইল URL</Label>
               <Input
