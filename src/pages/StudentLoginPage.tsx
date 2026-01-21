@@ -404,6 +404,15 @@ export default function StudentLoginPage() {
                       </div>
                     </div>
 
+                    <div className="flex justify-end">
+                      <Link 
+                        to="/forgot-password" 
+                        className="text-sm text-primary hover:underline"
+                      >
+                        পাসওয়ার্ড ভুলে গেছেন?
+                      </Link>
+                    </div>
+
                     <Button type="submit" className="w-full h-11" disabled={isLoading}>
                       {isLoading ? t('login.loggingIn') : t('login.login')}
                     </Button>
