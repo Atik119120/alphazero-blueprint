@@ -31,6 +31,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import MyCertificatesPage from "./pages/MyCertificatesPage";
+import CertificatePage from "./pages/CertificatePage";
 import VerifyCertificatePage from "./pages/VerifyCertificatePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
