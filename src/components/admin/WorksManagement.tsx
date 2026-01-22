@@ -142,9 +142,29 @@ export const WorksManagement = () => {
 
   const getCategoryLabel = (category: string) => {
     const labels: Record<string, string> = {
+      // Web
       web: "ওয়েব ডেভেলপমেন্ট",
+      web_portfolio: "পোর্টফোলিও ওয়েবসাইট",
+      web_ecommerce: "ই-কমার্স ওয়েবসাইট",
+      web_education: "এডুকেশন ওয়েবসাইট",
+      web_agency: "এজেন্সি / অর্গানাইজেশন",
+      web_general: "অন্যান্য ওয়েবসাইট",
+      // Graphics
       graphics: "গ্রাফিক্স ডিজাইন",
+      design: "গ্রাফিক্স ডিজাইন",
+      graphics_social: "সোশ্যাল মিডিয়া ডিজাইন",
+      graphics_logo: "লোগো ডিজাইন",
+      graphics_vector: "ভেক্টর ডিজাইন",
+      graphics_branding: "প্রফেশনাল ব্র্যান্ডিং",
+      graphics_general: "অন্যান্য গ্রাফিক্স",
+      // Video
       video: "ভিডিও এডিটিং",
+      video_short: "শর্ট ভিডিও",
+      video_reels: "রিলস",
+      video_funny: "ফানি কনটেন্ট",
+      video_square: "স্কয়ার ভিডিও",
+      video_general: "অন্যান্য ভিডিও",
+      // Other
       other: "অন্যান্য",
     };
     return labels[category] || category;
@@ -201,10 +221,33 @@ export const WorksManagement = () => {
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="web">ওয়েব ডেভেলপমেন্ট</SelectItem>
-                    <SelectItem value="graphics">গ্রাফিক্স ডিজাইন</SelectItem>
-                    <SelectItem value="video">ভিডিও এডিটিং</SelectItem>
+                  <SelectContent className="max-h-80 bg-popover z-50">
+                    {/* Web Development */}
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50">ওয়েব ডেভেলপমেন্ট</div>
+                    <SelectItem value="web_portfolio">পোর্টফোলিও ওয়েবসাইট</SelectItem>
+                    <SelectItem value="web_ecommerce">ই-কমার্স ওয়েবসাইট</SelectItem>
+                    <SelectItem value="web_education">এডুকেশন ওয়েবসাইট</SelectItem>
+                    <SelectItem value="web_agency">এজেন্সি / অর্গানাইজেশন</SelectItem>
+                    <SelectItem value="web_general">অন্যান্য ওয়েবসাইট</SelectItem>
+                    
+                    {/* Graphics Design */}
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">গ্রাফিক্স ডিজাইন</div>
+                    <SelectItem value="graphics_social">সোশ্যাল মিডিয়া ডিজাইন</SelectItem>
+                    <SelectItem value="graphics_logo">লোগো ডিজাইন</SelectItem>
+                    <SelectItem value="graphics_vector">ভেক্টর ডিজাইন</SelectItem>
+                    <SelectItem value="graphics_branding">প্রফেশনাল ব্র্যান্ডিং</SelectItem>
+                    <SelectItem value="graphics_general">অন্যান্য গ্রাফিক্স</SelectItem>
+                    
+                    {/* Video Editing */}
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">ভিডিও এডিটিং</div>
+                    <SelectItem value="video_short">শর্ট ভিডিও</SelectItem>
+                    <SelectItem value="video_reels">রিলস</SelectItem>
+                    <SelectItem value="video_funny">ফানি কনটেন্ট</SelectItem>
+                    <SelectItem value="video_square">স্কয়ার ভিডিও</SelectItem>
+                    <SelectItem value="video_general">অন্যান্য ভিডিও</SelectItem>
+                    
+                    {/* Other */}
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">অন্যান্য</div>
                     <SelectItem value="other">অন্যান্য</SelectItem>
                   </SelectContent>
                 </Select>
