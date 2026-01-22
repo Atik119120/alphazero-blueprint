@@ -47,6 +47,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [courseDescriptionEn, setCourseDescriptionEn] = useState('');
   const [courseThumbnail, setCourseThumbnail] = useState('');
   const [coursePrice, setCoursePrice] = useState('');
+  const [coursePublished, setCoursePublished] = useState(true);
 
   // Video form state
   const [showVideoDialog, setShowVideoDialog] = useState(false);
@@ -119,6 +120,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseDescriptionEn(course.description_en || '');
       setCourseThumbnail(course.thumbnail_url || '');
       setCoursePrice(course.price ? String(course.price) : '');
+      setCoursePublished(course.is_published);
     } else {
       setEditingCourse(null);
       setCourseTitle('');
@@ -127,6 +129,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseDescriptionEn('');
       setCourseThumbnail('');
       setCoursePrice('');
+      setCoursePublished(true); // Default to published for new courses
     }
     setShowCourseDialog(true);
   };
@@ -147,6 +150,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           description_en: courseDescriptionEn || null,
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
+          is_published: coursePublished,
         })
         .eq('id', editingCourse.id);
 
@@ -165,6 +169,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           description_en: courseDescriptionEn || null,
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
+          is_published: coursePublished,
         });
 
       if (error) {
@@ -992,6 +997,20 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 />
               </div>
               <p className="text-xs text-muted-foreground">ফ্রি কোর্সের জন্য ০ রাখুন</p>
+            </div>
+            
+            {/* Publish Toggle */}
+            <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 border">
+              <div>
+                <Label className="text-base font-medium">পাবলিশ করুন</Label>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {coursePublished ? 'কোর্সটি ওয়েবসাইটে দেখাবে' : 'কোর্সটি ড্রাফট হিসেবে থাকবে'}
+                </p>
+              </div>
+              <Switch
+                checked={coursePublished}
+                onCheckedChange={setCoursePublished}
+              />
             </div>
           </div>
           <DialogFooter>
