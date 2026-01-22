@@ -56,9 +56,10 @@ export function useWorks() {
 export function useWorksByCategory() {
   const { data: works, isLoading, error } = useWorks();
 
-  const webProjects = works?.filter(w => w.category === 'web') || [];
-  const designProjects = works?.filter(w => w.category === 'design') || [];
-  const videoProjects = works?.filter(w => w.category === 'video') || [];
+  const webProjects = works?.filter(w => w.category === 'web' || w.category.startsWith('web_')) || [];
+  // Backward compatible: old data used `design`, admin UI also used `graphics`
+  const designProjects = works?.filter(w => w.category === 'design' || w.category === 'graphics' || w.category.startsWith('graphics_')) || [];
+  const videoProjects = works?.filter(w => w.category === 'video' || w.category.startsWith('video_')) || [];
 
   return {
     webProjects,
