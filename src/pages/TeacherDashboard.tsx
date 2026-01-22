@@ -33,6 +33,8 @@ import TeacherEarningsTab from '@/components/teacher/TeacherEarningsTab';
 import TeacherPaidWorksTab from '@/components/teacher/TeacherPaidWorksTab';
 import TeacherTicketsTab from '@/components/teacher/TeacherTicketsTab';
 import TeacherProfileTab from '@/components/teacher/TeacherProfileTab';
+import TeacherNoticesTab from '@/components/teacher/TeacherNoticesTab';
+import TeacherChatTab from '@/components/teacher/TeacherChatTab';
 
 const translations = {
   en: {
@@ -143,6 +145,8 @@ export default function TeacherDashboard() {
     { id: 'dashboard', icon: LayoutDashboard, label: t.dashboard },
     { id: 'courses', icon: BookOpen, label: t.courses },
     { id: 'students', icon: Users, label: t.students },
+    { id: 'notices', icon: MessageSquare, label: language === 'bn' ? 'নোটিশ' : 'Notices' },
+    { id: 'chat', icon: MessageSquare, label: language === 'bn' ? 'চ্যাট' : 'Chat' },
     { id: 'earnings', icon: DollarSign, label: t.earnings },
     { id: 'paidWorks', icon: Briefcase, label: t.paidWorks },
     { id: 'support', icon: MessageSquare, label: t.support },
@@ -423,6 +427,20 @@ export default function TeacherDashboard() {
             <TeacherStudentsTab 
               students={students} 
               isLoading={studentsLoading}
+              language={language}
+            />
+          )}
+
+          {activeTab === 'notices' && (
+            <TeacherNoticesTab 
+              courses={courses}
+              language={language}
+            />
+          )}
+
+          {activeTab === 'chat' && (
+            <TeacherChatTab 
+              courses={courses}
               language={language}
             />
           )}
