@@ -318,13 +318,21 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
       
       if (error) throw error;
       
-      // Add teacher role
+      // Add teacher role and remove student role
       const teacher = teachers.find(t => t.id === teacherId);
       if (teacher) {
-        await supabase.from('user_roles').insert({
+        // First remove student role
+        await supabase
+          .from('user_roles')
+          .delete()
+          .eq('user_id', teacher.user_id)
+          .eq('role', 'student');
+        
+        // Then add teacher role
+        await supabase.from('user_roles').upsert({
           user_id: teacher.user_id,
           role: 'teacher'
-        });
+        }, { onConflict: 'user_id,role' });
       }
       
       toast.success(language === 'bn' ? 'টিচার অনুমোদিত' : 'Teacher approved');
@@ -343,6 +351,23 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
         .eq('id', teacherId);
       
       if (error) throw error;
+      
+      // Update role based on block status
+      const teacher = teachers.find(t => t.id === teacherId);
+      if (teacher && block) {
+        // Remove teacher role, add student role
+        await supabase
+          .from('user_roles')
+          .delete()
+          .eq('user_id', teacher.user_id)
+          .eq('role', 'teacher');
+        
+        await supabase.from('user_roles').upsert({
+          user_id: teacher.user_id,
+          role: 'student'
+        }, { onConflict: 'user_id,role' });
+      }
+      
       toast.success(block 
         ? (language === 'bn' ? 'টিচার ব্লক করা হয়েছে' : 'Teacher blocked')
         : (language === 'bn' ? 'টিচার সক্রিয় করা হয়েছে' : 'Teacher activated')
