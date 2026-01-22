@@ -86,42 +86,59 @@ export type Database = {
       }
       courses: {
         Row: {
+          course_type: string | null
           created_at: string | null
           description: string | null
           description_en: string | null
           id: string
+          is_approved: boolean | null
           is_published: boolean | null
           price: number | null
+          teacher_id: string | null
           thumbnail_url: string | null
           title: string
           title_en: string | null
           updated_at: string | null
         }
         Insert: {
+          course_type?: string | null
           created_at?: string | null
           description?: string | null
           description_en?: string | null
           id?: string
+          is_approved?: boolean | null
           is_published?: boolean | null
           price?: number | null
+          teacher_id?: string | null
           thumbnail_url?: string | null
           title: string
           title_en?: string | null
           updated_at?: string | null
         }
         Update: {
+          course_type?: string | null
           created_at?: string | null
           description?: string | null
           description_en?: string | null
           id?: string
+          is_approved?: boolean | null
           is_published?: boolean | null
           price?: number | null
+          teacher_id?: string | null
           thumbnail_url?: string | null
           title?: string
           title_en?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "courses_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       enrollment_requests: {
         Row: {
@@ -269,6 +286,69 @@ export type Database = {
         }
         Relationships: []
       }
+      paid_works: {
+        Row: {
+          assigned_by: string | null
+          assigned_to: string | null
+          category: string
+          client_name: string | null
+          completed_at: string | null
+          created_at: string | null
+          deadline: string | null
+          description: string | null
+          id: string
+          status: string | null
+          title: string
+          total_amount: number
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_by?: string | null
+          assigned_to?: string | null
+          category: string
+          client_name?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          status?: string | null
+          title: string
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_by?: string | null
+          assigned_to?: string | null
+          category?: string
+          client_name?: string | null
+          completed_at?: string | null
+          created_at?: string | null
+          deadline?: string | null
+          description?: string | null
+          id?: string
+          status?: string | null
+          title?: string
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "paid_works_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "paid_works_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pass_code_courses: {
         Row: {
           assigned_at: string | null
@@ -346,41 +426,140 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          bio: string | null
           created_at: string | null
           email: string
           full_name: string
           id: string
           is_active: boolean | null
+          is_teacher: boolean | null
+          linked_team_member_id: string | null
           pass_code: string | null
           phone_number: string | null
+          skills: string[] | null
+          teacher_approved: boolean | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string | null
           email: string
           full_name: string
           id?: string
           is_active?: boolean | null
+          is_teacher?: boolean | null
+          linked_team_member_id?: string | null
           pass_code?: string | null
           phone_number?: string | null
+          skills?: string[] | null
+          teacher_approved?: boolean | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           avatar_url?: string | null
+          bio?: string | null
           created_at?: string | null
           email?: string
           full_name?: string
           id?: string
           is_active?: boolean | null
+          is_teacher?: boolean | null
+          linked_team_member_id?: string | null
           pass_code?: string | null
           phone_number?: string | null
+          skills?: string[] | null
+          teacher_approved?: boolean | null
           updated_at?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_linked_team_member_id_fkey"
+            columns: ["linked_team_member_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      revenue_records: {
+        Row: {
+          agency_percentage: number
+          agency_share: number
+          course_id: string | null
+          created_at: string | null
+          id: string
+          notes: string | null
+          paid_work_id: string | null
+          revenue_type: string
+          status: string | null
+          student_id: string | null
+          teacher_id: string
+          teacher_percentage: number
+          teacher_share: number
+          total_amount: number
+          updated_at: string | null
+        }
+        Insert: {
+          agency_percentage?: number
+          agency_share?: number
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          paid_work_id?: string | null
+          revenue_type: string
+          status?: string | null
+          student_id?: string | null
+          teacher_id: string
+          teacher_percentage?: number
+          teacher_share?: number
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Update: {
+          agency_percentage?: number
+          agency_share?: number
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          notes?: string | null
+          paid_work_id?: string | null
+          revenue_type?: string
+          status?: string | null
+          student_id?: string | null
+          teacher_id?: string
+          teacher_percentage?: number
+          teacher_share?: number
+          total_amount?: number
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "revenue_records_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "revenue_records_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "revenue_records_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       services: {
         Row: {
@@ -444,6 +623,67 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      support_tickets: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          id: string
+          priority: string | null
+          status: string | null
+          student_id: string
+          subject: string
+          teacher_id: string | null
+          ticket_number: string
+          updated_at: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          priority?: string | null
+          status?: string | null
+          student_id: string
+          subject: string
+          teacher_id?: string | null
+          ticket_number: string
+          updated_at?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          priority?: string | null
+          status?: string | null
+          student_id?: string
+          subject?: string
+          teacher_id?: string | null
+          ticket_number?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_tickets_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       team_members: {
         Row: {
@@ -510,6 +750,48 @@ export type Database = {
           whatsapp_url?: string | null
         }
         Relationships: []
+      }
+      ticket_messages: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          message: string
+          sender_id: string
+          ticket_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          sender_id: string
+          ticket_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          sender_id?: string
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ticket_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ticket_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -652,6 +934,53 @@ export type Database = {
           },
         ]
       }
+      withdrawal_requests: {
+        Row: {
+          admin_notes: string | null
+          amount: number
+          created_at: string | null
+          id: string
+          payment_details: Json | null
+          payment_method: string
+          processed_at: string | null
+          status: string | null
+          teacher_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          admin_notes?: string | null
+          amount: number
+          created_at?: string | null
+          id?: string
+          payment_details?: Json | null
+          payment_method: string
+          processed_at?: string | null
+          status?: string | null
+          teacher_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          admin_notes?: string | null
+          amount?: number
+          created_at?: string | null
+          id?: string
+          payment_details?: Json | null
+          payment_method?: string
+          processed_at?: string | null
+          status?: string | null
+          teacher_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "withdrawal_requests_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       works: {
         Row: {
           category: string
@@ -699,8 +1028,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_revenue_split: {
+        Args: { _revenue_type: string; _total_amount: number }
+        Returns: {
+          agency_pct: number
+          agency_share: number
+          teacher_pct: number
+          teacher_share: number
+        }[]
+      }
       generate_certificate_id: { Args: never; Returns: string }
       generate_pass_code: { Args: never; Returns: string }
+      generate_ticket_number: { Args: never; Returns: string }
       get_user_pass_code: { Args: { _user_id: string }; Returns: string }
       has_role: {
         Args: {
@@ -709,6 +1048,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_teacher: { Args: { _user_id: string }; Returns: boolean }
       make_admin: { Args: { _email: string }; Returns: boolean }
       user_has_course_access: {
         Args: { _course_id: string; _user_id: string }
