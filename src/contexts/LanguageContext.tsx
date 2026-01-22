@@ -417,6 +417,23 @@ const translations: Record<Language, Record<string, string>> = {
     "work.whatsappUs": "WhatsApp Us",
     "work.noWorks": "No projects found",
 
+    // Work Page Categories (Subsections)
+    "work.category.web_portfolio": "Portfolio Websites",
+    "work.category.web_ecommerce": "E-commerce Websites",
+    "work.category.web_education": "Education Websites",
+    "work.category.web_agency": "Agency / Organization Websites",
+    "work.category.web_general": "Other Websites",
+    "work.category.graphics_social": "Social Media Design",
+    "work.category.graphics_logo": "Logo Design",
+    "work.category.graphics_vector": "Vector Design",
+    "work.category.graphics_branding": "Professional Branding",
+    "work.category.graphics_general": "Other Graphics",
+    "work.category.video_short": "Short Videos",
+    "work.category.video_reels": "Reels",
+    "work.category.video_funny": "Funny Content",
+    "work.category.video_square": "Square Videos",
+    "work.category.video_general": "Other Videos",
+
     // Services Page CTA
     "services.cta.btn1": "Get a Free Consultation",
     "services.cta.btn2": "WhatsApp Us",
@@ -839,6 +856,23 @@ const translations: Record<Language, Record<string, string>> = {
     "work.startProject": "প্রজেক্ট শুরু করুন",
     "work.whatsappUs": "হোয়াটসঅ্যাপ করুন",
     "work.noWorks": "কোনো প্রজেক্ট পাওয়া যায়নি",
+
+    // Work Page Categories (Subsections)
+    "work.category.web_portfolio": "পোর্টফোলিও ওয়েবসাইট",
+    "work.category.web_ecommerce": "ই-কমার্স ওয়েবসাইট",
+    "work.category.web_education": "এডুকেশন ওয়েবসাইট",
+    "work.category.web_agency": "এজেন্সি / অর্গানাইজেশন ওয়েবসাইট",
+    "work.category.web_general": "অন্যান্য ওয়েবসাইট",
+    "work.category.graphics_social": "সোশ্যাল মিডিয়া ডিজাইন",
+    "work.category.graphics_logo": "লোগো ডিজাইন",
+    "work.category.graphics_vector": "ভেক্টর ডিজাইন",
+    "work.category.graphics_branding": "প্রফেশনাল ব্র্যান্ডিং",
+    "work.category.graphics_general": "অন্যান্য গ্রাফিক্স",
+    "work.category.video_short": "শর্ট ভিডিও",
+    "work.category.video_reels": "রিলস",
+    "work.category.video_funny": "ফানি কনটেন্ট",
+    "work.category.video_square": "স্কয়ার ভিডিও",
+    "work.category.video_general": "অন্যান্য ভিডিও",
 
     // Services Page CTA
     "services.cta.btn1": "বিনামূল্যে পরামর্শ নিন",
