@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Facebook, Instagram, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TeamPage = () => {
   const { t } = useLanguage();
@@ -78,11 +80,16 @@ const TeamPage = () => {
                       </div>
                       
                       {/* Image Container */}
-                      <div className="relative flex-shrink-0 w-28 h-28 rounded-xl overflow-hidden">
-                        <motion.img
+                      <div className="relative flex-shrink-0 w-28 h-28 rounded-xl overflow-hidden bg-secondary">
+                        <img
                           src={member.image_url || '/placeholder.svg'}
                           alt={member.name}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
                         />
                         {/* Gradient Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent opacity-40" />
