@@ -49,7 +49,8 @@ import {
   Wrench,
   Settings,
   FileText,
-  Link2
+  Link2,
+  GraduationCap
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -59,6 +60,7 @@ import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import FooterManagement from '@/components/admin/FooterManagement';
+import TeacherManagement from '@/components/admin/TeacherManagement';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
 // Chart colors
@@ -674,6 +676,7 @@ export default function AdminDashboard() {
     { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students', category: 'lms' },
     { id: 'passcodes', icon: Key, label: 'Pass Code', category: 'lms' },
     { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', category: 'lms', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
+    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', category: 'lms' },
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
@@ -1124,6 +1127,11 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Teachers Tab */}
+          <TabsContent value="teachers">
+            <TeacherManagement language={language} />
           </TabsContent>
 
           {/* Requests Tab */}
