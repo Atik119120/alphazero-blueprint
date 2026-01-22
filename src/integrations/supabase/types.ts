@@ -449,7 +449,9 @@ export type Database = {
         Row: {
           bio: string | null
           created_at: string
+          email: string | null
           facebook_url: string | null
+          fiverr_url: string | null
           id: string
           image_url: string | null
           instagram_url: string | null
@@ -457,13 +459,20 @@ export type Database = {
           linkedin_url: string | null
           name: string
           order_index: number | null
+          portfolio_url: string | null
           role: string
+          threads_url: string | null
+          twitter_url: string | null
           updated_at: string
+          upwork_url: string | null
+          whatsapp_url: string | null
         }
         Insert: {
           bio?: string | null
           created_at?: string
+          email?: string | null
           facebook_url?: string | null
+          fiverr_url?: string | null
           id?: string
           image_url?: string | null
           instagram_url?: string | null
@@ -471,13 +480,20 @@ export type Database = {
           linkedin_url?: string | null
           name: string
           order_index?: number | null
+          portfolio_url?: string | null
           role: string
+          threads_url?: string | null
+          twitter_url?: string | null
           updated_at?: string
+          upwork_url?: string | null
+          whatsapp_url?: string | null
         }
         Update: {
           bio?: string | null
           created_at?: string
+          email?: string | null
           facebook_url?: string | null
+          fiverr_url?: string | null
           id?: string
           image_url?: string | null
           instagram_url?: string | null
@@ -485,8 +501,13 @@ export type Database = {
           linkedin_url?: string | null
           name?: string
           order_index?: number | null
+          portfolio_url?: string | null
           role?: string
+          threads_url?: string | null
+          twitter_url?: string | null
           updated_at?: string
+          upwork_url?: string | null
+          whatsapp_url?: string | null
         }
         Relationships: []
       }

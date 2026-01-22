@@ -11,6 +11,13 @@ export interface TeamMember {
   facebook_url: string | null;
   instagram_url: string | null;
   linkedin_url: string | null;
+  twitter_url: string | null;
+  whatsapp_url: string | null;
+  email: string | null;
+  fiverr_url: string | null;
+  upwork_url: string | null;
+  portfolio_url: string | null;
+  threads_url: string | null;
   is_active: boolean;
   order_index: number;
 }
