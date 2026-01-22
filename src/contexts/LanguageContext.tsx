@@ -5,6 +5,7 @@ type Language = "en" | "bn";
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
+  toggleLanguage: () => void;
   t: (key: string) => string;
 }
 
@@ -904,6 +905,10 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     localStorage.setItem("language", lang);
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'bn' : 'en');
+  };
+
   const t = (key: string): string => {
     return translations[language][key] || key;
   };
@@ -919,7 +924,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [language]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
