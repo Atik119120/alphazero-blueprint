@@ -9,9 +9,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { GraduationCap, ArrowLeft, Mail, Lock, User, Sun, Moon, Globe, ShieldCheck, Loader2, RefreshCw, Phone } from 'lucide-react';
+import { GraduationCap, ArrowLeft, Mail, Lock, User, Sun, Moon, Globe, ShieldCheck, Loader2, RefreshCw, Phone, Users } from 'lucide-react';
 import { z } from 'zod';
+import { useTeamMembers } from '@/hooks/useTeamMembers';
 
 export default function StudentLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,13 +24,25 @@ export default function StudentLoginPage() {
   const [signupPassword, setSignupPassword] = useState('');
   const [signupPhone, setSignupPhone] = useState('');
   
+  // Teacher Signup States
+  const [teacherName, setTeacherName] = useState('');
+  const [teacherEmail, setTeacherEmail] = useState('');
+  const [teacherPassword, setTeacherPassword] = useState('');
+  const [teacherPhone, setTeacherPhone] = useState('');
+  const [selectedTeamMember, setSelectedTeamMember] = useState('');
+  const [teacherSignupMode, setTeacherSignupMode] = useState<'select' | 'otp'>('select');
+  
   // OTP States
   const [showOtpVerification, setShowOtpVerification] = useState(false);
+  const [isTeacherOtp, setIsTeacherOtp] = useState(false);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const [generatedOtp, setGeneratedOtp] = useState('');
   const [otpTimer, setOtpTimer] = useState(0);
   const [sendingOtp, setSendingOtp] = useState(false);
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  
+  // Team members for teacher signup
+  const { data: teamMembers, isLoading: teamMembersLoading } = useTeamMembers();
   
   const { user, role, isLoading: authLoading, signIn, signUp } = useAuth();
   const { language, setLanguage, t } = useLanguage();
@@ -45,6 +59,14 @@ export default function StudentLoginPage() {
     email: z.string().email(t('login.invalidEmail')),
     password: z.string().min(6, t('login.passwordMin')),
     phone: z.string().min(11, 'সঠিক মোবাইল নম্বর দিন').max(14, 'সঠিক মোবাইল নম্বর দিন'),
+  });
+
+  const teacherSignupSchema = z.object({
+    fullName: z.string().min(2, t('login.nameMin')),
+    email: z.string().email(t('login.invalidEmail')),
+    password: z.string().min(6, t('login.passwordMin')),
+    phone: z.string().min(11, 'সঠিক মোবাইল নম্বর দিন').max(14, 'সঠিক মোবাইল নম্বর দিন'),
+    teamMemberId: z.string().min(1, 'Team member সিলেক্ট করুন'),
   });
 
   // OTP timer countdown
@@ -64,6 +86,8 @@ export default function StudentLoginPage() {
     if (user && role) {
       if (role === 'admin') {
         navigate('/admin', { replace: true });
+      } else if (role === 'teacher') {
+        navigate('/teacher', { replace: true });
       } else if (role === 'student') {
         navigate('/student', { replace: true });
       }
@@ -95,22 +119,39 @@ export default function StudentLoginPage() {
     toast.success(t('login.loginSuccess'));
   };
 
-  const sendOtp = async () => {
-    const validation = signupSchema.safeParse({ 
-      fullName: signupName, 
-      email: signupEmail, 
-      password: signupPassword,
-      phone: signupPhone
-    });
-    if (!validation.success) {
-      toast.error(validation.error.errors[0].message);
-      return;
+  const sendOtp = async (forTeacher = false) => {
+    if (forTeacher) {
+      const validation = teacherSignupSchema.safeParse({ 
+        fullName: teacherName, 
+        email: teacherEmail, 
+        password: teacherPassword,
+        phone: teacherPhone,
+        teamMemberId: selectedTeamMember
+      });
+      if (!validation.success) {
+        toast.error(validation.error.errors[0].message);
+        return;
+      }
+    } else {
+      const validation = signupSchema.safeParse({ 
+        fullName: signupName, 
+        email: signupEmail, 
+        password: signupPassword,
+        phone: signupPhone
+      });
+      if (!validation.success) {
+        toast.error(validation.error.errors[0].message);
+        return;
+      }
     }
+
+    const emailToUse = forTeacher ? teacherEmail : signupEmail;
+    const nameToUse = forTeacher ? teacherName : signupName;
 
     setSendingOtp(true);
     try {
       const { data, error } = await supabase.functions.invoke('send-otp', {
-        body: { email: signupEmail, name: signupName }
+        body: { email: emailToUse, name: nameToUse }
       });
 
       if (error) throw error;
@@ -118,6 +159,7 @@ export default function StudentLoginPage() {
       if (data?.otp) {
         setGeneratedOtp(data.otp);
         setShowOtpVerification(true);
+        setIsTeacherOtp(forTeacher);
         setOtpTimer(120); // 2 minutes
         setOtp(['', '', '', '', '', '']);
         toast.success('✉️ ভেরিফিকেশন কোড আপনার ইমেইলে পাঠানো হয়েছে');
@@ -191,22 +233,84 @@ export default function StudentLoginPage() {
       return;
     }
 
-    // OTP verified, proceed with signup
     setIsLoading(true);
-    const { error } = await signUp(signupEmail, signupPassword, signupName, signupPhone);
-    setIsLoading(false);
 
-    if (error) {
-      if (error.message.includes('User already registered')) {
-        toast.error(t('login.userExists'));
-      } else {
-        toast.error(error.message);
+    if (isTeacherOtp) {
+      // Teacher signup flow
+      try {
+        const { data: authData, error: authError } = await supabase.auth.signUp({
+          email: teacherEmail,
+          password: teacherPassword,
+          options: {
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              full_name: teacherName,
+            },
+          },
+        });
+
+        if (authError) throw authError;
+
+        if (authData.user) {
+          // Create profile with is_teacher = true and linked_team_member_id
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+              user_id: authData.user.id,
+              full_name: teacherName,
+              email: teacherEmail,
+              phone_number: teacherPhone,
+              is_teacher: true,
+              teacher_approved: false,
+              linked_team_member_id: selectedTeamMember,
+            });
+
+          if (profileError) {
+            console.error('Profile creation error:', profileError);
+          }
+
+          // Assign student role initially (will be upgraded to teacher after approval)
+          const { error: roleError } = await supabase
+            .from('user_roles')
+            .insert({
+              user_id: authData.user.id,
+              role: 'student',
+            });
+
+          if (roleError) {
+            console.error('Role assignment error:', roleError);
+          }
+
+          setShowOtpVerification(false);
+          setIsTeacherOtp(false);
+          toast.success('🎓 Teacher আবেদন সফল! Admin approval এর পর আপনি Teacher হিসেবে login করতে পারবেন।');
+        }
+      } catch (error: any) {
+        if (error.message.includes('User already registered')) {
+          toast.error(t('login.userExists'));
+        } else {
+          toast.error(error.message);
+        }
       }
-      return;
+    } else {
+      // Regular student signup
+      const { error } = await signUp(signupEmail, signupPassword, signupName, signupPhone);
+
+      if (error) {
+        if (error.message.includes('User already registered')) {
+          toast.error(t('login.userExists'));
+        } else {
+          toast.error(error.message);
+        }
+        setIsLoading(false);
+        return;
+      }
+
+      setShowOtpVerification(false);
+      toast.success('🎉 ' + t('login.accountCreated'));
     }
 
-    setShowOtpVerification(false);
-    toast.success('🎉 ' + t('login.accountCreated'));
+    setIsLoading(false);
   };
 
   const resendOtp = async () => {
@@ -214,8 +318,11 @@ export default function StudentLoginPage() {
       toast.error('৩০ সেকেন্ড পর আবার চেষ্টা করুন');
       return;
     }
-    await sendOtp();
+    await sendOtp(isTeacherOtp);
   };
+
+  const handleStudentOtp = () => sendOtp(false);
+  const handleTeacherOtp = () => sendOtp(true);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -363,11 +470,12 @@ export default function StudentLoginPage() {
                 </div>
               </div>
             ) : (
-              /* Login/Signup Tabs */
+              /* Login/Signup/Teacher Tabs */
               <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsList className="grid w-full grid-cols-3 mb-6">
                   <TabsTrigger value="login" className="text-sm">{t('login.login')}</TabsTrigger>
                   <TabsTrigger value="signup" className="text-sm">{t('login.signup')}</TabsTrigger>
+                  <TabsTrigger value="teacher" className="text-sm">Teacher</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="login">
@@ -489,7 +597,7 @@ export default function StudentLoginPage() {
                       type="button" 
                       className="w-full h-11 gap-2" 
                       disabled={sendingOtp}
-                      onClick={sendOtp}
+                      onClick={handleStudentOtp}
                     >
                       {sendingOtp ? (
                         <>
@@ -503,6 +611,121 @@ export default function StudentLoginPage() {
                         </>
                       )}
                     </Button>
+                  </div>
+                </TabsContent>
+
+                {/* Teacher Signup Tab */}
+                <TabsContent value="teacher">
+                  <div className="space-y-4">
+                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+                      <p className="text-xs text-center text-muted-foreground">
+                        <Users className="w-4 h-4 inline-block mr-1" />
+                        শুধুমাত্র Team Members teacher হিসেবে আবেদন করতে পারবেন
+                      </p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="team-member" className="text-sm">আপনার Team Profile সিলেক্ট করুন</Label>
+                      <Select value={selectedTeamMember} onValueChange={setSelectedTeamMember}>
+                        <SelectTrigger className="h-11">
+                          <SelectValue placeholder={teamMembersLoading ? "লোড হচ্ছে..." : "Team Member সিলেক্ট করুন"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {teamMembers?.map((member) => (
+                            <SelectItem key={member.id} value={member.id}>
+                              {member.name} - {member.role}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="teacher-name" className="text-sm">{t('login.fullName')}</Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="teacher-name"
+                          type="text"
+                          placeholder={t('login.namePlaceholder')}
+                          value={teacherName}
+                          onChange={(e) => setTeacherName(e.target.value)}
+                          className="pl-10 h-11"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="teacher-phone" className="text-sm">মোবাইল নম্বর</Label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="teacher-phone"
+                          type="tel"
+                          placeholder="01XXXXXXXXX"
+                          value={teacherPhone}
+                          onChange={(e) => setTeacherPhone(e.target.value)}
+                          className="pl-10 h-11"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="teacher-email" className="text-sm">{t('login.email')}</Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="teacher-email"
+                          type="email"
+                          placeholder="your@email.com"
+                          value={teacherEmail}
+                          onChange={(e) => setTeacherEmail(e.target.value)}
+                          className="pl-10 h-11"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="teacher-password" className="text-sm">{t('login.password')}</Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="teacher-password"
+                          type="password"
+                          placeholder="••••••••"
+                          value={teacherPassword}
+                          onChange={(e) => setTeacherPassword(e.target.value)}
+                          className="pl-10 h-11"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <Button 
+                      type="button" 
+                      className="w-full h-11 gap-2" 
+                      disabled={sendingOtp || !selectedTeamMember}
+                      onClick={handleTeacherOtp}
+                    >
+                      {sendingOtp ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          কোড পাঠানো হচ্ছে...
+                        </>
+                      ) : (
+                        <>
+                          <GraduationCap className="w-4 h-4" />
+                          Teacher হিসেবে আবেদন করুন
+                        </>
+                      )}
+                    </Button>
+
+                    <p className="text-xs text-center text-muted-foreground">
+                      আবেদন করার পর Admin approve করলে আপনি Teacher Dashboard এ login করতে পারবেন
+                    </p>
                   </div>
                 </TabsContent>
               </Tabs>
