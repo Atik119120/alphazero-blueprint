@@ -8,6 +8,12 @@ export interface Profile {
   avatar_url: string | null;
   pass_code: string | null;
   is_active: boolean;
+  is_teacher: boolean;
+  teacher_approved: boolean;
+  linked_team_member_id: string | null;
+  phone_number: string | null;
+  bio: string | null;
+  skills: string[] | null;
   created_at: string;
   updated_at: string;
 }

@@ -30,6 +30,7 @@ import PassCodePage from "./pages/PassCodePage";
 import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import TeacherLoginPage from "./pages/TeacherLoginPage";
 import MyCertificatesPage from "./pages/MyCertificatesPage";
 import CertificatePage from "./pages/CertificatePage";
 import VerifyCertificatePage from "./pages/VerifyCertificatePage";
@@ -42,6 +43,7 @@ const queryClient = new QueryClient();
 const LMS_ROUTES = [
   '/admin/login',
   '/student/login',
+  '/teacher/login',
   '/auth',
   '/dashboard',
   '/passcode',
@@ -97,6 +99,7 @@ function AppContent() {
         {/* LMS routes */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/student/login" element={<StudentLoginPage />} />
+        <Route path="/teacher/login" element={<TeacherLoginPage />} />
         <Route path="/auth" element={<StudentLoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/passcode" element={<PassCodePage />} />
