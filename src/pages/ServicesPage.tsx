@@ -114,30 +114,28 @@ const ServicesPage = () => {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
           >
-            <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border border-primary/30 overflow-hidden">
+            <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border border-primary/30 overflow-hidden text-center">
               {/* Animated background glow */}
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl" />
               <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/20 rounded-full blur-3xl" />
               
-              <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-                <div className="flex-shrink-0">
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center">
-                    <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-                  </div>
+              <div className="relative z-10 flex flex-col items-center gap-6">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center">
+                  <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
                 </div>
                 
-                <div className="flex-1 text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                <div>
+                  <div className="flex items-center justify-center gap-2 mb-3">
                     <span className="px-3 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full">
                       ✨ {t("language") === "bn" ? "বিশেষ সুবিধা" : "Special Feature"}
                     </span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-display font-bold mb-2">
+                  <h3 className="text-xl md:text-2xl font-display font-bold mb-3">
                     {t("language") === "bn" 
                       ? "আপনার নিজের Portfolio তৈরি করুন!" 
                       : "Create Your Own Portfolio!"}
                   </h3>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
                     {t("language") === "bn" 
                       ? "এখানে লগইন করে আপনি নিজের সুন্দর পোর্টফোলিও ওয়েবসাইট তৈরি করতে পারবেন। সহজ এবং দ্রুত!" 
                       : "Login here to create your own beautiful portfolio website. Easy and fast!"}
@@ -146,10 +144,10 @@ const ServicesPage = () => {
                     href="https://portfolio.alphazero.online/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:gap-3"
+                    className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 hover:-translate-y-1"
                   >
                     {t("language") === "bn" ? "Portfolio তৈরি করুন" : "Create Portfolio"}
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
                   </a>
                 </div>
               </div>
