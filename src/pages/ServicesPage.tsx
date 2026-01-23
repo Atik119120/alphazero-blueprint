@@ -105,7 +105,7 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Portfolio Showcase Section */}
+      {/* Portfolio Builder Showcase Section */}
       <section className="py-12 relative overflow-hidden">
         <div className="container mx-auto px-6">
           <motion.div
@@ -114,46 +114,46 @@ const ServicesPage = () => {
             viewport={{ once: true }}
             className="max-w-4xl mx-auto"
           >
-            <a
-              href="https://portfolio.alphazero.online/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block group"
-            >
-              <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border border-primary/30 hover:border-primary/50 transition-all duration-500 overflow-hidden">
-                {/* Animated background glow */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors duration-500" />
-                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/20 rounded-full blur-3xl group-hover:bg-accent/30 transition-colors duration-500" />
-                
-                <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 text-center md:text-left">
-                    <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                      <span className="px-3 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full">
-                        ✨ Featured
-                      </span>
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-display font-bold mb-2">
-                      আমাদের Portfolio দেখুন
-                    </h3>
-                    <p className="text-muted-foreground mb-3">
-                      আমাদের তৈরি করা ওয়েবসাইট এবং প্রোজেক্টগুলো দেখুন। আপনিও চাইলে এখানে লগইন করে নিজের ওয়েবসাইট বানাতে পারবেন!
-                    </p>
-                    <div className="inline-flex items-center gap-2 text-primary font-medium group-hover:gap-3 transition-all duration-300">
-                      <Globe className="w-4 h-4" />
-                      portfolio.alphazero.online
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </div>
+            <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border border-primary/30 overflow-hidden">
+              {/* Animated background glow */}
+              <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl" />
+              <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/20 rounded-full blur-3xl" />
+              
+              <div className="relative z-10 flex flex-col md:flex-row items-center gap-6">
+                <div className="flex-shrink-0">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center">
+                    <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
                   </div>
                 </div>
+                
+                <div className="flex-1 text-center md:text-left">
+                  <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+                    <span className="px-3 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full">
+                      ✨ {t("language") === "bn" ? "বিশেষ সুবিধা" : "Special Feature"}
+                    </span>
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-display font-bold mb-2">
+                    {t("language") === "bn" 
+                      ? "আপনার নিজের Portfolio তৈরি করুন!" 
+                      : "Create Your Own Portfolio!"}
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    {t("language") === "bn" 
+                      ? "এখানে লগইন করে আপনি নিজের সুন্দর পোর্টফোলিও ওয়েবসাইট তৈরি করতে পারবেন। সহজ এবং দ্রুত!" 
+                      : "Login here to create your own beautiful portfolio website. Easy and fast!"}
+                  </p>
+                  <a
+                    href="https://portfolio.alphazero.online/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:gap-3"
+                  >
+                    {t("language") === "bn" ? "Portfolio তৈরি করুন" : "Create Portfolio"}
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
-            </a>
+            </div>
           </motion.div>
         </div>
       </section>
