@@ -105,57 +105,6 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Portfolio Builder Showcase Section */}
-      <section className="py-12 relative overflow-hidden">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto"
-          >
-            <div className="relative p-6 md:p-8 rounded-2xl bg-gradient-to-r from-primary/20 via-primary/10 to-accent/20 border border-primary/30 overflow-hidden text-center">
-              {/* Animated background glow */}
-              <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-3xl" />
-              <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-accent/20 rounded-full blur-3xl" />
-              
-              <div className="relative z-10 flex flex-col items-center gap-6">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center">
-                  <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-primary" />
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="px-3 py-1 text-xs font-medium bg-primary/20 text-primary rounded-full">
-                      ✨ {t("language") === "bn" ? "বিশেষ সুবিধা" : "Special Feature"}
-                    </span>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-display font-bold mb-3">
-                    {t("language") === "bn" 
-                      ? "আপনার নিজের Portfolio তৈরি করুন!" 
-                      : "Create Your Own Portfolio!"}
-                  </h3>
-                  <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-                    {t("language") === "bn" 
-                      ? "এখানে লগইন করে আপনি নিজের সুন্দর পোর্টফোলিও ওয়েবসাইট তৈরি করতে পারবেন। সহজ এবং দ্রুত!" 
-                      : "Login here to create your own beautiful portfolio website. Easy and fast!"}
-                  </p>
-                  <a
-                    href="https://portfolio.alphazero.online/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 hover:-translate-y-1"
-                  >
-                    {t("language") === "bn" ? "Portfolio তৈরি করুন" : "Create Portfolio"}
-                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Dynamic Services Grid */}
       <section className="py-20 bg-secondary/30">
         <div className="container mx-auto px-6">
@@ -213,6 +162,47 @@ const ServicesPage = () => {
                 })}
               </div>
             )}
+
+            {/* Portfolio Builder - Compact */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mt-12"
+            >
+              <div className="relative p-5 md:p-6 rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border border-primary/20 overflow-hidden">
+                <div className="absolute -top-16 -right-16 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
+                
+                <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 text-center sm:text-left">
+                    <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-display font-semibold">
+                        {t("language") === "bn" 
+                          ? "আপনার নিজের Portfolio তৈরি করুন!" 
+                          : "Create Your Own Portfolio!"}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {t("language") === "bn" 
+                          ? "লগইন করে সহজেই পোর্টফোলিও ওয়েবসাইট বানান" 
+                          : "Login and easily build your portfolio website"}
+                      </p>
+                    </div>
+                  </div>
+                  <a
+                    href="https://portfolio.alphazero.online/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
+                  >
+                    {t("language") === "bn" ? "তৈরি করুন" : "Create Now"}
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
