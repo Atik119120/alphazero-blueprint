@@ -127,6 +127,11 @@ export default function AdminDashboard() {
   // Search state
   const [studentSearch, setStudentSearch] = useState('');
 
+  // Delete students state
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+  const [deletingStudents, setDeletingStudents] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   // Admin list state
   const [admins, setAdmins] = useState<Array<{
     id: string;
@@ -412,6 +417,100 @@ export default function AdminDashboard() {
   const availableCoursesForAssign = assigningPassCode 
     ? courses.filter(c => !assigningPassCode.courses.some(ac => ac.id === c.id))
     : [];
+
+  // Delete single student
+  const handleDeleteStudent = async (profileId: string, studentName: string) => {
+    if (!confirm(language === 'bn' 
+      ? `"${studentName}" কে মুছে ফেলতে চান? এটা undo করা যাবে না।` 
+      : `Delete "${studentName}"? This cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      toast.loading(language === 'bn' ? 'মুছে ফেলা হচ্ছে...' : 'Deleting...', { id: 'delete-student' });
+      
+      const { data, error } = await supabase.functions.invoke('delete-student', {
+        body: { student_ids: [profileId] }
+      });
+
+      if (error) {
+        toast.error(error.message || 'Error deleting student', { id: 'delete-student' });
+        return;
+      }
+
+      if (data?.deleted_count > 0) {
+        toast.success(language === 'bn' ? 'সফলভাবে মুছে ফেলা হয়েছে' : 'Successfully deleted', { id: 'delete-student' });
+        refetchPassCodes();
+      } else {
+        toast.error(data?.errors?.[0] || 'Failed to delete', { id: 'delete-student' });
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error occurred', { id: 'delete-student' });
+    }
+  };
+
+  // Bulk delete students
+  const handleBulkDeleteStudents = async () => {
+    if (selectedStudents.length === 0) return;
+    
+    setDeletingStudents(true);
+    try {
+      toast.loading(
+        language === 'bn' 
+          ? `${selectedStudents.length} জন ছাত্র মুছে ফেলা হচ্ছে...` 
+          : `Deleting ${selectedStudents.length} students...`, 
+        { id: 'bulk-delete' }
+      );
+
+      const { data, error } = await supabase.functions.invoke('delete-student', {
+        body: { student_ids: selectedStudents }
+      });
+
+      if (error) {
+        toast.error(error.message || 'Error deleting students', { id: 'bulk-delete' });
+        return;
+      }
+
+      toast.success(
+        language === 'bn' 
+          ? `${data?.deleted_count || 0} জন ছাত্র মুছে ফেলা হয়েছে` 
+          : `${data?.deleted_count || 0} students deleted`, 
+        { id: 'bulk-delete' }
+      );
+      
+      setSelectedStudents([]);
+      setShowDeleteConfirm(false);
+      refetchPassCodes();
+    } catch (error) {
+      console.error('Bulk delete error:', error);
+      toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error occurred', { id: 'bulk-delete' });
+    } finally {
+      setDeletingStudents(false);
+    }
+  };
+
+  // Toggle student selection for bulk delete
+  const toggleStudentSelection = (profileId: string) => {
+    setSelectedStudents(prev => 
+      prev.includes(profileId) 
+        ? prev.filter(id => id !== profileId)
+        : [...prev, profileId]
+    );
+  };
+
+  // Select all visible students
+  const selectAllStudents = () => {
+    const allProfileIds = filteredStudents
+      .filter(pc => pc.student)
+      .map(pc => pc.student!.id);
+    
+    if (selectedStudents.length === allProfileIds.length) {
+      setSelectedStudents([]);
+    } else {
+      setSelectedStudents(allProfileIds);
+    }
+  };
 
   // Add student handler - using Edge Function to avoid session switch
   const handleAddStudent = async () => {
@@ -1442,7 +1541,7 @@ export default function AdminDashboard() {
               <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                 {language === 'bn' ? 'ছাত্র তালিকা' : 'Student List'}
               </h2>
-              <div className="flex items-center gap-3 w-full sm:w-auto">
+              <div className="flex items-center gap-3 w-full sm:w-auto flex-wrap">
                 <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -1458,6 +1557,66 @@ export default function AdminDashboard() {
                 </Button>
               </div>
             </div>
+
+            {/* Bulk Delete Controls */}
+            {filteredStudents.length > 0 && (
+              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                <input
+                  type="checkbox"
+                  checked={selectedStudents.length > 0 && selectedStudents.length === filteredStudents.filter(pc => pc.student).length}
+                  onChange={selectAllStudents}
+                  className="rounded border-gray-300"
+                />
+                <span className="text-sm text-muted-foreground">
+                  {selectedStudents.length > 0 
+                    ? (language === 'bn' ? `${selectedStudents.length} জন সিলেক্ট করা হয়েছে` : `${selectedStudents.length} selected`)
+                    : (language === 'bn' ? 'সব সিলেক্ট করুন' : 'Select all')}
+                </span>
+                {selectedStudents.length > 0 && (
+                  <Button 
+                    variant="destructive" 
+                    size="sm" 
+                    className="gap-2 ml-auto"
+                    onClick={() => setShowDeleteConfirm(true)}
+                    disabled={deletingStudents}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    {language === 'bn' ? `${selectedStudents.length} জন মুছুন` : `Delete ${selectedStudents.length}`}
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {/* Bulk Delete Confirm Dialog */}
+            <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="text-destructive">
+                    {language === 'bn' ? '⚠️ নিশ্চিত করুন' : '⚠️ Confirm Deletion'}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {language === 'bn' 
+                      ? `আপনি ${selectedStudents.length} জন ছাত্র মুছে ফেলতে যাচ্ছেন। এটা undo করা যাবে না। তাদের সব ডাটা, progress, certificates মুছে যাবে।`
+                      : `You are about to delete ${selectedStudents.length} students. This cannot be undone. All their data, progress, and certificates will be permanently removed.`}
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
+                    {language === 'bn' ? 'বাতিল' : 'Cancel'}
+                  </Button>
+                  <Button 
+                    variant="destructive" 
+                    onClick={handleBulkDeleteStudents}
+                    disabled={deletingStudents}
+                  >
+                    {deletingStudents 
+                      ? (language === 'bn' ? 'মুছে ফেলা হচ্ছে...' : 'Deleting...')
+                      : (language === 'bn' ? 'হ্যাঁ, মুছে ফেলুন' : 'Yes, Delete All')}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
 
             {/* Course Enrollment & Sales Stats */}
             <Card className="bg-gradient-to-r from-primary/5 to-cyan-500/5 border-primary/20">
@@ -1549,10 +1708,22 @@ export default function AdminDashboard() {
                       {unassignedStudents.map((passCode) => (
                         <Card
                           key={passCode.id}
-                          className="overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors"
+                          className={`overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors ${
+                            passCode.student && selectedStudents.includes(passCode.student.id) ? 'ring-2 ring-destructive' : ''
+                          }`}
                         >
                           <CardHeader className="pb-2">
                             <div className="flex items-center gap-3">
+                              {/* Selection Checkbox */}
+                              {passCode.student && (
+                                <input
+                                  type="checkbox"
+                                  checked={selectedStudents.includes(passCode.student.id)}
+                                  onChange={() => toggleStudentSelection(passCode.student!.id)}
+                                  className="rounded border-gray-300"
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                              )}
                               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">
                                   {passCode.student?.full_name?.charAt(0).toUpperCase()}
@@ -1569,6 +1740,17 @@ export default function AdminDashboard() {
                                 </div>
                                 <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
                               </div>
+                              {/* Delete Button */}
+                              {passCode.student && (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                  onClick={() => handleDeleteStudent(passCode.student!.id, passCode.student!.full_name)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              )}
                             </div>
                           </CardHeader>
                           <CardContent className="pt-0 space-y-3">
@@ -1628,9 +1810,24 @@ export default function AdminDashboard() {
 
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                     {(studentSearch ? filteredStudents : assignedStudents).map((passCode) => (
-                      <Card key={passCode.id} className="overflow-hidden hover:border-primary/50 transition-colors">
+                      <Card 
+                        key={passCode.id} 
+                        className={`overflow-hidden hover:border-primary/50 transition-colors ${
+                          passCode.student && selectedStudents.includes(passCode.student.id) ? 'ring-2 ring-destructive' : ''
+                        }`}
+                      >
                         <CardHeader className="pb-2">
                           <div className="flex items-center gap-3">
+                            {/* Selection Checkbox */}
+                            {passCode.student && (
+                              <input
+                                type="checkbox"
+                                checked={selectedStudents.includes(passCode.student.id)}
+                                onChange={() => toggleStudentSelection(passCode.student!.id)}
+                                className="rounded border-gray-300"
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                            )}
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
                               <span className="text-white font-bold text-lg">
                                 {passCode.student?.full_name?.charAt(0).toUpperCase()}
@@ -1647,6 +1844,17 @@ export default function AdminDashboard() {
                               </div>
                               <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
                             </div>
+                            {/* Delete Button */}
+                            {passCode.student && (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                onClick={() => handleDeleteStudent(passCode.student!.id, passCode.student!.full_name)}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            )}
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0 space-y-3">
