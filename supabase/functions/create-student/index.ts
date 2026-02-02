@@ -223,6 +223,26 @@ Deno.serve(async (req) => {
       }
     }
 
+    // Send welcome email (non-blocking)
+    try {
+      const welcomeEmailUrl = `${supabaseUrl}/functions/v1/send-welcome-email`;
+      fetch(welcomeEmailUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${supabaseAnonKey}`,
+        },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          name: full_name.trim(),
+          passCode: newPassCode,
+        }),
+      }).catch(err => console.error("Welcome email error:", err));
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // Don't fail the request if email fails
+    }
+
     return new Response(
       JSON.stringify({
         success: true,

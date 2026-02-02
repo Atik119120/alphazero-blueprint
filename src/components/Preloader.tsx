@@ -7,22 +7,22 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Faster progress - complete in 1.2s
+    // Much faster progress - complete in 800ms
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        return prev + 5; // Faster increment
+        return prev + 10; // Faster increment
       });
-    }, 30); // Faster interval
+    }, 25); // Faster interval
 
-    // Reduced total time from 2.8s to 1.2s
+    // Reduced total time to 800ms for faster LCP
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 300);
-    }, 1200);
+      setTimeout(onComplete, 200);
+    }, 800);
 
     return () => {
       clearTimeout(timer);
