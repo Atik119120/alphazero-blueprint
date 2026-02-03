@@ -49,7 +49,7 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
             <img
               src="/logo.png"
               alt="AlphaZero"
-              className="h-20 md:h-24 w-auto dark:brightness-0 dark:invert brightness-0"
+              className="h-20 md:h-24 w-auto"
               loading="eager"
               fetchPriority="high"
             />
