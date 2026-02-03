@@ -1,28 +1,28 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-import logo from "@/assets/logo.png";
+import { useEffect, useState, memo } from "react";
 
-const Preloader = ({ onComplete }: { onComplete: () => void }) => {
+// Inline critical logo for faster LCP - no import delay
+const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Much faster progress - complete in 800ms
+    // Faster progress animation - complete in 500ms
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        return prev + 10; // Faster increment
+        return prev + 20; // Even faster increment
       });
-    }, 25); // Faster interval
+    }, 20); // Faster interval
 
-    // Reduced total time to 800ms for faster LCP
+    // Reduced total time to 500ms for much faster LCP
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 200);
-    }, 800);
+      setTimeout(onComplete, 150);
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -39,43 +39,45 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center"
         >
-          {/* Logo with clean animation */}
+          {/* Logo with clean animation - using preloaded image */}
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="relative z-10"
           >
             <img
-              src={logo}
+              src="/logo.png"
               alt="AlphaZero"
-              className="h-24 md:h-32 w-auto dark:brightness-0 dark:invert brightness-0"
+              className="h-20 md:h-24 w-auto dark:brightness-0 dark:invert brightness-0"
+              loading="eager"
+              fetchPriority="high"
             />
           </motion.div>
 
-          {/* Tagline */}
+          {/* Tagline - faster animation */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.3 }}
-            className="mt-6 text-lg md:text-xl text-foreground font-display tracking-wide font-medium"
+            transition={{ delay: 0.1, duration: 0.2 }}
+            className="mt-4 text-base md:text-lg text-foreground font-display tracking-wide font-medium"
           >
             From <span className="text-primary">zero</span> to impact
           </motion.p>
 
-          {/* Progress bar */}
-          <div className="mt-6 w-48 h-0.5 bg-border rounded-full overflow-hidden">
+          {/* Progress bar - minimal */}
+          <div className="mt-4 w-32 h-0.5 bg-border rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-primary rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.05, ease: "linear" }}
+              transition={{ duration: 0.02, ease: "linear" }}
             />
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
-};
+});
 
 export default Preloader;
