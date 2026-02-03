@@ -37,7 +37,7 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed inset-0 z-[100] bg-background flex flex-col items-center justify-center"
+          className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center"
         >
           {/* Logo with clean animation - using preloaded image */}
           <motion.div
@@ -60,13 +60,13 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.2 }}
-            className="mt-4 text-base md:text-lg text-foreground font-display tracking-wide font-medium"
+            className="mt-4 text-base md:text-lg text-white font-display tracking-wide font-medium"
           >
             From <span className="text-primary">zero</span> to impact
           </motion.p>
 
           {/* Progress bar - minimal */}
-          <div className="mt-4 w-32 h-0.5 bg-border rounded-full overflow-hidden">
+          <div className="mt-4 w-32 h-0.5 bg-white/20 rounded-full overflow-hidden">
             <motion.div
               className="h-full bg-primary rounded-full"
               initial={{ width: 0 }}
