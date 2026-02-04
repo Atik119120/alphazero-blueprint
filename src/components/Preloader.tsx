@@ -39,21 +39,20 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center"
         >
-          {/* Logo with clean animation - using preloaded image */}
-          <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="relative z-10"
-          >
+          {/* Logo - NO animation delay, instant visibility */}
+          <div className="relative z-10 bg-transparent">
             <img
               src="/logo.png"
               alt="AlphaZero"
-              className="h-20 md:h-24 w-auto"
+              width={96}
+              height={96}
+              className="h-20 md:h-24 w-auto block bg-transparent"
               loading="eager"
               fetchPriority="high"
+              decoding="sync"
+              style={{ background: 'transparent' }}
             />
-          </motion.div>
+          </div>
 
           {/* Tagline - faster animation */}
           <motion.p
