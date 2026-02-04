@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, memo } from "react";
+import logo from "@/assets/logo.png";
 
-// Inline critical logo for faster LCP - no import delay
+// Use the same header logo with invert filter for white on black background
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -39,18 +40,17 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center"
         >
-          {/* Logo - NO animation delay, instant visibility */}
-          <div className="relative z-10 bg-transparent">
+          {/* Logo - Same as header but inverted to white for black background */}
+          <div className="relative z-10">
             <img
-              src="/logo.png"
+              src={logo}
               alt="AlphaZero"
               width={96}
               height={96}
-              className="h-20 md:h-24 w-auto block bg-transparent"
+              className="h-20 md:h-24 w-auto invert"
               loading="eager"
               fetchPriority="high"
               decoding="sync"
-              style={{ background: 'transparent' }}
             />
           </div>
 

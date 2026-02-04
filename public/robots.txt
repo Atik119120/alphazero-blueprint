@@ -1,5 +1,5 @@
 # AlphaZero - Creative Design Agency
-# https://alphazero.online
+# Canonical domain: https://alphazero.online (non-www)
 
 User-agent: Googlebot
 Allow: /
@@ -15,7 +15,6 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-
 User-agent: Slurp
 Allow: /
 
@@ -26,5 +25,15 @@ User-agent: *
 Allow: /
 Crawl-delay: 2
 
-# Sitemap location
+# Block private/admin routes from indexing
+Disallow: /admin
+Disallow: /admin/*
+Disallow: /student/dashboard
+Disallow: /teacher/dashboard
+Disallow: /passcode
+
+# Sitemap location (canonical non-www domain)
 Sitemap: https://alphazero.online/sitemap.xml
+
+# Host directive for canonical domain
+Host: https://alphazero.online
