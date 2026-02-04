@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, lazy, Suspense } from "react";
+import { useCallback, useState, useEffect, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,35 +10,34 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
 
-// Critical pages - loaded immediately
+// Main site pages - loaded immediately for instant navigation
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import AboutPage from "./pages/AboutPage";
+import ServicesPage from "./pages/ServicesPage";
+import WorkPage from "./pages/WorkPage";
+import TeamPage from "./pages/TeamPage";
+import JoinTeamPage from "./pages/JoinTeamPage";
+import ContactPage from "./pages/ContactPage";
+import CoursesPage from "./pages/CoursesPage";
 
-// Lazy loaded pages for better performance
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const ServicesPage = lazy(() => import("./pages/ServicesPage"));
-const WorkPage = lazy(() => import("./pages/WorkPage"));
-const TeamPage = lazy(() => import("./pages/TeamPage"));
-const JoinTeamPage = lazy(() => import("./pages/JoinTeamPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const CoursesPage = lazy(() => import("./pages/CoursesPage"));
+// LMS pages - loaded immediately for fast access
+import AdminLoginPage from "./pages/AdminLoginPage";
+import StudentLoginPage from "./pages/StudentLoginPage";
+import DashboardPage from "./pages/DashboardPage";
+import PassCodePage from "./pages/PassCodePage";
+import AdminDashboard from "./pages/AdminDashboard";
+import StudentDashboard from "./pages/StudentDashboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
+import TeacherLoginPage from "./pages/TeacherLoginPage";
+import MyCertificatesPage from "./pages/MyCertificatesPage";
+import CertificatePage from "./pages/CertificatePage";
+import VerifyCertificatePage from "./pages/VerifyCertificatePage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
-// LMS pages - lazy loaded
-const AdminLoginPage = lazy(() => import("./pages/AdminLoginPage"));
-const StudentLoginPage = lazy(() => import("./pages/StudentLoginPage"));
-const DashboardPage = lazy(() => import("./pages/DashboardPage"));
-const PassCodePage = lazy(() => import("./pages/PassCodePage"));
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const StudentDashboard = lazy(() => import("./pages/StudentDashboard"));
-const TeacherDashboard = lazy(() => import("./pages/TeacherDashboard"));
-const TeacherLoginPage = lazy(() => import("./pages/TeacherLoginPage"));
-const MyCertificatesPage = lazy(() => import("./pages/MyCertificatesPage"));
-const CertificatePage = lazy(() => import("./pages/CertificatePage"));
-const VerifyCertificatePage = lazy(() => import("./pages/VerifyCertificatePage"));
-const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
-const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
-
-// Lazy load AI Chatbot (not critical for initial render)
+// Lazy load only AI Chatbot (not critical for navigation)
+import { lazy } from "react";
 const AIChatbot = lazy(() => import("./components/AIChatbot"));
 
 const queryClient = new QueryClient();
@@ -60,13 +59,6 @@ const LMS_ROUTES = [
   '/forgot-password',
   '/reset-password'
 ];
-
-// Minimal loading fallback for lazy components
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
-  </div>
-);
 
 function AppContent() {
   const location = useLocation();
@@ -100,37 +92,35 @@ function AppContent() {
         <AIChatbot />
       </Suspense>
       
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          {/* Main site routes */}
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/work" element={<WorkPage />} />
-          <Route path="/team" element={<TeamPage />} />
-          <Route path="/join-team" element={<JoinTeamPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/courses" element={<CoursesPage />} />
-          
-          {/* LMS routes */}
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/student/login" element={<StudentLoginPage />} />
-          <Route path="/teacher/login" element={<TeacherLoginPage />} />
-          <Route path="/auth" element={<StudentLoginPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/passcode" element={<PassCodePage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/student" element={<StudentDashboard />} />
-          <Route path="/teacher" element={<TeacherDashboard />} />
-          <Route path="/my-certificates" element={<MyCertificatesPage />} />
-          <Route path="/certificate/:certificateId" element={<CertificatePage />} />
-          <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+      <Routes>
+        {/* Main site routes */}
+        <Route path="/" element={<Index />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/work" element={<WorkPage />} />
+        <Route path="/team" element={<TeamPage />} />
+        <Route path="/join-team" element={<JoinTeamPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        
+        {/* LMS routes */}
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/student/login" element={<StudentLoginPage />} />
+        <Route path="/teacher/login" element={<TeacherLoginPage />} />
+        <Route path="/auth" element={<StudentLoginPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/passcode" element={<PassCodePage />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/teacher" element={<TeacherDashboard />} />
+        <Route path="/my-certificates" element={<MyCertificatesPage />} />
+        <Route path="/certificate/:certificateId" element={<CertificatePage />} />
+        <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </>
   );
 }
