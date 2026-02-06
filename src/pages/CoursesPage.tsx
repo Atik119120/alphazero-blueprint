@@ -481,7 +481,10 @@ const CoursesPage = () => {
       titleBn: course.title,
       description: course.description_en || course.description || '',
       descriptionBn: course.description || '',
-      price: course.price || 0
+      price: course.price || 0,
+      trainer_name: course.trainer_name || null,
+      trainer_image: course.trainer_image || null,
+      trainer_designation: course.trainer_designation || null
     }));
   }, [dbCourses]);
 
@@ -749,26 +752,27 @@ const CoursesPage = () => {
                           </div>
                         )}
 
-                        {/* Trainer with Photo - Enhanced */}
-                        {metadata.trainer && (
+                        {/* Trainer with Photo - Enhanced (Priority: DB data > Metadata) */}
+                        {(course.trainer_name || metadata.trainer) && (
                           <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-gradient-to-r from-secondary/50 to-secondary/30 border border-border mb-4 mt-auto">
                             <img
-                              src={metadata.trainer.image}
-                              alt={metadata.trainer.name}
+                              src={course.trainer_image || metadata.trainer?.image || '/placeholder.svg'}
+                              alt={course.trainer_name || metadata.trainer?.name || 'Trainer'}
                               className="w-12 h-12 rounded-full object-cover border-2 border-primary/30 shadow-md"
+                              onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }}
                             />
                             <div className="flex-1 min-w-0">
                               <p className="text-xs text-muted-foreground">{t.trainer}</p>
-                              <p className="text-sm font-semibold truncate">{metadata.trainer.name}</p>
+                              <p className="text-sm font-semibold truncate">{course.trainer_name || metadata.trainer?.name}</p>
                               <p className="text-xs text-muted-foreground truncate">
-                                {isBn ? metadata.trainer.qualificationBn : metadata.trainer.qualificationEn}
+                                {course.trainer_designation || (isBn ? metadata.trainer?.qualificationBn : metadata.trainer?.qualificationEn)}
                               </p>
                             </div>
                           </div>
                         )}
 
                         {/* Spacer if no trainer */}
-                        {!metadata.trainer && <div className="flex-1" />}
+                        {!course.trainer_name && !metadata.trainer && <div className="flex-1" />}
 
                         {/* Enroll Button - Enhanced */}
                         <a

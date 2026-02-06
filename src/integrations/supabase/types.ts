@@ -207,6 +207,9 @@ export type Database = {
           thumbnail_url: string | null
           title: string
           title_en: string | null
+          trainer_designation: string | null
+          trainer_image: string | null
+          trainer_name: string | null
           updated_at: string | null
         }
         Insert: {
@@ -222,6 +225,9 @@ export type Database = {
           thumbnail_url?: string | null
           title: string
           title_en?: string | null
+          trainer_designation?: string | null
+          trainer_image?: string | null
+          trainer_name?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -237,6 +243,9 @@ export type Database = {
           thumbnail_url?: string | null
           title?: string
           title_en?: string | null
+          trainer_designation?: string | null
+          trainer_image?: string | null
+          trainer_name?: string | null
           updated_at?: string | null
         }
         Relationships: [

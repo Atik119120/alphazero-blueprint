@@ -26,6 +26,7 @@ import {
   DollarSign
 } from 'lucide-react';
 import { Course, Video, VideoMaterial } from '@/types/lms';
+import ImageUploader from './ImageUploader';
 
 interface CourseManagementProps {
   courses: Course[];
@@ -48,6 +49,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [courseThumbnail, setCourseThumbnail] = useState('');
   const [coursePrice, setCoursePrice] = useState('');
   const [coursePublished, setCoursePublished] = useState(true);
+  const [trainerName, setTrainerName] = useState('');
+  const [trainerImage, setTrainerImage] = useState('');
+  const [trainerDesignation, setTrainerDesignation] = useState('');
 
   // Video form state
   const [showVideoDialog, setShowVideoDialog] = useState(false);
@@ -121,6 +125,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseThumbnail(course.thumbnail_url || '');
       setCoursePrice(course.price ? String(course.price) : '');
       setCoursePublished(course.is_published);
+      setTrainerName(course.trainer_name || '');
+      setTrainerImage(course.trainer_image || '');
+      setTrainerDesignation(course.trainer_designation || '');
     } else {
       setEditingCourse(null);
       setCourseTitle('');
@@ -129,7 +136,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseDescriptionEn('');
       setCourseThumbnail('');
       setCoursePrice('');
-      setCoursePublished(true); // Default to published for new courses
+      setCoursePublished(true);
+      setTrainerName('');
+      setTrainerImage('');
+      setTrainerDesignation('');
     }
     setShowCourseDialog(true);
   };
@@ -151,6 +161,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
           is_published: coursePublished,
+          trainer_name: trainerName || null,
+          trainer_image: trainerImage || null,
+          trainer_designation: trainerDesignation || null,
         })
         .eq('id', editingCourse.id);
 
@@ -170,6 +183,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
           is_published: coursePublished,
+          trainer_name: trainerName || null,
+          trainer_image: trainerImage || null,
+          trainer_designation: trainerDesignation || null,
         });
 
       if (error) {
@@ -997,6 +1013,40 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 />
               </div>
               <p className="text-xs text-muted-foreground">ফ্রি কোর্সের জন্য ০ রাখুন</p>
+            </div>
+            
+            {/* Trainer Section */}
+            <div className="border-t pt-4 mt-4">
+              <h4 className="font-medium mb-4">ট্রেইনার তথ্য</h4>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label>ট্রেইনার নাম</Label>
+                  <Input
+                    value={trainerName}
+                    onChange={(e) => setTrainerName(e.target.value)}
+                    placeholder="ট্রেইনারের নাম লিখুন"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>ট্রেইনার পদবি</Label>
+                  <Input
+                    value={trainerDesignation}
+                    onChange={(e) => setTrainerDesignation(e.target.value)}
+                    placeholder="যেমন: Graphic Designer, Web Developer"
+                  />
+                </div>
+                
+                <ImageUploader
+                  value={trainerImage}
+                  onChange={setTrainerImage}
+                  folder="trainers"
+                  label="ট্রেইনার ছবি"
+                  aspectRatio="square"
+                  maxSizeMB={2}
+                />
+              </div>
             </div>
             
             {/* Publish Toggle */}

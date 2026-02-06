@@ -110,7 +110,10 @@ export interface TeacherCourse extends Course {
   teacher_id: string | null;
   course_type: 'recorded' | 'live' | 'free';
   is_approved: boolean;
-  videos?: Video[];
+  videos?: { id: string }[];
   enrolled_students?: number;
   total_revenue?: number;
+  trainer_name?: string | null;
+  trainer_image?: string | null;
+  trainer_designation?: string | null;
 }
