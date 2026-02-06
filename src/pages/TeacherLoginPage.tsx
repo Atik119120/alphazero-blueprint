@@ -61,7 +61,8 @@ export default function TeacherLoginPage() {
 
   useEffect(() => {
     if (!isLoading && user && role === 'teacher') {
-      if ((profile as any)?.teacher_approved) {
+      const isApproved = (profile as any)?.teacher_approved === true;
+      if (isApproved) {
         navigate('/teacher');
       }
     }
@@ -91,19 +92,25 @@ export default function TeacherLoginPage() {
   // Check teacher status after login
   useEffect(() => {
     if (!isLoading && user && isSubmitting) {
-      if (role !== 'teacher') {
-        toast.error(t.notTeacherRole);
-        setIsSubmitting(false);
-        return;
-      }
+      // Give some time for profile to load
+      const timer = setTimeout(() => {
+        if (role !== 'teacher') {
+          toast.error(t.notTeacherRole);
+          setIsSubmitting(false);
+          return;
+        }
+        
+        const isApproved = (profile as any)?.teacher_approved === true;
+        if (!isApproved) {
+          toast.error(t.notApproved);
+          setIsSubmitting(false);
+          return;
+        }
+        
+        navigate('/teacher');
+      }, 500);
       
-      if (!(profile as any)?.teacher_approved) {
-        toast.error(t.notApproved);
-        setIsSubmitting(false);
-        return;
-      }
-      
-      navigate('/teacher');
+      return () => clearTimeout(timer);
     }
   }, [user, role, isLoading, profile, isSubmitting, navigate, t]);
 

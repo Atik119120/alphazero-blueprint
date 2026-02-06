@@ -33,6 +33,9 @@ export interface Course {
   thumbnail_url: string | null;
   is_published: boolean;
   price: number;
+  trainer_name?: string | null;
+  trainer_image?: string | null;
+  trainer_designation?: string | null;
   created_at: string;
   updated_at: string;
 }
