@@ -29,3 +29,6 @@ verify_jwt = false
 
 [functions.uddoktapay-verify]
 verify_jwt = false
+
+[functions.send-custom-email]
+verify_jwt = false

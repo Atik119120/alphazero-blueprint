@@ -50,7 +50,8 @@ import {
   Settings,
   FileText,
   Link2,
-  GraduationCap
+  GraduationCap,
+  Send
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -61,6 +62,7 @@ import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
+import EmailManagement from '@/components/admin/EmailManagement';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
 // Chart colors
@@ -777,6 +779,7 @@ export default function AdminDashboard() {
     { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', category: 'lms', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
     { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', category: 'lms' },
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
+    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', category: 'lms' },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
@@ -1933,6 +1936,11 @@ export default function AdminDashboard() {
           {/* Footer Tab */}
           <TabsContent value="footer" className="space-y-6">
             <FooterManagement />
+          </TabsContent>
+
+          {/* Email Tab */}
+          <TabsContent value="email" className="space-y-6">
+            <EmailManagement language={language} />
           </TabsContent>
 
           {/* Settings Tab */}
