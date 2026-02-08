@@ -58,19 +58,46 @@ export default function TeacherLoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginAttempted, setLoginAttempted] = useState(false);
 
+  // Handle redirect for already logged-in teachers
   useEffect(() => {
-    if (!isLoading && user && role === 'teacher') {
+    if (!isLoading && user && role === 'teacher' && !loginAttempted) {
       const isApproved = (profile as any)?.teacher_approved === true;
       if (isApproved) {
         navigate('/teacher');
       }
     }
-  }, [user, role, isLoading, profile, navigate]);
+  }, [user, role, isLoading, profile, navigate, loginAttempted]);
+
+  // Handle post-login redirect - wait for isLoading to be false
+  useEffect(() => {
+    if (loginAttempted && !isLoading && user) {
+      // Auth context finished loading, now check role
+      if (role !== 'teacher') {
+        toast.error(t.notTeacherRole);
+        setIsSubmitting(false);
+        setLoginAttempted(false);
+        return;
+      }
+      
+      const isApproved = (profile as any)?.teacher_approved === true;
+      if (!isApproved) {
+        toast.error(t.notApproved);
+        setIsSubmitting(false);
+        setLoginAttempted(false);
+        return;
+      }
+      
+      // All checks passed, navigate to teacher dashboard
+      navigate('/teacher');
+    }
+  }, [loginAttempted, isLoading, user, role, profile, navigate, t]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setLoginAttempted(false);
 
     try {
       const { error } = await signIn(email, password);
@@ -81,38 +108,14 @@ export default function TeacherLoginPage() {
         return;
       }
 
-      // Check will happen in useEffect after auth state updates
+      // Mark that login was attempted, useEffect will handle redirect after auth loads
+      setLoginAttempted(true);
       toast.success(t.success);
     } catch (err) {
       toast.error(t.invalidCredentials);
       setIsSubmitting(false);
     }
   };
-
-  // Check teacher status after login
-  useEffect(() => {
-    if (!isLoading && user && isSubmitting) {
-      // Give some time for profile to load
-      const timer = setTimeout(() => {
-        if (role !== 'teacher') {
-          toast.error(t.notTeacherRole);
-          setIsSubmitting(false);
-          return;
-        }
-        
-        const isApproved = (profile as any)?.teacher_approved === true;
-        if (!isApproved) {
-          toast.error(t.notApproved);
-          setIsSubmitting(false);
-          return;
-        }
-        
-        navigate('/teacher');
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [user, role, isLoading, profile, isSubmitting, navigate, t]);
 
   if (isLoading) {
     return null;
