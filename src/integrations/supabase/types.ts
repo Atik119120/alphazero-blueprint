@@ -276,6 +276,92 @@ export type Database = {
         }
         Relationships: []
       }
+      email_messages: {
+        Row: {
+          body_html: string | null
+          body_text: string | null
+          created_at: string
+          direction: string
+          from_email: string
+          id: string
+          is_read: boolean | null
+          resend_email_id: string | null
+          sender_identity: string | null
+          subject: string
+          thread_id: string
+          to_email: string
+        }
+        Insert: {
+          body_html?: string | null
+          body_text?: string | null
+          created_at?: string
+          direction: string
+          from_email: string
+          id?: string
+          is_read?: boolean | null
+          resend_email_id?: string | null
+          sender_identity?: string | null
+          subject: string
+          thread_id: string
+          to_email: string
+        }
+        Update: {
+          body_html?: string | null
+          body_text?: string | null
+          created_at?: string
+          direction?: string
+          from_email?: string
+          id?: string
+          is_read?: boolean | null
+          resend_email_id?: string | null
+          sender_identity?: string | null
+          subject?: string
+          thread_id?: string
+          to_email?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "email_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      email_threads: {
+        Row: {
+          created_at: string
+          external_email: string
+          external_name: string | null
+          id: string
+          last_message_at: string | null
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          external_email: string
+          external_name?: string | null
+          id?: string
+          last_message_at?: string | null
+          status?: string
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          external_email?: string
+          external_name?: string | null
+          id?: string
+          last_message_at?: string | null
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       enrollment_requests: {
         Row: {
           course_id: string
@@ -773,6 +859,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      sender_identities: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_name: string
+          email_prefix: string
+          id: string
+          is_active: boolean | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_name: string
+          email_prefix: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_name?: string
+          email_prefix?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+        }
+        Relationships: []
       }
       services: {
         Row: {
