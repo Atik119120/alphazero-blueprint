@@ -15,6 +15,8 @@ interface EmailRequest {
   subject: string;
   message: string;
   senderName?: string;
+  senderIdentity?: string; // noreply, support, info, admin
+  threadId?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -68,7 +70,7 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const { to, subject, message, senderName }: EmailRequest = await req.json();
+    const { to, subject, message, senderName, senderIdentity, threadId }: EmailRequest = await req.json();
 
     // Validate required fields
     if (!to || !subject || !message) {
@@ -87,7 +89,16 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    const fromName = senderName || 'AlphaZero Academy';
+    // Get sender identity settings
+    const identity = senderIdentity || 'noreply';
+    const identityMap: Record<string, { email: string; name: string }> = {
+      noreply: { email: 'noreply@alphazero.online', name: senderName || 'AlphaZero Academy' },
+      support: { email: 'support@alphazero.online', name: senderName || 'AlphaZero Support' },
+      info: { email: 'info@alphazero.online', name: senderName || 'AlphaZero Academy' },
+      admin: { email: 'admin@alphazero.online', name: senderName || 'AlphaZero Admin' },
+    };
+
+    const sender = identityMap[identity] || identityMap.noreply;
     const currentYear = new Date().getFullYear();
 
     // Create professional HTML email template
@@ -108,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
           <tr>
             <td style="background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%); padding: 32px 40px; text-align: center;">
               <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: -0.5px;">
-                ${fromName}
+                ${sender.name}
               </h1>
             </td>
           </tr>
@@ -129,10 +140,13 @@ ${message}
           <tr>
             <td style="background-color: #f9fafb; padding: 24px 40px; border-top: 1px solid #e4e4e7;">
               <p style="margin: 0; color: #71717a; font-size: 14px; text-align: center;">
-                © ${currentYear} ${fromName}. All rights reserved.
+                © ${currentYear} AlphaZero Academy. All rights reserved.
               </p>
               <p style="margin: 8px 0 0 0; color: #a1a1aa; font-size: 12px; text-align: center;">
                 This email was sent from <a href="https://alphazero.online" style="color: #0ea5e9; text-decoration: none;">alphazero.online</a>
+              </p>
+              <p style="margin: 8px 0 0 0; color: #a1a1aa; font-size: 12px; text-align: center;">
+                Reply to this email to contact us
               </p>
             </td>
           </tr>
@@ -144,16 +158,41 @@ ${message}
 </html>
     `.trim();
 
-    console.log(`Sending email to: ${to}, Subject: ${subject}`);
+    console.log(`Sending email from: ${sender.email} to: ${to}, Subject: ${subject}`);
 
+    // Use reply-to as support email so users can reply
     const emailResponse = await resend.emails.send({
-      from: `${fromName} <noreply@alphazero.online>`,
+      from: `${sender.name} <${sender.email}>`,
+      reply_to: 'support@alphazero.online',
       to: [to],
       subject: subject,
       html: htmlContent,
     });
 
     console.log("Email sent successfully:", emailResponse);
+
+    // If threadId provided, store the outbound message
+    if (threadId && emailResponse.data?.id) {
+      const supabaseAdmin = createClient(
+        Deno.env.get('SUPABASE_URL')!,
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+      );
+
+      await supabaseAdmin.from('email_messages').insert({
+        thread_id: threadId,
+        direction: 'outbound',
+        from_email: sender.email,
+        to_email: to,
+        subject: subject,
+        body_text: message,
+        body_html: htmlContent,
+        sender_identity: identity,
+        is_read: true,
+        resend_email_id: emailResponse.data.id,
+      });
+
+      console.log("Outbound message stored in thread:", threadId);
+    }
 
     return new Response(
       JSON.stringify({ success: true, data: emailResponse }),
