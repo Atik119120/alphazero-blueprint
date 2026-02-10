@@ -9,12 +9,15 @@ import {
   Mail, 
   Globe, 
   MessageCircle,
-  Linkedin
+  Linkedin,
+  ExternalLink
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Custom icons for platforms without lucide equivalents
@@ -40,6 +43,22 @@ const TeamPage = () => {
   const { t } = useLanguage();
   const { data: teamMembers, isLoading } = useTeamMembers();
 
+  // Fetch custom links for all team members
+  const { data: customLinks } = useQuery({
+    queryKey: ['team-custom-links'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('team_member_custom_links')
+        .select('*')
+        .order('order_index');
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const getMemberCustomLinks = (memberId: string) => {
+    return customLinks?.filter(l => l.team_member_id === memberId) || [];
+  };
   return (
     <Layout>
       {/* Hero Section */}
@@ -257,7 +276,24 @@ const TeamPage = () => {
                             >
                               <Globe size={14} />
                             </a>
-                          )}
+                           )}
+                          {/* Custom Links */}
+                          {getMemberCustomLinks(member.id).map((link) => (
+                            <a
+                              key={link.id}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                              title={link.label}
+                            >
+                              {link.icon_url ? (
+                                <img src={link.icon_url} alt={link.label} className="w-3.5 h-3.5 object-contain" />
+                              ) : (
+                                <ExternalLink size={14} />
+                              )}
+                            </a>
+                          ))}
                         </div>
                       </div>
                     </div>

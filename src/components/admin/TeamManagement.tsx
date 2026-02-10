@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, Globe, MessageCircle } from "lucide-react";
+import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, Globe, MessageCircle, Link as LinkIcon, X } from "lucide-react";
 import { toast } from "sonner";
+import ImageUploader from "./ImageUploader";
 
 // Custom icons for platforms without lucide equivalents
 const FiverrIcon = () => (
@@ -51,6 +52,13 @@ interface TeamMember {
   order_index: number;
 }
 
+interface CustomLink {
+  id?: string;
+  label: string;
+  url: string;
+  icon_url: string;
+}
+
 export const TeamManagement = () => {
   const queryClient = useQueryClient();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -72,6 +80,7 @@ export const TeamManagement = () => {
     threads_url: "",
     is_active: true,
   });
+  const [customLinks, setCustomLinks] = useState<CustomLink[]>([]);
 
   const { data: members, isLoading } = useQuery({
     queryKey: ["admin-team-members"],
@@ -87,6 +96,7 @@ export const TeamManagement = () => {
 
   const saveMutation = useMutation({
     mutationFn: async (data: typeof formData & { id?: string }) => {
+      let memberId = data.id;
       if (data.id) {
         const { error } = await supabase
           .from("team_members")
@@ -110,7 +120,7 @@ export const TeamManagement = () => {
           .eq("id", data.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("team_members").insert({
+        const { data: newMember, error } = await supabase.from("team_members").insert({
           name: data.name,
           role: data.role,
           bio: data.bio || null,
@@ -127,8 +137,29 @@ export const TeamManagement = () => {
           threads_url: data.threads_url || null,
           is_active: data.is_active,
           order_index: (members?.length || 0) + 1,
-        });
+        }).select('id').single();
         if (error) throw error;
+        memberId = newMember?.id;
+      }
+
+      // Save custom links
+      if (memberId) {
+        // Delete existing custom links
+        await supabase.from("team_member_custom_links").delete().eq("team_member_id", memberId);
+        
+        // Insert new custom links
+        if (customLinks.length > 0) {
+          const linksToInsert = customLinks.filter(l => l.label && l.url).map((link, idx) => ({
+            team_member_id: memberId!,
+            label: link.label,
+            url: link.url,
+            icon_url: link.icon_url || null,
+            order_index: idx,
+          }));
+          if (linksToInsert.length > 0) {
+            await supabase.from("team_member_custom_links").insert(linksToInsert);
+          }
+        }
       }
     },
     onSuccess: () => {
@@ -173,11 +204,12 @@ export const TeamManagement = () => {
       threads_url: "",
       is_active: true,
     });
+    setCustomLinks([]);
     setEditingMember(null);
     setIsDialogOpen(false);
   };
 
-  const handleEdit = (member: TeamMember) => {
+  const handleEdit = async (member: TeamMember) => {
     setEditingMember(member);
     setFormData({
       name: member.name,
@@ -196,6 +228,15 @@ export const TeamManagement = () => {
       threads_url: member.threads_url || "",
       is_active: member.is_active,
     });
+    
+    // Load custom links
+    const { data: links } = await supabase
+      .from("team_member_custom_links")
+      .select("*")
+      .eq("team_member_id", member.id)
+      .order("order_index");
+    
+    setCustomLinks((links || []).map(l => ({ id: l.id, label: l.label, url: l.url, icon_url: l.icon_url || '' })));
     setIsDialogOpen(true);
   };
 
@@ -364,6 +405,69 @@ export const TeamManagement = () => {
                     />
                   </div>
                 </div>
+              </div>
+
+              {/* Custom Links Section */}
+              <div className="border-t pt-4 mt-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="font-medium text-sm text-muted-foreground">কাস্টম লিংক (অন্যান্য সাইট)</h4>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCustomLinks([...customLinks, { label: '', url: '', icon_url: '' }])}
+                  >
+                    <Plus className="w-3 h-3 mr-1" />
+                    লিংক যোগ
+                  </Button>
+                </div>
+                
+                {customLinks.map((link, idx) => (
+                  <div key={idx} className="space-y-2 mb-3 p-3 border rounded-lg relative">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-1 right-1 h-6 w-6"
+                      onClick={() => setCustomLinks(customLinks.filter((_, i) => i !== idx))}
+                    >
+                      <X className="w-3 h-3" />
+                    </Button>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input
+                        placeholder="লেবেল (যেমন: YouTube)"
+                        value={link.label}
+                        onChange={(e) => {
+                          const updated = [...customLinks];
+                          updated[idx].label = e.target.value;
+                          setCustomLinks(updated);
+                        }}
+                      />
+                      <Input
+                        placeholder="URL"
+                        value={link.url}
+                        onChange={(e) => {
+                          const updated = [...customLinks];
+                          updated[idx].url = e.target.value;
+                          setCustomLinks(updated);
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-xs text-muted-foreground">আইকন (URL বা আপলোড)</Label>
+                      <ImageUploader
+                        value={link.icon_url}
+                        onChange={(url) => {
+                          const updated = [...customLinks];
+                          updated[idx].icon_url = url;
+                          setCustomLinks(updated);
+                        }}
+                        folder="custom-icons"
+                        placeholder="আইকন URL বা আপলোড করুন"
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
 
               <div className="flex items-center gap-2">

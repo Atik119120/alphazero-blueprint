@@ -70,7 +70,9 @@ const SiteSettingsManagement = () => {
     const labels: Record<string, string> = {
       'favicon_url': 'Favicon URL',
       'logo_url': 'Logo URL',
-      'site_name': 'Site Name'
+      'site_name': 'Site Name',
+      'bkash_number': 'বিকাশ নাম্বার',
+      'nagad_number': 'নগদ নাম্বার'
     };
     return labels[key] || key;
   };
@@ -79,7 +81,9 @@ const SiteSettingsManagement = () => {
     const descriptions: Record<string, string> = {
       'favicon_url': 'ব্রাউজার ট্যাবে দেখানো ছোট আইকন (URL দিন)',
       'logo_url': 'সাইটের মূল লোগো (URL দিন)',
-      'site_name': 'সাইটের নাম'
+      'site_name': 'সাইটের নাম',
+      'bkash_number': 'কোর্স পেমেন্টের জন্য বিকাশ নাম্বার',
+      'nagad_number': 'কোর্স পেমেন্টের জন্য নগদ নাম্বার'
     };
     return descriptions[key] || '';
   };

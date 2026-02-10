@@ -1014,6 +1014,44 @@ export type Database = {
           },
         ]
       }
+      team_member_custom_links: {
+        Row: {
+          created_at: string
+          icon_url: string | null
+          id: string
+          label: string
+          order_index: number
+          team_member_id: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          icon_url?: string | null
+          id?: string
+          label: string
+          order_index?: number
+          team_member_id: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          icon_url?: string | null
+          id?: string
+          label?: string
+          order_index?: number
+          team_member_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_member_custom_links_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       team_members: {
         Row: {
           bio: string | null
