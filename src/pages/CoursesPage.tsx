@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   GraduationCap, 
@@ -472,6 +472,27 @@ const CoursesPage = () => {
     transactionId: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentNumbers, setPaymentNumbers] = useState({ bkash: '01776965533', nagad: '01776965533' });
+
+  // Fetch payment numbers from site settings
+  useEffect(() => {
+    const fetchPaymentNumbers = async () => {
+      const { data } = await supabase
+        .from('site_settings')
+        .select('setting_key, setting_value')
+        .in('setting_key', ['bkash_number', 'nagad_number']);
+      
+      if (data) {
+        const numbers = { ...paymentNumbers };
+        data.forEach(s => {
+          if (s.setting_key === 'bkash_number' && s.setting_value) numbers.bkash = s.setting_value;
+          if (s.setting_key === 'nagad_number' && s.setting_value) numbers.nagad = s.setting_value;
+        });
+        setPaymentNumbers(numbers);
+      }
+    };
+    fetchPaymentNumbers();
+  }, []);
 
   // Use database courses with proper language support
   const displayCourses = useMemo(() => {
@@ -965,8 +986,8 @@ const CoursesPage = () => {
                     </p>
                     <p className="text-sm text-muted-foreground">
                       {formData.paymentMethod === 'bkash' 
-                        ? (isBn ? "বিকাশ নাম্বার: 01776965533 - এই নাম্বারে টাকা পাঠান" : "bKash Number: 01776965533 - Send money to this number")
-                        : (isBn ? "নগদ নাম্বার: 01776965533 - এই নাম্বারে টাকা পাঠান" : "Nagad Number: 01776965533 - Send money to this number")
+                        ? (isBn ? `বিকাশ নাম্বার: ${paymentNumbers.bkash} - এই নাম্বারে টাকা পাঠান` : `bKash Number: ${paymentNumbers.bkash} - Send money to this number`)
+                        : (isBn ? `নগদ নাম্বার: ${paymentNumbers.nagad} - এই নাম্বারে টাকা পাঠান` : `Nagad Number: ${paymentNumbers.nagad} - Send money to this number`)
                       }
                     </p>
                     {selectedCourse && (
