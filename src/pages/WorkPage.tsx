@@ -1,6 +1,6 @@
-import { useMemo } from "react";
-import { motion } from "framer-motion";
-import { ExternalLink, ArrowRight, Globe, Palette, Video, Play, Loader2 } from "lucide-react";
+import { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, ArrowRight, Globe, Palette, Video, Play, Loader2, X, ZoomIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
   const { t } = useLanguage();
+  const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string } | null>(null);
 
   const WEB_KEYS = ["web_portfolio", "web_ecommerce", "web_education", "web_agency", "web_general"] as const;
   const GRAPHICS_KEYS = [
@@ -254,7 +255,7 @@ const WorkPage = () => {
                         <h3 className="text-xl lg:text-2xl font-display font-semibold mb-5">{catLabel(key)}</h3>
 
                         {/* Design Projects Grid */}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                           {items.map((project, index) => (
                             <motion.div
                               key={project.id}
@@ -262,27 +263,33 @@ const WorkPage = () => {
                               whileInView={{ opacity: 1, y: 0 }}
                               viewport={{ once: true }}
                               transition={{ delay: index * 0.06 }}
-                              className="group"
+                              className="group cursor-pointer"
+                              onClick={() => project.image_url && setLightboxImage({ url: project.image_url, title: project.title })}
                             >
                               <div className="rounded-xl overflow-hidden border border-border bg-card hover:border-primary/30 hover:shadow-lg transition-all duration-300 h-full">
-                                {/* Image */}
-                                <div className="aspect-[4/3] overflow-hidden">
+                                {/* Image - fixed square aspect ratio */}
+                                <div className="aspect-square overflow-hidden relative">
                                   <img
                                     src={project.image_url || "/placeholder.svg"}
                                     alt={project.title}
                                     loading="lazy"
                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                   />
+                                  {/* Zoom overlay */}
+                                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center">
+                                      <ZoomIn size={22} className="text-primary-foreground" />
+                                    </div>
+                                  </div>
                                 </div>
                                 {/* Content */}
-                                <div className="p-4">
-                                  <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-2">
+                                <div className="p-3 md:p-4">
+                                  <span className="inline-block px-2 py-0.5 text-[10px] md:text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-1.5">
                                     {catLabel(key)}
                                   </span>
-                                  <h4 className="text-lg font-display font-semibold mb-1 group-hover:text-primary transition-colors">
+                                  <h4 className="text-sm md:text-lg font-display font-semibold group-hover:text-primary transition-colors line-clamp-1">
                                     {project.title}
                                   </h4>
-                                  <p className="text-sm text-muted-foreground">{project.description || ""}</p>
                                 </div>
                               </div>
                             </motion.div>
@@ -413,6 +420,36 @@ const WorkPage = () => {
           </motion.div>
         </div>
       </section>
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-pointer"
+            onClick={() => setLightboxImage(null)}
+          >
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+            >
+              <X size={24} className="text-white" />
+            </button>
+            <motion.img
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25 }}
+              src={lightboxImage.url}
+              alt={lightboxImage.title}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <p className="absolute bottom-6 text-white/80 text-lg font-display font-semibold">{lightboxImage.title}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 };
