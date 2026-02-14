@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Plus, Pencil, Trash2, ExternalLink, Image } from "lucide-react";
 import { toast } from "sonner";
+import ImageUploader from "./ImageUploader";
 
 interface Work {
   id: string;
@@ -253,14 +254,15 @@ export const WorksManagement = () => {
                 </Select>
               </div>
 
-              <div>
-                <Label>ছবির URL</Label>
-                <Input
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
+              <ImageUploader
+                value={formData.image_url}
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                folder="works"
+                label="ছবি / কনটেন্ট"
+                placeholder="URL পেস্ট করুন অথবা আপলোড করুন"
+                aspectRatio="video"
+                maxSizeMB={10}
+              />
 
               <div>
                 <Label>প্রজেক্ট লিংক</Label>
