@@ -1,20 +1,237 @@
-import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, ArrowRight, Globe, Palette, Video, Play, Loader2, X, ZoomIn } from "lucide-react";
+import { useMemo, useState, useRef, useEffect, useCallback } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { X, ZoomIn, Play, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+/* ─── Horizontal Auto-Scroll Strip ─── */
+const ScrollStrip = ({
+  items,
+  onItemClick,
+  speed = 30,
+}: {
+  items: Work[];
+  onItemClick: (w: Work) => void;
+  speed?: number;
+}) => {
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Duplicate items for seamless loop
+  const doubled = [...items, ...items];
+
+  useEffect(() => {
+    const el = stripRef.current;
+    if (!el) return;
+    let raf: number;
+    let pos = 0;
+    const half = el.scrollWidth / 2;
+
+    const tick = () => {
+      if (!isPaused) {
+        pos += 0.5;
+        if (pos >= half) pos = 0;
+        el.scrollLeft = pos;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [isPaused, items]);
+
+  return (
+    <div
+      ref={stripRef}
+      className="flex gap-5 overflow-x-hidden py-4"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      {doubled.map((w, i) => (
+        <div
+          key={`${w.id}-${i}`}
+          className="flex-shrink-0 w-[280px] md:w-[340px] group cursor-pointer"
+          onClick={() => onItemClick(w)}
+        >
+          <div className="relative rounded-2xl overflow-hidden border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/40 transition-all duration-500 hover:shadow-[0_8px_40px_hsl(var(--primary)/0.15)]">
+            <div className="aspect-[4/5] overflow-hidden">
+              <img
+                src={w.image_url || "/placeholder.svg"}
+                alt={w.title}
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <p className="text-white/90 font-display text-lg font-semibold">{w.title}</p>
+                <p className="text-white/60 text-sm mt-1">Designed by Alpha Zero</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ─── Horizontal Gallery Row ─── */
+const HorizontalGallery = ({
+  items,
+  onItemClick,
+  isVideo = false,
+}: {
+  items: Work[];
+  onItemClick: (w: Work) => void;
+  isVideo?: boolean;
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    return () => el.removeEventListener("scroll", checkScroll);
+  }, [checkScroll, items]);
+
+  const scroll = (dir: "left" | "right") => {
+    scrollRef.current?.scrollBy({
+      left: dir === "left" ? -400 : 400,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <div className="relative group/gallery">
+      {/* Nav arrows */}
+      {canScrollLeft && (
+        <button
+          onClick={() => scroll("left")}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-primary hover:text-primary-foreground hover:border-primary"
+        >
+          <ChevronLeft size={18} />
+        </button>
+      )}
+      {canScrollRight && (
+        <button
+          onClick={() => scroll("right")}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-card/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover/gallery:opacity-100 transition-opacity duration-300 hover:bg-primary hover:text-primary-foreground hover:border-primary"
+        >
+          <ChevronRight size={18} />
+        </button>
+      )}
+
+      <div
+        ref={scrollRef}
+        className="flex gap-5 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {items.map((project, index) => (
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.05, duration: 0.5 }}
+            className="flex-shrink-0 w-[260px] md:w-[320px] snap-start group cursor-pointer"
+            onClick={() => onItemClick(project)}
+          >
+            <div className="rounded-2xl overflow-hidden border border-border/40 bg-card/40 backdrop-blur-sm hover:border-primary/30 transition-all duration-500 hover:shadow-[0_8px_40px_hsl(var(--primary)/0.12)] h-full">
+              {/* Image - preserve original ratio */}
+              <div className={`${isVideo ? "aspect-video" : "aspect-[4/5]"} overflow-hidden relative`}>
+                <img
+                  src={project.image_url || "/placeholder.svg"}
+                  alt={project.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center backdrop-blur-sm transform scale-75 group-hover:scale-100 transition-transform duration-500">
+                    {isVideo ? (
+                      <Play size={20} className="text-primary-foreground ml-0.5" fill="currentColor" />
+                    ) : (
+                      <ZoomIn size={20} className="text-primary-foreground" />
+                    )}
+                  </div>
+                </div>
+              </div>
+              {/* Info */}
+              <div className="p-4 space-y-2">
+                <h4 className="font-display font-semibold text-base group-hover:text-primary transition-colors duration-300 line-clamp-1">
+                  {project.title}
+                </h4>
+                {project.description && (
+                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                    {project.description}
+                  </p>
+                )}
+                <div className="flex items-center gap-2 pt-1">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary/80 to-primary/40 flex items-center justify-center">
+                    <Sparkles size={10} className="text-primary-foreground" />
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    Designed by <span className="text-foreground/80 font-medium">Alpha Zero</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ─── Section Header ─── */
+const SectionHeader = ({
+  number,
+  title,
+  subtitle,
+}: {
+  number: string;
+  title: string;
+  subtitle: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 24 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6 }}
+    className="mb-10"
+  >
+    <div className="flex items-center gap-3 mb-3">
+      <span className="text-xs font-mono text-primary/70 tracking-widest">{number}</span>
+      <div className="h-px w-12 bg-primary/30" />
+    </div>
+    <h2 className="text-3xl lg:text-4xl font-display font-bold mb-2">{title}</h2>
+    <p className="text-muted-foreground text-lg max-w-xl">{subtitle}</p>
+  </motion.div>
+);
+
+/* ─── Main Page ─── */
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
   const { t } = useLanguage();
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string } | null>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
-  const WEB_KEYS = ["web_portfolio", "web_ecommerce", "web_education", "web_agency", "web_general"] as const;
   const GRAPHICS_KEYS = [
-    "graphics_social",
     "graphics_logo",
+    "graphics_social",
     "graphics_vector",
     "graphics_branding",
     "graphics_general",
@@ -22,431 +239,232 @@ const WorkPage = () => {
   const VIDEO_KEYS = ["video_short", "video_reels", "video_funny", "video_square", "video_general"] as const;
 
   const categorized = useMemo(() => {
-    const buckets: Record<string, Work[]> = {
-      web_portfolio: [],
-      web_ecommerce: [],
-      web_education: [],
-      web_agency: [],
-      web_general: [],
-
-      graphics_social: [],
-      graphics_logo: [],
-      graphics_vector: [],
-      graphics_branding: [],
-      graphics_general: [],
-
-      video_short: [],
-      video_reels: [],
-      video_funny: [],
-      video_square: [],
-      video_general: [],
-
-      other: [],
-    };
+    const buckets: Record<string, Work[]> = {};
+    for (const key of [...GRAPHICS_KEYS, ...VIDEO_KEYS, "other"]) buckets[key] = [];
 
     for (const w of works || []) {
       const c = w.category;
-
-      // Web
-      if (c.startsWith("web_")) {
-        (buckets[c] ||= []).push(w);
-        continue;
-      }
-      if (c === "web") {
-        buckets.web_general.push(w);
-        continue;
-      }
-
-      // Graphics (backward compatible: `design` and `graphics`)
-      if (c.startsWith("graphics_")) {
-        (buckets[c] ||= []).push(w);
-        continue;
-      }
-      if (c === "graphics" || c === "design") {
-        buckets.graphics_general.push(w);
-        continue;
-      }
-
-      // Video
-      if (c.startsWith("video_")) {
-        (buckets[c] ||= []).push(w);
-        continue;
-      }
-      if (c === "video") {
-        buckets.video_general.push(w);
-        continue;
-      }
-
-      // Fallback
-      buckets.other.push(w);
+      if (c.startsWith("graphics_")) (buckets[c] ||= []).push(w);
+      else if (c === "graphics" || c === "design") buckets.graphics_general.push(w);
+      else if (c.startsWith("video_")) (buckets[c] ||= []).push(w);
+      else if (c === "video") buckets.video_general.push(w);
+      // web items are intentionally excluded from display per request
     }
-
     return buckets;
   }, [works]);
 
-  const hasAny = Object.values(categorized).some((arr) => (arr?.length || 0) > 0);
-  const hasWeb = WEB_KEYS.some((k) => categorized[k]?.length);
+  // Flatten for featured hero strip
+  const featuredItems = useMemo(() => {
+    const all = Object.values(categorized).flat();
+    const featured = all.filter((w) => w.is_featured);
+    return featured.length > 0 ? featured : all.slice(0, 8);
+  }, [categorized]);
+
   const hasGraphics = GRAPHICS_KEYS.some((k) => categorized[k]?.length);
   const hasVideo = VIDEO_KEYS.some((k) => categorized[k]?.length);
+  const hasAny = hasGraphics || hasVideo;
+
+  const logoItems = useMemo(() => categorized.graphics_logo || [], [categorized]);
+  const socialItems = useMemo(() => {
+    return [
+      ...(categorized.graphics_social || []),
+      ...(categorized.graphics_vector || []),
+      ...(categorized.graphics_branding || []),
+      ...(categorized.graphics_general || []),
+    ];
+  }, [categorized]);
+  const videoItems = useMemo(() => {
+    return VIDEO_KEYS.flatMap((k) => categorized[k] || []);
+  }, [categorized]);
+
+  const handleItemClick = (w: Work) => {
+    if (w.image_url) setLightboxImage({ url: w.image_url, title: w.title });
+  };
 
   const catLabel = (key: string) => t(`work.category.${key}`);
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
-            >
-              {t("work.subtitle")}
-            </motion.span>
-            <motion.h1
+      {/* ═══ HERO ═══ */}
+      <motion.section
+        ref={heroRef}
+        style={{ opacity: heroOpacity, scale: heroScale }}
+        className="relative min-h-[90vh] flex flex-col justify-center overflow-hidden"
+      >
+        {/* Cinematic gradient bg */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-secondary/20" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,hsl(var(--primary)/0.08),transparent_70%)]" />
+
+        <div className="container mx-auto px-6 relative z-10 pt-16 pb-8">
+          <div className="max-w-5xl mx-auto text-center mb-16">
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
-              {t("work.title")} <span className="gradient-text">{t("work.title2")}</span>
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-sm font-medium mb-8">
+                <Sparkles size={14} />
+                Creative Portfolio
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight leading-[0.95] mb-8"
+            >
+              Crafting Modern
+              <br />
+              <span className="gradient-text">Digital Identity.</span>
             </motion.h1>
+
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
             >
-              {t("work.description")}
+              We design brands, shape visuals, and edit stories that stand out in the digital world.
             </motion.p>
           </div>
         </div>
-      </section>
+
+        {/* Featured auto-scroll strip */}
+        {featuredItems.length > 2 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className="relative w-full overflow-hidden"
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+            <ScrollStrip items={featuredItems} onItemClick={handleItemClick} />
+          </motion.div>
+        )}
+      </motion.section>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-32">
-          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        <div className="flex items-center justify-center py-40">
+          <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
         </div>
       ) : !hasAny ? (
-        <div className="container mx-auto px-6 py-24">
-          <div className="max-w-3xl mx-auto text-center text-muted-foreground">{t("work.noWorks")}</div>
+        <div className="container mx-auto px-6 py-32 text-center text-muted-foreground text-lg">
+          {t("work.noWorks")}
         </div>
       ) : (
-        <>
-          {/* Web Development Section */}
-          {hasWeb && (
-            <section className="py-20">
+        <div className="space-y-0">
+          {/* ═══ LOGO DESIGN ═══ */}
+          {logoItems.length > 0 && (
+            <section className="py-20 lg:py-28">
               <div className="container mx-auto px-6">
-                <div className="max-w-6xl mx-auto">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-3 mb-8"
-                  >
-                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                      <Globe size={24} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl lg:text-3xl font-display font-bold">{t("work.webDev")}</h2>
-                      <p className="text-muted-foreground">{t("work.webDevDesc")}</p>
-                    </div>
-                  </motion.div>
-
-                  {WEB_KEYS.map((key) => {
-                    const items = categorized[key] || [];
-                    if (!items.length) return null;
-
-                    return (
-                      <div key={key} className="mb-12 last:mb-0">
-                        <h3 className="text-xl lg:text-2xl font-display font-semibold mb-5">{catLabel(key)}</h3>
-
-                        {/* Web Projects Grid - Browser Mockup Style */}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                          {items.map((project, index) => (
-                            <motion.a
-                              key={project.id}
-                              href={project.project_url || "#"}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              initial={{ opacity: 0, y: 30 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: index * 0.06 }}
-                              className="group block"
-                            >
-                              {/* Browser Mockup */}
-                              <div className="rounded-xl overflow-hidden border border-border bg-card shadow-lg hover:shadow-xl hover:border-primary/30 transition-all duration-300">
-                                {/* Browser Top Bar */}
-                                <div className="bg-secondary/50 px-4 py-3 flex items-center gap-2 border-b border-border">
-                                  <div className="flex gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                                    <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                                    <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                                  </div>
-                                  <div className="flex-1 mx-3">
-                                    <div className="bg-background/80 rounded-md px-3 py-1.5 text-xs text-muted-foreground flex items-center gap-2 max-w-[200px]">
-                                      <Globe size={12} />
-                                      <span className="truncate">
-                                        {project.project_url?.replace("https://", "") || project.title}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-
-                                {/* Website Preview Area */}
-                                <div className="aspect-[4/3] bg-gradient-to-br from-primary/5 via-background to-secondary/20 flex items-center justify-center relative overflow-hidden">
-                                  <div className="text-center p-6">
-                                    <Globe size={48} className="mx-auto mb-4 text-primary/40" />
-                                    <h4 className="text-lg font-display font-semibold mb-2 group-hover:text-primary transition-colors">
-                                      {project.title}
-                                    </h4>
-                                    <p className="text-sm text-muted-foreground mb-4">{project.description || ""}</p>
-                                  </div>
-
-                                  {/* Hover Overlay */}
-                                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                                    <div className="bg-primary text-primary-foreground px-4 py-2 rounded-lg flex items-center gap-2 font-medium">
-                                      {t("work.visitWebsite")} <ExternalLink size={16} />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.a>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="max-w-7xl mx-auto">
+                  <SectionHeader number="01" title="Logo Design" subtitle="Minimal, timeless, and brand-defining marks." />
+                  <HorizontalGallery items={logoItems} onItemClick={handleItemClick} />
                 </div>
               </div>
             </section>
           )}
 
-          {/* Design Section */}
-          {hasGraphics && (
-            <section className="py-20 bg-secondary/30">
+          {/* ═══ SOCIAL MEDIA DESIGN ═══ */}
+          {socialItems.length > 0 && (
+            <section className="py-20 lg:py-28 bg-secondary/20">
               <div className="container mx-auto px-6">
-                <div className="max-w-6xl mx-auto">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-3 mb-8"
-                  >
-                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                      <Palette size={24} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl lg:text-3xl font-display font-bold">{t("work.graphicDesign")}</h2>
-                      <p className="text-muted-foreground">{t("work.graphicDesignDesc")}</p>
-                    </div>
-                  </motion.div>
-
-                  {GRAPHICS_KEYS.map((key) => {
-                    const items = categorized[key] || [];
-                    if (!items.length) return null;
-
-                    return (
-                      <div key={key} className="mb-12 last:mb-0">
-                        <h3 className="text-xl lg:text-2xl font-display font-semibold mb-5">{catLabel(key)}</h3>
-
-                        {/* Design Projects Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                          {items.map((project, index) => (
-                            <motion.div
-                              key={project.id}
-                              initial={{ opacity: 0, y: 30 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: index * 0.06 }}
-                              className="group cursor-pointer"
-                              onClick={() => project.image_url && setLightboxImage({ url: project.image_url, title: project.title })}
-                            >
-                              <div className="rounded-xl overflow-hidden border border-border bg-card hover:border-primary/30 hover:shadow-lg transition-all duration-300 h-full">
-                                {/* Image - fixed square aspect ratio */}
-                                <div className="aspect-square overflow-hidden relative">
-                                  <img
-                                    src={project.image_url || "/placeholder.svg"}
-                                    alt={project.title}
-                                    loading="lazy"
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                  />
-                                  {/* Zoom overlay */}
-                                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div className="w-12 h-12 rounded-full bg-primary/90 flex items-center justify-center">
-                                      <ZoomIn size={22} className="text-primary-foreground" />
-                                    </div>
-                                  </div>
-                                </div>
-                                {/* Content */}
-                                <div className="p-3 md:p-4">
-                                  <span className="inline-block px-2 py-0.5 text-[10px] md:text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-1.5">
-                                    {catLabel(key)}
-                                  </span>
-                                  <h4 className="text-sm md:text-lg font-display font-semibold group-hover:text-primary transition-colors line-clamp-1">
-                                    {project.title}
-                                  </h4>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="max-w-7xl mx-auto">
+                  <SectionHeader
+                    number="02"
+                    title="Social Media Design"
+                    subtitle="Scroll-stopping visuals for every platform."
+                  />
+                  <HorizontalGallery items={socialItems} onItemClick={handleItemClick} />
                 </div>
               </div>
             </section>
           )}
 
-          {/* Video Editing Section */}
-          {hasVideo && (
-            <section className="py-20">
+          {/* ═══ VIDEO EDITING ═══ */}
+          {videoItems.length > 0 && (
+            <section className="py-20 lg:py-28">
               <div className="container mx-auto px-6">
-                <div className="max-w-6xl mx-auto">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="flex items-center gap-3 mb-8"
-                  >
-                    <div className="p-3 rounded-xl bg-primary/10 text-primary">
-                      <Video size={24} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl lg:text-3xl font-display font-bold">{t("work.videoEditing")}</h2>
-                      <p className="text-muted-foreground">{t("work.videoEditingDesc")}</p>
-                    </div>
-                  </motion.div>
-
-                  {VIDEO_KEYS.map((key) => {
-                    const items = categorized[key] || [];
-                    if (!items.length) return null;
-
-                    return (
-                      <div key={key} className="mb-12 last:mb-0">
-                        <h3 className="text-xl lg:text-2xl font-display font-semibold mb-5">{catLabel(key)}</h3>
-
-                        {/* Video Projects Grid */}
-                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                          {items.map((project, index) => (
-                            <motion.div
-                              key={project.id}
-                              initial={{ opacity: 0, y: 30 }}
-                              whileInView={{ opacity: 1, y: 0 }}
-                              viewport={{ once: true }}
-                              transition={{ delay: index * 0.06 }}
-                              className="group cursor-pointer"
-                            >
-                              <div className="rounded-xl overflow-hidden border border-border bg-card hover:border-primary/30 hover:shadow-lg transition-all duration-300 h-full">
-                                {/* Thumbnail with Play Button */}
-                                <div className="aspect-video overflow-hidden relative">
-                                  <img
-                                    src={project.image_url || "/placeholder.svg"}
-                                    alt={project.title}
-                                    loading="lazy"
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                  />
-                                  {/* Play Button Overlay */}
-                                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                    <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center">
-                                      <Play
-                                        size={24}
-                                        className="text-primary-foreground ml-1"
-                                        fill="currentColor"
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                {/* Content */}
-                                <div className="p-4">
-                                  <span className="inline-block px-2 py-1 text-xs font-semibold rounded-md bg-gradient-to-r from-primary/15 to-primary/5 text-primary border border-primary/25 mb-2">
-                                    {catLabel(key)}
-                                  </span>
-                                  <h4 className="text-lg font-display font-semibold mb-1 group-hover:text-primary transition-colors">
-                                    {project.title}
-                                  </h4>
-                                  <p className="text-sm text-muted-foreground">{project.description || ""}</p>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="max-w-7xl mx-auto">
+                  <SectionHeader
+                    number="03"
+                    title="Video Editing"
+                    subtitle="Cinematic cuts, motion graphics, and storytelling."
+                  />
+                  <HorizontalGallery items={videoItems} onItemClick={handleItemClick} isVideo />
                 </div>
               </div>
             </section>
           )}
-        </>
+        </div>
       )}
 
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      {/* ═══ CTA ═══ */}
+      <section className="py-24 lg:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_60%,hsl(var(--primary)/0.06),transparent_70%)]" />
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
+            transition={{ duration: 0.7 }}
+            className="max-w-2xl mx-auto text-center"
           >
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6 tracking-tight">
               {t("work.likeWhatYouSee")}
             </h2>
-            <p className="text-muted-foreground text-lg mb-8">
+            <p className="text-muted-foreground text-lg mb-10 leading-relaxed">
               {t("work.letsCreate")}
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
-              >
-                {t("work.startProject")} <ArrowRight size={20} />
-              </Link>
-              <a
-                href="https://wa.me/8801712345678"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
-              >
-                {t("work.whatsappUs")}
-              </a>
-            </div>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-3 px-10 py-4 bg-primary text-primary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500 hover:shadow-[0_8px_40px_hsl(var(--primary)/0.3)] hover:scale-[1.02]"
+            >
+              {t("work.startProject")}
+              <ChevronRight size={20} />
+            </Link>
           </motion.div>
         </div>
       </section>
-      {/* Lightbox Modal */}
+
+      {/* ═══ LIGHTBOX ═══ */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-pointer"
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8 cursor-pointer"
             onClick={() => setLightboxImage(null)}
           >
             <button
               onClick={() => setLightboxImage(null)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all duration-300"
             >
-              <X size={24} className="text-white" />
+              <X size={22} className="text-white" />
             </button>
             <motion.img
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", damping: 25 }}
+              initial={{ scale: 0.85, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.85, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
               src={lightboxImage.url}
               alt={lightboxImage.title}
-              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-default"
+              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl cursor-default"
               onClick={(e) => e.stopPropagation()}
             />
-            <p className="absolute bottom-6 text-white/80 text-lg font-display font-semibold">{lightboxImage.title}</p>
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center"
+            >
+              <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
+              <p className="text-white/50 text-sm mt-1">Designed by Alpha Zero</p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
