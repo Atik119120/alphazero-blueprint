@@ -117,15 +117,9 @@ const ScrollStrip = ({ items }: { items: Work[] }) => {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 1 — Graphic Design (Horizontal Scroll, Uniform Size)
+   SECTION 1 — Graphic Design (Dark Grid, Internal Scroll)
    ═══════════════════════════════════════════════════════════ */
 const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) => void }) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const scroll = (dir: "left" | "right") => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollBy({ left: dir === "left" ? -340 : 340, behavior: "smooth" });
-  };
-
   if (items.length === 0) return null;
 
   return (
@@ -134,68 +128,57 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="flex items-center justify-between mb-8"
+          className="mb-8"
         >
-          <div>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
-              <Sparkles size={12} /> Graphic Design
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-              Our <span className="gradient-text">Creative Designs</span>
-            </h2>
-          </div>
-          <div className="hidden sm:flex gap-2">
-            <button onClick={() => scroll("left")} className="w-10 h-10 rounded-full bg-secondary/80 hover:bg-secondary border border-border/50 flex items-center justify-center transition-colors">
-              <ChevronLeft size={18} className="text-foreground" />
-            </button>
-            <button onClick={() => scroll("right")} className="w-10 h-10 rounded-full bg-secondary/80 hover:bg-secondary border border-border/50 flex items-center justify-center transition-colors">
-              <ChevronRight size={18} className="text-foreground" />
-            </button>
-          </div>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
+            <Sparkles size={12} /> Graphic Design
+          </span>
+          <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
+            Our <span className="gradient-text">Creative Designs</span>
+          </h2>
         </motion.div>
 
+        {/* Fixed-height scrollable grid area */}
         <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          className="h-[70vh] lg:h-[75vh] overflow-y-auto pr-1"
+          style={{ scrollbarWidth: "thin", scrollbarColor: "hsl(var(--primary) / 0.3) transparent" }}
         >
-          {items.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: idx * 0.05, duration: 0.5 }}
-              className="flex-shrink-0 w-[300px] snap-start group cursor-pointer"
-              onClick={() => onZoom(project)}
-            >
-              <div className="relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]">
-                {/* Fixed square aspect ratio for uniform sizing */}
-                <div className="relative overflow-hidden aspect-square">
-                  <img
-                    src={project.image_url || "/placeholder.svg"}
-                    alt={project.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                  />
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-400">
-                    <div className="w-12 h-12 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500">
-                      <ZoomIn size={20} className="text-primary-foreground" />
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+            {items.map((project, idx) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ delay: idx * 0.03, duration: 0.4 }}
+                className="group cursor-pointer"
+                onClick={() => onZoom(project)}
+              >
+                <div className="relative rounded-xl overflow-hidden bg-[hsl(0_0%_8%)] border border-[hsl(0_0%_15%)] hover:border-primary/50 transition-all duration-500 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.15)] hover:-translate-y-1">
+                  <div className="relative overflow-hidden aspect-[4/5]">
+                    <img
+                      src={project.image_url || "/placeholder.svg"}
+                      alt={project.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                    />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
+                      <div className="w-11 h-11 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
+                        <ZoomIn size={18} className="text-primary-foreground" />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="p-3.5">
-                  <h4 className="font-display font-semibold text-sm leading-snug group-hover:text-primary transition-colors line-clamp-1">{project.title}</h4>
-                  {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
-                  <div className="flex items-center gap-1.5 mt-2">
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center">
-                      <Sparkles size={8} className="text-primary-foreground" />
-                    </div>
-                    <span className="text-[10px] text-foreground/70 font-medium">Alpha Zero</span>
+                  {/* Minimal footer — no description */}
+                  <div className="px-3 py-2.5 bg-[hsl(0_0%_6%)]">
+                    <h4 className="font-display font-semibold text-xs sm:text-sm text-[hsl(0_0%_92%)] leading-snug line-clamp-1 group-hover:text-primary transition-colors">
+                      {project.title}
+                    </h4>
+                    <span className="text-[10px] text-[hsl(0_0%_50%)] font-medium mt-0.5 block">By Alphazero Team</span>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -428,7 +411,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
   const { t } = useLanguage();
-  const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string } | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; description?: string | null } | null>(null);
 
   const graphicsWorks = useMemo(() => works?.filter(isGraphics) || [], [works]);
   const webWorks = useMemo(() => works?.filter(isWeb) || [], [works]);
@@ -436,7 +419,7 @@ const WorkPage = () => {
 
   const handleZoom = (w: Work) => {
     if (w.image_url && !getVideoEmbed(w.image_url)) {
-      setLightboxImage({ url: w.image_url, title: w.title });
+      setLightboxImage({ url: w.image_url, title: w.title, description: w.description });
     }
   };
 
@@ -444,9 +427,7 @@ const WorkPage = () => {
     <Layout>
       {/* ═══ HERO ═══ */}
       <section className="relative py-24 lg:py-36 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background to-secondary/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_30%,hsl(var(--primary)/0.07),transparent_70%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_1px_at_center,hsl(var(--primary)/0.15)_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
+        <div className="absolute inset-0 bg-background" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -489,7 +470,7 @@ const WorkPage = () => {
 
       {/* ═══ CTA ═══ */}
       <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,hsl(var(--primary)/0.06),transparent_70%)]" />
+        <div className="absolute inset-0 bg-background" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
             className="max-w-2xl mx-auto text-center">
@@ -508,7 +489,7 @@ const WorkPage = () => {
         </div>
       </section>
 
-      {/* ═══ IMAGE LIGHTBOX ═══ */}
+      {/* ═══ IMAGE LIGHTBOX with Description ═══ */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -518,16 +499,20 @@ const WorkPage = () => {
               className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
               <X size={22} className="text-white" />
             </button>
-            <motion.img initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              src={lightboxImage.url} alt={lightboxImage.title}
-              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl cursor-default"
-              onClick={(e) => e.stopPropagation()} />
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center">
-              <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
-              <p className="text-white/50 text-sm mt-1">Designed by Alpha Zero</p>
-            </motion.div>
+            <div className="flex flex-col items-center max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+              <motion.img initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
+                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                src={lightboxImage.url} alt={lightboxImage.title}
+                className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl cursor-default" />
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                className="mt-6 text-center max-w-lg">
+                <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
+                {lightboxImage.description && (
+                  <p className="text-white/60 text-sm mt-2 leading-relaxed">{lightboxImage.description}</p>
+                )}
+                <p className="text-white/40 text-xs mt-3">Designed by Alpha Zero</p>
+              </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
