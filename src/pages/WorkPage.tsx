@@ -1,8 +1,8 @@
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, ZoomIn, Play, Sparkles, ExternalLink, Phone, MessageCircle,
-  ChevronLeft, ChevronRight, Maximize2, Globe, ArrowUpRight,
+  Globe, ArrowUpRight, Maximize2,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
@@ -22,7 +22,6 @@ function isVideo(w: Work) {
   return c === "video" || c.startsWith("video_");
 }
 
-/** Try to extract a YouTube/Facebook embed from ANY url string */
 function getVideoEmbed(url: string | null | undefined): string | null {
   if (!url) return null;
   const ytMatch = url.match(
@@ -35,7 +34,6 @@ function getVideoEmbed(url: string | null | undefined): string | null {
   return null;
 }
 
-/** Extract YouTube thumbnail */
 function getYouTubeThumbnail(url: string | null | undefined): string | null {
   if (!url) return null;
   const ytMatch = url.match(
@@ -45,7 +43,6 @@ function getYouTubeThumbnail(url: string | null | undefined): string | null {
   return null;
 }
 
-/** Find the best video URL from a work item (check both fields) */
 function findVideoUrl(w: Work): string | null {
   return getVideoEmbed(w.project_url) ? w.project_url
     : getVideoEmbed(w.image_url) ? w.image_url
@@ -53,10 +50,11 @@ function findVideoUrl(w: Work): string | null {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   AUTO-SCROLLING STRIP (Top showcase)
+   AUTO-SCROLLING STRIP — Graphics + Videos only, square, pause on hover, clickable
    ═══════════════════════════════════════════════════════════ */
-const ScrollStrip = ({ items }: { items: Work[] }) => {
+const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: Work) => void }) => {
   const stripRef = useRef<HTMLDivElement>(null);
+  const pausedRef = useRef(false);
 
   useEffect(() => {
     const el = stripRef.current;
@@ -65,9 +63,11 @@ const ScrollStrip = ({ items }: { items: Work[] }) => {
     let pos = 0;
     const speed = 0.5;
     const tick = () => {
-      pos += speed;
-      if (pos >= el.scrollWidth / 2) pos = 0;
-      el.scrollLeft = pos;
+      if (!pausedRef.current) {
+        pos += speed;
+        if (pos >= el.scrollWidth / 2) pos = 0;
+        el.scrollLeft = pos;
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -76,37 +76,49 @@ const ScrollStrip = ({ items }: { items: Work[] }) => {
 
   if (items.length === 0) return null;
 
-  // duplicate for infinite loop
   const doubled = [...items, ...items];
 
   return (
-    <div className="py-10 overflow-hidden relative">
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+    <div
+      className="py-8 overflow-hidden relative"
+      onMouseEnter={() => { pausedRef.current = true; }}
+      onMouseLeave={() => { pausedRef.current = false; }}
+    >
+      <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
       <div
         ref={stripRef}
-        className="flex gap-4 overflow-hidden"
+        className="flex gap-3 overflow-hidden"
         style={{ scrollbarWidth: "none" }}
       >
         {doubled.map((project, idx) => {
-          const thumb = project.image_url && !getVideoEmbed(project.image_url)
-            ? project.image_url
-            : getYouTubeThumbnail(project.image_url) || getYouTubeThumbnail(project.project_url) || null;
+          const isVid = isVideo(project);
+          const thumb = isVid
+            ? (getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url)
+            : project.image_url;
 
           return (
             <div
               key={`${project.id}-${idx}`}
-              className="flex-shrink-0 w-[200px] h-[130px] rounded-xl overflow-hidden bg-card border border-border/30 relative group"
+              className="flex-shrink-0 w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] rounded-xl overflow-hidden bg-card border border-border/30 relative group cursor-pointer"
+              onClick={() => onItemClick(project)}
             >
               {thumb ? (
                 <img src={thumb} alt={project.title} className="w-full h-full object-cover" />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                  {isWeb(project) ? <Globe size={28} className="text-primary/40" /> : <Sparkles size={28} className="text-primary/40" />}
+                  <Sparkles size={24} className="text-primary/40" />
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
-                <span className="text-white text-[11px] font-medium line-clamp-1">{project.title}</span>
+              {isVid && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center">
+                    <Play size={14} className="text-primary-foreground ml-0.5" fill="currentColor" />
+                  </div>
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2">
+                <span className="text-white text-[10px] font-medium line-clamp-1">{project.title}</span>
               </div>
             </div>
           );
@@ -117,7 +129,7 @@ const ScrollStrip = ({ items }: { items: Work[] }) => {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 1 — Graphic Design (Dark Grid, Internal Scroll)
+   SECTION 1 — Graphic Design (Square grid, NO internal scroll)
    ═══════════════════════════════════════════════════════════ */
 const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) => void }) => {
   if (items.length === 0) return null;
@@ -138,47 +150,42 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
           </h2>
         </motion.div>
 
-        {/* Fixed-height scrollable grid area */}
-        <div
-          className="h-[70vh] lg:h-[75vh] overflow-y-auto pr-1"
-          style={{ scrollbarWidth: "thin", scrollbarColor: "hsl(var(--primary) / 0.3) transparent" }}
-        >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-            {items.map((project, idx) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ delay: idx * 0.03, duration: 0.4 }}
-                className="group cursor-pointer"
-                onClick={() => onZoom(project)}
-              >
-                <div className="relative rounded-xl overflow-hidden bg-[hsl(0_0%_8%)] border border-[hsl(0_0%_15%)] hover:border-primary/50 transition-all duration-500 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.15)] hover:-translate-y-1">
-                  <div className="relative overflow-hidden aspect-[4/5]">
-                    <img
-                      src={project.image_url || "/placeholder.svg"}
-                      alt={project.title}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
-                      <div className="w-11 h-11 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
-                        <ZoomIn size={18} className="text-primary-foreground" />
-                      </div>
+        {/* Normal grid — page grows naturally */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+          {items.map((project, idx) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ delay: idx * 0.03, duration: 0.4 }}
+              className="group cursor-pointer"
+              onClick={() => onZoom(project)}
+            >
+              <div className="relative rounded-xl overflow-hidden bg-card border border-border/40 hover:border-primary/50 transition-all duration-500 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.15)] hover:-translate-y-1">
+                {/* SQUARE aspect ratio */}
+                <div className="relative overflow-hidden aspect-square">
+                  <img
+                    src={project.image_url || "/placeholder.svg"}
+                    alt={project.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
+                    <div className="w-11 h-11 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
+                      <ZoomIn size={18} className="text-primary-foreground" />
                     </div>
                   </div>
-                  {/* Minimal footer — no description */}
-                  <div className="px-3 py-2.5 bg-[hsl(0_0%_6%)]">
-                    <h4 className="font-display font-semibold text-xs sm:text-sm text-[hsl(0_0%_92%)] leading-snug line-clamp-1 group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h4>
-                    <span className="text-[10px] text-[hsl(0_0%_50%)] font-medium mt-0.5 block">By Alphazero Team</span>
-                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+                <div className="px-3 py-2.5 bg-card">
+                  <h4 className="font-display font-semibold text-xs sm:text-sm text-foreground leading-snug line-clamp-1 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h4>
+                  <span className="text-[10px] text-muted-foreground font-medium mt-0.5 block">By Alphazero Team</span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -186,7 +193,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
 };
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 2 — Web Design (Website-style cards with live links)
+   SECTION 2 — Web Design (Browser-style cards)
    ═══════════════════════════════════════════════════════════ */
 const WebSection = ({ items }: { items: Work[] }) => {
   if (items.length === 0) return null;
@@ -226,7 +233,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                   rel="noopener noreferrer"
                   className="block relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]"
                 >
-                  {/* Browser-style header */}
+                  {/* Browser header */}
                   <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/30">
                     <div className="flex gap-1.5">
                       <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
@@ -240,9 +247,8 @@ const WebSection = ({ items }: { items: Work[] }) => {
                     <ArrowUpRight size={14} className="text-muted-foreground/60 group-hover:text-primary transition-colors" />
                   </div>
 
-                  {/* Preview area */}
                   <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/5 via-secondary/30 to-primary/10">
-                    {project.image_url && !project.image_url.startsWith("http") ? null : project.image_url ? (
+                    {project.image_url ? (
                       <img src={project.image_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center gap-3">
@@ -252,7 +258,6 @@ const WebSection = ({ items }: { items: Work[] }) => {
                         <span className="text-sm text-muted-foreground font-medium">{project.title}</span>
                       </div>
                     )}
-                    {/* Visit overlay */}
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-400">
                       <div className="px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2">
                         <ExternalLink size={16} className="text-primary-foreground" />
@@ -261,7 +266,6 @@ const WebSection = ({ items }: { items: Work[] }) => {
                     </div>
                   </div>
 
-                  {/* Info */}
                   <div className="p-4">
                     <h4 className="font-display font-semibold text-base leading-snug group-hover:text-primary transition-colors">
                       {project.title}
@@ -285,10 +289,20 @@ const WebSection = ({ items }: { items: Work[] }) => {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   SECTION 3 — Video Editing (YouTube/Facebook Embed)
+   SECTION 3 — Video Editing
    ═══════════════════════════════════════════════════════════ */
 const VideoSection = ({ items }: { items: Work[] }) => {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
+  // Lock body scroll when video modal is open
+  useEffect(() => {
+    if (activeVideo) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [activeVideo]);
 
   if (items.length === 0) return null;
 
@@ -323,7 +337,6 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                 className="group"
               >
                 <div className="relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]">
-                  {/* Thumbnail with play button */}
                   <div
                     className="relative overflow-hidden cursor-pointer aspect-video"
                     onClick={() => {
@@ -337,7 +350,6 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                       loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
-                    {/* Play overlay */}
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 flex items-center justify-center transition-all duration-400">
                       <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500 shadow-lg">
                         <Play size={24} className="text-primary-foreground ml-0.5" fill="currentColor" />
@@ -345,7 +357,6 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                     </div>
                   </div>
 
-                  {/* Info */}
                   <div className="p-3.5">
                     <h4 className="font-display font-semibold text-sm leading-snug group-hover:text-primary transition-colors line-clamp-1">{project.title}</h4>
                     {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
@@ -417,22 +428,50 @@ const WorkPage = () => {
   const webWorks = useMemo(() => works?.filter(isWeb) || [], [works]);
   const videoWorks = useMemo(() => works?.filter(isVideo) || [], [works]);
 
-  const handleZoom = (w: Work) => {
+  // Items for the scroll strip: graphics + videos only
+  const scrollStripItems = useMemo(() => [...graphicsWorks, ...videoWorks], [graphicsWorks, videoWorks]);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [lightboxImage]);
+
+  const handleZoom = useCallback((w: Work) => {
     if (w.image_url && !getVideoEmbed(w.image_url)) {
       setLightboxImage({ url: w.image_url, title: w.title, description: w.description });
     }
-  };
+  }, []);
+
+  const handleScrollStripClick = useCallback((w: Work) => {
+    if (isVideo(w)) {
+      const videoUrl = findVideoUrl(w);
+      if (videoUrl) window.open(videoUrl, "_blank");
+    } else {
+      handleZoom(w);
+    }
+  }, [handleZoom]);
 
   return (
     <Layout>
-      {/* ═══ HERO ═══ */}
+      {/* ═══ HERO with glassmorphic background ═══ */}
       <section className="relative py-24 lg:py-36 overflow-hidden">
         <div className="absolute inset-0 bg-background" />
+        {/* Glassmorphic decorative element */}
+        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
+          <div className="w-[500px] h-[500px] rounded-full bg-primary/8 blur-[100px]" />
+        </div>
+        <div className="absolute left-1/4 top-1/3 w-[200px] h-[200px] rounded-full bg-primary/5 blur-[80px] pointer-events-none" />
+        <div className="absolute right-1/4 bottom-1/4 w-[250px] h-[250px] rounded-full bg-accent/5 blur-[90px] pointer-events-none" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm text-primary text-xs font-medium tracking-wide mb-6">
                 <Sparkles size={12} /> Creative Portfolio
               </span>
             </motion.div>
@@ -444,6 +483,14 @@ const WorkPage = () => {
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {t("work.description") || "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion."}
             </motion.p>
+
+            {/* Glassmorphic card accent below heading */}
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-10 mx-auto max-w-md px-6 py-3 rounded-2xl bg-card/40 backdrop-blur-xl border border-border/30 shadow-lg">
+              <p className="text-sm text-muted-foreground font-medium">
+                ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} Projects • Graphic Design • Web • Video
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -454,8 +501,8 @@ const WorkPage = () => {
         </div>
       ) : (
         <>
-          {/* Auto-scrolling showcase strip */}
-          <ScrollStrip items={works || []} />
+          {/* Auto-scrolling strip — graphics + videos only */}
+          <ScrollStrip items={scrollStripItems} onItemClick={handleScrollStripClick} />
 
           {/* 1. Graphic Design */}
           <GraphicsSection items={graphicsWorks} onZoom={handleZoom} />
@@ -489,7 +536,7 @@ const WorkPage = () => {
         </div>
       </section>
 
-      {/* ═══ IMAGE LIGHTBOX with Description ═══ */}
+      {/* ═══ IMAGE LIGHTBOX — scroll-locked ═══ */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
