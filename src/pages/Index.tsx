@@ -2,110 +2,110 @@ import { motion } from "framer-motion";
 import { 
   ArrowRight, 
   Sparkles, 
-  Palette, 
-  Eye, 
-  Target, 
-  MessageSquare, 
-  Gem,
-  Layout,
-  Share2,
-  PenTool,
-  Monitor,
-  ShoppingCart,
-  Search,
-  Star,
-  Quote,
-  MessageCircle
+  MessageCircle,
+  CheckCircle,
+  Loader2,
+  ExternalLink,
+  BookOpen,
+  Users,
+  Briefcase,
+  Award
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useServices } from "@/hooks/useServices";
+import { useTeamMembers } from "@/hooks/useTeamMembers";
+import { useWorks } from "@/hooks/useWorks";
+import { usePublicCourses } from "@/hooks/usePublicCourses";
+import * as LucideIcons from "lucide-react";
 
-const clientLogos = [
-  "TechStart", "GreenLeaf", "Bloom Co", "NextGen", "Spark Digital", "CloudNine"
-];
+// Icon mapping for dynamic services
+const iconMap: Record<string, any> = {
+  Code: LucideIcons.Code, Palette: LucideIcons.Palette, Video: LucideIcons.Video,
+  Search: LucideIcons.Search, Globe: LucideIcons.Globe, Smartphone: LucideIcons.Smartphone,
+  Monitor: LucideIcons.Monitor, PenTool: LucideIcons.PenTool, Camera: LucideIcons.Camera,
+  Megaphone: LucideIcons.Megaphone, BarChart: LucideIcons.BarChart, Shield: LucideIcons.Shield,
+  Zap: LucideIcons.Zap, Sparkles: LucideIcons.Sparkles, Target: LucideIcons.Target,
+  Layers: LucideIcons.Layers, Box: LucideIcons.Box, Settings: LucideIcons.Settings,
+  Layout: LucideIcons.Layout, Share2: LucideIcons.Share2, ShoppingCart: LucideIcons.ShoppingCart,
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i: number = 0) => ({
+    opacity: 1, y: 0,
+    transition: { duration: 0.6, delay: i * 0.1 }
+  })
+};
 
 const Index = () => {
   const { t } = useLanguage();
   const { getContent } = usePageContent('home');
+  const { data: services, isLoading: servicesLoading } = useServices();
+  const { data: teamMembers, isLoading: teamLoading } = useTeamMembers();
+  const { data: works, isLoading: worksLoading } = useWorks();
+  const { courses, isLoading: coursesLoading } = usePublicCourses();
 
-  // Helper to get content with translation fallback
   const c = (key: string, translationKey: string) => {
     const dbContent = getContent(key);
     return dbContent || t(translationKey);
   };
 
-  const whyChooseUs = [
-    { icon: Palette, title: c("why.clean", "home.why.clean"), description: c("why.cleanDesc", "home.why.cleanDesc") },
-    { icon: Eye, title: c("why.brand", "home.why.brand"), description: c("why.brandDesc", "home.why.brandDesc") },
-    { icon: Target, title: c("why.detail", "home.why.detail"), description: c("why.detailDesc", "home.why.detailDesc") },
-    { icon: MessageSquare, title: c("why.client", "home.why.client"), description: c("why.clientDesc", "home.why.clientDesc") },
-    { icon: Gem, title: c("why.zero", "home.why.zero"), description: c("why.zeroDesc", "home.why.zeroDesc") },
-  ];
+  // Filter items for homepage display
+  const homepageServices = services?.filter((s: any) => s.show_on_homepage)?.slice(0, 6) || [];
+  const homepageWorks = works?.filter((w: any) => w.show_on_homepage || w.is_featured)?.slice(0, 6) || [];
+  const homepageTeam = teamMembers?.filter((m: any) => m.show_on_homepage)?.slice(0, 4) || [];
+  const homepageCourses = courses?.filter((c: any) => c.show_on_homepage)?.slice(0, 4) || [];
 
-  const services = [
-    { icon: Layout, title: c("service.uiux", "home.service.uiux"), description: c("service.uiuxDesc", "home.service.uiuxDesc") },
-    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc") },
-    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc") },
-    { icon: ShoppingCart, title: c("service.ecommerce", "home.service.ecommerce"), description: c("service.ecommerceDesc", "home.service.ecommerceDesc") },
-    { icon: Share2, title: c("service.social", "home.service.social"), description: c("service.socialDesc", "home.service.socialDesc") },
-    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc") },
-  ];
+  // Fallback: if no items have show_on_homepage, show first N items
+  const displayServices = homepageServices.length > 0 ? homepageServices : services?.slice(0, 6) || [];
+  const displayWorks = homepageWorks.length > 0 ? homepageWorks : works?.filter(w => w.is_featured)?.slice(0, 6) || works?.slice(0, 6) || [];
+  const displayTeam = homepageTeam.length > 0 ? homepageTeam : teamMembers?.slice(0, 4) || [];
+  const displayCourses = homepageCourses.length > 0 ? homepageCourses : courses?.slice(0, 4) || [];
 
   const stats = [
-    { value: c("stats.projects", "home.stats.projects") || "50+", label: c("stats.projects_label", "home.stats.projects") },
-    { value: c("stats.clients", "home.stats.clients") || "30+", label: c("stats.clients_label", "home.stats.clients") },
-    { value: c("stats.years", "home.stats.years") || "3+", label: c("stats.years_label", "home.stats.years") },
-    { value: c("stats.satisfaction", "home.stats.satisfaction") || "100%", label: c("stats.satisfaction_label", "home.stats.satisfaction") },
+    { value: c("stats.projects", "home.stats.projects") || "50+", label: c("stats.projects_label", "home.stats.projects"), icon: Briefcase },
+    { value: c("stats.clients", "home.stats.clients") || "30+", label: c("stats.clients_label", "home.stats.clients"), icon: Users },
+    { value: c("stats.years", "home.stats.years") || "3+", label: c("stats.years_label", "home.stats.years"), icon: Award },
+    { value: c("stats.satisfaction", "home.stats.satisfaction") || "100%", label: c("stats.satisfaction_label", "home.stats.satisfaction"), icon: CheckCircle },
   ];
 
-  const testimonials = [
-    {
-      name: c("testimonial1.name", "home.testimonial1.name"),
-      role: c("testimonial1.role", "home.testimonial1.role"),
-      content: c("testimonial1.content", "home.testimonial1.content"),
-      rating: 5
-    },
-    {
-      name: c("testimonial2.name", "home.testimonial2.name"),
-      role: c("testimonial2.role", "home.testimonial2.role"),
-      content: c("testimonial2.content", "home.testimonial2.content"),
-      rating: 5
-    },
-    {
-      name: c("testimonial3.name", "home.testimonial3.name"),
-      role: c("testimonial3.role", "home.testimonial3.role"),
-      content: c("testimonial3.content", "home.testimonial3.content"),
-      rating: 5
-    },
-  ];
+  const getIcon = (iconName: string | null) => {
+    if (!iconName) return Sparkles;
+    return iconMap[iconName] || Sparkles;
+  };
 
   return (
     <LayoutComponent>
-      {/* Hero Section */}
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 1. HERO SECTION — Strong Brand Statement */}
+      {/* ═══════════════════════════════════════════════ */}
       <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:80px_80px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+        {/* Background accents */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-primary/3 rounded-full blur-3xl" />
+        </div>
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:60px_60px] dark:bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)]" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-primary/20 mb-8 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-card/80 border border-primary/20 mb-10 backdrop-blur-sm"
             >
               <Sparkles size={14} className="text-primary" />
-              <span className="text-sm text-foreground">{c("badge", "home.badge")}</span>
+              <span className="text-sm font-medium text-foreground">{c("badge", "home.badge")}</span>
             </motion.div>
 
-            {/* Main Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
               className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-6"
             >
               {c("title1", "home.title1")}{" "}
@@ -116,7 +116,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium text-primary mb-8"
+              className="text-xl sm:text-2xl lg:text-3xl font-display font-medium text-primary/90 mb-6"
             >
               {c("tagline", "home.tagline")}
             </motion.p>
@@ -125,12 +125,11 @@ const Index = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
+              className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
             >
               {c("description", "home.description")}
             </motion.p>
 
-            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -138,28 +137,27 @@ const Index = () => {
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
               <Link
-                to="/contact"
+                to="/work"
                 className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2"
               >
-                {c("cta1", "home.cta1")}
+                {c("cta2", "home.cta2")}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                to="/work"
-                className="px-8 py-4 bg-transparent border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
+                to="/contact"
+                className="px-8 py-4 bg-card/80 backdrop-blur-sm border border-border text-foreground rounded-xl font-medium text-lg hover:border-primary/30 hover:bg-card transition-all duration-300"
               >
-                {c("cta2", "home.cta2")}
+                {c("cta1", "home.cta1")}
               </Link>
             </motion.div>
-
           </div>
 
           {/* Scroll Indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2"
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2"
           >
             <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
               <motion.div
@@ -172,236 +170,451 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Stats Section */}
-      <section className="py-12 lg:py-16 border-t border-border/50">
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 2. ABOUT PREVIEW — Who We Are + Stats */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="py-20 lg:py-28 relative">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
-          >
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={stat.label} 
-                className="text-center p-4 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left - Text */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                variants={fadeUp}
               >
-                <div className="text-3xl lg:text-4xl font-display font-bold gradient-text mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <span className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block">
+                  {c("aboutLabel", "home.aboutLabel") || "Who We Are"}
+                </span>
+                <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6 leading-tight">
+                  {c("aboutTitle", "home.aboutTitle") || "We Build Brands That"}{" "}
+                  <span className="gradient-text">{c("aboutTitleHighlight", "home.aboutTitleHighlight") || "Stand Out"}</span>
+                </h2>
+                <p className="text-muted-foreground text-lg leading-relaxed mb-6">
+                  {c("aboutDesc", "home.aboutDesc") || "AlphaZero is a creative digital agency based in Bangladesh. We help brands grow through stunning design, development, and strategic marketing."}
+                </p>
+                <p className="text-muted-foreground leading-relaxed mb-8">
+                  {c("aboutMission", "home.aboutMission") || "Our mission is to bring ideas to life with pixel-perfect execution and a deep understanding of what makes brands truly memorable."}
+                </p>
+                <Link
+                  to="/about"
+                  className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all duration-300"
+                >
+                  {c("learnMore", "home.learnMore") || "Learn more about us"} <ArrowRight size={18} />
+                </Link>
               </motion.div>
-            ))}
-          </motion.div>
+
+              {/* Right - Stats Grid */}
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="grid grid-cols-2 gap-4"
+              >
+                {stats.map((stat, index) => (
+                  <motion.div
+                    key={stat.label}
+                    custom={index}
+                    variants={fadeUp}
+                    className="p-6 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/60 hover:border-primary/20 transition-all duration-500 text-center"
+                  >
+                    <stat.icon size={24} className="text-primary mx-auto mb-3" />
+                    <div className="text-3xl lg:text-4xl font-display font-bold gradient-text mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* What We Do / Our Expertise Section */}
-      <section className="py-12 lg:py-16 bg-card/40 backdrop-blur-sm border-y border-border/30">
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 3. SERVICES PREVIEW — What We Do */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="py-20 lg:py-28 bg-card/40 backdrop-blur-sm border-y border-border/30">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
-              {c("expertise", "home.expertise")}
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
-              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-sm lg:text-base">
-              {c("expertiseDesc", "home.expertiseDesc")}
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto">
-            {services.map((service, index) => (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group p-5 lg:p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                  <service.icon size={24} className="text-primary" />
-                </div>
-                <h3 className="text-lg font-display font-semibold mb-2">{service.title}</h3>
-                <p className="text-muted-foreground text-sm">{service.description}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mt-8"
-          >
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mb-14"
             >
-              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={18} />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+              <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+                {c("expertise", "home.expertise") || "What We Do"}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+                {c("whatWeDo", "home.whatWeDo") || "Our"} <span className="gradient-text">{c("do", "home.do") || "Services"}</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                {c("expertiseDesc", "home.expertiseDesc") || "We offer a full suite of creative and digital services to help your brand thrive."}
+              </p>
+            </motion.div>
 
-      {/* Why Choose Us Section */}
-      <section className="py-12 lg:py-16">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
-              {c("whyChoose", "home.whyChoose")}
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
-              {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
-            </h2>
-          </motion.div>
+            {servicesLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                {displayServices.map((service, index) => {
+                  const IconComponent = getIcon(service.icon);
+                  return (
+                    <motion.div
+                      key={service.id}
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      custom={index}
+                      variants={fadeUp}
+                      className="group p-6 lg:p-8 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500"
+                    >
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/15 group-hover:scale-110 transition-all duration-300">
+                        <IconComponent size={24} className="text-primary" />
+                      </div>
+                      <h3 className="text-lg font-display font-semibold mb-2">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                        {service.description}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-            {whyChooseUs.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group p-5 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500"
-              >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors duration-300">
-                  <item.icon size={20} className="text-primary" />
-                </div>
-                <h3 className="text-base font-display font-semibold mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-12 lg:py-16 bg-card/40 backdrop-blur-sm border-y border-border/30">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
-              {c("testimonials", "home.testimonials")}
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
-              {c("whatClientsSay", "home.whatClientsSay")} <span className="gradient-text">{c("say", "home.say")}</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-4 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="p-5 lg:p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
-              >
-                <Quote size={24} className="text-primary/30 mb-3" />
-                <p className="text-foreground mb-4 leading-relaxed text-sm">{testimonial.content}</p>
-                <div className="flex items-center gap-1 mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={14} className="text-primary fill-primary" />
-                  ))}
-                </div>
-                <div>
-                  <p className="font-display font-semibold text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Client Logos Section */}
-      <section className="py-10 border-t border-border/30">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <p className="text-muted-foreground text-sm uppercase tracking-wider">{c("trustedBy", "home.trustedBy")}</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center items-center gap-6 md:gap-12 max-w-4xl mx-auto"
-          >
-            {clientLogos.map((client, index) => (
-              <motion.div
-                key={client}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-lg font-display font-bold text-muted-foreground/40 hover:text-primary/70 transition-colors duration-300"
-              >
-                {client}
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 lg:py-20">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-card/80 to-accent/5 backdrop-blur-sm border border-primary/20"
-          >
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              {c("readyTo", "home.readyTo")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mt-10"
+            >
               <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                to="/services"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/30 text-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
-                {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
+                {c("viewAllServices", "home.viewAllServices") || "View All Services"} <ArrowRight size={18} />
               </Link>
-              <a
-                href="https://wa.me/8801846484200"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-background border border-border text-foreground rounded-xl font-medium hover:bg-secondary/80 transition-all duration-300"
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 4. SELECTED WORK — Our Portfolio */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="py-20 lg:py-28">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mb-14"
+            >
+              <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+                {c("workLabel", "home.workLabel") || "Our Portfolio"}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+                {c("workTitle", "home.workTitle") || "Selected"} <span className="gradient-text">{c("workTitleHighlight", "home.workTitleHighlight") || "Projects"}</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                {c("workDesc", "home.workDesc") || "A showcase of our finest work across design, development, and multimedia."}
+              </p>
+            </motion.div>
+
+            {worksLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : displayWorks.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">No projects to display.</div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+                {displayWorks.map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    custom={index}
+                    variants={fadeUp}
+                    className="group relative aspect-square rounded-2xl overflow-hidden bg-muted border border-border/50 hover:border-primary/30 transition-all duration-500 cursor-pointer"
+                  >
+                    {project.image_url ? (
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-card">
+                        <Briefcase className="w-12 h-12 text-muted-foreground/30" />
+                      </div>
+                    )}
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-5">
+                      <h3 className="text-foreground font-display font-semibold text-lg mb-1">{project.title}</h3>
+                      <p className="text-muted-foreground text-sm line-clamp-2 mb-3">{project.description}</p>
+                      {project.project_url && (
+                        <a
+                          href={project.project_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-primary text-sm font-medium hover:gap-2 transition-all"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <ExternalLink size={14} /> View Project
+                        </a>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mt-10"
+            >
+              <Link
+                to="/work"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/30 text-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
-                <MessageCircle size={18} />
-                {c("whatsappUs", "home.whatsappUs")}
-              </a>
+                {c("viewAllWork", "home.viewAllWork") || "View All Projects"} <ArrowRight size={18} />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 5. TEAM PREVIEW — Our People */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="py-20 lg:py-28 bg-card/40 backdrop-blur-sm border-y border-border/30">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mb-14"
+            >
+              <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+                {c("teamLabel", "home.teamLabel") || "Our Team"}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+                {c("teamTitle", "home.teamTitle") || "Meet the"} <span className="gradient-text">{c("teamTitleHighlight", "home.teamTitleHighlight") || "Creative Minds"}</span>
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                {c("teamDesc", "home.teamDesc") || "The talented people behind every project we deliver."}
+              </p>
+            </motion.div>
+
+            {teamLoading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                {displayTeam.map((member, index) => (
+                  <motion.div
+                    key={member.id}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    custom={index}
+                    variants={fadeUp}
+                    className="group text-center"
+                  >
+                    <div className="relative mb-4 rounded-2xl overflow-hidden aspect-square bg-muted border border-border/50 group-hover:border-primary/30 transition-all duration-500">
+                      {member.image_url ? (
+                        <img
+                          src={member.image_url}
+                          alt={member.name}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-card">
+                          <Users className="w-12 h-12 text-muted-foreground/30" />
+                        </div>
+                      )}
+                      {/* Subtle gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <h3 className="font-display font-semibold text-lg mb-1">{member.name}</h3>
+                    <p className="text-primary text-sm font-medium">{member.role}</p>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mt-10"
+            >
+              <Link
+                to="/team"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/30 text-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+              >
+                {c("viewFullTeam", "home.viewFullTeam") || "Meet Full Team"} <ArrowRight size={18} />
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 6. COURSES PREVIEW */}
+      {/* ═══════════════════════════════════════════════ */}
+      {displayCourses.length > 0 && (
+        <section className="py-20 lg:py-28">
+          <div className="container mx-auto px-6">
+            <div className="max-w-6xl mx-auto">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                className="text-center mb-14"
+              >
+                <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+                  {c("coursesLabel", "home.coursesLabel") || "Learn With Us"}
+                </span>
+                <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+                  {c("coursesTitle", "home.coursesTitle") || "Our"} <span className="gradient-text">{c("coursesTitleHighlight", "home.coursesTitleHighlight") || "Courses"}</span>
+                </h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                  {c("coursesDesc", "home.coursesDesc") || "Learn design, development, and digital skills from industry professionals."}
+                </p>
+              </motion.div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+                {displayCourses.map((course, index) => (
+                  <motion.div
+                    key={course.id}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    custom={index}
+                    variants={fadeUp}
+                    className="group rounded-2xl overflow-hidden bg-card border border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500"
+                  >
+                    <div className="aspect-video bg-muted overflow-hidden">
+                      {course.thumbnail_url ? (
+                        <img
+                          src={course.thumbnail_url}
+                          alt={course.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <BookOpen className="w-10 h-10 text-muted-foreground/30" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-5">
+                      <h3 className="font-display font-semibold mb-2 line-clamp-2">{course.title}</h3>
+                      {course.description && (
+                        <p className="text-muted-foreground text-sm line-clamp-2 mb-3">{course.description}</p>
+                      )}
+                      <div className="flex items-center justify-between">
+                        {course.price && course.price > 0 ? (
+                          <span className="text-primary font-bold">৳{course.price}</span>
+                        ) : (
+                          <span className="text-primary font-medium text-sm">Free</span>
+                        )}
+                        <Link
+                          to="/courses"
+                          className="text-sm text-primary font-medium hover:underline"
+                        >
+                          Details →
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                className="text-center mt-10"
+              >
+                <Link
+                  to="/courses"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-primary/30 text-primary font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                >
+                  {c("viewAllCourses", "home.viewAllCourses") || "View All Courses"} <ArrowRight size={18} />
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* 7. CONTACT CTA — Let's Work Together */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="py-20 lg:py-28">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="max-w-4xl mx-auto relative"
+          >
+            {/* Glow effects */}
+            <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-80 h-40 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="relative text-center p-10 lg:p-16 rounded-3xl bg-card/80 backdrop-blur-sm border border-primary/20 overflow-hidden">
+              {/* Subtle corner accents */}
+              <div className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-br-3xl" />
+              <div className="absolute bottom-0 right-0 w-20 h-20 bg-gradient-to-tl from-primary/10 to-transparent rounded-tl-3xl" />
+              
+              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4 relative">
+                {c("letsBuild", "home.letsBuild") || "Ready to Build Your"}{" "}
+                <span className="gradient-text">{c("brand", "home.brand") || "Brand"}</span>?
+              </h2>
+              <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto relative">
+                {c("readyTo", "home.readyTo") || "Let's discuss your project and create something extraordinary together. Get in touch with us today."}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                >
+                  {c("freeConsultation", "home.freeConsultation") || "Start a Project"} <ArrowRight size={18} />
+                </Link>
+                <a
+                  href="https://wa.me/8801344497808"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-card border border-border text-foreground rounded-xl font-medium text-lg hover:border-primary/30 transition-all duration-300"
+                >
+                  <MessageCircle size={18} />
+                  {c("whatsappUs", "home.whatsappUs") || "WhatsApp Us"}
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>

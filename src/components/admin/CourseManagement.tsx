@@ -49,6 +49,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [courseThumbnail, setCourseThumbnail] = useState('');
   const [coursePrice, setCoursePrice] = useState('');
   const [coursePublished, setCoursePublished] = useState(true);
+  const [courseHomepage, setCourseHomepage] = useState(false);
   const [trainerName, setTrainerName] = useState('');
   const [trainerImage, setTrainerImage] = useState('');
   const [trainerDesignation, setTrainerDesignation] = useState('');
@@ -125,6 +126,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseThumbnail(course.thumbnail_url || '');
       setCoursePrice(course.price ? String(course.price) : '');
       setCoursePublished(course.is_published);
+      setCourseHomepage((course as any).show_on_homepage || false);
       setTrainerName(course.trainer_name || '');
       setTrainerImage(course.trainer_image || '');
       setTrainerDesignation(course.trainer_designation || '');
@@ -137,6 +139,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseThumbnail('');
       setCoursePrice('');
       setCoursePublished(true);
+      setCourseHomepage(false);
       setTrainerName('');
       setTrainerImage('');
       setTrainerDesignation('');
@@ -161,6 +164,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
           is_published: coursePublished,
+          show_on_homepage: courseHomepage,
           trainer_name: trainerName || null,
           trainer_image: trainerImage || null,
           trainer_designation: trainerDesignation || null,
@@ -183,6 +187,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           thumbnail_url: courseThumbnail || null,
           price: coursePrice ? parseFloat(coursePrice) : 0,
           is_published: coursePublished,
+          show_on_homepage: courseHomepage,
           trainer_name: trainerName || null,
           trainer_image: trainerImage || null,
           trainer_designation: trainerDesignation || null,
@@ -1060,6 +1065,20 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               <Switch
                 checked={coursePublished}
                 onCheckedChange={setCoursePublished}
+              />
+            </div>
+
+            {/* Homepage Toggle */}
+            <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 border">
+              <div>
+                <Label className="text-base font-medium">Homepage-এ দেখান</Label>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {courseHomepage ? 'হোমপেজে দেখাবে' : 'হোমপেজে দেখাবে না'}
+                </p>
+              </div>
+              <Switch
+                checked={courseHomepage}
+                onCheckedChange={setCourseHomepage}
               />
             </div>
           </div>
