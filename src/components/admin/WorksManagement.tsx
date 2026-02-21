@@ -37,6 +37,7 @@ export const WorksManagement = () => {
     project_url: "",
     is_featured: false,
     is_published: true,
+    show_on_homepage: false,
   });
 
   const { data: works, isLoading } = useQuery({
@@ -64,6 +65,7 @@ export const WorksManagement = () => {
             project_url: data.project_url || null,
             is_featured: data.is_featured,
             is_published: data.is_published,
+            show_on_homepage: data.show_on_homepage,
           })
           .eq("id", data.id);
         if (error) throw error;
@@ -76,6 +78,7 @@ export const WorksManagement = () => {
           project_url: data.project_url || null,
           is_featured: data.is_featured,
           is_published: data.is_published,
+          show_on_homepage: data.show_on_homepage,
           order_index: (works?.length || 0) + 1,
         });
         if (error) throw error;
@@ -114,6 +117,7 @@ export const WorksManagement = () => {
       project_url: "",
       is_featured: false,
       is_published: true,
+      show_on_homepage: false,
     });
     setEditingWork(null);
     setIsDialogOpen(false);
@@ -129,6 +133,7 @@ export const WorksManagement = () => {
       project_url: work.project_url || "",
       is_featured: work.is_featured,
       is_published: work.is_published,
+      show_on_homepage: (work as any).show_on_homepage || false,
     });
     setIsDialogOpen(true);
   };
@@ -273,7 +278,7 @@ export const WorksManagement = () => {
                 />
               </div>
 
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-6 flex-wrap">
                 <div className="flex items-center gap-2">
                   <Switch
                     checked={formData.is_featured}
@@ -287,6 +292,13 @@ export const WorksManagement = () => {
                     onCheckedChange={(checked) => setFormData({ ...formData, is_published: checked })}
                   />
                   <Label>Published</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={formData.show_on_homepage}
+                    onCheckedChange={(checked) => setFormData({ ...formData, show_on_homepage: checked })}
+                  />
+                  <Label>Homepage</Label>
                 </div>
               </div>
 
