@@ -79,7 +79,6 @@ export const TeamManagement = () => {
     portfolio_url: "",
     threads_url: "",
     is_active: true,
-    show_on_homepage: false,
   });
   const [customLinks, setCustomLinks] = useState<CustomLink[]>([]);
 
@@ -117,7 +116,6 @@ export const TeamManagement = () => {
             portfolio_url: data.portfolio_url || null,
             threads_url: data.threads_url || null,
             is_active: data.is_active,
-            show_on_homepage: data.show_on_homepage,
           })
           .eq("id", data.id);
         if (error) throw error;
@@ -138,7 +136,6 @@ export const TeamManagement = () => {
           portfolio_url: data.portfolio_url || null,
           threads_url: data.threads_url || null,
           is_active: data.is_active,
-          show_on_homepage: data.show_on_homepage,
           order_index: (members?.length || 0) + 1,
         }).select('id').single();
         if (error) throw error;
@@ -206,7 +203,6 @@ export const TeamManagement = () => {
       portfolio_url: "",
       threads_url: "",
       is_active: true,
-      show_on_homepage: false,
     });
     setCustomLinks([]);
     setEditingMember(null);
@@ -231,7 +227,6 @@ export const TeamManagement = () => {
       portfolio_url: member.portfolio_url || "",
       threads_url: member.threads_url || "",
       is_active: member.is_active,
-      show_on_homepage: (member as any).show_on_homepage || false,
     });
     
     // Load custom links
@@ -475,21 +470,12 @@ export const TeamManagement = () => {
                 ))}
               </div>
 
-              <div className="flex items-center gap-4 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={formData.is_active}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-                  />
-                  <Label>Active</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={formData.show_on_homepage}
-                    onCheckedChange={(checked) => setFormData({ ...formData, show_on_homepage: checked })}
-                  />
-                  <Label>Homepage</Label>
-                </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={formData.is_active}
+                  onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                />
+                <Label>Active (ওয়েবসাইটে দেখাবে)</Label>
               </div>
 
               <div className="flex gap-2 pt-4">

@@ -38,7 +38,6 @@ export const ServicesManagement = () => {
     icon: "Sparkles",
     features: [] as string[],
     is_active: true,
-    show_on_homepage: false,
   });
   const [newFeature, setNewFeature] = useState("");
 
@@ -65,7 +64,6 @@ export const ServicesManagement = () => {
             icon: data.icon,
             features: data.features.length > 0 ? data.features : null,
             is_active: data.is_active,
-            show_on_homepage: data.show_on_homepage,
           })
           .eq("id", data.id);
         if (error) throw error;
@@ -76,7 +74,6 @@ export const ServicesManagement = () => {
           icon: data.icon,
           features: data.features.length > 0 ? data.features : null,
           is_active: data.is_active,
-          show_on_homepage: data.show_on_homepage,
           order_index: (services?.length || 0) + 1,
         });
         if (error) throw error;
@@ -113,7 +110,6 @@ export const ServicesManagement = () => {
       icon: "Sparkles",
       features: [],
       is_active: true,
-      show_on_homepage: false,
     });
     setNewFeature("");
     setEditingService(null);
@@ -128,7 +124,6 @@ export const ServicesManagement = () => {
       icon: service.icon,
       features: service.features || [],
       is_active: service.is_active,
-      show_on_homepage: (service as any).show_on_homepage || false,
     });
     setIsDialogOpen(true);
   };
@@ -271,21 +266,12 @@ export const ServicesManagement = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 flex-wrap">
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={formData.is_active}
-                    onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
-                  />
-                  <Label>Active</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={formData.show_on_homepage}
-                    onCheckedChange={(checked) => setFormData({ ...formData, show_on_homepage: checked })}
-                  />
-                  <Label>Homepage</Label>
-                </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  checked={formData.is_active}
+                  onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                />
+                <Label>Active (ওয়েবসাইটে দেখাবে)</Label>
               </div>
 
               <div className="flex gap-2 pt-4">

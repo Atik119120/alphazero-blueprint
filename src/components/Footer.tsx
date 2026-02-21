@@ -76,9 +76,6 @@ const Footer = () => {
   const address = getContent('address') || t("about.location.address");
   const description = getContent('description') || t("footer.description");
 
-  // Build proper mailto link — strip any whitespace from email
-  const mailtoLink = `mailto:${email.trim()}`;
-
   return (
     <footer className="relative">
       {/* Main Footer Content */}
@@ -201,7 +198,7 @@ const Footer = () => {
                     {phone}
                   </a>
                   <a 
-                    href={mailtoLink}
+                    href={`mailto:${email}`}
                     className="block text-foreground hover:text-primary transition-colors"
                   >
                     {email}
