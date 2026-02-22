@@ -52,7 +52,7 @@ import {
   Link2,
   GraduationCap,
   Send,
-  Inbox
+  
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -64,7 +64,7 @@ import PageContentManagement from '@/components/admin/PageContentManagement';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
-import EmailInbox from '@/components/admin/EmailInbox';
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
 // Chart colors
@@ -782,7 +782,6 @@ export default function AdminDashboard() {
     { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', category: 'lms' },
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', category: 'lms' },
-    { id: 'inbox', icon: Inbox, label: language === 'bn' ? 'ইনবক্স' : 'Inbox', category: 'lms' },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
@@ -1946,10 +1945,6 @@ export default function AdminDashboard() {
             <EmailManagement language={language} />
           </TabsContent>
 
-          {/* Inbox Tab */}
-          <TabsContent value="inbox" className="space-y-6">
-            <EmailInbox language={language} />
-          </TabsContent>
 
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">

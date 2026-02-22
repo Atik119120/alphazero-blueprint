@@ -749,14 +749,14 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   rows={4}
                 />
               </div>
-              <div className="space-y-2">
-                <Label>থাম্বনেইল URL</Label>
-                <Input
-                  value={courseThumbnail}
-                  onChange={(e) => setCourseThumbnail(e.target.value)}
-                  placeholder="https://..."
-                />
-              </div>
+              <ImageUploader
+                value={courseThumbnail}
+                onChange={setCourseThumbnail}
+                folder="course-thumbnails"
+                label="থাম্বনেইল"
+                aspectRatio="video"
+                maxSizeMB={5}
+              />
               <div className="space-y-2">
                 <Label>মূল্য (টাকা)</Label>
                 <div className="relative">
