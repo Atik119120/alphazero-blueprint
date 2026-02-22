@@ -203,6 +203,7 @@ export type Database = {
           is_approved: boolean | null
           is_published: boolean | null
           price: number | null
+          show_on_homepage: boolean | null
           teacher_id: string | null
           thumbnail_url: string | null
           title: string
@@ -221,6 +222,7 @@ export type Database = {
           is_approved?: boolean | null
           is_published?: boolean | null
           price?: number | null
+          show_on_homepage?: boolean | null
           teacher_id?: string | null
           thumbnail_url?: string | null
           title: string
@@ -239,6 +241,7 @@ export type Database = {
           is_approved?: boolean | null
           is_published?: boolean | null
           price?: number | null
+          show_on_homepage?: boolean | null
           teacher_id?: string | null
           thumbnail_url?: string | null
           title?: string
@@ -899,6 +902,7 @@ export type Database = {
           id: string
           is_active: boolean | null
           order_index: number | null
+          show_on_homepage: boolean | null
           title: string
           updated_at: string
         }
@@ -910,6 +914,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           order_index?: number | null
+          show_on_homepage?: boolean | null
           title: string
           updated_at?: string
         }
@@ -921,6 +926,7 @@ export type Database = {
           id?: string
           is_active?: boolean | null
           order_index?: number | null
+          show_on_homepage?: boolean | null
           title?: string
           updated_at?: string
         }
@@ -1068,6 +1074,7 @@ export type Database = {
           order_index: number | null
           portfolio_url: string | null
           role: string
+          show_on_homepage: boolean | null
           threads_url: string | null
           twitter_url: string | null
           updated_at: string
@@ -1089,6 +1096,7 @@ export type Database = {
           order_index?: number | null
           portfolio_url?: string | null
           role: string
+          show_on_homepage?: boolean | null
           threads_url?: string | null
           twitter_url?: string | null
           updated_at?: string
@@ -1110,6 +1118,7 @@ export type Database = {
           order_index?: number | null
           portfolio_url?: string | null
           role?: string
+          show_on_homepage?: boolean | null
           threads_url?: string | null
           twitter_url?: string | null
           updated_at?: string
@@ -1359,6 +1368,7 @@ export type Database = {
           is_published: boolean | null
           order_index: number | null
           project_url: string | null
+          show_on_homepage: boolean | null
           title: string
           updated_at: string
         }
@@ -1372,6 +1382,7 @@ export type Database = {
           is_published?: boolean | null
           order_index?: number | null
           project_url?: string | null
+          show_on_homepage?: boolean | null
           title: string
           updated_at?: string
         }
@@ -1385,6 +1396,7 @@ export type Database = {
           is_published?: boolean | null
           order_index?: number | null
           project_url?: string | null
+          show_on_homepage?: boolean | null
           title?: string
           updated_at?: string
         }
