@@ -64,6 +64,7 @@ import PageContentManagement from '@/components/admin/PageContentManagement';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
+import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
@@ -788,6 +789,7 @@ export default function AdminDashboard() {
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', category: 'cms' },
     { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', category: 'cms' },
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', category: 'settings' },
+    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', category: 'settings' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', category: 'settings' },
   ];
 
@@ -1949,6 +1951,11 @@ export default function AdminDashboard() {
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">
             <SiteSettingsManagement />
+          </TabsContent>
+
+          {/* API Keys Tab */}
+          <TabsContent value="apikeys" className="space-y-6">
+            <ApiKeyManagement />
           </TabsContent>
 
           {/* Profile Tab */}

@@ -696,43 +696,81 @@ const CoursesPage = () => {
                     className="group h-full"
                   >
                     <div className={`relative h-full flex flex-col rounded-3xl overflow-hidden bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${metadata.isSpecial ? 'ring-2 ring-primary/40' : ''} ${metadata.isUpcoming ? 'ring-2 ring-amber-500/40' : ''}`}>
-                      {/* Gradient Background Header */}
-                      <div className={`relative h-40 bg-gradient-to-br ${metadata.color} p-6`}>
-                        {/* Decorative Pattern */}
-                        <div className="absolute inset-0 opacity-20">
-                          <div className="absolute top-4 right-4 w-24 h-24 border-4 border-white/30 rounded-full" />
-                          <div className="absolute bottom-4 left-6 w-16 h-16 border-2 border-white/20 rounded-lg rotate-12" />
-                          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-                        </div>
+                      {/* Course Thumbnail or Gradient Header */}
+                      {(() => {
+                        const dbCourse = dbCourses.find(c => c.id === course.id);
+                        const thumbnailUrl = dbCourse?.thumbnail_url;
                         
-                        {/* Special Badge */}
-                        {metadata.isSpecial && (
-                          <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                            <Sparkles className="w-3.5 h-3.5" />
-                            {t.special}
-                          </div>
-                        )}
-
-                        {/* Upcoming Badge */}
-                        {metadata.isUpcoming && (
-                          <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                            <Clock className="w-3.5 h-3.5" />
-                            {t.upcoming}
-                          </div>
-                        )}
+                        if (thumbnailUrl) {
+                          return (
+                            <div className="relative h-48 overflow-hidden">
+                              <img 
+                                src={thumbnailUrl} 
+                                alt={isBn ? course.titleBn : course.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                              
+                              {/* Badges on thumbnail */}
+                              {metadata.isSpecial && (
+                                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                                  <Sparkles className="w-3.5 h-3.5" />
+                                  {t.special}
+                                </div>
+                              )}
+                              {metadata.isUpcoming && (
+                                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                                  <Clock className="w-3.5 h-3.5" />
+                                  {t.upcoming}
+                                </div>
+                              )}
+                              
+                              {/* Price on thumbnail */}
+                              {course.price > 0 && (
+                                <div className="absolute bottom-3 right-3 px-4 py-2 rounded-xl bg-white/90 dark:bg-background/90 backdrop-blur-sm shadow-lg">
+                                  <span className="text-lg font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">৳{course.price.toLocaleString(isBn ? 'bn-BD' : 'en-US')}</span>
+                                </div>
+                              )}
+                              {course.price === 0 && (
+                                <div className="absolute bottom-3 right-3 px-4 py-2 rounded-xl bg-emerald-500 text-white shadow-lg">
+                                  <span className="text-sm font-bold">{t.upcoming === 'আসছে শীঘ্রই' ? 'ফ্রি' : 'Free'}</span>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        }
                         
-                        {/* Icon */}
-                        <div className="relative w-16 h-16 rounded-2xl bg-white/25 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl">
-                          <CourseIcon className="w-8 h-8 text-white" />
-                        </div>
-
-                        {/* Price Tag */}
-                        {course.price > 0 && (
-                          <div className="absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-white/90 dark:bg-background/90 backdrop-blur-sm shadow-lg">
-                            <span className="text-lg font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">৳{course.price.toLocaleString(isBn ? 'bn-BD' : 'en-US')}</span>
+                        return (
+                          <div className={`relative h-40 bg-gradient-to-br ${metadata.color} p-6`}>
+                            <div className="absolute inset-0 opacity-20">
+                              <div className="absolute top-4 right-4 w-24 h-24 border-4 border-white/30 rounded-full" />
+                              <div className="absolute bottom-4 left-6 w-16 h-16 border-2 border-white/20 rounded-lg rotate-12" />
+                              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
+                            </div>
+                            {metadata.isSpecial && (
+                              <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                                <Sparkles className="w-3.5 h-3.5" />
+                                {t.special}
+                              </div>
+                            )}
+                            {metadata.isUpcoming && (
+                              <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                                <Clock className="w-3.5 h-3.5" />
+                                {t.upcoming}
+                              </div>
+                            )}
+                            <div className="relative w-16 h-16 rounded-2xl bg-white/25 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl">
+                              <CourseIcon className="w-8 h-8 text-white" />
+                            </div>
+                            {course.price > 0 && (
+                              <div className="absolute bottom-4 right-4 px-4 py-2 rounded-xl bg-white/90 dark:bg-background/90 backdrop-blur-sm shadow-lg">
+                                <span className="text-lg font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">৳{course.price.toLocaleString(isBn ? 'bn-BD' : 'en-US')}</span>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
+                        );
+                      })()}
 
                       {/* Card Body */}
                       <div className="flex-1 flex flex-col p-6">
