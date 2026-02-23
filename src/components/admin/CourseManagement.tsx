@@ -62,6 +62,12 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [courseVideos, setCourseVideos] = useState<Video[]>([]);
   const [loadingVideos, setLoadingVideos] = useState(false);
   const [editingVideo, setEditingVideo] = useState<Video | null>(null);
+  const [videoTopicId, setVideoTopicId] = useState<string>('');
+
+  // Topic state
+  const [courseTopics, setCourseTopics] = useState<Array<{ id: string; title: string; order_index: number }>>([]);
+  const [showTopicDialog, setShowTopicDialog] = useState(false);
+  const [newTopicTitle, setNewTopicTitle] = useState('');
 
   // Material form state
   const [showMaterialDialog, setShowMaterialDialog] = useState(false);
@@ -72,10 +78,11 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [videoMaterials, setVideoMaterials] = useState<VideoMaterial[]>([]);
   const [loadingMaterials, setLoadingMaterials] = useState(false);
 
-  // Load videos when course is selected
+  // Load videos and topics when course is selected
   useEffect(() => {
     if (selectedCourse) {
       loadCourseVideos(selectedCourse.id);
+      loadCourseTopics(selectedCourse.id);
     }
   }, [selectedCourse]);
 
@@ -98,6 +105,49 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCourseVideos((data || []) as Video[]);
     }
     setLoadingVideos(false);
+  };
+
+  const loadCourseTopics = async (courseId: string) => {
+    const { data, error } = await supabase
+      .from('course_topics')
+      .select('*')
+      .eq('course_id', courseId)
+      .order('order_index', { ascending: true });
+    if (!error) {
+      setCourseTopics(data || []);
+    }
+  };
+
+  const addTopic = async () => {
+    if (!selectedCourse || !newTopicTitle.trim()) {
+      toast.error('টপিক নাম দিন');
+      return;
+    }
+    const nextOrder = courseTopics.length + 1;
+    const { error } = await supabase.from('course_topics').insert({
+      course_id: selectedCourse.id,
+      title: newTopicTitle.trim(),
+      order_index: nextOrder,
+    });
+    if (error) {
+      toast.error('টপিক যোগ করতে সমস্যা');
+      return;
+    }
+    toast.success('টপিক যোগ হয়েছে');
+    setNewTopicTitle('');
+    setShowTopicDialog(false);
+    loadCourseTopics(selectedCourse.id);
+  };
+
+  const deleteTopic = async (topicId: string) => {
+    if (!confirm('এই টপিক মুছতে চান? ক্লাসগুলো আনঅ্যাসাইন হবে।')) return;
+    const { error } = await supabase.from('course_topics').delete().eq('id', topicId);
+    if (error) {
+      toast.error('মুছতে সমস্যা হয়েছে');
+      return;
+    }
+    toast.success('টপিক মুছে ফেলা হয়েছে');
+    if (selectedCourse) loadCourseTopics(selectedCourse.id);
   };
 
   const loadVideoMaterials = async (videoId: string) => {
@@ -237,12 +287,14 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setVideoUrl(video.video_url);
       setVideoType(video.video_type);
       setVideoDuration(video.duration_seconds ? String(Math.round(video.duration_seconds / 60)) : '');
+      setVideoTopicId((video as any).topic_id || '');
     } else {
       setEditingVideo(null);
       setVideoTitle('');
       setVideoUrl('');
       setVideoType('youtube');
       setVideoDuration('');
+      setVideoTopicId('');
     }
     setShowVideoDialog(true);
   };
@@ -263,6 +315,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           video_url: videoUrl,
           video_type: videoType,
           duration_seconds: durationSeconds,
+          topic_id: videoTopicId || null,
         })
         .eq('id', editingVideo.id);
 
@@ -282,6 +335,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           video_type: videoType,
           duration_seconds: durationSeconds,
           order_index: nextOrder,
+          topic_id: videoTopicId || null,
         });
 
       if (error) {
@@ -583,11 +637,52 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             <Edit className="w-4 h-4" />
             এডিট
           </Button>
+          <Button variant="outline" onClick={() => setShowTopicDialog(true)} className="gap-2">
+            <Plus className="w-4 h-4" />
+            টপিক
+          </Button>
           <Button onClick={() => openVideoDialog()} className="gap-2">
             <Plus className="w-4 h-4" />
             ক্লাস যোগ
           </Button>
         </div>
+
+        {/* Topic Management */}
+        {courseTopics.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {courseTopics.map(topic => (
+              <Badge key={topic.id} variant="secondary" className="gap-1.5 py-1 px-3">
+                {topic.title}
+                <button onClick={() => deleteTopic(topic.id)} className="ml-1 hover:text-destructive">
+                  <Trash2 className="w-3 h-3" />
+                </button>
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {/* Topic Dialog */}
+        <Dialog open={showTopicDialog} onOpenChange={setShowTopicDialog}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>নতুন টপিক যোগ করুন</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-2">
+              <div className="space-y-2">
+                <Label>টপিক নাম</Label>
+                <Input
+                  value={newTopicTitle}
+                  onChange={(e) => setNewTopicTitle(e.target.value)}
+                  placeholder="যেমন: HTML Basics"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowTopicDialog(false)}>বাতিল</Button>
+              <Button onClick={addTopic}>যোগ করুন</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Course Description */}
         {selectedCourse.description && (
@@ -619,7 +714,51 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             </Card>
           ) : (
             <div className="space-y-2">
-              {courseVideos.map((video, index) => (
+              {/* Group by topic if topics exist */}
+              {courseTopics.length > 0 && (() => {
+                const topicMap = new Map(courseTopics.map(t => [t.id, t.title]));
+                const grouped: Record<string, typeof courseVideos> = { '': [] };
+                courseTopics.forEach(t => { grouped[t.id] = []; });
+                courseVideos.forEach(v => {
+                  const tid = (v as any).topic_id || '';
+                  if (!grouped[tid]) grouped[tid] = [];
+                  grouped[tid].push(v);
+                });
+                const sections = [
+                  ...courseTopics.map(t => ({ id: t.id, label: t.title, videos: grouped[t.id] || [] })),
+                  ...(grouped[''].length > 0 ? [{ id: '', label: 'অন্যান্য', videos: grouped[''] }] : [])
+                ];
+                return sections.map(section => (
+                  section.videos.length > 0 && (
+                    <div key={section.id || 'other'} className="space-y-2">
+                      <Badge variant="outline" className="text-xs">{section.label} ({section.videos.length})</Badge>
+                      {section.videos.map((video, idx) => (
+                        <Card key={video.id} className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => setSelectedVideo(video)}>
+                          <CardContent className="p-4">
+                            <div className="flex items-center gap-4">
+                              <GripVertical className="w-4 h-4 text-muted-foreground" />
+                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                <span className="font-semibold text-primary">{idx + 1}</span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium">{video.title}</p>
+                                <p className="text-xs text-muted-foreground truncate">{video.video_url}</p>
+                              </div>
+                              <Badge variant="outline">{video.video_type}</Badge>
+                              <div className="flex items-center gap-1">
+                                <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); openVideoDialog(video); }}><Edit className="w-4 h-4" /></Button>
+                                <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); deleteVideo(video.id); }}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  )
+                ));
+              })()}
+              {courseTopics.length === 0 && courseVideos.map((video, index) => (
                 <Card 
                   key={video.id} 
                   className="cursor-pointer hover:bg-muted/50 transition-colors"
@@ -713,6 +852,22 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   placeholder="15"
                 />
               </div>
+              {courseTopics.length > 0 && (
+                <div className="space-y-2">
+                  <Label>টপিক (ঐচ্ছিক)</Label>
+                  <Select value={videoTopicId} onValueChange={setVideoTopicId}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="টপিক সিলেক্ট করুন" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="none">কোনো টপিক নেই</SelectItem>
+                      {courseTopics.map(topic => (
+                        <SelectItem key={topic.id} value={topic.id}>{topic.title}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setShowVideoDialog(false)}>

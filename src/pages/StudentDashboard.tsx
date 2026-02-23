@@ -150,7 +150,7 @@ export default function StudentDashboard() {
         : url.includes('v=') 
           ? url.split('v=')[1]?.split('&')[0]
           : url;
-      return `https://www.youtube.com/embed/${videoId}?rel=0`;
+      return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=0&fs=1&cc_load_policy=0`;
     }
     if (video.video_type === 'vimeo') {
       const videoId = url.split('/').pop();

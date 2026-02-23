@@ -193,6 +193,41 @@ export type Database = {
           },
         ]
       }
+      course_topics: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          order_index: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          order_index?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          order_index?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_topics_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           course_type: string | null
@@ -1274,6 +1309,7 @@ export type Database = {
           id: string
           order_index: number
           title: string
+          topic_id: string | null
           updated_at: string | null
           video_type: string | null
           video_url: string
@@ -1285,6 +1321,7 @@ export type Database = {
           id?: string
           order_index: number
           title: string
+          topic_id?: string | null
           updated_at?: string | null
           video_type?: string | null
           video_url: string
@@ -1296,6 +1333,7 @@ export type Database = {
           id?: string
           order_index?: number
           title?: string
+          topic_id?: string | null
           updated_at?: string | null
           video_type?: string | null
           video_url?: string
@@ -1306,6 +1344,13 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "videos_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "course_topics"
             referencedColumns: ["id"]
           },
         ]
