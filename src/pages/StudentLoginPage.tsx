@@ -350,7 +350,15 @@ export default function StudentLoginPage() {
   // No loading screen - login page loads directly
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
+      {/* Colorful artistic background */}
+      <div className="absolute inset-0 bg-background">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-sky-400/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-rose-400/15 rounded-full blur-[120px] translate-x-1/3 translate-y-1/3" />
+        <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-amber-400/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] bg-emerald-400/10 rounded-full blur-[80px]" />
+        <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] bg-violet-400/10 rounded-full blur-[90px]" />
+      </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Top Bar with Navigation and Controls */}
@@ -489,10 +497,9 @@ export default function StudentLoginPage() {
             ) : (
               /* Login/Signup/Teacher Tabs */
               <Tabs defaultValue="login" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 mb-6">
+                <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="login" className="text-sm">{t('login.login')}</TabsTrigger>
                   <TabsTrigger value="signup" className="text-sm">{t('login.signup')}</TabsTrigger>
-                  <TabsTrigger value="teacher" className="text-sm">Teacher</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="login">
@@ -656,120 +663,7 @@ export default function StudentLoginPage() {
                   </div>
                 </TabsContent>
 
-                {/* Teacher Signup Tab */}
-                <TabsContent value="teacher">
-                  <div className="space-y-4">
-                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
-                      <p className="text-xs text-center text-muted-foreground">
-                        <Users className="w-4 h-4 inline-block mr-1" />
-                        শুধুমাত্র Team Members teacher হিসেবে আবেদন করতে পারবেন
-                      </p>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="team-member" className="text-sm">আপনার Team Profile সিলেক্ট করুন</Label>
-                      <Select value={selectedTeamMember} onValueChange={setSelectedTeamMember}>
-                        <SelectTrigger className="h-11">
-                          <SelectValue placeholder={teamMembersLoading ? "লোড হচ্ছে..." : "Team Member সিলেক্ট করুন"} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {teamMembers?.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              {member.name} - {member.role}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="teacher-name" className="text-sm">{t('login.fullName')}</Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          id="teacher-name"
-                          type="text"
-                          placeholder={t('login.namePlaceholder')}
-                          value={teacherName}
-                          onChange={(e) => setTeacherName(e.target.value)}
-                          className="pl-10 h-11"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="teacher-phone" className="text-sm">মোবাইল নম্বর</Label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          id="teacher-phone"
-                          type="tel"
-                          placeholder="01XXXXXXXXX"
-                          value={teacherPhone}
-                          onChange={(e) => setTeacherPhone(e.target.value)}
-                          className="pl-10 h-11"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="teacher-email" className="text-sm">{t('login.email')}</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          id="teacher-email"
-                          type="email"
-                          placeholder="your@email.com"
-                          value={teacherEmail}
-                          onChange={(e) => setTeacherEmail(e.target.value)}
-                          className="pl-10 h-11"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="teacher-password" className="text-sm">{t('login.password')}</Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <Input
-                          id="teacher-password"
-                          type="password"
-                          placeholder="••••••••"
-                          value={teacherPassword}
-                          onChange={(e) => setTeacherPassword(e.target.value)}
-                          className="pl-10 h-11"
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <Button 
-                      type="button" 
-                      className="w-full h-11 gap-2" 
-                      disabled={sendingOtp || !selectedTeamMember}
-                      onClick={handleTeacherOtp}
-                    >
-                      {sendingOtp ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          কোড পাঠানো হচ্ছে...
-                        </>
-                      ) : (
-                        <>
-                          <GraduationCap className="w-4 h-4" />
-                          Teacher হিসেবে আবেদন করুন
-                        </>
-                      )}
-                    </Button>
-
-                    <p className="text-xs text-center text-muted-foreground">
-                      আবেদন করার পর Admin approve করলে আপনি Teacher Dashboard এ login করতে পারবেন
-                    </p>
-                  </div>
-                </TabsContent>
+                {/* Teacher info removed - teachers use /teacher/login */}
               </Tabs>
             )}
           </CardContent>
