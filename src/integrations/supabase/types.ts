@@ -193,6 +193,44 @@ export type Database = {
           },
         ]
       }
+      course_modules: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          id: string
+          order_index: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          order_index?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_topics: {
         Row: {
           course_id: string
@@ -1222,6 +1260,41 @@ export type Database = {
         }
         Relationships: []
       }
+      video_feedback: {
+        Row: {
+          created_at: string
+          id: string
+          message: string
+          sentiment: string
+          user_id: string
+          video_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message: string
+          sentiment?: string
+          user_id: string
+          video_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string
+          sentiment?: string
+          user_id?: string
+          video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_feedback_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "videos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_materials: {
         Row: {
           created_at: string
@@ -1270,26 +1343,32 @@ export type Database = {
         Row: {
           id: string
           is_completed: boolean | null
+          last_position: number | null
           last_watched_at: string | null
           progress_percent: number | null
           user_id: string
           video_id: string
+          watched_seconds: number | null
         }
         Insert: {
           id?: string
           is_completed?: boolean | null
+          last_position?: number | null
           last_watched_at?: string | null
           progress_percent?: number | null
           user_id: string
           video_id: string
+          watched_seconds?: number | null
         }
         Update: {
           id?: string
           is_completed?: boolean | null
+          last_position?: number | null
           last_watched_at?: string | null
           progress_percent?: number | null
           user_id?: string
           video_id?: string
+          watched_seconds?: number | null
         }
         Relationships: [
           {
@@ -1303,11 +1382,16 @@ export type Database = {
       }
       videos: {
         Row: {
+          cloudinary_public_id: string | null
+          cloudinary_url: string | null
           course_id: string
           created_at: string | null
+          description: string | null
           duration_seconds: number | null
           id: string
+          module_id: string | null
           order_index: number
+          thumbnail_url: string | null
           title: string
           topic_id: string | null
           updated_at: string | null
@@ -1315,11 +1399,16 @@ export type Database = {
           video_url: string
         }
         Insert: {
+          cloudinary_public_id?: string | null
+          cloudinary_url?: string | null
           course_id: string
           created_at?: string | null
+          description?: string | null
           duration_seconds?: number | null
           id?: string
+          module_id?: string | null
           order_index: number
+          thumbnail_url?: string | null
           title: string
           topic_id?: string | null
           updated_at?: string | null
@@ -1327,11 +1416,16 @@ export type Database = {
           video_url: string
         }
         Update: {
+          cloudinary_public_id?: string | null
+          cloudinary_url?: string | null
           course_id?: string
           created_at?: string | null
+          description?: string | null
           duration_seconds?: number | null
           id?: string
+          module_id?: string | null
           order_index?: number
+          thumbnail_url?: string | null
           title?: string
           topic_id?: string | null
           updated_at?: string | null
@@ -1344,6 +1438,13 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "videos_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
             referencedColumns: ["id"]
           },
           {
