@@ -300,8 +300,57 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   };
 
   const saveVideo = async () => {
-    if (!selectedCourse || !videoTitle.trim() || !videoUrl.trim()) {
-      toast.error('সব তথ্য দিন');
+    if (!selectedCourse || !videoTitle.trim()) {
+      toast.error('টাইটেল দিন');
+      return;
+    }
+
+    // Handle Cloudinary upload
+    if (videoType === 'cloudinary' && !editingVideo) {
+      const file = (window as any).__pendingVideoFile as File | undefined;
+      if (!file) {
+        toast.error('ভিডিও ফাইল সিলেক্ট করুন');
+        return;
+      }
+
+      toast.info('ভিডিও আপলোড হচ্ছে... অপেক্ষা করুন');
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('title', videoTitle);
+      formData.append('course_id', selectedCourse.id);
+      formData.append('order_index', String(courseVideos.length + 1));
+      if (videoTopicId) formData.append('topic_id', videoTopicId);
+
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-video`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session?.access_token}`,
+          },
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+      
+      if (!response.ok) {
+        toast.error(result.error || 'আপলোড ব্যর্থ হয়েছে');
+        return;
+      }
+
+      toast.success('ভিডিও আপলোড সম্পন্ন!');
+      (window as any).__pendingVideoFile = undefined;
+      setShowVideoDialog(false);
+      loadCourseVideos(selectedCourse.id);
+      return;
+    }
+
+    if (!videoUrl.trim() && videoType !== 'cloudinary') {
+      toast.error('URL দিন');
       return;
     }
 
@@ -832,17 +881,40 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   <SelectContent>
                     <SelectItem value="youtube">YouTube</SelectItem>
                     <SelectItem value="vimeo">Vimeo</SelectItem>
+                    <SelectItem value="cloudinary">Cloudinary (Direct Upload)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <Label>ভিডিও URL</Label>
-                <Input
-                  value={videoUrl}
-                  onChange={(e) => setVideoUrl(e.target.value)}
-                  placeholder="https://youtube.com/watch?v=..."
-                />
-              </div>
+              {videoType === 'cloudinary' ? (
+                <div className="space-y-2">
+                  <Label>ভিডিও ফাইল আপলোড করুন</Label>
+                  <p className="text-xs text-muted-foreground">MP4, WebM, MOV — সর্বোচ্চ 100MB</p>
+                  <Input
+                    type="file"
+                    accept="video/mp4,video/webm,video/quicktime"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        // Store file reference for upload on save
+                        (window as any).__pendingVideoFile = file;
+                        setVideoUrl(file.name);
+                      }
+                    }}
+                  />
+                  {videoUrl && videoType === 'cloudinary' && (
+                    <p className="text-xs text-emerald-600">ফাইল সিলেক্ট করা হয়েছে: {videoUrl}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Label>ভিডিও URL</Label>
+                  <Input
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://youtube.com/watch?v=..."
+                  />
+                </div>
+              )}
               <div className="space-y-2">
                 <Label>সময়কাল (মিনিট)</Label>
                 <Input

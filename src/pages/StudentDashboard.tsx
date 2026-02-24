@@ -25,6 +25,8 @@ import StudentIDCard from '@/components/student/StudentIDCard';
 import ProfilePhotoUpload from '@/components/student/ProfilePhotoUpload';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CourseEnrollmentModal from '@/components/student/CourseEnrollmentModal';
+import SecureVideoPlayer from '@/components/SecureVideoPlayer';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
@@ -53,6 +55,11 @@ export default function StudentDashboard() {
   const [loadingCourses, setLoadingCourses] = useState(false);
   const [selectedEnrollCourse, setSelectedEnrollCourse] = useState<Course | null>(null);
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
+  
+  // Feedback states
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackSentiment, setFeedbackSentiment] = useState<'positive' | 'negative'>('positive');
+  const [feedbackMessage, setFeedbackMessage] = useState('');
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -142,22 +149,7 @@ export default function StudentDashboard() {
     setShowVideoPlayer(true);
   };
 
-  const getEmbedUrl = (video: VideoWithProgress) => {
-    const url = video.video_url;
-    if (video.video_type === 'youtube') {
-      const videoId = url.includes('youtu.be') 
-        ? url.split('/').pop()?.split('?')[0]
-        : url.includes('v=') 
-          ? url.split('v=')[1]?.split('&')[0]
-          : url;
-      return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3&disablekb=0&fs=1&cc_load_policy=0`;
-    }
-    if (video.video_type === 'vimeo') {
-      const videoId = url.split('/').pop();
-      return `https://player.vimeo.com/video/${videoId}`;
-    }
-    return url;
-  };
+  // SecureVideoPlayer handles video URLs internally
 
   const { updateProgress } = useVideoProgress(selectedVideo?.id || '');
 
@@ -171,9 +163,9 @@ export default function StudentDashboard() {
     }
 
     toast.success(t('student.videoComplete'));
-    setShowVideoPlayer(false);
-    setSelectedVideo(null);
-    setVideoMaterials([]);
+    
+    // Show feedback form instead of closing immediately
+    setShowFeedback(true);
 
     const completedCount = selectedCourse.videos.filter(v => v.progress?.is_completed || v.id === selectedVideo.id).length;
     if (completedCount === selectedCourse.total_videos) {
@@ -210,6 +202,39 @@ export default function StudentDashboard() {
     }
 
     refetch();
+  };
+
+  const submitFeedback = async () => {
+    if (!selectedVideo || !user || !feedbackMessage.trim()) {
+      toast.error('মতামত লিখুন');
+      return;
+    }
+    
+    const { error } = await supabase.from('video_feedback').insert({
+      user_id: user.id,
+      video_id: selectedVideo.id,
+      sentiment: feedbackSentiment,
+      message: feedbackMessage.trim(),
+    });
+    
+    if (!error) {
+      toast.success('ধন্যবাদ! আপনার মতামত গ্রহণ করা হয়েছে');
+    }
+    
+    setShowFeedback(false);
+    setFeedbackMessage('');
+    setFeedbackSentiment('positive');
+    setShowVideoPlayer(false);
+    setSelectedVideo(null);
+    setVideoMaterials([]);
+  };
+
+  const skipFeedback = () => {
+    setShowFeedback(false);
+    setFeedbackMessage('');
+    setShowVideoPlayer(false);
+    setSelectedVideo(null);
+    setVideoMaterials([]);
   };
 
   const updateProfile = async () => {
@@ -758,63 +783,116 @@ export default function StudentDashboard() {
       </main>
 
       {/* Video Player Dialog */}
-      <Dialog open={showVideoPlayer} onOpenChange={setShowVideoPlayer}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden rounded-2xl">
-          <div className="grid md:grid-cols-3">
-            <div className="md:col-span-2">
-              {selectedVideo && (
-                <>
-                  <div className="aspect-video bg-black">
-                    <iframe
-                      src={getEmbedUrl(selectedVideo)}
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    />
-                  </div>
-                  <div className="p-4 border-t bg-white dark:bg-slate-900">
-                    <h3 className="font-semibold text-sm mb-3">{selectedVideo.title}</h3>
-                    <Button onClick={markVideoComplete} className="w-full gap-2" size="sm">
-                      <CheckCircle className="w-4 h-4" />
-                      {t('student.markComplete')}
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="border-l bg-slate-50 dark:bg-slate-900">
-              <div className="p-3 border-b">
-                <h4 className="font-semibold text-sm">{t('student.materials')}</h4>
+      <Dialog open={showVideoPlayer} onOpenChange={(open) => {
+        if (!open) {
+          setShowVideoPlayer(false);
+          setShowFeedback(false);
+          setSelectedVideo(null);
+          setVideoMaterials([]);
+        }
+      }}>
+        <DialogContent className="max-w-5xl p-0 overflow-hidden rounded-2xl">
+          {showFeedback ? (
+            /* Feedback Form */
+            <div className="p-6 space-y-4">
+              <div className="text-center">
+                <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto mb-2" />
+                <h3 className="font-bold text-lg">ক্লাস সম্পন্ন হয়েছে!</h3>
+                <p className="text-sm text-muted-foreground">আপনার মতামত জানান</p>
               </div>
-              <ScrollArea className="h-[300px] md:h-[350px]">
-                {loadingMaterials ? (
-                  <div className="flex justify-center py-8">
-                    <div className="w-6 h-6 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
-                  </div>
-                ) : videoMaterials.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground text-xs">
-                    {t('student.noMaterials')}
-                  </div>
-                ) : (
-                  <div className="p-3 space-y-2">
-                    {videoMaterials.map((material) => (
-                      <div key={material.id} className="p-2 bg-white dark:bg-slate-800 rounded-lg border border-border/50">
-                        <div className="flex items-center gap-2">
-                          {getMaterialIcon(material.material_type)}
-                          <span className="text-xs font-medium flex-1 truncate">{material.title}</span>
-                          {material.material_url && (
-                            <a href={material.material_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                              <FileText className="w-3 h-3" />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
+              
+              <div className="flex gap-3 justify-center">
+                <Button
+                  variant={feedbackSentiment === 'positive' ? 'default' : 'outline'}
+                  onClick={() => setFeedbackSentiment('positive')}
+                  className="gap-2"
+                >
+                  👍 ভালো লেগেছে
+                </Button>
+                <Button
+                  variant={feedbackSentiment === 'negative' ? 'destructive' : 'outline'}
+                  onClick={() => setFeedbackSentiment('negative')}
+                  className="gap-2"
+                >
+                  👎 উন্নতি দরকার
+                </Button>
+              </div>
+              
+              <Textarea
+                value={feedbackMessage}
+                onChange={(e) => setFeedbackMessage(e.target.value)}
+                placeholder={feedbackSentiment === 'positive' ? 'কোন বিষয়টি আপনার ভালো লেগেছে?' : 'কোথায় উন্নতি করা উচিত বলে মনে করেন?'}
+                rows={3}
+              />
+              
+              <div className="flex gap-2">
+                <Button variant="outline" className="flex-1" onClick={skipFeedback}>
+                  স্কিপ করুন
+                </Button>
+                <Button className="flex-1" onClick={submitFeedback} disabled={!feedbackMessage.trim()}>
+                  পাঠান
+                </Button>
+              </div>
             </div>
-          </div>
+          ) : (
+            /* Video Player */
+            <div className="grid md:grid-cols-3">
+              <div className="md:col-span-2">
+                {selectedVideo && user && (
+                  <>
+                    <SecureVideoPlayer
+                      videoUrl={selectedVideo.video_url}
+                      videoType={selectedVideo.video_type}
+                      videoId={selectedVideo.id}
+                      userId={user.id}
+                      onComplete={markVideoComplete}
+                      initialPosition={selectedVideo.progress?.progress_percent ? 0 : 0}
+                      maxWatchedSeconds={0}
+                    />
+                    <div className="p-4 border-t bg-white dark:bg-slate-900">
+                      <h3 className="font-semibold text-sm mb-3">{selectedVideo.title}</h3>
+                      <Button onClick={markVideoComplete} className="w-full gap-2" size="sm">
+                        <CheckCircle className="w-4 h-4" />
+                        {t('student.markComplete')}
+                      </Button>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="border-l bg-slate-50 dark:bg-slate-900">
+                <div className="p-3 border-b">
+                  <h4 className="font-semibold text-sm">{t('student.materials')}</h4>
+                </div>
+                <ScrollArea className="h-[300px] md:h-[350px]">
+                  {loadingMaterials ? (
+                    <div className="flex justify-center py-8">
+                      <div className="w-6 h-6 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+                    </div>
+                  ) : videoMaterials.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground text-xs">
+                      {t('student.noMaterials')}
+                    </div>
+                  ) : (
+                    <div className="p-3 space-y-2">
+                      {videoMaterials.map((material) => (
+                        <div key={material.id} className="p-2 bg-white dark:bg-slate-800 rounded-lg border border-border/50">
+                          <div className="flex items-center gap-2">
+                            {getMaterialIcon(material.material_type)}
+                            <span className="text-xs font-medium flex-1 truncate">{material.title}</span>
+                            {material.material_url && (
+                              <a href={material.material_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                                <FileText className="w-3 h-3" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 
