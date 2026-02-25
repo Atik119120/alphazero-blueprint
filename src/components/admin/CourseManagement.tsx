@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 import { Switch } from '@/components/ui/switch';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -68,6 +69,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [courseTopics, setCourseTopics] = useState<Array<{ id: string; title: string; order_index: number }>>([]);
   const [showTopicDialog, setShowTopicDialog] = useState(false);
   const [newTopicTitle, setNewTopicTitle] = useState('');
+
+  // Cloudinary upload progress
+  const [cloudinaryUploading, setCloudinaryUploading] = useState(false);
+  const [cloudinaryProgress, setCloudinaryProgress] = useState(0);
 
   // Material form state
   const [showMaterialDialog, setShowMaterialDialog] = useState(false);
@@ -313,39 +318,51 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         return;
       }
 
-      toast.info('ভিডিও আপলোড হচ্ছে... অপেক্ষা করুন');
+      setCloudinaryUploading(true);
+      setCloudinaryProgress(0);
 
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('title', videoTitle);
-      formData.append('course_id', selectedCourse.id);
-      formData.append('order_index', String(courseVideos.length + 1));
-      if (videoTopicId) formData.append('topic_id', videoTopicId);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('title', videoTitle);
+        formData.append('course_id', selectedCourse.id);
+        formData.append('order_index', String(courseVideos.length + 1));
+        if (videoTopicId) formData.append('topic_id', videoTopicId);
 
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-video`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${session?.access_token}`,
-          },
-          body: formData,
-        }
-      );
+        const { data: { session } } = await supabase.auth.getSession();
 
-      const result = await response.json();
-      
-      if (!response.ok) {
-        toast.error(result.error || 'আপলোড ব্যর্থ হয়েছে');
-        return;
+        // Use XMLHttpRequest for progress tracking
+        const xhr = new XMLHttpRequest();
+        
+        const result = await new Promise<any>((resolve, reject) => {
+          xhr.upload.addEventListener('progress', (e) => {
+            if (e.lengthComputable) {
+              setCloudinaryProgress(Math.round((e.loaded / e.total) * 100));
+            }
+          });
+          xhr.addEventListener('load', () => {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+              else reject(new Error(data.error || 'আপলোড ব্যর্থ'));
+            } catch { reject(new Error('রেসপন্স পার্স সমস্যা')); }
+          });
+          xhr.addEventListener('error', () => reject(new Error('নেটওয়ার্ক সমস্যা')));
+          xhr.open('POST', `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-video`);
+          xhr.setRequestHeader('Authorization', `Bearer ${session?.access_token}`);
+          xhr.send(formData);
+        });
+
+        toast.success('ভিডিও আপলোড সম্পন্ন!');
+        (window as any).__pendingVideoFile = undefined;
+        setShowVideoDialog(false);
+        loadCourseVideos(selectedCourse.id);
+      } catch (error: any) {
+        toast.error(error.message || 'আপলোড ব্যর্থ হয়েছে');
+      } finally {
+        setCloudinaryUploading(false);
+        setCloudinaryProgress(0);
       }
-
-      toast.success('ভিডিও আপলোড সম্পন্ন!');
-      (window as any).__pendingVideoFile = undefined;
-      setShowVideoDialog(false);
-      loadCourseVideos(selectedCourse.id);
       return;
     }
 
@@ -888,14 +905,14 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               {videoType === 'cloudinary' ? (
                 <div className="space-y-2">
                   <Label>ভিডিও ফাইল আপলোড করুন</Label>
-                  <p className="text-xs text-muted-foreground">MP4, WebM, MOV — সর্বোচ্চ 100MB</p>
+                  <p className="text-xs text-muted-foreground">MP4, WebM, MOV — সর্বোচ্চ ১ জিবি</p>
                   <Input
                     type="file"
                     accept="video/mp4,video/webm,video/quicktime"
+                    disabled={cloudinaryUploading}
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        // Store file reference for upload on save
                         (window as any).__pendingVideoFile = file;
                         setVideoUrl(file.name);
                       }
@@ -903,6 +920,18 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   />
                   {videoUrl && videoType === 'cloudinary' && (
                     <p className="text-xs text-emerald-600">ফাইল সিলেক্ট করা হয়েছে: {videoUrl}</p>
+                  )}
+                  {cloudinaryUploading && (
+                    <div className="space-y-2 pt-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">আপলোড হচ্ছে...</span>
+                        <span className="font-mono font-semibold">{cloudinaryProgress}%</span>
+                      </div>
+                      <Progress value={cloudinaryProgress} className="h-3" />
+                      {cloudinaryProgress === 100 && (
+                        <p className="text-xs text-muted-foreground">Cloudinary-তে প্রসেস হচ্ছে...</p>
+                      )}
+                    </div>
                   )}
                 </div>
               ) : (
@@ -942,11 +971,11 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               )}
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setShowVideoDialog(false)}>
+              <Button variant="outline" onClick={() => setShowVideoDialog(false)} disabled={cloudinaryUploading}>
                 বাতিল
               </Button>
-              <Button onClick={saveVideo}>
-                {editingVideo ? 'আপডেট' : 'যোগ করুন'}
+              <Button onClick={saveVideo} disabled={cloudinaryUploading}>
+                {cloudinaryUploading ? 'আপলোড হচ্ছে...' : editingVideo ? 'আপডেট' : 'যোগ করুন'}
               </Button>
             </DialogFooter>
           </DialogContent>

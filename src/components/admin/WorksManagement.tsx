@@ -186,13 +186,13 @@ export const WorksManagement = () => {
               নতুন Work যোগ করুন
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-lg">
+          <DialogContent className="max-w-lg max-h-[90vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>
                 {editingWork ? "Work এডিট করুন" : "নতুন Work যোগ করুন"}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-4 overflow-y-auto flex-1 pr-2">
               <div>
                 <Label>শিরোনাম *</Label>
                 <Input

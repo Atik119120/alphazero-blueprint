@@ -52,7 +52,7 @@ import {
   Link2,
   GraduationCap,
   Send,
-  
+  Film,
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -66,6 +66,7 @@ import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
+import GalleryManagement from '@/components/admin/GalleryManagement';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
@@ -785,6 +786,7 @@ export default function AdminDashboard() {
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', category: 'lms' },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', category: 'lms' },
+    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery', category: 'lms' },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
@@ -1952,6 +1954,11 @@ export default function AdminDashboard() {
           {/* Feedback Tab */}
           <TabsContent value="feedback" className="space-y-6">
             <FeedbackViewer />
+          </TabsContent>
+
+          {/* Gallery Tab */}
+          <TabsContent value="gallery" className="space-y-6">
+            <GalleryManagement />
           </TabsContent>
 
 
