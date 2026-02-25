@@ -554,6 +554,54 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_videos: {
+        Row: {
+          cloudinary_public_id: string | null
+          cloudinary_url: string | null
+          created_at: string
+          description: string | null
+          duration_seconds: number | null
+          file_size_bytes: number | null
+          id: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          uploaded_by: string | null
+          video_type: string
+          video_url: string
+        }
+        Insert: {
+          cloudinary_public_id?: string | null
+          cloudinary_url?: string | null
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          uploaded_by?: string | null
+          video_type?: string
+          video_url: string
+        }
+        Update: {
+          cloudinary_public_id?: string | null
+          cloudinary_url?: string | null
+          created_at?: string
+          description?: string | null
+          duration_seconds?: number | null
+          file_size_bytes?: number | null
+          id?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          uploaded_by?: string | null
+          video_type?: string
+          video_url?: string
+        }
+        Relationships: []
+      }
       notice_reads: {
         Row: {
           id: string

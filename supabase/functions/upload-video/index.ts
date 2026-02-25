@@ -24,16 +24,13 @@ serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const token = authHeader.replace('Bearer ', '');
-    const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
       return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    const userId = claimsData.claims.sub;
-
     // Check admin role
-    const { data: roleData } = await supabase.from('user_roles').select('role').eq('user_id', userId).maybeSingle();
+    const { data: roleData } = await supabase.from('user_roles').select('role').eq('user_id', user.id).maybeSingle();
     if (!roleData || roleData.role !== 'admin') {
       return new Response(JSON.stringify({ error: 'Admin access required' }), { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
@@ -51,19 +48,25 @@ serve(async (req) => {
     const formData = await req.formData();
     const file = formData.get('file') as File;
     const title = formData.get('title') as string;
-    const courseId = formData.get('course_id') as string;
+    const courseId = formData.get('course_id') as string | null;
     const moduleId = formData.get('module_id') as string | null;
     const orderIndex = formData.get('order_index') as string;
     const topicId = formData.get('topic_id') as string | null;
+    const isGallery = formData.get('gallery') === 'true';
+    const description = formData.get('description') as string | null;
 
-    if (!file || !title || !courseId) {
-      return new Response(JSON.stringify({ error: 'Missing required fields: file, title, course_id' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    if (!file || !title) {
+      return new Response(JSON.stringify({ error: 'Missing required fields: file, title' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
-    // Validate file
-    const maxSize = 100 * 1024 * 1024; // 100MB
+    if (!isGallery && !courseId) {
+      return new Response(JSON.stringify({ error: 'course_id required for course videos' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    // Validate file - 1GB max
+    const maxSize = 1024 * 1024 * 1024; // 1GB
     if (file.size > maxSize) {
-      return new Response(JSON.stringify({ error: 'File too large. Max 100MB.' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      return new Response(JSON.stringify({ error: 'File too large. Max 1GB.' }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
     }
 
     const allowedTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
@@ -73,7 +76,7 @@ serve(async (req) => {
 
     // Generate signature for Cloudinary upload
     const timestamp = Math.round(Date.now() / 1000);
-    const folder = `courses/${courseId}`;
+    const folder = isGallery ? 'gallery' : `courses/${courseId}`;
     const params: Record<string, string> = {
       folder,
       resource_type: 'video',
@@ -111,16 +114,54 @@ serve(async (req) => {
 
     const cloudinaryData = await cloudinaryResponse.json();
 
-    // Save to videos table using service role
+    // Save to database using service role
     const adminSupabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     );
 
+    if (isGallery) {
+      // Save to gallery_videos table
+      const { data: galleryData, error: insertError } = await adminSupabase
+        .from('gallery_videos')
+        .insert({
+          title,
+          description: description || null,
+          video_url: cloudinaryData.secure_url,
+          video_type: 'cloudinary',
+          cloudinary_public_id: cloudinaryData.public_id,
+          cloudinary_url: cloudinaryData.secure_url,
+          thumbnail_url: cloudinaryData.secure_url.replace(/\.[^.]+$/, '.jpg'),
+          duration_seconds: Math.round(cloudinaryData.duration || 0),
+          file_size_bytes: cloudinaryData.bytes || 0,
+          uploaded_by: user.id,
+        })
+        .select()
+        .single();
+
+      if (insertError) {
+        console.error('DB insert error:', insertError);
+        return new Response(JSON.stringify({ error: 'Failed to save video metadata', details: insertError.message }), { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      }
+
+      return new Response(JSON.stringify({
+        success: true,
+        video: galleryData,
+        cloudinary: {
+          public_id: cloudinaryData.public_id,
+          secure_url: cloudinaryData.secure_url,
+          duration: cloudinaryData.duration,
+          format: cloudinaryData.format,
+          bytes: cloudinaryData.bytes,
+        }
+      }), { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    }
+
+    // Save to videos table (course video)
     const { data: videoData, error: insertError } = await adminSupabase
       .from('videos')
       .insert({
-        course_id: courseId,
+        course_id: courseId!,
         title,
         video_url: cloudinaryData.secure_url,
         video_type: 'cloudinary',
