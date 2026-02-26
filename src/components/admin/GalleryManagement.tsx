@@ -62,8 +62,7 @@ export default function GalleryManagement() {
       return;
     }
 
-    // Validate
-    const maxSize = 1024 * 1024 * 1024; // 1GB
+    const maxSize = 1024 * 1024 * 1024;
     if (selectedFile.size > maxSize) {
       toast.error('ফাইল সাইজ ১ জিবির বেশি হতে পারবে না');
       return;
@@ -80,48 +79,61 @@ export default function GalleryManagement() {
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        toast.error('সেশন পাওয়া যায়নি');
-        return;
-      }
+      if (!session) { toast.error('সেশন পাওয়া যায়নি'); return; }
 
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('title', title.trim());
-      formData.append('description', description.trim());
-      formData.append('gallery', 'true');
+      // Step 1: Get signed credentials from edge function (lightweight)
+      const signRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sign-upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folder: 'gallery' }),
+      });
+      if (!signRes.ok) throw new Error('সাইন করতে সমস্যা');
+      const { cloudName, apiKey, timestamp, signature, folder } = await signRes.json();
 
-      // Use XMLHttpRequest for progress tracking
+      // Step 2: Upload directly to Cloudinary from browser
+      const cloudForm = new FormData();
+      cloudForm.append('file', selectedFile);
+      cloudForm.append('api_key', apiKey);
+      cloudForm.append('timestamp', String(timestamp));
+      cloudForm.append('signature', signature);
+      cloudForm.append('folder', folder);
+      cloudForm.append('resource_type', 'video');
+
       const xhr = new XMLHttpRequest();
-      
-      const result = await new Promise<any>((resolve, reject) => {
+      const cloudinaryData = await new Promise<any>((resolve, reject) => {
         xhr.upload.addEventListener('progress', (e) => {
-          if (e.lengthComputable) {
-            const pct = Math.round((e.loaded / e.total) * 100);
-            setUploadProgress(pct);
-          }
+          if (e.lengthComputable) setUploadProgress(Math.round((e.loaded / e.total) * 100));
         });
-
         xhr.addEventListener('load', () => {
           try {
             const data = JSON.parse(xhr.responseText);
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve(data);
-            } else {
-              reject(new Error(data.error || 'আপলোড ব্যর্থ'));
-            }
-          } catch {
-            reject(new Error('রেসপন্স পার্স করতে সমস্যা'));
-          }
+            if (xhr.status >= 200 && xhr.status < 300) resolve(data);
+            else reject(new Error(data?.error?.message || 'Cloudinary আপলোড ব্যর্থ'));
+          } catch { reject(new Error('রেসপন্স পার্স সমস্যা')); }
         });
-
         xhr.addEventListener('error', () => reject(new Error('নেটওয়ার্ক সমস্যা')));
-        xhr.addEventListener('abort', () => reject(new Error('আপলোড বাতিল হয়েছে')));
-
-        xhr.open('POST', `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-video`);
-        xhr.setRequestHeader('Authorization', `Bearer ${session.access_token}`);
-        xhr.send(formData);
+        xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`);
+        xhr.send(cloudForm);
       });
+
+      // Step 3: Save metadata to DB
+      const { error: insertError } = await supabase.from('gallery_videos').insert({
+        title: title.trim(),
+        description: description.trim() || null,
+        video_url: cloudinaryData.secure_url,
+        video_type: 'cloudinary',
+        cloudinary_public_id: cloudinaryData.public_id,
+        cloudinary_url: cloudinaryData.secure_url,
+        thumbnail_url: cloudinaryData.secure_url?.replace(/\.[^.]+$/, '.jpg'),
+        duration_seconds: Math.round(cloudinaryData.duration || 0),
+        file_size_bytes: cloudinaryData.bytes || 0,
+        uploaded_by: session.user.id,
+      });
+
+      if (insertError) throw new Error(insertError.message);
 
       toast.success('ভিডিও আপলোড সম্পন্ন!');
       queryClient.invalidateQueries({ queryKey: ['gallery-videos'] });
