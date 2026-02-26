@@ -38,3 +38,6 @@ verify_jwt = false
 
 [functions.upload-video]
 verify_jwt = false
+
+[functions.sign-upload]
+verify_jwt = false

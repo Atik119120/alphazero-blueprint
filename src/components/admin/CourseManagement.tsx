@@ -310,7 +310,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       return;
     }
 
-    // Handle Cloudinary upload
+    // Handle Cloudinary direct upload
     if (videoType === 'cloudinary' && !editingVideo) {
       const file = (window as any).__pendingVideoFile as File | undefined;
       if (!file) {
@@ -322,35 +322,61 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setCloudinaryProgress(0);
 
       try {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('title', videoTitle);
-        formData.append('course_id', selectedCourse.id);
-        formData.append('order_index', String(courseVideos.length + 1));
-        if (videoTopicId) formData.append('topic_id', videoTopicId);
-
         const { data: { session } } = await supabase.auth.getSession();
 
-        // Use XMLHttpRequest for progress tracking
+        // Step 1: Get signed credentials
+        const signRes = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/sign-upload`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session?.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ folder: `courses/${selectedCourse.id}` }),
+        });
+        if (!signRes.ok) throw new Error('সাইন করতে সমস্যা');
+        const { cloudName, apiKey, timestamp, signature, folder } = await signRes.json();
+
+        // Step 2: Upload directly to Cloudinary
+        const cloudForm = new FormData();
+        cloudForm.append('file', file);
+        cloudForm.append('api_key', apiKey);
+        cloudForm.append('timestamp', String(timestamp));
+        cloudForm.append('signature', signature);
+        cloudForm.append('folder', folder);
+        cloudForm.append('resource_type', 'video');
+
         const xhr = new XMLHttpRequest();
-        
-        const result = await new Promise<any>((resolve, reject) => {
+        const cloudinaryData = await new Promise<any>((resolve, reject) => {
           xhr.upload.addEventListener('progress', (e) => {
-            if (e.lengthComputable) {
-              setCloudinaryProgress(Math.round((e.loaded / e.total) * 100));
-            }
+            if (e.lengthComputable) setCloudinaryProgress(Math.round((e.loaded / e.total) * 100));
           });
           xhr.addEventListener('load', () => {
             try {
               const data = JSON.parse(xhr.responseText);
               if (xhr.status >= 200 && xhr.status < 300) resolve(data);
-              else reject(new Error(data.error || 'আপলোড ব্যর্থ'));
+              else reject(new Error(data?.error?.message || 'Cloudinary আপলোড ব্যর্থ'));
             } catch { reject(new Error('রেসপন্স পার্স সমস্যা')); }
           });
           xhr.addEventListener('error', () => reject(new Error('নেটওয়ার্ক সমস্যা')));
-          xhr.open('POST', `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/upload-video`);
-          xhr.setRequestHeader('Authorization', `Bearer ${session?.access_token}`);
-          xhr.send(formData);
+          xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`);
+          xhr.send(cloudForm);
+        });
+
+        // Step 3: Save metadata to DB
+        const durationSeconds = videoDuration ? parseInt(videoDuration) * 60 : Math.round(cloudinaryData.duration || 0);
+        const nextOrder = courseVideos.length + 1;
+
+        await supabase.from('videos').insert({
+          course_id: selectedCourse.id,
+          title: videoTitle,
+          video_url: cloudinaryData.secure_url,
+          video_type: 'cloudinary',
+          duration_seconds: durationSeconds,
+          order_index: nextOrder,
+          cloudinary_public_id: cloudinaryData.public_id,
+          cloudinary_url: cloudinaryData.secure_url,
+          thumbnail_url: cloudinaryData.secure_url?.replace(/\.[^.]+$/, '.jpg'),
+          topic_id: videoTopicId || null,
         });
 
         toast.success('ভিডিও আপলোড সম্পন্ন!');
@@ -371,6 +397,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       return;
     }
 
+    // Normalize cloudinary_url to cloudinary for DB storage
+    const dbVideoType = videoType === 'cloudinary_url' ? 'cloudinary' : videoType;
+
     const durationSeconds = videoDuration ? parseInt(videoDuration) * 60 : 0;
 
     if (editingVideo) {
@@ -379,7 +408,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         .update({
           title: videoTitle,
           video_url: videoUrl,
-          video_type: videoType,
+          video_type: dbVideoType,
           duration_seconds: durationSeconds,
           topic_id: videoTopicId || null,
         })
@@ -398,7 +427,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           course_id: selectedCourse.id,
           title: videoTitle,
           video_url: videoUrl,
-          video_type: videoType,
+          video_type: dbVideoType,
           duration_seconds: durationSeconds,
           order_index: nextOrder,
           topic_id: videoTopicId || null,
@@ -899,6 +928,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                     <SelectItem value="youtube">YouTube</SelectItem>
                     <SelectItem value="vimeo">Vimeo</SelectItem>
                     <SelectItem value="cloudinary">Cloudinary (Direct Upload)</SelectItem>
+                    <SelectItem value="cloudinary_url">Cloudinary URL (লিংক পেস্ট)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -933,6 +963,16 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                       )}
                     </div>
                   )}
+                </div>
+              ) : videoType === 'cloudinary_url' ? (
+                <div className="space-y-2">
+                  <Label>Cloudinary ভিডিও URL</Label>
+                  <Input
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://res.cloudinary.com/..."
+                  />
+                  <p className="text-xs text-muted-foreground">Gallery থেকে লিংক কপি করে এখানে পেস্ট করুন</p>
                 </div>
               ) : (
                 <div className="space-y-2">
