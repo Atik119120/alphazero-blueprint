@@ -48,7 +48,6 @@ serve(async (req) => {
     const uploadFolder = folder || 'gallery';
     const params: Record<string, string> = {
       folder: uploadFolder,
-      resource_type: 'video',
       timestamp: String(timestamp),
     };
 
