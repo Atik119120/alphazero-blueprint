@@ -31,6 +31,7 @@ import StudentDashboard from "./pages/StudentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import TeacherLoginPage from "./pages/TeacherLoginPage";
 import MyCertificatesPage from "./pages/MyCertificatesPage";
+import CourseViewerPage from "./pages/CourseViewerPage";
 import CertificatePage from "./pages/CertificatePage";
 import VerifyCertificatePage from "./pages/VerifyCertificatePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -112,6 +113,7 @@ function AppContent() {
         <Route path="/passcode" element={<PassCodePage />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/student/course/:courseId" element={<CourseViewerPage />} />
         <Route path="/teacher" element={<TeacherDashboard />} />
         <Route path="/my-certificates" element={<MyCertificatesPage />} />
         <Route path="/certificate/:certificateId" element={<CertificatePage />} />
