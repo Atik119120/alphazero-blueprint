@@ -67,6 +67,7 @@ import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
 import GalleryManagement from '@/components/admin/GalleryManagement';
+import CommentManagement from '@/components/admin/CommentManagement';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
@@ -787,6 +788,7 @@ export default function AdminDashboard() {
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', category: 'lms' },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', category: 'lms' },
     { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery', category: 'lms' },
+    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments', category: 'lms' },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
@@ -1961,6 +1963,10 @@ export default function AdminDashboard() {
             <GalleryManagement />
           </TabsContent>
 
+          {/* Comments Tab */}
+          <TabsContent value="comments" className="space-y-6">
+            <CommentManagement />
+          </TabsContent>
 
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">

@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
-  SkipBack, CheckCircle, Loader2
+  SkipBack, CheckCircle, Loader2, Settings
 } from 'lucide-react';
 
 interface SecureVideoPlayerProps {
@@ -16,7 +16,11 @@ interface SecureVideoPlayerProps {
   onComplete: () => void;
   initialPosition?: number;
   maxWatchedSeconds?: number;
+  autoPlay?: boolean;
+  onThresholdMet?: () => void;
 }
+
+const COMPLETION_THRESHOLD = 0.95; // 95%
 
 export default function SecureVideoPlayer({
   videoUrl,
@@ -26,6 +30,8 @@ export default function SecureVideoPlayer({
   onComplete,
   initialPosition = 0,
   maxWatchedSeconds = 0,
+  autoPlay = false,
+  onThresholdMet,
 }: SecureVideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,6 +47,9 @@ export default function SecureVideoPlayer({
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [showIntro, setShowIntro] = useState(true);
+  const [thresholdNotified, setThresholdNotified] = useState(false);
+  const [showResMenu, setShowResMenu] = useState(false);
+  const [selectedRes, setSelectedRes] = useState('auto');
   const hideControlsTimer = useRef<NodeJS.Timeout>();
   const progressSaveTimer = useRef<NodeJS.Timeout>();
 
@@ -51,11 +60,16 @@ export default function SecureVideoPlayer({
     return () => document.removeEventListener('contextmenu', handler);
   }, []);
 
-  // Auto-hide intro after 4s
+  // Intro splash (3s) then auto-play
   useEffect(() => {
-    const timer = setTimeout(() => setShowIntro(false), 4000);
+    const timer = setTimeout(() => {
+      setShowIntro(false);
+      if (autoPlay && videoRef.current) {
+        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+    }, 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [autoPlay]);
 
   // Set initial position
   useEffect(() => {
@@ -84,9 +98,14 @@ export default function SecureVideoPlayer({
     
     setCurrentTime(video.currentTime);
     
-    // Update highest watched
     if (video.currentTime > highestWatched) {
       setHighestWatched(video.currentTime);
+    }
+
+    // Check 95% threshold
+    if (duration > 0 && video.currentTime / duration >= COMPLETION_THRESHOLD && !thresholdNotified) {
+      setThresholdNotified(true);
+      onThresholdMet?.();
     }
 
     // Periodic save (every 10s)
@@ -99,16 +118,13 @@ export default function SecureVideoPlayer({
   const handleSeek = (value: number[]) => {
     const video = videoRef.current;
     if (!video) return;
-    
     const seekTo = value[0];
-    
-    // Anti-forward-seek: can't go beyond highest watched (unless completed)
+    // Anti-forward-seek
     if (!isCompleted && seekTo > highestWatched + 2) {
       toast.error('আপনি এখনো এই অংশ পর্যন্ত দেখেননি');
       video.currentTime = highestWatched;
       return;
     }
-    
     video.currentTime = seekTo;
     setCurrentTime(seekTo);
   };
@@ -144,8 +160,7 @@ export default function SecureVideoPlayer({
     if (!video) return;
     video.volume = value[0];
     setVolume(value[0]);
-    if (value[0] === 0) setIsMuted(true);
-    else setIsMuted(false);
+    setIsMuted(value[0] === 0);
   };
 
   const changePlaybackRate = () => {
@@ -189,7 +204,37 @@ export default function SecureVideoPlayer({
     return `${m}:${sec.toString().padStart(2, '0')}`;
   };
 
-  // For YouTube/Vimeo, fallback to iframe
+  // Resolution options for Cloudinary
+  const resolutions = [
+    { label: 'Auto', value: 'auto' },
+    { label: '1080p', value: '1080' },
+    { label: '720p', value: '720' },
+    { label: '480p', value: '480' },
+    { label: '360p', value: '360' },
+  ];
+
+  const getVideoUrl = () => {
+    if (selectedRes === 'auto' || !videoUrl.includes('cloudinary')) return videoUrl;
+    // Cloudinary transformation for resolution
+    return videoUrl.replace('/upload/', `/upload/q_auto,h_${selectedRes}/`);
+  };
+
+  const changeResolution = (res: string) => {
+    const video = videoRef.current;
+    const time = video?.currentTime || 0;
+    const wasPlaying = !video?.paused;
+    setSelectedRes(res);
+    setShowResMenu(false);
+    // After src changes, restore time
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.currentTime = time;
+        if (wasPlaying) videoRef.current.play();
+      }
+    }, 100);
+  };
+
+  // YouTube/Vimeo iframe fallback
   if (videoType === 'youtube' || videoType === 'vimeo') {
     const getEmbedUrl = () => {
       if (videoType === 'youtube') {
@@ -206,18 +251,10 @@ export default function SecureVideoPlayer({
 
     return (
       <div className="relative aspect-video bg-black rounded-lg overflow-hidden" onContextMenu={e => e.preventDefault()}>
-        <iframe
-          src={getEmbedUrl()}
-          className="w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        <iframe src={getEmbedUrl()} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
       </div>
     );
   }
-
-  // Cloudinary / direct video
-  const streamUrl = videoUrl;
 
   return (
     <div
@@ -226,9 +263,9 @@ export default function SecureVideoPlayer({
       onMouseMove={handleMouseMove}
       onContextMenu={e => e.preventDefault()}
     >
-      {/* Logo Intro */}
+      {/* Logo Intro Splash */}
       {showIntro && (
-        <div className="absolute inset-0 z-50 bg-black flex items-center justify-center animate-fade-in">
+        <div className="absolute inset-0 z-50 bg-black flex items-center justify-center">
           <div className="text-center animate-pulse">
             <img src="/logo.png" alt="Logo" className="w-20 h-20 mx-auto mb-3 dark:invert" />
             <p className="text-white/80 text-sm font-medium">AlphaZero Academy</p>
@@ -239,7 +276,7 @@ export default function SecureVideoPlayer({
       {/* Video Element */}
       <video
         ref={videoRef}
-        src={streamUrl}
+        src={getVideoUrl()}
         className="w-full h-full object-contain"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={() => {
@@ -257,15 +294,27 @@ export default function SecureVideoPlayer({
         playsInline
       />
 
+      {/* Center Play Button (when paused) */}
+      {!isPlaying && !isLoading && !showIntro && (
+        <button
+          onClick={togglePlay}
+          className="absolute inset-0 flex items-center justify-center z-10 group"
+        >
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
+            <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
+          </div>
+        </button>
+      )}
+
       {/* Loading Spinner */}
       {isLoading && !showIntro && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20">
           <Loader2 className="w-10 h-10 text-white animate-spin" />
         </div>
       )}
 
       {/* Controls Overlay */}
-      <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 transition-opacity duration-300 z-30 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         {/* Progress Bar */}
         <div className="mb-3">
           <Slider
@@ -275,13 +324,9 @@ export default function SecureVideoPlayer({
             onValueChange={handleSeek}
             className="cursor-pointer"
           />
-          {/* Watched indicator */}
           {!isCompleted && highestWatched > 0 && duration > 0 && (
             <div className="relative h-0.5 -mt-2 mb-2 pointer-events-none">
-              <div
-                className="absolute h-full bg-emerald-500/40 rounded"
-                style={{ width: `${(highestWatched / duration) * 100}%` }}
-              />
+              <div className="absolute h-full bg-emerald-500/40 rounded" style={{ width: `${(highestWatched / duration) * 100}%` }} />
             </div>
           )}
         </div>
@@ -291,14 +336,32 @@ export default function SecureVideoPlayer({
           <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20" onClick={togglePlay}>
             {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
           </Button>
-          
           <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20" onClick={skipBack}>
             <SkipBack className="w-4 h-4" />
           </Button>
-
           <span className="text-xs tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
-
           <div className="flex-1" />
+
+          {/* Resolution Selector */}
+          <div className="relative">
+            <Button variant="ghost" size="sm" className="h-7 text-xs text-white hover:bg-white/20 px-2 gap-1" onClick={() => setShowResMenu(!showResMenu)}>
+              <Settings className="w-3 h-3" />
+              {selectedRes === 'auto' ? 'Auto' : `${selectedRes}p`}
+            </Button>
+            {showResMenu && (
+              <div className="absolute bottom-full right-0 mb-1 bg-black/90 backdrop-blur-sm border border-white/20 rounded-lg py-1 min-w-[100px] z-50">
+                {resolutions.map(res => (
+                  <button
+                    key={res.value}
+                    onClick={() => changeResolution(res.value)}
+                    className={`w-full px-3 py-1.5 text-xs text-left hover:bg-white/10 transition-colors ${selectedRes === res.value ? 'text-primary font-semibold' : 'text-white/80'}`}
+                  >
+                    {res.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Playback Speed */}
           <Button variant="ghost" size="sm" className="h-7 text-xs text-white hover:bg-white/20 px-2" onClick={changePlaybackRate}>
@@ -322,9 +385,16 @@ export default function SecureVideoPlayer({
         </div>
       </div>
 
+      {/* 95% Threshold Indicator */}
+      {thresholdNotified && !isCompleted && (
+        <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs flex items-center gap-1 animate-bounce z-30">
+          <CheckCircle className="w-3 h-3" /> Ready to complete!
+        </div>
+      )}
+
       {/* Completion Badge */}
       {isCompleted && (
-        <div className="absolute top-3 right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1">
+        <div className="absolute top-3 right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1 z-30">
           <CheckCircle className="w-3 h-3" /> Completed
         </div>
       )}
