@@ -9,14 +9,14 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+
 import SecureVideoPlayer from '@/components/SecureVideoPlayer';
 import LessonComments from '@/components/student/LessonComments';
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Play, Lock, CheckCircle, ArrowLeft, ArrowRight, ChevronLeft,
-  FileText, StickyNote, File, Clock, PlayCircle, BookOpen, Maximize2, Minimize2,
-  Download, ExternalLink, User, List
+  FileText, StickyNote, File, Clock, PlayCircle, Maximize2, Minimize2,
+  Download, ExternalLink, User
 } from 'lucide-react';
 import { CourseWithProgress, VideoWithProgress, VideoMaterial } from '@/types/lms';
 import { useStudentCourses, useVideoProgress } from '@/hooks/useCourses';
@@ -37,7 +37,8 @@ export default function CourseViewerPage() {
   const [showStartScreen, setShowStartScreen] = useState(true);
   const [watchThresholdMet, setWatchThresholdMet] = useState(false);
   const [dailyClassCount, setDailyClassCount] = useState(0);
-  const [mobileSyllabusOpen, setMobileSyllabusOpen] = useState(false);
+  
+  const [autoCompleting, setAutoCompleting] = useState(false);
 
   // Find the course from student courses
   useEffect(() => {
@@ -83,9 +84,18 @@ export default function CourseViewerPage() {
 
   const { updateProgress } = useVideoProgress(selectedVideo?.id || '');
 
+  // Auto-complete when threshold is met
   const handleVideoComplete = useCallback(() => {
     setWatchThresholdMet(true);
   }, []);
+
+  // Auto mark complete when threshold met
+  useEffect(() => {
+    if (watchThresholdMet && !autoCompleting && selectedVideo && !selectedVideo.progress?.is_completed) {
+      setAutoCompleting(true);
+      markComplete().finally(() => setAutoCompleting(false));
+    }
+  }, [watchThresholdMet]);
 
   const markComplete = async () => {
     if (!selectedVideo || !course || !user) return;
@@ -134,7 +144,7 @@ export default function CourseViewerPage() {
       return;
     }
     setSelectedVideo(video);
-    setMobileSyllabusOpen(false);
+    
   };
 
   const currentIndex = course?.videos.findIndex(v => v.id === selectedVideo?.id) ?? -1;
@@ -210,7 +220,8 @@ export default function CourseViewerPage() {
   return (
     <div className={`min-h-screen bg-slate-950 text-white flex flex-col ${language === 'bn' ? 'font-bengali' : ''}`}>
       {/* Top Bar */}
-      <header className={`h-12 md:h-14 border-b border-white/10 flex items-center px-3 md:px-4 gap-2 md:gap-3 shrink-0 bg-slate-900/80 backdrop-blur-sm z-30 ${focusMode ? 'hidden' : ''}`}>
+      {/* Top Bar - always visible */}
+      <header className={`h-12 md:h-14 border-b border-white/10 flex items-center px-3 md:px-4 gap-2 md:gap-3 shrink-0 bg-slate-900/80 backdrop-blur-sm z-30`}>
         <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 shrink-0 w-8 h-8 md:w-9 md:h-9" onClick={() => navigate('/student')}>
           <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         </Button>
@@ -283,52 +294,24 @@ export default function CourseViewerPage() {
           </div>
 
           {/* Below Video Content */}
-          <div className={`p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode ? 'hidden' : ''}`}>
-            {/* Video Title + Mark Complete + Syllabus Button (mobile) */}
+          <div className={`p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode && !isMobile ? 'hidden' : ''}`}>
+            {/* Video Title + Status */}
             <div className="flex items-start justify-between gap-2 md:gap-4">
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] md:text-xs text-white/40 mb-0.5">Class {currentIndex + 1} of {course.total_videos}</p>
                 <h2 className="text-sm md:text-lg font-bold line-clamp-2">{selectedVideo?.title}</h2>
               </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {/* Mobile Syllabus Button */}
-                {isMobile && (
-                  <Sheet open={mobileSyllabusOpen} onOpenChange={setMobileSyllabusOpen}>
-                    <SheetTrigger asChild>
-                      <Button size="sm" variant="outline" className="gap-1.5 border-white/20 text-white/70 bg-white/5 h-8 text-xs">
-                        <List className="w-3.5 h-3.5" />
-                        সিলেবাস
-                      </Button>
-                    </SheetTrigger>
-                    <SheetContent side="bottom" className="bg-slate-900 border-white/10 text-white h-[70vh] rounded-t-2xl p-0">
-                      <SheetHeader className="p-4 border-b border-white/10">
-                        <SheetTitle className="text-white text-sm flex items-center justify-between">
-                          <span>কোর্স সিলেবাস ({course.total_videos}টি ক্লাস)</span>
-                          <span className="text-xs font-bold text-emerald-400">{Math.round(course.progress_percent)}%</span>
-                        </SheetTitle>
-                      </SheetHeader>
-                      <ScrollArea className="h-[calc(70vh-60px)]">
-                        <LessonList />
-                      </ScrollArea>
-                    </SheetContent>
-                  </Sheet>
-                )}
-                <Button
-                  onClick={markComplete}
-                  size={isMobile ? "sm" : "default"}
-                  disabled={!watchThresholdMet && !selectedVideo?.progress?.is_completed}
-                  className={`gap-1.5 shrink-0 rounded-full text-xs md:text-sm h-8 md:h-9 ${
-                    selectedVideo?.progress?.is_completed
-                      ? 'bg-emerald-600 hover:bg-emerald-700'
-                      : watchThresholdMet
-                        ? 'bg-primary hover:bg-primary/90 animate-pulse'
-                        : 'bg-white/10 text-white/40 cursor-not-allowed'
-                  }`}
-                >
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  {selectedVideo?.progress?.is_completed ? 'Completed' : 'Mark Complete'}
-                </Button>
-              </div>
+              {/* Completed badge (auto-complete replaces button) */}
+              {selectedVideo?.progress?.is_completed && (
+                <Badge className="bg-emerald-600 text-white gap-1 shrink-0">
+                  <CheckCircle className="w-3 h-3" /> সম্পন্ন
+                </Badge>
+              )}
+              {autoCompleting && (
+                <Badge className="bg-primary/20 text-primary gap-1 shrink-0 animate-pulse">
+                  <CheckCircle className="w-3 h-3" /> সেভ হচ্ছে...
+                </Badge>
+              )}
             </div>
 
             {/* Navigation */}
@@ -353,6 +336,22 @@ export default function CourseViewerPage() {
                 </Button>
               )}
             </div>
+
+            {/* Mobile: Lesson List (YouTube style - below video) */}
+            {isMobile && (
+              <div className="border border-white/10 rounded-xl overflow-hidden bg-slate-900/50">
+                <div className="p-3 border-b border-white/10 flex items-center justify-between">
+                  <div>
+                    <h3 className="text-xs font-bold">কোর্স সিলেবাস</h3>
+                    <p className="text-[10px] text-white/40">{course.total_videos}টি ক্লাস</p>
+                  </div>
+                  <span className="text-[10px] font-bold text-emerald-400">{Math.round(course.progress_percent)}%</span>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto">
+                  <LessonList />
+                </div>
+              </div>
+            )}
 
             {/* Materials Accordion */}
             {videoMaterials.length > 0 && (
