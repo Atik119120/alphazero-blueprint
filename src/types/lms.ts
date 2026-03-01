@@ -76,6 +76,8 @@ export interface VideoProgress {
   progress_percent: number;
   is_completed: boolean;
   last_watched_at: string;
+  watched_seconds?: number;
+  last_position?: number;
 }
 
 export interface CourseCompletion {

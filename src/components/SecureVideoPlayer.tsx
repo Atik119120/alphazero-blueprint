@@ -16,11 +16,14 @@ interface SecureVideoPlayerProps {
   onComplete: () => void;
   initialPosition?: number;
   maxWatchedSeconds?: number;
+  isLessonCompleted?: boolean;
+  posterUrl?: string;
   autoPlay?: boolean;
   onThresholdMet?: () => void;
 }
 
-const COMPLETION_THRESHOLD = 0.95; // 95%
+const COMPLETION_THRESHOLD = 0.90; // 90%
+const PROGRESS_SAVE_INTERVAL = 5000; // 5 seconds
 
 export default function SecureVideoPlayer({
   videoUrl,
@@ -30,6 +33,8 @@ export default function SecureVideoPlayer({
   onComplete,
   initialPosition = 0,
   maxWatchedSeconds = 0,
+  isLessonCompleted = false,
+  posterUrl,
   autoPlay = false,
   onThresholdMet,
 }: SecureVideoPlayerProps) {
@@ -43,10 +48,11 @@ export default function SecureVideoPlayer({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [highestWatched, setHighestWatched] = useState(maxWatchedSeconds);
-  const [isCompleted, setIsCompleted] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(isLessonCompleted);
   const [showControls, setShowControls] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showPoster, setShowPoster] = useState(!autoPlay);
+  const [showIntro, setShowIntro] = useState(autoPlay);
   const [thresholdNotified, setThresholdNotified] = useState(false);
   const [showResMenu, setShowResMenu] = useState(false);
   const [selectedRes, setSelectedRes] = useState('auto');
@@ -60,8 +66,29 @@ export default function SecureVideoPlayer({
     return () => document.removeEventListener('contextmenu', handler);
   }, []);
 
+  // Load existing progress from DB
+  useEffect(() => {
+    const loadProgress = async () => {
+      const { data } = await supabase
+        .from('video_progress')
+        .select('watched_seconds, last_position, is_completed')
+        .eq('user_id', userId)
+        .eq('video_id', videoId)
+        .maybeSingle();
+      if (data) {
+        const maxW = Math.max(data.watched_seconds || 0, data.last_position || 0, maxWatchedSeconds);
+        setHighestWatched(maxW);
+        if (data.is_completed) {
+          setIsCompleted(true);
+        }
+      }
+    };
+    loadProgress();
+  }, [videoId, userId, maxWatchedSeconds]);
+
   // Intro splash (3s) then auto-play
   useEffect(() => {
+    if (!showIntro) return;
     const timer = setTimeout(() => {
       setShowIntro(false);
       if (autoPlay && videoRef.current) {
@@ -69,16 +96,16 @@ export default function SecureVideoPlayer({
       }
     }, 3000);
     return () => clearTimeout(timer);
-  }, [autoPlay]);
+  }, [autoPlay, showIntro]);
 
   // Set initial position
   useEffect(() => {
-    if (videoRef.current && initialPosition > 0 && !showIntro) {
+    if (videoRef.current && initialPosition > 0 && !showIntro && !showPoster) {
       videoRef.current.currentTime = initialPosition;
     }
-  }, [initialPosition, showIntro]);
+  }, [initialPosition, showIntro, showPoster]);
 
-  // Save progress periodically
+  // Save progress to DB
   const saveProgress = useCallback(async (seconds: number, completed: boolean) => {
     const percent = duration > 0 ? Math.round((seconds / duration) * 100) : 0;
     await supabase.from('video_progress').upsert({
@@ -87,10 +114,10 @@ export default function SecureVideoPlayer({
       progress_percent: Math.min(percent, 100),
       is_completed: completed,
       last_watched_at: new Date().toISOString(),
-      watched_seconds: Math.round(seconds),
+      watched_seconds: Math.round(Math.max(seconds, highestWatched)),
       last_position: Math.round(seconds),
     }, { onConflict: 'user_id,video_id' });
-  }, [userId, videoId, duration]);
+  }, [userId, videoId, duration, highestWatched]);
 
   const handleTimeUpdate = () => {
     const video = videoRef.current;
@@ -102,25 +129,31 @@ export default function SecureVideoPlayer({
       setHighestWatched(video.currentTime);
     }
 
-    // Check 95% threshold
+    // Check 90% threshold
     if (duration > 0 && video.currentTime / duration >= COMPLETION_THRESHOLD && !thresholdNotified) {
       setThresholdNotified(true);
       onThresholdMet?.();
     }
 
-    // Periodic save (every 10s)
+    // Periodic save (every 5s)
     if (progressSaveTimer.current) clearTimeout(progressSaveTimer.current);
     progressSaveTimer.current = setTimeout(() => {
       saveProgress(Math.max(video.currentTime, highestWatched), isCompleted);
-    }, 10000);
+    }, PROGRESS_SAVE_INTERVAL);
   };
 
   const handleSeek = (value: number[]) => {
     const video = videoRef.current;
     if (!video) return;
     const seekTo = value[0];
-    // Anti-forward-seek
-    if (!isCompleted && seekTo > highestWatched + 2) {
+    // For completed lessons: allow full seeking
+    if (isCompleted) {
+      video.currentTime = seekTo;
+      setCurrentTime(seekTo);
+      return;
+    }
+    // For new lessons: can't seek beyond maxWatchedTime
+    if (seekTo > highestWatched + 2) {
       toast.error('আপনি এখনো এই অংশ পর্যন্ত দেখেননি');
       video.currentTime = highestWatched;
       return;
@@ -146,6 +179,15 @@ export default function SecureVideoPlayer({
       video.pause();
       setIsPlaying(false);
     }
+  };
+
+  const startFromPoster = () => {
+    setShowPoster(false);
+    setTimeout(() => {
+      if (videoRef.current) {
+        videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
+    }, 100);
   };
 
   const toggleMute = () => {
@@ -204,7 +246,6 @@ export default function SecureVideoPlayer({
     return `${m}:${sec.toString().padStart(2, '0')}`;
   };
 
-  // Resolution options for Cloudinary
   const resolutions = [
     { label: 'Auto', value: 'auto' },
     { label: '1080p', value: '1080' },
@@ -215,7 +256,6 @@ export default function SecureVideoPlayer({
 
   const getVideoUrl = () => {
     if (selectedRes === 'auto' || !videoUrl.includes('cloudinary')) return videoUrl;
-    // Cloudinary transformation for resolution
     return videoUrl.replace('/upload/', `/upload/q_auto,h_${selectedRes}/`);
   };
 
@@ -225,7 +265,6 @@ export default function SecureVideoPlayer({
     const wasPlaying = !video?.paused;
     setSelectedRes(res);
     setShowResMenu(false);
-    // After src changes, restore time
     setTimeout(() => {
       if (videoRef.current) {
         videoRef.current.currentTime = time;
@@ -256,6 +295,28 @@ export default function SecureVideoPlayer({
     );
   }
 
+  // Poster/thumbnail screen
+  if (showPoster) {
+    return (
+      <div
+        className="relative aspect-video bg-black rounded-lg overflow-hidden cursor-pointer group"
+        onClick={startFromPoster}
+        onContextMenu={e => e.preventDefault()}
+      >
+        {posterUrl ? (
+          <img src={posterUrl} alt="" className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-b from-slate-800 to-slate-950" />
+        )}
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
+            <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={containerRef}
@@ -273,7 +334,6 @@ export default function SecureVideoPlayer({
         </div>
       )}
 
-      {/* Video Element */}
       <video
         ref={videoRef}
         src={getVideoUrl()}
@@ -294,36 +354,26 @@ export default function SecureVideoPlayer({
         playsInline
       />
 
-      {/* Center Play Button (when paused) */}
+      {/* Center Play Button */}
       {!isPlaying && !isLoading && !showIntro && (
-        <button
-          onClick={togglePlay}
-          className="absolute inset-0 flex items-center justify-center z-10 group"
-        >
+        <button onClick={togglePlay} className="absolute inset-0 flex items-center justify-center z-10 group">
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
             <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
           </div>
         </button>
       )}
 
-      {/* Loading Spinner */}
+      {/* Loading */}
       {isLoading && !showIntro && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20">
           <Loader2 className="w-10 h-10 text-white animate-spin" />
         </div>
       )}
 
-      {/* Controls Overlay */}
-      <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-4 transition-opacity duration-300 z-30 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        {/* Progress Bar */}
-        <div className="mb-3">
-          <Slider
-            value={[currentTime]}
-            max={duration || 100}
-            step={0.1}
-            onValueChange={handleSeek}
-            className="cursor-pointer"
-          />
+      {/* Controls */}
+      <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 md:p-4 transition-opacity duration-300 z-30 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="mb-2 md:mb-3">
+          <Slider value={[currentTime]} max={duration || 100} step={0.1} onValueChange={handleSeek} className="cursor-pointer" />
           {!isCompleted && highestWatched > 0 && duration > 0 && (
             <div className="relative h-0.5 -mt-2 mb-2 pointer-events-none">
               <div className="absolute h-full bg-emerald-500/40 rounded" style={{ width: `${(highestWatched / duration) * 100}%` }} />
@@ -331,31 +381,27 @@ export default function SecureVideoPlayer({
           )}
         </div>
 
-        {/* Controls Row */}
-        <div className="flex items-center gap-2 text-white">
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20" onClick={togglePlay}>
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+        <div className="flex items-center gap-1 md:gap-2 text-white">
+          <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={togglePlay}>
+            {isPlaying ? <Pause className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Play className="w-3.5 h-3.5 md:w-4 md:h-4" />}
           </Button>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20" onClick={skipBack}>
-            <SkipBack className="w-4 h-4" />
+          <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={skipBack}>
+            <SkipBack className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </Button>
-          <span className="text-xs tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
+          <span className="text-[10px] md:text-xs tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
           <div className="flex-1" />
 
-          {/* Resolution Selector */}
+          {/* Resolution */}
           <div className="relative">
-            <Button variant="ghost" size="sm" className="h-7 text-xs text-white hover:bg-white/20 px-2 gap-1" onClick={() => setShowResMenu(!showResMenu)}>
+            <Button variant="ghost" size="sm" className="h-6 md:h-7 text-[10px] md:text-xs text-white hover:bg-white/20 px-1.5 md:px-2 gap-1" onClick={() => setShowResMenu(!showResMenu)}>
               <Settings className="w-3 h-3" />
               {selectedRes === 'auto' ? 'Auto' : `${selectedRes}p`}
             </Button>
             {showResMenu && (
               <div className="absolute bottom-full right-0 mb-1 bg-black/90 backdrop-blur-sm border border-white/20 rounded-lg py-1 min-w-[100px] z-50">
                 {resolutions.map(res => (
-                  <button
-                    key={res.value}
-                    onClick={() => changeResolution(res.value)}
-                    className={`w-full px-3 py-1.5 text-xs text-left hover:bg-white/10 transition-colors ${selectedRes === res.value ? 'text-primary font-semibold' : 'text-white/80'}`}
-                  >
+                  <button key={res.value} onClick={() => changeResolution(res.value)}
+                    className={`w-full px-3 py-1.5 text-xs text-left hover:bg-white/10 ${selectedRes === res.value ? 'text-primary font-semibold' : 'text-white/80'}`}>
                     {res.label}
                   </button>
                 ))}
@@ -363,36 +409,32 @@ export default function SecureVideoPlayer({
             )}
           </div>
 
-          {/* Playback Speed */}
-          <Button variant="ghost" size="sm" className="h-7 text-xs text-white hover:bg-white/20 px-2" onClick={changePlaybackRate}>
+          <Button variant="ghost" size="sm" className="h-6 md:h-7 text-[10px] md:text-xs text-white hover:bg-white/20 px-1.5 md:px-2" onClick={changePlaybackRate}>
             {playbackRate}x
           </Button>
 
-          {/* Volume */}
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20" onClick={toggleMute}>
-              {isMuted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={toggleMute}>
+              {isMuted || volume === 0 ? <VolumeX className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Volume2 className="w-3.5 h-3.5 md:w-4 md:h-4" />}
             </Button>
             <div className="w-16 hidden md:block">
               <Slider value={[isMuted ? 0 : volume]} max={1} step={0.01} onValueChange={changeVolume} />
             </div>
           </div>
 
-          {/* Fullscreen */}
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-white hover:bg-white/20" onClick={toggleFullscreen}>
-            {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+          <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={toggleFullscreen}>
+            {isFullscreen ? <Minimize className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Maximize className="w-3.5 h-3.5 md:w-4 md:h-4" />}
           </Button>
         </div>
       </div>
 
-      {/* 95% Threshold Indicator */}
+      {/* Threshold Indicator */}
       {thresholdNotified && !isCompleted && (
         <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs flex items-center gap-1 animate-bounce z-30">
           <CheckCircle className="w-3 h-3" /> Ready to complete!
         </div>
       )}
 
-      {/* Completion Badge */}
       {isCompleted && (
         <div className="absolute top-3 right-3 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs flex items-center gap-1 z-30">
           <CheckCircle className="w-3 h-3" /> Completed
