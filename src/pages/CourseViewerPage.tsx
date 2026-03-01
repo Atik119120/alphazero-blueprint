@@ -16,7 +16,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Play, Lock, CheckCircle, ArrowLeft, ArrowRight, ChevronLeft,
   FileText, StickyNote, File, Clock, PlayCircle, Maximize2, Minimize2,
-  Download, ExternalLink, User
+  Download, ExternalLink
 } from 'lucide-react';
 import { CourseWithProgress, VideoWithProgress, VideoMaterial } from '@/types/lms';
 import { useStudentCourses, useVideoProgress } from '@/hooks/useCourses';
@@ -34,13 +34,10 @@ export default function CourseViewerPage() {
   const [videoMaterials, setVideoMaterials] = useState<VideoMaterial[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [focusMode, setFocusMode] = useState(false);
-  const [showStartScreen, setShowStartScreen] = useState(true);
   const [watchThresholdMet, setWatchThresholdMet] = useState(false);
   const [dailyClassCount, setDailyClassCount] = useState(0);
-  
   const [autoCompleting, setAutoCompleting] = useState(false);
 
-  // Find the course from student courses
   useEffect(() => {
     if (courses.length > 0 && courseId) {
       const found = courses.find(c => c.id === courseId);
@@ -54,7 +51,6 @@ export default function CourseViewerPage() {
     }
   }, [courses, courseId]);
 
-  // Fetch daily class count
   useEffect(() => {
     if (!user) return;
     const today = new Date();
@@ -68,7 +64,6 @@ export default function CourseViewerPage() {
       .then(({ count }) => setDailyClassCount(count || 0));
   }, [user]);
 
-  // Fetch materials when video changes
   useEffect(() => {
     if (selectedVideo) {
       supabase
@@ -77,14 +72,12 @@ export default function CourseViewerPage() {
         .eq('video_id', selectedVideo.id)
         .order('order_index', { ascending: true })
         .then(({ data }) => setVideoMaterials((data || []) as VideoMaterial[]));
-      setShowStartScreen(true);
       setWatchThresholdMet(false);
     }
   }, [selectedVideo?.id]);
 
   const { updateProgress } = useVideoProgress(selectedVideo?.id || '');
 
-  // Auto-complete when threshold is met
   const handleVideoComplete = useCallback(() => {
     setWatchThresholdMet(true);
   }, []);
@@ -144,7 +137,6 @@ export default function CourseViewerPage() {
       return;
     }
     setSelectedVideo(video);
-    
   };
 
   const currentIndex = course?.videos.findIndex(v => v.id === selectedVideo?.id) ?? -1;
@@ -170,7 +162,6 @@ export default function CourseViewerPage() {
     );
   }
 
-  // Lesson list component (shared between sidebar and mobile sheet)
   const LessonList = () => (
     <div className="divide-y divide-white/5">
       {course.videos.map((video, index) => {
@@ -211,6 +202,7 @@ export default function CourseViewerPage() {
                 </p>
               )}
             </div>
+            {isComplete && <Badge className="bg-emerald-500/20 text-emerald-400 text-[8px] px-1.5 py-0">✓</Badge>}
           </button>
         );
       })}
@@ -219,9 +211,8 @@ export default function CourseViewerPage() {
 
   return (
     <div className={`min-h-screen bg-slate-950 text-white flex flex-col ${language === 'bn' ? 'font-bengali' : ''}`}>
-      {/* Top Bar */}
       {/* Top Bar - always visible */}
-      <header className={`h-12 md:h-14 border-b border-white/10 flex items-center px-3 md:px-4 gap-2 md:gap-3 shrink-0 bg-slate-900/80 backdrop-blur-sm z-30`}>
+      <header className="h-12 md:h-14 border-b border-white/10 flex items-center px-3 md:px-4 gap-2 md:gap-3 shrink-0 bg-slate-900/80 backdrop-blur-sm z-30">
         <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 shrink-0 w-8 h-8 md:w-9 md:h-9" onClick={() => navigate('/student')}>
           <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
         </Button>
@@ -230,7 +221,7 @@ export default function CourseViewerPage() {
         </div>
         <div className="flex items-center gap-1.5 md:gap-2">
           <Badge variant="outline" className="text-[9px] md:text-[10px] border-white/20 text-white/60 px-1.5 md:px-2">
-            {course.completed_videos}/{course.total_videos} done
+            {course.completed_videos}/{course.total_videos}
           </Badge>
           <Progress value={course.progress_percent} className="w-12 md:w-20 h-1.5" />
           <span className="text-[10px] md:text-xs font-bold text-emerald-400">{Math.round(course.progress_percent)}%</span>
@@ -242,46 +233,23 @@ export default function CourseViewerPage() {
         <div className="flex-1 flex flex-col overflow-y-auto">
           {/* Video Player */}
           <div className="relative w-full bg-black">
-            {showStartScreen && !selectedVideo?.progress?.is_completed ? (
-              <div className="aspect-video flex flex-col items-center justify-center bg-gradient-to-b from-slate-900 to-slate-950 relative">
-                {course.thumbnail_url && (
-                  <img src={course.thumbnail_url} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 blur-sm" />
-                )}
-                <div className="relative z-10 text-center space-y-3 md:space-y-4 px-4">
-                  <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary/20 flex items-center justify-center mx-auto ring-4 ring-primary/10">
-                    <Play className="w-6 h-6 md:w-8 md:h-8 text-primary fill-primary" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] md:text-xs text-white/50 mb-1">Class {currentIndex + 1}</p>
-                    <h2 className="text-sm md:text-xl font-bold line-clamp-2">{selectedVideo?.title}</h2>
-                  </div>
-                  <Button
-                    size={isMobile ? "default" : "lg"}
-                    className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 md:px-8"
-                    onClick={() => setShowStartScreen(false)}
-                  >
-                    <Play className="w-4 h-4 md:w-5 md:h-5 fill-current" />
-                    Start Class
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              selectedVideo && user && (
-                <SecureVideoPlayer
-                  videoUrl={selectedVideo.video_url}
-                  videoType={selectedVideo.video_type}
-                  videoId={selectedVideo.id}
-                  userId={user.id}
-                  onComplete={handleVideoComplete}
-                  initialPosition={0}
-                  maxWatchedSeconds={0}
-                  autoPlay
-                  onThresholdMet={() => setWatchThresholdMet(true)}
-                />
-              )
+            {selectedVideo && user && (
+              <SecureVideoPlayer
+                videoUrl={selectedVideo.video_url}
+                videoType={selectedVideo.video_type}
+                videoId={selectedVideo.id}
+                userId={user.id}
+                onComplete={handleVideoComplete}
+                initialPosition={selectedVideo.progress?.last_position || 0}
+                maxWatchedSeconds={selectedVideo.progress?.watched_seconds || 0}
+                isLessonCompleted={!!selectedVideo.progress?.is_completed}
+                posterUrl={course.thumbnail_url || undefined}
+                autoPlay={false}
+                onThresholdMet={() => setWatchThresholdMet(true)}
+              />
             )}
 
-            {/* Focus Mode Toggle - hidden on mobile */}
+            {/* Focus Mode Toggle - desktop only */}
             {!isMobile && (
               <Button
                 variant="ghost" size="icon"
@@ -301,7 +269,6 @@ export default function CourseViewerPage() {
                 <p className="text-[10px] md:text-xs text-white/40 mb-0.5">Class {currentIndex + 1} of {course.total_videos}</p>
                 <h2 className="text-sm md:text-lg font-bold line-clamp-2">{selectedVideo?.title}</h2>
               </div>
-              {/* Completed badge (auto-complete replaces button) */}
               {selectedVideo?.progress?.is_completed && (
                 <Badge className="bg-emerald-600 text-white gap-1 shrink-0">
                   <CheckCircle className="w-3 h-3" /> সম্পন্ন
@@ -314,46 +281,55 @@ export default function CourseViewerPage() {
               )}
             </div>
 
+            {/* Progress bar */}
+            <Progress value={course.progress_percent} className="h-2" />
+
             {/* Navigation */}
             <div className="flex items-center justify-between gap-2">
-              <Button
-                variant="ghost" size="sm"
+              <Button variant="ghost" size="sm"
                 className="gap-1.5 text-white/60 hover:text-white hover:bg-white/10 text-xs"
-                disabled={!prevVideo}
-                onClick={() => prevVideo && goToVideo(prevVideo)}
-              >
+                disabled={!prevVideo} onClick={() => prevVideo && goToVideo(prevVideo)}>
                 <ArrowLeft className="w-3.5 h-3.5" /> Previous
               </Button>
               {nextVideo && (
-                <Button
-                  variant="ghost" size="sm"
+                <Button variant="ghost" size="sm"
                   className="gap-1.5 text-white/60 hover:text-white hover:bg-white/10 text-xs max-w-[60%] truncate"
-                  disabled={nextVideo.is_locked}
-                  onClick={() => goToVideo(nextVideo)}
-                >
+                  disabled={nextVideo.is_locked} onClick={() => goToVideo(nextVideo)}>
                   <span className="truncate">Next: {nextVideo.title}</span>
                   <ArrowRight className="w-3.5 h-3.5 shrink-0" />
                 </Button>
               )}
             </div>
 
-            {/* Mobile: Lesson List (YouTube style - below video) */}
-            {isMobile && (
-              <div className="border border-white/10 rounded-xl overflow-hidden bg-slate-900/50">
-                <div className="p-3 border-b border-white/10 flex items-center justify-between">
-                  <div>
-                    <h3 className="text-xs font-bold">কোর্স সিলেবাস</h3>
-                    <p className="text-[10px] text-white/40">{course.total_videos}টি ক্লাস</p>
-                  </div>
-                  <span className="text-[10px] font-bold text-emerald-400">{Math.round(course.progress_percent)}%</span>
-                </div>
-                <div className="max-h-[300px] overflow-y-auto">
-                  <LessonList />
-                </div>
-              </div>
+            {/* Comments */}
+            {selectedVideo && course && (
+              <LessonComments
+                videoId={selectedVideo.id}
+                courseId={course.id}
+                userId={user.id}
+                userName={profile?.full_name || 'Student'}
+                userAvatar={profile?.avatar_url || ''}
+              />
             )}
 
-            {/* Materials Accordion */}
+            {/* Mobile: Course Content Accordion (YouTube-style below video) */}
+            {isMobile && (
+              <Accordion type="single" collapsible className="border border-white/10 rounded-xl overflow-hidden bg-slate-900/50">
+                <AccordionItem value="syllabus" className="border-0">
+                  <AccordionTrigger className="px-3 py-3 text-xs font-bold hover:no-underline hover:bg-white/5 text-white">
+                    <span className="flex items-center gap-2">
+                      <PlayCircle className="w-4 h-4 text-primary" />
+                      কোর্স সিলেবাস ({course.total_videos}টি ক্লাস)
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="p-0 max-h-[400px] overflow-y-auto">
+                    <LessonList />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            )}
+
+            {/* Materials */}
             {videoMaterials.length > 0 && (
               <Accordion type="single" collapsible className="border border-white/10 rounded-xl overflow-hidden">
                 <AccordionItem value="materials" className="border-0">
@@ -386,17 +362,6 @@ export default function CourseViewerPage() {
                 </AccordionItem>
               </Accordion>
             )}
-
-            {/* Comments / Q&A */}
-            {selectedVideo && course && (
-              <LessonComments
-                videoId={selectedVideo.id}
-                courseId={course.id}
-                userId={user.id}
-                userName={profile?.full_name || 'Student'}
-                userAvatar={profile?.avatar_url || ''}
-              />
-            )}
           </div>
         </div>
 
@@ -423,12 +388,10 @@ export default function CourseViewerPage() {
           </aside>
         )}
 
-        {/* Sidebar Toggle (desktop, when collapsed) */}
+        {/* Sidebar Toggle (desktop, collapsed) */}
         {!isMobile && !sidebarOpen && !focusMode && (
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="fixed right-0 top-1/2 -translate-y-1/2 z-30 bg-slate-800 border border-white/10 rounded-l-lg p-2 text-white/60 hover:text-white hover:bg-slate-700 transition-colors"
-          >
+          <button onClick={() => setSidebarOpen(true)}
+            className="fixed right-0 top-1/2 -translate-y-1/2 z-30 bg-slate-800 border border-white/10 rounded-l-lg p-2 text-white/60 hover:text-white hover:bg-slate-700 transition-colors">
             <ChevronLeft className="w-4 h-4" />
           </button>
         )}
