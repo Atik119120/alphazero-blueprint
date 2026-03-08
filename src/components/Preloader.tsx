@@ -50,6 +50,8 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
               className="h-20 md:h-24 w-auto invert"
               loading="eager"
               fetchPriority="high"
+              loading="eager"
+              fetchPriority="high"
               decoding="sync"
             />
           </div>
