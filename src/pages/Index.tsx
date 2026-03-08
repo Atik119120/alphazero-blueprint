@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { 
   ArrowRight, 
-  Sparkles, 
   Palette, 
   Eye, 
   Target, 
@@ -15,7 +14,8 @@ import {
   Search,
   Star,
   Quote,
-  MessageCircle
+  MessageCircle,
+  Sparkles
 } from "lucide-react";
 import { PremiumHero } from "@/components/ui/hero";
 import { Link } from "react-router-dom";
