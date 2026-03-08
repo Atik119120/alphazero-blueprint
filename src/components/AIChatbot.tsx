@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
 
 interface Attachment {
-  type: "image" | "video";
+  type: "image" | "video" | "audio";
   url: string;
   name: string;
 }
