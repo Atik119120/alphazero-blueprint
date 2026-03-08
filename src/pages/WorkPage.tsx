@@ -55,13 +55,14 @@ function findVideoUrl(w: Work): string | null {
 const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: Work) => void }) => {
   const stripRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   useEffect(() => {
     const el = stripRef.current;
     if (!el) return;
     let raf: number;
     let pos = 0;
-    const speed = 0.5;
+    const speed = 0.6;
     const tick = () => {
       if (!pausedRef.current) {
         pos += speed;
@@ -78,17 +79,26 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
 
   const doubled = [...items, ...items];
 
+  const cardVariants = [
+    'rounded-2xl',
+    'rounded-3xl',
+    'rounded-xl',
+    'rounded-[1.5rem]',
+  ];
+
   return (
     <div
-      className="py-8 overflow-hidden relative"
+      className="py-6 overflow-hidden relative"
       onMouseEnter={() => { pausedRef.current = true; }}
-      onMouseLeave={() => { pausedRef.current = false; }}
+      onMouseLeave={() => { pausedRef.current = false; setHoveredIdx(null); }}
     >
-      <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+      {/* Gradient fade edges */}
+      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
+      
       <div
         ref={stripRef}
-        className="flex gap-3 overflow-hidden"
+        className="flex gap-4 overflow-hidden items-end px-4"
         style={{ scrollbarWidth: "none" }}
       >
         {doubled.map((project, idx) => {
@@ -96,30 +106,68 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
           const thumb = isVid
             ? (getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url)
             : project.image_url;
+          const isHovered = hoveredIdx === idx;
+          const borderRadius = cardVariants[idx % cardVariants.length];
 
           return (
             <div
               key={`${project.id}-${idx}`}
-              className="flex-shrink-0 w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 relative group cursor-pointer shadow-[0_2px_10px_hsl(215_25%_10%/0.05)] dark:shadow-none hover:shadow-[0_4px_20px_hsl(185_100%_38%/0.12)] dark:hover:shadow-none transition-all duration-300 hover:scale-[1.03]"
+              className={`flex-shrink-0 relative group cursor-pointer transition-all duration-500 ease-out ${borderRadius} overflow-hidden ${
+                isHovered 
+                  ? 'w-[180px] sm:w-[220px] h-[180px] sm:h-[220px] shadow-[0_8px_30px_hsl(185_100%_38%/0.2)] dark:shadow-[0_0_30px_hsl(185_100%_50%/0.1)] border-2 border-primary/40 z-20' 
+                  : 'w-[130px] sm:w-[160px] h-[130px] sm:h-[160px] border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.05)] dark:shadow-none'
+              } bg-card`}
               onClick={() => onItemClick(project)}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              onMouseLeave={() => setHoveredIdx(null)}
             >
               {thumb ? (
-                <img src={thumb} alt={project.title} className="w-full h-full object-cover" />
+                <img 
+                  src={thumb} 
+                  alt={project.title} 
+                  className={`w-full h-full object-cover transition-transform duration-700 ${isHovered ? 'scale-[1.05]' : 'scale-100'}`} 
+                />
               ) : (
                 <div className="w-full h-full bg-secondary/40 flex items-center justify-center">
                   <Sparkles size={24} className="text-muted-foreground" />
                 </div>
               )}
+              
+              {/* Video play button */}
               {isVid && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-9 h-9 rounded-full bg-primary/80 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-primary/20">
-                    <Play size={14} className="text-primary-foreground ml-0.5" fill="currentColor" />
+                  <div className={`rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-xl shadow-primary/30 transition-all duration-300 ${
+                    isHovered ? 'w-12 h-12' : 'w-9 h-9'
+                  }`}>
+                    <Play size={isHovered ? 18 : 14} className="text-primary-foreground ml-0.5" fill="currentColor" />
                   </div>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
-                <span className="text-white text-[10px] font-semibold line-clamp-1 drop-shadow-md">{project.title}</span>
+              
+              {/* Bottom info */}
+              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-all duration-500 ${
+                isHovered ? 'p-3.5' : 'p-2'
+              }`}>
+                <p className={`text-white font-display font-bold line-clamp-1 drop-shadow-lg transition-all duration-300 ${
+                  isHovered ? 'text-sm mb-0.5' : 'text-[10px]'
+                }`}>
+                  {project.title}
+                </p>
+                {isHovered && (
+                  <span className="text-white/50 text-[10px] font-medium">
+                    {isVid ? '▶ Video' : '✦ Design'} • Alphazero
+                  </span>
+                )}
               </div>
+
+              {/* Top-left category pill on hover */}
+              {isHovered && (
+                <div className="absolute top-2.5 left-2.5">
+                  <div className="px-2 py-0.5 rounded-full bg-primary/80 backdrop-blur-md text-[9px] font-bold text-primary-foreground uppercase tracking-wider">
+                    {isVid ? 'Video' : 'Design'}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
