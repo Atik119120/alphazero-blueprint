@@ -84,8 +84,8 @@ const Navbar = () => {
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
             className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
               isScrolled
-                ? "bg-card/95 backdrop-blur-xl shadow-sm border border-border/40"
-                : "bg-card/80 backdrop-blur-xl border border-border/20"
+                ? "bg-background/90 dark:bg-card/90 backdrop-blur-2xl shadow-[0_4px_30px_-8px_hsl(var(--primary)/0.08)] border border-border/50 dark:border-border/30"
+                : "bg-background/70 dark:bg-card/70 backdrop-blur-xl border border-border/30 dark:border-border/15"
             }`}
           >
             {/* Logo */}
