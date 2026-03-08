@@ -213,7 +213,7 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               onSubmit={handleSubmit}
-              className="space-y-6 p-8 rounded-2xl bg-card border border-border"
+              className="space-y-6 p-8 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30"
             >
               
               <div className="text-center mb-6 relative z-10">
