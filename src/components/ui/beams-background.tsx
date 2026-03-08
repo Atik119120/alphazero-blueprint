@@ -27,14 +27,14 @@ function createBeam(width: number, height: number): Beam {
   return {
     x: Math.random() * width * 1.5 - width * 0.25,
     y: Math.random() * height * 1.5 - height * 0.25,
-    width: 20 + Math.random() * 40,
+    width: 30 + Math.random() * 60,
     length: height * 2.5,
     angle,
-    speed: 0.4 + Math.random() * 0.8,
-    opacity: 0.06 + Math.random() * 0.08,
-    hue: 182 + Math.random() * 15,
+    speed: 0.6 + Math.random() * 1.2,
+    opacity: 0.12 + Math.random() * 0.16,
+    hue: 190 + Math.random() * 70,
     pulse: Math.random() * Math.PI * 2,
-    pulseSpeed: 0.01 + Math.random() * 0.02,
+    pulseSpeed: 0.02 + Math.random() * 0.03,
   };
 }
 
@@ -46,7 +46,7 @@ export function BeamsBackground({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const beamsRef = useRef<Beam[]>([]);
   const animationFrameRef = useRef<number>(0);
-  const MINIMUM_BEAMS = 12;
+  const MINIMUM_BEAMS = 20;
 
   const opacityMap = {
     subtle: 0.7,
@@ -84,10 +84,10 @@ export function BeamsBackground({
       const spacing = canvas.width / 3;
       beam.y = canvas.height + 100;
       beam.x = column * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
-      beam.width = 60 + Math.random() * 60;
-      beam.speed = 0.3 + Math.random() * 0.3;
-      beam.hue = 182 + (index * 15) / totalBeams;
-      beam.opacity = 0.08 + Math.random() * 0.06;
+      beam.width = 100 + Math.random() * 100;
+      beam.speed = 0.5 + Math.random() * 0.4;
+      beam.hue = 190 + (index * 70) / totalBeams;
+      beam.opacity = 0.2 + Math.random() * 0.1;
       return beam;
     }
 
