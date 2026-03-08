@@ -252,7 +252,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                   href={siteUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
+                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.04)] dark:shadow-none hover:shadow-[0_8px_30px_hsl(185_100%_38%/0.1),0_2px_8px_hsl(215_25%_10%/0.06)] dark:hover:shadow-none hover:border-primary/30 transition-all duration-500 hover:-translate-y-1"
                 >
                   {/* Browser header */}
                   <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/30">
