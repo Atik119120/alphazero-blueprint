@@ -106,8 +106,8 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
               {thumb ? (
                 <img src={thumb} alt={project.title} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                  <Sparkles size={24} className="text-primary/40" />
+                <div className="w-full h-full bg-secondary/40 flex items-center justify-center">
+                  <Sparkles size={24} className="text-muted-foreground" />
                 </div>
               )}
               {isVid && (
