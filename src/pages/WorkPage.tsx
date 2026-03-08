@@ -351,7 +351,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 flex items-center justify-center transition-all duration-400">
-                      <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500 shadow-lg">
+                      <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
                         <Play size={24} className="text-primary-foreground ml-0.5" fill="currentColor" />
                       </div>
                     </div>
