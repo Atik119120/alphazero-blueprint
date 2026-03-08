@@ -58,8 +58,8 @@ export function ContainerTextFlip({
       default:
         return {
           container:
-            "bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white shadow-2xl shadow-purple-500/40 border border-white/20",
-          glow: "before:bg-gradient-to-r before:from-purple-600/30 before:via-pink-600/30 before:to-orange-500/30",
+            "bg-gradient-to-r from-[hsl(185,100%,35%)] via-[hsl(185,100%,40%)] to-[hsl(200,100%,45%)] text-white shadow-2xl shadow-[hsl(185,100%,40%)]/40 border border-white/20",
+          glow: "before:bg-gradient-to-r before:from-[hsl(185,100%,35%)]/30 before:via-[hsl(185,100%,40%)]/30 before:to-[hsl(200,100%,45%)]/30",
         };
     }
   };
