@@ -217,27 +217,23 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Stats Section — editorial counter strip */}
-      <section className="py-0 relative">
+      {/* Mobile Stats (shown only on mobile since desktop has stats in hero) */}
+      <section className="py-8 lg:hidden relative">
         <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto border-y border-border/60 dark:border-border/30">
-            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/60 dark:divide-border/30">
-              {stats.map((stat, index) => (
-                <motion.div 
-                  key={stat.label} 
-                  className="text-center py-10 px-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div className="text-4xl lg:text-6xl font-display font-bold gradient-text mb-1 tracking-tight">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-3">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-4 rounded-xl border border-border/50 bg-card/60 text-center"
+              >
+                <div className="text-3xl font-display font-bold gradient-text tracking-tight">{stat.value}</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

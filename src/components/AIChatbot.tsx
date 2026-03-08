@@ -397,7 +397,7 @@ const AIChatbot = () => {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border/50 shrink-0">
+            <form onSubmit={handleSubmit} className="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] border-t border-border/50 shrink-0 bg-background lg:bg-transparent">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -410,7 +410,7 @@ const AIChatbot = () => {
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors"
+                  className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
                 >
                   {isLoading ? (
                     <Loader2 size={18} className="animate-spin" />
@@ -421,7 +421,7 @@ const AIChatbot = () => {
               </div>
               
               {/* Powered by */}
-              <div className="text-center mt-2">
+              <div className="text-center mt-1.5">
                 <span className="text-[10px] text-muted-foreground">
                   {language === "bn" ? "AlphaZero AI দ্বারা চালিত" : "Powered by AlphaZero AI"}
                 </span>
