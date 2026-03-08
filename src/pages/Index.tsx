@@ -85,104 +85,22 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <BeamsBackground className="min-h-[calc(100vh-5rem)] flex items-center justify-center" intensity="medium">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:80px_80px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
-
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-primary/20 mb-8 backdrop-blur-sm"
-            >
-              <Sparkles size={14} className="text-primary" />
-              <span className="text-sm text-foreground">{c("badge", "home.badge")}</span>
-            </motion.div>
-
-            {/* Main Heading */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-6"
-            >
-              {c("title1", "home.title1")}{" "}
-              <span className="gradient-text">{c("title2", "home.title2")}</span>
-            </motion.h1>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex justify-center mb-8"
-            >
-              <ContainerTextFlip
-                words={[
-                  "Creative Design",
-                  "Web Development",
-                  "Brand Building",
-                  "SEO Optimization",
-                  "UI/UX Design",
-                ]}
-                interval={3000}
-                variant="gradient"
-                animationDuration={700}
-              />
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
-            >
-              {c("description", "home.description")}
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            >
-              <Link
-                to="/contact"
-                className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2"
-              >
-                {c("cta1", "home.cta1")}
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                to="/work"
-                className="px-8 py-4 bg-transparent border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
-              >
-                {c("cta2", "home.cta2")}
-              </Link>
-            </motion.div>
-
-          </div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2"
-          >
-            <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-1 h-2 bg-primary rounded-full"
-              />
-            </div>
-          </motion.div>
-        </div>
-      </BeamsBackground>
+      <PremiumHero
+        badge={c("badge", "home.badge")}
+        titlePrefix={`${c("title1", "home.title1")} `}
+        flipWords={[
+          "Creative Design",
+          "Web Development",
+          "Brand Building",
+          "SEO Optimization",
+          "UI/UX Design",
+        ]}
+        description={c("description", "home.description")}
+        ctaPrimaryText={c("cta1", "home.cta1")}
+        ctaPrimaryHref="/contact"
+        ctaSecondaryText={c("cta2", "home.cta2")}
+        ctaSecondaryHref="/work"
+      />
 
       {/* Quick Stats Section */}
       <section className="py-12 lg:py-16 border-t border-border/50">
