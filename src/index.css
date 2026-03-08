@@ -65,8 +65,7 @@
     --radius: 0.5rem;
 
     /* Custom AlphaZero tokens */
-    --glow-primary: 185 100% 50%;
-    --glow-secondary: 260 100% 65%;
+    --gradient-start: 185 100% 40%;
     --gradient-start: 185 100% 40%;
     --gradient-end: 200 100% 50%;
     
