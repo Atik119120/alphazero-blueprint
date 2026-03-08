@@ -48,11 +48,11 @@ const Footer = () => {
   // Fallback static links if database is empty
   const defaultSocialLinks = [
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: "Facebook" },
-    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: "MessageCircle" },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: "Instagram" },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazeroagency/", icon: "Linkedin" },
-    { name: "X", url: "https://x.com/AgencyAlphazero", icon: "Twitter" },
+    { name: "X (Twitter)", url: "https://x.com/AgencyAlphazero", icon: "Twitter" },
+    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: "MessageCircle" },
     { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
+    { name: "Email", url: "mailto:agency.alphazero@gmail.com", icon: "Mail" },
   ];
 
   const displaySocialLinks = socialLinks.length > 0 
