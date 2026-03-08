@@ -197,7 +197,7 @@ const Navbar = () => {
             <div className="flex items-center gap-1.5 lg:hidden">
               <Link
                 to="/student/login"
-                className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
+                className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center"
               >
                 <User size={15} className="text-muted-foreground" />
               </Link>
