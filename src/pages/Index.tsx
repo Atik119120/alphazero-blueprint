@@ -312,56 +312,45 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-tl from-[hsl(260,40%,97%)] via-background to-[hsl(185,40%,97%)] dark:from-transparent dark:to-transparent" />
-        
-        <div className="container mx-auto px-6 relative z-10">
+      {/* Why Choose Us — horizontal numbered list */}
+      <section className="py-20 lg:py-28 relative">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-14"
           >
-            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
               {c("whyChoose", "home.whyChoose")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-            {whyChooseUs.map((item, index) => {
-              const gradients = [
-                "from-primary/10 to-[hsl(200,100%,50%)]/5",
-                "from-[hsl(260,80%,60%)]/8 to-primary/5",
-                "from-[hsl(340,80%,55%)]/6 to-[hsl(260,80%,60%)]/5",
-                "from-[hsl(45,100%,50%)]/8 to-[hsl(340,80%,55%)]/5",
-                "from-[hsl(200,100%,50%)]/8 to-primary/5",
-              ];
-              return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  className="group p-6 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
-                >
-                  {/* Unique gradient per card */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[index % gradients.length]} opacity-40 dark:opacity-20`} />
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                      <item.icon size={22} className="text-primary" />
-                    </div>
-                    <h3 className="text-base font-display font-bold mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+          <div className="space-y-0 max-w-6xl mx-auto border-t border-border/50 dark:border-border/30">
+            {whyChooseUs.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="group flex items-start gap-6 py-7 border-b border-border/50 dark:border-border/30 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.03] transition-colors duration-300 px-2"
+              >
+                <span className="text-4xl lg:text-5xl font-display font-bold text-primary/15 dark:text-primary/10 leading-none shrink-0 w-16 group-hover:text-primary/30 transition-colors duration-300">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <item.icon size={20} className="text-primary" />
+                    <h3 className="text-lg font-display font-bold">{item.title}</h3>
                   </div>
-                </motion.div>
-              );
-            })}
+                  <p className="text-muted-foreground text-sm leading-relaxed max-w-xl">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
