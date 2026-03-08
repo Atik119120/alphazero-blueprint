@@ -146,7 +146,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
             <Sparkles size={12} /> Graphic Design
           </span>
           <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Our <span className="gradient-text">Creative Designs</span>
+            Our <span className="text-primary">Creative Designs</span>
           </h2>
         </motion.div>
 
