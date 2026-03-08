@@ -188,7 +188,7 @@ const AboutPage = () => {
                   <motion.div
                     whileHover={{ scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 300 }}
-                    className="aspect-square rounded-2xl bg-card p-8 flex items-center justify-center border border-border box-glow"
+                    className="aspect-square rounded-2xl bg-card p-8 flex items-center justify-center border border-border"
                   >
                     <div className="text-center">
                       <motion.img

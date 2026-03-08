@@ -64,22 +64,6 @@ export function ContainerTextFlip({
 
   return (
     <div className={cn("relative inline-flex items-center", className)}>
-      {/* Animated background glow */}
-      <motion.div
-        className={cn(
-          "absolute -inset-1 rounded-3xl blur-2xl opacity-50",
-          variantClasses.glow
-        )}
-        animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Outer ring pulse */}
-      <motion.div
-        className="absolute -inset-[3px] rounded-3xl bg-gradient-to-r from-primary via-[hsl(185,100%,50%)] to-[hsl(200,100%,55%)] opacity-0"
-        animate={{ opacity: [0, 0.4, 0] }}
-        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
 
       {/* Main container */}
       <div
