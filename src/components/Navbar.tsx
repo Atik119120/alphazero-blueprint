@@ -197,7 +197,7 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden relative w-11 h-11 flex items-center justify-center group"
             >
-              <div className="absolute inset-0 bg-white/[0.08] rounded-xl border border-white/[0.06] group-hover:bg-white/[0.12] transition-all" />
+              <div className="absolute inset-0 bg-foreground/[0.06] dark:bg-white/[0.08] rounded-xl border border-foreground/[0.06] dark:border-white/[0.06] group-hover:bg-foreground/[0.1] dark:group-hover:bg-white/[0.12] transition-all" />
               <motion.div className="relative z-10 flex flex-col items-center justify-center gap-1.5">
                 <motion.span 
                   className="w-5 h-[2px] bg-white/80 rounded-full origin-center"
