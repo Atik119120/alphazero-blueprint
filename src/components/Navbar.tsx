@@ -197,9 +197,9 @@ const Navbar = () => {
             <div className="flex items-center gap-1.5 lg:hidden">
               <Link
                 to="/student/login"
-                className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center"
+                className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
               >
-                <User size={16} />
+                <User size={15} className="text-muted-foreground" />
               </Link>
               {mounted && (
                 <button
