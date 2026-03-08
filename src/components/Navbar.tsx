@@ -234,7 +234,7 @@ const Navbar = () => {
         return (
           <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
             <div className="bg-card/95 backdrop-blur-lg border-t border-border">
-              <div className="flex items-center overflow-x-auto no-scrollbar px-1 py-1.5 safe-bottom">
+              <div className="grid grid-cols-7 py-1.5 safe-bottom">
                 {bottomNavItems.map((item) => {
                   const IconComp = item.icon;
                   const isActive = location.pathname === item.href;
@@ -243,12 +243,12 @@ const Navbar = () => {
                     <Link
                       key={item.href}
                       to={item.href}
-                      className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg transition-colors min-w-[52px] shrink-0 ${
+                      className={`flex flex-col items-center gap-0.5 py-1 transition-colors ${
                         isActive ? "text-primary" : "text-muted-foreground"
                       }`}
                     >
                       <IconComp size={18} strokeWidth={isActive ? 2.2 : 1.8} />
-                      <span className={`text-[9px] ${isActive ? "font-semibold" : "font-medium"}`}>{item.name}</span>
+                      <span className={`text-[9px] leading-tight ${isActive ? "font-semibold" : "font-medium"}`}>{item.name}</span>
                     </Link>
                   );
                 })}
