@@ -86,22 +86,6 @@ const Index = () => {
     <LayoutComponent>
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden bg-background">
-        {/* Animated gradient orbs */}
-        <motion.div
-          className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px]"
-          animate={{ x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.2, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-[-15%] right-[-10%] w-[450px] h-[450px] rounded-full bg-[hsl(200,100%,50%)]/8 blur-[120px]"
-          animate={{ x: [0, -50, 0], y: [0, -30, 0], scale: [1.1, 0.9, 1.1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-[40%] right-[20%] w-[300px] h-[300px] rounded-full bg-[hsl(260,80%,60%)]/5 blur-[100px]"
-          animate={{ x: [0, -40, 0], y: [0, 50, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
 
         {/* Dot grid pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(circle,hsl(var(--primary)/0.08)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[radial-gradient(circle,hsl(var(--primary)/0.05)_1px,transparent_1px)]" />
