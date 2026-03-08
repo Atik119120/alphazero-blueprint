@@ -104,7 +104,7 @@ const TeamPage = () => {
                     transition={{ delay: index * 0.08 }}
                     className="group h-full"
                   >
-                    <div className="relative h-full flex gap-4 bg-card/80 dark:bg-card/50 rounded-xl p-4 border border-border/50 dark:border-border/30 group-hover:border-primary/30 transition-all duration-400">
+                    <div className="relative h-full flex gap-4 rounded-2xl glass-card p-4 group-hover:border-primary/30 transition-all duration-400">
                       {/* Active dot */}
                       <div className="absolute -top-1 -left-1 z-20">
                         <span className="relative flex h-3 w-3">
