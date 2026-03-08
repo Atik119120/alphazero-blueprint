@@ -140,7 +140,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="mb-8"
+          className="mb-10"
         >
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
             <Sparkles size={12} /> Graphic Design
@@ -150,44 +150,63 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
           </h2>
         </motion.div>
 
-        {/* Normal grid — page grows naturally */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-          {items.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ delay: idx * 0.03, duration: 0.4 }}
-              className="group cursor-pointer"
-              onClick={() => onZoom(project)}
-            >
-              <div className="relative rounded-xl overflow-hidden bg-card border border-border/40 hover:border-primary/50 transition-all duration-500 hover:-translate-y-1">
-                {/* SQUARE aspect ratio */}
-                <div className="relative overflow-hidden aspect-square">
-                  <img
-                    src={project.image_url || "/placeholder.svg"}
-                    alt={project.title}
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                    onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
-                    <div className="w-11 h-11 rounded-full bg-primary/90 flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
-                      <ZoomIn size={18} className="text-primary-foreground" />
+        {/* Staggered masonry-style grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+          {items.map((project, idx) => {
+            // Alternate card sizes for visual rhythm
+            const isFeature = idx % 5 === 0;
+            
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ delay: idx * 0.04, duration: 0.5, ease: "easeOut" }}
+                className={`group cursor-pointer ${isFeature ? 'lg:col-span-2 lg:row-span-2' : ''}`}
+                onClick={() => onZoom(project)}
+              >
+                <div className="relative h-full rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.04)] dark:shadow-none hover:shadow-[0_8px_30px_hsl(185_100%_38%/0.1),0_2px_8px_hsl(215_25%_10%/0.06)] dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30">
+                  {/* Image */}
+                  <div className={`relative overflow-hidden ${isFeature ? 'aspect-square' : 'aspect-square'}`}>
+                    <img
+                      src={project.image_url || "/placeholder.svg"}
+                      alt={project.title}
+                      loading="lazy"
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                      onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
+                    />
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    {/* Zoom icon */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="w-12 h-12 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-lg shadow-primary/20">
+                        <ZoomIn size={20} className="text-primary-foreground" />
+                      </div>
+                    </div>
+                    {/* Bottom title on hover (inside image) */}
+                    <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                      <p className="text-white text-xs font-medium line-clamp-1 drop-shadow-lg">{project.title}</p>
+                    </div>
+                  </div>
+                  
+                  {/* Card footer */}
+                  <div className="px-3.5 py-3 bg-card border-t border-border/20">
+                    <h4 className="font-display font-semibold text-xs sm:text-sm text-foreground leading-snug line-clamp-1 group-hover:text-primary transition-colors duration-300">
+                      {project.title}
+                    </h4>
+                    <div className="flex items-center gap-1.5 mt-1.5">
+                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+                        <Sparkles size={7} className="text-primary-foreground" />
+                      </div>
+                      <span className="text-[10px] text-muted-foreground font-medium">By Alphazero Team</span>
                     </div>
                   </div>
                 </div>
-                <div className="px-3 py-2.5 bg-card">
-                  <h4 className="font-display font-semibold text-xs sm:text-sm text-foreground leading-snug line-clamp-1 group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h4>
-                  <span className="text-[10px] text-muted-foreground font-medium mt-0.5 block">By Alphazero Team</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
