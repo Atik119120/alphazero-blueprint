@@ -84,10 +84,10 @@ export function BeamsBackground({
       const spacing = canvas.width / 3;
       beam.y = canvas.height + 100;
       beam.x = column * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
-      beam.width = 100 + Math.random() * 100;
-      beam.speed = 0.5 + Math.random() * 0.4;
-      beam.hue = 190 + (index * 70) / totalBeams;
-      beam.opacity = 0.2 + Math.random() * 0.1;
+      beam.width = 60 + Math.random() * 60;
+      beam.speed = 0.3 + Math.random() * 0.3;
+      beam.hue = 182 + (index * 15) / totalBeams;
+      beam.opacity = 0.08 + Math.random() * 0.06;
       return beam;
     }
 
