@@ -272,7 +272,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                     </h4>
                     {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
                     <div className="flex items-center gap-1.5 mt-2.5">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center">
+                        <div className="w-4 h-4 rounded-full bg-primary/80 flex items-center justify-center">
                         <Sparkles size={8} className="text-primary-foreground" />
                       </div>
                       <span className="text-[10px] text-foreground/70 font-medium">Alpha Zero</span>
