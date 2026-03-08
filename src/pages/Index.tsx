@@ -244,12 +244,9 @@ const Index = () => {
         </div>
       </section>
 
-      {/* What We Do / Our Expertise Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        {/* Colorful background accents */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(200,40%,96%)] dark:from-card/40 dark:via-background dark:to-card/40" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      {/* What We Do — asymmetric editorial section */}
+      <section className="py-20 lg:py-28 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
