@@ -55,10 +55,10 @@ const Index = () => {
   ];
 
   const stats = [
-    { value: c("stats.projects", "home.stats.projects") || "50+", label: c("stats.projects_label", "home.stats.projects") },
-    { value: c("stats.clients", "home.stats.clients") || "30+", label: c("stats.clients_label", "home.stats.clients") },
-    { value: c("stats.years", "home.stats.years") || "3+", label: c("stats.years_label", "home.stats.years") },
-    { value: c("stats.satisfaction", "home.stats.satisfaction") || "100%", label: c("stats.satisfaction_label", "home.stats.satisfaction") },
+    { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
+    { value: "30+", label: c("stats.clients_label", "home.stats.clients") || "Clients" },
+    { value: "3+", label: c("stats.years_label", "home.stats.years") || "Years" },
+    { value: "100%", label: c("stats.satisfaction_label", "home.stats.satisfaction") || "Satisfaction" },
   ];
 
   const testimonials = [
@@ -85,8 +85,9 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background -mt-8 grain-texture">
-        <div className="absolute inset-0 stripe-accent" />
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background -mt-8">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_auto] gap-12 items-center">
@@ -171,23 +172,26 @@ const Index = () => {
               </motion.div>
             </div>
 
-            {/* Right — large decorative stat block (desktop only) */}
+            {/* Right — stacked stat cards (desktop only) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="hidden lg:grid grid-cols-2 gap-3 w-[280px]"
+              className="hidden lg:flex flex-col gap-3 w-[240px] shrink-0"
             >
               {stats.map((stat, i) => (
-                <div
+                <motion.div
                   key={stat.label}
-                  className={`p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm text-center ${i === 0 ? 'col-span-2' : ''}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                  className="group p-4 rounded-2xl border border-border/40 dark:border-border/20 bg-card/40 dark:bg-card/30 backdrop-blur-sm hover:border-primary/30 transition-all duration-300"
                 >
-                  <div className={`font-display font-bold gradient-text tracking-tight ${i === 0 ? 'text-5xl' : 'text-3xl'}`}>
-                    {stat.value}
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-display font-bold gradient-text tracking-tight">{stat.value}</span>
+                    <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</span>
                   </div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">{stat.label}</div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
@@ -239,8 +243,8 @@ const Index = () => {
       </section>
 
       {/* What We Do — asymmetric editorial section */}
-      <section className="py-20 lg:py-28 relative overflow-hidden grain-texture">
-        <div className="absolute inset-0 stripe-accent" />
+      <section className="py-20 lg:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
@@ -350,7 +354,7 @@ const Index = () => {
       </section>
 
       {/* Testimonials — editorial quote cards */}
-      <section className="py-20 lg:py-28 relative grain-texture">
+      <section className="py-20 lg:py-28 relative">
         <div className="absolute inset-0 bg-secondary/30 dark:bg-card/20" />
         
         <div className="container mx-auto px-6 relative z-10">
