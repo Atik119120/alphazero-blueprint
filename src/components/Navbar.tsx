@@ -214,113 +214,64 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ═══ Mobile Bottom Navigation - Notched FAB ═══ */}
+      {/* ═══ Mobile Bottom Navigation Bar ═══ */}
       {(() => {
         const hiddenRoutes = ['/admin', '/student', '/teacher'];
         const shouldHideBottomBar = hiddenRoutes.some(route => location.pathname.startsWith(route));
         if (shouldHideBottomBar) return null;
 
-        const leftItems = [
+        const bottomNavItems = [
+          { name: language === "bn" ? "হোম" : "Home", href: "/", icon: Home },
           { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
-        ];
-        const rightItems = [
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
           { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
-        const isHomeActive = location.pathname === "/";
-
-        const NavItem = ({ item }: { item: { name: string; href: string; icon: typeof Home } }) => {
-          const IconComp = item.icon;
-          const isActive = location.pathname === item.href;
-          return (
-            <Link
-              to={item.href}
-              className="relative flex flex-col items-center gap-0.5 py-1 flex-1"
-            >
-              <IconComp
-                size={18}
-                strokeWidth={isActive ? 2.2 : 1.5}
-                className={`transition-all duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}
-              />
-              <span className={`text-[8px] leading-none transition-colors duration-200 ${
-                isActive ? "font-bold text-primary" : "font-medium text-muted-foreground"
-              }`}>
-                {item.name}
-              </span>
-              {isActive && (
-                <motion.div
-                  layoutId="nav-indicator"
-                  className="absolute -bottom-1 w-4 h-0.5 rounded-full bg-primary"
-                  transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-                />
-              )}
-            </Link>
-          );
-        };
 
         return (
-          <>
-            {/* Center FAB - Home */}
-            <Link
-              to="/"
-              className="fixed bottom-[38px] left-1/2 -translate-x-1/2 z-[60] lg:hidden"
-            >
-              <motion.div
-                whileTap={{ scale: 0.9 }}
-                className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 ${
-                  isHomeActive 
-                    ? "bg-primary shadow-primary/40" 
-                    : "bg-card border-2 border-border shadow-black/20"
-                }`}
-              >
-                <Home
-                  size={22}
-                  strokeWidth={2}
-                  className={isHomeActive ? "text-primary-foreground" : "text-muted-foreground"}
-                />
-              </motion.div>
-            </Link>
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 lg:hidden">
+            <div className="bg-card/85 backdrop-blur-2xl rounded-[20px] border border-border/40 shadow-xl shadow-black/15 dark:shadow-black/40 px-2 py-1.5 safe-bottom">
+              <div className="flex items-end gap-0.5">
+                {bottomNavItems.map((item) => {
+                  const IconComp = item.icon;
+                  const isActive = location.pathname === item.href;
 
-            {/* Bottom bar with notch */}
-            <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-              {/* SVG notch shape */}
-              <svg
-                className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-5"
-                viewBox="0 0 96 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 20h96V0C96 0 80 0 72 0c-6 0-10 4-14.5 12C53 20 50 20 48 20s-5 0-9.5-8C34 4 30 0 24 0 16 0 0 0 0 0v20z"
-                  className="fill-card/90 dark:fill-card/85"
-                />
-              </svg>
-
-              <div className="bg-card/90 backdrop-blur-2xl border-t border-border/30">
-                <div className="flex items-center px-2 py-2 safe-bottom">
-                  {/* Left side */}
-                  <div className="flex items-center flex-1">
-                    {leftItems.map((item) => (
-                      <NavItem key={item.href} item={item} />
-                    ))}
-                  </div>
-
-                  {/* Center spacer for FAB */}
-                  <div className="w-16 shrink-0" />
-
-                  {/* Right side */}
-                  <div className="flex items-center flex-1">
-                    {rightItems.map((item) => (
-                      <NavItem key={item.href} item={item} />
-                    ))}
-                  </div>
-                </div>
+                  return (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      className="relative flex flex-col items-center"
+                    >
+                      {isActive ? (
+                        <motion.div
+                          layoutId="dock-active"
+                          className="flex flex-col items-center gap-0.5 px-3 pb-1"
+                          transition={{ type: "spring", bounce: 0.3, duration: 0.45 }}
+                        >
+                          <motion.div
+                            initial={{ y: 0 }}
+                            animate={{ y: -6 }}
+                            transition={{ type: "spring", bounce: 0.4, duration: 0.4 }}
+                            className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-md shadow-primary/30"
+                          >
+                            <IconComp size={18} strokeWidth={2.2} className="text-primary-foreground" />
+                          </motion.div>
+                          <span className="text-[8px] font-bold text-primary leading-none">{item.name}</span>
+                        </motion.div>
+                      ) : (
+                        <div className="flex flex-col items-center gap-1 px-2.5 py-1.5">
+                          <IconComp size={17} strokeWidth={1.5} className="text-muted-foreground" />
+                          <span className="text-[8px] font-medium text-muted-foreground leading-none">{item.name}</span>
+                        </div>
+                      )}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
-          </>
+          </div>
         );
       })()}
 
