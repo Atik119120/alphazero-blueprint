@@ -275,9 +275,10 @@ const AIChatbot = () => {
                 
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-9 h-9 rounded-xl bg-secondary/80 flex items-center justify-center hover:bg-secondary transition-colors"
+                  className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  aria-label="Close chat"
                 >
-                  <X size={18} className="text-muted-foreground" />
+                  <X size={20} className="text-foreground" />
                 </button>
               </div>
             </div>
