@@ -211,18 +211,18 @@ const AIChatbot = () => {
         animate={{ scale: 1 }}
         transition={{ delay: 1, type: "spring", stiffness: 200 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-20 right-4 lg:bottom-6 lg:right-6 z-50 group ${isOpen ? 'hidden' : ''}`}
+        className={`fixed bottom-20 right-3 lg:bottom-6 lg:right-6 z-50 group ${isOpen ? 'hidden' : ''}`}
       >
       <div className="relative">
           {/* Glass button */}
-          <div className="relative w-16 h-16 rounded-full bg-background/80 backdrop-blur-xl border border-primary/30 flex items-center justify-center shadow-lg group-hover:border-primary/60 group-hover:scale-105 transition-all duration-300">
-            <img src={logo} alt="Alpha One" className="w-9 h-9 object-contain dark:brightness-0 dark:invert" />
+          <div className="relative w-12 h-12 lg:w-16 lg:h-16 rounded-full bg-background/80 backdrop-blur-xl border border-primary/30 flex items-center justify-center shadow-lg group-hover:border-primary/60 group-hover:scale-105 transition-all duration-300">
+            <img src={logo} alt="Alpha One" className="w-6 h-6 lg:w-9 lg:h-9 object-contain dark:brightness-0 dark:invert" />
           </div>
           
           {/* Online indicator */}
-          <span className="absolute -top-1 -right-1 flex h-4 w-4">
+          <span className="absolute -top-0.5 -right-0.5 lg:-top-1 lg:-right-1 flex h-3 w-3 lg:h-4 lg:w-4">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-4 w-4 bg-green-500 border-2 border-background" />
+            <span className="relative inline-flex rounded-full h-3 w-3 lg:h-4 lg:w-4 bg-green-500 border-2 border-background" />
           </span>
         </div>
         
