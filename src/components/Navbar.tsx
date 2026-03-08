@@ -230,7 +230,6 @@ const Navbar = () => {
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
           { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
-          { name: language === "bn" ? "লগইন" : "Sign In", href: "/student/login", icon: User },
         ];
 
         return (
