@@ -44,261 +44,178 @@ const AboutPage = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Hero Section — editorial */}
+      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
             >
-              {c("subtitle", "about.subtitle")}
-            </motion.span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("subtitle", "about.subtitle")}</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6"
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
             >
               {c("title", "about.title")} <span className="gradient-text">AlphaZero</span>
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              className="flex items-start gap-4"
             >
-              {c("description", "about.description")}
-            </motion.p>
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-xl text-muted-foreground max-w-2xl">
+                {c("description", "about.description")}
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-24 bg-secondary/30">
+      {/* Story Section — editorial horizontal list */}
+      <section className="py-20 lg:py-28 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="mb-14"
             >
-              <motion.div
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", bounce: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6"
-              >
-                <Sparkles className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">{c("story.badge", "about.story.badge")}</span>
-              </motion.div>
-              <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4">
+              <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
+                {c("story.badge", "about.story.badge")}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold">
                 {c("story.title", "about.story.title")} <span className="gradient-text">AlphaZero</span> {c("story.title2", "about.story.title2")}
               </h2>
             </motion.div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Left Content */}
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-              >
-                {/* Story Cards */}
-                <div className="space-y-6">
+              {/* Left — Story cards as numbered rows */}
+              <div className="border-t border-border/50 dark:border-border/30">
+                {[
+                  { icon: Rocket, title: c("story.card1.title", "about.story.card1.title"), desc: c("story.card1.desc", "about.story.card1.desc") },
+                  { icon: Zap, title: c("story.card2.title", "about.story.card2.title"), desc: c("story.card2.desc", "about.story.card2.desc") },
+                  { icon: Heart, title: c("story.card3.title", "about.story.card3.title"), desc: c("story.card3.desc", "about.story.card3.desc") },
+                ].map((card, index) => (
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 group"
+                    transition={{ delay: index * 0.1 }}
+                    className="group flex items-start gap-5 py-7 border-b border-border/50 dark:border-border/30 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.03] transition-colors duration-300 px-2"
                   >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Rocket className="w-6 h-6 text-primary" />
+                    <span className="text-3xl font-display font-bold text-primary/15 dark:text-primary/10 leading-none shrink-0 w-10 group-hover:text-primary/30 transition-colors">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <card.icon size={18} className="text-primary" />
+                        <h3 className="text-lg font-display font-bold">{card.title}</h3>
                       </div>
-                      <div>
-                        <h3 className="text-lg font-semibold mb-2">{c("story.card1.title", "about.story.card1.title")}</h3>
-                        <p className="text-muted-foreground">
-                          {c("story.card1.desc", "about.story.card1.desc")}
-                        </p>
-                      </div>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
                     </div>
                   </motion.div>
+                ))}
+              </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 group"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Zap className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold mb-2">{c("story.card2.title", "about.story.card2.title")}</h3>
-                        <p className="text-muted-foreground">
-                          {c("story.card2.desc", "about.story.card2.desc")}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 }}
-                    className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300 group"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Heart className="w-6 h-6 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold mb-2">{c("story.card3.title", "about.story.card3.title")}</h3>
-                        <p className="text-muted-foreground">
-                          {c("story.card3.desc", "about.story.card3.desc")}
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Right Content - Logo & Features */}
+              {/* Right — Logo Card + Why Choose */}
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="relative"
+                className="space-y-6"
               >
-                {/* Main Logo Card */}
-                <div className="relative">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                    className="aspect-square rounded-2xl bg-card p-8 flex items-center justify-center border border-border"
-                  >
-                    <div className="text-center">
-                      <motion.img
-                        src={logo}
-                        alt="AlphaZero Logo"
-                        className="h-32 md:h-40 w-auto mx-auto brightness-0 dark:invert mb-6"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ type: "spring", bounce: 0.4 }}
-                      />
-                      <motion.p 
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="text-primary text-xl font-semibold tracking-wide"
-                      >
-                        {c("tagline", "about.tagline")}
-                      </motion.p>
-                    </div>
-                  </motion.div>
-                  {/* Floating badges */}
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.4, type: "spring" }}
-                    className="absolute -top-3 -right-3 px-3 py-1.5 rounded-full bg-primary text-primary-foreground font-medium text-xs"
-                  >
-                    {c("badge.agency", "about.badge.agency")}
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5, type: "spring" }}
-                    className="absolute -bottom-3 -left-3 px-3 py-1.5 rounded-full bg-card border border-border font-medium text-xs"
-                  >
-                    🇧🇩 Bangladesh
-                  </motion.div>
+                <div className="rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 p-8 text-center">
+                  <img
+                    src={logo}
+                    alt="AlphaZero Logo"
+                    className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6"
+                  />
+                  <p className="text-primary text-lg font-semibold tracking-wide">
+                    {c("tagline", "about.tagline")}
+                  </p>
+                  <div className="flex justify-center gap-3 mt-4">
+                    <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium text-xs">
+                      {c("badge.agency", "about.badge.agency")}
+                    </span>
+                    <span className="px-3 py-1 rounded-full bg-secondary border border-border font-medium text-xs">
+                      🇧🇩 Bangladesh
+                    </span>
+                  </div>
                 </div>
 
-                {/* Why Choose List */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3 }}
-                  className="mt-6 p-5 rounded-xl bg-card border border-border"
-                >
-                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-primary" />
+                <div className="p-5 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+                  <h4 className="text-base font-bold mb-4 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-primary" />
                     {c("whyChoose", "about.whyChoose")}
                   </h4>
-                  <div className="grid grid-cols-1 gap-3">
+                  <div className="space-y-3">
                     {whyChoose.map((item, index) => (
-                      <motion.div 
-                        key={index} 
-                        initial={{ opacity: 0, x: -10 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.7 + index * 0.1 }}
-                        className="flex items-center gap-3 group"
-                      >
-                        <div className="w-2 h-2 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-                        <span className="text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
-                      </motion.div>
+                      <div key={index} className="flex items-center gap-3 group">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary group-hover:scale-150 transition-transform" />
+                        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
+                      </div>
                     ))}
                   </div>
-                </motion.div>
+                </div>
               </motion.div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      {/* Values — editorial cards with numbers */}
+      <section className="py-20 lg:py-28 relative grain-texture">
+        <div className="absolute inset-0 bg-secondary/20 dark:bg-card/10" />
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="flex flex-col lg:flex-row items-end justify-between gap-6 mb-14"
             >
-              <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                {c("values.title", "about.values.title")}
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <div>
+                <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">Core Values</span>
+                <h2 className="text-3xl lg:text-5xl font-display font-bold">
+                  {c("values.title", "about.values.title")}
+                </h2>
+              </div>
+              <p className="text-muted-foreground max-w-md text-base lg:text-right">
                 {c("values.subtitle", "about.values.subtitle")}
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-5">
               {values.map((value, index) => (
                 <motion.div
                   key={value.title}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500"
+                  transition={{ delay: index * 0.08 }}
+                  className="group p-6 rounded-xl bg-background dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
-                    <value.icon size={24} className="text-primary" />
+                  <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="w-12 h-12 rounded-xl bg-primary/[0.08] dark:bg-primary/[0.1] flex items-center justify-center mb-5 border border-primary/10">
+                    <value.icon size={22} className="text-primary" />
                   </div>
-                  <h3 className="text-xl font-display font-semibold mb-3">{value.title}</h3>
-                  <p className="text-muted-foreground">{value.desc}</p>
+                  <h3 className="text-lg font-display font-bold mb-2">{value.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{value.desc}</p>
+                  <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                 </motion.div>
               ))}
             </div>
@@ -306,8 +223,8 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Location Section */}
-      <section className="py-20 bg-secondary/30">
+      {/* Location — clean CTA */}
+      <section className="py-20 lg:py-28">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -315,20 +232,20 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center"
           >
-            <Globe size={48} className="text-primary mx-auto mb-6" />
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-4 block">Location</span>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
               {c("location.title", "about.location.title")}
             </h2>
             <p className="text-xl text-muted-foreground mb-2">
               {c("location.address", "about.location.address")}
             </p>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-muted-foreground mb-10">
               {c("location.desc", "about.location.desc")}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                className="inline-flex items-center gap-2 px-9 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:opacity-90"
               >
                 {c("location.cta1", "about.location.cta1")} <ArrowRight size={20} />
               </Link>
@@ -336,7 +253,7 @@ const AboutPage = () => {
                 href="https://wa.me/8801410190019"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-9 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 transition-all duration-300"
               >
                 {c("location.cta2", "about.location.cta2")}
               </a>

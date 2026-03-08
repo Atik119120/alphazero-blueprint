@@ -458,31 +458,33 @@ const WorkPage = () => {
 
   return (
     <Layout>
-      {/* ═══ HERO ═══ */}
-      <section className="relative py-24 lg:py-36 overflow-hidden">
-        <div className="absolute inset-0 bg-background" />
+      {/* ═══ HERO — editorial ═══ */}
+      <section className="relative py-24 lg:py-36 overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-6">
-                <Sparkles size={12} /> Creative Portfolio
-              </span>
+          <div className="max-w-4xl mx-auto">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Creative Portfolio</span>
+              </div>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-[1] mb-6">
-              Our Creative<br /><span className="text-primary">Works & Projects</span>
+              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-tight mb-6">
+              Our Creative<br /><span className="gradient-text">Works & Projects</span>
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              {t("work.description") || "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion."}
-            </motion.p>
-
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-10 mx-auto max-w-md px-6 py-3 rounded-2xl bg-card border border-border/30">
-              <p className="text-sm text-muted-foreground font-medium">
-                ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} Projects • Graphic Design • Web • Video
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
+              className="flex items-start gap-4 mb-8">
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
+                {t("work.description") || "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion."}
               </p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/50 dark:border-border/30 bg-card/80 dark:bg-card/50 text-sm text-muted-foreground font-medium">
+              ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} Projects • Graphic Design • Web • Video
             </motion.div>
           </div>
         </div>

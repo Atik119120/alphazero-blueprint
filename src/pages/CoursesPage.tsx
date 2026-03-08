@@ -264,39 +264,43 @@ const CoursesPage = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="container mx-auto px-6 relative">
-          <div className="max-w-5xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-              <GraduationCap className="w-5 h-5 text-primary" />
-              <span className="text-primary font-medium">{t.badge}</span>
+      {/* Hero Section — editorial */}
+      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-5xl mx-auto">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6">
+              <GraduationCap className="w-4 h-4 text-primary" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t.badge}</span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-7xl font-display font-bold mb-6">
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
               <span className="gradient-text">{t.title}</span>
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">{t.subtitle}</motion.p>
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="flex items-start gap-4 mb-8">
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-xl lg:text-2xl text-muted-foreground max-w-3xl">{t.subtitle}</p>
+            </motion.div>
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="flex flex-wrap justify-center gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary/50 border border-border">
-                <Target className="w-5 h-5 text-primary" /><span className="text-sm">{t.beginnerFriendly}</span>
+              className="flex flex-wrap gap-3">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+                <Target className="w-4 h-4 text-primary" /><span className="text-sm">{t.beginnerFriendly}</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary/50 border border-border">
-                <Award className="w-5 h-5 text-primary" /><span className="text-sm">{t.certificate}</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+                <Award className="w-4 h-4 text-primary" /><span className="text-sm">{t.certificate}</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary/50 border border-border">
-                <Star className="w-5 h-5 text-primary" /><span className="text-sm">{t.expertTrainer}</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+                <Star className="w-4 h-4 text-primary" /><span className="text-sm">{t.expertTrainer}</span>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* About */}
-      <section className="py-16 bg-secondary/30">
+      {/* About — editorial */}
+      <section className="py-16 border-y border-border/40 dark:border-border/20">
         <div className="container mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center">

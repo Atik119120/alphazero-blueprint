@@ -61,41 +61,43 @@ const TeamPage = () => {
   };
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Hero Section — editorial */}
+      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
         
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
             >
-              {t("team.subtitle")}
-            </motion.span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("team.subtitle")}</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6"
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
             >
               {t("team.title")} <span className="gradient-text">{t("team.title2")}</span>
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              className="flex items-start gap-4"
             >
-              {t("team.description")}
-            </motion.p>
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-xl text-muted-foreground max-w-2xl">{t("team.description")}</p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Team Grid */}
-      <section className="py-20">
+      {/* Team Grid — editorial */}
+      <section className="py-20 lg:py-28">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {isLoading ? (
@@ -103,27 +105,24 @@ const TeamPage = () => {
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : !teamMembers || teamMembers.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
-                No team members found.
-              </div>
+              <div className="text-center py-20 text-muted-foreground">No team members found.</div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
                 {teamMembers.map((member, index) => (
                   <motion.div
                     key={member.id}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.08 }}
                     className="group h-full"
                   >
-                    {/* Card Container - Horizontal Layout */}
-                    <div className="relative h-full flex gap-4 bg-gradient-to-r from-secondary/50 to-background rounded-2xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/10">
-                      {/* Active Status Dot */}
+                    <div className="relative h-full flex gap-4 bg-card/80 dark:bg-card/50 rounded-xl p-4 border border-border/50 dark:border-border/30 group-hover:border-primary/30 transition-all duration-400">
+                      {/* Active dot */}
                       <div className="absolute -top-1 -left-1 z-20">
-                        <span className="relative flex h-4 w-4">
+                        <span className="relative flex h-3 w-3">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-background"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
                         </span>
                       </div>
                       
