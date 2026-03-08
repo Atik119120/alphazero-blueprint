@@ -472,24 +472,3 @@ const Index = () => {
 };
 
 export default Index;
-                  {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
-                </Link>
-                <a
-                  href="https://wa.me/8801846484200"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-background border-2 border-border text-foreground rounded-2xl font-semibold hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                >
-                  <MessageCircle size={18} />
-                  {c("whatsappUs", "home.whatsappUs")}
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </LayoutComponent>
-  );
-};
-
-export default Index;
