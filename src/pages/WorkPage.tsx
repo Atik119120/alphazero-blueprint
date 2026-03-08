@@ -231,7 +231,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                   href={siteUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]"
+                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
                 >
                   {/* Browser header */}
                   <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/30">
