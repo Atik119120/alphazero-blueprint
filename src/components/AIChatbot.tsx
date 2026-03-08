@@ -486,6 +486,13 @@ const AIChatbot = () => {
                                     className="max-w-[180px] max-h-[140px] object-cover rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
                                     onClick={() => window.open(att.url, '_blank')}
                                   />
+                                ) : att.type === "audio" ? (
+                                  <div className="flex items-center gap-2 px-3 py-2 bg-secondary/80 rounded-xl min-w-[180px]">
+                                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                                      <Mic size={14} className="text-primary" />
+                                    </div>
+                                    <audio src={att.url} controls className="h-8 w-full max-w-[150px]" style={{ minWidth: 0 }} />
+                                  </div>
                                 ) : (
                                   <div 
                                     className="relative w-[180px] h-[120px] bg-secondary rounded-xl cursor-pointer group"
