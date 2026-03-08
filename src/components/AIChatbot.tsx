@@ -149,11 +149,12 @@ const AIChatbot = () => {
     });
   };
 
-  const streamChat = async (userMessage: string) => {
-    const userMsg: Message = { role: "user", content: userMessage };
+  const streamChat = async (userMessage: string, msgAttachments?: Attachment[]) => {
+    const userMsg: Message = { role: "user", content: userMessage, attachments: msgAttachments };
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
     setInput("");
+    setAttachments([]);
     setFollowUpQuestions([]);
 
     let assistantContent = "";
