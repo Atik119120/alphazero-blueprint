@@ -125,7 +125,7 @@ const ServicesPage = () => {
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.08 }}
                       whileHover={{ y: -4 }}
-                      className="group p-5 lg:p-7 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
+                      className="group p-5 lg:p-7 rounded-2xl glass-card hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
                     >
                       <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
                         {String(index + 1).padStart(2, '0')}
