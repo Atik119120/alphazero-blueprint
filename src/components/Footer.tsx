@@ -78,14 +78,14 @@ const Footer = () => {
       {/* Main Footer Content */}
       <div className="border-t border-border">
         {/* CTA Section */}
-        <div className="container mx-auto px-5 sm:px-6 py-10 sm:py-20">
+        <div className="container mx-auto px-5 sm:px-6 py-6 sm:py-20">
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-end">
+            <div className="grid lg:grid-cols-2 gap-4 sm:gap-12 items-end">
               <div>
-                <span className="text-xs sm:text-sm text-primary font-medium tracking-wider uppercase mb-3 sm:mb-4 block">
+                <span className="text-[10px] sm:text-sm text-primary font-medium tracking-wider uppercase mb-2 sm:mb-4 block">
                   {t("footer.ready")}
                 </span>
-                <h2 className="text-2xl sm:text-4xl lg:text-6xl font-display font-bold leading-tight">
+                <h2 className="text-xl sm:text-4xl lg:text-6xl font-display font-bold leading-tight">
                   {t("footer.letsCreate")}
                   <br />
                   <span className="gradient-text">{t("footer.together")}</span>
@@ -94,13 +94,13 @@ const Footer = () => {
               <div className="flex lg:justify-end">
                 <Link
                   to="/contact"
-                  className="group inline-flex items-center gap-3 sm:gap-4 text-base sm:text-lg font-medium"
+                  className="group inline-flex items-center gap-2 sm:gap-4 text-sm sm:text-lg font-medium"
                 >
-                  <span className="px-6 sm:px-8 py-3 sm:py-4 bg-primary text-primary-foreground rounded-full transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/20">
+                  <span className="px-5 sm:px-8 py-2.5 sm:py-4 bg-primary text-primary-foreground rounded-full transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/20">
                     {t("nav.startProject")}
                   </span>
-                  <span className="w-11 sm:w-14 h-11 sm:h-14 rounded-full bg-foreground text-background flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <ArrowUpRight size={20} />
+                  <span className="w-9 sm:w-14 h-9 sm:h-14 rounded-full bg-foreground text-background flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <ArrowUpRight size={16} />
                   </span>
                 </Link>
               </div>
