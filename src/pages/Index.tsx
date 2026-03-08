@@ -253,15 +253,17 @@ const Index = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="flex flex-col lg:flex-row items-end justify-between gap-6 mb-14"
           >
-            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
-              {c("expertise", "home.expertise")}
-            </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-base">
+            <div>
+              <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
+                {c("expertise", "home.expertise")}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold">
+                {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
+              </h2>
+            </div>
+            <p className="text-muted-foreground max-w-md text-base lg:text-right">
               {c("expertiseDesc", "home.expertiseDesc")}
             </p>
           </motion.div>
@@ -273,18 +275,23 @@ const Index = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -6 }}
-                className="group p-5 lg:p-7 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
+                transition={{ delay: index * 0.08 }}
+                whileHover={{ y: -4 }}
+                className="group p-5 lg:p-7 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
               >
-                {/* Colored top accent line */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(200,100%,50%)] to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl" />
+                {/* Numbered index */}
+                <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
                 
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-[hsl(200,100%,50%)]/10 flex items-center justify-center mb-5 group-hover:from-primary/25 group-hover:to-[hsl(200,100%,50%)]/20 transition-all duration-300 border border-primary/10">
-                  <service.icon size={26} className="text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-primary/[0.08] dark:bg-primary/[0.1] flex items-center justify-center mb-5 border border-primary/10">
+                  <service.icon size={22} className="text-primary" />
                 </div>
-                <h3 className="text-lg font-display font-bold mb-2">{service.title}</h3>
+                <h3 className="text-base lg:text-lg font-display font-bold mb-2">{service.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
+                
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
               </motion.div>
             ))}
           </div>
@@ -293,13 +300,13 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mt-10"
+            className="text-center mt-12"
           >
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 px-6 py-3 text-primary bg-primary/10 hover:bg-primary/20 rounded-full font-medium transition-all duration-300"
+              className="inline-flex items-center gap-3 px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.1em] text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300"
             >
-              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={18} />
+              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={16} />
             </Link>
           </motion.div>
         </div>
