@@ -27,6 +27,7 @@ const ContactPage = () => {
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook },
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram },
+    { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin },
     { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter },
     { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon },
   ];
