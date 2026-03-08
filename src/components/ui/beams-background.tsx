@@ -141,7 +141,7 @@ export function BeamsBackground({
         className="absolute inset-0 w-full h-full"
         style={{ filter: "blur(15px)" }}
       />
-      <div className="absolute inset-0 bg-background/5" />
+      <div className="absolute inset-0 bg-background/80 dark:bg-background/85" />
       <div className="relative z-10">
         {children}
       </div>
