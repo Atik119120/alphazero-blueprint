@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Loader2, Sparkles, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 interface Message {
@@ -48,6 +48,7 @@ const AIChatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -64,6 +65,12 @@ const AIChatbot = () => {
       setFollowUpQuestions(getFollowUpQuestions(lastAssistantMsg, language));
     }
   }, [messages, language]);
+
+  // Hide chatbot on admin, student, and teacher dashboard routes
+  const hiddenRoutes = ['/admin', '/student', '/teacher'];
+  const shouldHide = hiddenRoutes.some(route => location.pathname.startsWith(route));
+
+  if (shouldHide) return null;
 
   // Parse links from assistant messages
   const parseMessageWithLinks = (content: string) => {
