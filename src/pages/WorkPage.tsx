@@ -134,73 +134,118 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
 const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) => void }) => {
   if (items.length === 0) return null;
 
+  // Card style variants for visual variety
+  const cardStyles = [
+    'rounded-[2rem]',        // pill-rounded
+    'rounded-2xl',           // standard
+    'rounded-3xl',           // extra round
+    'rounded-xl',            // subtle
+    'rounded-[1.5rem]',      // medium
+  ];
+
+  const accentColors = [
+    'from-[hsl(185,100%,45%)]',
+    'from-[hsl(200,100%,55%)]',
+    'from-[hsl(160,80%,45%)]',
+    'from-[hsl(215,100%,60%)]',
+    'from-[hsl(280,80%,60%)]',
+    'from-[hsl(340,80%,55%)]',
+  ];
+
   return (
     <section className="py-16 lg:py-24">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="mb-10"
+          className="flex items-end justify-between mb-10"
         >
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
-            <Sparkles size={12} /> Graphic Design
+          <div>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
+              <Sparkles size={12} /> Graphic Design
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
+              Our <span className="text-primary">Creative Designs</span>
+            </h2>
+          </div>
+          <span className="hidden sm:block text-7xl lg:text-8xl font-display font-bold text-muted-foreground/[0.05] leading-none select-none">
+            {String(items.length).padStart(2, '0')}
           </span>
-          <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Our <span className="text-primary">Creative Designs</span>
-          </h2>
         </motion.div>
 
-        {/* Staggered masonry-style grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+        {/* Dynamic masonry grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 auto-rows-fr">
           {items.map((project, idx) => {
-            // Alternate card sizes for visual rhythm
-            const isFeature = idx % 5 === 0;
+            const isFeature = idx % 7 === 0;
+            const borderRadius = cardStyles[idx % cardStyles.length];
+            const accent = accentColors[idx % accentColors.length];
+            const num = String(idx + 1).padStart(2, '0');
             
             return (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ delay: idx * 0.04, duration: 0.5, ease: "easeOut" }}
+                initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ delay: idx * 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className={`group cursor-pointer ${isFeature ? 'lg:col-span-2 lg:row-span-2' : ''}`}
                 onClick={() => onZoom(project)}
               >
-                <div className="relative h-full rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.04)] dark:shadow-none hover:shadow-[0_8px_30px_hsl(185_100%_38%/0.1),0_2px_8px_hsl(215_25%_10%/0.06)] dark:hover:shadow-none transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/30">
+                <div className={`relative h-full ${borderRadius} overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.05)] dark:shadow-none hover:shadow-[0_12px_40px_hsl(185_100%_38%/0.12),0_4px_12px_hsl(215_25%_10%/0.08)] dark:hover:shadow-[0_0_30px_hsl(185_100%_50%/0.06)] transition-all duration-500 hover:-translate-y-2 hover:border-primary/30`}>
+                  
+                  {/* Accent gradient line at top */}
+                  <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${accent} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10`} />
+                  
                   {/* Image */}
-                  <div className={`relative overflow-hidden ${isFeature ? 'aspect-square' : 'aspect-square'}`}>
+                  <div className="relative overflow-hidden aspect-square">
                     <img
                       src={project.image_url || "/placeholder.svg"}
                       alt={project.title}
                       loading="lazy"
                       referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
                       onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                     />
-                    {/* Gradient overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    {/* Zoom icon */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="w-12 h-12 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-500 shadow-lg shadow-primary/20">
-                        <ZoomIn size={20} className="text-primary-foreground" />
+                    
+                    {/* Number badge */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <div className="w-8 h-8 rounded-lg bg-black/40 dark:bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/10">
+                        <span className="text-white text-[10px] font-bold font-display">{num}</span>
                       </div>
                     </div>
-                    {/* Bottom title on hover (inside image) */}
-                    <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                      <p className="text-white text-xs font-medium line-clamp-1 drop-shadow-lg">{project.title}</p>
+
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                    
+                    {/* Zoom icon */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="w-13 h-13 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-50 group-hover:scale-100 transition-transform duration-500 shadow-xl shadow-primary/30">
+                        <ZoomIn size={22} className="text-primary-foreground" />
+                      </div>
+                    </div>
+                    
+                    {/* Bottom info on hover */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
+                      <p className="text-white text-sm font-display font-bold line-clamp-1 drop-shadow-lg mb-1">{project.title}</p>
+                      <span className="text-white/60 text-[10px] font-medium">Alphazero Agency</span>
                     </div>
                   </div>
                   
                   {/* Card footer */}
-                  <div className="px-3.5 py-3 bg-card border-t border-border/20">
-                    <h4 className="font-display font-semibold text-xs sm:text-sm text-foreground leading-snug line-clamp-1 group-hover:text-primary transition-colors duration-300">
-                      {project.title}
-                    </h4>
-                    <div className="flex items-center gap-1.5 mt-1.5">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-                        <Sparkles size={7} className="text-primary-foreground" />
+                  <div className="px-4 py-3 bg-card">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <h4 className="font-display font-bold text-xs sm:text-sm text-foreground leading-snug line-clamp-1 group-hover:text-primary transition-colors duration-300">
+                          {project.title}
+                        </h4>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${accent} to-primary`} />
+                          <span className="text-[10px] text-muted-foreground font-medium">By Alphazero Team</span>
+                        </div>
                       </div>
-                      <span className="text-[10px] text-muted-foreground font-medium">By Alphazero Team</span>
+                      <div className="w-8 h-8 rounded-full border border-border/40 dark:border-border/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-primary/5 dark:bg-primary/10 flex-shrink-0">
+                        <ArrowUpRight size={12} className="text-primary" />
+                      </div>
                     </div>
                   </div>
                 </div>
