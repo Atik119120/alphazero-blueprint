@@ -40,26 +40,26 @@ export function ContainerTextFlip({
       case "primary":
         return {
           container:
-            "bg-primary text-primary-foreground shadow-2xl shadow-primary/30 border border-primary/50",
+            "bg-primary text-primary-foreground shadow-2xl shadow-primary/30 border-2 border-primary/50",
           glow: "before:bg-primary/20",
         };
       case "neon":
         return {
           container:
-            "bg-background text-primary shadow-2xl shadow-primary/40 border border-primary/60",
+            "bg-background text-primary shadow-2xl shadow-primary/40 border-2 border-primary/60",
           glow: "before:bg-primary/30",
         };
       case "glass":
         return {
           container:
-            "bg-card/10 backdrop-blur-xl text-foreground shadow-2xl shadow-black/20 border border-border/20",
+            "bg-card/10 backdrop-blur-xl text-foreground shadow-2xl shadow-black/20 border-2 border-border/20",
           glow: "before:bg-card/10",
         };
       default:
         return {
           container:
-            "bg-gradient-to-r from-[hsl(185,100%,35%)] via-[hsl(185,100%,40%)] to-[hsl(200,100%,45%)] text-white shadow-2xl shadow-[hsl(185,100%,40%)]/40 border border-white/20",
-          glow: "before:bg-gradient-to-r before:from-[hsl(185,100%,35%)]/30 before:via-[hsl(185,100%,40%)]/30 before:to-[hsl(200,100%,45%)]/30",
+            "bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-[hsl(200,100%,50%)] text-white shadow-[0_0_40px_hsl(185,100%,40%,0.35),0_0_80px_hsl(185,100%,40%,0.15)] border-2 border-white/25",
+          glow: "before:bg-gradient-to-r before:from-primary/25 before:via-[hsl(185,100%,45%)]/25 before:to-[hsl(200,100%,50%)]/25",
         };
     }
   };
@@ -71,28 +71,60 @@ export function ContainerTextFlip({
       {/* Animated background glow */}
       <motion.div
         className={cn(
-          "absolute inset-0 rounded-2xl blur-xl opacity-60",
+          "absolute -inset-1 rounded-3xl blur-2xl opacity-50",
           variantClasses.glow
         )}
-        animate={{ scale: [1, 1.05, 1], opacity: [0.4, 0.6, 0.4] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ scale: [1, 1.08, 1], opacity: [0.3, 0.6, 0.3] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Outer ring pulse */}
+      <motion.div
+        className="absolute -inset-[3px] rounded-3xl bg-gradient-to-r from-primary via-[hsl(185,100%,50%)] to-[hsl(200,100%,55%)] opacity-0"
+        animate={{ opacity: [0, 0.4, 0] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
       />
 
       {/* Main container */}
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl px-6 py-3 sm:px-8 sm:py-4",
+          "relative overflow-hidden rounded-3xl px-7 py-4 sm:px-10 sm:py-5",
           variantClasses.container
         )}
       >
         {/* Shimmer effect */}
         <motion.div
-          className="absolute inset-0 opacity-30"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 opacity-20"
+          animate={{ x: ["-100%", "200%"] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
         >
-          <div className="h-full w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg]" />
+          <div className="h-full w-1/4 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-15deg]" />
         </motion.div>
+
+        {/* Top-left decorative dot */}
+        <motion.div 
+          className="absolute top-2.5 left-3 w-1.5 h-1.5 rounded-full bg-white/40"
+          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+        {/* Top-right decorative dot */}
+        <motion.div 
+          className="absolute top-2.5 right-3 w-1.5 h-1.5 rounded-full bg-white/40"
+          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+        />
+        {/* Bottom-left decorative dot */}
+        <motion.div 
+          className="absolute bottom-2.5 left-3 w-1.5 h-1.5 rounded-full bg-white/40"
+          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+        />
+        {/* Bottom-right decorative dot */}
+        <motion.div 
+          className="absolute bottom-2.5 right-3 w-1.5 h-1.5 rounded-full bg-white/40"
+          animate={{ opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity, delay: 1.5 }}
+        />
 
         {/* Text content */}
         <div className="relative z-10">
@@ -100,12 +132,12 @@ export function ContainerTextFlip({
             <motion.span
               key={`word-${currentWordIndex}-${id}`}
               className={cn(
-                "inline-flex text-2xl sm:text-3xl lg:text-5xl font-display font-bold tracking-tight",
+                "inline-flex text-2xl sm:text-3xl lg:text-5xl font-display font-bold tracking-tight drop-shadow-lg",
                 textClassName
               )}
-              initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+              initial={{ opacity: 0, y: 20, filter: "blur(8px)", scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+              exit={{ opacity: 0, y: -20, filter: "blur(8px)", scale: 0.95 }}
               transition={{ duration: animationDuration / 1000 }}
             >
               {words[currentWordIndex].split("").map((letter, index) => (
@@ -124,12 +156,6 @@ export function ContainerTextFlip({
             </motion.span>
           </AnimatePresence>
         </div>
-
-        {/* Decorative corners */}
-        <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-white/30 rounded-tl" />
-        <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-white/30 rounded-tr" />
-        <div className="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-white/30 rounded-bl" />
-        <div className="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-white/30 rounded-br" />
       </div>
     </div>
   );
