@@ -494,9 +494,6 @@ const Index = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-[hsl(200,100%,50%)]/10 dark:from-primary/5 dark:to-[hsl(200,100%,50%)]/5 rounded-3xl" />
             <div className="absolute inset-[1px] bg-background/95 dark:bg-background/90 rounded-3xl" />
             
-            {/* Decorative orbs */}
-            <div className="absolute top-0 left-1/4 w-40 h-40 bg-primary/[0.06] rounded-full blur-[60px]" />
-            <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-[hsl(200,100%,50%)]/[0.06] rounded-full blur-[60px]" />
             
             <div className="relative z-10">
               <h2 className="text-3xl lg:text-5xl font-display font-bold mb-5">
