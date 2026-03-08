@@ -243,7 +243,7 @@ const AIChatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-2xl lg:inset-auto lg:bottom-6 lg:right-6 lg:w-[380px] lg:h-[560px] lg:rounded-3xl lg:border lg:border-border/50 lg:shadow-2xl lg:bg-background/80"
+            className="fixed inset-0 z-50 flex flex-col bg-background backdrop-blur-2xl lg:inset-auto lg:bottom-6 lg:right-6 lg:w-[380px] lg:h-[560px] lg:rounded-3xl lg:border lg:border-border/50 lg:shadow-2xl lg:bg-background/80"
           >
             {/* Header */}
             <div className="relative shrink-0 border-b border-border/50">
@@ -275,15 +275,16 @@ const AIChatbot = () => {
                 
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-9 h-9 rounded-xl bg-secondary/80 flex items-center justify-center hover:bg-secondary transition-colors"
+                  className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  aria-label="Close chat"
                 >
-                  <X size={18} className="text-muted-foreground" />
+                  <X size={20} className="text-foreground" />
                 </button>
               </div>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-3">
               {messages.length === 0 ? (
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
@@ -396,7 +397,7 @@ const AIChatbot = () => {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4 border-t border-border/50 shrink-0">
+            <form onSubmit={handleSubmit} className="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] border-t border-border/50 shrink-0 bg-background lg:bg-transparent">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -409,7 +410,7 @@ const AIChatbot = () => {
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim()}
-                  className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors"
+                  className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
                 >
                   {isLoading ? (
                     <Loader2 size={18} className="animate-spin" />
@@ -420,7 +421,7 @@ const AIChatbot = () => {
               </div>
               
               {/* Powered by */}
-              <div className="text-center mt-2">
+              <div className="text-center mt-1.5">
                 <span className="text-[10px] text-muted-foreground">
                   {language === "bn" ? "AlphaZero AI দ্বারা চালিত" : "Powered by AlphaZero AI"}
                 </span>

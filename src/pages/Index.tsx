@@ -85,113 +85,111 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background -mt-8 grain-texture">
-
-        {/* Stripe texture background */}
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background -mt-8 grain-texture">
         <div className="absolute inset-0 stripe-accent" />
-        
-        {/* Asymmetric accent shapes (no glow) */}
-        <div className="absolute top-20 -left-20 w-72 h-72 bg-primary/[0.03] dark:bg-primary/[0.04] rounded-full blur-3xl" />
-        <div className="absolute bottom-20 -right-20 w-96 h-96 bg-[hsl(200,100%,50%)]/[0.02] dark:bg-[hsl(200,100%,50%)]/[0.03] rounded-full blur-3xl" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            {/* Asymmetric layout — left-aligned badge */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-8"
-            >
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-semibold tracking-[0.15em] uppercase text-primary">{c("badge", "home.badge")}</span>
-            </motion.div>
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_auto] gap-12 items-center">
+            {/* Left — editorial content */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-8"
+              >
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                <span className="text-xs font-semibold tracking-[0.15em] uppercase text-primary">{c("badge", "home.badge")}</span>
+              </motion.div>
 
-            {/* Main Heading — editorial feel, left-aligned then centered */}
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-4 text-center"
-            >
-              <span className="text-foreground">{c("title1", "home.title1")}</span>
-              <br className="hidden sm:block" />{" "}
-              <span className="relative">
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-display font-bold leading-[0.95] tracking-tight mb-6"
+              >
+                <span className="text-foreground">{c("title1", "home.title1")}</span>
+                <br />
                 <span className="gradient-text">{c("title2", "home.title2")}</span>
-                <motion.span 
-                  className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ duration: 1, delay: 0.8 }}
-                />
-              </span>
-            </motion.h1>
+              </motion.h1>
 
-            {/* Animated tagline — with editorial line */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex justify-center mb-8"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-px bg-primary/40" />
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="flex items-start gap-4 mb-8"
+              >
+                <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+                <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
+                  {c("description", "home.description")}
+                </p>
+              </motion.div>
+
+              {/* Animated tagline */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="mb-10"
+              >
                 <ContainerTextFlip
-                  words={[
-                    "Creative Design",
-                    "Web Development", 
-                    "Brand Building",
-                    "SEO Optimization",
-                    "UI/UX Design",
-                  ]}
+                  words={["Creative Design", "Web Development", "Brand Building", "SEO Optimization", "UI/UX Design"]}
                   interval={3000}
                   variant="gradient"
                   animationDuration={700}
                 />
-                <div className="w-12 h-px bg-primary/40" />
-              </div>
-            </motion.div>
+              </motion.div>
 
-            {/* Description */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-14 leading-relaxed"
-            >
-              {c("description", "home.description")}
-            </motion.p>
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.45 }}
+                className="flex flex-col sm:flex-row items-start gap-4"
+              >
+                <Link
+                  to="/contact"
+                  className="group relative px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2 overflow-hidden"
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    {c("cta1", "home.cta1")}
+                    <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
+                  </span>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-primary bg-[length:200%_100%]"
+                    animate={{ backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  />
+                </Link>
+                <Link
+                  to="/work"
+                  className="group px-8 py-4 border-2 border-border text-foreground rounded-2xl font-semibold text-lg hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 flex items-center gap-2"
+                >
+                  {c("cta2", "home.cta2")}
+                  <Eye size={18} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </Link>
+              </motion.div>
+            </div>
 
-            {/* CTA Buttons */}
+            {/* Right — large decorative stat block (desktop only) */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-5"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="hidden lg:grid grid-cols-2 gap-3 w-[280px]"
             >
-              <Link
-                to="/contact"
-                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2 overflow-hidden"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  {c("cta1", "home.cta1")}
-                  <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
-                </span>
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-primary bg-[length:200%_100%]"
-                  animate={{ backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                />
-              </Link>
-              <Link
-                to="/work"
-                className="group px-9 py-4 bg-transparent border-2 border-border text-foreground rounded-2xl font-semibold text-lg hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 flex items-center gap-2"
-              >
-                {c("cta2", "home.cta2")}
-                <Eye size={18} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </Link>
+              {stats.map((stat, i) => (
+                <div
+                  key={stat.label}
+                  className={`p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm text-center ${i === 0 ? 'col-span-2' : ''}`}
+                >
+                  <div className={`font-display font-bold gradient-text tracking-tight ${i === 0 ? 'text-5xl' : 'text-3xl'}`}>
+                    {stat.value}
+                  </div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">{stat.label}</div>
+                </div>
+              ))}
             </motion.div>
-
           </div>
 
           {/* Scroll Indicator */}
@@ -219,27 +217,23 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Stats Section — editorial counter strip */}
-      <section className="py-0 relative">
+      {/* Mobile Stats (shown only on mobile since desktop has stats in hero) */}
+      <section className="py-8 lg:hidden relative">
         <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto border-y border-border/60 dark:border-border/30">
-            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/60 dark:divide-border/30">
-              {stats.map((stat, index) => (
-                <motion.div 
-                  key={stat.label} 
-                  className="text-center py-10 px-4"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <div className="text-4xl lg:text-6xl font-display font-bold gradient-text mb-1 tracking-tight">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-3">
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="p-4 rounded-xl border border-border/50 bg-card/60 text-center"
+              >
+                <div className="text-3xl font-display font-bold gradient-text tracking-tight">{stat.value}</div>
+                <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
