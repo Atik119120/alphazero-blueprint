@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play } from "lucide-react";
+import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play, Mic, MicOff, Square } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
 
 interface Attachment {
-  type: "image" | "video";
+  type: "image" | "video" | "audio";
   url: string;
   name: string;
 }
@@ -101,6 +101,84 @@ const AIChatbot = () => {
 
   const removeAttachment = (idx: number) => {
     setAttachments(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  // Voice recording
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        
+        if (audioBlob.size < 1000) return; // too short
+        
+        setIsUploading(true);
+        const fileName = `chatbot/voice-${Date.now()}.webm`;
+        const { data, error } = await supabase.storage
+          .from("media-uploads")
+          .upload(fileName, audioBlob, { cacheControl: "3600", contentType: "audio/webm" });
+
+        if (!error && data) {
+          const { data: urlData } = supabase.storage
+            .from("media-uploads")
+            .getPublicUrl(data.path);
+          
+          const voiceAttachment: Attachment = {
+            type: "audio",
+            url: urlData.publicUrl,
+            name: "Voice message",
+          };
+          
+          // Send immediately with voice
+          streamChat(
+            language === "bn" ? "🎤 ভয়েস মেসেজ" : "🎤 Voice message",
+            [voiceAttachment]
+          );
+        }
+        setIsUploading(false);
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      setRecordingTime(0);
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1);
+      }, 1000);
+    } catch {
+      console.error("Microphone access denied");
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      if (recordingTimerRef.current) {
+        clearInterval(recordingTimerRef.current);
+        recordingTimerRef.current = null;
+      }
+    }
+  };
+
+  const formatRecordingTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
   const scrollToBottom = () => {
@@ -408,6 +486,13 @@ const AIChatbot = () => {
                                     className="max-w-[180px] max-h-[140px] object-cover rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
                                     onClick={() => window.open(att.url, '_blank')}
                                   />
+                                ) : att.type === "audio" ? (
+                                  <div className="flex items-center gap-2 px-3 py-2 bg-secondary/80 rounded-xl min-w-[180px]">
+                                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+                                      <Mic size={14} className="text-primary" />
+                                    </div>
+                                    <audio src={att.url} controls className="h-8 w-full max-w-[150px]" style={{ minWidth: 0 }} />
+                                  </div>
                                 ) : (
                                   <div 
                                     className="relative w-[180px] h-[120px] bg-secondary rounded-xl cursor-pointer group"
@@ -534,25 +619,57 @@ const AIChatbot = () => {
                   )}
                 </button>
 
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={language === "bn" ? "আপনার প্রশ্ন লিখুন..." : "Type your message..."}
-                  className="flex-1 px-4 py-3 rounded-xl bg-secondary/50 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-all"
-                  disabled={isLoading}
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading || isUploading || (!input.trim() && attachments.length === 0)}
-                  className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
-                >
-                  {isLoading ? (
-                    <Loader2 size={18} className="animate-spin" />
-                  ) : (
-                    <Send size={18} />
-                  )}
-                </button>
+                {/* Recording UI or normal input */}
+                {isRecording ? (
+                  <div className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/30">
+                    <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
+                    <span className="text-sm text-destructive font-medium">{formatRecordingTime(recordingTime)}</span>
+                    <span className="text-xs text-muted-foreground flex-1">
+                      {language === "bn" ? "রেকর্ডিং চলছে..." : "Recording..."}
+                    </span>
+                  </div>
+                ) : (
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder={language === "bn" ? "আপনার প্রশ্ন লিখুন..." : "Type your message..."}
+                    className="flex-1 px-4 py-3 rounded-xl bg-secondary/50 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-all"
+                    disabled={isLoading}
+                  />
+                )}
+
+                {/* Mic / Stop button */}
+                {!input.trim() && attachments.length === 0 && !isRecording ? (
+                  <button
+                    type="button"
+                    onClick={startRecording}
+                    disabled={isLoading || isUploading}
+                    className="w-11 h-11 rounded-xl bg-secondary/70 border border-border/50 flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-colors disabled:opacity-50 shrink-0"
+                  >
+                    <Mic size={18} className="text-muted-foreground" />
+                  </button>
+                ) : isRecording ? (
+                  <button
+                    type="button"
+                    onClick={stopRecording}
+                    className="w-11 h-11 rounded-xl bg-destructive text-destructive-foreground flex items-center justify-center hover:bg-destructive/90 transition-colors shrink-0 animate-pulse"
+                  >
+                    <Square size={16} className="fill-current" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isLoading || isUploading || (!input.trim() && attachments.length === 0)}
+                    className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
+                  >
+                    {isLoading ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <Send size={18} />
+                    )}
+                  </button>
+                )}
               </div>
               
               {/* Powered by */}
