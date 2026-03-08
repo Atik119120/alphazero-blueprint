@@ -83,10 +83,20 @@ const TeamPage = () => {
         </div>
       </section>
 
-      {/* Team Grid — editorial */}
-      <section className="py-24 lg:py-32">
+      {/* Team Grid — premium card layout */}
+      <section className="py-20 lg:py-28">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+              className="mb-14">
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
+                {t("team.subtitle")}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold">
+                {t("team.title")} <span className="gradient-text">{t("team.title2")}</span>
+              </h2>
+            </motion.div>
+
             {isLoading ? (
               <div className="flex items-center justify-center py-20">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
@@ -94,197 +104,153 @@ const TeamPage = () => {
             ) : !teamMembers || teamMembers.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">No team members found.</div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
-                {teamMembers.map((member, index) => (
-                  <motion.div
-                    key={member.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.08 }}
-                    className="group h-full"
-                  >
-                    <div className="relative h-full flex gap-4 rounded-2xl glass-card p-4 group-hover:border-primary/30 transition-all duration-400">
-                      {/* Active dot */}
-                      <div className="absolute -top-1 -left-1 z-20">
-                        <span className="relative flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
-                        </span>
-                      </div>
-                      
-                      {/* Image Container */}
-                      <div className="relative flex-shrink-0 w-28 h-28 rounded-xl overflow-hidden bg-secondary">
-                        <img
-                          src={member.image_url || '/placeholder.svg'}
-                          alt={member.name}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          onError={(e) => {
-                            e.currentTarget.src = '/placeholder.svg';
-                          }}
-                        />
-                        {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/50 to-transparent opacity-40" />
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        {/* Name */}
-                        <h3 className="text-lg font-display font-bold mb-1 bg-gradient-to-r from-foreground to-primary bg-clip-text group-hover:text-transparent transition-all duration-500 truncate">
-                          {member.name}
-                        </h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamMembers.map((member, index) => {
+                  const memberLinks = getMemberCustomLinks(member.id);
+                  const roles = member.role.split(', ');
+                  
+                  return (
+                    <motion.div
+                      key={member.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.06 }}
+                      className="group"
+                    >
+                      <div className="relative h-full rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.08]">
                         
-                        {/* Role Tags */}
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {member.role.split(', ').map((role, idx) => (
-                            <span 
-                              key={idx} 
-                              className="inline-block px-2 py-0.5 text-[10px] font-semibold rounded-full bg-primary/15 text-primary border border-primary/25"
-                            >
-                              {role}
+                        {/* Top section: Image banner */}
+                        <div className="relative h-48 overflow-hidden bg-secondary">
+                          <img
+                            src={member.image_url || '/placeholder.svg'}
+                            alt={member.name}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                            onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                          
+                          {/* Editorial index */}
+                          <span className="absolute bottom-2 right-4 text-[4rem] font-display font-black text-white/[0.06] leading-none select-none">
+                            {String(index + 1).padStart(2, '0')}
+                          </span>
+                          
+                          {/* Active indicator */}
+                          <div className="absolute top-3 left-3">
+                            <span className="relative flex h-2.5 w-2.5">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
                             </span>
-                          ))}
+                          </div>
                         </div>
-                        
-                        {/* Bio */}
-                        {member.bio && (
-                          <p className="text-muted-foreground text-xs leading-relaxed mb-2">{member.bio}</p>
-                        )}
-                        
-                        {/* Social Icons */}
-                        <div className="flex flex-wrap gap-1.5">
-                          {member.facebook_url && (
-                            <a 
-                              href={member.facebook_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-blue-600 hover:text-white transition-all duration-300"
-                              title="Facebook"
-                            >
-                              <Facebook size={14} />
-                            </a>
+
+                        {/* Content */}
+                        <div className="p-5 space-y-3">
+                          {/* Name */}
+                          <h3 className="text-lg font-display font-bold leading-tight group-hover:text-primary transition-colors duration-300">
+                            {member.name}
+                          </h3>
+                          
+                          {/* Role Tags */}
+                          <div className="flex flex-wrap gap-1.5">
+                            {roles.map((role, idx) => (
+                              <span 
+                                key={idx} 
+                                className="inline-block px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary border border-primary/20"
+                              >
+                                {role.trim()}
+                              </span>
+                            ))}
+                          </div>
+                          
+                          {/* Bio */}
+                          {member.bio && (
+                            <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3">{member.bio}</p>
                           )}
-                          {member.instagram_url && (
-                            <a 
-                              href={member.instagram_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-pink-600 hover:text-white transition-all duration-300"
-                              title="Instagram"
-                            >
-                              <Instagram size={14} />
-                            </a>
-                          )}
-                          {member.twitter_url && (
-                            <a 
-                              href={member.twitter_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-sky-500 hover:text-white transition-all duration-300"
-                              title="Twitter/X"
-                            >
-                              <Twitter size={14} />
-                            </a>
-                          )}
-                          {member.threads_url && (
-                            <a 
-                              href={member.threads_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-foreground hover:text-background transition-all duration-300"
-                              title="Threads"
-                            >
-                              <ThreadsIcon />
-                            </a>
-                          )}
-                          {member.whatsapp_url && (
-                            <a 
-                              href={member.whatsapp_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-green-500 hover:text-white transition-all duration-300"
-                              title="WhatsApp"
-                            >
-                              <MessageCircle size={14} />
-                            </a>
-                          )}
-                          {member.email && (
-                            <a 
-                              href={`mailto:${member.email}`}
-                              className="p-1.5 rounded-full bg-secondary hover:bg-red-500 hover:text-white transition-all duration-300"
-                              title="Email"
-                            >
-                              <Mail size={14} />
-                            </a>
-                          )}
-                          {member.linkedin_url && (
-                            <a 
-                              href={member.linkedin_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-blue-700 hover:text-white transition-all duration-300"
-                              title="LinkedIn"
-                            >
-                              <Linkedin size={14} />
-                            </a>
-                          )}
-                          {member.fiverr_url && (
-                            <a 
-                              href={member.fiverr_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-green-600 hover:text-white transition-all duration-300"
-                              title="Fiverr"
-                            >
-                              <FiverrIcon />
-                            </a>
-                          )}
-                          {member.upwork_url && (
-                            <a 
-                              href={member.upwork_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-green-500 hover:text-white transition-all duration-300"
-                              title="Upwork"
-                            >
-                              <UpworkIcon />
-                            </a>
-                          )}
-                          {member.portfolio_url && (
-                            <a 
-                              href={member.portfolio_url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                              title="Portfolio"
-                            >
-                              <Globe size={14} />
-                            </a>
-                           )}
-                          {/* Custom Links */}
-                          {getMemberCustomLinks(member.id).map((link) => (
-                            <a
-                              key={link.id}
-                              href={link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1.5 rounded-full bg-secondary hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                              title={link.label}
-                            >
-                              {link.icon_url ? (
-                                <img src={link.icon_url} alt={link.label} className="w-3.5 h-3.5 object-contain" />
-                              ) : (
-                                <ExternalLink size={14} />
-                              )}
-                            </a>
-                          ))}
+                          
+                          {/* Social Icons */}
+                          <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
+                            {member.facebook_url && (
+                              <a href={member.facebook_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Facebook">
+                                <Facebook size={14} />
+                              </a>
+                            )}
+                            {member.instagram_url && (
+                              <a href={member.instagram_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Instagram">
+                                <Instagram size={14} />
+                              </a>
+                            )}
+                            {member.twitter_url && (
+                              <a href={member.twitter_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Twitter/X">
+                                <Twitter size={14} />
+                              </a>
+                            )}
+                            {member.threads_url && (
+                              <a href={member.threads_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Threads">
+                                <ThreadsIcon />
+                              </a>
+                            )}
+                            {member.whatsapp_url && (
+                              <a href={member.whatsapp_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="WhatsApp">
+                                <MessageCircle size={14} />
+                              </a>
+                            )}
+                            {member.email && (
+                              <a href={`mailto:${member.email}`}
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Email">
+                                <Mail size={14} />
+                              </a>
+                            )}
+                            {member.linkedin_url && (
+                              <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="LinkedIn">
+                                <Linkedin size={14} />
+                              </a>
+                            )}
+                            {member.fiverr_url && (
+                              <a href={member.fiverr_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Fiverr">
+                                <FiverrIcon />
+                              </a>
+                            )}
+                            {member.upwork_url && (
+                              <a href={member.upwork_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Upwork">
+                                <UpworkIcon />
+                              </a>
+                            )}
+                            {member.portfolio_url && (
+                              <a href={member.portfolio_url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Portfolio">
+                                <Globe size={14} />
+                              </a>
+                            )}
+                            {memberLinks.map((link) => (
+                              <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title={link.label}>
+                                {link.icon_url ? (
+                                  <img src={link.icon_url} alt={link.label} className="w-3.5 h-3.5 object-contain" />
+                                ) : (
+                                  <ExternalLink size={14} />
+                                )}
+                              </a>
+                            ))}
+                          </div>
                         </div>
+
+                        {/* Hover accent line */}
+                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-purple-500 to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             )}
           </div>
