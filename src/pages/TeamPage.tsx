@@ -108,6 +108,24 @@ const TeamPage = () => {
                 {teamMembers.map((member, index) => {
                   const memberLinks = getMemberCustomLinks(member.id);
                   const roles = member.role.split(', ');
+
+                  // Collect all social links into array
+                  const socials: { href: string; icon: React.ReactNode; label: string }[] = [];
+                  if (member.facebook_url) socials.push({ href: member.facebook_url, icon: <Facebook size={14} />, label: "Facebook" });
+                  if (member.instagram_url) socials.push({ href: member.instagram_url, icon: <Instagram size={14} />, label: "Instagram" });
+                  if (member.twitter_url) socials.push({ href: member.twitter_url, icon: <Twitter size={14} />, label: "Twitter" });
+                  if (member.threads_url) socials.push({ href: member.threads_url, icon: <ThreadsIcon />, label: "Threads" });
+                  if (member.whatsapp_url) socials.push({ href: member.whatsapp_url, icon: <MessageCircle size={14} />, label: "WhatsApp" });
+                  if (member.email) socials.push({ href: `mailto:${member.email}`, icon: <Mail size={14} />, label: "Email" });
+                  if (member.linkedin_url) socials.push({ href: member.linkedin_url, icon: <Linkedin size={14} />, label: "LinkedIn" });
+                  if (member.fiverr_url) socials.push({ href: member.fiverr_url, icon: <FiverrIcon />, label: "Fiverr" });
+                  if (member.upwork_url) socials.push({ href: member.upwork_url, icon: <UpworkIcon />, label: "Upwork" });
+                  if (member.portfolio_url) socials.push({ href: member.portfolio_url, icon: <Globe size={14} />, label: "Portfolio" });
+                  memberLinks.forEach(link => socials.push({
+                    href: link.url,
+                    icon: link.icon_url ? <img src={link.icon_url} alt={link.label} className="w-3.5 h-3.5 object-contain" /> : <ExternalLink size={14} />,
+                    label: link.label
+                  }));
                   
                   return (
                     <motion.div
@@ -116,137 +134,80 @@ const TeamPage = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.06 }}
-                      className="group"
+                      className="group relative"
                     >
-                      <div className="relative h-full rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.08]">
+                      <div className="relative h-full rounded-2xl overflow-hidden border border-border/20 hover:border-primary/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/[0.1]">
                         
-                        {/* Top section: Image banner */}
-                        <div className="relative aspect-square overflow-hidden bg-secondary">
+                        {/* Full image background */}
+                        <div className="relative aspect-[4/5] overflow-hidden bg-secondary">
                           <img
                             src={member.image_url || '/placeholder.svg'}
                             alt={member.name}
                             loading="lazy"
                             decoding="async"
-                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                            className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
                             onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                           />
-                          <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
                           
-                          {/* Editorial index */}
-                          <span className="absolute bottom-2 right-4 text-[4rem] font-display font-black text-white/[0.06] leading-none select-none">
+                          {/* Dark gradient overlay from bottom */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                          
+                          {/* Editorial index watermark */}
+                          <span className="absolute top-3 right-4 text-[3.5rem] font-display font-black text-white/[0.06] leading-none select-none">
                             {String(index + 1).padStart(2, '0')}
                           </span>
-                          
-                          {/* Active indicator */}
-                          <div className="absolute top-3 left-3">
-                            <span className="relative flex h-2.5 w-2.5">
+
+                          {/* Active dot */}
+                          <div className="absolute top-4 left-4">
+                            <span className="relative flex h-2 w-2">
                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                             </span>
                           </div>
-                        </div>
 
-                        {/* Content */}
-                        <div className="p-5 space-y-3">
-                          {/* Name */}
-                          <h3 className="text-lg font-display font-bold leading-tight group-hover:text-primary transition-colors duration-300">
-                            {member.name}
-                          </h3>
-                          
-                          {/* Role Tags */}
-                          <div className="flex flex-wrap gap-1.5">
-                            {roles.map((role, idx) => (
-                              <span 
-                                key={idx} 
-                                className="inline-block px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/10 text-primary border border-primary/20"
-                              >
-                                {role.trim()}
-                              </span>
-                            ))}
-                          </div>
-                          
-                          {/* Bio */}
-                          {member.bio && (
-                            <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3">{member.bio}</p>
-                          )}
-                          
-                          {/* Social Icons */}
-                          <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20">
-                            {member.facebook_url && (
-                              <a href={member.facebook_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Facebook">
-                                <Facebook size={14} />
-                              </a>
-                            )}
-                            {member.instagram_url && (
-                              <a href={member.instagram_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Instagram">
-                                <Instagram size={14} />
-                              </a>
-                            )}
-                            {member.twitter_url && (
-                              <a href={member.twitter_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Twitter/X">
-                                <Twitter size={14} />
-                              </a>
-                            )}
-                            {member.threads_url && (
-                              <a href={member.threads_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Threads">
-                                <ThreadsIcon />
-                              </a>
-                            )}
-                            {member.whatsapp_url && (
-                              <a href={member.whatsapp_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="WhatsApp">
-                                <MessageCircle size={14} />
-                              </a>
-                            )}
-                            {member.email && (
-                              <a href={`mailto:${member.email}`}
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Email">
-                                <Mail size={14} />
-                              </a>
-                            )}
-                            {member.linkedin_url && (
-                              <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="LinkedIn">
-                                <Linkedin size={14} />
-                              </a>
-                            )}
-                            {member.fiverr_url && (
-                              <a href={member.fiverr_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Fiverr">
-                                <FiverrIcon />
-                              </a>
-                            )}
-                            {member.upwork_url && (
-                              <a href={member.upwork_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Upwork">
-                                <UpworkIcon />
-                              </a>
-                            )}
-                            {member.portfolio_url && (
-                              <a href={member.portfolio_url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title="Portfolio">
-                                <Globe size={14} />
-                              </a>
-                            )}
-                            {memberLinks.map((link) => (
-                              <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer"
-                                className="w-8 h-8 rounded-lg bg-secondary/80 hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-all duration-300 hover:scale-110" title={link.label}>
-                                {link.icon_url ? (
-                                  <img src={link.icon_url} alt={link.label} className="w-3.5 h-3.5 object-contain" />
-                                ) : (
-                                  <ExternalLink size={14} />
-                                )}
-                              </a>
-                            ))}
+                          {/* Bottom content overlay */}
+                          <div className="absolute bottom-0 left-0 right-0 p-5 space-y-2.5">
+                            <h3 className="text-lg font-display font-bold text-white leading-tight">
+                              {member.name}
+                            </h3>
+                            
+                            {/* Role tags */}
+                            <div className="flex flex-wrap gap-1.5">
+                              {roles.map((role, idx) => (
+                                <span key={idx} className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/20 text-primary border border-primary/30 backdrop-blur-sm">
+                                  {role.trim()}
+                                </span>
+                              ))}
+                            </div>
+
+                            {/* Bio - visible on hover */}
+                            <div className="overflow-hidden max-h-0 group-hover:max-h-24 transition-all duration-500">
+                              {member.bio && (
+                                <p className="text-white/70 text-xs leading-relaxed line-clamp-3 pt-1">{member.bio}</p>
+                              )}
+                            </div>
+                            
+                            {/* Social links */}
+                            <div className="flex flex-wrap gap-1.5 pt-1">
+                              {socials.map((s, idx) => (
+                                <motion.a
+                                  key={idx}
+                                  href={s.href}
+                                  target={s.href.startsWith('mailto:') ? undefined : '_blank'}
+                                  rel="noopener noreferrer"
+                                  className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground text-white/80 flex items-center justify-center transition-all duration-300"
+                                  title={s.label}
+                                  whileHover={{ scale: 1.2, y: -2 }}
+                                >
+                                  {s.icon}
+                                </motion.a>
+                              ))}
+                            </div>
                           </div>
                         </div>
-
-                        {/* Hover accent line */}
-                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-purple-500 to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                        
+                        {/* Accent line */}
+                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary to-primary/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                       </div>
                     </motion.div>
                   );
