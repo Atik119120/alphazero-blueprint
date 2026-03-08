@@ -40,26 +40,22 @@ export function ContainerTextFlip({
       case "primary":
         return {
           container:
-            "bg-primary text-primary-foreground shadow-2xl shadow-primary/30 border-2 border-primary/50",
-          glow: "before:bg-primary/20",
+            "bg-primary text-primary-foreground border-2 border-primary/50",
         };
       case "neon":
         return {
           container:
-            "bg-background text-primary shadow-2xl shadow-primary/40 border-2 border-primary/60",
-          glow: "before:bg-primary/30",
+            "bg-background text-primary border-2 border-primary/60",
         };
       case "glass":
         return {
           container:
-            "bg-card/10 backdrop-blur-xl text-foreground shadow-2xl shadow-black/20 border-2 border-border/20",
-          glow: "before:bg-card/10",
+            "bg-card/10 backdrop-blur-xl text-foreground border-2 border-border/20",
         };
       default:
         return {
           container:
-            "bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-[hsl(200,100%,50%)] text-white shadow-[0_0_40px_hsl(185,100%,40%,0.35),0_0_80px_hsl(185,100%,40%,0.15)] border-2 border-white/25",
-          glow: "before:bg-gradient-to-r before:from-primary/25 before:via-[hsl(185,100%,45%)]/25 before:to-[hsl(200,100%,50%)]/25",
+            "bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-[hsl(200,100%,50%)] text-white border-2 border-white/25",
         };
     }
   };
