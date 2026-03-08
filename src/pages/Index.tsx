@@ -87,8 +87,6 @@ const Index = () => {
     <LayoutComponent>
       {/* Hero Section */}
       <WavyBackground className="min-h-[calc(100vh-5rem)] flex items-center justify-center">
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-background/80 z-[1]" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
