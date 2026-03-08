@@ -458,15 +458,9 @@ const WorkPage = () => {
 
   return (
     <Layout>
-      {/* ═══ HERO with glassmorphic background ═══ */}
+      {/* ═══ HERO ═══ */}
       <section className="relative py-24 lg:py-36 overflow-hidden">
         <div className="absolute inset-0 bg-background" />
-        {/* Glassmorphic decorative element */}
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
-          <div className="w-[500px] h-[500px] rounded-full bg-primary/8 blur-[100px]" />
-        </div>
-        <div className="absolute left-1/4 top-1/3 w-[200px] h-[200px] rounded-full bg-primary/5 blur-[80px] pointer-events-none" />
-        <div className="absolute right-1/4 bottom-1/4 w-[250px] h-[250px] rounded-full bg-accent/5 blur-[90px] pointer-events-none" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
