@@ -38,64 +38,60 @@ const ContactPage = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Hero Section — editorial */}
+      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
             >
-              {t("contact.subtitle")}
-            </motion.span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("contact.subtitle")}</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6"
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
             >
               {t("contact.title")} <span className="gradient-text">{t("contact.title2")}</span>
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              className="flex items-start gap-4 mb-10"
             >
-              {t("contact.description")}
-            </motion.p>
-          </div>
-        </div>
-      </section>
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-xl text-muted-foreground max-w-2xl">{t("contact.description")}</p>
+            </motion.div>
 
-      {/* Quick Contact Buttons */}
-      <section className="py-8">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <a
-              href="mailto:agency.alphazero@gmail.com"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+            {/* Quick Contact — inline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-wrap gap-3"
             >
-              <Mail size={22} />
-              {t("contact.emailUs")}
-            </a>
-            <a
-              href="https://wa.me/8801846484200"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-xl font-medium text-lg transition-all duration-300 hover:bg-[#25D366]/90 hover:shadow-lg hover:shadow-[#25D366]/20"
-            >
-              <MessageCircle size={22} />
-              {t("contact.whatsapp")}
-            </a>
-          </motion.div>
+              <a
+                href="mailto:agency.alphazero@gmail.com"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold transition-all duration-300 hover:opacity-90"
+              >
+                <Mail size={18} /> {t("contact.emailUs")}
+              </a>
+              <a
+                href="https://wa.me/8801846484200"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-border text-foreground rounded-full font-semibold hover:border-primary/30 transition-all duration-300"
+              >
+                <MessageCircle size={18} /> {t("contact.whatsapp")}
+              </a>
+            </motion.div>
+          </div>
         </div>
       </section>
 

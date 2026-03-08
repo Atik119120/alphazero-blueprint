@@ -72,53 +72,56 @@ const ServicesPage = () => {
 
   return (
     <LayoutComponent>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Hero Section — editorial */}
+      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
             >
-              {t("services.subtitle")}
-            </motion.span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("services.subtitle")}</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6"
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
             >
               {t("services.title")} <span className="gradient-text">{t("services.title2")}</span> {t("services.title3")}
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              className="flex items-start gap-4"
             >
-              {t("services.description")}
-            </motion.p>
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-xl text-muted-foreground max-w-2xl">{t("services.description")}</p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Dynamic Services Grid */}
-      <section className="py-20 bg-secondary/30">
+      {/* Dynamic Services Grid — editorial */}
+      <section className="py-20 lg:py-28 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="flex flex-col lg:flex-row items-end justify-between gap-6 mb-14"
             >
-              <h2 className="text-3xl font-display font-bold mb-4">{t("services.whatWeOffer")}</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                {t("services.whatWeOfferDesc")}
-              </p>
+              <div>
+                <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">What We Offer</span>
+                <h2 className="text-3xl lg:text-5xl font-display font-bold">{t("services.whatWeOffer")}</h2>
+              </div>
+              <p className="text-muted-foreground max-w-md text-base lg:text-right">{t("services.whatWeOfferDesc")}</p>
             </motion.div>
 
             {isLoading ? (
@@ -126,11 +129,9 @@ const ServicesPage = () => {
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
               </div>
             ) : !services || services.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
-                No services found.
-              </div>
+              <div className="text-center py-20 text-muted-foreground">No services found.</div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {services.map((service, index) => {
                   const IconComponent = getIcon(service.icon);
                   return (
@@ -139,55 +140,54 @@ const ServicesPage = () => {
                       initial={{ opacity: 0, y: 30 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      className="group p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all duration-500"
+                      transition={{ delay: index * 0.08 }}
+                      whileHover={{ y: -4 }}
+                      className="group p-5 lg:p-7 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
                     >
-                      <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors duration-300">
-                        <IconComponent size={32} className="text-primary" />
+                      <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <div className="w-12 h-12 rounded-xl bg-primary/[0.08] dark:bg-primary/[0.1] flex items-center justify-center mb-5 border border-primary/10">
+                        <IconComponent size={22} className="text-primary" />
                       </div>
-                      <h3 className="text-xl font-display font-semibold mb-3">{service.title}</h3>
-                      <p className="text-muted-foreground mb-6">{service.description}</p>
+                      <h3 className="text-base lg:text-lg font-display font-bold mb-2">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{service.description}</p>
                       {service.features && service.features.length > 0 && (
-                        <ul className="space-y-2">
+                        <ul className="space-y-1.5">
                           {service.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <CheckCircle size={14} className="text-primary flex-shrink-0" />
+                            <li key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
+                              <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
                               {feature}
                             </li>
                           ))}
                         </ul>
                       )}
+                      <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                     </motion.div>
                   );
                 })}
               </div>
             )}
 
-            {/* Portfolio Builder - Compact */}
+            {/* Portfolio Builder */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="mt-12"
             >
-              <div className="relative p-5 md:p-6 rounded-xl bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border border-primary/20 overflow-hidden">
-                
-                
-                <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="relative p-5 md:p-6 rounded-xl border border-primary/20 bg-primary/[0.03] dark:bg-primary/[0.05]">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-4 text-center sm:text-left">
-                    <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-primary/[0.1] flex items-center justify-center flex-shrink-0 border border-primary/10">
                       <Sparkles className="w-5 h-5 text-primary" />
                     </div>
                     <div>
                       <h4 className="font-display font-semibold">
-                        {t("language") === "bn" 
-                          ? "আপনার নিজের Portfolio তৈরি করুন!" 
-                          : "Create Your Own Portfolio!"}
+                        {t("language") === "bn" ? "আপনার নিজের Portfolio তৈরি করুন!" : "Create Your Own Portfolio!"}
                       </h4>
                       <p className="text-sm text-muted-foreground">
-                        {t("language") === "bn" 
-                          ? "লগইন করে সহজেই পোর্টফোলিও ওয়েবসাইট বানান" 
-                          : "Login and easily build your portfolio website"}
+                        {t("language") === "bn" ? "লগইন করে সহজেই পোর্টফোলিও ওয়েবসাইট বানান" : "Login and easily build your portfolio website"}
                       </p>
                     </div>
                   </div>
@@ -195,10 +195,10 @@ const ServicesPage = () => {
                     href="https://portfolio.alphazero.online/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-lg font-medium text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-105"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 hover:opacity-90"
                   >
                     {t("language") === "bn" ? "তৈরি করুন" : "Create Now"}
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4" />
                   </a>
                 </div>
               </div>
@@ -207,25 +207,23 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      {/* Process Section — editorial numbered */}
+      <section className="py-20 lg:py-28 relative grain-texture">
+        <div className="absolute inset-0 bg-secondary/20 dark:bg-card/10" />
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center mb-16"
+              className="mb-14"
             >
-              <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-                {t("services.process.title")}
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                {t("services.process.desc")}
-              </p>
+              <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">Process</span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold">{t("services.process.title")}</h2>
+              <p className="text-muted-foreground max-w-2xl mt-3">{t("services.process.desc")}</p>
             </motion.div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {processSteps.map((item, index) => (
                 <motion.div
                   key={item.step}
@@ -233,14 +231,14 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="text-center p-6 rounded-2xl bg-card border border-border"
+                  className="p-6 rounded-xl bg-background dark:bg-card/50 border border-border/50 dark:border-border/30 relative overflow-hidden"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <item.icon size={24} className="text-primary" />
+                  <span className="absolute top-3 right-3 text-5xl font-display font-bold text-primary/[0.06] dark:text-primary/[0.08] leading-none">{item.step}</span>
+                  <div className="w-10 h-10 rounded-lg bg-primary/[0.08] flex items-center justify-center mb-4 border border-primary/10">
+                    <item.icon size={18} className="text-primary" />
                   </div>
-                  <div className="text-3xl font-display font-bold gradient-text mb-2">{item.step}</div>
-                  <h3 className="text-xl font-display font-semibold mb-2">{t(item.titleKey)}</h3>
-                  <p className="text-muted-foreground text-sm">{t(item.descKey)}</p>
+                  <h3 className="text-base font-display font-bold mb-1">{t(item.titleKey)}</h3>
+                  <p className="text-muted-foreground text-xs leading-relaxed">{t(item.descKey)}</p>
                 </motion.div>
               ))}
             </div>
@@ -248,8 +246,8 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20">
+      {/* CTA Section — clean */}
+      <section className="py-20 lg:py-32">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -257,16 +255,12 @@ const ServicesPage = () => {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center"
           >
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
-              {t("services.cta.title")}
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              {t("services.cta.desc")}
-            </p>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6">{t("services.cta.title")}</h2>
+            <p className="text-muted-foreground text-lg mb-10">{t("services.cta.desc")}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                className="inline-flex items-center gap-2 px-9 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:opacity-90"
               >
                 {t("services.cta.btn1")} <ArrowRight size={20} />
               </Link>
@@ -274,7 +268,7 @@ const ServicesPage = () => {
                 href="https://wa.me/8801712345678"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
+                className="inline-flex items-center gap-2 px-9 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 transition-all duration-300"
               >
                 {t("services.cta.btn2")}
               </a>
