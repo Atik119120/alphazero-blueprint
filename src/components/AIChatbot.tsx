@@ -241,8 +241,9 @@ const AIChatbot = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    streamChat(input.trim());
+    if ((!input.trim() && attachments.length === 0) || isLoading) return;
+    const currentAttachments = attachments.length > 0 ? [...attachments] : undefined;
+    streamChat(input.trim() || (language === "bn" ? "এই ফাইল দেখুন" : "See this file"), currentAttachments);
   };
 
   const quickQuestions = language === "bn" 
