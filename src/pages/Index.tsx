@@ -219,40 +219,28 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Stats Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        {/* Decorative background for light mode */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-transparent to-primary/[0.03] dark:from-transparent dark:to-transparent" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto"
-          >
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={stat.label} 
-                className="group text-center p-6 rounded-2xl bg-background/80 dark:bg-card/60 backdrop-blur-sm border border-primary/10 dark:border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[hsl(200,100%,50%)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <div className="text-3xl lg:text-5xl font-display font-bold gradient-text mb-2">
+      {/* Quick Stats Section — editorial counter strip */}
+      <section className="py-0 relative">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto border-y border-border/60 dark:border-border/30">
+            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/60 dark:divide-border/30">
+              {stats.map((stat, index) => (
+                <motion.div 
+                  key={stat.label} 
+                  className="text-center py-10 px-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="text-4xl lg:text-6xl font-display font-bold gradient-text mb-1 tracking-tight">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
