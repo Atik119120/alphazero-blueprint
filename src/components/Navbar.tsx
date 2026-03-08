@@ -122,7 +122,7 @@ const Navbar = () => {
                       <span className={`relative z-10 transition-colors duration-200 ${
                         isActive 
                           ? "text-primary-foreground font-semibold" 
-                          : "text-white/50 hover:text-white/90"
+                          : "text-muted-foreground hover:text-foreground"
                       }`}>
                         {link.name}
                       </span>
