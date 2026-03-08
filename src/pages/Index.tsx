@@ -85,58 +85,34 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background -mt-8">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background -mt-8 grain-texture">
 
-        {/* Dot grid pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle,hsl(var(--primary)/0.08)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[radial-gradient(circle,hsl(var(--primary)/0.05)_1px,transparent_1px)]" />
-
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={`particle-${i}`}
-            className="absolute w-1 h-1 rounded-full bg-primary/30"
-            style={{
-              top: `${15 + i * 14}%`,
-              left: `${10 + i * 15}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 4 + i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.8,
-            }}
-          />
-        ))}
+        {/* Stripe texture background */}
+        <div className="absolute inset-0 stripe-accent" />
+        
+        {/* Asymmetric accent shapes (no glow) */}
+        <div className="absolute top-20 -left-20 w-72 h-72 bg-primary/[0.03] dark:bg-primary/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-20 -right-20 w-96 h-96 bg-[hsl(200,100%,50%)]/[0.02] dark:bg-[hsl(200,100%,50%)]/[0.03] rounded-full blur-3xl" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Badge with icon */}
+          <div className="max-w-5xl mx-auto">
+            {/* Asymmetric layout — left-aligned badge */}
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-10 backdrop-blur-md"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-8"
             >
-              <motion.div
-                animate={{ rotate: [0, 15, -15, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <Sparkles size={16} className="text-primary" />
-              </motion.div>
-              <span className="text-sm font-medium text-primary">{c("badge", "home.badge")}</span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-semibold tracking-[0.15em] uppercase text-primary">{c("badge", "home.badge")}</span>
             </motion.div>
 
-            {/* Main Heading - Split with accent */}
+            {/* Main Heading — editorial feel, left-aligned then centered */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-4"
+              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-4 text-center"
             >
               <span className="text-foreground">{c("title1", "home.title1")}</span>
               <br className="hidden sm:block" />{" "}
@@ -151,25 +127,29 @@ const Index = () => {
               </span>
             </motion.h1>
 
-            {/* Animated tagline */}
+            {/* Animated tagline — with editorial line */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex justify-center mb-10"
+              className="flex justify-center mb-8"
             >
-              <ContainerTextFlip
-                words={[
-                  "Creative Design",
-                  "Web Development",
-                  "Brand Building",
-                  "SEO Optimization",
-                  "UI/UX Design",
-                ]}
-                interval={3000}
-                variant="gradient"
-                animationDuration={700}
-              />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-px bg-primary/40" />
+                <ContainerTextFlip
+                  words={[
+                    "Creative Design",
+                    "Web Development", 
+                    "Brand Building",
+                    "SEO Optimization",
+                    "UI/UX Design",
+                  ]}
+                  interval={3000}
+                  variant="gradient"
+                  animationDuration={700}
+                />
+                <div className="w-12 h-px bg-primary/40" />
+              </div>
             </motion.div>
 
             {/* Description */}
@@ -239,64 +219,51 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Quick Stats Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        {/* Decorative background for light mode */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-transparent to-primary/[0.03] dark:from-transparent dark:to-transparent" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto"
-          >
-            {stats.map((stat, index) => (
-              <motion.div 
-                key={stat.label} 
-                className="group text-center p-6 rounded-2xl bg-background/80 dark:bg-card/60 backdrop-blur-sm border border-primary/10 dark:border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[hsl(200,100%,50%)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <div className="text-3xl lg:text-5xl font-display font-bold gradient-text mb-2">
+      {/* Quick Stats Section — editorial counter strip */}
+      <section className="py-0 relative">
+        <div className="container mx-auto px-6">
+          <div className="max-w-5xl mx-auto border-y border-border/60 dark:border-border/30">
+            <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border/60 dark:divide-border/30">
+              {stats.map((stat, index) => (
+                <motion.div 
+                  key={stat.label} 
+                  className="text-center py-10 px-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="text-4xl lg:text-6xl font-display font-bold gradient-text mb-1 tracking-tight">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* What We Do / Our Expertise Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        {/* Colorful background accents */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(200,40%,96%)] dark:from-card/40 dark:via-background dark:to-card/40" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      {/* What We Do — asymmetric editorial section */}
+      <section className="py-20 lg:py-28 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="flex flex-col lg:flex-row items-end justify-between gap-6 mb-14"
           >
-            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
-              {c("expertise", "home.expertise")}
-            </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
-            </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-base">
+            <div>
+              <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
+                {c("expertise", "home.expertise")}
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold">
+                {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
+              </h2>
+            </div>
+            <p className="text-muted-foreground max-w-md text-base lg:text-right">
               {c("expertiseDesc", "home.expertiseDesc")}
             </p>
           </motion.div>
@@ -308,18 +275,23 @@ const Index = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -6 }}
-                className="group p-5 lg:p-7 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
+                transition={{ delay: index * 0.08 }}
+                whileHover={{ y: -4 }}
+                className="group p-5 lg:p-7 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
               >
-                {/* Colored top accent line */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(200,100%,50%)] to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl" />
+                {/* Numbered index */}
+                <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
                 
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-[hsl(200,100%,50%)]/10 flex items-center justify-center mb-5 group-hover:from-primary/25 group-hover:to-[hsl(200,100%,50%)]/20 transition-all duration-300 border border-primary/10">
-                  <service.icon size={26} className="text-primary" />
+                <div className="w-12 h-12 rounded-xl bg-primary/[0.08] dark:bg-primary/[0.1] flex items-center justify-center mb-5 border border-primary/10">
+                  <service.icon size={22} className="text-primary" />
                 </div>
-                <h3 className="text-lg font-display font-bold mb-2">{service.title}</h3>
+                <h3 className="text-base lg:text-lg font-display font-bold mb-2">{service.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
+                
+                {/* Bottom accent line */}
+                <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
               </motion.div>
             ))}
           </div>
@@ -328,89 +300,76 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mt-10"
+            className="text-center mt-12"
           >
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 px-6 py-3 text-primary bg-primary/10 hover:bg-primary/20 rounded-full font-medium transition-all duration-300"
+              className="inline-flex items-center gap-3 px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.1em] text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300"
             >
-              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={18} />
+              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={16} />
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-tl from-[hsl(260,40%,97%)] via-background to-[hsl(185,40%,97%)] dark:from-transparent dark:to-transparent" />
-        
-        <div className="container mx-auto px-6 relative z-10">
+      {/* Why Choose Us — horizontal numbered list */}
+      <section className="py-20 lg:py-28 relative">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-14"
           >
-            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
               {c("whyChoose", "home.whyChoose")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-            {whyChooseUs.map((item, index) => {
-              const gradients = [
-                "from-primary/10 to-[hsl(200,100%,50%)]/5",
-                "from-[hsl(260,80%,60%)]/8 to-primary/5",
-                "from-[hsl(340,80%,55%)]/6 to-[hsl(260,80%,60%)]/5",
-                "from-[hsl(45,100%,50%)]/8 to-[hsl(340,80%,55%)]/5",
-                "from-[hsl(200,100%,50%)]/8 to-primary/5",
-              ];
-              return (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -4 }}
-                  className="group p-6 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
-                >
-                  {/* Unique gradient per card */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[index % gradients.length]} opacity-40 dark:opacity-20`} />
-                  <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                      <item.icon size={22} className="text-primary" />
-                    </div>
-                    <h3 className="text-base font-display font-bold mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+          <div className="space-y-0 max-w-6xl mx-auto border-t border-border/50 dark:border-border/30">
+            {whyChooseUs.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="group flex items-start gap-6 py-7 border-b border-border/50 dark:border-border/30 hover:bg-primary/[0.02] dark:hover:bg-primary/[0.03] transition-colors duration-300 px-2"
+              >
+                <span className="text-4xl lg:text-5xl font-display font-bold text-primary/15 dark:text-primary/10 leading-none shrink-0 w-16 group-hover:text-primary/30 transition-colors duration-300">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <item.icon size={20} className="text-primary" />
+                    <h3 className="text-lg font-display font-bold">{item.title}</h3>
                   </div>
-                </motion.div>
-              );
-            })}
+                  <p className="text-muted-foreground text-sm leading-relaxed max-w-xl">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(260,30%,97%)] dark:from-card/40 dark:via-background dark:to-card/40" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      {/* Testimonials — editorial quote cards */}
+      <section className="py-20 lg:py-28 relative grain-texture">
+        <div className="absolute inset-0 bg-secondary/30 dark:bg-card/20" />
         
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-14"
           >
-            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
               {c("testimonials", "home.testimonials")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold">
               {c("whatClientsSay", "home.whatClientsSay")} <span className="gradient-text">{c("say", "home.say")}</span>
             </h2>
           </motion.div>
@@ -422,22 +381,29 @@ const Index = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="p-6 lg:p-7 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 relative overflow-hidden"
+                transition={{ delay: index * 0.08 }}
+                className="p-6 lg:p-7 bg-background dark:bg-card/60 border border-border/50 dark:border-border/30 rounded-xl relative"
               >
-                {/* Subtle gradient accent */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-[60px]" />
-                <Quote size={28} className="text-primary/25 mb-4 relative z-10" />
-                <p className="text-foreground mb-5 leading-relaxed text-sm relative z-10">{testimonial.content}</p>
-                <div className="flex items-center gap-1 mb-3 relative z-10">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={14} className="text-[hsl(45,100%,50%)] fill-[hsl(45,100%,50%)]" />
-                  ))}
-                </div>
-                <div className="relative z-10">
-                  <p className="font-display font-bold text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                {/* Editorial left accent */}
+                <div className="absolute left-0 top-6 bottom-6 w-[3px] bg-primary/30 rounded-full" />
+                
+                <div className="pl-4">
+                  <Quote size={24} className="text-primary/20 mb-4" />
+                  <p className="text-foreground mb-5 leading-relaxed text-sm">{testimonial.content}</p>
+                  <div className="flex items-center gap-1 mb-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} size={12} className="text-[hsl(45,100%,50%)] fill-[hsl(45,100%,50%)]" />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                      {testimonial.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-display font-bold text-sm">{testimonial.name}</p>
+                      <p className="text-[11px] text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -445,80 +411,58 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Client Logos Section */}
-      <section className="py-12 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      {/* Client Logos — minimal marquee strip */}
+      <section className="py-10 relative border-y border-border/40 dark:border-border/20">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <p className="text-muted-foreground text-sm uppercase tracking-wider font-medium">{c("trustedBy", "home.trustedBy")}</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center items-center gap-6 md:gap-12 max-w-4xl mx-auto"
-          >
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 max-w-4xl mx-auto">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/50 font-medium shrink-0">{c("trustedBy", "home.trustedBy")}</span>
             {clientLogos.map((client, index) => (
               <motion.div
                 key={client}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-lg font-display font-bold text-muted-foreground/30 hover:text-primary/70 transition-colors duration-300"
+                transition={{ delay: index * 0.08 }}
+                className="text-base font-display font-bold text-muted-foreground/25 hover:text-primary/50 transition-colors duration-300"
               >
                 {client}
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 lg:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-[hsl(260,80%,60%)]/[0.03] dark:from-transparent dark:to-transparent" />
-        <div className="container mx-auto px-6 relative z-10">
+      {/* CTA Section — bold, clean */}
+      <section className="py-20 lg:py-32 relative">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center p-10 lg:p-16 rounded-3xl relative overflow-hidden"
+            className="max-w-4xl mx-auto text-center"
           >
-            {/* CTA background with gradient border effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-[hsl(200,100%,50%)]/10 dark:from-primary/5 dark:to-[hsl(200,100%,50%)]/5 rounded-3xl" />
-            <div className="absolute inset-[1px] bg-background/95 dark:bg-background/90 rounded-3xl" />
-            
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-5">
-                {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
-              </h2>
-              <p className="text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
-                {c("readyTo", "home.readyTo")}
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300"
-                >
-                  {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
-                </Link>
-                <a
-                  href="https://wa.me/8801846484200"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-background border-2 border-border text-foreground rounded-2xl font-semibold hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                >
-                  <MessageCircle size={18} />
-                  {c("whatsappUs", "home.whatsappUs")}
-                </a>
-              </div>
+            <h2 className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-tight">
+              {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
+            </h2>
+            <p className="text-muted-foreground mb-10 text-lg max-w-xl mx-auto">
+              {c("readyTo", "home.readyTo")}
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-9 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:opacity-90"
+              >
+                {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
+              </Link>
+              <a
+                href="https://wa.me/8801846484200"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-9 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 transition-all duration-300"
+              >
+                <MessageCircle size={18} />
+                {c("whatsappUs", "home.whatsappUs")}
+              </a>
             </div>
           </motion.div>
         </div>

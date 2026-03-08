@@ -84,8 +84,8 @@ const Navbar = () => {
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
             className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
               isScrolled
-                ? "bg-card/95 backdrop-blur-xl shadow-sm border border-border/40"
-                : "bg-card/80 backdrop-blur-xl border border-border/20"
+                ? "bg-background/90 dark:bg-card/90 backdrop-blur-2xl shadow-[0_4px_30px_-8px_hsl(var(--primary)/0.08)] border border-border/50 dark:border-border/30"
+                : "bg-background/70 dark:bg-card/70 backdrop-blur-xl border border-border/30 dark:border-border/15"
             }`}
           >
             {/* Logo */}
@@ -104,7 +104,7 @@ const Navbar = () => {
 
             {/* Desktop Navigation - Pill style */}
             <div className="hidden lg:flex items-center">
-              <div className="flex items-center bg-foreground/[0.04] dark:bg-white/[0.06] rounded-full px-1.5 py-1 border border-foreground/[0.06] dark:border-white/[0.06]">
+              <div className="flex items-center bg-secondary/80 dark:bg-secondary/50 rounded-full px-1.5 py-1 border border-border/50 dark:border-border/30">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
                   return (
@@ -137,7 +137,7 @@ const Navbar = () => {
                 {/* Search */}
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200 group"
+                  className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200 group"
                   title={language === "bn" ? "সার্চ করুন" : "Search"}
                 >
                   <Search size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
@@ -146,7 +146,7 @@ const Navbar = () => {
                 {/* Login */}
                 <Link
                   to="/student/login"
-                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200 group"
+                  className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200 group"
                   title={language === "bn" ? "লগইন" : "Login"}
                 >
                   <User size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
@@ -167,7 +167,7 @@ const Navbar = () => {
                 {mounted && (
                   <button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center overflow-hidden group hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200"
+                    className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center overflow-hidden group hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200"
                   >
                     <motion.div
                       animate={{ rotate: theme === "dark" ? 0 : 180 }}
@@ -197,14 +197,14 @@ const Navbar = () => {
             <div className="flex items-center gap-1.5 lg:hidden">
               <Link
                 to="/student/login"
-                className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
+                className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center"
               >
                 <User size={15} className="text-muted-foreground" />
               </Link>
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
+                  className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center"
                 >
                   {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
                 </button>
@@ -232,7 +232,7 @@ const Navbar = () => {
 
         return (
           <div className="fixed bottom-3 left-3 right-3 z-50 lg:hidden">
-            <div className="bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 shadow-lg shadow-black/10 dark:shadow-black/30">
+            <div className="bg-background/90 dark:bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 dark:border-border/30 shadow-[0_-4px_30px_-8px_hsl(var(--primary)/0.06)]">
               <div className="grid grid-cols-7 py-2 px-1 safe-bottom">
                 {bottomNavItems.map((item) => {
                   const IconComp = item.icon;
