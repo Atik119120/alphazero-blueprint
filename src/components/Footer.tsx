@@ -22,6 +22,7 @@ const ICON_MAP: Record<string, IconComponent> = {
   Globe,
   Mail,
   Phone,
+  Linkedin,
   Discord: DiscordIcon,
 };
 
