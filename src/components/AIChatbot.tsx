@@ -243,7 +243,7 @@ const AIChatbot = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] h-[560px] rounded-3xl overflow-hidden shadow-2xl flex flex-col bg-background/80 backdrop-blur-2xl border border-border/50"
+            className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-2xl lg:inset-auto lg:bottom-6 lg:right-6 lg:w-[380px] lg:h-[560px] lg:rounded-3xl lg:border lg:border-border/50 lg:shadow-2xl lg:bg-background/80"
           >
             {/* Header */}
             <div className="relative shrink-0 border-b border-border/50">
