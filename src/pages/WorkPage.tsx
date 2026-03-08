@@ -100,7 +100,7 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
           return (
             <div
               key={`${project.id}-${idx}`}
-              className="flex-shrink-0 w-[120px] h-[120px] sm:w-[140px] sm:h-[140px] rounded-xl overflow-hidden bg-card border border-border/30 relative group cursor-pointer"
+              className="flex-shrink-0 w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 relative group cursor-pointer shadow-[0_2px_10px_hsl(215_25%_10%/0.05)] dark:shadow-none hover:shadow-[0_4px_20px_hsl(185_100%_38%/0.12)] dark:hover:shadow-none transition-all duration-300 hover:scale-[1.03]"
               onClick={() => onItemClick(project)}
             >
               {thumb ? (
@@ -112,13 +112,13 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
               )}
               {isVid && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full bg-primary/80 flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-full bg-primary/80 backdrop-blur-sm flex items-center justify-center shadow-lg shadow-primary/20">
                     <Play size={14} className="text-primary-foreground ml-0.5" fill="currentColor" />
                   </div>
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2">
-                <span className="text-white text-[10px] font-medium line-clamp-1">{project.title}</span>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-2.5">
+                <span className="text-white text-[10px] font-semibold line-clamp-1 drop-shadow-md">{project.title}</span>
               </div>
             </div>
           );
