@@ -151,7 +151,7 @@ const translations = {
     aboutTitle: "About", aboutDesc: "Alpha Academy teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our", coursesTitle: "Courses", coursesSubtitle: "Professional Online Courses - Start Your Career Today",
     special: "Special", upcoming: "Coming Soon", trainer: "Trainer", courseFee: "Course Fee",
-    enrollNow: "Enroll Now", free: "Free",
+    enrollNow: "Enroll Now", free: "Free", readMore: "Read More", readLess: "Show Less",
     startCareer: "Start Your Digital Career", startToday: "Today",
     ctaSubtitle: "100% Online Courses • Beginner-Friendly • Certificate Provided • Expert Trainers",
     enrollButton: "Enroll Now", whatsappContact: "WhatsApp Contact",
@@ -165,7 +165,7 @@ const translations = {
     aboutTitle: "সম্পর্কে", aboutDesc: "Alpha Academy প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
     ourCourses: "আমাদের", coursesTitle: "কোর্সসমূহ", coursesSubtitle: "প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
     special: "স্পেশাল", upcoming: "আসছে শীঘ্রই", trainer: "ট্রেইনার", courseFee: "কোর্স ফি",
-    enrollNow: "এখনই ভর্তি হন", free: "ফ্রি",
+    enrollNow: "এখনই ভর্তি হন", free: "ফ্রি", readMore: "আরো দেখুন", readLess: "কম দেখুন",
     startCareer: "আপনার ডিজিটাল ক্যারিয়ার", startToday: "শুরু করুন আজই",
     ctaSubtitle: "১০০% অনলাইন কোর্স • বিগিনার-ফ্রেন্ডলি • সার্টিফিকেট প্রদান • এক্সপার্ট ট্রেইনার",
     enrollButton: "এখনই ভর্তি হন", whatsappContact: "WhatsApp-এ যোগাযোগ",
@@ -185,6 +185,16 @@ const CoursesPage = () => {
   // Enrollment modal state
   const [enrollmentCourse, setEnrollmentCourse] = useState<Course | null>(null);
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (courseId: string) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      if (next.has(courseId)) next.delete(courseId);
+      else next.add(courseId);
+      return next;
+    });
+  };
 
   const displayCourses = useMemo(() => {
     return dbCourses.map(course => ({
@@ -416,12 +426,6 @@ const CoursesPage = () => {
                                   </span>
                                 )}
                               </div>
-                              {/* Price chip */}
-                              <div className="absolute top-3 right-3">
-                                <span className={`px-3 py-1 rounded-lg text-xs font-bold backdrop-blur-md shadow-lg ${isFree ? 'bg-emerald-500/90 text-primary-foreground' : 'bg-card/90 text-primary border border-primary/20'}`}>
-                                  {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                                </span>
-                              </div>
                             </div>
                           );
                         }
@@ -442,11 +446,6 @@ const CoursesPage = () => {
                                 </span>
                               )}
                             </div>
-                            <div className="absolute top-3 right-3">
-                              <span className={`px-3 py-1 rounded-lg text-xs font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-primary-foreground' : 'bg-white/20 text-primary-foreground'}`}>
-                                {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                              </span>
-                            </div>
                             <div className="absolute top-1/2 left-5 -translate-y-1/2">
                               <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
                                 <CourseIcon className="w-7 h-7 text-white" />
@@ -461,39 +460,74 @@ const CoursesPage = () => {
                         <h3 className="text-base font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        <p className={`text-xs text-muted-foreground leading-relaxed ${expandedCards.has(course.id) ? '' : 'line-clamp-2'}`}>
                           {isBn ? course.descriptionBn : course.descriptionEn}
                         </p>
 
-                        {/* Features - compact tags */}
-                        <div className="flex flex-wrap gap-1.5">
-                          {(isBn ? metadata.featuresBn : metadata.featuresEn).slice(0, 3).map((feature, idx) => (
-                            <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20 group-hover:border-primary/20 transition-colors">
-                              {feature}
-                            </span>
-                          ))}
-                        </div>
+                        {/* Read More toggle */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleExpand(course.id); }}
+                          className="text-[11px] text-primary font-medium hover:underline self-start -mt-1 flex items-center gap-1"
+                        >
+                          {expandedCards.has(course.id) ? t.readLess : t.readMore}
+                          <ArrowRight className={`w-3 h-3 transition-transform ${expandedCards.has(course.id) ? 'rotate-90' : ''}`} />
+                        </button>
 
-                        {/* Trainer + Enroll */}
-                        <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border/20">
-                          {trainerName ? (
-                            <div className="flex items-center gap-2 flex-1 min-w-0">
-                              <img src={trainerImage || '/placeholder.svg'}
-                                alt={trainerName}
-                                className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10 flex-shrink-0"
-                                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                              <div className="min-w-0">
-                                <p className="text-xs font-semibold truncate">{trainerName}</p>
-                                <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
-                              </div>
+                        {/* Expanded content */}
+                        {expandedCards.has(course.id) && (
+                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                            className="space-y-3 overflow-hidden">
+                            {/* Features */}
+                            <div className="flex flex-wrap gap-1.5">
+                              {(isBn ? metadata.featuresBn : metadata.featuresEn).map((feature, idx) => (
+                                <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20">
+                                  {feature}
+                                </span>
+                              ))}
                             </div>
-                          ) : <div className="flex-1" />}
+                            {/* Special content */}
+                            {metadata.isSpecial && metadata.specialContentBn && metadata.specialContentEn && (
+                              <div className="p-3 rounded-xl bg-primary/[0.05] border border-primary/10">
+                                <h4 className="font-semibold text-primary text-xs mb-1.5 flex items-center gap-1">
+                                  <Zap className="w-3.5 h-3.5" />
+                                  {isBn ? metadata.specialContentBn.title : metadata.specialContentEn.title}
+                                </h4>
+                                <ul className="space-y-1">
+                                  {(isBn ? metadata.specialContentBn.points : metadata.specialContentEn.points).map((point, idx) => (
+                                    <li key={idx} className="text-[11px] text-muted-foreground flex items-start gap-1.5">
+                                      <span className="text-primary mt-0.5">•</span>{point}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {/* Trainer */}
+                            {trainerName && (
+                              <div className="flex items-center gap-2">
+                                <img src={trainerImage || '/placeholder.svg'}
+                                  alt={trainerName}
+                                  className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10 flex-shrink-0"
+                                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                                <div className="min-w-0">
+                                  <p className="text-xs font-semibold truncate">{trainerName}</p>
+                                  <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
+                                </div>
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+
+                        {/* Price + Enroll row */}
+                        <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border/20">
+                          <span className={`text-lg font-display font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
+                            {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
+                          </span>
                           <button
                             onClick={() => handleEnrollClick(course)}
-                            className={`flex-shrink-0 flex items-center gap-1.5 py-2.5 px-5 rounded-xl font-semibold text-xs transition-all duration-300 ${
+                            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
                               metadata.isUpcoming 
                                 ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.03]'
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02]'
                             }`}
                             disabled={metadata.isUpcoming}
                           >
