@@ -1,13 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Loader2, Sparkles, MessageCircle } from "lucide-react";
+import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
+
+interface Attachment {
+  type: "image" | "video";
+  url: string;
+  name: string;
+}
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  attachments?: Attachment[];
 }
 
 // Suggested follow-up questions based on context
