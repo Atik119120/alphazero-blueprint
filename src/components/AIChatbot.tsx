@@ -395,17 +395,49 @@ const AIChatbot = () => {
                           <img src={logo} alt="" className="w-4 h-4 object-contain dark:brightness-0 dark:invert" />
                         </div>
                       )}
-                      <div
-                        className={`max-w-[80%] px-4 py-2.5 text-sm leading-relaxed ${
-                          msg.role === "user"
-                            ? "bg-primary text-primary-foreground rounded-2xl rounded-br-md"
-                            : "bg-secondary/80 text-foreground rounded-2xl rounded-bl-md border border-border/50"
-                        }`}
-                      >
-                        {msg.role === "assistant" 
-                          ? <div className="whitespace-pre-line">{parseMessageWithLinks(msg.content)}</div>
-                          : msg.content
-                        }
+                      <div className={`max-w-[80%] space-y-2`}>
+                        {/* Attachments */}
+                        {msg.attachments && msg.attachments.length > 0 && (
+                          <div className={`flex flex-wrap gap-1.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                            {msg.attachments.map((att, ai) => (
+                              <div key={ai} className="relative rounded-xl overflow-hidden border border-border/50">
+                                {att.type === "image" ? (
+                                  <img 
+                                    src={att.url} 
+                                    alt={att.name} 
+                                    className="max-w-[180px] max-h-[140px] object-cover rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
+                                    onClick={() => window.open(att.url, '_blank')}
+                                  />
+                                ) : (
+                                  <div 
+                                    className="relative w-[180px] h-[120px] bg-secondary rounded-xl cursor-pointer group"
+                                    onClick={() => window.open(att.url, '_blank')}
+                                  >
+                                    <video src={att.url} className="w-full h-full object-cover rounded-xl" />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl group-hover:bg-black/40 transition-colors">
+                                      <Play size={28} className="text-white fill-white" />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* Text content */}
+                        {msg.content && (
+                          <div
+                            className={`px-4 py-2.5 text-sm leading-relaxed ${
+                              msg.role === "user"
+                                ? "bg-primary text-primary-foreground rounded-2xl rounded-br-md"
+                                : "bg-secondary/80 text-foreground rounded-2xl rounded-bl-md border border-border/50"
+                            }`}
+                          >
+                            {msg.role === "assistant" 
+                              ? <div className="whitespace-pre-line">{parseMessageWithLinks(msg.content)}</div>
+                              : msg.content
+                            }
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   ))}
