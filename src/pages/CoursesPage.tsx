@@ -471,39 +471,74 @@ const CoursesPage = () => {
                         <h3 className="text-base font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
-                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                        <p className={`text-xs text-muted-foreground leading-relaxed ${expandedCards.has(course.id) ? '' : 'line-clamp-2'}`}>
                           {isBn ? course.descriptionBn : course.descriptionEn}
                         </p>
 
-                        {/* Features - compact tags */}
-                        <div className="flex flex-wrap gap-1.5">
-                          {(isBn ? metadata.featuresBn : metadata.featuresEn).slice(0, 3).map((feature, idx) => (
-                            <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20 group-hover:border-primary/20 transition-colors">
-                              {feature}
-                            </span>
-                          ))}
-                        </div>
+                        {/* Read More toggle */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); toggleExpand(course.id); }}
+                          className="text-[11px] text-primary font-medium hover:underline self-start -mt-1 flex items-center gap-1"
+                        >
+                          {expandedCards.has(course.id) ? t.readLess : t.readMore}
+                          <ArrowRight className={`w-3 h-3 transition-transform ${expandedCards.has(course.id) ? 'rotate-90' : ''}`} />
+                        </button>
 
-                        {/* Trainer + Enroll */}
-                        <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border/20">
-                          {trainerName ? (
-                            <div className="flex items-center gap-2 flex-1 min-w-0">
-                              <img src={trainerImage || '/placeholder.svg'}
-                                alt={trainerName}
-                                className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10 flex-shrink-0"
-                                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                              <div className="min-w-0">
-                                <p className="text-xs font-semibold truncate">{trainerName}</p>
-                                <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
-                              </div>
+                        {/* Expanded content */}
+                        {expandedCards.has(course.id) && (
+                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                            className="space-y-3 overflow-hidden">
+                            {/* Features */}
+                            <div className="flex flex-wrap gap-1.5">
+                              {(isBn ? metadata.featuresBn : metadata.featuresEn).map((feature, idx) => (
+                                <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20">
+                                  {feature}
+                                </span>
+                              ))}
                             </div>
-                          ) : <div className="flex-1" />}
+                            {/* Special content */}
+                            {metadata.isSpecial && metadata.specialContentBn && metadata.specialContentEn && (
+                              <div className="p-3 rounded-xl bg-primary/[0.05] border border-primary/10">
+                                <h4 className="font-semibold text-primary text-xs mb-1.5 flex items-center gap-1">
+                                  <Zap className="w-3.5 h-3.5" />
+                                  {isBn ? metadata.specialContentBn.title : metadata.specialContentEn.title}
+                                </h4>
+                                <ul className="space-y-1">
+                                  {(isBn ? metadata.specialContentBn.points : metadata.specialContentEn.points).map((point, idx) => (
+                                    <li key={idx} className="text-[11px] text-muted-foreground flex items-start gap-1.5">
+                                      <span className="text-primary mt-0.5">•</span>{point}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                            {/* Trainer */}
+                            {trainerName && (
+                              <div className="flex items-center gap-2">
+                                <img src={trainerImage || '/placeholder.svg'}
+                                  alt={trainerName}
+                                  className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10 flex-shrink-0"
+                                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                                <div className="min-w-0">
+                                  <p className="text-xs font-semibold truncate">{trainerName}</p>
+                                  <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
+                                </div>
+                              </div>
+                            )}
+                          </motion.div>
+                        )}
+
+                        {/* Price + Enroll row */}
+                        <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border/20">
+                          <span className={`text-lg font-display font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
+                            {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
+                          </span>
                           <button
                             onClick={() => handleEnrollClick(course)}
-                            className={`flex-shrink-0 flex items-center gap-1.5 py-2.5 px-5 rounded-xl font-semibold text-xs transition-all duration-300 ${
+                            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
                               metadata.isUpcoming 
                                 ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.03]'
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02]'
                             }`}
                             disabled={metadata.isUpcoming}
                           >
