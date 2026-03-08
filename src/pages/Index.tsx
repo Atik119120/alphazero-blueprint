@@ -172,23 +172,26 @@ const Index = () => {
               </motion.div>
             </div>
 
-            {/* Right — large decorative stat block (desktop only) */}
+            {/* Right — stacked stat cards (desktop only) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="hidden lg:grid grid-cols-2 gap-3 w-[280px]"
+              className="hidden lg:flex flex-col gap-3 w-[240px] shrink-0"
             >
               {stats.map((stat, i) => (
-                <div
+                <motion.div
                   key={stat.label}
-                  className={`p-5 rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm text-center ${i === 0 ? 'col-span-2' : ''}`}
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                  className="group p-4 rounded-2xl border border-border/40 dark:border-border/20 bg-card/40 dark:bg-card/30 backdrop-blur-sm hover:border-primary/30 transition-all duration-300"
                 >
-                  <div className={`font-display font-bold gradient-text tracking-tight ${i === 0 ? 'text-5xl' : 'text-3xl'}`}>
-                    {stat.value}
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl font-display font-bold gradient-text tracking-tight">{stat.value}</span>
+                    <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{stat.label}</span>
                   </div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-1">{stat.label}</div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
