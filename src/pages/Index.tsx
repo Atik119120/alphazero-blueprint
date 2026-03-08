@@ -85,33 +85,14 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background -mt-8">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background -mt-8 grain-texture">
 
-        {/* Dot grid pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle,hsl(var(--primary)/0.08)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[radial-gradient(circle,hsl(var(--primary)/0.05)_1px,transparent_1px)]" />
-
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={`particle-${i}`}
-            className="absolute w-1 h-1 rounded-full bg-primary/30"
-            style={{
-              top: `${15 + i * 14}%`,
-              left: `${10 + i * 15}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 4 + i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.8,
-            }}
-          />
-        ))}
+        {/* Stripe texture background */}
+        <div className="absolute inset-0 stripe-accent" />
+        
+        {/* Asymmetric accent shapes (no glow) */}
+        <div className="absolute top-20 -left-20 w-72 h-72 bg-primary/[0.03] dark:bg-primary/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-20 -right-20 w-96 h-96 bg-[hsl(200,100%,50%)]/[0.02] dark:bg-[hsl(200,100%,50%)]/[0.03] rounded-full blur-3xl" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
