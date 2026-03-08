@@ -110,7 +110,7 @@ const Footer = () => {
 
         {/* Links Grid - Compact on mobile */}
         <div className="border-t border-border">
-          <div className="container mx-auto px-5 sm:px-6 py-8 sm:py-16">
+          <div className="container mx-auto px-5 sm:px-6 py-6 sm:py-16">
             <div className="max-w-6xl mx-auto">
               {/* Brand - Full width on mobile */}
               <div className="mb-6 sm:mb-0 sm:hidden">
