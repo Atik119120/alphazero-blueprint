@@ -17,8 +17,7 @@ import {
   Quote,
   MessageCircle
 } from "lucide-react";
-import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
-import { BeamsBackground } from "@/components/ui/beams-background";
+import { PremiumHero } from "@/components/ui/hero";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
