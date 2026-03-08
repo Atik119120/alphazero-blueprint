@@ -167,7 +167,7 @@ const Navbar = () => {
                 {mounted && (
                   <button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center overflow-hidden group hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200"
+                    className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center overflow-hidden group hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200"
                   >
                     <motion.div
                       animate={{ rotate: theme === "dark" ? 0 : 180 }}
