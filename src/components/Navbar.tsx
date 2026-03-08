@@ -184,7 +184,7 @@ const Navbar = () => {
                 {/* CTA Button */}
                 <Link
                   to="/contact"
-                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-white text-[hsl(220,20%,10%)] rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] flex items-center gap-1.5 border border-white/80"
+                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_24px_hsl(var(--primary)/0.4)] flex items-center gap-1.5"
                 >
                   <span className="relative z-10">{t("nav.startProject")}</span>
                   <ArrowUpRight size={14} className="relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
