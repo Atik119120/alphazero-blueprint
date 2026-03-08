@@ -338,140 +338,121 @@ const CoursesPage = () => {
           )}
 
           {!coursesLoading && displayCourses.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-7xl mx-auto">
               {displayCourses.map((course, index) => {
                 const metadata = getCourseMetadata(course.titleEn);
                 const CourseIcon = metadata.icon;
                 const coursePrice = course.price || 0;
                 const isFree = coursePrice === 0;
+                const trainerName = course.trainer_name || metadata.trainer?.name;
+                const trainerImage = course.trainer_image || metadata.trainer?.image;
+                const trainerDesig = course.trainer_designation || (isBn ? metadata.trainer?.qualificationBn : metadata.trainer?.qualificationEn);
                 
                 return (
-                  <motion.div key={course.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: index * 0.05 }} className="group h-full">
-                    <div className={`relative h-full flex flex-col rounded-3xl overflow-hidden bg-card border border-border/50 shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-2 ${metadata.isSpecial ? 'ring-2 ring-primary/40' : ''} ${metadata.isUpcoming ? 'ring-2 ring-amber-500/40' : ''}`}>
-                      {/* Course Thumbnail - NO price overlay */}
+                  <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group">
+                    <div className={`relative flex flex-col rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/30 transition-all duration-400 hover:-translate-y-1 hover:shadow-lg ${metadata.isSpecial ? 'ring-1 ring-primary/30' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/30' : ''}`}>
+                      
+                      {/* Thumbnail */}
                       {(() => {
                         const thumbnailUrl = course.thumbnail_url;
                         if (thumbnailUrl) {
                           return (
-                            <div className="relative h-48 overflow-hidden">
+                            <div className="relative h-44 overflow-hidden">
                               <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                              {metadata.isSpecial && (
-                                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                                  <Sparkles className="w-3.5 h-3.5" />{t.special}
-                                </div>
-                              )}
-                              {metadata.isUpcoming && (
-                                <div className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                                  <Clock className="w-3.5 h-3.5" />{t.upcoming}
-                                </div>
-                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                              {/* Badges */}
+                              <div className="absolute top-3 right-3 flex gap-1.5">
+                                {metadata.isSpecial && (
+                                  <span className="px-2.5 py-1 rounded-full bg-primary/80 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                    <Sparkles className="w-3 h-3" />{t.special}
+                                  </span>
+                                )}
+                                {metadata.isUpcoming && (
+                                  <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                    <Clock className="w-3 h-3" />{t.upcoming}
+                                  </span>
+                                )}
+                              </div>
+                              {/* Price overlay */}
+                              <div className="absolute bottom-3 left-3">
+                                <span className={`px-3 py-1 rounded-lg text-sm font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-white' : 'bg-card/80 text-primary border border-primary/20'}`}>
+                                  {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
+                                </span>
+                              </div>
                             </div>
                           );
                         }
                         return (
-                          <div className={`relative h-40 bg-gradient-to-br ${metadata.color} p-6`}>
-                            <div className="absolute inset-0 opacity-20">
-                              <div className="absolute top-4 right-4 w-24 h-24 border-4 border-white/30 rounded-full" />
-                              <div className="absolute bottom-4 left-6 w-16 h-16 border-2 border-white/20 rounded-lg rotate-12" />
+                          <div className={`relative h-36 bg-gradient-to-br ${metadata.color} p-5 flex items-end`}>
+                            <div className="absolute top-3 right-3 flex gap-1.5">
+                              {metadata.isSpecial && (
+                                <span className="px-2.5 py-1 rounded-full bg-white/25 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                  <Sparkles className="w-3 h-3" />{t.special}
+                                </span>
+                              )}
+                              {metadata.isUpcoming && (
+                                <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />{t.upcoming}
+                                </span>
+                              )}
                             </div>
-                            {metadata.isSpecial && (
-                              <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                                <Sparkles className="w-3.5 h-3.5" />{t.special}
-                              </div>
-                            )}
-                            {metadata.isUpcoming && (
-                              <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                                <Clock className="w-3.5 h-3.5" />{t.upcoming}
-                              </div>
-                            )}
-                            <div className="relative w-16 h-16 rounded-2xl bg-white/25 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl">
-                              <CourseIcon className="w-8 h-8 text-white" />
+                            <div className="absolute bottom-3 left-3">
+                              <span className={`px-3 py-1 rounded-lg text-sm font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-white' : 'bg-white/20 text-white'}`}>
+                                {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
+                              </span>
+                            </div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10">
+                              <CourseIcon className="w-28 h-28 text-white" strokeWidth={1} />
                             </div>
                           </div>
                         );
                       })()}
 
-                      {/* Card Body */}
-                      <div className="flex-1 flex flex-col p-6">
-                        <h3 className="text-lg font-display font-bold leading-tight mb-3">
+                      {/* Body */}
+                      <div className="flex flex-col p-5 gap-3">
+                        <h3 className="text-base font-display font-bold leading-snug line-clamp-2">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
-                        <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                           {isBn ? course.descriptionBn : course.descriptionEn}
                         </p>
 
-                        {/* Features */}
-                        <div className="grid grid-cols-2 gap-2 mb-4">
+                        {/* Features - compact inline */}
+                        <div className="flex flex-wrap gap-1.5">
                           {(isBn ? metadata.featuresBn : metadata.featuresEn).slice(0, 4).map((feature, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-xs bg-secondary/60 rounded-xl px-3 py-2">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-primary flex-shrink-0" />
-                              <span className="text-muted-foreground truncate">{feature}</span>
-                            </div>
+                            <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/70 text-muted-foreground border border-border/30">
+                              {feature}
+                            </span>
                           ))}
                         </div>
 
-                        {/* Special Content */}
-                        {metadata.isSpecial && metadata.specialContentBn && metadata.specialContentEn && (
-                          <div className="mb-4 p-4 rounded-xl bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20">
-                            <h4 className="font-semibold text-primary text-sm mb-2 flex items-center gap-1.5">
-                              <Zap className="w-4 h-4" />
-                              {isBn ? metadata.specialContentBn.title : metadata.specialContentEn.title}
-                            </h4>
-                            <ul className="space-y-1.5">
-                              {(isBn ? metadata.specialContentBn.points : metadata.specialContentEn.points).slice(0, 3).map((point, idx) => (
-                                <li key={idx} className="text-xs text-muted-foreground flex items-start gap-2">
-                                  <span className="text-primary mt-0.5">•</span>{point}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {/* Trainer */}
-                        {(course.trainer_name || metadata.trainer) && (
-                          <div className="flex items-center gap-3 py-3 px-4 rounded-xl bg-gradient-to-r from-secondary/50 to-secondary/30 border border-border mb-4 mt-auto">
-                            <img src={course.trainer_image || metadata.trainer?.image || '/placeholder.svg'}
-                              alt={course.trainer_name || metadata.trainer?.name || 'Trainer'}
-                              className="w-12 h-12 rounded-full object-cover border-2 border-primary/30 shadow-md"
-                              onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs text-muted-foreground">{t.trainer}</p>
-                              <p className="text-sm font-semibold truncate">{course.trainer_name || metadata.trainer?.name}</p>
-                              <p className="text-xs text-muted-foreground truncate">
-                                {course.trainer_designation || (isBn ? metadata.trainer?.qualificationBn : metadata.trainer?.qualificationEn)}
-                              </p>
+                        {/* Trainer + Enroll row */}
+                        <div className="flex items-center gap-3 pt-2 mt-auto border-t border-border/30">
+                          {trainerName && (
+                            <div className="flex items-center gap-2 flex-1 min-w-0">
+                              <img src={trainerImage || '/placeholder.svg'}
+                                alt={trainerName}
+                                className="w-8 h-8 rounded-full object-cover border border-primary/20 flex-shrink-0"
+                                onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                              <div className="min-w-0">
+                                <p className="text-xs font-semibold truncate">{trainerName}</p>
+                                <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        {!course.trainer_name && !metadata.trainer && <div className="flex-1" />}
-
-                        {/* Price + Enroll Button */}
-                        <div className="space-y-3 mt-auto">
-                          {/* Price Display */}
-                          <div className="flex items-center justify-between px-1">
-                            <span className="text-xs text-muted-foreground">{t.courseFee}</span>
-                            <Badge className={`text-base px-3 py-0.5 font-bold border-0 ${isFree ? 'bg-emerald-500 text-white' : 'bg-primary/10 text-primary'}`}>
-                              {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                            </Badge>
-                          </div>
-
-                          {/* Enroll Button */}
+                          )}
                           <button
                             onClick={() => handleEnrollClick(course)}
-                            className={`w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-semibold text-sm transition-all duration-300 ${
+                            className={`flex-shrink-0 flex items-center gap-1.5 py-2 px-4 rounded-xl font-semibold text-xs transition-all duration-300 ${
                               metadata.isUpcoming 
-                                ? 'bg-amber-500/20 text-amber-500 border border-amber-500/30 cursor-not-allowed'
-                                : metadata.isSpecial 
-                                  ? 'bg-gradient-to-r from-primary to-purple-500 text-white hover:shadow-xl hover:shadow-primary/30 hover:scale-[1.02]' 
-                                  : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/20 hover:scale-[1.02]'
+                                ? 'bg-amber-500/15 text-amber-500 cursor-not-allowed'
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105'
                             }`}
                             disabled={metadata.isUpcoming}
                           >
-                            <GraduationCap className="w-4 h-4" />
+                            <GraduationCap className="w-3.5 h-3.5" />
                             {metadata.isUpcoming ? t.upcoming : t.enrollNow}
                           </button>
                         </div>
