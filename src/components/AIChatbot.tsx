@@ -485,7 +485,55 @@ const AIChatbot = () => {
 
             {/* Input Area */}
             <form onSubmit={handleSubmit} className="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] border-t border-border/50 shrink-0 bg-background lg:bg-transparent">
-              <div className="flex gap-2">
+              {/* Attachment Preview */}
+              {attachments.length > 0 && (
+                <div className="flex gap-2 mb-2 overflow-x-auto pb-1">
+                  {attachments.map((att, i) => (
+                    <div key={i} className="relative shrink-0 group">
+                      {att.type === "image" ? (
+                        <img src={att.url} alt={att.name} className="w-14 h-14 rounded-lg object-cover border border-border/50" />
+                      ) : (
+                        <div className="w-14 h-14 rounded-lg bg-secondary border border-border/50 flex items-center justify-center">
+                          <Video size={20} className="text-primary" />
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeAttachment(i)}
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex gap-2 items-center">
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                
+                {/* Attach button */}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isLoading || isUploading}
+                  className="w-10 h-10 rounded-xl bg-secondary/70 border border-border/50 flex items-center justify-center hover:bg-secondary transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {isUploading ? (
+                    <Loader2 size={16} className="animate-spin text-muted-foreground" />
+                  ) : (
+                    <Paperclip size={16} className="text-muted-foreground" />
+                  )}
+                </button>
+
                 <input
                   type="text"
                   value={input}
@@ -496,7 +544,7 @@ const AIChatbot = () => {
                 />
                 <button
                   type="submit"
-                  disabled={isLoading || !input.trim()}
+                  disabled={isLoading || isUploading || (!input.trim() && attachments.length === 0)}
                   className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
                 >
                   {isLoading ? (
