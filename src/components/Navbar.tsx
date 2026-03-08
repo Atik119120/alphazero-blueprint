@@ -115,7 +115,7 @@ const Navbar = () => {
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
-                          className="absolute inset-0 bg-primary rounded-full shadow-[0_0_20px_hsl(var(--primary)/0.4)]"
+                          className="absolute inset-0 bg-primary rounded-full"
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
@@ -184,7 +184,7 @@ const Navbar = () => {
                 {/* CTA Button */}
                 <Link
                   to="/contact"
-                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_24px_hsl(var(--primary)/0.4)] flex items-center gap-1.5"
+                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 flex items-center gap-1.5"
                 >
                   <span className="relative z-10">{t("nav.startProject")}</span>
                   <ArrowUpRight size={14} className="relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

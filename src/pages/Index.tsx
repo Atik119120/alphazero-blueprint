@@ -207,7 +207,7 @@ const Index = () => {
             >
               <Link
                 to="/contact"
-                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] flex items-center gap-2 overflow-hidden"
+                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 flex items-center gap-2 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   {c("cta1", "home.cta1")}
@@ -279,7 +279,6 @@ const Index = () => {
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -4 }}
               >
-                {/* Card glow on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[hsl(200,100%,50%)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative z-10">
                   <div className="text-3xl lg:text-5xl font-display font-bold gradient-text mb-2">
@@ -527,7 +526,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300"
                 >
                   {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
                 </Link>
