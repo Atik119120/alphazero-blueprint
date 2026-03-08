@@ -200,6 +200,6 @@
 /* Add bottom padding to body on mobile for bottom nav */
 @media (max-width: 1023px) {
   body {
-    padding-bottom: 64px;
+    padding-bottom: 80px;
   }
 }
