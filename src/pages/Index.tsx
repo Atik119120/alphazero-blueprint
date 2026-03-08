@@ -127,25 +127,29 @@ const Index = () => {
               </span>
             </motion.h1>
 
-            {/* Animated tagline */}
+            {/* Animated tagline — with editorial line */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex justify-center mb-10"
+              className="flex justify-center mb-8"
             >
-              <ContainerTextFlip
-                words={[
-                  "Creative Design",
-                  "Web Development",
-                  "Brand Building",
-                  "SEO Optimization",
-                  "UI/UX Design",
-                ]}
-                interval={3000}
-                variant="gradient"
-                animationDuration={700}
-              />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-px bg-primary/40" />
+                <ContainerTextFlip
+                  words={[
+                    "Creative Design",
+                    "Web Development", 
+                    "Brand Building",
+                    "SEO Optimization",
+                    "UI/UX Design",
+                  ]}
+                  interval={3000}
+                  variant="gradient"
+                  animationDuration={700}
+                />
+                <div className="w-12 h-px bg-primary/40" />
+              </div>
             </motion.div>
 
             {/* Description */}
