@@ -145,8 +145,20 @@ const TeamPage = () => {
                             alt={member.name}
                             loading="lazy"
                             decoding="async"
+                            referrerPolicy="no-referrer"
+                            crossOrigin="anonymous"
                             className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
-                            onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
+                            onError={(e) => { 
+                              const target = e.currentTarget;
+                              if (!target.dataset.retried) {
+                                target.dataset.retried = 'true';
+                                // Try without crossOrigin as fallback
+                                target.removeAttribute('crossorigin');
+                                target.src = member.image_url || '/placeholder.svg';
+                              } else {
+                                target.src = '/placeholder.svg'; 
+                              }
+                            }}
                           />
                           
                           {/* Gradient overlay - intensifies on hover */}

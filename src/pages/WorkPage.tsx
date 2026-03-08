@@ -169,7 +169,9 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
                     src={project.image_url || "/placeholder.svg"}
                     alt={project.title}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                    onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
                     <div className="w-11 h-11 rounded-full bg-primary/90 flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
@@ -249,7 +251,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
 
                   <div className="relative aspect-[16/10] overflow-hidden bg-secondary/30">
                     {project.image_url ? (
-                      <img src={project.image_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+                      <img src={project.image_url} alt={project.title} referrerPolicy="no-referrer" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }} />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                         <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
