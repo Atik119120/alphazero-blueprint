@@ -223,29 +223,20 @@ const ServicesPage = () => {
       </section>
 
       {/* CTA Section — clean */}
-      <section className="py-20 lg:py-32">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
+      <section className="py-24 lg:py-36 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg" />
+        <div className="container mx-auto px-6 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6">{t("services.cta.title")}</h2>
             <p className="text-muted-foreground text-lg mb-10">{t("services.cta.desc")}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-9 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:opacity-90"
-              >
+              <Link to="/contact"
+                className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]">
                 {t("services.cta.btn1")} <ArrowRight size={20} />
               </Link>
-              <a
-                href="https://wa.me/8801712345678"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-9 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 transition-all duration-300"
-              >
+              <a href="https://wa.me/8801712345678" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
                 {t("services.cta.btn2")}
               </a>
             </div>
