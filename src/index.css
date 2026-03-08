@@ -186,3 +186,17 @@
     pointer-events: none;
   }
 }
+
+/* Safe area for mobile bottom nav */
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Add bottom padding to body on mobile for bottom nav */
+@media (max-width: 1023px) {
+  body {
+    padding-bottom: 64px;
+  }
+}

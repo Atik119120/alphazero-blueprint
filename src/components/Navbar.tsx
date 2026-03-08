@@ -15,7 +15,8 @@ import {
   Users,
   GraduationCap,
   Mail,
-  Phone
+  Phone,
+  MoreHorizontal
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
@@ -192,145 +193,171 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden relative w-11 h-11 flex items-center justify-center group"
-            >
-              <div className="absolute inset-0 bg-foreground/[0.06] dark:bg-white/[0.08] rounded-xl border border-foreground/[0.06] dark:border-white/[0.06] group-hover:bg-foreground/[0.1] dark:group-hover:bg-white/[0.12] transition-all" />
-              <motion.div className="relative z-10 flex flex-col items-center justify-center gap-1.5">
-                <motion.span 
-                  className="w-5 h-[2px] bg-foreground/80 rounded-full origin-center"
-                  animate={{ 
-                    rotate: isMobileMenuOpen ? 45 : 0,
-                    y: isMobileMenuOpen ? 4 : 0,
-                  }}
-                  transition={{ duration: 0.15 }}
-                />
-                <motion.span 
-                  className="w-5 h-[2px] bg-foreground/80 rounded-full"
-                  animate={{ 
-                    opacity: isMobileMenuOpen ? 0 : 1,
-                    scaleX: isMobileMenuOpen ? 0 : 1
-                  }}
-                  transition={{ duration: 0.1 }}
-                />
-                <motion.span 
-                  className="w-5 h-[2px] bg-foreground/80 rounded-full origin-center"
-                  animate={{ 
-                    rotate: isMobileMenuOpen ? -45 : 0,
-                    y: isMobileMenuOpen ? -4 : 0,
-                    width: isMobileMenuOpen ? 20 : 14
-                  }}
-                  transition={{ duration: 0.15 }}
-                />
-              </motion.div>
-            </button>
+            {/* Mobile: only search + theme on top bar */}
+            <div className="flex items-center gap-1.5 lg:hidden">
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
+              >
+                <Search size={15} className="text-muted-foreground" />
+              </button>
+              {mounted && (
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
+                >
+                  {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
+                </button>
+              )}
+            </div>
           </motion.div>
         </div>
       </nav>
 
-      {/* Mobile Menu - Dropdown Card */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
+      {/* ═══ Mobile Bottom Navigation Bar ═══ */}
+      {(() => {
+        // Hide bottom bar on dashboard routes
+        const hiddenRoutes = ['/admin', '/student', '/teacher'];
+        const shouldHideBottomBar = hiddenRoutes.some(route => location.pathname.startsWith(route));
+        if (shouldHideBottomBar) return null;
+
+        const bottomNavItems = [
+          { name: language === "bn" ? "হোম" : "Home", href: "/", icon: Home },
+          { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
+          { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
+          { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
+          { name: language === "bn" ? "আরও" : "More", href: "#more", icon: MoreHorizontal },
+        ];
+
+        return (
           <>
-            {/* Backdrop - light overlay, tap to close */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.15 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-black/30 lg:hidden"
-            />
+            <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
+              <div className="bg-card/95 backdrop-blur-lg border-t border-border">
+                <div className="flex items-center justify-around px-1 py-1.5 safe-bottom">
+                  {bottomNavItems.map((item) => {
+                    const IconComp = item.icon;
+                    const isMore = item.href === "#more";
+                    const isActive = !isMore && location.pathname === item.href;
 
-            {/* Card drops below navbar */}
-            <motion.div
-              initial={{ opacity: 0, y: -8, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -8, scale: 0.97 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="fixed top-[72px] left-4 right-4 z-50 lg:hidden"
-            >
-              <div className="bg-card rounded-2xl border border-border shadow-lg overflow-hidden">
-                {/* Search */}
-                <div className="p-3 pb-2">
-                  <button
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      setTimeout(() => setIsSearchOpen(true), 150);
-                    }}
-                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-muted/60 text-muted-foreground text-sm hover:bg-muted transition-colors"
-                  >
-                    <Search size={14} />
-                    <span>{language === "bn" ? "সার্চ করুন..." : "Search..."}</span>
-                  </button>
-                </div>
+                    if (isMore) {
+                      return (
+                        <button
+                          key="more"
+                          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                          className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[56px] ${
+                            isMobileMenuOpen ? "text-primary" : "text-muted-foreground"
+                          }`}
+                        >
+                          <IconComp size={20} strokeWidth={1.8} />
+                          <span className="text-[10px] font-medium">{item.name}</span>
+                        </button>
+                      );
+                    }
 
-                {/* Nav grid - 2 columns */}
-                <div className="grid grid-cols-2 gap-1 px-3 pb-2">
-                  {navLinksWithIcons.map((link) => {
-                    const IconComponent = link.icon;
-                    const isActive = location.pathname === link.href;
                     return (
                       <Link
-                        key={link.href}
-                        to={link.href}
-                        onClick={handleNavClick}
-                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-colors ${
-                          isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "text-foreground hover:bg-muted"
+                        key={item.href}
+                        to={item.href}
+                        className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[56px] ${
+                          isActive ? "text-primary" : "text-muted-foreground"
                         }`}
                       >
-                        <IconComponent size={15} className={isActive ? "text-primary-foreground" : "text-muted-foreground"} strokeWidth={1.8} />
-                        {link.name}
+                        <IconComp size={20} strokeWidth={isActive ? 2.2 : 1.8} />
+                        <span className={`text-[10px] ${isActive ? "font-semibold" : "font-medium"}`}>{item.name}</span>
                       </Link>
                     );
                   })}
-                  {/* Sign In */}
-                  <Link
-                    to="/student/login"
-                    onClick={handleNavClick}
-                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium text-foreground hover:bg-muted transition-colors"
-                  >
-                    <User size={15} className="text-muted-foreground" strokeWidth={1.8} />
-                    {language === "bn" ? "লগইন" : "Sign In"}
-                  </Link>
-                </div>
-
-                {/* Bottom row */}
-                <div className="flex items-center gap-2 p-3 pt-2 border-t border-border/50">
-                  <button
-                    onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                    className="h-9 px-4 rounded-lg border border-border text-xs font-semibold hover:bg-muted transition-colors flex items-center gap-1.5"
-                  >
-                    <span className={language === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
-                    <span className="text-muted-foreground/30">|</span>
-                    <span className={language === "bn" ? "text-primary" : "text-muted-foreground"}>বাং</span>
-                  </button>
-                  {mounted && (
-                    <button
-                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="w-9 h-9 rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-colors"
-                    >
-                      {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
-                    </button>
-                  )}
-                  <Link
-                    to="/contact"
-                    onClick={handleNavClick}
-                    className="ml-auto h-9 px-4 bg-primary text-primary-foreground rounded-lg font-semibold text-xs flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
-                  >
-                    {t("nav.startProject")}
-                    <ArrowUpRight size={12} />
-                  </Link>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            {/* "More" Sheet */}
+            <AnimatePresence>
+              {isMobileMenuOpen && (
+                <>
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+                  />
+                  <motion.div
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    exit={{ y: "100%" }}
+                    transition={{ type: "spring", damping: 30, stiffness: 350, mass: 0.8 }}
+                    className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
+                  >
+                    <div className="bg-card rounded-t-2xl border-t border-border shadow-lg">
+                      {/* Drag handle */}
+                      <div className="flex justify-center pt-3 pb-2">
+                        <div className="w-10 h-1 rounded-full bg-muted-foreground/20" />
+                      </div>
+
+                      {/* More links grid */}
+                      <div className="grid grid-cols-4 gap-1 px-4 pb-3">
+                        {[
+                          { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
+                          { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
+                          { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
+                          { name: language === "bn" ? "লগইন" : "Sign In", href: "/student/login", icon: User },
+                        ].map((item) => {
+                          const IconComp = item.icon;
+                          const isActive = location.pathname === item.href;
+                          return (
+                            <Link
+                              key={item.href}
+                              to={item.href}
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-colors ${
+                                isActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
+                              }`}
+                            >
+                              <IconComp size={20} strokeWidth={1.8} className={isActive ? "text-primary" : "text-muted-foreground"} />
+                              <span className="text-[11px] font-medium">{item.name}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+
+                      {/* Bottom row */}
+                      <div className="flex items-center gap-2 px-4 pb-4 pt-1 border-t border-border/50">
+                        <button
+                          onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                          className="h-9 px-4 rounded-lg border border-border text-xs font-semibold hover:bg-muted transition-colors flex items-center gap-1.5"
+                        >
+                          <span className={language === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
+                          <span className="text-muted-foreground/30">|</span>
+                          <span className={language === "bn" ? "text-primary" : "text-muted-foreground"}>বাং</span>
+                        </button>
+                        <a
+                          href="https://wa.me/8801779277603"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="h-9 px-3 rounded-lg border border-border text-xs font-medium hover:bg-muted transition-colors flex items-center gap-1.5 text-foreground"
+                        >
+                          <Phone size={13} className="text-muted-foreground" />
+                          WhatsApp
+                        </a>
+                        <Link
+                          to="/contact"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="ml-auto h-9 px-4 bg-primary text-primary-foreground rounded-lg font-semibold text-xs flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
+                        >
+                          {t("nav.startProject")}
+                          <ArrowUpRight size={12} />
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </>
-        )}
-      </AnimatePresence>
+        );
+      })()}
 
       {/* Search Modal */}
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
