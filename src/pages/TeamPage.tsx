@@ -127,7 +127,7 @@ const TeamPage = () => {
                             alt={member.name}
                             loading="lazy"
                             decoding="async"
-                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                             onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
