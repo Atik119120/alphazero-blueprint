@@ -247,7 +247,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                     <ArrowUpRight size={14} className="text-muted-foreground/60 group-hover:text-primary transition-colors" />
                   </div>
 
-                  <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/5 via-secondary/30 to-primary/10">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-secondary/30">
                     {project.image_url ? (
                       <img src={project.image_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     ) : (
