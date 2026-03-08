@@ -53,10 +53,55 @@ const AIChatbot = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [followUpQuestions, setFollowUpQuestions] = useState<string[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { language } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    setIsUploading(true);
+    const newAttachments: Attachment[] = [];
+    
+    for (const file of Array.from(files)) {
+      const isImage = file.type.startsWith("image/");
+      const isVideo = file.type.startsWith("video/");
+      if (!isImage && !isVideo) continue;
+      if (file.size > 20 * 1024 * 1024) continue; // 20MB max
+      
+      const ext = file.name.split('.').pop();
+      const fileName = `chatbot/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      
+      const { data, error } = await supabase.storage
+        .from("media-uploads")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+      
+      if (!error && data) {
+        const { data: urlData } = supabase.storage
+          .from("media-uploads")
+          .getPublicUrl(data.path);
+        
+        newAttachments.push({
+          type: isImage ? "image" : "video",
+          url: urlData.publicUrl,
+          name: file.name,
+        });
+      }
+    }
+    
+    setAttachments(prev => [...prev, ...newAttachments]);
+    setIsUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeAttachment = (idx: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== idx));
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
