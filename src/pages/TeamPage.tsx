@@ -292,7 +292,7 @@ const TeamPage = () => {
       </section>
 
       {/* Join Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-24 mesh-bg">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
