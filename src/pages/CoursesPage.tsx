@@ -426,12 +426,6 @@ const CoursesPage = () => {
                                   </span>
                                 )}
                               </div>
-                              {/* Price chip */}
-                              <div className="absolute top-3 right-3">
-                                <span className={`px-3 py-1 rounded-lg text-xs font-bold backdrop-blur-md shadow-lg ${isFree ? 'bg-emerald-500/90 text-primary-foreground' : 'bg-card/90 text-primary border border-primary/20'}`}>
-                                  {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                                </span>
-                              </div>
                             </div>
                           );
                         }
