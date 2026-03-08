@@ -172,7 +172,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
-                    <div className="w-11 h-11 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
+                    <div className="w-11 h-11 rounded-full bg-primary/90 flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
                       <ZoomIn size={18} className="text-primary-foreground" />
                     </div>
                   </div>
