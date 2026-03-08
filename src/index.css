@@ -37,40 +37,45 @@
 
 @layer base {
   :root {
-    --background: 210 20% 98%;
-    --foreground: 0 0% 5%;
+    --background: 210 25% 97%;
+    --foreground: 215 25% 10%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 5%;
+    --card: 210 20% 99%;
+    --card-foreground: 215 25% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover-foreground: 215 25% 10%;
 
-    --primary: 185 100% 40%;
+    --primary: 185 100% 38%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 15% 94%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 210 20% 93%;
+    --secondary-foreground: 215 20% 15%;
 
-    --muted: 210 15% 92%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 210 18% 91%;
+    --muted-foreground: 215 12% 42%;
 
-    --accent: 185 100% 40%;
+    --accent: 185 100% 38%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 15% 88%;
-    --input: 210 15% 88%;
-    --ring: 185 100% 40%;
+    --border: 210 18% 85%;
+    --input: 210 18% 87%;
+    --ring: 185 100% 38%;
 
     --radius: 0.5rem;
 
     /* Custom AlphaZero tokens */
-    --gradient-start: 185 100% 40%;
-    --gradient-mid: 195 100% 45%;
-    --gradient-end: 210 100% 55%;
+    --gradient-start: 185 100% 38%;
+    --gradient-mid: 195 100% 42%;
+    --gradient-end: 215 100% 52%;
+
+    /* Light mode premium shadows */
+    --shadow-card: 0 1px 3px hsl(215 25% 10% / 0.04), 0 8px 24px hsl(185 100% 38% / 0.04);
+    --shadow-card-hover: 0 4px 12px hsl(215 25% 10% / 0.06), 0 16px 40px hsl(185 100% 38% / 0.08);
+    --shadow-elevated: 0 8px 30px hsl(215 25% 10% / 0.08), 0 2px 8px hsl(185 100% 38% / 0.05);
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
