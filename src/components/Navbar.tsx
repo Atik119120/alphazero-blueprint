@@ -216,7 +216,6 @@ const Navbar = () => {
 
       {/* ═══ Mobile Bottom Navigation Bar ═══ */}
       {(() => {
-        // Hide bottom bar on dashboard routes
         const hiddenRoutes = ['/admin', '/student', '/teacher'];
         const shouldHideBottomBar = hiddenRoutes.some(route => location.pathname.startsWith(route));
         if (shouldHideBottomBar) return null;
@@ -232,9 +231,9 @@ const Navbar = () => {
         ];
 
         return (
-          <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-            <div className="bg-card/95 backdrop-blur-lg border-t border-border">
-              <div className="grid grid-cols-7 py-1.5 safe-bottom">
+          <div className="fixed bottom-3 left-3 right-3 z-50 lg:hidden">
+            <div className="bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 shadow-lg shadow-black/10 dark:shadow-black/30">
+              <div className="grid grid-cols-7 py-2 px-1 safe-bottom">
                 {bottomNavItems.map((item) => {
                   const IconComp = item.icon;
                   const isActive = location.pathname === item.href;
@@ -243,12 +242,36 @@ const Navbar = () => {
                     <Link
                       key={item.href}
                       to={item.href}
-                      className={`flex flex-col items-center gap-0.5 py-1 transition-colors ${
-                        isActive ? "text-primary" : "text-muted-foreground"
-                      }`}
+                      className="relative flex flex-col items-center gap-0.5 py-1"
                     >
-                      <IconComp size={18} strokeWidth={isActive ? 2.2 : 1.8} />
-                      <span className={`text-[9px] leading-tight ${isActive ? "font-semibold" : "font-medium"}`}>{item.name}</span>
+                      {/* Active pill background */}
+                      {isActive && (
+                        <motion.div
+                          layoutId="bottom-nav-active"
+                          className="absolute inset-x-1 inset-y-0 bg-primary/12 dark:bg-primary/15 rounded-xl"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                        />
+                      )}
+                      <div className="relative z-10 flex flex-col items-center gap-0.5">
+                        <IconComp 
+                          size={18} 
+                          strokeWidth={isActive ? 2.4 : 1.6} 
+                          className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                        />
+                        <span className={`text-[9px] leading-tight transition-colors duration-200 ${
+                          isActive ? "font-bold text-primary" : "font-medium text-muted-foreground"
+                        }`}>
+                          {item.name}
+                        </span>
+                        {/* Active dot */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="bottom-nav-dot"
+                            className="w-1 h-1 rounded-full bg-primary"
+                            transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
+                          />
+                        )}
+                      </div>
                     </Link>
                   );
                 })}
