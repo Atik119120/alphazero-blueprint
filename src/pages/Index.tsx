@@ -85,39 +85,94 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
-        {/* Subtle grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:80px_80px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
+      <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden bg-background">
+        {/* Animated gradient orbs */}
+        <motion.div
+          className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px]"
+          animate={{ x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.2, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-[-15%] right-[-10%] w-[450px] h-[450px] rounded-full bg-[hsl(200,100%,50%)]/8 blur-[120px]"
+          animate={{ x: [0, -50, 0], y: [0, -30, 0], scale: [1.1, 0.9, 1.1] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-[40%] right-[20%] w-[300px] h-[300px] rounded-full bg-[hsl(260,80%,60%)]/5 blur-[100px]"
+          animate={{ x: [0, -40, 0], y: [0, 50, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Dot grid pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle,hsl(var(--primary)/0.08)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[radial-gradient(circle,hsl(var(--primary)/0.05)_1px,transparent_1px)]" />
+
+        {/* Floating particles */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            className="absolute w-1 h-1 rounded-full bg-primary/30"
+            style={{
+              top: `${15 + i * 14}%`,
+              left: `${10 + i * 15}%`,
+            }}
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.2, 0.7, 0.2],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 4 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.8,
+            }}
+          />
+        ))}
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
+            {/* Badge with icon */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 border border-primary/20 mb-8 backdrop-blur-sm"
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-10 backdrop-blur-md"
             >
-              <Sparkles size={14} className="text-primary" />
-              <span className="text-sm text-foreground">{c("badge", "home.badge")}</span>
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <Sparkles size={16} className="text-primary" />
+              </motion.div>
+              <span className="text-sm font-medium text-primary">{c("badge", "home.badge")}</span>
             </motion.div>
 
-            {/* Main Heading */}
+            {/* Main Heading - Split with accent */}
             <motion.h1
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-6"
+              transition={{ duration: 0.8, delay: 0.15 }}
+              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-4"
             >
-              {c("title1", "home.title1")}{" "}
-              <span className="gradient-text">{c("title2", "home.title2")}</span>
+              <span className="text-foreground">{c("title1", "home.title1")}</span>
+              <br className="hidden sm:block" />{" "}
+              <span className="relative">
+                <span className="gradient-text">{c("title2", "home.title2")}</span>
+                <motion.span 
+                  className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ duration: 1, delay: 0.8 }}
+                />
+              </span>
             </motion.h1>
 
+            {/* Animated tagline */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="flex justify-center mb-8"
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="flex justify-center mb-10"
             >
               <ContainerTextFlip
                 words={[
@@ -133,11 +188,12 @@ const Index = () => {
               />
             </motion.div>
 
+            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12"
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-14 leading-relaxed"
             >
               {c("description", "home.description")}
             </motion.p>
@@ -146,21 +202,29 @@ const Index = () => {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-5"
             >
               <Link
                 to="/contact"
-                className="group px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center gap-2"
+                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] flex items-center gap-2 overflow-hidden"
               >
-                {c("cta1", "home.cta1")}
-                <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                <span className="relative z-10 flex items-center gap-2">
+                  {c("cta1", "home.cta1")}
+                  <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
+                </span>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-primary bg-[length:200%_100%]"
+                  animate={{ backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                />
               </Link>
               <Link
                 to="/work"
-                className="px-8 py-4 bg-transparent border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary hover:border-primary/30 transition-all duration-300"
+                className="group px-9 py-4 bg-transparent border-2 border-border text-foreground rounded-2xl font-semibold text-lg hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 flex items-center gap-2"
               >
                 {c("cta2", "home.cta2")}
+                <Eye size={18} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </Link>
             </motion.div>
 
@@ -170,16 +234,23 @@ const Index = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.6 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
             className="absolute bottom-10 left-1/2 -translate-x-1/2"
           >
-            <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-              <motion.div
-                animate={{ y: [0, 8, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-                className="w-1 h-2 bg-primary rounded-full"
-              />
-            </div>
+            <motion.div 
+              className="flex flex-col items-center gap-2"
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <span className="text-[10px] uppercase tracking-[3px] text-muted-foreground/50 font-medium">Scroll</span>
+              <div className="w-5 h-9 rounded-full border-2 border-muted-foreground/20 flex justify-center pt-1.5">
+                <motion.div
+                  animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                  className="w-1 h-2 bg-primary rounded-full"
+                />
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
