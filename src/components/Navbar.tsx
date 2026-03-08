@@ -71,135 +71,144 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-background/95 backdrop-blur-xl border-b border-border/50" : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled ? "py-2" : "py-3"
         }`}
       >
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Logo with creative treatment */}
-            <Link to="/" className="flex items-center gap-3 group relative">
-              <div className="absolute -inset-2 bg-primary/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="container mx-auto px-4 sm:px-6">
+          {/* Floating navbar container */}
+          <motion.div
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
+            className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
+              isScrolled
+                ? "bg-[hsl(220,20%,10%)]/95 dark:bg-[hsl(220,20%,8%)]/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.05)] border border-white/[0.06]"
+                : "bg-[hsl(220,20%,10%)]/90 dark:bg-[hsl(220,20%,8%)]/90 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.04)] border border-white/[0.04]"
+            }`}
+          >
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2.5 group relative shrink-0">
+              <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img 
                 src={logo} 
                 alt="AlphaZero Logo" 
-                className="h-9 w-auto brightness-0 dark:invert relative z-10"
+                className="h-8 w-auto invert relative z-10"
               />
               <div className="hidden sm:flex flex-col relative z-10">
-                <span className="text-[10px] text-primary font-medium tracking-[0.2em] uppercase">Creative</span>
-                <span className="text-[10px] text-muted-foreground tracking-[0.15em]">Agency</span>
+                <span className="text-[10px] text-primary font-bold tracking-[0.2em] uppercase leading-tight">Creative</span>
+                <span className="text-[10px] text-white/40 tracking-[0.15em] leading-tight">Agency</span>
               </div>
             </Link>
 
-            {/* Desktop Navigation - Unconventional style */}
+            {/* Desktop Navigation - Pill style */}
             <div className="hidden lg:flex items-center">
-              <div className="flex items-center bg-secondary/50 backdrop-blur-sm rounded-full px-2 py-1.5 border border-border/50">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full ${
-                      location.pathname === link.href 
-                        ? "text-primary-foreground bg-primary" 
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+              <div className="flex items-center bg-white/[0.06] rounded-full px-1.5 py-1 border border-white/[0.06]">
+                {navLinks.map((link) => {
+                  const isActive = location.pathname === link.href;
+                  return (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      className="relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full"
+                    >
+                      {isActive && (
+                        <motion.div
+                          layoutId="navbar-active-pill"
+                          className="absolute inset-0 bg-primary rounded-full shadow-[0_0_20px_hsl(var(--primary)/0.4)]"
+                          transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                        />
+                      )}
+                      <span className={`relative z-10 transition-colors duration-200 ${
+                        isActive 
+                          ? "text-primary-foreground font-semibold" 
+                          : "text-white/50 hover:text-white/90"
+                      }`}>
+                        {link.name}
+                      </span>
+                    </Link>
+                  );
+                })}
               </div>
               
               {/* Controls */}
-              <div className="flex items-center gap-2 ml-4">
-                {/* Search Button */}
+              <div className="flex items-center gap-1.5 ml-3">
+                {/* Search */}
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="relative w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-secondary/80 transition-colors group"
+                  className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center hover:bg-white/[0.15] transition-all duration-200 group"
                   title={language === "bn" ? "সার্চ করুন" : "Search"}
                 >
-                  <Search size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                  <Search size={16} className="text-white/50 group-hover:text-primary transition-colors" />
                 </button>
 
-                {/* Login Button */}
+                {/* Login */}
                 <Link
                   to="/student/login"
-                  className="relative w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center hover:bg-secondary/80 transition-colors group"
+                  className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center hover:bg-white/[0.15] transition-all duration-200 group"
                   title={language === "bn" ? "লগইন" : "Login"}
                 >
-                  <User size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                  <User size={16} className="text-white/50 group-hover:text-primary transition-colors" />
                 </Link>
 
-                {/* Language Toggle - Creative */}
+                {/* Language Toggle */}
                 <button
                   onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                  className="relative w-14 h-8 rounded-full bg-secondary border border-border overflow-hidden group"
+                  className="relative h-9 px-3 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center overflow-hidden group hover:bg-primary/30 transition-all duration-200"
                   title={language === "en" ? "বাংলা" : "English"}
                 >
-                  <motion.div
-                    animate={{ x: language === "en" ? 0 : 24 }}
-                    className="absolute top-1 left-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center"
-                  >
-                    <span className="text-[10px] font-bold text-primary-foreground">
-                      {language === "en" ? "EN" : "বা"}
-                    </span>
-                  </motion.div>
+                  <span className="text-xs font-bold text-primary">
+                    {language === "en" ? "EN" : "বা"}
+                  </span>
                 </button>
                 
-                {/* Theme Toggle - Creative */}
+                {/* Theme Toggle */}
                 {mounted && (
                   <button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="relative w-10 h-10 rounded-full bg-secondary border border-border flex items-center justify-center overflow-hidden group"
+                    className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center overflow-hidden group hover:bg-white/[0.15] transition-all duration-200"
                   >
                     <motion.div
                       animate={{ rotate: theme === "dark" ? 0 : 180 }}
-                      transition={{ duration: 0.5 }}
+                      transition={{ duration: 0.4 }}
                     >
                       {theme === "dark" ? (
-                        <Sun size={18} className="text-primary" />
+                        <Sun size={16} className="text-primary" />
                       ) : (
-                        <Moon size={18} className="text-primary" />
+                        <Moon size={16} className="text-primary" />
                       )}
                     </motion.div>
                   </button>
                 )}
                 
-                {/* CTA Button - Unconventional */}
+                {/* CTA Button */}
                 <Link
                   to="/contact"
-                  className="ml-2 group relative overflow-hidden px-6 py-2.5 bg-foreground text-background rounded-full font-medium text-sm transition-all duration-300 hover:shadow-xl flex items-center gap-2"
+                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-white text-[hsl(220,20%,10%)] rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] flex items-center gap-1.5 border border-white/80"
                 >
                   <span className="relative z-10">{t("nav.startProject")}</span>
-                  <ArrowUpRight size={16} className="relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUpRight size={14} className="relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
 
-            {/* Mobile Menu Button - Morphing Icon */}
+            {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden relative w-14 h-14 flex items-center justify-center group"
+              className="lg:hidden relative w-11 h-11 flex items-center justify-center group"
             >
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl"
-                animate={{ 
-                  scale: isMobileMenuOpen ? 1.1 : 1,
-                  rotate: isMobileMenuOpen ? 90 : 0 
-                }}
-                transition={{ duration: 0.15 }}
-              />
+              <div className="absolute inset-0 bg-white/[0.08] rounded-xl border border-white/[0.06] group-hover:bg-white/[0.12] transition-all" />
               <motion.div className="relative z-10 flex flex-col items-center justify-center gap-1.5">
                 <motion.span 
-                  className="w-6 h-0.5 bg-foreground rounded-full origin-center"
+                  className="w-5 h-[2px] bg-white/80 rounded-full origin-center"
                   animate={{ 
                     rotate: isMobileMenuOpen ? 45 : 0,
                     y: isMobileMenuOpen ? 4 : 0,
-                    width: isMobileMenuOpen ? 24 : 24
                   }}
                   transition={{ duration: 0.15 }}
                 />
                 <motion.span 
-                  className="w-6 h-0.5 bg-foreground rounded-full"
+                  className="w-5 h-[2px] bg-white/80 rounded-full"
                   animate={{ 
                     opacity: isMobileMenuOpen ? 0 : 1,
                     scaleX: isMobileMenuOpen ? 0 : 1
@@ -207,17 +216,17 @@ const Navbar = () => {
                   transition={{ duration: 0.1 }}
                 />
                 <motion.span 
-                  className="w-6 h-0.5 bg-foreground rounded-full origin-center"
+                  className="w-5 h-[2px] bg-white/80 rounded-full origin-center"
                   animate={{ 
                     rotate: isMobileMenuOpen ? -45 : 0,
                     y: isMobileMenuOpen ? -4 : 0,
-                    width: isMobileMenuOpen ? 24 : 16
+                    width: isMobileMenuOpen ? 20 : 14
                   }}
                   transition={{ duration: 0.15 }}
                 />
               </motion.div>
             </button>
-          </div>
+          </motion.div>
         </div>
       </nav>
 
