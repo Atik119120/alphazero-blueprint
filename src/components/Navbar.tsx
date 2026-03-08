@@ -136,10 +136,10 @@ const Navbar = () => {
                 {/* Search */}
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center hover:bg-white/[0.15] transition-all duration-200 group"
+                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200 group"
                   title={language === "bn" ? "সার্চ করুন" : "Search"}
                 >
-                  <Search size={16} className="text-white/50 group-hover:text-primary transition-colors" />
+                  <Search size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
                 </button>
 
                 {/* Login */}
