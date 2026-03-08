@@ -517,7 +517,7 @@ const WorkPage = () => {
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4 tracking-tight">{t("work.likeWhatYouSee") || "Like What You See?"}</h2>
             <p className="text-muted-foreground text-lg mb-10 leading-relaxed">{t("work.letsCreate") || "Let's create something extraordinary together. Reach out to us now!"}</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="tel:+8801410190019" className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500 hover:shadow-[0_8px_40px_hsl(var(--primary)/0.3)] hover:scale-[1.02]">
+              <a href="tel:+8801410190019" className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500">
                 <Phone size={20} /> Call Us
               </a>
               <a href="https://wa.me/8801846484200" target="_blank" rel="noopener noreferrer"
