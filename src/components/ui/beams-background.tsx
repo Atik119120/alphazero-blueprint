@@ -27,14 +27,14 @@ function createBeam(width: number, height: number): Beam {
   return {
     x: Math.random() * width * 1.5 - width * 0.25,
     y: Math.random() * height * 1.5 - height * 0.25,
-    width: 30 + Math.random() * 60,
+    width: 20 + Math.random() * 40,
     length: height * 2.5,
     angle,
-    speed: 0.6 + Math.random() * 1.2,
-    opacity: 0.12 + Math.random() * 0.16,
-    hue: 190 + Math.random() * 70,
+    speed: 0.4 + Math.random() * 0.8,
+    opacity: 0.06 + Math.random() * 0.08,
+    hue: 182 + Math.random() * 15,
     pulse: Math.random() * Math.PI * 2,
-    pulseSpeed: 0.02 + Math.random() * 0.03,
+    pulseSpeed: 0.01 + Math.random() * 0.02,
   };
 }
 
