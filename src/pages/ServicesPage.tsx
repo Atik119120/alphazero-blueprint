@@ -191,33 +191,26 @@ const ServicesPage = () => {
       </section>
 
       {/* Process Section — editorial numbered */}
-      <section className="py-20 lg:py-28 relative grain-texture">
-        <div className="absolute inset-0 bg-secondary/20 dark:bg-card/10" />
+      <section className="py-24 lg:py-32 relative mesh-bg">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mb-14"
-            >
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">Process</span>
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
+                <Zap size={14} className="text-primary" />
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Process</span>
+              </div>
               <h2 className="text-3xl lg:text-5xl font-display font-bold">{t("services.process.title")}</h2>
-              <p className="text-muted-foreground max-w-2xl mt-3">{t("services.process.desc")}</p>
+              <p className="text-muted-foreground max-w-2xl mx-auto mt-4">{t("services.process.desc")}</p>
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {processSteps.map((item, index) => (
-                <motion.div
-                  key={item.step}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="p-6 rounded-xl bg-background dark:bg-card/50 border border-border/50 dark:border-border/30 relative overflow-hidden"
-                >
-                  <span className="absolute top-3 right-3 text-5xl font-display font-bold text-primary/[0.06] dark:text-primary/[0.08] leading-none">{item.step}</span>
-                  <div className="w-10 h-10 rounded-lg bg-primary/[0.08] flex items-center justify-center mb-4 border border-primary/10">
+                <motion.div key={item.step} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -4 }}
+                  className="p-6 rounded-2xl glass-card relative overflow-hidden">
+                  <span className="absolute top-3 right-3 text-5xl font-display font-bold text-muted-foreground/[0.04] leading-none">{item.step}</span>
+                  <div className="w-10 h-10 rounded-lg bg-primary/[0.08] flex items-center justify-center mb-4">
                     <item.icon size={18} className="text-primary" />
                   </div>
                   <h3 className="text-base font-display font-bold mb-1">{t(item.titleKey)}</h3>
