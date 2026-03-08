@@ -230,152 +230,134 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu - Right Side Drawer */}
+      {/* Mobile Menu - Fullscreen Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-            />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 lg:hidden bg-background"
+          >
+            {/* Top bar */}
+            <div className="flex items-center justify-between px-6 h-16">
+              <Link to="/" onClick={handleNavClick}>
+                <img src={logo} alt="AlphaZero" className="h-6 w-auto brightness-0 dark:invert" />
+              </Link>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <X size={16} />
+              </button>
+            </div>
 
-            {/* Drawer */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 32, stiffness: 380, mass: 0.7 }}
-              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-[300px] z-50 lg:hidden shadow-2xl"
-            >
-              <div className="h-full flex flex-col bg-card">
-                
-                {/* Header */}
-                <div className="flex items-center justify-between px-6 h-16 border-b border-border/50">
-                  <Link to="/" onClick={handleNavClick}>
-                    <img src={logo} alt="AlphaZero" className="h-6 w-auto brightness-0 dark:invert" />
-                  </Link>
-                  <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <X size={18} />
-                  </button>
-                </div>
+            {/* Content */}
+            <div className="flex flex-col h-[calc(100%-4rem)] px-6 pt-4 pb-6 overflow-y-auto">
+              {/* Search */}
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  setTimeout(() => setIsSearchOpen(true), 150);
+                }}
+                className="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-muted/50 text-muted-foreground text-sm mb-6 hover:bg-muted transition-colors"
+              >
+                <Search size={15} />
+                <span>{language === "bn" ? "সার্চ করুন..." : "Search..."}</span>
+              </button>
 
-                {/* Search */}
-                <div className="px-4 pt-4 pb-2">
-                  <button
-                    onClick={() => {
-                      setIsMobileMenuOpen(false);
-                      setTimeout(() => setIsSearchOpen(true), 150);
-                    }}
-                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border border-border bg-background text-muted-foreground text-sm hover:border-primary/40 transition-colors"
-                  >
-                    <Search size={15} className="text-muted-foreground" />
-                    <span>{language === "bn" ? "সার্চ করুন..." : "Search..."}</span>
-                  </button>
-                </div>
-
-                {/* Nav Links */}
-                <nav className="flex-1 px-3 pt-2 pb-4 overflow-y-auto">
-                  {navLinksWithIcons.map((link, index) => {
-                    const IconComponent = link.icon;
-                    const isActive = location.pathname === link.href;
-                    return (
-                      <motion.div
-                        key={link.href}
-                        initial={{ opacity: 0, x: 12 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.04 + index * 0.035, duration: 0.2 }}
+              {/* Nav Links - Large, centered-feel */}
+              <nav className="flex-1 space-y-1">
+                {navLinksWithIcons.map((link, index) => {
+                  const IconComponent = link.icon;
+                  const isActive = location.pathname === link.href;
+                  return (
+                    <motion.div
+                      key={link.href}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.06 + index * 0.04, duration: 0.3, ease: "easeOut" }}
+                    >
+                      <Link
+                        to={link.href}
+                        onClick={handleNavClick}
+                        className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors duration-150 ${
+                          isActive
+                            ? "bg-primary text-primary-foreground"
+                            : "text-foreground hover:bg-muted"
+                        }`}
                       >
-                        <Link
-                          to={link.href}
-                          onClick={handleNavClick}
-                          className={`flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[14px] font-medium transition-colors duration-150 ${
-                            isActive
-                              ? "bg-primary text-primary-foreground"
-                              : "text-foreground/80 hover:bg-muted hover:text-foreground"
-                          }`}
-                        >
-                          <IconComponent size={17} className={isActive ? "text-primary-foreground" : "text-muted-foreground"} />
-                          {link.name}
-                        </Link>
-                      </motion.div>
-                    );
-                  })}
+                        <IconComponent size={18} className={isActive ? "text-primary-foreground" : "text-muted-foreground"} strokeWidth={1.8} />
+                        {link.name}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
 
-                  <div className="h-px bg-border/60 my-3 mx-3" />
-
-                  {/* Secondary links */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.32, duration: 0.2 }}
-                  >
-                    <Link
-                      to="/student/login"
-                      onClick={handleNavClick}
-                      className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[14px] font-medium text-foreground/80 hover:bg-muted hover:text-foreground transition-colors"
-                    >
-                      <User size={17} className="text-muted-foreground" />
-                      {language === "bn" ? "লগইন" : "Sign In"}
-                    </Link>
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, x: 12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.36, duration: 0.2 }}
-                  >
-                    <a
-                      href="https://wa.me/8801779277603"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={handleNavClick}
-                      className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-[14px] font-medium text-foreground/80 hover:bg-muted hover:text-foreground transition-colors"
-                    >
-                      <Phone size={17} className="text-muted-foreground" />
-                      {language === "bn" ? "হোয়াটসঅ্যাপ" : "WhatsApp"}
-                    </a>
-                  </motion.div>
-                </nav>
-
-                {/* Footer */}
-                <div className="px-4 pb-5 pt-3 border-t border-border/50 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                      className="flex-1 h-9 rounded-lg border border-border bg-background flex items-center justify-center gap-1.5 text-xs font-semibold hover:bg-muted transition-colors"
-                    >
-                      <span className={language === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
-                      <span className="text-border">/</span>
-                      <span className={language === "bn" ? "text-primary" : "text-muted-foreground"}>বাং</span>
-                    </button>
-                    {mounted && (
-                      <button
-                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                        className="w-9 h-9 rounded-lg border border-border bg-background flex items-center justify-center hover:bg-muted transition-colors"
-                      >
-                        {theme === "dark" ? <Sun size={14} className="text-foreground" /> : <Moon size={14} className="text-foreground" />}
-                      </button>
-                    )}
-                  </div>
+              {/* Secondary */}
+              <div className="mt-4 pt-4 border-t border-border/60 space-y-1">
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38, duration: 0.25 }}>
                   <Link
-                    to="/contact"
+                    to="/student/login"
                     onClick={handleNavClick}
-                    className="w-full h-10 bg-primary text-primary-foreground rounded-lg font-semibold text-sm flex items-center justify-center gap-1.5 hover:bg-primary/90 transition-colors"
+                    className="flex items-center gap-4 px-4 py-3 rounded-xl text-[15px] font-medium text-foreground hover:bg-muted transition-colors"
                   >
-                    {t("nav.startProject")}
-                    <ArrowUpRight size={14} />
+                    <User size={18} className="text-muted-foreground" strokeWidth={1.8} />
+                    {language === "bn" ? "লগইন" : "Sign In"}
                   </Link>
-                </div>
+                </motion.div>
+                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.25 }}>
+                  <a
+                    href="https://wa.me/8801779277603"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleNavClick}
+                    className="flex items-center gap-4 px-4 py-3 rounded-xl text-[15px] font-medium text-foreground hover:bg-muted transition-colors"
+                  >
+                    <Phone size={18} className="text-muted-foreground" strokeWidth={1.8} />
+                    {language === "bn" ? "হোয়াটসঅ্যাপ" : "WhatsApp"}
+                  </a>
+                </motion.div>
               </div>
-            </motion.div>
-          </>
+
+              {/* Bottom */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
+                className="mt-6 space-y-3"
+              >
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                    className="flex-1 h-10 rounded-xl border border-border bg-muted/50 flex items-center justify-center gap-2 text-xs font-semibold hover:bg-muted transition-colors"
+                  >
+                    <span className={language === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
+                    <span className="text-muted-foreground/30">|</span>
+                    <span className={language === "bn" ? "text-primary" : "text-muted-foreground"}>বাং</span>
+                  </button>
+                  {mounted && (
+                    <button
+                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                      className="w-10 h-10 rounded-xl border border-border bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
+                    >
+                      {theme === "dark" ? <Sun size={15} className="text-foreground" /> : <Moon size={15} className="text-foreground" />}
+                    </button>
+                  )}
+                </div>
+                <Link
+                  to="/contact"
+                  onClick={handleNavClick}
+                  className="w-full h-11 bg-primary text-primary-foreground rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
+                >
+                  {t("nav.startProject")}
+                  <ArrowUpRight size={14} />
+                </Link>
+              </motion.div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
