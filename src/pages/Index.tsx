@@ -183,7 +183,7 @@ const Index = () => {
             </div>
           </motion.div>
         </div>
-      </section>
+      </WavyBackground>
 
       {/* Quick Stats Section */}
       <section className="py-12 lg:py-16 border-t border-border/50">
