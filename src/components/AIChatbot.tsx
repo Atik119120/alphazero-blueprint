@@ -103,6 +103,84 @@ const AIChatbot = () => {
     setAttachments(prev => prev.filter((_, i) => i !== idx));
   };
 
+  // Voice recording
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingTime, setRecordingTime] = useState(0);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        
+        if (audioBlob.size < 1000) return; // too short
+        
+        setIsUploading(true);
+        const fileName = `chatbot/voice-${Date.now()}.webm`;
+        const { data, error } = await supabase.storage
+          .from("media-uploads")
+          .upload(fileName, audioBlob, { cacheControl: "3600", contentType: "audio/webm" });
+
+        if (!error && data) {
+          const { data: urlData } = supabase.storage
+            .from("media-uploads")
+            .getPublicUrl(data.path);
+          
+          const voiceAttachment: Attachment = {
+            type: "audio",
+            url: urlData.publicUrl,
+            name: "Voice message",
+          };
+          
+          // Send immediately with voice
+          streamChat(
+            language === "bn" ? "🎤 ভয়েস মেসেজ" : "🎤 Voice message",
+            [voiceAttachment]
+          );
+        }
+        setIsUploading(false);
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      setRecordingTime(0);
+      recordingTimerRef.current = setInterval(() => {
+        setRecordingTime(prev => prev + 1);
+      }, 1000);
+    } catch {
+      console.error("Microphone access denied");
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+      if (recordingTimerRef.current) {
+        clearInterval(recordingTimerRef.current);
+        recordingTimerRef.current = null;
+      }
+    }
+  };
+
+  const formatRecordingTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
