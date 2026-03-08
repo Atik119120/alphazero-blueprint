@@ -224,28 +224,28 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-border">
-          <div className="container mx-auto px-5 sm:px-6 py-4 sm:py-6 pb-20 sm:pb-6">
-            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-              <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+          <div className="container mx-auto px-5 sm:px-6 py-3 sm:py-6 pb-[72px] sm:pb-6">
+            <div className="max-w-6xl mx-auto flex flex-row items-center justify-between gap-2 sm:gap-4">
+              <div className="flex items-center gap-2 sm:gap-4 text-[10px] sm:text-sm text-muted-foreground">
                 <span>© {new Date().getFullYear()} AlphaZero</span>
                 <span className="w-1 h-1 rounded-full bg-border" />
                 <span>{t("footer.rights")}</span>
               </div>
               
-              <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <a 
                   href="https://www.alphazero.online" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors"
+                  className="text-[10px] sm:text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
                   alphazero.online
                 </a>
                 <button
                   onClick={scrollToTop}
-                  className="group w-9 sm:w-10 h-9 sm:h-10 rounded-full border border-border bg-secondary flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300"
+                  className="group w-8 sm:w-10 h-8 sm:h-10 rounded-full border border-border bg-secondary flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-300"
                 >
-                  <ArrowUp size={14} className="group-hover:-translate-y-0.5 transition-transform" />
+                  <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform sm:[&]:w-[14px] sm:[&]:h-[14px]" />
                 </button>
               </div>
             </div>
