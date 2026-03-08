@@ -115,7 +115,7 @@ const Navbar = () => {
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
-                          className="absolute inset-0 bg-primary rounded-full shadow-[0_0_20px_hsl(var(--primary)/0.4)]"
+                          className="absolute inset-0 bg-primary rounded-full"
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
