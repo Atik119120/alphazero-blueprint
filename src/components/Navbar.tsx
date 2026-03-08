@@ -230,109 +230,80 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu - Fullscreen Overlay */}
+      {/* Mobile Menu - Dropdown Card */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-50 lg:hidden bg-background"
-          >
-            {/* Top bar */}
-            <div className="flex items-center justify-between px-6 h-16">
-              <Link to="/" onClick={handleNavClick}>
-                <img src={logo} alt="AlphaZero" className="h-6 w-auto brightness-0 dark:invert" />
-              </Link>
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="w-9 h-9 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-              >
-                <X size={16} />
-              </button>
-            </div>
+          <>
+            {/* Backdrop - light overlay, tap to close */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/30 lg:hidden"
+            />
 
-            {/* Content */}
-            <div className="flex flex-col h-[calc(100%-4rem)] px-6 pt-4 pb-6 overflow-y-auto">
-              {/* Search */}
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  setTimeout(() => setIsSearchOpen(true), 150);
-                }}
-                className="w-full flex items-center gap-2.5 px-4 py-3 rounded-xl border border-border bg-muted/50 text-muted-foreground text-sm mb-6 hover:bg-muted transition-colors"
-              >
-                <Search size={15} />
-                <span>{language === "bn" ? "সার্চ করুন..." : "Search..."}</span>
-              </button>
+            {/* Card drops below navbar */}
+            <motion.div
+              initial={{ opacity: 0, y: -8, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.97 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="fixed top-[72px] left-4 right-4 z-50 lg:hidden"
+            >
+              <div className="bg-card rounded-2xl border border-border shadow-lg overflow-hidden">
+                {/* Search */}
+                <div className="p-3 pb-2">
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      setTimeout(() => setIsSearchOpen(true), 150);
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-muted/60 text-muted-foreground text-sm hover:bg-muted transition-colors"
+                  >
+                    <Search size={14} />
+                    <span>{language === "bn" ? "সার্চ করুন..." : "Search..."}</span>
+                  </button>
+                </div>
 
-              {/* Nav Links - Large, centered-feel */}
-              <nav className="flex-1 space-y-1">
-                {navLinksWithIcons.map((link, index) => {
-                  const IconComponent = link.icon;
-                  const isActive = location.pathname === link.href;
-                  return (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.06 + index * 0.04, duration: 0.3, ease: "easeOut" }}
-                    >
+                {/* Nav grid - 2 columns */}
+                <div className="grid grid-cols-2 gap-1 px-3 pb-2">
+                  {navLinksWithIcons.map((link) => {
+                    const IconComponent = link.icon;
+                    const isActive = location.pathname === link.href;
+                    return (
                       <Link
+                        key={link.href}
                         to={link.href}
                         onClick={handleNavClick}
-                        className={`flex items-center gap-4 px-4 py-3.5 rounded-xl text-[15px] font-medium transition-colors duration-150 ${
+                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-colors ${
                           isActive
                             ? "bg-primary text-primary-foreground"
                             : "text-foreground hover:bg-muted"
                         }`}
                       >
-                        <IconComponent size={18} className={isActive ? "text-primary-foreground" : "text-muted-foreground"} strokeWidth={1.8} />
+                        <IconComponent size={15} className={isActive ? "text-primary-foreground" : "text-muted-foreground"} strokeWidth={1.8} />
                         {link.name}
                       </Link>
-                    </motion.div>
-                  );
-                })}
-              </nav>
-
-              {/* Secondary */}
-              <div className="mt-4 pt-4 border-t border-border/60 space-y-1">
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38, duration: 0.25 }}>
+                    );
+                  })}
+                  {/* Sign In */}
                   <Link
                     to="/student/login"
                     onClick={handleNavClick}
-                    className="flex items-center gap-4 px-4 py-3 rounded-xl text-[15px] font-medium text-foreground hover:bg-muted transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium text-foreground hover:bg-muted transition-colors"
                   >
-                    <User size={18} className="text-muted-foreground" strokeWidth={1.8} />
+                    <User size={15} className="text-muted-foreground" strokeWidth={1.8} />
                     {language === "bn" ? "লগইন" : "Sign In"}
                   </Link>
-                </motion.div>
-                <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42, duration: 0.25 }}>
-                  <a
-                    href="https://wa.me/8801779277603"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={handleNavClick}
-                    className="flex items-center gap-4 px-4 py-3 rounded-xl text-[15px] font-medium text-foreground hover:bg-muted transition-colors"
-                  >
-                    <Phone size={18} className="text-muted-foreground" strokeWidth={1.8} />
-                    {language === "bn" ? "হোয়াটসঅ্যাপ" : "WhatsApp"}
-                  </a>
-                </motion.div>
-              </div>
+                </div>
 
-              {/* Bottom */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.3 }}
-                className="mt-6 space-y-3"
-              >
-                <div className="flex items-center gap-2">
+                {/* Bottom row */}
+                <div className="flex items-center gap-2 p-3 pt-2 border-t border-border/50">
                   <button
                     onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                    className="flex-1 h-10 rounded-xl border border-border bg-muted/50 flex items-center justify-center gap-2 text-xs font-semibold hover:bg-muted transition-colors"
+                    className="h-9 px-4 rounded-lg border border-border text-xs font-semibold hover:bg-muted transition-colors flex items-center gap-1.5"
                   >
                     <span className={language === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
                     <span className="text-muted-foreground/30">|</span>
@@ -341,23 +312,23 @@ const Navbar = () => {
                   {mounted && (
                     <button
                       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                      className="w-10 h-10 rounded-xl border border-border bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
+                      className="w-9 h-9 rounded-lg border border-border flex items-center justify-center hover:bg-muted transition-colors"
                     >
-                      {theme === "dark" ? <Sun size={15} className="text-foreground" /> : <Moon size={15} className="text-foreground" />}
+                      {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
                     </button>
                   )}
+                  <Link
+                    to="/contact"
+                    onClick={handleNavClick}
+                    className="ml-auto h-9 px-4 bg-primary text-primary-foreground rounded-lg font-semibold text-xs flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
+                  >
+                    {t("nav.startProject")}
+                    <ArrowUpRight size={12} />
+                  </Link>
                 </div>
-                <Link
-                  to="/contact"
-                  onClick={handleNavClick}
-                  className="w-full h-11 bg-primary text-primary-foreground rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
-                >
-                  {t("nav.startProject")}
-                  <ArrowUpRight size={14} />
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
