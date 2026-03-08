@@ -149,7 +149,7 @@ const ContactPage = () => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-secondary/50 border border-border hover:border-primary/30 transition-colors duration-300">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/20 transition-colors duration-300">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <Clock size={20} className="text-primary" />
                   </div>
