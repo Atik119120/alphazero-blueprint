@@ -543,7 +543,7 @@ const WorkPage = () => {
               <motion.img initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
                 src={lightboxImage.url} alt={lightboxImage.title}
-                className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl cursor-default" />
+                className="max-w-full max-h-[70vh] object-contain rounded-xl cursor-default" />
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
                 className="mt-6 text-center max-w-lg">
                 <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
