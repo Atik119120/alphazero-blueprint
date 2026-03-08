@@ -50,6 +50,7 @@ const Footer = () => {
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: "Facebook" },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: "Instagram" },
     { name: "X (Twitter)", url: "https://x.com/AgencyAlphazero", icon: "Twitter" },
+    { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazeroagency/", icon: "Linkedin" },
     { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: "MessageCircle" },
     { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: "Discord" },
     { name: "Email", url: "mailto:agency.alphazero@gmail.com", icon: "Mail" },
