@@ -113,14 +113,24 @@ const Index = () => {
               <span className="gradient-text">{c("title2", "home.title2")}</span>
             </motion.h1>
 
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-2xl sm:text-3xl lg:text-4xl font-display font-medium text-primary mb-8"
+              className="flex justify-center mb-8"
             >
-              {c("tagline", "home.tagline")}
-            </motion.p>
+              <ContainerTextFlip
+                words={[
+                  c("tagline", "home.tagline"),
+                  "ক্রিয়েটিভ ডিজাইন",
+                  "ওয়েব ডেভেলপমেন্ট",
+                  "ব্র্যান্ড বিল্ডিং",
+                ]}
+                interval={3000}
+                variant="gradient"
+                animationDuration={700}
+              />
+            </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
