@@ -318,7 +318,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
             <Play size={12} /> Video Editing
           </span>
           <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Video <span className="gradient-text">Productions</span>
+            Video <span className="text-primary">Productions</span>
           </h2>
         </motion.div>
 
