@@ -95,29 +95,24 @@ const Index = () => {
         <div className="absolute bottom-20 -right-20 w-96 h-96 bg-[hsl(200,100%,50%)]/[0.02] dark:bg-[hsl(200,100%,50%)]/[0.03] rounded-full blur-3xl" />
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Badge with icon */}
+          <div className="max-w-5xl mx-auto">
+            {/* Asymmetric layout — left-aligned badge */}
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-10 backdrop-blur-md"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-8"
             >
-              <motion.div
-                animate={{ rotate: [0, 15, -15, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              >
-                <Sparkles size={16} className="text-primary" />
-              </motion.div>
-              <span className="text-sm font-medium text-primary">{c("badge", "home.badge")}</span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-semibold tracking-[0.15em] uppercase text-primary">{c("badge", "home.badge")}</span>
             </motion.div>
 
-            {/* Main Heading - Split with accent */}
+            {/* Main Heading — editorial feel, left-aligned then centered */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-4"
+              className="text-5xl sm:text-6xl lg:text-8xl font-display font-bold leading-[0.9] tracking-tight mb-4 text-center"
             >
               <span className="text-foreground">{c("title1", "home.title1")}</span>
               <br className="hidden sm:block" />{" "}
