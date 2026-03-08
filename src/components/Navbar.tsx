@@ -256,6 +256,7 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+        );
       })()}
 
       {/* Search Modal */}
