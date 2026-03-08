@@ -259,7 +259,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-400">
-                      <div className="px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2">
+                      <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2">
                         <ExternalLink size={16} className="text-primary-foreground" />
                         <span className="text-primary-foreground text-sm font-semibold">Visit Site</span>
                       </div>
