@@ -55,14 +55,8 @@ const Footer = () => {
     { name: "Email", url: "mailto:agency.alphazero@gmail.com", icon: "Mail" },
   ];
 
-  const displaySocialLinks = socialLinks.length > 0 
-    ? socialLinks.map(link => ({
-        name: link.title,
-        url: link.url,
-        icon: link.icon || 'Globe',
-        comingSoon: false
-      }))
-    : defaultSocialLinks;
+  // Always use default social links (ignore database for now)
+  const displaySocialLinks = defaultSocialLinks;
 
   const quickLinks = [
     { name: t("nav.about"), href: "/about" },
