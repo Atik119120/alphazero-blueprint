@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter } from "lucide-react";
+import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter, Sparkles } from "lucide-react";
 
 const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -12,12 +12,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const ContactPage = () => {
   const { t } = useLanguage();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,65 +24,41 @@ const ContactPage = () => {
   };
 
   const socialLinks = [
-    { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, comingSoon: false },
-    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle, comingSoon: false },
-    { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram, comingSoon: false },
-    { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter, comingSoon: false },
-    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon, comingSoon: false },
+    { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook },
+    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle },
+    { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram },
+    { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter },
+    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon },
   ];
 
   return (
     <Layout>
-      {/* Hero Section — editorial */}
-      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
-        <div className="absolute inset-0 stripe-accent" />
+      {/* Hero */}
+      <section className="py-28 lg:py-40 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
-            >
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
+              <Sparkles size={14} className="text-primary" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("contact.subtitle")}</span>
             </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
-            >
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
               {t("contact.title")} <span className="gradient-text">{t("contact.title2")}</span>
             </motion.h1>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-start gap-4 mb-10"
-            >
-              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
-              <p className="text-xl text-muted-foreground max-w-2xl">{t("contact.description")}</p>
-            </motion.div>
-
-            {/* Quick Contact — inline */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-3"
-            >
-              <a
-                href="mailto:agency.alphazero@gmail.com"
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold transition-all duration-300 hover:opacity-90"
-              >
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+              {t("contact.description")}
+            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="flex flex-wrap justify-center gap-3">
+              <a href="mailto:agency.alphazero@gmail.com"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold transition-all duration-300 glow-primary hover:scale-[1.02]">
                 <Mail size={18} /> {t("contact.emailUs")}
               </a>
-              <a
-                href="https://wa.me/8801846484200"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-border text-foreground rounded-full font-semibold hover:border-primary/30 transition-all duration-300"
-              >
+              <a href="https://wa.me/8801846484200" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-border text-foreground rounded-full font-semibold hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
                 <MessageCircle size={18} /> {t("contact.whatsapp")}
               </a>
             </motion.div>
@@ -96,68 +67,39 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 relative">
-
-        <div className="container mx-auto px-6 relative z-10">
+      <section className="py-24 relative">
+        <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12">
             {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
+            <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-8">
               <div>
                 <h2 className="text-2xl font-display font-bold mb-4">{t("contact.getInTouch")}</h2>
-                <p className="text-muted-foreground">
-                  {t("contact.getInTouchDesc")}
-                </p>
+                <p className="text-muted-foreground">{t("contact.getInTouchDesc")}</p>
               </div>
 
-              <div className="space-y-6">
-                 <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/20 transition-colors duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Phone size={20} className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.callUs")}</h3>
-                    <a href="tel:+8801410190019" className="text-muted-foreground hover:text-primary transition-colors">
-                      +880 1410-190019
-                    </a>
-                  </div>
-                </div>
-
-                 <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/20 transition-colors duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Mail size={20} className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.emailUsLabel")}</h3>
-                    <a href="mailto:agency.alphazero@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
-                      agency.alphazero@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                 <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/20 transition-colors duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <MapPin size={20} className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.location")}</h3>
-                    <p className="text-muted-foreground">{t("contact.locationValue")}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30 hover:border-primary/20 transition-colors duration-300">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <Clock size={20} className="text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-1">{t("contact.workingHours")}</h3>
-                    <p className="text-muted-foreground">{t("contact.workingHoursValue")}</p>
-                  </div>
-                </div>
+              <div className="space-y-4">
+                {[
+                  { icon: Phone, title: t("contact.callUs"), value: "+880 1410-190019", href: "tel:+8801410190019" },
+                  { icon: Mail, title: t("contact.emailUsLabel"), value: "agency.alphazero@gmail.com", href: "mailto:agency.alphazero@gmail.com" },
+                  { icon: MapPin, title: t("contact.location"), value: t("contact.locationValue") },
+                  { icon: Clock, title: t("contact.workingHours"), value: t("contact.workingHoursValue") },
+                ].map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }} transition={{ delay: i * 0.08 }}
+                    className="flex items-start gap-4 p-5 rounded-2xl glass-card hover:border-primary/30 transition-all duration-300">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                      <item.icon size={20} className="text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold mb-1">{item.title}</h3>
+                      {item.href ? (
+                        <a href={item.href} className="text-muted-foreground hover:text-primary transition-colors">{item.value}</a>
+                      ) : (
+                        <p className="text-muted-foreground">{item.value}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
               </div>
 
               {/* Social Links */}
@@ -165,133 +107,62 @@ const ContactPage = () => {
                 <p className="font-semibold mb-4">{t("contact.followUs")}</p>
                 <div className="flex gap-3 flex-wrap">
                   {socialLinks.map((social) => (
-                    social.comingSoon ? (
-                      <div
-                        key={social.name}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary/50 border border-border text-muted-foreground cursor-not-allowed text-sm font-medium"
-                      >
-                        <social.icon size={16} />
-                        {social.name}
-                        <span className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                          <Clock size={10} />
-                          Soon
-                        </span>
-                      </div>
-                    ) : (
-                      <a
-                        key={social.name}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary border border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-sm font-medium"
-                      >
-                        <social.icon size={16} />
-                        {social.name}
-                      </a>
-                    )
+                    <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl glass-card hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-sm font-medium">
+                      <social.icon size={16} />{social.name}
+                    </a>
                   ))}
                 </div>
               </div>
 
-              {/* Website */}
-              <div className="pt-4 border-t border-border">
+              <div className="pt-4 border-t border-border/40">
                 <p className="text-sm text-muted-foreground mb-2">{t("contact.visitWebsite")}</p>
-                <a 
-                  href="https://www.alphazero.online" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline font-medium"
-                >
+                <a href="https://www.alphazero.online" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
                   www.alphazero.online
                 </a>
               </div>
             </motion.div>
 
             {/* Contact Form */}
-            <motion.form
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              onSubmit={handleSubmit}
-              className="space-y-6 p-8 rounded-xl bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30"
-            >
-              
-              <div className="text-center mb-6 relative z-10">
+            <motion.form initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl glass-card">
+              <div className="text-center mb-6">
                 <h3 className="text-xl font-display font-semibold mb-2">{t("contact.formTitle")}</h3>
                 <p className="text-sm text-muted-foreground">{t("contact.formSubtitle")}</p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6 relative z-10">
+              <div className="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    {t("contact.yourName")}
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
+                  <label htmlFor="name" className="block text-sm font-medium mb-2">{t("contact.yourName")}</label>
+                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
                     className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder={t("contact.namePlaceholder")}
-                  />
+                    placeholder={t("contact.namePlaceholder")} />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    {t("contact.yourEmail")}
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">{t("contact.yourEmail")}</label>
+                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
                     className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder={t("contact.emailPlaceholder")}
-                  />
+                    placeholder={t("contact.emailPlaceholder")} />
                 </div>
               </div>
 
-              <div className="relative z-10">
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                  {t("contact.subject")}
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium mb-2">{t("contact.subject")}</label>
+                <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} required
                   className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                  placeholder={t("contact.subjectPlaceholder")}
-                />
+                  placeholder={t("contact.subjectPlaceholder")} />
               </div>
 
-              <div className="relative z-10">
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
-                  {t("contact.message")}
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={6}
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium mb-2">{t("contact.message")}</label>
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6}
                   className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none"
-                  placeholder={t("contact.messagePlaceholder")}
-                />
+                  placeholder={t("contact.messagePlaceholder")} />
               </div>
 
-              <button
-                type="submit"
-                className="relative z-10 w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 flex items-center justify-center gap-2"
-              >
-                <Send size={20} />
-                {t("contact.submitButton")}
+              <button type="submit"
+                className="w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 glow-primary hover:scale-[1.01] flex items-center justify-center gap-2">
+                <Send size={20} />{t("contact.submitButton")}
               </button>
             </motion.form>
           </div>

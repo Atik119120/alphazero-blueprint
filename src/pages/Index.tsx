@@ -110,8 +110,7 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.1 }}
               className="text-5xl sm:text-6xl lg:text-8xl xl:text-[6.5rem] font-display font-bold leading-[0.92] tracking-tight mb-6"
             >
-              <span className="text-foreground">{c("title1", "home.title1")}</span>
-              <br />
+              <span className="text-foreground">{c("title1", "home.title1")} </span>
               <span className="gradient-text">{c("title2", "home.title2")}</span>
             </motion.h1>
 
