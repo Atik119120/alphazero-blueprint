@@ -223,141 +223,39 @@ const Navbar = () => {
 
         const bottomNavItems = [
           { name: language === "bn" ? "হোম" : "Home", href: "/", icon: Home },
+          { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
+          { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
           { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
-          { name: language === "bn" ? "আরও" : "More", href: "#more", icon: MoreHorizontal },
+          { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
+          { name: language === "bn" ? "লগইন" : "Sign In", href: "/student/login", icon: User },
         ];
 
         return (
-          <>
-            <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-              <div className="bg-card/95 backdrop-blur-lg border-t border-border">
-                <div className="flex items-center justify-around px-1 py-1.5 safe-bottom">
-                  {bottomNavItems.map((item) => {
-                    const IconComp = item.icon;
-                    const isMore = item.href === "#more";
-                    const isActive = !isMore && location.pathname === item.href;
+          <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
+            <div className="bg-card/95 backdrop-blur-lg border-t border-border">
+              <div className="flex items-center overflow-x-auto no-scrollbar px-1 py-1.5 safe-bottom">
+                {bottomNavItems.map((item) => {
+                  const IconComp = item.icon;
+                  const isActive = location.pathname === item.href;
 
-                    if (isMore) {
-                      return (
-                        <button
-                          key="more"
-                          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                          className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[56px] ${
-                            isMobileMenuOpen ? "text-primary" : "text-muted-foreground"
-                          }`}
-                        >
-                          <IconComp size={20} strokeWidth={1.8} />
-                          <span className="text-[10px] font-medium">{item.name}</span>
-                        </button>
-                      );
-                    }
-
-                    return (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[56px] ${
-                          isActive ? "text-primary" : "text-muted-foreground"
-                        }`}
-                      >
-                        <IconComp size={20} strokeWidth={isActive ? 2.2 : 1.8} />
-                        <span className={`text-[10px] ${isActive ? "font-semibold" : "font-medium"}`}>{item.name}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
+                  return (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      className={`flex flex-col items-center gap-0.5 px-2.5 py-1.5 rounded-lg transition-colors min-w-[52px] shrink-0 ${
+                        isActive ? "text-primary" : "text-muted-foreground"
+                      }`}
+                    >
+                      <IconComp size={18} strokeWidth={isActive ? 2.2 : 1.8} />
+                      <span className={`text-[9px] ${isActive ? "font-semibold" : "font-medium"}`}>{item.name}</span>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
-
-            {/* "More" Sheet */}
-            <AnimatePresence>
-              {isMobileMenuOpen && (
-                <>
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="fixed inset-0 z-40 bg-black/30 lg:hidden"
-                  />
-                  <motion.div
-                    initial={{ y: "100%" }}
-                    animate={{ y: 0 }}
-                    exit={{ y: "100%" }}
-                    transition={{ type: "spring", damping: 30, stiffness: 350, mass: 0.8 }}
-                    className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
-                  >
-                    <div className="bg-card rounded-t-2xl border-t border-border shadow-lg">
-                      {/* Drag handle */}
-                      <div className="flex justify-center pt-3 pb-2">
-                        <div className="w-10 h-1 rounded-full bg-muted-foreground/20" />
-                      </div>
-
-                      {/* More links grid */}
-                      <div className="grid grid-cols-4 gap-1 px-4 pb-3">
-                        {[
-                          { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
-                          { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
-                          { name: language === "bn" ? "যোগদান" : "Join Team", href: "/join-team", icon: ArrowUpRight },
-                          { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
-                          { name: language === "bn" ? "লগইন" : "Sign In", href: "/student/login", icon: User },
-                        ].map((item) => {
-                          const IconComp = item.icon;
-                          const isActive = location.pathname === item.href;
-                          return (
-                            <Link
-                              key={item.href}
-                              to={item.href}
-                              onClick={() => setIsMobileMenuOpen(false)}
-                              className={`flex flex-col items-center gap-1.5 py-3 rounded-xl transition-colors ${
-                                isActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
-                              }`}
-                            >
-                              <IconComp size={20} strokeWidth={1.8} className={isActive ? "text-primary" : "text-muted-foreground"} />
-                              <span className="text-[11px] font-medium">{item.name}</span>
-                            </Link>
-                          );
-                        })}
-                      </div>
-
-                      {/* Bottom row */}
-                      <div className="flex items-center gap-2 px-4 pb-4 pt-1 border-t border-border/50">
-                        <button
-                          onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                          className="h-9 px-4 rounded-lg border border-border text-xs font-semibold hover:bg-muted transition-colors flex items-center gap-1.5"
-                        >
-                          <span className={language === "en" ? "text-primary" : "text-muted-foreground"}>EN</span>
-                          <span className="text-muted-foreground/30">|</span>
-                          <span className={language === "bn" ? "text-primary" : "text-muted-foreground"}>বাং</span>
-                        </button>
-                        <a
-                          href="https://wa.me/8801779277603"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="h-9 px-3 rounded-lg border border-border text-xs font-medium hover:bg-muted transition-colors flex items-center gap-1.5 text-foreground"
-                        >
-                          <Phone size={13} className="text-muted-foreground" />
-                          WhatsApp
-                        </a>
-                        <Link
-                          to="/contact"
-                          onClick={() => setIsMobileMenuOpen(false)}
-                          className="ml-auto h-9 px-4 bg-primary text-primary-foreground rounded-lg font-semibold text-xs flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
-                        >
-                          {t("nav.startProject")}
-                          <ArrowUpRight size={12} />
-                        </Link>
-                      </div>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
-          </>
-        );
+          </div>
       })()}
 
       {/* Search Modal */}
