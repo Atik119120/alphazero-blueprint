@@ -256,27 +256,37 @@ const Index = () => {
       </section>
 
       {/* Quick Stats Section */}
-      <section className="py-12 lg:py-16 border-t border-border/50">
-        <div className="container mx-auto px-6">
+      <section className="py-14 lg:py-20 relative overflow-hidden">
+        {/* Decorative background for light mode */}
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-transparent to-primary/[0.03] dark:from-transparent dark:to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto"
+            className="grid grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto"
           >
             {stats.map((stat, index) => (
               <motion.div 
                 key={stat.label} 
-                className="text-center p-4 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50"
+                className="group text-center p-6 rounded-2xl bg-background/80 dark:bg-card/60 backdrop-blur-sm border border-primary/10 dark:border-border/50 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -4 }}
               >
-                <div className="text-3xl lg:text-4xl font-display font-bold gradient-text mb-2">
-                  {stat.value}
+                {/* Card glow on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-[hsl(200,100%,50%)]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative z-10">
+                  <div className="text-3xl lg:text-5xl font-display font-bold gradient-text mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted-foreground font-medium">{stat.label}</div>
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -284,26 +294,33 @@ const Index = () => {
       </section>
 
       {/* What We Do / Our Expertise Section */}
-      <section className="py-12 lg:py-16 bg-card/40 backdrop-blur-sm border-y border-border/30">
-        <div className="container mx-auto px-6">
+      <section className="py-14 lg:py-20 relative overflow-hidden">
+        {/* Colorful background accents */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(200,40%,96%)] dark:from-card/40 dark:via-background dark:to-card/40" />
+        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/[0.04] blur-[80px] dark:bg-primary/[0.02]" />
+        <div className="absolute bottom-20 right-10 w-72 h-72 rounded-full bg-[hsl(200,100%,50%)]/[0.04] blur-[80px] dark:bg-[hsl(200,100%,50%)]/[0.02]" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
               {c("expertise", "home.expertise")}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
               {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
             </h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto text-sm lg:text-base">
+            <p className="text-muted-foreground max-w-2xl mx-auto text-base">
               {c("expertiseDesc", "home.expertiseDesc")}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 max-w-6xl mx-auto">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
@@ -311,13 +328,17 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-5 lg:p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500"
+                whileHover={{ y: -6 }}
+                className="group p-5 lg:p-7 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
               >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                  <service.icon size={24} className="text-primary" />
+                {/* Colored top accent line */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-[hsl(200,100%,50%)] to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-t-2xl" />
+                
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-[hsl(200,100%,50%)]/10 flex items-center justify-center mb-5 group-hover:from-primary/25 group-hover:to-[hsl(200,100%,50%)]/20 transition-all duration-300 border border-primary/10">
+                  <service.icon size={26} className="text-primary" />
                 </div>
-                <h3 className="text-lg font-display font-semibold mb-2">{service.title}</h3>
-                <p className="text-muted-foreground text-sm">{service.description}</p>
+                <h3 className="text-lg font-display font-bold mb-2">{service.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -326,11 +347,11 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mt-8"
+            className="text-center mt-10"
           >
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 text-primary bg-primary/10 hover:bg-primary/20 rounded-full font-medium transition-all duration-300"
             >
               {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={18} />
             </Link>
@@ -339,61 +360,81 @@ const Index = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-12 lg:py-16">
-        <div className="container mx-auto px-6">
+      <section className="py-14 lg:py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-tl from-[hsl(260,40%,97%)] via-background to-[hsl(185,40%,97%)] dark:from-transparent dark:to-transparent" />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
               {c("whyChoose", "home.whyChoose")}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-            {whyChooseUs.map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group p-5 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-500"
-              >
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors duration-300">
-                  <item.icon size={20} className="text-primary" />
-                </div>
-                <h3 className="text-base font-display font-semibold mb-2">{item.title}</h3>
-                <p className="text-muted-foreground text-sm">{item.description}</p>
-              </motion.div>
-            ))}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+            {whyChooseUs.map((item, index) => {
+              const gradients = [
+                "from-primary/10 to-[hsl(200,100%,50%)]/5",
+                "from-[hsl(260,80%,60%)]/8 to-primary/5",
+                "from-[hsl(340,80%,55%)]/6 to-[hsl(260,80%,60%)]/5",
+                "from-[hsl(45,100%,50%)]/8 to-[hsl(340,80%,55%)]/5",
+                "from-[hsl(200,100%,50%)]/8 to-primary/5",
+              ];
+              return (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -4 }}
+                  className="group p-6 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 relative overflow-hidden"
+                >
+                  {/* Unique gradient per card */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${gradients[index % gradients.length]} opacity-40 dark:opacity-20`} />
+                  <div className="relative z-10">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                      <item.icon size={22} className="text-primary" />
+                    </div>
+                    <h3 className="text-base font-display font-bold mb-2">{item.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-12 lg:py-16 bg-card/40 backdrop-blur-sm border-y border-border/30">
-        <div className="container mx-auto px-6">
+      <section className="py-14 lg:py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(260,30%,97%)] dark:from-card/40 dark:via-background dark:to-card/40" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <span className="text-primary text-sm font-medium tracking-wider uppercase mb-3 block">
+            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
               {c("testimonials", "home.testimonials")}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
               {c("whatClientsSay", "home.whatClientsSay")} <span className="gradient-text">{c("say", "home.say")}</span>
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-4 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-5 max-w-6xl mx-auto">
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={testimonial.name}
@@ -401,17 +442,20 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-5 lg:p-6 rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                whileHover={{ y: -4 }}
+                className="p-6 lg:p-7 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 relative overflow-hidden"
               >
-                <Quote size={24} className="text-primary/30 mb-3" />
-                <p className="text-foreground mb-4 leading-relaxed text-sm">{testimonial.content}</p>
-                <div className="flex items-center gap-1 mb-3">
+                {/* Subtle gradient accent */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-[60px]" />
+                <Quote size={28} className="text-primary/25 mb-4 relative z-10" />
+                <p className="text-foreground mb-5 leading-relaxed text-sm relative z-10">{testimonial.content}</p>
+                <div className="flex items-center gap-1 mb-3 relative z-10">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={14} className="text-primary fill-primary" />
+                    <Star key={i} size={14} className="text-[hsl(45,100%,50%)] fill-[hsl(45,100%,50%)]" />
                   ))}
                 </div>
-                <div>
-                  <p className="font-display font-semibold text-sm">{testimonial.name}</p>
+                <div className="relative z-10">
+                  <p className="font-display font-bold text-sm">{testimonial.name}</p>
                   <p className="text-xs text-muted-foreground">{testimonial.role}</p>
                 </div>
               </motion.div>
@@ -421,7 +465,8 @@ const Index = () => {
       </section>
 
       {/* Client Logos Section */}
-      <section className="py-10 border-t border-border/30">
+      <section className="py-12 relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -429,7 +474,7 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-8"
           >
-            <p className="text-muted-foreground text-sm uppercase tracking-wider">{c("trustedBy", "home.trustedBy")}</p>
+            <p className="text-muted-foreground text-sm uppercase tracking-wider font-medium">{c("trustedBy", "home.trustedBy")}</p>
           </motion.div>
           
           <motion.div
@@ -445,7 +490,7 @@ const Index = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="text-lg font-display font-bold text-muted-foreground/40 hover:text-primary/70 transition-colors duration-300"
+                className="text-lg font-display font-bold text-muted-foreground/30 hover:text-primary/70 transition-colors duration-300"
               >
                 {client}
               </motion.div>
@@ -455,36 +500,47 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-20">
-        <div className="container mx-auto px-6">
+      <section className="py-16 lg:py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-[hsl(260,80%,60%)]/[0.03] dark:from-transparent dark:to-transparent" />
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center p-8 lg:p-12 rounded-3xl bg-gradient-to-br from-primary/5 via-card/80 to-accent/5 backdrop-blur-sm border border-primary/20"
+            className="max-w-4xl mx-auto text-center p-10 lg:p-16 rounded-3xl relative overflow-hidden"
           >
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              {c("readyTo", "home.readyTo")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
-              >
-                {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
-              </Link>
-              <a
-                href="https://wa.me/8801846484200"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-background border border-border text-foreground rounded-xl font-medium hover:bg-secondary/80 transition-all duration-300"
-              >
-                <MessageCircle size={18} />
-                {c("whatsappUs", "home.whatsappUs")}
-              </a>
+            {/* CTA background with gradient border effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-[hsl(200,100%,50%)]/10 dark:from-primary/5 dark:to-[hsl(200,100%,50%)]/5 rounded-3xl" />
+            <div className="absolute inset-[1px] bg-background/95 dark:bg-background/90 rounded-3xl" />
+            
+            {/* Decorative orbs */}
+            <div className="absolute top-0 left-1/4 w-40 h-40 bg-primary/[0.06] rounded-full blur-[60px]" />
+            <div className="absolute bottom-0 right-1/4 w-40 h-40 bg-[hsl(200,100%,50%)]/[0.06] rounded-full blur-[60px]" />
+            
+            <div className="relative z-10">
+              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-5">
+                {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
+              </h2>
+              <p className="text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
+                {c("readyTo", "home.readyTo")}
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
+                >
+                  {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
+                </Link>
+                <a
+                  href="https://wa.me/8801846484200"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-background border-2 border-border text-foreground rounded-2xl font-semibold hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                >
+                  <MessageCircle size={18} />
+                  {c("whatsappUs", "home.whatsappUs")}
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>
