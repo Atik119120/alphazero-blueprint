@@ -18,7 +18,6 @@ import {
   MessageCircle
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
-import WavyBackground from "@/components/ui/blue-meshy-background";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -86,7 +85,9 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <WavyBackground className="min-h-[calc(100vh-5rem)] flex items-center justify-center">
+      <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:80px_80px] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)]" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
@@ -181,7 +182,7 @@ const Index = () => {
             </div>
           </motion.div>
         </div>
-      </WavyBackground>
+      </section>
 
       {/* Quick Stats Section */}
       <section className="py-12 lg:py-16 border-t border-border/50">
