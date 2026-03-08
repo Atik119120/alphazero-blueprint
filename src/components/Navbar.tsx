@@ -230,9 +230,12 @@ const Navbar = () => {
         ];
 
         return (
-          <div className="fixed bottom-3 left-3 right-3 z-50 lg:hidden">
-            <div className="bg-background/90 dark:bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 dark:border-border/30 shadow-[0_-4px_30px_-8px_hsl(var(--primary)/0.06)]">
-              <div className="grid grid-cols-7 py-2 px-1 safe-bottom">
+          <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
+            {/* Gradient fade effect at top */}
+            <div className="h-6 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
+            
+            <div className="bg-background/70 dark:bg-card/70 backdrop-blur-3xl border-t border-border/30 dark:border-border/20">
+              <div className="grid grid-cols-7 pt-1.5 pb-[calc(0.375rem+env(safe-area-inset-bottom))] px-1">
                 {bottomNavItems.map((item) => {
                   const IconComp = item.icon;
                   const isActive = location.pathname === item.href;
@@ -243,33 +246,41 @@ const Navbar = () => {
                       to={item.href}
                       className="relative flex flex-col items-center gap-0.5 py-1"
                     >
-                      {/* Active pill background */}
+                      {/* Active glow */}
                       {isActive && (
                         <motion.div
                           layoutId="bottom-nav-active"
-                          className="absolute inset-x-1 inset-y-0 bg-primary/12 dark:bg-primary/15 rounded-xl"
+                          className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary/20 dark:bg-primary/25 rounded-full blur-md"
                           transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                         />
                       )}
-                      <div className="relative z-10 flex flex-col items-center gap-0.5">
-                        <IconComp 
-                          size={18} 
-                          strokeWidth={isActive ? 2.4 : 1.6} 
-                          className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}
-                        />
-                        <span className={`text-[9px] leading-tight transition-colors duration-200 ${
-                          isActive ? "font-bold text-primary" : "font-medium text-muted-foreground"
-                        }`}>
-                          {item.name}
-                        </span>
-                        {/* Active dot */}
+                      
+                      <div className="relative z-10 flex flex-col items-center">
+                        {/* Active top bar indicator */}
                         {isActive && (
                           <motion.div
-                            layoutId="bottom-nav-dot"
-                            className="w-1 h-1 rounded-full bg-primary"
+                            layoutId="bottom-nav-bar"
+                            className="absolute -top-2.5 w-6 h-[2.5px] rounded-full bg-primary"
                             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
                           />
                         )}
+                        
+                        <motion.div
+                          animate={isActive ? { y: -2, scale: 1.15 } : { y: 0, scale: 1 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                        >
+                          <IconComp 
+                            size={19} 
+                            strokeWidth={isActive ? 2.5 : 1.5} 
+                            className={`transition-colors duration-200 ${isActive ? "text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.4)]" : "text-muted-foreground/70"}`}
+                          />
+                        </motion.div>
+                        
+                        <span className={`text-[8.5px] leading-tight mt-0.5 transition-all duration-200 ${
+                          isActive ? "font-bold text-primary" : "font-medium text-muted-foreground/60"
+                        }`}>
+                          {item.name}
+                        </span>
                       </div>
                     </Link>
                   );
