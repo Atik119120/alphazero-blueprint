@@ -121,11 +121,11 @@ const Index = () => {
             >
               <ContainerTextFlip
                 words={[
-                  c("tagline", "home.tagline"),
-                  "ক্রিয়েটিভ ডিজাইন",
-                  "ওয়েব ডেভেলপমেন্ট",
-                  "ব্র্যান্ড বিল্ডিং",
-                  "SEO অপটিমাইজেশন",
+                  "Creative Design",
+                  "Web Development",
+                  "Brand Building",
+                  "SEO Optimization",
+                  "UI/UX Design",
                 ]}
                 interval={3000}
                 variant="gradient"
