@@ -355,23 +355,21 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-14 lg:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(260,30%,97%)] dark:from-card/40 dark:via-background dark:to-card/40" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+      {/* Testimonials — editorial quote cards */}
+      <section className="py-20 lg:py-28 relative grain-texture">
+        <div className="absolute inset-0 bg-secondary/30 dark:bg-card/20" />
         
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="mb-14"
           >
-            <span className="inline-block text-primary text-sm font-semibold tracking-wider uppercase mb-3 px-4 py-1.5 bg-primary/10 rounded-full">
+            <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">
               {c("testimonials", "home.testimonials")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold">
               {c("whatClientsSay", "home.whatClientsSay")} <span className="gradient-text">{c("say", "home.say")}</span>
             </h2>
           </motion.div>
@@ -383,22 +381,29 @@ const Index = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="p-6 lg:p-7 rounded-2xl bg-background/90 dark:bg-card/60 backdrop-blur-sm border border-border/60 hover:border-primary/30 shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 relative overflow-hidden"
+                transition={{ delay: index * 0.08 }}
+                className="p-6 lg:p-7 bg-background dark:bg-card/60 border border-border/50 dark:border-border/30 rounded-xl relative"
               >
-                {/* Subtle gradient accent */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-[60px]" />
-                <Quote size={28} className="text-primary/25 mb-4 relative z-10" />
-                <p className="text-foreground mb-5 leading-relaxed text-sm relative z-10">{testimonial.content}</p>
-                <div className="flex items-center gap-1 mb-3 relative z-10">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} size={14} className="text-[hsl(45,100%,50%)] fill-[hsl(45,100%,50%)]" />
-                  ))}
-                </div>
-                <div className="relative z-10">
-                  <p className="font-display font-bold text-sm">{testimonial.name}</p>
-                  <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                {/* Editorial left accent */}
+                <div className="absolute left-0 top-6 bottom-6 w-[3px] bg-primary/30 rounded-full" />
+                
+                <div className="pl-4">
+                  <Quote size={24} className="text-primary/20 mb-4" />
+                  <p className="text-foreground mb-5 leading-relaxed text-sm">{testimonial.content}</p>
+                  <div className="flex items-center gap-1 mb-3">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} size={12} className="text-[hsl(45,100%,50%)] fill-[hsl(45,100%,50%)]" />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                      {testimonial.name.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-display font-bold text-sm">{testimonial.name}</p>
+                      <p className="text-[11px] text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -406,68 +411,67 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Client Logos Section */}
-      <section className="py-12 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      {/* Client Logos — minimal marquee strip */}
+      <section className="py-10 relative border-y border-border/40 dark:border-border/20">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <p className="text-muted-foreground text-sm uppercase tracking-wider font-medium">{c("trustedBy", "home.trustedBy")}</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center items-center gap-6 md:gap-12 max-w-4xl mx-auto"
-          >
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 max-w-4xl mx-auto">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/50 font-medium shrink-0">{c("trustedBy", "home.trustedBy")}</span>
             {clientLogos.map((client, index) => (
               <motion.div
                 key={client}
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-lg font-display font-bold text-muted-foreground/30 hover:text-primary/70 transition-colors duration-300"
+                transition={{ delay: index * 0.08 }}
+                className="text-base font-display font-bold text-muted-foreground/25 hover:text-primary/50 transition-colors duration-300"
               >
                 {client}
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 lg:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.04] via-transparent to-[hsl(260,80%,60%)]/[0.03] dark:from-transparent dark:to-transparent" />
-        <div className="container mx-auto px-6 relative z-10">
+      {/* CTA Section — bold, clean */}
+      <section className="py-20 lg:py-32 relative">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center p-10 lg:p-16 rounded-3xl relative overflow-hidden"
+            className="max-w-4xl mx-auto text-center"
           >
-            {/* CTA background with gradient border effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-[hsl(200,100%,50%)]/10 dark:from-primary/5 dark:to-[hsl(200,100%,50%)]/5 rounded-3xl" />
-            <div className="absolute inset-[1px] bg-background/95 dark:bg-background/90 rounded-3xl" />
-            
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-5">
-                {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
-              </h2>
-              <p className="text-muted-foreground mb-8 text-lg max-w-xl mx-auto">
-                {c("readyTo", "home.readyTo")}
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300"
-                >
+            <h2 className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-tight">
+              {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
+            </h2>
+            <p className="text-muted-foreground mb-10 text-lg max-w-xl mx-auto">
+              {c("readyTo", "home.readyTo")}
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-9 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:opacity-90"
+              >
+                {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
+              </Link>
+              <a
+                href="https://wa.me/8801846484200"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-9 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 transition-all duration-300"
+              >
+                <MessageCircle size={18} />
+                {c("whatsappUs", "home.whatsappUs")}
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </LayoutComponent>
+  );
+};
+
+export default Index;
                   {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
                 </Link>
                 <a
