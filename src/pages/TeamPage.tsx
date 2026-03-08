@@ -61,35 +61,37 @@ const TeamPage = () => {
   };
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      {/* Hero Section — editorial */}
+      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
+        <div className="absolute inset-0 stripe-accent" />
         
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-primary text-sm font-medium tracking-wider uppercase mb-4 block"
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
             >
-              {t("team.subtitle")}
-            </motion.span>
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("team.subtitle")}</span>
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6"
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
             >
               {t("team.title")} <span className="gradient-text">{t("team.title2")}</span>
             </motion.h1>
-            <motion.p
+            <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              className="flex items-start gap-4"
             >
-              {t("team.description")}
-            </motion.p>
+              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
+              <p className="text-xl text-muted-foreground max-w-2xl">{t("team.description")}</p>
+            </motion.div>
           </div>
         </div>
       </section>
