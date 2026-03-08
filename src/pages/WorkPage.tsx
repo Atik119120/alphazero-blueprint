@@ -162,7 +162,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
               className="group cursor-pointer"
               onClick={() => onZoom(project)}
             >
-              <div className="relative rounded-xl overflow-hidden bg-card border border-border/40 hover:border-primary/50 transition-all duration-500 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.15)] hover:-translate-y-1">
+              <div className="relative rounded-xl overflow-hidden bg-card border border-border/40 hover:border-primary/50 transition-all duration-500 hover:-translate-y-1">
                 {/* SQUARE aspect ratio */}
                 <div className="relative overflow-hidden aspect-square">
                   <img
