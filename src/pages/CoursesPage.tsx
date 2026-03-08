@@ -446,11 +446,6 @@ const CoursesPage = () => {
                                 </span>
                               )}
                             </div>
-                            <div className="absolute top-3 right-3">
-                              <span className={`px-3 py-1 rounded-lg text-xs font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-primary-foreground' : 'bg-white/20 text-primary-foreground'}`}>
-                                {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                              </span>
-                            </div>
                             <div className="absolute top-1/2 left-5 -translate-y-1/2">
                               <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
                                 <CourseIcon className="w-7 h-7 text-white" />
