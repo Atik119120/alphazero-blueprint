@@ -301,6 +301,7 @@ const Navbar = () => {
                         {[
                           { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
                           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
+                          { name: language === "bn" ? "যোগদান" : "Join Team", href: "/join-team", icon: ArrowUpRight },
                           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
                           { name: language === "bn" ? "লগইন" : "Sign In", href: "/student/login", icon: User },
                         ].map((item) => {
