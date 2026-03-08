@@ -48,6 +48,13 @@ const AIChatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Hide chatbot on admin and student dashboard routes
+  const hiddenRoutes = ['/admin', '/student', '/teacher'];
+  const shouldHide = hiddenRoutes.some(route => location.pathname.startsWith(route));
+
+  if (shouldHide) return null;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
