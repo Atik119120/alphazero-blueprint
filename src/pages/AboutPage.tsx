@@ -183,7 +183,7 @@ const AboutPage = () => {
                 transition={{ duration: 0.6 }}
                 className="relative"
               >
-                {/* Main Logo Card with Glow */}
+                {/* Main Logo Card */}
                 <div className="relative">
                   <motion.div
                     whileHover={{ scale: 1.02 }}

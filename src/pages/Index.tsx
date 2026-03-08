@@ -526,7 +526,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.3)]"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold transition-all duration-300"
                 >
                   {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
                 </Link>
