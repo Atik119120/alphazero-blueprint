@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play } from "lucide-react";
+import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play, Mic, MicOff, Square } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
