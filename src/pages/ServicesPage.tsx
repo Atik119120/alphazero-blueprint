@@ -98,17 +98,13 @@ const ServicesPage = () => {
       <section className="py-20 lg:py-28 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="flex flex-col lg:flex-row items-end justify-between gap-6 mb-14"
-            >
-              <div>
-                <span className="text-xs font-bold tracking-[0.3em] uppercase text-primary mb-3 block">What We Offer</span>
-                <h2 className="text-3xl lg:text-5xl font-display font-bold">{t("services.whatWeOffer")}</h2>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
+                <Zap size={14} className="text-primary" />
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">What We Offer</span>
               </div>
-              <p className="text-muted-foreground max-w-md text-base lg:text-right">{t("services.whatWeOfferDesc")}</p>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold">{t("services.whatWeOffer")}</h2>
+              <p className="text-muted-foreground max-w-lg mx-auto mt-4">{t("services.whatWeOfferDesc")}</p>
             </motion.div>
 
             {isLoading ? (
