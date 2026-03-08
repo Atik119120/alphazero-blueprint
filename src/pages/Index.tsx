@@ -78,16 +78,21 @@ const Index = () => {
         {/* Animated mesh background */}
         <div className="absolute inset-0 mesh-bg" />
         
-        {/* Floating orbs */}
+        {/* Floating orbs - more visible in light mode */}
         <motion.div
-          className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/[0.07] blur-[100px]"
+          className="absolute top-1/4 -left-32 w-96 h-96 rounded-full bg-primary/[0.12] dark:bg-primary/[0.07] blur-[100px]"
           animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-[hsl(var(--gradient-end)/0.06)] blur-[100px]"
+          className="absolute bottom-1/4 -right-32 w-80 h-80 rounded-full bg-[hsl(215,100%,60%)]/[0.1] dark:bg-[hsl(var(--gradient-end)/0.06)] blur-[100px]"
           animate={{ x: [0, -20, 0], y: [0, 30, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[hsl(195,80%,85%)]/[0.15] dark:bg-transparent blur-[120px]"
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
         />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
