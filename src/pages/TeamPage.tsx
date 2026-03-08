@@ -127,7 +127,7 @@ const TeamPage = () => {
                     label: link.label
                   }));
                   
-                  return (
+                    return (
                     <motion.div
                       key={member.id}
                       initial={{ opacity: 0, y: 30 }}
@@ -149,65 +149,86 @@ const TeamPage = () => {
                             onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
                           />
                           
-                          {/* Dark gradient overlay from bottom */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                          {/* Gradient overlay - intensifies on hover */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent group-hover:from-black/100 group-hover:via-black/50 transition-all duration-500" />
                           
-                          {/* Editorial index watermark */}
-                          <span className="absolute top-3 right-4 text-[3.5rem] font-display font-black text-white/[0.06] leading-none select-none">
+                          {/* Corner decorative frame */}
+                          <div className="absolute top-3 left-3 w-8 h-8 border-l-2 border-t-2 border-primary/40 rounded-tl-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="absolute top-3 right-3 w-8 h-8 border-r-2 border-t-2 border-primary/40 rounded-tr-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          
+                          {/* Editorial index - top right, large */}
+                          <span className="absolute top-4 right-5 text-[4.5rem] font-display font-black text-white/[0.04] leading-none select-none group-hover:text-primary/[0.08] transition-colors duration-500">
                             {String(index + 1).padStart(2, '0')}
                           </span>
 
-                          {/* Active dot */}
-                          <div className="absolute top-4 left-4">
+                          {/* Active dot with label */}
+                          <div className="absolute top-4 left-4 flex items-center gap-2">
                             <span className="relative flex h-2 w-2">
                               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                             </span>
+                            <span className="text-[9px] uppercase tracking-[0.15em] text-primary/80 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">Active</span>
+                          </div>
+
+                          {/* Social links - side bar, slides in on hover */}
+                          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 translate-x-12 group-hover:translate-x-0 transition-transform duration-500">
+                            {socials.slice(0, 5).map((s, idx) => (
+                              <motion.a
+                                key={idx}
+                                href={s.href}
+                                target={s.href.startsWith('mailto:') ? undefined : '_blank'}
+                                rel="noopener noreferrer"
+                                className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md hover:bg-primary hover:text-primary-foreground text-white/80 flex items-center justify-center transition-all duration-300 border border-white/10"
+                                title={s.label}
+                                style={{ transitionDelay: `${idx * 50}ms` }}
+                                whileHover={{ scale: 1.15 }}
+                              >
+                                {s.icon}
+                              </motion.a>
+                            ))}
                           </div>
 
                           {/* Bottom content overlay */}
-                          <div className="absolute bottom-0 left-0 right-0 p-5 space-y-2.5">
-                            <h3 className="text-lg font-display font-bold text-white leading-tight">
+                          <div className="absolute bottom-0 left-0 right-0 p-5 space-y-2">
+                            {/* Thin primary line above name */}
+                            <div className="w-8 h-0.5 bg-primary rounded-full mb-1 group-hover:w-12 transition-all duration-500" />
+                            
+                            <h3 className="text-lg font-display font-bold text-white leading-tight tracking-tight">
                               {member.name}
                             </h3>
                             
                             {/* Role tags */}
                             <div className="flex flex-wrap gap-1.5">
                               {roles.map((role, idx) => (
-                                <span key={idx} className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-primary/20 text-primary border border-primary/30 backdrop-blur-sm">
+                                <span key={idx} className="px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded-full bg-primary/15 text-primary border border-primary/25 backdrop-blur-sm">
                                   {role.trim()}
                                 </span>
                               ))}
                             </div>
 
-                            {/* Bio - visible on hover */}
-                            <div className="overflow-hidden max-h-0 group-hover:max-h-24 transition-all duration-500">
+                            {/* Bio - expands on hover */}
+                            <div className="overflow-hidden max-h-0 group-hover:max-h-20 transition-all duration-500 ease-out">
                               {member.bio && (
-                                <p className="text-white/70 text-xs leading-relaxed line-clamp-3 pt-1">{member.bio}</p>
+                                <p className="text-white/60 text-[11px] leading-relaxed line-clamp-3 pt-1">{member.bio}</p>
                               )}
                             </div>
                             
-                            {/* Social links */}
-                            <div className="flex flex-wrap gap-1.5 pt-1">
-                              {socials.map((s, idx) => (
-                                <motion.a
-                                  key={idx}
-                                  href={s.href}
-                                  target={s.href.startsWith('mailto:') ? undefined : '_blank'}
-                                  rel="noopener noreferrer"
-                                  className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground text-white/80 flex items-center justify-center transition-all duration-300"
-                                  title={s.label}
-                                  whileHover={{ scale: 1.2, y: -2 }}
-                                >
-                                  {s.icon}
-                                </motion.a>
-                              ))}
-                            </div>
+                            {/* Extra social links if > 5 */}
+                            {socials.length > 5 && (
+                              <div className="flex flex-wrap gap-1.5 pt-1 overflow-hidden max-h-0 group-hover:max-h-16 transition-all duration-500">
+                                {socials.slice(5).map((s, idx) => (
+                                  <a key={idx} href={s.href} target={s.href.startsWith('mailto:') ? undefined : '_blank'} rel="noopener noreferrer"
+                                    className="w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm hover:bg-primary hover:text-primary-foreground text-white/70 flex items-center justify-center transition-all duration-300" title={s.label}>
+                                    {s.icon}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                         
-                        {/* Accent line */}
-                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary to-primary/40 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                        {/* Bottom accent line */}
+                        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-primary/60 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                       </div>
                     </motion.div>
                   );
