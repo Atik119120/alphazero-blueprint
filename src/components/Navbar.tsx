@@ -93,11 +93,11 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="AlphaZero Logo" 
-                className="h-8 w-auto invert relative z-10"
+                className="h-8 w-auto brightness-0 dark:invert relative z-10"
               />
               <div className="hidden sm:flex flex-col relative z-10">
                 <span className="text-[10px] text-primary font-bold tracking-[0.2em] uppercase leading-tight">Creative</span>
-                <span className="text-[10px] text-white/40 tracking-[0.15em] leading-tight">Agency</span>
+                <span className="text-[10px] text-muted-foreground tracking-[0.15em] leading-tight">Agency</span>
               </div>
             </Link>
 
