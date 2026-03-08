@@ -96,8 +96,8 @@ const TeamPage = () => {
         </div>
       </section>
 
-      {/* Team Grid */}
-      <section className="py-20">
+      {/* Team Grid — editorial */}
+      <section className="py-20 lg:py-28">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {isLoading ? (
@@ -105,27 +105,24 @@ const TeamPage = () => {
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : !teamMembers || teamMembers.length === 0 ? (
-              <div className="text-center py-20 text-muted-foreground">
-                No team members found.
-              </div>
+              <div className="text-center py-20 text-muted-foreground">No team members found.</div>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
                 {teamMembers.map((member, index) => (
                   <motion.div
                     key={member.id}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
+                    transition={{ delay: index * 0.08 }}
                     className="group h-full"
                   >
-                    {/* Card Container - Horizontal Layout */}
-                    <div className="relative h-full flex gap-4 bg-gradient-to-r from-secondary/50 to-background rounded-2xl p-4 border border-border group-hover:border-primary/40 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/10">
-                      {/* Active Status Dot */}
+                    <div className="relative h-full flex gap-4 bg-card/80 dark:bg-card/50 rounded-xl p-4 border border-border/50 dark:border-border/30 group-hover:border-primary/30 transition-all duration-400">
+                      {/* Active dot */}
                       <div className="absolute -top-1 -left-1 z-20">
-                        <span className="relative flex h-4 w-4">
+                        <span className="relative flex h-3 w-3">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-4 w-4 bg-primary border-2 border-background"></span>
+                          <span className="relative inline-flex rounded-full h-3 w-3 bg-primary border-2 border-background"></span>
                         </span>
                       </div>
                       
