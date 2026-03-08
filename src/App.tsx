@@ -10,6 +10,13 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
 
+// Preload logos immediately
+import logoSrc from "@/assets/logo.png";
+import logoFullSrc from "@/assets/logo-full.png";
+const preloadImg = (src: string) => { const img = new Image(); img.src = src; };
+preloadImg(logoSrc);
+preloadImg(logoFullSrc);
+
 // Main site pages - loaded immediately for instant navigation
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
