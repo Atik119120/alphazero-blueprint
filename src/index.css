@@ -69,8 +69,8 @@
 
     /* Custom AlphaZero tokens */
     --gradient-start: 185 100% 40%;
-    --gradient-start: 185 100% 40%;
-    --gradient-end: 200 100% 50%;
+    --gradient-mid: 195 100% 45%;
+    --gradient-end: 210 100% 55%;
     
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
@@ -80,28 +80,29 @@
   }
 
   .dark {
-    --background: 0 0% 0%;
+    --background: 220 15% 4%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 4%;
+    --card: 220 15% 7%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 4%;
+    --popover: 220 15% 7%;
     --popover-foreground: 0 0% 98%;
     --primary: 185 100% 50%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 8%;
+    --primary-foreground: 220 15% 4%;
+    --secondary: 220 12% 12%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 220 12% 16%;
+    --muted-foreground: 220 10% 55%;
     --accent: 185 100% 50%;
-    --accent-foreground: 0 0% 0%;
+    --accent-foreground: 220 15% 4%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
+    --border: 220 12% 16%;
+    --input: 220 12% 16%;
     --ring: 185 100% 50%;
     
     --gradient-start: 185 100% 50%;
-    --gradient-end: 200 100% 60%;
+    --gradient-mid: 195 100% 55%;
+    --gradient-end: 210 100% 60%;
   }
 }
 
@@ -136,7 +137,6 @@
     font-family: var(--font-body-bn);
   }
 
-  /* h1 - Main titles use SabinaShorolipi */
   html.font-bengali h1 {
     font-family: var(--font-display-bn);
     font-weight: 300;
@@ -144,7 +144,6 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* h2, h3 - Subtitles use MahinRafid */
   html.font-bengali h2,
   html.font-bengali h3 {
     font-family: var(--font-subtitle-bn);
@@ -153,7 +152,6 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* h4, h5, h6 - Smaller headings use MahinRafid */
   html.font-bengali h4,
   html.font-bengali h5,
   html.font-bengali h6 {
@@ -165,7 +163,7 @@
 @layer utilities {
 
   .gradient-text {
-    background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+    background: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -189,7 +187,40 @@
     pointer-events: none;
   }
 
-  /* Grain/noise texture overlay for unique feel */
+  /* Glass card effect */
+  .glass-card {
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+  .dark .glass-card {
+    background: hsl(var(--card) / 0.4);
+    border-color: hsl(var(--border) / 0.3);
+  }
+
+  /* Shimmer animation for loading/accent */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(var(--primary) / 0.06) 50%,
+      transparent 100%
+    );
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Grain/noise texture overlay */
   .grain-texture {
     position: relative;
   }
@@ -197,7 +228,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    opacity: 0.025;
+    opacity: 0.02;
     pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-repeat: repeat;
@@ -205,38 +236,27 @@
     z-index: 1;
   }
   .dark .grain-texture::after {
-    opacity: 0.04;
+    opacity: 0.03;
   }
 
-  /* Diagonal section divider */
-  .diagonal-top {
-    clip-path: polygon(0 4%, 100% 0%, 100% 100%, 0% 100%);
+  /* Glow effect behind elements */
+  .glow-primary {
+    box-shadow: 0 0 60px -12px hsl(var(--primary) / 0.25);
+  }
+  .dark .glow-primary {
+    box-shadow: 0 0 80px -12px hsl(var(--primary) / 0.2);
   }
 
-  /* Striped accent */
-  .stripe-accent {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 4px,
-      hsl(var(--primary) / 0.04) 4px,
-      hsl(var(--primary) / 0.04) 5px
-    );
+  /* Section mesh background */
+  .mesh-bg {
+    background-image:
+      radial-gradient(at 20% 80%, hsl(var(--primary) / 0.06) 0%, transparent 50%),
+      radial-gradient(at 80% 20%, hsl(var(--gradient-end) / 0.05) 0%, transparent 50%);
   }
-  .dark .stripe-accent {
-    background-image: repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 4px,
-      hsl(var(--primary) / 0.06) 4px,
-      hsl(var(--primary) / 0.06) 5px
-    );
-  }
-
-  /* Editorial left-border accent */
-  .editorial-accent {
-    border-left: 3px solid hsl(var(--primary));
-    padding-left: 1rem;
+  .dark .mesh-bg {
+    background-image:
+      radial-gradient(at 20% 80%, hsl(var(--primary) / 0.08) 0%, transparent 50%),
+      radial-gradient(at 80% 20%, hsl(var(--gradient-end) / 0.06) 0%, transparent 50%);
   }
 
   .safe-bottom {
