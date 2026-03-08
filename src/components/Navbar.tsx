@@ -83,8 +83,8 @@ const Navbar = () => {
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
             className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
               isScrolled
-                ? "bg-[hsl(220,20%,10%)]/95 dark:bg-[hsl(220,20%,8%)]/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.05)] border border-white/[0.06]"
-                : "bg-[hsl(220,20%,10%)]/90 dark:bg-[hsl(220,20%,8%)]/90 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.04)] border border-white/[0.04]"
+                ? "bg-background/95 dark:bg-[hsl(220,20%,8%)]/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.05)] border border-border/30 dark:border-white/[0.06]"
+                : "bg-background/80 dark:bg-[hsl(220,20%,8%)]/90 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.04)] border border-border/20 dark:border-white/[0.04]"
             }`}
           >
             {/* Logo */}
@@ -93,17 +93,17 @@ const Navbar = () => {
               <img 
                 src={logo} 
                 alt="AlphaZero Logo" 
-                className="h-8 w-auto invert relative z-10"
+                className="h-8 w-auto brightness-0 dark:invert relative z-10"
               />
               <div className="hidden sm:flex flex-col relative z-10">
                 <span className="text-[10px] text-primary font-bold tracking-[0.2em] uppercase leading-tight">Creative</span>
-                <span className="text-[10px] text-white/40 tracking-[0.15em] leading-tight">Agency</span>
+                <span className="text-[10px] text-muted-foreground tracking-[0.15em] leading-tight">Agency</span>
               </div>
             </Link>
 
             {/* Desktop Navigation - Pill style */}
             <div className="hidden lg:flex items-center">
-              <div className="flex items-center bg-white/[0.06] rounded-full px-1.5 py-1 border border-white/[0.06]">
+              <div className="flex items-center bg-foreground/[0.04] dark:bg-white/[0.06] rounded-full px-1.5 py-1 border border-foreground/[0.06] dark:border-white/[0.06]">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
                   return (
@@ -122,7 +122,7 @@ const Navbar = () => {
                       <span className={`relative z-10 transition-colors duration-200 ${
                         isActive 
                           ? "text-primary-foreground font-semibold" 
-                          : "text-white/50 hover:text-white/90"
+                          : "text-muted-foreground hover:text-foreground"
                       }`}>
                         {link.name}
                       </span>
@@ -136,19 +136,19 @@ const Navbar = () => {
                 {/* Search */}
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center hover:bg-white/[0.15] transition-all duration-200 group"
+                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200 group"
                   title={language === "bn" ? "সার্চ করুন" : "Search"}
                 >
-                  <Search size={16} className="text-white/50 group-hover:text-primary transition-colors" />
+                  <Search size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
                 </button>
 
                 {/* Login */}
                 <Link
                   to="/student/login"
-                  className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center hover:bg-white/[0.15] transition-all duration-200 group"
+                  className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200 group"
                   title={language === "bn" ? "লগইন" : "Login"}
                 >
-                  <User size={16} className="text-white/50 group-hover:text-primary transition-colors" />
+                  <User size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
 
                 {/* Language Toggle */}
@@ -166,7 +166,7 @@ const Navbar = () => {
                 {mounted && (
                   <button
                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="w-9 h-9 rounded-full bg-white/[0.08] border border-white/[0.06] flex items-center justify-center overflow-hidden group hover:bg-white/[0.15] transition-all duration-200"
+                    className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center overflow-hidden group hover:bg-foreground/[0.12] dark:hover:bg-white/[0.15] transition-all duration-200"
                   >
                     <motion.div
                       animate={{ rotate: theme === "dark" ? 0 : 180 }}
@@ -184,7 +184,7 @@ const Navbar = () => {
                 {/* CTA Button */}
                 <Link
                   to="/contact"
-                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-white text-[hsl(220,20%,10%)] rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)] flex items-center gap-1.5 border border-white/80"
+                  className="ml-1 group relative overflow-hidden px-5 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 hover:shadow-[0_0_24px_hsl(var(--primary)/0.4)] flex items-center gap-1.5"
                 >
                   <span className="relative z-10">{t("nav.startProject")}</span>
                   <ArrowUpRight size={14} className="relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -197,10 +197,10 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden relative w-11 h-11 flex items-center justify-center group"
             >
-              <div className="absolute inset-0 bg-white/[0.08] rounded-xl border border-white/[0.06] group-hover:bg-white/[0.12] transition-all" />
+              <div className="absolute inset-0 bg-foreground/[0.06] dark:bg-white/[0.08] rounded-xl border border-foreground/[0.06] dark:border-white/[0.06] group-hover:bg-foreground/[0.1] dark:group-hover:bg-white/[0.12] transition-all" />
               <motion.div className="relative z-10 flex flex-col items-center justify-center gap-1.5">
                 <motion.span 
-                  className="w-5 h-[2px] bg-white/80 rounded-full origin-center"
+                  className="w-5 h-[2px] bg-foreground/80 rounded-full origin-center"
                   animate={{ 
                     rotate: isMobileMenuOpen ? 45 : 0,
                     y: isMobileMenuOpen ? 4 : 0,
@@ -208,7 +208,7 @@ const Navbar = () => {
                   transition={{ duration: 0.15 }}
                 />
                 <motion.span 
-                  className="w-5 h-[2px] bg-white/80 rounded-full"
+                  className="w-5 h-[2px] bg-foreground/80 rounded-full"
                   animate={{ 
                     opacity: isMobileMenuOpen ? 0 : 1,
                     scaleX: isMobileMenuOpen ? 0 : 1
@@ -216,7 +216,7 @@ const Navbar = () => {
                   transition={{ duration: 0.1 }}
                 />
                 <motion.span 
-                  className="w-5 h-[2px] bg-white/80 rounded-full origin-center"
+                  className="w-5 h-[2px] bg-foreground/80 rounded-full origin-center"
                   animate={{ 
                     rotate: isMobileMenuOpen ? -45 : 0,
                     y: isMobileMenuOpen ? -4 : 0,
