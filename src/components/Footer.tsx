@@ -224,7 +224,7 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="border-t border-border">
-          <div className="container mx-auto px-5 sm:px-6 py-3 sm:py-6 pb-[72px] sm:pb-6">
+          <div className="container mx-auto px-5 sm:px-6 py-3 sm:py-6 pb-16 sm:pb-6">
             <div className="max-w-6xl mx-auto flex flex-row items-center justify-between gap-2 sm:gap-4">
               <div className="flex items-center gap-2 sm:gap-4 text-[10px] sm:text-sm text-muted-foreground">
                 <span>© {new Date().getFullYear()} AlphaZero</span>
