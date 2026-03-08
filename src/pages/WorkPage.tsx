@@ -106,8 +106,8 @@ const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: W
               {thumb ? (
                 <img src={thumb} alt={project.title} className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center">
-                  <Sparkles size={24} className="text-primary/40" />
+                <div className="w-full h-full bg-secondary/40 flex items-center justify-center">
+                  <Sparkles size={24} className="text-muted-foreground" />
                 </div>
               )}
               {isVid && (
@@ -146,7 +146,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
             <Sparkles size={12} /> Graphic Design
           </span>
           <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Our <span className="gradient-text">Creative Designs</span>
+            Our <span className="text-primary">Creative Designs</span>
           </h2>
         </motion.div>
 
@@ -162,7 +162,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
               className="group cursor-pointer"
               onClick={() => onZoom(project)}
             >
-              <div className="relative rounded-xl overflow-hidden bg-card border border-border/40 hover:border-primary/50 transition-all duration-500 hover:shadow-[0_8px_32px_hsl(var(--primary)/0.15)] hover:-translate-y-1">
+              <div className="relative rounded-xl overflow-hidden bg-card border border-border/40 hover:border-primary/50 transition-all duration-500 hover:-translate-y-1">
                 {/* SQUARE aspect ratio */}
                 <div className="relative overflow-hidden aspect-square">
                   <img
@@ -172,7 +172,7 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all duration-400">
-                    <div className="w-11 h-11 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
+                    <div className="w-11 h-11 rounded-full bg-primary/90 flex items-center justify-center scale-0 group-hover:scale-100 transition-transform duration-500">
                       <ZoomIn size={18} className="text-primary-foreground" />
                     </div>
                   </div>
@@ -210,7 +210,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
             <Globe size={12} /> Web Design
           </span>
           <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Web <span className="gradient-text">Projects</span>
+            Web <span className="text-primary">Projects</span>
           </h2>
         </motion.div>
 
@@ -231,7 +231,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                   href={siteUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]"
+                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500"
                 >
                   {/* Browser header */}
                   <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/30">
@@ -247,7 +247,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                     <ArrowUpRight size={14} className="text-muted-foreground/60 group-hover:text-primary transition-colors" />
                   </div>
 
-                  <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/5 via-secondary/30 to-primary/10">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-secondary/30">
                     {project.image_url ? (
                       <img src={project.image_url} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                     ) : (
@@ -259,7 +259,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                       </div>
                     )}
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-400">
-                      <div className="px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2">
+                      <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2">
                         <ExternalLink size={16} className="text-primary-foreground" />
                         <span className="text-primary-foreground text-sm font-semibold">Visit Site</span>
                       </div>
@@ -272,7 +272,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
                     </h4>
                     {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
                     <div className="flex items-center gap-1.5 mt-2.5">
-                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center">
+                        <div className="w-4 h-4 rounded-full bg-primary/80 flex items-center justify-center">
                         <Sparkles size={8} className="text-primary-foreground" />
                       </div>
                       <span className="text-[10px] text-foreground/70 font-medium">Alpha Zero</span>
@@ -318,7 +318,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
             <Play size={12} /> Video Editing
           </span>
           <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Video <span className="gradient-text">Productions</span>
+            Video <span className="text-primary">Productions</span>
           </h2>
         </motion.div>
 
@@ -336,7 +336,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                 transition={{ delay: idx * 0.06, duration: 0.5 }}
                 className="group"
               >
-                <div className="relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]">
+                <div className="relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500">
                   <div
                     className="relative overflow-hidden cursor-pointer aspect-video"
                     onClick={() => {
@@ -351,7 +351,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
                     <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 flex items-center justify-center transition-all duration-400">
-                      <div className="w-14 h-14 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500 shadow-lg">
+                      <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
                         <Play size={24} className="text-primary-foreground ml-0.5" fill="currentColor" />
                       </div>
                     </div>
@@ -362,7 +362,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                     {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
                     <div className="flex items-center justify-between mt-2.5">
                       <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/50 flex items-center justify-center">
+                        <div className="w-4 h-4 rounded-full bg-primary/80 flex items-center justify-center">
                           <Sparkles size={8} className="text-primary-foreground" />
                         </div>
                         <span className="text-[10px] text-foreground/70 font-medium">Alpha Zero</span>
@@ -390,7 +390,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
           return (
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8"
               onClick={() => setActiveVideo(null)}
             >
               <button onClick={() => setActiveVideo(null)}
@@ -458,35 +458,28 @@ const WorkPage = () => {
 
   return (
     <Layout>
-      {/* ═══ HERO with glassmorphic background ═══ */}
+      {/* ═══ HERO ═══ */}
       <section className="relative py-24 lg:py-36 overflow-hidden">
         <div className="absolute inset-0 bg-background" />
-        {/* Glassmorphic decorative element */}
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
-          <div className="w-[500px] h-[500px] rounded-full bg-primary/8 blur-[100px]" />
-        </div>
-        <div className="absolute left-1/4 top-1/3 w-[200px] h-[200px] rounded-full bg-primary/5 blur-[80px] pointer-events-none" />
-        <div className="absolute right-1/4 bottom-1/4 w-[250px] h-[250px] rounded-full bg-accent/5 blur-[90px] pointer-events-none" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm text-primary text-xs font-medium tracking-wide mb-6">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-6">
                 <Sparkles size={12} /> Creative Portfolio
               </span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }}
               className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-[1] mb-6">
-              Our Creative<br /><span className="gradient-text">Works & Projects</span>
+              Our Creative<br /><span className="text-primary">Works & Projects</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.2 }}
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {t("work.description") || "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion."}
             </motion.p>
 
-            {/* Glassmorphic card accent below heading */}
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-10 mx-auto max-w-md px-6 py-3 rounded-2xl bg-card/40 backdrop-blur-xl border border-border/30 shadow-lg">
+              className="mt-10 mx-auto max-w-md px-6 py-3 rounded-2xl bg-card border border-border/30">
               <p className="text-sm text-muted-foreground font-medium">
                 ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} Projects • Graphic Design • Web • Video
               </p>
@@ -524,11 +517,11 @@ const WorkPage = () => {
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4 tracking-tight">{t("work.likeWhatYouSee") || "Like What You See?"}</h2>
             <p className="text-muted-foreground text-lg mb-10 leading-relaxed">{t("work.letsCreate") || "Let's create something extraordinary together. Reach out to us now!"}</p>
             <div className="flex flex-wrap justify-center gap-4">
-              <a href="tel:+8801410190019" className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500 hover:shadow-[0_8px_40px_hsl(var(--primary)/0.3)] hover:scale-[1.02]">
+              <a href="tel:+8801410190019" className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500">
                 <Phone size={20} /> Call Us
               </a>
               <a href="https://wa.me/8801846484200" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-2xl font-display font-semibold text-lg transition-all duration-500 hover:shadow-[0_8px_40px_rgba(37,211,102,0.3)] hover:scale-[1.02]">
+                className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-secondary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500">
                 <MessageCircle size={20} /> WhatsApp
               </a>
             </div>
@@ -540,7 +533,7 @@ const WorkPage = () => {
       <AnimatePresence>
         {lightboxImage && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8 cursor-pointer"
+            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8 cursor-pointer"
             onClick={() => setLightboxImage(null)}>
             <button onClick={() => setLightboxImage(null)}
               className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
@@ -550,7 +543,7 @@ const WorkPage = () => {
               <motion.img initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
                 src={lightboxImage.url} alt={lightboxImage.title}
-                className="max-w-full max-h-[70vh] object-contain rounded-xl shadow-2xl cursor-default" />
+                className="max-w-full max-h-[70vh] object-contain rounded-xl cursor-default" />
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
                 className="mt-6 text-center max-w-lg">
                 <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
