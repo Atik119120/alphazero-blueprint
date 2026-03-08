@@ -185,6 +185,16 @@ const CoursesPage = () => {
   // Enrollment modal state
   const [enrollmentCourse, setEnrollmentCourse] = useState<Course | null>(null);
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
+  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (courseId: string) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      if (next.has(courseId)) next.delete(courseId);
+      else next.add(courseId);
+      return next;
+    });
+  };
 
   const displayCourses = useMemo(() => {
     return dbCourses.map(course => ({
