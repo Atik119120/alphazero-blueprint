@@ -231,9 +231,9 @@ const Navbar = () => {
         ];
 
         return (
-          <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 lg:hidden">
-            <div className="bg-card/85 backdrop-blur-2xl rounded-[20px] border border-border/40 shadow-xl shadow-black/15 dark:shadow-black/40 px-2 py-1.5 safe-bottom">
-              <div className="flex items-end gap-0.5">
+          <div className="fixed bottom-3 left-3 right-3 z-50 lg:hidden">
+            <div className="bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 shadow-lg shadow-black/10 dark:shadow-black/30">
+              <div className="grid grid-cols-7 py-2 px-1 safe-bottom">
                 {bottomNavItems.map((item) => {
                   const IconComp = item.icon;
                   const isActive = location.pathname === item.href;
@@ -242,30 +242,36 @@ const Navbar = () => {
                     <Link
                       key={item.href}
                       to={item.href}
-                      className="relative flex flex-col items-center"
+                      className="relative flex flex-col items-center gap-0.5 py-1"
                     >
-                      {isActive ? (
+                      {/* Active pill background */}
+                      {isActive && (
                         <motion.div
-                          layoutId="dock-active"
-                          className="flex flex-col items-center gap-0.5 px-3 pb-1"
-                          transition={{ type: "spring", bounce: 0.3, duration: 0.45 }}
-                        >
-                          <motion.div
-                            initial={{ y: 0 }}
-                            animate={{ y: -6 }}
-                            transition={{ type: "spring", bounce: 0.4, duration: 0.4 }}
-                            className="w-10 h-10 rounded-2xl bg-primary flex items-center justify-center shadow-md shadow-primary/30"
-                          >
-                            <IconComp size={18} strokeWidth={2.2} className="text-primary-foreground" />
-                          </motion.div>
-                          <span className="text-[8px] font-bold text-primary leading-none">{item.name}</span>
-                        </motion.div>
-                      ) : (
-                        <div className="flex flex-col items-center gap-1 px-2.5 py-1.5">
-                          <IconComp size={17} strokeWidth={1.5} className="text-muted-foreground" />
-                          <span className="text-[8px] font-medium text-muted-foreground leading-none">{item.name}</span>
-                        </div>
+                          layoutId="bottom-nav-active"
+                          className="absolute inset-x-1 inset-y-0 bg-primary/12 dark:bg-primary/15 rounded-xl"
+                          transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                        />
                       )}
+                      <div className="relative z-10 flex flex-col items-center gap-0.5">
+                        <IconComp 
+                          size={18} 
+                          strokeWidth={isActive ? 2.4 : 1.6} 
+                          className={`transition-colors duration-200 ${isActive ? "text-primary" : "text-muted-foreground"}`}
+                        />
+                        <span className={`text-[9px] leading-tight transition-colors duration-200 ${
+                          isActive ? "font-bold text-primary" : "font-medium text-muted-foreground"
+                        }`}>
+                          {item.name}
+                        </span>
+                        {/* Active dot */}
+                        {isActive && (
+                          <motion.div
+                            layoutId="bottom-nav-dot"
+                            className="w-1 h-1 rounded-full bg-primary"
+                            transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
+                          />
+                        )}
+                      </div>
                     </Link>
                   );
                 })}
