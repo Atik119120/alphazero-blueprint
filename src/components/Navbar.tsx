@@ -197,10 +197,9 @@ const Navbar = () => {
             <div className="flex items-center gap-1.5 lg:hidden">
               <Link
                 to="/student/login"
-                className="h-8 px-3 rounded-full bg-primary text-primary-foreground flex items-center gap-1.5 text-xs font-semibold"
+                className="w-9 h-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center"
               >
-                <User size={14} />
-                {language === "bn" ? "লগইন" : "Login"}
+                <User size={16} />
               </Link>
               {mounted && (
                 <button
