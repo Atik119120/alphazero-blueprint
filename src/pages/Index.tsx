@@ -240,8 +240,8 @@ const Index = () => {
       </section>
 
       {/* What We Do — asymmetric editorial section */}
-      <section className="py-20 lg:py-28 relative overflow-hidden grain-texture">
-        <div className="absolute inset-0 stripe-accent" />
+      <section className="py-20 lg:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
