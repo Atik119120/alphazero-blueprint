@@ -21,7 +21,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logo from "@/assets/logo.png";
+import logoFull from "@/assets/logo-full.png";
 import SearchModal from "./SearchModal";
 
 const Navbar = () => {
@@ -89,17 +89,13 @@ const Navbar = () => {
             }`}
           >
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2.5 group relative shrink-0">
+            <Link to="/" className="flex items-center group relative shrink-0">
               <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img 
-                src={logo} 
+                src={logoFull} 
                 alt="AlphaZero Logo" 
-                className="h-8 w-auto brightness-0 dark:invert relative z-10"
+                className="h-7 sm:h-8 w-auto relative z-10 brightness-0 dark:invert transition-all duration-300"
               />
-              <div className="hidden sm:flex flex-col relative z-10">
-                <span className="text-[10px] text-primary font-bold tracking-[0.2em] uppercase leading-tight">Creative</span>
-                <span className="text-[10px] text-muted-foreground tracking-[0.15em] leading-tight">Agency</span>
-              </div>
             </Link>
 
             {/* Desktop Navigation - Pill style */}
