@@ -264,13 +264,13 @@ const CoursesPage = () => {
 
   return (
     <Layout>
-      {/* Hero Section — editorial */}
-      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
-        <div className="absolute inset-0 stripe-accent" />
+      {/* Hero */}
+      <section className="py-28 lg:py-40 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6">
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
               <GraduationCap className="w-4 h-4 text-primary" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t.badge}</span>
             </motion.div>
@@ -278,20 +278,19 @@ const CoursesPage = () => {
               className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
               <span className="gradient-text">{t.title}</span>
             </motion.h1>
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="flex items-start gap-4 mb-8">
-              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
-              <p className="text-xl lg:text-2xl text-muted-foreground max-w-3xl">{t.subtitle}</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+              {t.subtitle}
+            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="flex flex-wrap justify-center gap-3">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card">
                 <Target className="w-4 h-4 text-primary" /><span className="text-sm">{t.beginnerFriendly}</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card">
                 <Award className="w-4 h-4 text-primary" /><span className="text-sm">{t.certificate}</span>
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-card/80 dark:bg-card/50 border border-border/50 dark:border-border/30">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card">
                 <Star className="w-4 h-4 text-primary" /><span className="text-sm">{t.expertTrainer}</span>
               </div>
             </motion.div>
