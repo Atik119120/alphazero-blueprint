@@ -83,8 +83,8 @@ const Navbar = () => {
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
             className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
               isScrolled
-                ? "bg-[hsl(220,20%,10%)]/95 dark:bg-[hsl(220,20%,8%)]/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.05)] border border-white/[0.06]"
-                : "bg-[hsl(220,20%,10%)]/90 dark:bg-[hsl(220,20%,8%)]/90 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.04)] border border-white/[0.04]"
+                ? "bg-background/95 dark:bg-[hsl(220,20%,8%)]/95 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.06)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),0_0_0_1px_rgba(255,255,255,0.05)] border border-border/30 dark:border-white/[0.06]"
+                : "bg-background/80 dark:bg-[hsl(220,20%,8%)]/90 backdrop-blur-2xl shadow-[0_4px_24px_rgba(0,0,0,0.08),0_0_0_1px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_rgba(0,0,0,0.2),0_0_0_1px_rgba(255,255,255,0.04)] border border-border/20 dark:border-white/[0.04]"
             }`}
           >
             {/* Logo */}
