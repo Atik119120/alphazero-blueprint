@@ -1,13 +1,15 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   GraduationCap, Monitor, Palette, Video, Camera, TrendingUp, Code, Sparkles, Bot, Globe,
-  CheckCircle2, BookOpen, Star, Zap, Target, Award, Clock, Wrench, Lock, Loader2, LucideIcon
+  CheckCircle2, BookOpen, Star, Zap, Target, Award, Clock, Wrench, Lock, Loader2, LucideIcon,
+  ArrowRight, Users, Play
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useRef } from "react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -262,52 +264,84 @@ const CoursesPage = () => {
     }
   };
 
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
+
   return (
     <Layout>
-      {/* Hero */}
-      <section className="py-28 lg:py-40 relative overflow-hidden">
+      {/* Hero - editorial cinematic */}
+      <section ref={heroRef} className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 mesh-bg" />
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
-              <GraduationCap className="w-4 h-4 text-primary" />
+        {/* Floating course icons */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {[GraduationCap, Palette, Code, Camera, Bot].map((Icon, i) => (
+            <motion.div key={i}
+              className="absolute text-primary/[0.04]"
+              style={{ left: `${15 + i * 18}%`, top: `${20 + (i % 3) * 25}%` }}
+              animate={{ y: [0, -20, 0], rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut" }}>
+              <Icon className="w-16 h-16 lg:w-24 lg:h-24" strokeWidth={1} />
+            </motion.div>
+          ))}
+        </div>
+        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10 py-28 lg:py-40">
+          <div className="max-w-5xl mx-auto text-center">
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t.badge}</span>
             </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, type: "spring", stiffness: 50 }}
+              className="text-5xl lg:text-8xl font-display font-bold mb-6 leading-[0.95] tracking-tight">
               <span className="gradient-text">{t.title}</span>
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+              className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
               {t.subtitle}
             </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="flex flex-wrap justify-center gap-3">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card">
-                <Target className="w-4 h-4 text-primary" /><span className="text-sm">{t.beginnerFriendly}</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card">
-                <Award className="w-4 h-4 text-primary" /><span className="text-sm">{t.certificate}</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full glass-card">
-                <Star className="w-4 h-4 text-primary" /><span className="text-sm">{t.expertTrainer}</span>
-              </div>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+              className="flex flex-wrap justify-center gap-4">
+              {[
+                { icon: Target, label: t.beginnerFriendly },
+                { icon: Award, label: t.certificate },
+                { icon: Star, label: t.expertTrainer },
+              ].map((item, i) => (
+                <motion.div key={i} whileHover={{ scale: 1.05, y: -2 }}
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-card cursor-default">
+                  <item.icon className="w-4 h-4 text-primary" /><span className="text-sm font-medium">{item.label}</span>
+                </motion.div>
+              ))}
             </motion.div>
           </div>
-        </div>
+        </motion.div>
+        {/* Scroll indicator */}
+        <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/20 flex justify-center pt-2">
+            <div className="w-1 h-2.5 rounded-full bg-primary/60" />
+          </div>
+        </motion.div>
       </section>
 
-      {/* About — editorial */}
-      <section className="py-16 border-y border-border/40 dark:border-border/20">
+      {/* Stats bar */}
+      <section className="border-y border-border/40">
         <div className="container mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
-              Alpha Academy <span className="gradient-text">{t.aboutTitle}</span>
-            </h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">{t.aboutDesc}</p>
-          </motion.div>
+          <div className="flex flex-wrap items-center justify-center divide-x divide-border/40 py-6">
+            {[
+              { num: `${displayCourses.length}+`, label: isBn ? "কোর্স" : "Courses" },
+              { num: "100%", label: isBn ? "অনলাইন" : "Online" },
+              { num: "24/7", label: isBn ? "সাপোর্ট" : "Support" },
+            ].map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="px-8 lg:px-16 py-2 text-center">
+                <p className="text-2xl lg:text-3xl font-display font-bold gradient-text">{stat.num}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -315,11 +349,13 @@ const CoursesPage = () => {
       <section className="py-20" id="courses">
         <div className="container mx-auto px-6">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-              {t.ourCourses} <span className="gradient-text">{t.coursesTitle}</span>
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.coursesSubtitle}</p>
+            className="flex items-end justify-between mb-14 max-w-7xl mx-auto">
+            <div>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">{isBn ? "কোর্স ক্যাটালগ" : "Course Catalog"}</span>
+              <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
+                {t.ourCourses} <span className="gradient-text">{t.coursesTitle}</span>
+              </h2>
+            </div>
           </motion.div>
 
           {coursesLoading && (
@@ -351,34 +387,38 @@ const CoursesPage = () => {
                 return (
                   <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group">
-                    <div className={`relative flex flex-col rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/30 transition-all duration-400 hover:-translate-y-1 hover:shadow-lg ${metadata.isSpecial ? 'ring-1 ring-primary/30' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/30' : ''}`}>
+                    <div className={`relative flex flex-col rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.08] ${metadata.isSpecial ? 'ring-1 ring-primary/20' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
                       
-                      {/* Thumbnail */}
+                      {/* Thumbnail with editorial number */}
                       {(() => {
                         const thumbnailUrl = course.thumbnail_url;
                         if (thumbnailUrl) {
                           return (
                             <div className="relative h-44 overflow-hidden">
                               <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                              <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+                              {/* Editorial index */}
+                              <span className="absolute bottom-2 right-3 text-[4rem] font-display font-black text-white/[0.08] leading-none select-none">
+                                {String(index + 1).padStart(2, '0')}
+                              </span>
                               {/* Badges */}
-                              <div className="absolute top-3 right-3 flex gap-1.5">
+                              <div className="absolute top-3 left-3 flex gap-1.5">
                                 {metadata.isSpecial && (
-                                  <span className="px-2.5 py-1 rounded-full bg-primary/80 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                  <span className="px-2.5 py-1 rounded-full bg-primary/90 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
                                     <Sparkles className="w-3 h-3" />{t.special}
                                   </span>
                                 )}
                                 {metadata.isUpcoming && (
-                                  <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                  <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
                                     <Clock className="w-3 h-3" />{t.upcoming}
                                   </span>
                                 )}
                               </div>
-                              {/* Price overlay */}
-                              <div className="absolute bottom-3 left-3">
-                                <span className={`px-3 py-1 rounded-lg text-sm font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-white' : 'bg-card/80 text-primary border border-primary/20'}`}>
+                              {/* Price chip */}
+                              <div className="absolute top-3 right-3">
+                                <span className={`px-3 py-1 rounded-lg text-xs font-bold backdrop-blur-md shadow-lg ${isFree ? 'bg-emerald-500/90 text-primary-foreground' : 'bg-card/90 text-primary border border-primary/20'}`}>
                                   {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
                                 </span>
                               </div>
@@ -386,26 +426,31 @@ const CoursesPage = () => {
                           );
                         }
                         return (
-                          <div className={`relative h-36 bg-gradient-to-br ${metadata.color} p-5 flex items-end`}>
-                            <div className="absolute top-3 right-3 flex gap-1.5">
+                          <div className={`relative h-36 bg-gradient-to-br ${metadata.color} overflow-hidden`}>
+                            <span className="absolute -bottom-4 -right-2 text-[5rem] font-display font-black text-white/[0.08] leading-none select-none">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            <div className="absolute top-3 left-3 flex gap-1.5">
                               {metadata.isSpecial && (
-                                <span className="px-2.5 py-1 rounded-full bg-white/25 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                <span className="px-2.5 py-1 rounded-full bg-white/25 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
                                   <Sparkles className="w-3 h-3" />{t.special}
                                 </span>
                               )}
                               {metadata.isUpcoming && (
-                                <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                                <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
                                   <Clock className="w-3 h-3" />{t.upcoming}
                                 </span>
                               )}
                             </div>
-                            <div className="absolute bottom-3 left-3">
-                              <span className={`px-3 py-1 rounded-lg text-sm font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-white' : 'bg-white/20 text-white'}`}>
+                            <div className="absolute top-3 right-3">
+                              <span className={`px-3 py-1 rounded-lg text-xs font-bold backdrop-blur-md ${isFree ? 'bg-emerald-500/90 text-primary-foreground' : 'bg-white/20 text-primary-foreground'}`}>
                                 {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
                               </span>
                             </div>
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10">
-                              <CourseIcon className="w-28 h-28 text-white" strokeWidth={1} />
+                            <div className="absolute top-1/2 left-5 -translate-y-1/2">
+                              <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                                <CourseIcon className="w-7 h-7 text-white" />
+                              </div>
                             </div>
                           </div>
                         );
@@ -413,50 +458,56 @@ const CoursesPage = () => {
 
                       {/* Body */}
                       <div className="flex flex-col p-5 gap-3">
-                        <h3 className="text-base font-display font-bold leading-snug line-clamp-2">
+                        <h3 className="text-base font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
                         <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                           {isBn ? course.descriptionBn : course.descriptionEn}
                         </p>
 
-                        {/* Features - compact inline */}
+                        {/* Features - compact tags */}
                         <div className="flex flex-wrap gap-1.5">
-                          {(isBn ? metadata.featuresBn : metadata.featuresEn).slice(0, 4).map((feature, idx) => (
-                            <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/70 text-muted-foreground border border-border/30">
+                          {(isBn ? metadata.featuresBn : metadata.featuresEn).slice(0, 3).map((feature, idx) => (
+                            <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20 group-hover:border-primary/20 transition-colors">
                               {feature}
                             </span>
                           ))}
                         </div>
 
-                        {/* Trainer + Enroll row */}
-                        <div className="flex items-center gap-3 pt-2 mt-auto border-t border-border/30">
-                          {trainerName && (
+                        {/* Trainer + Enroll */}
+                        <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border/20">
+                          {trainerName ? (
                             <div className="flex items-center gap-2 flex-1 min-w-0">
                               <img src={trainerImage || '/placeholder.svg'}
                                 alt={trainerName}
-                                className="w-8 h-8 rounded-full object-cover border border-primary/20 flex-shrink-0"
+                                className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10 flex-shrink-0"
                                 onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
                               <div className="min-w-0">
                                 <p className="text-xs font-semibold truncate">{trainerName}</p>
                                 <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
                               </div>
                             </div>
-                          )}
+                          ) : <div className="flex-1" />}
                           <button
                             onClick={() => handleEnrollClick(course)}
-                            className={`flex-shrink-0 flex items-center gap-1.5 py-2 px-4 rounded-xl font-semibold text-xs transition-all duration-300 ${
+                            className={`flex-shrink-0 flex items-center gap-1.5 py-2.5 px-5 rounded-xl font-semibold text-xs transition-all duration-300 ${
                               metadata.isUpcoming 
-                                ? 'bg-amber-500/15 text-amber-500 cursor-not-allowed'
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-105'
+                                ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.03]'
                             }`}
                             disabled={metadata.isUpcoming}
                           >
-                            <GraduationCap className="w-3.5 h-3.5" />
-                            {metadata.isUpcoming ? t.upcoming : t.enrollNow}
+                            {metadata.isUpcoming ? (
+                              <><Clock className="w-3.5 h-3.5" />{t.upcoming}</>
+                            ) : (
+                              <><ArrowRight className="w-3.5 h-3.5" />{t.enrollNow}</>
+                            )}
                           </button>
                         </div>
                       </div>
+
+                      {/* Hover accent line */}
+                      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-purple-500 to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                     </div>
                   </motion.div>
                 );
@@ -467,20 +518,22 @@ const CoursesPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg opacity-50" />
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
+            className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-12 lg:p-16">
+            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
               {t.startCareer} <span className="gradient-text">{t.startToday}</span>
             </h2>
-            <p className="text-muted-foreground text-lg mb-8">{t.ctaSubtitle}</p>
+            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">{t.ctaSubtitle}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#courses" className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
+              <a href="#courses" className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
                 <GraduationCap className="w-5 h-5" />{t.enrollButton}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </a>
               <a href="https://wa.me/+8801776965533" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300">
+                className="inline-flex items-center gap-2 px-8 py-4 glass-card text-foreground rounded-xl font-medium text-lg hover:border-primary/30 transition-all duration-300">
                 {t.whatsappContact}
               </a>
             </div>
@@ -488,7 +541,7 @@ const CoursesPage = () => {
         </div>
       </section>
 
-      {/* Enrollment Modal (for paid courses) */}
+      {/* Enrollment Modal */}
       {enrollmentCourse && user && profile && (
         <CourseEnrollmentModal
           isOpen={showEnrollmentModal}
