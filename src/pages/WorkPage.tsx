@@ -521,7 +521,7 @@ const WorkPage = () => {
                 <Phone size={20} /> Call Us
               </a>
               <a href="https://wa.me/8801846484200" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-[#25D366] text-white rounded-2xl font-display font-semibold text-lg transition-all duration-500 hover:shadow-[0_8px_40px_rgba(37,211,102,0.3)] hover:scale-[1.02]">
+                className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-secondary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500">
                 <MessageCircle size={20} /> WhatsApp
               </a>
             </div>
