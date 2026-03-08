@@ -354,7 +354,7 @@ const Index = () => {
       </section>
 
       {/* Testimonials — editorial quote cards */}
-      <section className="py-20 lg:py-28 relative grain-texture">
+      <section className="py-20 lg:py-28 relative">
         <div className="absolute inset-0 bg-secondary/30 dark:bg-card/20" />
         
         <div className="container mx-auto px-6 relative z-10">
