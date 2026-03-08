@@ -21,7 +21,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logo from "@/assets/logo.png";
+import logoFull from "@/assets/logo-full.png";
 import SearchModal from "./SearchModal";
 
 const Navbar = () => {
