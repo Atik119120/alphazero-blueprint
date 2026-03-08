@@ -280,8 +280,6 @@ const Index = () => {
       <section className="py-14 lg:py-20 relative overflow-hidden">
         {/* Colorful background accents */}
         <div className="absolute inset-0 bg-gradient-to-br from-[hsl(185,40%,96%)] via-background to-[hsl(200,40%,96%)] dark:from-card/40 dark:via-background dark:to-card/40" />
-        <div className="absolute top-20 left-10 w-72 h-72 rounded-full bg-primary/[0.04] blur-[80px] dark:bg-primary/[0.02]" />
-        <div className="absolute bottom-20 right-10 w-72 h-72 rounded-full bg-[hsl(200,100%,50%)]/[0.04] blur-[80px] dark:bg-[hsl(200,100%,50%)]/[0.02]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
