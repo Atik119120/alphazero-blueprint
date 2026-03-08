@@ -232,7 +232,7 @@ const Navbar = () => {
 
         return (
           <div className="fixed bottom-3 left-3 right-3 z-50 lg:hidden">
-            <div className="bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 shadow-lg shadow-black/10 dark:shadow-black/30">
+            <div className="bg-background/90 dark:bg-card/90 backdrop-blur-2xl rounded-2xl border border-border/50 dark:border-border/30 shadow-[0_-4px_30px_-8px_hsl(var(--primary)/0.06)]">
               <div className="grid grid-cols-7 py-2 px-1 safe-bottom">
                 {bottomNavItems.map((item) => {
                   const IconComp = item.icon;
