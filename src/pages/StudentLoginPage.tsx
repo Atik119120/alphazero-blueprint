@@ -351,14 +351,8 @@ export default function StudentLoginPage() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 overflow-hidden">
-      {/* Colorful artistic background */}
-      <div className="absolute inset-0 bg-background">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-sky-400/20 rounded-full blur-[120px] -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-rose-400/15 rounded-full blur-[120px] translate-x-1/3 translate-y-1/3" />
-        <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-amber-400/10 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] bg-emerald-400/10 rounded-full blur-[80px]" />
-        <div className="absolute top-1/4 right-1/4 w-[350px] h-[350px] bg-violet-400/10 rounded-full blur-[90px]" />
-      </div>
+      {/* Clean background */}
+      <div className="absolute inset-0 bg-background" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Top Bar with Navigation and Controls */}

@@ -144,11 +144,6 @@ const NotFound = () => {
             </div>
           </motion.div>
 
-          {/* Decorative Elements */}
-          <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
-          </div>
         </div>
       </div>
     </LayoutComponent>
