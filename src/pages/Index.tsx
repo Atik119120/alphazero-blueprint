@@ -86,7 +86,8 @@ const Index = () => {
     <LayoutComponent>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background -mt-8">
-        <div className="absolute inset-0 stripe-accent" />
+        {/* Subtle grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(hsl(var(--primary)) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-6xl mx-auto grid lg:grid-cols-[1fr_auto] gap-12 items-center">
