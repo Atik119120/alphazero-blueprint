@@ -210,7 +210,7 @@ const WebSection = ({ items }: { items: Work[] }) => {
             <Globe size={12} /> Web Design
           </span>
           <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Web <span className="gradient-text">Projects</span>
+            Web <span className="text-primary">Projects</span>
           </h2>
         </motion.div>
 
