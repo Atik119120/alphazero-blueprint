@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter, Sparkles } from "lucide-react";
+import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter, Linkedin, Sparkles } from "lucide-react";
 
 const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
