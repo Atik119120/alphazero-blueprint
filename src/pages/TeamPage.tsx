@@ -121,7 +121,7 @@ const TeamPage = () => {
                       <div className="relative h-full rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.08]">
                         
                         {/* Top section: Image banner */}
-                        <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
+                        <div className="relative aspect-square overflow-hidden bg-secondary">
                           <img
                             src={member.image_url || '/placeholder.svg'}
                             alt={member.name}
