@@ -265,22 +265,30 @@ const WebSection = ({ items }: { items: Work[] }) => {
   if (items.length === 0) return null;
 
   return (
-    <section className="py-16 lg:py-24">
+    <section className="py-16 lg:py-24 relative">
+      {/* Subtle section divider */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+      
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="mb-8"
+          className="flex items-end justify-between mb-10"
         >
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
-            <Globe size={12} /> Web Design
+          <div>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
+              <Globe size={12} /> Web Design
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
+              Web <span className="text-primary">Projects</span>
+            </h2>
+          </div>
+          <span className="hidden sm:block text-7xl lg:text-8xl font-display font-bold text-muted-foreground/[0.05] leading-none select-none">
+            {String(items.length).padStart(2, '0')}
           </span>
-          <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Web <span className="text-primary">Projects</span>
-          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {items.map((project, idx) => {
             const siteUrl = project.project_url || project.image_url;
             const domain = siteUrl ? (() => { try { return new URL(siteUrl).hostname; } catch { return siteUrl; } })() : null;
@@ -290,32 +298,34 @@ const WebSection = ({ items }: { items: Work[] }) => {
                 key={project.id}
                 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: idx * 0.06, duration: 0.5 }}
+                transition={{ delay: idx * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 className="group"
               >
                 <a
                   href={siteUrl || "#"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.04)] dark:shadow-none hover:shadow-[0_8px_30px_hsl(185_100%_38%/0.1),0_2px_8px_hsl(215_25%_10%/0.06)] dark:hover:shadow-none hover:border-primary/30 transition-all duration-500 hover:-translate-y-1"
+                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_10px_hsl(215_25%_10%/0.05)] dark:shadow-none hover:shadow-[0_12px_40px_hsl(185_100%_38%/0.12),0_4px_12px_hsl(215_25%_10%/0.08)] dark:hover:shadow-[0_0_30px_hsl(185_100%_50%/0.06)] hover:border-primary/30 transition-all duration-500 hover:-translate-y-2"
                 >
-                  {/* Browser header */}
-                  <div className="flex items-center gap-2 px-4 py-3 bg-secondary/50 border-b border-border/30">
+                  {/* macOS-style browser chrome */}
+                  <div className="flex items-center gap-2 px-4 py-3 bg-secondary/60 dark:bg-secondary/30 border-b border-border/30">
                     <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-destructive/60" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
+                      <div className="w-3 h-3 rounded-full bg-[hsl(0,70%,60%)]" />
+                      <div className="w-3 h-3 rounded-full bg-[hsl(45,90%,55%)]" />
+                      <div className="w-3 h-3 rounded-full bg-[hsl(140,60%,50%)]" />
                     </div>
-                    <div className="flex-1 mx-3 px-3 py-1 rounded-md bg-background/60 border border-border/30 text-[11px] text-muted-foreground truncate flex items-center gap-1.5">
-                      <Globe size={10} className="text-muted-foreground/60 flex-shrink-0" />
+                    <div className="flex-1 mx-2 px-3 py-1.5 rounded-lg bg-background/70 dark:bg-background/30 border border-border/30 text-[11px] text-muted-foreground truncate flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full border border-primary/40 flex items-center justify-center flex-shrink-0">
+                        <Globe size={7} className="text-primary/60" />
+                      </div>
                       {domain || "website"}
                     </div>
-                    <ArrowUpRight size={14} className="text-muted-foreground/60 group-hover:text-primary transition-colors" />
+                    <ArrowUpRight size={14} className="text-muted-foreground/40 group-hover:text-primary group-hover:rotate-12 transition-all duration-300" />
                   </div>
 
                   <div className="relative aspect-[16/10] overflow-hidden bg-secondary/30">
                     {project.image_url ? (
-                      <img src={project.image_url} alt={project.title} referrerPolicy="no-referrer" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }} />
+                      <img src={project.image_url} alt={project.title} referrerPolicy="no-referrer" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }} />
                     ) : (
                       <div className="w-full h-full flex flex-col items-center justify-center gap-3">
                         <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -324,24 +334,34 @@ const WebSection = ({ items }: { items: Work[] }) => {
                         <span className="text-sm text-muted-foreground font-medium">{project.title}</span>
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-400">
-                      <div className="px-5 py-2.5 rounded-full bg-primary/90 flex items-center gap-2">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                      <div className="px-6 py-3 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2 scale-90 group-hover:scale-100 transition-transform duration-500 shadow-xl shadow-primary/20">
                         <ExternalLink size={16} className="text-primary-foreground" />
-                        <span className="text-primary-foreground text-sm font-semibold">Visit Site</span>
+                        <span className="text-primary-foreground text-sm font-bold">Visit Site</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="p-4">
-                    <h4 className="font-display font-semibold text-base leading-snug group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h4>
-                    {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
-                    <div className="flex items-center gap-1.5 mt-2.5">
-                        <div className="w-4 h-4 rounded-full bg-primary/80 flex items-center justify-center">
-                        <Sparkles size={8} className="text-primary-foreground" />
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h4 className="font-display font-bold text-base leading-snug group-hover:text-primary transition-colors">
+                          {project.title}
+                        </h4>
+                        {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5 leading-relaxed">{project.description}</p>}
                       </div>
-                      <span className="text-[10px] text-foreground/70 font-medium">Alpha Zero</span>
+                      <span className="text-3xl font-display font-bold text-muted-foreground/[0.06] leading-none select-none flex-shrink-0">
+                        {String(idx + 1).padStart(2, '0')}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/20">
+                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
+                        <Sparkles size={9} className="text-primary-foreground" />
+                      </div>
+                      <span className="text-[11px] text-muted-foreground font-medium">Alpha Zero</span>
+                      <span className="ml-auto text-[10px] text-primary/60 font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                        <ExternalLink size={8} /> Open
+                      </span>
                     </div>
                   </div>
                 </a>
