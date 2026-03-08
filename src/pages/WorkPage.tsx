@@ -336,7 +336,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
                 transition={{ delay: idx * 0.06, duration: 0.5 }}
                 className="group"
               >
-                <div className="relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_12px_48px_hsl(var(--primary)/0.12)]">
+                <div className="relative rounded-2xl overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500">
                   <div
                     className="relative overflow-hidden cursor-pointer aspect-video"
                     onClick={() => {
