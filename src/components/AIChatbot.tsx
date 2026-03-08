@@ -619,25 +619,57 @@ const AIChatbot = () => {
                   )}
                 </button>
 
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={language === "bn" ? "আপনার প্রশ্ন লিখুন..." : "Type your message..."}
-                  className="flex-1 px-4 py-3 rounded-xl bg-secondary/50 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-all"
-                  disabled={isLoading}
-                />
-                <button
-                  type="submit"
-                  disabled={isLoading || isUploading || (!input.trim() && attachments.length === 0)}
-                  className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
-                >
-                  {isLoading ? (
-                    <Loader2 size={18} className="animate-spin" />
-                  ) : (
-                    <Send size={18} />
-                  )}
-                </button>
+                {/* Recording UI or normal input */}
+                {isRecording ? (
+                  <div className="flex-1 flex items-center gap-2 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/30">
+                    <span className="w-2 h-2 rounded-full bg-destructive animate-pulse" />
+                    <span className="text-sm text-destructive font-medium">{formatRecordingTime(recordingTime)}</span>
+                    <span className="text-xs text-muted-foreground flex-1">
+                      {language === "bn" ? "রেকর্ডিং চলছে..." : "Recording..."}
+                    </span>
+                  </div>
+                ) : (
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder={language === "bn" ? "আপনার প্রশ্ন লিখুন..." : "Type your message..."}
+                    className="flex-1 px-4 py-3 rounded-xl bg-secondary/50 border border-border/50 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/30 transition-all"
+                    disabled={isLoading}
+                  />
+                )}
+
+                {/* Mic / Stop button */}
+                {!input.trim() && attachments.length === 0 && !isRecording ? (
+                  <button
+                    type="button"
+                    onClick={startRecording}
+                    disabled={isLoading || isUploading}
+                    className="w-11 h-11 rounded-xl bg-secondary/70 border border-border/50 flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 transition-colors disabled:opacity-50 shrink-0"
+                  >
+                    <Mic size={18} className="text-muted-foreground" />
+                  </button>
+                ) : isRecording ? (
+                  <button
+                    type="button"
+                    onClick={stopRecording}
+                    className="w-11 h-11 rounded-xl bg-destructive text-destructive-foreground flex items-center justify-center hover:bg-destructive/90 transition-colors shrink-0 animate-pulse"
+                  >
+                    <Square size={16} className="fill-current" />
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    disabled={isLoading || isUploading || (!input.trim() && attachments.length === 0)}
+                    className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
+                  >
+                    {isLoading ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <Send size={18} />
+                    )}
+                  </button>
+                )}
               </div>
               
               {/* Powered by */}
