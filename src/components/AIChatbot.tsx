@@ -1,13 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Loader2, Sparkles, MessageCircle } from "lucide-react";
+import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Play } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
+
+interface Attachment {
+  type: "image" | "video";
+  url: string;
+  name: string;
+}
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  attachments?: Attachment[];
 }
 
 // Suggested follow-up questions based on context
@@ -45,10 +53,55 @@ const AIChatbot = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [followUpQuestions, setFollowUpQuestions] = useState<string[]>([]);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { language } = useLanguage();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    
+    setIsUploading(true);
+    const newAttachments: Attachment[] = [];
+    
+    for (const file of Array.from(files)) {
+      const isImage = file.type.startsWith("image/");
+      const isVideo = file.type.startsWith("video/");
+      if (!isImage && !isVideo) continue;
+      if (file.size > 20 * 1024 * 1024) continue; // 20MB max
+      
+      const ext = file.name.split('.').pop();
+      const fileName = `chatbot/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      
+      const { data, error } = await supabase.storage
+        .from("media-uploads")
+        .upload(fileName, file, { cacheControl: "3600", upsert: false });
+      
+      if (!error && data) {
+        const { data: urlData } = supabase.storage
+          .from("media-uploads")
+          .getPublicUrl(data.path);
+        
+        newAttachments.push({
+          type: isImage ? "image" : "video",
+          url: urlData.publicUrl,
+          name: file.name,
+        });
+      }
+    }
+    
+    setAttachments(prev => [...prev, ...newAttachments]);
+    setIsUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const removeAttachment = (idx: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== idx));
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -96,11 +149,12 @@ const AIChatbot = () => {
     });
   };
 
-  const streamChat = async (userMessage: string) => {
-    const userMsg: Message = { role: "user", content: userMessage };
+  const streamChat = async (userMessage: string, msgAttachments?: Attachment[]) => {
+    const userMsg: Message = { role: "user", content: userMessage, attachments: msgAttachments };
     setMessages(prev => [...prev, userMsg]);
     setIsLoading(true);
     setInput("");
+    setAttachments([]);
     setFollowUpQuestions([]);
 
     let assistantContent = "";
@@ -187,8 +241,9 @@ const AIChatbot = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    streamChat(input.trim());
+    if ((!input.trim() && attachments.length === 0) || isLoading) return;
+    const currentAttachments = attachments.length > 0 ? [...attachments] : undefined;
+    streamChat(input.trim() || (language === "bn" ? "এই ফাইল দেখুন" : "See this file"), currentAttachments);
   };
 
   const quickQuestions = language === "bn" 
@@ -340,17 +395,49 @@ const AIChatbot = () => {
                           <img src={logo} alt="" className="w-4 h-4 object-contain dark:brightness-0 dark:invert" />
                         </div>
                       )}
-                      <div
-                        className={`max-w-[80%] px-4 py-2.5 text-sm leading-relaxed ${
-                          msg.role === "user"
-                            ? "bg-primary text-primary-foreground rounded-2xl rounded-br-md"
-                            : "bg-secondary/80 text-foreground rounded-2xl rounded-bl-md border border-border/50"
-                        }`}
-                      >
-                        {msg.role === "assistant" 
-                          ? <div className="whitespace-pre-line">{parseMessageWithLinks(msg.content)}</div>
-                          : msg.content
-                        }
+                      <div className={`max-w-[80%] space-y-2`}>
+                        {/* Attachments */}
+                        {msg.attachments && msg.attachments.length > 0 && (
+                          <div className={`flex flex-wrap gap-1.5 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+                            {msg.attachments.map((att, ai) => (
+                              <div key={ai} className="relative rounded-xl overflow-hidden border border-border/50">
+                                {att.type === "image" ? (
+                                  <img 
+                                    src={att.url} 
+                                    alt={att.name} 
+                                    className="max-w-[180px] max-h-[140px] object-cover rounded-xl cursor-pointer hover:opacity-90 transition-opacity"
+                                    onClick={() => window.open(att.url, '_blank')}
+                                  />
+                                ) : (
+                                  <div 
+                                    className="relative w-[180px] h-[120px] bg-secondary rounded-xl cursor-pointer group"
+                                    onClick={() => window.open(att.url, '_blank')}
+                                  >
+                                    <video src={att.url} className="w-full h-full object-cover rounded-xl" />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-xl group-hover:bg-black/40 transition-colors">
+                                      <Play size={28} className="text-white fill-white" />
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {/* Text content */}
+                        {msg.content && (
+                          <div
+                            className={`px-4 py-2.5 text-sm leading-relaxed ${
+                              msg.role === "user"
+                                ? "bg-primary text-primary-foreground rounded-2xl rounded-br-md"
+                                : "bg-secondary/80 text-foreground rounded-2xl rounded-bl-md border border-border/50"
+                            }`}
+                          >
+                            {msg.role === "assistant" 
+                              ? <div className="whitespace-pre-line">{parseMessageWithLinks(msg.content)}</div>
+                              : msg.content
+                            }
+                          </div>
+                        )}
                       </div>
                     </motion.div>
                   ))}
@@ -398,7 +485,55 @@ const AIChatbot = () => {
 
             {/* Input Area */}
             <form onSubmit={handleSubmit} className="p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] border-t border-border/50 shrink-0 bg-background lg:bg-transparent">
-              <div className="flex gap-2">
+              {/* Attachment Preview */}
+              {attachments.length > 0 && (
+                <div className="flex gap-2 mb-2 overflow-x-auto pb-1">
+                  {attachments.map((att, i) => (
+                    <div key={i} className="relative shrink-0 group">
+                      {att.type === "image" ? (
+                        <img src={att.url} alt={att.name} className="w-14 h-14 rounded-lg object-cover border border-border/50" />
+                      ) : (
+                        <div className="w-14 h-14 rounded-lg bg-secondary border border-border/50 flex items-center justify-center">
+                          <Video size={20} className="text-primary" />
+                        </div>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeAttachment(i)}
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex gap-2 items-center">
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*,video/*"
+                  multiple
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                
+                {/* Attach button */}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isLoading || isUploading}
+                  className="w-10 h-10 rounded-xl bg-secondary/70 border border-border/50 flex items-center justify-center hover:bg-secondary transition-colors disabled:opacity-50 shrink-0"
+                >
+                  {isUploading ? (
+                    <Loader2 size={16} className="animate-spin text-muted-foreground" />
+                  ) : (
+                    <Paperclip size={16} className="text-muted-foreground" />
+                  )}
+                </button>
+
                 <input
                   type="text"
                   value={input}
@@ -409,7 +544,7 @@ const AIChatbot = () => {
                 />
                 <button
                   type="submit"
-                  disabled={isLoading || !input.trim()}
+                  disabled={isLoading || isUploading || (!input.trim() && attachments.length === 0)}
                   className="w-11 h-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 transition-colors shrink-0"
                 >
                   {isLoading ? (
