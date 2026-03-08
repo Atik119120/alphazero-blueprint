@@ -478,9 +478,8 @@ const WorkPage = () => {
               {t("work.description") || "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion."}
             </motion.p>
 
-            {/* Glassmorphic card accent below heading */}
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-10 mx-auto max-w-md px-6 py-3 rounded-2xl bg-card/40 backdrop-blur-xl border border-border/30 shadow-lg">
+              className="mt-10 mx-auto max-w-md px-6 py-3 rounded-2xl bg-card border border-border/30">
               <p className="text-sm text-muted-foreground font-medium">
                 ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} Projects • Graphic Design • Web • Video
               </p>
