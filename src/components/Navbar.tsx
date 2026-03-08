@@ -95,6 +95,9 @@ const Navbar = () => {
                 src={logoFull} 
                 alt="AlphaZero Logo" 
                 className="h-7 sm:h-8 w-auto relative z-10 brightness-0 dark:invert transition-all duration-300"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
               />
             </Link>
 
