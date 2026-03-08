@@ -15,7 +15,8 @@ import {
   Users,
   GraduationCap,
   Mail,
-  Phone
+  Phone,
+  MoreHorizontal
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
