@@ -85,69 +85,81 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden bg-background">
-        {/* Animated gradient orbs */}
+      <section className="relative min-h-[calc(100vh-5rem)] flex items-center justify-center overflow-hidden">
+        {/* Animated colorful gradient orbs - MORE VIVID */}
         <motion.div
-          className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-primary/8 blur-[120px]"
-          animate={{ x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.2, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[-15%] left-[-5%] w-[600px] h-[600px] rounded-full bg-primary/[0.12] dark:bg-primary/[0.08] blur-[130px]"
+          animate={{ x: [0, 80, 0], y: [0, 50, 0], scale: [1, 1.3, 1] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute bottom-[-15%] right-[-10%] w-[450px] h-[450px] rounded-full bg-[hsl(200,100%,50%)]/8 blur-[120px]"
-          animate={{ x: [0, -50, 0], y: [0, -30, 0], scale: [1.1, 0.9, 1.1] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[hsl(260,80%,60%)]/[0.10] dark:bg-[hsl(260,80%,60%)]/[0.05] blur-[130px]"
+          animate={{ x: [0, -60, 0], y: [0, -40, 0], scale: [1.1, 0.85, 1.1] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
-          className="absolute top-[40%] right-[20%] w-[300px] h-[300px] rounded-full bg-[hsl(260,80%,60%)]/5 blur-[100px]"
-          animate={{ x: [0, -40, 0], y: [0, 50, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[30%] right-[15%] w-[350px] h-[350px] rounded-full bg-[hsl(340,80%,60%)]/[0.07] dark:bg-[hsl(340,80%,60%)]/[0.03] blur-[110px]"
+          animate={{ x: [0, -50, 0], y: [0, 60, 0] }}
+          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute top-[60%] left-[15%] w-[300px] h-[300px] rounded-full bg-[hsl(45,100%,55%)]/[0.06] dark:bg-[hsl(45,100%,55%)]/[0.02] blur-[100px]"
+          animate={{ x: [0, 40, 0], y: [0, -40, 0] }}
+          transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
         />
 
         {/* Dot grid pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle,hsl(var(--primary)/0.08)_1px,transparent_1px)] bg-[size:40px_40px] dark:bg-[radial-gradient(circle,hsl(var(--primary)/0.05)_1px,transparent_1px)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle,hsl(var(--primary)/0.07)_1px,transparent_1px)] bg-[size:36px_36px] dark:bg-[radial-gradient(circle,hsl(var(--primary)/0.04)_1px,transparent_1px)]" />
 
-        {/* Floating particles */}
-        {[...Array(6)].map((_, i) => (
+        {/* Floating colored particles */}
+        {[
+          { color: "bg-primary/40", top: "12%", left: "8%", size: "w-2 h-2" },
+          { color: "bg-[hsl(260,80%,60%)]/30", top: "25%", left: "85%", size: "w-1.5 h-1.5" },
+          { color: "bg-[hsl(340,80%,55%)]/30", top: "45%", left: "12%", size: "w-1 h-1" },
+          { color: "bg-[hsl(45,100%,55%)]/35", top: "65%", left: "78%", size: "w-2 h-2" },
+          { color: "bg-primary/25", top: "75%", left: "25%", size: "w-1.5 h-1.5" },
+          { color: "bg-[hsl(200,100%,50%)]/30", top: "18%", left: "60%", size: "w-1 h-1" },
+          { color: "bg-[hsl(260,80%,60%)]/25", top: "55%", left: "92%", size: "w-1.5 h-1.5" },
+          { color: "bg-[hsl(340,80%,55%)]/20", top: "85%", left: "55%", size: "w-1 h-1" },
+        ].map((p, i) => (
           <motion.div
             key={`particle-${i}`}
-            className="absolute w-1 h-1 rounded-full bg-primary/30"
-            style={{
-              top: `${15 + i * 14}%`,
-              left: `${10 + i * 15}%`,
-            }}
+            className={`absolute rounded-full ${p.color} ${p.size}`}
+            style={{ top: p.top, left: p.left }}
             animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.7, 0.2],
-              scale: [1, 1.5, 1],
+              y: [0, -25 + i * 5, 0],
+              x: [0, (i % 2 === 0 ? 15 : -15), 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.6, 1],
             }}
             transition={{
-              duration: 4 + i * 0.5,
+              duration: 4 + i * 0.4,
               repeat: Infinity,
               ease: "easeInOut",
-              delay: i * 0.8,
+              delay: i * 0.6,
             }}
           />
         ))}
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto text-center">
-            {/* Badge with icon */}
+            {/* Badge with animated icon */}
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20 mb-10 backdrop-blur-md"
+              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/15 to-[hsl(260,80%,60%)]/10 border border-primary/25 mb-10 backdrop-blur-md shadow-sm"
             >
               <motion.div
-                animate={{ rotate: [0, 15, -15, 0] }}
+                animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.1, 1] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
                 <Sparkles size={16} className="text-primary" />
               </motion.div>
-              <span className="text-sm font-medium text-primary">{c("badge", "home.badge")}</span>
+              <span className="text-sm font-semibold bg-gradient-to-r from-primary to-[hsl(260,80%,60%)] bg-clip-text text-transparent">{c("badge", "home.badge")}</span>
             </motion.div>
 
-            {/* Main Heading - Split with accent */}
+            {/* Main Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -156,10 +168,10 @@ const Index = () => {
             >
               <span className="text-foreground">{c("title1", "home.title1")}</span>
               <br className="hidden sm:block" />{" "}
-              <span className="relative">
+              <span className="relative inline-block">
                 <span className="gradient-text">{c("title2", "home.title2")}</span>
                 <motion.span 
-                  className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"
+                  className="absolute -bottom-2 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-[hsl(260,80%,60%)] to-[hsl(340,80%,55%)] rounded-full"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ duration: 1, delay: 0.8 }}
@@ -207,21 +219,21 @@ const Index = () => {
             >
               <Link
                 to="/contact"
-                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_30px_hsl(var(--primary)/0.4)] flex items-center gap-2 overflow-hidden"
+                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-2xl font-semibold text-lg transition-all duration-300 hover:shadow-[0_0_40px_hsl(var(--primary)/0.4)] flex items-center gap-2 overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   {c("cta1", "home.cta1")}
                   <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
                 </span>
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-primary via-[hsl(185,100%,45%)] to-primary bg-[length:200%_100%]"
+                  className="absolute inset-0 bg-gradient-to-r from-primary via-[hsl(200,100%,50%)] to-[hsl(260,80%,60%)] bg-[length:300%_100%]"
                   animate={{ backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
                 />
               </Link>
               <Link
                 to="/work"
-                className="group px-9 py-4 bg-transparent border-2 border-border text-foreground rounded-2xl font-semibold text-lg hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 flex items-center gap-2"
+                className="group px-9 py-4 bg-gradient-to-r from-primary/5 to-[hsl(260,80%,60%)]/5 dark:bg-transparent border-2 border-primary/20 dark:border-border text-foreground rounded-2xl font-semibold text-lg hover:border-primary/50 hover:from-primary/10 hover:to-[hsl(260,80%,60%)]/10 transition-all duration-300 flex items-center gap-2"
               >
                 {c("cta2", "home.cta2")}
                 <Eye size={18} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -243,7 +255,7 @@ const Index = () => {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <span className="text-[10px] uppercase tracking-[3px] text-muted-foreground/50 font-medium">Scroll</span>
-              <div className="w-5 h-9 rounded-full border-2 border-muted-foreground/20 flex justify-center pt-1.5">
+              <div className="w-5 h-9 rounded-full border-2 border-primary/20 flex justify-center pt-1.5">
                 <motion.div
                   animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
