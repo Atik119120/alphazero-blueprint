@@ -61,43 +61,30 @@ const TeamPage = () => {
   };
   return (
     <Layout>
-      {/* Hero Section — editorial */}
-      <section className="py-24 lg:py-36 relative overflow-hidden grain-texture">
-        <div className="absolute inset-0 stripe-accent" />
-        
+      {/* Hero */}
+      <section className="py-28 lg:py-40 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg" />
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] dark:bg-primary/[0.08] mb-6"
-            >
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("team.subtitle")}</span>
             </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight"
-            >
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
               {t("team.title")} <span className="gradient-text">{t("team.title2")}</span>
             </motion.h1>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-start gap-4"
-            >
-              <div className="w-12 h-px bg-primary/40 mt-3 shrink-0" />
-              <p className="text-xl text-muted-foreground max-w-2xl">{t("team.description")}</p>
-            </motion.div>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              {t("team.description")}
+            </motion.p>
           </div>
         </div>
       </section>
 
       {/* Team Grid — editorial */}
-      <section className="py-20 lg:py-28">
+      <section className="py-24 lg:py-32">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {isLoading ? (
@@ -117,7 +104,7 @@ const TeamPage = () => {
                     transition={{ delay: index * 0.08 }}
                     className="group h-full"
                   >
-                    <div className="relative h-full flex gap-4 bg-card/80 dark:bg-card/50 rounded-xl p-4 border border-border/50 dark:border-border/30 group-hover:border-primary/30 transition-all duration-400">
+                    <div className="relative h-full flex gap-4 rounded-2xl glass-card p-4 group-hover:border-primary/30 transition-all duration-400">
                       {/* Active dot */}
                       <div className="absolute -top-1 -left-1 z-20">
                         <span className="relative flex h-3 w-3">
@@ -305,7 +292,7 @@ const TeamPage = () => {
       </section>
 
       {/* Join Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-24 mesh-bg">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
