@@ -126,7 +126,14 @@
   }
 
   :root body {
-    background: hsl(var(--background));
+    background: linear-gradient(
+      180deg,
+      hsl(210 30% 97%) 0%,
+      hsl(200 20% 96%) 30%,
+      hsl(210 25% 97%) 60%,
+      hsl(195 15% 96%) 100%
+    );
+    background-attachment: fixed;
   }
 
   .dark body {
