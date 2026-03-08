@@ -85,7 +85,7 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background -mt-8 grain-texture">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-background -mt-8">
         <div className="absolute inset-0 stripe-accent" />
 
         <div className="container mx-auto px-6 relative z-10">
