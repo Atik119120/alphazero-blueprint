@@ -193,14 +193,15 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Mobile: only search + theme on top bar */}
+            {/* Mobile: login + theme on top bar */}
             <div className="flex items-center gap-1.5 lg:hidden">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="w-9 h-9 rounded-full bg-foreground/[0.06] dark:bg-white/[0.08] border border-foreground/[0.06] dark:border-white/[0.06] flex items-center justify-center"
+              <Link
+                to="/student/login"
+                className="h-8 px-3 rounded-full bg-primary text-primary-foreground flex items-center gap-1.5 text-xs font-semibold"
               >
-                <Search size={15} className="text-muted-foreground" />
-              </button>
+                <User size={14} />
+                {language === "bn" ? "লগইন" : "Login"}
+              </Link>
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
@@ -229,7 +230,6 @@ const Navbar = () => {
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
           { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
-          { name: language === "bn" ? "লগইন" : "Sign In", href: "/student/login", icon: User },
         ];
 
         return (
