@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowUpRight, Facebook, Instagram, MessageCircle, Clock, Twitter, Youtube, Github, Globe, Mail, Phone, LucideIcon } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Facebook, Instagram, MessageCircle, Clock, Twitter, Youtube, Github, Globe, Mail, Phone, Linkedin, LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import logo from "@/assets/logo-full.png";
 import { useLanguage } from "@/contexts/LanguageContext";
