@@ -416,7 +416,7 @@ export default function StudentLoginPage() {
             </div>
           </div>
 
-          <CardContent className="px-4 sm:px-6">
+          <div className="px-5 sm:px-6 pb-2">
             {showOtpVerification ? (
               /* OTP Verification UI */
               <div className="space-y-6">
