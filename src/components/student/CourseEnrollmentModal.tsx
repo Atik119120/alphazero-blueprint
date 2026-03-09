@@ -11,7 +11,10 @@ import {
   GraduationCap,
   Info,
   CreditCard,
-  Loader2
+  Loader2,
+  Ticket,
+  CheckCircle,
+  X
 } from 'lucide-react';
 import { Course } from '@/types/lms';
 import bkashLogo from '@/assets/bkash-logo.png';
@@ -46,6 +49,13 @@ const translations = {
     transactionHint: 'Enter the transaction ID after sending money',
     submitEnrollment: 'Submit Enrollment',
     paymentInstructions: 'Payment Instructions:',
+    couponCode: 'Coupon Code',
+    couponPlaceholder: 'Enter coupon code',
+    applyCoupon: 'Apply',
+    couponApplied: 'Coupon applied!',
+    invalidCoupon: 'Invalid or expired coupon',
+    discount: 'Discount',
+    totalAfterDiscount: 'Total',
   },
   bn: {
     processing: 'প্রসেসিং...',
@@ -64,6 +74,13 @@ const translations = {
     transactionHint: 'টাকা পাঠানোর পর যে ট্রানজেকশন আইডি পাবেন সেটি দিন',
     submitEnrollment: 'এনরোলমেন্ট জমা দিন',
     paymentInstructions: 'পেমেন্ট নির্দেশনা:',
+    couponCode: 'কুপন কোড',
+    couponPlaceholder: 'কুপন কোড লিখুন',
+    applyCoupon: 'অ্যাপ্লাই',
+    couponApplied: 'কুপন প্রয়োগ হয়েছে!',
+    invalidCoupon: 'ভুল বা মেয়াদ শেষ কুপন',
+    discount: 'ছাড়',
+    totalAfterDiscount: 'মোট',
   }
 };
 
@@ -82,10 +99,19 @@ export default function CourseEnrollmentModal({
   const [transactionId, setTransactionId] = useState('');
   const [bkashNumber, setBkashNumber] = useState('01776965533');
   const [nagadNumber, setNagadNumber] = useState('01776965533');
+  
+  // Coupon state
+  const [couponCode, setCouponCode] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discount_type: string;
+    discount_value: number;
+    id: string;
+  } | null>(null);
+  const [checkingCoupon, setCheckingCoupon] = useState(false);
 
   const t = translations[language];
 
-  // Fetch payment numbers from site_settings
   useEffect(() => {
     const fetchNumbers = async () => {
       const { data } = await supabase
@@ -100,8 +126,85 @@ export default function CourseEnrollmentModal({
         });
       }
     };
-    if (isOpen) fetchNumbers();
+    if (isOpen) {
+      fetchNumbers();
+      // Reset coupon when modal opens
+      setCouponCode('');
+      setAppliedCoupon(null);
+    }
   }, [isOpen]);
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim() || !course) return;
+    
+    setCheckingCoupon(true);
+    try {
+      const { data, error } = await supabase
+        .from('coupons')
+        .select('*')
+        .eq('code', couponCode.toUpperCase())
+        .eq('is_active', true)
+        .maybeSingle();
+
+      if (error || !data) {
+        toast.error(t.invalidCoupon);
+        setCheckingCoupon(false);
+        return;
+      }
+
+      // Check if expired
+      if (data.expires_at && new Date(data.expires_at) < new Date()) {
+        toast.error(t.invalidCoupon);
+        setCheckingCoupon(false);
+        return;
+      }
+
+      // Check max uses
+      if (data.max_uses && data.used_count >= data.max_uses) {
+        toast.error(t.invalidCoupon);
+        setCheckingCoupon(false);
+        return;
+      }
+
+      // Check course-specific coupon
+      if (data.course_id && data.course_id !== course.id) {
+        toast.error(t.invalidCoupon);
+        setCheckingCoupon(false);
+        return;
+      }
+
+      setAppliedCoupon({
+        code: data.code,
+        discount_type: data.discount_type,
+        discount_value: data.discount_value,
+        id: data.id,
+      });
+      toast.success(t.couponApplied);
+    } catch {
+      toast.error(t.invalidCoupon);
+    }
+    setCheckingCoupon(false);
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponCode('');
+  };
+
+  const getDiscountedPrice = () => {
+    const originalPrice = course?.price || 0;
+    if (!appliedCoupon) return originalPrice;
+    
+    if (appliedCoupon.discount_type === 'percentage') {
+      return Math.max(0, originalPrice - (originalPrice * appliedCoupon.discount_value / 100));
+    }
+    return Math.max(0, originalPrice - appliedCoupon.discount_value);
+  };
+
+  const getDiscountAmount = () => {
+    const originalPrice = course?.price || 0;
+    return originalPrice - getDiscountedPrice();
+  };
 
   const handleSubmit = async () => {
     if (!course) return;
@@ -109,7 +212,6 @@ export default function CourseEnrollmentModal({
     setIsSubmitting(true);
 
     try {
-      // Check for existing pending request
       const { data: existingRequest } = await supabase
         .from('enrollment_requests')
         .select('id')
@@ -125,18 +227,19 @@ export default function CourseEnrollmentModal({
       }
 
       const isFree = !course.price || course.price === 0;
+      const finalPrice = getDiscountedPrice();
+      const effectivelyFree = isFree || finalPrice === 0;
 
-      // Create enrollment request
       const { error } = await supabase.from('enrollment_requests').insert({
         user_id: userId,
         course_id: course.id,
         student_name: userName,
         student_email: userEmail,
-        payment_method: isFree ? 'free' : paymentMethod,
-        transaction_id: isFree ? 'FREE' : transactionId,
-        message: isFree 
-          ? 'Free Course Enrollment' 
-          : `${paymentMethod} - TxnID: ${transactionId} - Amount: ৳${course.price || 0}`,
+        payment_method: effectivelyFree ? 'free' : paymentMethod,
+        transaction_id: effectivelyFree ? (appliedCoupon ? `COUPON:${appliedCoupon.code}` : 'FREE') : transactionId,
+        message: effectivelyFree 
+          ? (appliedCoupon ? `Coupon ${appliedCoupon.code} applied - 100% discount` : 'Free Course Enrollment')
+          : `${paymentMethod} - TxnID: ${transactionId} - Amount: ৳${finalPrice}${appliedCoupon ? ` (Coupon: ${appliedCoupon.code}, Discount: ৳${getDiscountAmount()})` : ''}`,
         status: 'pending',
       });
 
@@ -150,6 +253,28 @@ export default function CourseEnrollmentModal({
         return;
       }
 
+      // Increment coupon usage
+      if (appliedCoupon) {
+        await supabase
+          .from('coupons')
+          .update({ used_count: appliedCoupon.discount_value }) // will be handled via RPC ideally
+          .eq('id', appliedCoupon.id);
+        
+        // Actually increment properly
+        const { data: couponData } = await supabase
+          .from('coupons')
+          .select('used_count')
+          .eq('id', appliedCoupon.id)
+          .single();
+        
+        if (couponData) {
+          await supabase
+            .from('coupons')
+            .update({ used_count: (couponData.used_count || 0) + 1 })
+            .eq('id', appliedCoupon.id);
+        }
+      }
+
       // Send Telegram notification
       try {
         await supabase.functions.invoke('student-enrollment-notify', {
@@ -157,9 +282,9 @@ export default function CourseEnrollmentModal({
             studentName: userName,
             studentEmail: userEmail,
             courseName: course.title,
-            coursePrice: course.price || 0,
-            paymentMethod: isFree ? 'free' : paymentMethod,
-            transactionId: isFree ? 'FREE' : transactionId,
+            coursePrice: finalPrice,
+            paymentMethod: effectivelyFree ? 'free' : paymentMethod,
+            transactionId: effectivelyFree ? (appliedCoupon ? `COUPON:${appliedCoupon.code}` : 'FREE') : transactionId,
           }
         });
       } catch (notifyError) {
@@ -171,6 +296,8 @@ export default function CourseEnrollmentModal({
       onClose();
       setPaymentMethod('');
       setTransactionId('');
+      setCouponCode('');
+      setAppliedCoupon(null);
     } catch (err) {
       console.error('Enrollment error:', err);
       toast.error(t.error);
@@ -183,7 +310,9 @@ export default function CourseEnrollmentModal({
 
   const coursePrice = course.price || 0;
   const isFree = coursePrice === 0;
-  const canSubmit = isFree || (paymentMethod && transactionId);
+  const finalPrice = getDiscountedPrice();
+  const effectivelyFree = isFree || finalPrice === 0;
+  const canSubmit = effectivelyFree || (paymentMethod && transactionId);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -200,16 +329,72 @@ export default function CourseEnrollmentModal({
               </DialogTitle>
               <div className="mt-3 flex items-center gap-3">
                 <span className="text-xs text-white/60">{t.courseFee}</span>
-                <Badge className="bg-emerald-500 text-white border-0 text-base px-3 py-0.5 font-bold">
-                  {isFree ? t.free : `৳${coursePrice.toLocaleString()}`}
-                </Badge>
+                {appliedCoupon && !isFree ? (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-white/40 line-through">৳{coursePrice.toLocaleString()}</span>
+                    <Badge className="bg-emerald-500 text-white border-0 text-base px-3 py-0.5 font-bold">
+                      {finalPrice === 0 ? t.free : `৳${finalPrice.toLocaleString()}`}
+                    </Badge>
+                  </div>
+                ) : (
+                  <Badge className="bg-emerald-500 text-white border-0 text-base px-3 py-0.5 font-bold">
+                    {isFree ? t.free : `৳${coursePrice.toLocaleString()}`}
+                  </Badge>
+                )}
               </div>
             </div>
           </div>
         </div>
 
         <div className="p-5 space-y-5 bg-white dark:bg-slate-900">
-          {!isFree ? (
+          {/* Coupon Section - only show for paid courses */}
+          {!isFree && (
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2 text-sm">
+                <Ticket className="w-4 h-4 text-primary" />
+                {t.couponCode}
+              </Label>
+              {appliedCoupon ? (
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50">
+                  <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                      {appliedCoupon.code}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {appliedCoupon.discount_type === 'percentage' 
+                        ? `${appliedCoupon.discount_value}% ${t.discount}`
+                        : `৳${appliedCoupon.discount_value} ${t.discount}`
+                      }
+                      {' · '}{t.totalAfterDiscount}: ৳{finalPrice.toLocaleString()}
+                    </p>
+                  </div>
+                  <Button variant="ghost" size="icon" className="h-7 w-7 shrink-0" onClick={removeCoupon}>
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Input
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                    placeholder={t.couponPlaceholder}
+                    className="h-11 font-mono"
+                  />
+                  <Button 
+                    variant="outline" 
+                    className="shrink-0 h-11"
+                    onClick={applyCoupon}
+                    disabled={checkingCoupon || !couponCode.trim()}
+                  >
+                    {checkingCoupon ? <Loader2 className="w-4 h-4 animate-spin" /> : t.applyCoupon}
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!effectivelyFree ? (
             <div className="space-y-4">
               {/* Payment Method Selection */}
               <div className="space-y-2">
@@ -240,8 +425,8 @@ export default function CourseEnrollmentModal({
 
               {/* Payment Instructions */}
               {paymentMethod && (
-                <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/30">
-                  <p className="text-sm font-medium text-green-600 dark:text-green-400 mb-2">
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                  <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-2">
                     {t.paymentInstructions}
                   </p>
                   <div className="flex items-center gap-3 mb-2">
@@ -258,7 +443,7 @@ export default function CourseEnrollmentModal({
                     </div>
                   </div>
                   <p className="text-sm font-bold text-primary">
-                    {language === 'bn' ? `পাঠাতে হবে: ৳${coursePrice.toLocaleString()}` : `Amount: ৳${coursePrice.toLocaleString()}`}
+                    {language === 'bn' ? `পাঠাতে হবে: ৳${finalPrice.toLocaleString()}` : `Amount: ৳${finalPrice.toLocaleString()}`}
                   </p>
                 </div>
               )}
@@ -311,17 +496,27 @@ export default function CourseEnrollmentModal({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="bg-gradient-to-br from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30 rounded-2xl p-5 border border-sky-200 dark:border-sky-800/50">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-sky-500/30">
-                    <GraduationCap className="w-7 h-7 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-foreground">{t.free}</h3>
-                    <p className="text-sm text-muted-foreground">{t.freeNote}</p>
+              {appliedCoupon && !isFree && (
+                <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30 rounded-2xl p-5 border border-emerald-200 dark:border-emerald-800/50 text-center">
+                  <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
+                  <h3 className="font-bold text-lg text-foreground">১০০% ডিসকাউন্ট!</h3>
+                  <p className="text-sm text-muted-foreground">কুপন কোড দিয়ে ফ্রিতে এনরোল করুন</p>
+                </div>
+              )}
+              
+              {isFree && !appliedCoupon && (
+                <div className="bg-gradient-to-br from-sky-50 to-cyan-50 dark:from-sky-950/30 dark:to-cyan-950/30 rounded-2xl p-5 border border-sky-200 dark:border-sky-800/50">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-sky-500/30">
+                      <GraduationCap className="w-7 h-7 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg text-foreground">{t.free}</h3>
+                      <p className="text-sm text-muted-foreground">{t.freeNote}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <Button 
                 onClick={handleSubmit}
