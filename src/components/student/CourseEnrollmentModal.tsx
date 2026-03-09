@@ -255,12 +255,6 @@ export default function CourseEnrollmentModal({
 
       // Increment coupon usage
       if (appliedCoupon) {
-        await supabase
-          .from('coupons')
-          .update({ used_count: appliedCoupon.discount_value }) // will be handled via RPC ideally
-          .eq('id', appliedCoupon.id);
-        
-        // Actually increment properly
         const { data: couponData } = await supabase
           .from('coupons')
           .select('used_count')
