@@ -183,6 +183,7 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </section>
+      </div>
     </Layout>
   );
 };
