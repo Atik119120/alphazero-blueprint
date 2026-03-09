@@ -68,6 +68,7 @@ import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
 import GalleryManagement from '@/components/admin/GalleryManagement';
 import CommentManagement from '@/components/admin/CommentManagement';
+import CouponManagement from '@/components/admin/CouponManagement';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
