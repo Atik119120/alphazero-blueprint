@@ -53,6 +53,7 @@ import {
   GraduationCap,
   Send,
   Film,
+  Ticket,
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
