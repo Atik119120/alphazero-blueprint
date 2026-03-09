@@ -668,16 +668,15 @@ export default function StudentLoginPage() {
                 {/* Teacher info removed - teachers use /teacher/login */}
               </Tabs>
             )}
-          </CardContent>
+          </div>
 
           {!showOtpVerification && (
-            <CardFooter className="text-center text-xs sm:text-sm text-muted-foreground px-4 sm:px-6">
-              <p className="w-full">
-                {t('login.autoPassCode')}
-              </p>
-            </CardFooter>
+            <div className="text-center text-xs text-muted-foreground px-5 pb-5">
+              <p>{t('login.autoPassCode')}</p>
+            </div>
           )}
-        </Card>
+        </div>
+        </motion.div>
       </div>
     </div>
   );
