@@ -1970,6 +1970,11 @@ export default function AdminDashboard() {
             <CommentManagement />
           </TabsContent>
 
+          {/* Coupons Tab */}
+          <TabsContent value="coupons" className="space-y-6">
+            <CouponManagement />
+          </TabsContent>
+
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">
             <SiteSettingsManagement />
