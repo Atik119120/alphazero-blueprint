@@ -391,26 +391,30 @@ export default function StudentLoginPage() {
           </div>
         </div>
 
-        <Card className="border-border/50 bg-card/80 backdrop-blur-sm">
-          <CardHeader className="text-center space-y-4 pb-4">
-            <div className="mx-auto w-14 h-14 sm:w-16 sm:h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <div className="glass-card rounded-2xl border-border/30 overflow-hidden">
+          <div className="text-center space-y-4 p-6 pb-4">
+            <motion.div 
+              initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }}
+              className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center"
+            >
               {showOtpVerification ? (
-                <ShieldCheck className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
+                <ShieldCheck className="w-8 h-8 text-primary" />
               ) : (
-                <GraduationCap className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
+                <GraduationCap className="w-8 h-8 text-primary" />
               )}
-            </div>
+            </motion.div>
             <div>
-              <CardTitle className="text-xl sm:text-2xl gradient-text">
+              <h1 className="text-2xl font-display font-bold gradient-text">
                 {showOtpVerification ? 'ইমেইল ভেরিফিকেশন' : t('login.studentPortal')}
-              </CardTitle>
-              <CardDescription className="text-muted-foreground mt-2 text-sm">
+              </h1>
+              <p className="text-muted-foreground mt-2 text-sm">
                 {showOtpVerification 
                   ? `${signupEmail} এ পাঠানো ৬ সংখ্যার কোড দিন`
                   : t('login.startJourney')}
-              </CardDescription>
+              </p>
             </div>
-          </CardHeader>
+          </div>
 
           <CardContent className="px-4 sm:px-6">
             {showOtpVerification ? (
