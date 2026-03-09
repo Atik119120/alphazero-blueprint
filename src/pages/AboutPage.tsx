@@ -27,6 +27,7 @@ const AboutPage = () => {
 
   return (
     <Layout>
+      <div className="overflow-x-hidden">
       {/* Hero */}
       <section className="py-28 lg:py-40 relative overflow-hidden">
         <div className="absolute inset-0 mesh-bg" />
@@ -92,7 +93,7 @@ const AboutPage = () => {
               </div>
 
               {/* Logo + Why Choose */}
-              <motion.div initial={{ opacity: 0, x: 50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="space-y-5">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5">
                 <div className="rounded-2xl glass-card p-8 text-center">
                   <img src={logo} alt="AlphaZero Logo" className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6" />
                   <p className="text-primary text-lg font-semibold tracking-wide">{c("tagline", "about.tagline")}</p>
@@ -182,6 +183,7 @@ const AboutPage = () => {
           </motion.div>
         </div>
       </section>
+      </div>
     </Layout>
   );
 };

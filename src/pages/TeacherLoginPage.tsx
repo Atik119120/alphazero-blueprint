@@ -4,15 +4,15 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from 'next-themes';
-import { Moon, Sun, Globe, GraduationCap, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Moon, Sun, Globe, GraduationCap, ArrowLeft, Eye, EyeOff, Loader2, BookOpen } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 const translations = {
   en: {
-    title: 'Teacher Login',
+    title: 'Teacher Portal',
     subtitle: 'Access your teaching dashboard',
     email: 'Email',
     password: 'Password',
@@ -29,7 +29,7 @@ const translations = {
     success: 'Login successful!',
   },
   bn: {
-    title: 'টিচার লগইন',
+    title: 'টিচার পোর্টাল',
     subtitle: 'আপনার টিচিং ড্যাশবোর্ডে প্রবেশ করুন',
     email: 'ইমেইল',
     password: 'পাসওয়ার্ড',
@@ -60,7 +60,6 @@ export default function TeacherLoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loginAttempted, setLoginAttempted] = useState(false);
 
-  // Handle redirect for already logged-in teachers
   useEffect(() => {
     if (!isLoading && user && role === 'teacher' && !loginAttempted) {
       const isApproved = (profile as any)?.teacher_approved === true;
@@ -70,10 +69,8 @@ export default function TeacherLoginPage() {
     }
   }, [user, role, isLoading, profile, navigate, loginAttempted]);
 
-  // Handle post-login redirect - wait for isLoading to be false
   useEffect(() => {
     if (loginAttempted && !isLoading && user) {
-      // Auth context finished loading, now check role
       if (role !== 'teacher') {
         toast.error(t.notTeacherRole);
         setIsSubmitting(false);
@@ -89,7 +86,6 @@ export default function TeacherLoginPage() {
         return;
       }
       
-      // All checks passed, navigate to teacher dashboard
       navigate('/teacher');
     }
   }, [loginAttempted, isLoading, user, role, profile, navigate, t]);
@@ -108,7 +104,6 @@ export default function TeacherLoginPage() {
         return;
       }
 
-      // Mark that login was attempted, useEffect will handle redirect after auth loads
       setLoginAttempted(true);
       toast.success(t.success);
     } catch (err) {
@@ -117,110 +112,108 @@ export default function TeacherLoginPage() {
     }
   };
 
-  if (isLoading) {
-    return null;
-  }
+  if (isLoading) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-background">
-      <div className="absolute top-4 right-4 flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
-          className="rounded-full"
-        >
-          <Globe className="h-5 w-5" />
+    <div className="min-h-screen bg-background relative flex items-center justify-center p-4 overflow-hidden">
+      {/* Subtle background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
+      </div>
+
+      {/* Top controls */}
+      <div className="absolute top-4 right-4 flex items-center gap-1 z-20">
+        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl" onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}>
+          <Globe className="h-4 w-4" />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="rounded-full"
-        >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+          {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
       </div>
 
-      <Card className="w-full max-w-md border-primary/20 shadow-xl">
-        <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-            <GraduationCap className="h-8 w-8 text-primary" />
+      <div className="w-full max-w-sm relative z-10">
+        <Link to="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-8 transition-colors text-sm">
+          <ArrowLeft className="w-4 h-4" />
+          {t.backToHome}
+        </Link>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          {/* Icon */}
+          <div className="text-center mb-8">
+            <motion.div 
+              initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }}
+              className="mx-auto w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center mb-5"
+            >
+              <BookOpen className="w-10 h-10 text-primary" />
+            </motion.div>
+            <h1 className="text-3xl font-display font-bold mb-2">{t.title}</h1>
+            <p className="text-sm text-muted-foreground">{t.subtitle}</p>
           </div>
-          <CardTitle className="text-2xl font-bold">{t.title}</CardTitle>
-          <CardDescription>{t.subtitle}</CardDescription>
-        </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">{t.email}</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="teacher@example.com"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="password">{t.password}</Label>
-              <div className="relative">
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="absolute right-0 top-0 h-full px-3"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
+          {/* Form */}
+          <div className="glass-card rounded-2xl p-6 space-y-5">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-medium">{t.email}</Label>
+                <div className="relative">
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="teacher@example.com"
+                    className="h-12 rounded-xl bg-background/50 border-border/50"
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            <div className="text-right">
-              <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                {t.forgotPassword}
-              </Link>
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-medium">{t.password}</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="pr-11 h-12 rounded-xl bg-background/50 border-border/50"
+                    required
+                  />
+                  <Button type="button" variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                    onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? t.loggingIn : t.login}
-            </Button>
-          </form>
+              <div className="text-right">
+                <Link to="/forgot-password" className="text-xs text-primary hover:underline">{t.forgotPassword}</Link>
+              </div>
 
+              <Button type="submit" className="w-full h-12 rounded-xl text-base font-semibold gap-2" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" />{t.loggingIn}</>
+                ) : (
+                  <><GraduationCap className="w-4 h-4" />{t.login}</>
+                )}
+              </Button>
+            </form>
+          </div>
+
+          {/* Footer links */}
           <div className="mt-6 space-y-3 text-center text-sm">
             <p className="text-muted-foreground">
               {t.notTeacher}{' '}
-              <Link to="/student/login" className="text-primary hover:underline">
-                {t.studentLogin}
-              </Link>
+              <Link to="/student/login" className="text-primary hover:underline font-medium">{t.studentLogin}</Link>
             </p>
             <p className="text-muted-foreground">
-              <Link to="/student/login?tab=teacher" className="text-primary hover:underline">
-                {t.applyTeacher}
-              </Link>
+              <Link to="/student/login?tab=teacher" className="text-primary hover:underline font-medium">{t.applyTeacher}</Link>
             </p>
           </div>
-
-          <div className="mt-6 text-center">
-            <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-              <ArrowLeft className="h-4 w-4" />
-              {t.backToHome}
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+        </motion.div>
+      </div>
     </div>
   );
 }
