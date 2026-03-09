@@ -790,6 +790,7 @@ export default function AdminDashboard() {
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', category: 'lms' },
     { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery', category: 'lms' },
     { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments', category: 'lms' },
+    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons', category: 'lms' },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
