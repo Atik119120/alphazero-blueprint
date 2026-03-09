@@ -27,6 +27,7 @@ const AboutPage = () => {
 
   return (
     <Layout>
+      <div className="overflow-x-hidden">
       {/* Hero */}
       <section className="py-28 lg:py-40 relative overflow-hidden">
         <div className="absolute inset-0 mesh-bg" />
