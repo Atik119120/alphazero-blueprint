@@ -27,6 +27,7 @@ import TeamPage from "./pages/TeamPage";
 import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
 import CoursesPage from "./pages/CoursesPage";
+import PricingPage from "./pages/PricingPage";
 
 // LMS pages - loaded immediately for fast access
 import AdminLoginPage from "./pages/AdminLoginPage";
