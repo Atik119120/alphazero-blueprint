@@ -56,8 +56,8 @@ export default function SecureVideoPlayer({
   const [thresholdNotified, setThresholdNotified] = useState(false);
   const [showResMenu, setShowResMenu] = useState(false);
   const [selectedRes, setSelectedRes] = useState('auto');
-  const hideControlsTimer = useRef<NodeJS.Timeout>();
-  const progressSaveTimer = useRef<NodeJS.Timeout>();
+  const hideControlsTimer = useRef<ReturnType<typeof setTimeout>>();
+  const progressSaveTimer = useRef<ReturnType<typeof setTimeout>>();
 
   // Disable right-click
   useEffect(() => {
