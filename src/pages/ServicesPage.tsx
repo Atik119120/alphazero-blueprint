@@ -136,7 +136,7 @@ const ServicesPage = () => {
                       <h3 className="text-base lg:text-lg font-display font-bold mb-2">{service.title}</h3>
                       <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{service.description}</p>
                       {service.features && service.features.length > 0 && (
-                        <ul className="space-y-1.5">
+                        <ul className="space-y-1.5 mb-4">
                           {service.features.map((feature, idx) => (
                             <li key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
                               <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
@@ -145,6 +145,26 @@ const ServicesPage = () => {
                           ))}
                         </ul>
                       )}
+                      {/* See Pricing link */}
+                      <Link
+                        to={
+                          service.title?.toLowerCase().includes("web") ||
+                          service.title?.toLowerCase().includes("e-commerce") ||
+                          service.title?.toLowerCase().includes("ecommerce") ||
+                          service.title?.toLowerCase().includes("custom") ||
+                          service.title?.toLowerCase().includes("development") ||
+                          service.icon === "Monitor" ||
+                          service.icon === "Code" ||
+                          service.icon === "ShoppingCart" ||
+                          service.icon === "Globe" ||
+                          service.icon === "Laptop"
+                            ? "/pricing#web"
+                            : "/pricing#graphic"
+                        }
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:gap-2.5 transition-all duration-200"
+                      >
+                        {t("language") === "bn" ? "মূল্য দেখুন" : "See Pricing"} <ArrowRight size={12} />
+                      </Link>
                       <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                     </motion.div>
                   );
