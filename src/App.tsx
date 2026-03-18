@@ -27,6 +27,7 @@ import TeamPage from "./pages/TeamPage";
 import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
 import CoursesPage from "./pages/CoursesPage";
+import PricingPage from "./pages/PricingPage";
 
 // LMS pages - loaded immediately for fast access
 import AdminLoginPage from "./pages/AdminLoginPage";
@@ -110,6 +111,7 @@ function AppContent() {
         <Route path="/join-team" element={<JoinTeamPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         
         {/* LMS routes */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
