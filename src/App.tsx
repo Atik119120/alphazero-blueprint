@@ -111,6 +111,7 @@ function AppContent() {
         <Route path="/join-team" element={<JoinTeamPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/courses" element={<CoursesPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
         
         {/* LMS routes */}
         <Route path="/admin/login" element={<AdminLoginPage />} />
