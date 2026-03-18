@@ -114,7 +114,67 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center">
               <div className="flex items-center bg-secondary/80 dark:bg-secondary/50 rounded-full px-1.5 py-1 border border-border/50 dark:border-border/30">
                 {navLinks.map((link) => {
-                  const isActive = location.pathname === link.href;
+                  const isActive = location.pathname === link.href || (link.hasDropdown && location.pathname === "/pricing");
+                  
+                  if (link.hasDropdown) {
+                    return (
+                      <div
+                        key={link.href}
+                        className="relative"
+                        onMouseEnter={() => setServicesDropdownOpen(true)}
+                        onMouseLeave={() => setServicesDropdownOpen(false)}
+                      >
+                        <button
+                          className="relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full flex items-center gap-1"
+                        >
+                          {isActive && (
+                            <motion.div
+                              layoutId="navbar-active-pill"
+                              className="absolute inset-0 bg-primary rounded-full"
+                              transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                            />
+                          )}
+                          <span className={`relative z-10 transition-colors duration-200 ${
+                            isActive 
+                              ? "text-primary-foreground font-semibold" 
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}>
+                            {link.name}
+                          </span>
+                          <ChevronDown size={12} className={`relative z-10 transition-all duration-200 ${
+                            isActive ? "text-primary-foreground" : "text-muted-foreground"
+                          } ${servicesDropdownOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        
+                        <AnimatePresence>
+                          {servicesDropdownOpen && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                              animate={{ opacity: 1, y: 0, scale: 1 }}
+                              exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                              transition={{ duration: 0.15 }}
+                              className="absolute top-full left-0 mt-1 w-48 bg-background/95 dark:bg-card/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-xl overflow-hidden z-50"
+                            >
+                              {servicesDropdownItems.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  to={item.href}
+                                  onClick={() => setServicesDropdownOpen(false)}
+                                  className={`flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors hover:bg-primary/10 ${
+                                    location.pathname === item.href ? "text-primary font-semibold" : "text-foreground/80"
+                                  }`}
+                                >
+                                  <item.icon size={15} className="text-primary/70" />
+                                  {item.name}
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    );
+                  }
+
                   return (
                     <Link
                       key={link.href}
