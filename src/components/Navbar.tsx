@@ -16,7 +16,9 @@ import {
   GraduationCap,
   Mail,
   Phone,
-  MoreHorizontal
+  MoreHorizontal,
+  ChevronDown,
+  Tag
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
