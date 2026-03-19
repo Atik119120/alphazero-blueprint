@@ -1974,6 +1974,11 @@ export default function AdminDashboard() {
             <CommentManagement />
           </TabsContent>
 
+          {/* AI Assistant Tab */}
+          <TabsContent value="assistant" className="space-y-6">
+            <AdminAssistant />
+          </TabsContent>
+
           {/* Coupons Tab */}
           <TabsContent value="coupons" className="space-y-6">
             <CouponManagement />
