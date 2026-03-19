@@ -54,6 +54,7 @@ import {
   Send,
   Film,
   Ticket,
+  Sparkles,
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -70,6 +71,7 @@ import FeedbackViewer from '@/components/admin/FeedbackViewer';
 import GalleryManagement from '@/components/admin/GalleryManagement';
 import CommentManagement from '@/components/admin/CommentManagement';
 import CouponManagement from '@/components/admin/CouponManagement';
+import AdminAssistant from '@/components/admin/AdminAssistant';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, PieChart as RechartsPieChart, Pie, Cell } from 'recharts';
 
@@ -797,6 +799,7 @@ export default function AdminDashboard() {
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', category: 'cms' },
     { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', category: 'cms' },
+    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant', category: 'settings' },
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', category: 'settings' },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', category: 'settings' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', category: 'settings' },
@@ -1969,6 +1972,11 @@ export default function AdminDashboard() {
           {/* Comments Tab */}
           <TabsContent value="comments" className="space-y-6">
             <CommentManagement />
+          </TabsContent>
+
+          {/* AI Assistant Tab */}
+          <TabsContent value="assistant" className="space-y-6">
+            <AdminAssistant />
           </TabsContent>
 
           {/* Coupons Tab */}
