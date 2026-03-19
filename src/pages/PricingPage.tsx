@@ -1,42 +1,62 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Palette, Shield, ChevronUp } from "lucide-react";
+import { ArrowRight, Globe, Palette, Shield, ChevronUp, Check } from "lucide-react";
 import LayoutComponent from "@/components/Layout";
 import { webPricing, graphicPricing, domainPricing, servicePolicies } from "@/data/pricing";
 import type { PricingItem, MonthlyPackage } from "@/data/pricing";
 
 const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-IN")}`;
 
-const PriceCard = ({ item, accent = "blue" }: { item: PricingItem; accent?: "blue" | "gold" }) => {
-  const accentColor = accent === "blue" ? "text-sky-400" : "text-amber-400";
-  const borderGlow = accent === "blue" ? "hover:border-sky-500/40 hover:shadow-[0_0_30px_-8px_rgba(111,163,255,0.15)]" : "hover:border-amber-500/40 hover:shadow-[0_0_30px_-8px_rgba(212,168,67,0.15)]";
-
+const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent?: "blue" | "gold"; index: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
+      transition={{ delay: index * 0.06 }}
       whileHover={{ y: -4 }}
-      className={`relative p-5 lg:p-6 rounded-[14px] border border-[#252528] bg-[#131316] transition-all duration-300 ${borderGlow}`}
+      className="group relative p-5 lg:p-7 rounded-2xl glass-card hover:border-primary/30 transition-all duration-400 overflow-hidden"
     >
-      <div className="flex items-start justify-between mb-3">
-        <span className="text-2xl">{item.icon}</span>
+      {/* Index number */}
+      <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/20 tracking-wider">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      <div className="flex items-start gap-3 mb-4">
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl border ${
+          accent === "blue" 
+            ? "bg-primary/[0.08] border-primary/10" 
+            : "bg-amber-500/[0.08] border-amber-500/10"
+        }`}>
+          {item.icon}
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-sm lg:text-base font-display font-bold mb-0.5">{item.name}</h3>
+          <p className="text-xs text-muted-foreground/60 leading-snug">{item.description}</p>
+        </div>
       </div>
-      <h3 className="text-base lg:text-lg font-display font-bold text-[#f0ece4] mb-1">{item.name}</h3>
-      <p className="text-xs text-[#f0ece4]/50 mb-4">{item.description}</p>
-      <div className="flex items-baseline gap-2 mb-4">
-        <span className={`text-2xl lg:text-3xl font-bold ${accentColor}`}>{formatPrice(item.discountedPrice)}</span>
-        <span className="text-sm text-[#f0ece4]/30 line-through">{formatPrice(item.originalPrice)}</span>
+
+      <div className="flex items-baseline gap-2.5 mb-5 pl-0.5">
+        <span className={`text-2xl lg:text-3xl font-bold ${accent === "blue" ? "text-primary" : "text-amber-400"}`}>
+          {formatPrice(item.discountedPrice)}
+        </span>
+        <span className="text-sm text-muted-foreground/30 line-through">{formatPrice(item.originalPrice)}</span>
       </div>
+
       <ul className="space-y-2">
         {item.features.map((f, i) => (
-          <li key={i} className="flex items-start gap-2 text-xs text-[#f0ece4]/60">
-            <span className="mt-0.5 w-1 h-1 rounded-full bg-current shrink-0" />
-            {f}
+          <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground/70">
+            <Check size={12} className={`mt-0.5 shrink-0 ${accent === "blue" ? "text-primary/60" : "text-amber-400/60"}`} />
+            <span>{f}</span>
           </li>
         ))}
       </ul>
+
+      {/* Bottom accent line */}
+      <div className={`absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent ${
+        accent === "blue" ? "via-primary/20" : "via-amber-400/20"
+      } to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400`} />
     </motion.div>
   );
 };
@@ -50,68 +70,71 @@ const MonthlyCard = ({ pkg, index }: { pkg: MonthlyPackage; index: number }) => 
       viewport={{ once: true }}
       transition={{ delay: index * 0.1 }}
       whileHover={{ y: -4 }}
-      className={`relative p-5 lg:p-6 rounded-[14px] border transition-all duration-300 ${
+      className={`group relative p-5 lg:p-7 rounded-2xl transition-all duration-400 overflow-hidden ${
         isPopular
-          ? "border-amber-500/50 bg-gradient-to-b from-amber-500/[0.08] to-[#131316] shadow-[0_0_40px_-12px_rgba(212,168,67,0.2)]"
-          : "border-[#252528] bg-[#131316] hover:border-amber-500/30 hover:shadow-[0_0_30px_-8px_rgba(212,168,67,0.1)]"
+          ? "glass-card border-primary/40 shadow-[0_0_40px_-12px_hsl(var(--primary)/0.15)]"
+          : "glass-card hover:border-primary/30"
       }`}
     >
       {isPopular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-amber-500 text-black text-[10px] font-bold uppercase tracking-wider rounded-full">
+        <div className="absolute -top-0 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-wider rounded-b-lg">
           Most Popular
         </div>
       )}
-      <div className="flex items-center gap-2 mb-2">
-        <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border border-amber-500/30 text-amber-400 bg-amber-500/[0.08]">
+      
+      <div className="flex items-center gap-2 mb-3 mt-1">
+        <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border border-amber-500/30 text-amber-400 bg-amber-500/[0.06]">
           {pkg.badge}
         </span>
+        <span className="text-[10px] text-muted-foreground/40">{pkg.designsPerMonth} designs/mo</span>
       </div>
-      <h3 className="text-xl font-display font-bold text-[#f0ece4]">{pkg.name}</h3>
-      <p className="text-xs text-[#f0ece4]/40 mb-3">{pkg.tagline}</p>
-      <div className="flex items-baseline gap-2 mb-1">
+      
+      <h3 className="text-lg lg:text-xl font-display font-bold mb-1">{pkg.name}</h3>
+      <p className="text-xs text-muted-foreground/50 mb-4">{pkg.tagline}</p>
+      
+      <div className="flex items-baseline gap-2 mb-5">
         <span className="text-2xl lg:text-3xl font-bold text-amber-400">{formatPrice(pkg.discountedPrice)}</span>
-        <span className="text-sm text-[#f0ece4]/30 line-through">{formatPrice(pkg.originalPrice)}</span>
+        <span className="text-xs text-muted-foreground/30 line-through">{formatPrice(pkg.originalPrice)}</span>
+        <span className="text-xs text-muted-foreground/40">/mo</span>
       </div>
-      <p className="text-xs text-amber-400/60 mb-4">{pkg.designsPerMonth} designs/month</p>
+      
       <ul className="space-y-2">
         {pkg.features.map((f, i) => (
-          <li key={i} className="flex items-start gap-2 text-xs text-[#f0ece4]/60">
-            <span className="mt-0.5 w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
-            {f}
+          <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground/70">
+            <Check size={12} className="mt-0.5 shrink-0 text-amber-400/60" />
+            <span>{f}</span>
           </li>
         ))}
       </ul>
+
+      <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
     </motion.div>
   );
 };
 
 const StickyNav = ({ activeSection }: { activeSection: string }) => {
   const sections = [
-    { id: "web", label: "🌐 Web Design", icon: Globe },
-    { id: "graphic", label: "🎨 Graphic Design", icon: Palette },
-    { id: "policy", label: "🛡️ Policy", icon: Shield },
+    { id: "web", label: "🌐 Web Design" },
+    { id: "graphic", label: "🎨 Graphic Design" },
+    { id: "policy", label: "🛡️ Policy" },
   ];
 
   return (
-    <div className="sticky top-16 z-40 py-3 bg-[#0a0a0c]/90 backdrop-blur-xl border-b border-[#252528]/50">
+    <div className="sticky top-16 z-40 py-3 bg-background/80 dark:bg-background/80 backdrop-blur-xl border-b border-border/30">
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-center gap-2 sm:gap-4">
+        <div className="flex items-center justify-center gap-1.5 sm:gap-3">
           {sections.map((s) => (
-            <a
+            <button
               key={s.id}
-              href={`#${s.id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth" });
-              }}
+              onClick={() => document.getElementById(s.id)?.scrollIntoView({ behavior: "smooth" })}
               className={`px-3 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
                 activeSection === s.id
-                  ? "bg-primary text-primary-foreground"
-                  : "text-[#f0ece4]/50 hover:text-[#f0ece4] hover:bg-[#252528]/50"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
               }`}
             >
               {s.label}
-            </a>
+            </button>
           ))}
         </div>
       </div>
@@ -142,251 +165,252 @@ const PricingPage = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Handle hash scroll on mount
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (hash) {
       setTimeout(() => {
         document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
-      }, 300);
+      }, 400);
     }
   }, []);
 
   return (
     <LayoutComponent>
-      <div className="bg-[#0a0a0c] min-h-screen text-[#f0ece4]">
-        {/* Hero */}
-        <section className="pt-28 pb-12 lg:pt-40 lg:pb-16 relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-96 h-96 bg-sky-500/[0.04] rounded-full blur-[120px]" />
-            <div className="absolute bottom-10 right-1/4 w-80 h-80 bg-amber-500/[0.04] rounded-full blur-[120px]" />
-          </div>
-          <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] text-xs font-bold tracking-[0.2em] uppercase text-primary mb-6">
-                Transparent Pricing
-              </span>
+      {/* Hero */}
+      <section className="pt-28 pb-12 lg:pt-40 lg:pb-16 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg" />
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm text-xs font-bold tracking-[0.2em] uppercase text-primary mb-6">
+              Transparent Pricing
+            </span>
+          </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-4 leading-tight"
+          >
+            Simple, Honest <span className="gradient-text">Pricing</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto"
+          >
+            Quality design & development at prices that make sense for your business
+          </motion.p>
+        </div>
+      </section>
+
+      <StickyNav activeSection={activeSection} />
+
+      {/* ═══ WEB DESIGN SECTION ═══ */}
+      <section id="web" className="py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-4">
+                <Globe size={14} className="text-primary" />
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Web Design</span>
+              </div>
+              <h2 className="text-2xl lg:text-4xl font-display font-bold">Professional Websites</h2>
+              <p className="text-muted-foreground max-w-lg mt-2">Built with modern technologies for speed and reliability</p>
             </motion.div>
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-3xl sm:text-4xl lg:text-6xl font-display font-bold mb-4 leading-tight"
-            >
-              Simple, Honest <span className="bg-gradient-to-r from-sky-400 to-amber-400 bg-clip-text text-transparent">Pricing</span>
-            </motion.h1>
-            <motion.p
+
+            {/* WordPress */}
+            <div className="mb-14">
+              <h3 className="text-base font-display font-semibold text-primary mb-6 flex items-center gap-3">
+                <span className="w-8 h-px bg-primary/30" />
+                WordPress Websites
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                {webPricing.wordpress.map((item, i) => (
+                  <PriceCard key={item.id} item={item} accent="blue" index={i} />
+                ))}
+              </div>
+            </div>
+
+            {/* Custom Code */}
+            <div className="mb-14">
+              <h3 className="text-base font-display font-semibold text-primary mb-6 flex items-center gap-3">
+                <span className="w-8 h-px bg-primary/30" />
+                Custom Coded Websites
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                {webPricing.customCode.map((item, i) => (
+                  <PriceCard key={item.id} item={item} accent="blue" index={i} />
+                ))}
+              </div>
+            </div>
+
+            {/* Storage Info Box */}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-base sm:text-lg text-[#f0ece4]/50 max-w-xl mx-auto"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 mb-14"
             >
-              Quality design & development at prices that make sense for your business
-            </motion.p>
-          </div>
-        </section>
-
-        <StickyNav activeSection={activeSection} />
-
-        {/* ═══ WEB DESIGN SECTION ═══ */}
-        <section id="web" className="py-16 lg:py-24">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
-                <div className="flex items-center gap-3 mb-3">
-                  <Globe className="text-sky-400" size={24} />
-                  <h2 className="text-2xl lg:text-4xl font-display font-bold">Web Design</h2>
-                </div>
-                <p className="text-[#f0ece4]/40 max-w-lg">Professional websites built with modern technologies</p>
-              </motion.div>
-
-              {/* WordPress */}
-              <div className="mb-14">
-                <h3 className="text-lg font-display font-semibold text-sky-400 mb-6 flex items-center gap-2">
-                  <span className="w-8 h-px bg-sky-400/30" /> WordPress Websites
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {webPricing.wordpress.map((item) => (
-                    <PriceCard key={item.id} item={item} accent="blue" />
-                  ))}
-                </div>
+              <div className="p-5 lg:p-6 rounded-2xl glass-card border-primary/20">
+                <h4 className="font-display font-semibold text-primary mb-2 flex items-center gap-2">🚀 Custom Code</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Free storage included — Vercel hosting + Cloudflare R2 (25 GB) + Supabase (5 GB backend)
+                </p>
               </div>
-
-              {/* Custom Code */}
-              <div className="mb-14">
-                <h3 className="text-lg font-display font-semibold text-sky-400 mb-6 flex items-center gap-2">
-                  <span className="w-8 h-px bg-sky-400/30" /> Custom Coded Websites
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {webPricing.customCode.map((item) => (
-                    <PriceCard key={item.id} item={item} accent="blue" />
-                  ))}
-                </div>
+              <div className="p-5 lg:p-6 rounded-2xl glass-card border-amber-500/20">
+                <h4 className="font-display font-semibold text-amber-400 mb-2 flex items-center gap-2">📦 WordPress</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Client bears their own hosting/storage costs. We help set up and configure.
+                </p>
               </div>
+            </motion.div>
 
-              {/* Storage Info Box */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-14"
-              >
-                <div className="p-5 rounded-[14px] border border-sky-500/20 bg-sky-500/[0.04]">
-                  <h4 className="font-display font-semibold text-sky-400 mb-2">🚀 Custom Code</h4>
-                  <p className="text-xs text-[#f0ece4]/50">
-                    Free storage included — Vercel hosting + Cloudflare R2 (25 GB) + Supabase (5 GB backend)
-                  </p>
-                </div>
-                <div className="p-5 rounded-[14px] border border-amber-500/20 bg-amber-500/[0.04]">
-                  <h4 className="font-display font-semibold text-amber-400 mb-2">📦 WordPress</h4>
-                  <p className="text-xs text-[#f0ece4]/50">
-                    Client bears their own hosting/storage costs. We help set up and configure.
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Domain Policy Table */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h3 className="text-lg font-display font-semibold text-[#f0ece4]/80 mb-4">🌐 Domain Pricing</h3>
-                <div className="rounded-[14px] border border-[#252528] overflow-hidden">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-[#252528] bg-[#131316]">
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-[#f0ece4]/50 uppercase tracking-wider">Domain</th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-[#f0ece4]/50 uppercase tracking-wider">Condition</th>
-                        <th className="text-left py-3 px-4 text-xs font-semibold text-[#f0ece4]/50 uppercase tracking-wider">Charge</th>
+            {/* Domain Policy Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-base font-display font-semibold mb-4 flex items-center gap-3">
+                <span className="w-8 h-px bg-primary/30" />
+                🌐 Domain Pricing
+              </h3>
+              <div className="rounded-2xl glass-card overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border/30">
+                      <th className="text-left py-3.5 px-5 text-xs font-bold text-muted-foreground/50 uppercase tracking-wider">Domain</th>
+                      <th className="text-left py-3.5 px-5 text-xs font-bold text-muted-foreground/50 uppercase tracking-wider">Condition</th>
+                      <th className="text-left py-3.5 px-5 text-xs font-bold text-muted-foreground/50 uppercase tracking-wider">Charge</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {domainPricing.map((row, i) => (
+                      <tr key={i} className="border-b border-border/20 last:border-0">
+                        <td className="py-3 px-5 font-medium">{row.domain}</td>
+                        <td className="py-3 px-5 text-muted-foreground">{row.condition}</td>
+                        <td className={`py-3 px-5 font-semibold ${row.isFree ? "text-emerald-400" : "text-muted-foreground/60"}`}>
+                          {row.charge}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {domainPricing.map((row, i) => (
-                        <tr key={i} className="border-b border-[#252528]/50 last:border-0">
-                          <td className="py-3 px-4 font-medium text-[#f0ece4]/80">{row.domain}</td>
-                          <td className="py-3 px-4 text-[#f0ece4]/50">{row.condition}</td>
-                          <td className={`py-3 px-4 font-semibold ${row.isFree ? "text-emerald-400" : "text-[#f0ece4]/60"}`}>
-                            {row.charge}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══ GRAPHIC DESIGN SECTION ═══ */}
-        <section id="graphic" className="py-16 lg:py-24 border-t border-[#252528]/50">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
-                <div className="flex items-center gap-3 mb-3">
-                  <Palette className="text-amber-400" size={24} />
-                  <h2 className="text-2xl lg:text-4xl font-display font-bold">Graphic Design</h2>
-                </div>
-                <p className="text-[#f0ece4]/40 max-w-lg">Creative designs that make your brand stand out</p>
-              </motion.div>
-
-              {/* One-time services */}
-              <div className="mb-14">
-                <h3 className="text-lg font-display font-semibold text-amber-400 mb-6 flex items-center gap-2">
-                  <span className="w-8 h-px bg-amber-400/30" /> One-Time Services
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {graphicPricing.oneTime.map((item) => (
-                    <PriceCard key={item.id} item={item} accent="gold" />
-                  ))}
-                </div>
+                    ))}
+                  </tbody>
+                </table>
               </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-              {/* Monthly Packages */}
-              <div>
-                <h3 className="text-lg font-display font-semibold text-amber-400 mb-6 flex items-center gap-2">
-                  <span className="w-8 h-px bg-amber-400/30" /> Monthly Packages
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {graphicPricing.monthly.map((pkg, i) => (
-                    <MonthlyCard key={pkg.id} pkg={pkg} index={i} />
-                  ))}
-                </div>
+      {/* ═══ GRAPHIC DESIGN SECTION ═══ */}
+      <section id="graphic" className="py-16 lg:py-24 relative mesh-bg">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/20 bg-amber-500/[0.06] mb-4">
+                <Palette size={14} className="text-amber-400" />
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-amber-400">Graphic Design</span>
+              </div>
+              <h2 className="text-2xl lg:text-4xl font-display font-bold">Creative Design Services</h2>
+              <p className="text-muted-foreground max-w-lg mt-2">Make your brand stand out with professional designs</p>
+            </motion.div>
+
+            {/* One-time */}
+            <div className="mb-14">
+              <h3 className="text-base font-display font-semibold text-amber-400 mb-6 flex items-center gap-3">
+                <span className="w-8 h-px bg-amber-400/30" />
+                One-Time Services
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                {graphicPricing.oneTime.map((item, i) => (
+                  <PriceCard key={item.id} item={item} accent="gold" index={i} />
+                ))}
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* ═══ POLICY SECTION ═══ */}
-        <section id="policy" className="py-16 lg:py-24 border-t border-[#252528]/50">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
-                <div className="flex items-center gap-3 mb-3">
-                  <Shield className="text-emerald-400" size={24} />
-                  <h2 className="text-2xl lg:text-4xl font-display font-bold">Service Policy</h2>
-                </div>
-                <p className="text-[#f0ece4]/40 max-w-lg">Applies to all web design & graphic design services</p>
-              </motion.div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {servicePolicies.map((policy, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                    whileHover={{ y: -4 }}
-                    className="p-5 lg:p-6 rounded-[14px] border border-[#252528] bg-[#131316] hover:border-emerald-500/30 transition-all duration-300"
-                  >
-                    <span className="text-2xl mb-3 block">{policy.icon}</span>
-                    <h3 className="text-base font-display font-bold text-[#f0ece4] mb-2">{policy.title}</h3>
-                    <p className="text-xs text-[#f0ece4]/50 leading-relaxed">{policy.description}</p>
-                  </motion.div>
+            {/* Monthly */}
+            <div>
+              <h3 className="text-base font-display font-semibold text-amber-400 mb-6 flex items-center gap-3">
+                <span className="w-8 h-px bg-amber-400/30" />
+                Monthly Packages
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                {graphicPricing.monthly.map((pkg, i) => (
+                  <MonthlyCard key={pkg.id} pkg={pkg} index={i} />
                 ))}
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA */}
-        <section className="py-16 lg:py-24 border-t border-[#252528]/50">
-          <div className="container mx-auto px-4 sm:px-6 text-center">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-              <h2 className="text-2xl lg:text-4xl font-display font-bold mb-4">Ready to get started?</h2>
-              <p className="text-[#f0ece4]/40 mb-8 max-w-md mx-auto">
-                Contact us today and let's discuss your project requirements
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold transition-all duration-300 hover:scale-[1.02]"
-                >
-                  Start Your Project <ArrowRight size={18} />
-                </Link>
-                <a
-                  href="https://wa.me/8801712345678"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 border border-[#252528] text-[#f0ece4] rounded-full font-semibold hover:border-primary/30 transition-all duration-300"
-                >
-                  WhatsApp Us
-                </a>
+      {/* ═══ POLICY SECTION ═══ */}
+      <section id="policy" className="py-16 lg:py-24">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] mb-4">
+                <Shield size={14} className="text-emerald-400" />
+                <span className="text-xs font-bold tracking-[0.2em] uppercase text-emerald-400">Service Policy</span>
               </div>
+              <h2 className="text-2xl lg:text-4xl font-display font-bold">Our Commitment</h2>
+              <p className="text-muted-foreground max-w-lg mt-2">Applies to all web design & graphic design services</p>
             </motion.div>
-          </div>
-        </section>
 
-        {/* Scroll to top */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-20 right-4 lg:bottom-8 lg:right-8 z-40 w-10 h-10 rounded-full bg-[#131316] border border-[#252528] flex items-center justify-center text-[#f0ece4]/50 hover:text-primary hover:border-primary/30 transition-all"
-        >
-          <ChevronUp size={18} />
-        </button>
-      </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+              {servicePolicies.map((policy, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ y: -4 }}
+                  className="group p-5 lg:p-7 rounded-2xl glass-card hover:border-emerald-500/20 transition-all duration-400 relative overflow-hidden"
+                >
+                  <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/20 tracking-wider">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  <span className="text-2xl mb-4 block">{policy.icon}</span>
+                  <h3 className="text-sm lg:text-base font-display font-bold mb-2">{policy.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{policy.description}</p>
+                  <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 lg:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg" />
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <h2 className="text-2xl lg:text-4xl font-display font-bold mb-4">Ready to get started?</h2>
+            <p className="text-muted-foreground text-lg mb-10 max-w-md mx-auto">
+              Contact us today and let's discuss your project
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]"
+              >
+                Start Your Project <ArrowRight size={20} />
+              </Link>
+              <a
+                href="https://wa.me/8801712345678"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+              >
+                WhatsApp Us
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </LayoutComponent>
   );
 };
