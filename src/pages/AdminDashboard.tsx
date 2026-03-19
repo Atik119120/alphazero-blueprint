@@ -54,6 +54,7 @@ import {
   Send,
   Film,
   Ticket,
+  Sparkles,
 } from 'lucide-react';
 import { PassCodeWithCourses } from '@/types/lms';
 import CourseManagement from '@/components/admin/CourseManagement';
