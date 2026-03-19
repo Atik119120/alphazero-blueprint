@@ -799,6 +799,7 @@ export default function AdminDashboard() {
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', category: 'cms' },
     { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', category: 'cms' },
+    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant', category: 'settings' },
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', category: 'settings' },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', category: 'settings' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', category: 'settings' },
