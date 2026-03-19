@@ -146,8 +146,8 @@ const ServicesPage = () => {
                         </ul>
                       )}
                       {/* See Pricing link */}
-                      <Link
-                        to={
+                      <a
+                        href={
                           service.title?.toLowerCase().includes("web") ||
                           service.title?.toLowerCase().includes("e-commerce") ||
                           service.title?.toLowerCase().includes("ecommerce") ||
@@ -161,10 +161,15 @@ const ServicesPage = () => {
                             ? "/pricing#web"
                             : "/pricing#graphic"
                         }
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const target = e.currentTarget.getAttribute("href") || "/pricing";
+                          window.location.href = target;
+                        }}
                         className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:gap-2.5 transition-all duration-200"
                       >
                         {t("language") === "bn" ? "মূল্য দেখুন" : "See Pricing"} <ArrowRight size={12} />
-                      </Link>
+                      </a>
                       <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                     </motion.div>
                   );
