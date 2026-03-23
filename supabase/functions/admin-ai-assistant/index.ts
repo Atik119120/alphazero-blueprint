@@ -122,7 +122,7 @@ You can include multiple <action> blocks for multiple operations.
     ];
 
     // Call AI via Lovable AI gateway
-    const aiResponse = await fetch("https://ai.lovable.dev/api/v1/chat/completions", {
+    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
