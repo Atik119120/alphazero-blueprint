@@ -93,7 +93,16 @@ ${JSON.stringify(dbContext, null, 2)}
 - When asked questions, answer based on current data
 - Always respond in Bengali (বাংলা) since the admin speaks Bengali
 - Be friendly and helpful
-- If an image URL is provided in the message, use it directly
+
+## IMAGE ANALYSIS - VERY IMPORTANT:
+- If the admin provides an image URL and asks to add it to portfolio/works, you MUST automatically analyze the image URL to determine:
+  - A suitable **title** (in Bengali)
+  - A suitable **description** (in Bengali)
+  - The correct **category** from the available categories list
+- Do NOT ask the admin for title, description, or category — generate them yourself based on the image context and the admin's message
+- If the admin gives any hints about the image (e.g. "এটা একটা লোগো" or "portfolio তে add করো"), use those hints to determine the best category and metadata
+- Just do it — add it immediately with auto-generated metadata
+- If the admin provides a title or description explicitly, use those instead of auto-generating
 
 ## Action Format:
 When you need to perform a database action, include it in your response wrapped in <action> tags:
@@ -111,15 +120,43 @@ You can include multiple <action> blocks for multiple operations.
 ## Important Rules:
 - For works: default is_published=true, is_featured=false
 - For image_url: if admin provides an image URL, use it directly
-- Always confirm what you're about to do before doing complex operations
-- If something is unclear, ask for clarification
-- Keep responses concise but informative`;
+- NEVER ask the admin for title/description/category if they gave an image — auto-generate them
+- If something is truly unclear (like which table to use), ask briefly
+- Keep responses concise but informative
+- When admin says to do something, DO IT immediately — don't ask unnecessary questions`;
 
-    const messages = [
+    // Build messages - support image content for vision
+    const aiMessages: any[] = [
       { role: "system", content: systemPrompt },
-      ...(conversation_history || []),
-      { role: "user", content: message },
     ];
+
+    // Add conversation history
+    if (conversation_history) {
+      for (const msg of conversation_history) {
+        aiMessages.push(msg);
+      }
+    }
+
+    // Check if the message contains an image URL - use vision model
+    const imageUrlMatch = message.match(/\[Image URL:\s*(https?:\/\/[^\]]+)\]/);
+    const hasImage = !!imageUrlMatch;
+    
+    if (hasImage) {
+      const imgUrl = imageUrlMatch[1];
+      const textPart = message.replace(/\[Image URL:\s*https?:\/\/[^\]]+\]/, "").trim();
+      aiMessages.push({
+        role: "user",
+        content: [
+          { type: "text", text: textPart || "এই ছবিটি পোর্টফোলিওতে যোগ করো" },
+          { type: "image_url", image_url: { url: imgUrl } },
+        ],
+      });
+    } else {
+      aiMessages.push({ role: "user", content: message });
+    }
+
+    // Use vision-capable model when image is present
+    const modelToUse = hasImage ? "google/gemini-2.5-flash" : "google/gemini-2.5-flash";
 
     // Call AI via Lovable AI gateway
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -129,8 +166,8 @@ You can include multiple <action> blocks for multiple operations.
         Authorization: `Bearer ${lovableApiKey}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages,
+        model: modelToUse,
+        messages: aiMessages,
         temperature: 0.7,
         max_tokens: 2000,
       }),
