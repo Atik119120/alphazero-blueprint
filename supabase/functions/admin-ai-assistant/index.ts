@@ -6,6 +6,54 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+const toBengaliDigits = (value: string) =>
+  value.replace(/\d/g, (digit) => "০১২৩৪৫৬৭৮৯"[Number(digit)]);
+
+const sanitizePhoneDisplay = (value: string) => value.replace(/^tel:/i, "").trim();
+
+const sanitizePhoneLink = (value: string) => value.replace(/\D/g, "");
+
+const inferBanglaAddress = (value: string) => {
+  const replacements: Array<[RegExp, string]> = [
+    [/Hi[- ]?Tech Park/gi, "হাই-টেক পার্ক"],
+    [/Rajshahi/gi, "রাজশাহী"],
+    [/Bangladesh/gi, "বাংলাদেশ"],
+  ];
+
+  return replacements.reduce((text, [pattern, replacement]) => text.replace(pattern, replacement), value);
+};
+
+const extractContactUpdate = (message: string) => {
+  const lines = message
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const email = message.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0]?.trim();
+  const phone = sanitizePhoneDisplay(
+    message.match(/(?:tel:)?\+?\d[\d\s-]{7,}\d/)?.[0] || ""
+  );
+
+  const address = lines.find(
+    (line) =>
+      line !== email &&
+      line !== phone &&
+      !/whatsapp|হোয়াটসঅ্যাপ|phone|ফোন|email|ইমেইল|mail|tel:/i.test(line)
+  );
+
+  const wantsContactUpdate = /contact|যোগাযোগ|phone|ফোন|email|ইমেইল|mail|address|ঠিকানা|whatsapp|হোয়াটসঅ্যাপ|tel:/i.test(message);
+  const wantsWhatsappUpdate = /whatsapp|হোয়াটসঅ্যাপ|wa\.me|same number|same as phone|oi number|ওই number/i.test(message);
+
+  if (!wantsContactUpdate || (!email && !phone && !address)) return null;
+
+  return {
+    email,
+    phone,
+    address,
+    wantsWhatsappUpdate,
+  };
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -56,12 +104,14 @@ Deno.serve(async (req) => {
     const { message, conversation_history } = await req.json();
 
     // Get current data context
-    const [worksRes, servicesRes, teamRes, coursesRes, pageContentRes] = await Promise.all([
+    const [worksRes, servicesRes, teamRes, coursesRes, pageContentRes, footerContentRes, footerLinksRes] = await Promise.all([
       adminClient.from("works").select("id, title, category, is_published, is_featured, image_url, project_url, description, order_index").order("order_index"),
       adminClient.from("services").select("id, title, description, icon, is_active, order_index, features").order("order_index"),
       adminClient.from("team_members").select("id, name, role, is_active, image_url, order_index").order("order_index"),
       adminClient.from("courses").select("id, title, is_published, price, course_type, trainer_name").order("created_at", { ascending: false }),
       adminClient.from("page_content").select("id, page_name, content_key, content_bn, content_en"),
+      adminClient.from("footer_content").select("id, content_key, content_bn, content_en"),
+      adminClient.from("footer_links").select("id, title, url, icon, link_type, is_active, order_index").order("order_index"),
     ]);
 
     const dbContext = {
@@ -70,7 +120,103 @@ Deno.serve(async (req) => {
       team_members: teamRes.data || [],
       courses: coursesRes.data || [],
       page_content: pageContentRes.data || [],
+      footer_content: footerContentRes.data || [],
+      footer_links: footerLinksRes.data || [],
     };
+
+    const directContactUpdate = extractContactUpdate(message);
+
+    if (directContactUpdate) {
+      const actionResults: any[] = [];
+      const footerContent = footerContentRes.data || [];
+      const footerLinks = footerLinksRes.data || [];
+      const pageContent = pageContentRes.data || [];
+
+      const updateFooterContent = async (key: string, contentEn: string, contentBn: string) => {
+        const row = footerContent.find((item: any) => item.content_key === key);
+        if (!row) return;
+
+        const { data, error } = await adminClient
+          .from("footer_content")
+          .update({ content_en: contentEn, content_bn: contentBn })
+          .eq("id", row.id)
+          .select();
+
+        actionResults.push({ success: !error, table: "footer_content", type: "update", data, error: error?.message });
+      };
+
+      const updatePageContent = async (key: string, contentEn: string, contentBn: string) => {
+        const row = pageContent.find((item: any) => item.page_name === "contact" && item.content_key === key);
+        if (!row) return;
+
+        const { data, error } = await adminClient
+          .from("page_content")
+          .update({ content_en: contentEn, content_bn: contentBn })
+          .eq("id", row.id)
+          .select();
+
+        actionResults.push({ success: !error, table: "page_content", type: "update", data, error: error?.message });
+      };
+
+      if (directContactUpdate.phone) {
+        const phoneEn = directContactUpdate.phone;
+        const phoneBn = toBengaliDigits(phoneEn);
+        await updateFooterContent("phone", phoneEn, phoneBn);
+        await updatePageContent("info.phone", phoneEn, phoneBn);
+
+        if (directContactUpdate.wantsWhatsappUpdate) {
+          const whatsappDigits = sanitizePhoneLink(phoneEn);
+          const whatsappLinkRow = footerLinks.find((item: any) => item.link_type === "social" && /whatsapp/i.test(item.title));
+
+          if (whatsappLinkRow) {
+            const { data, error } = await adminClient
+              .from("footer_links")
+              .update({ url: `https://wa.me/${whatsappDigits}` })
+              .eq("id", whatsappLinkRow.id)
+              .select();
+
+            actionResults.push({ success: !error, table: "footer_links", type: "update", data, error: error?.message });
+          }
+
+          await updatePageContent("info.whatsapp", `+${whatsappDigits}`, toBengaliDigits(`+${whatsappDigits}`));
+          await updatePageContent("info.whatsapp_display", phoneEn, phoneBn);
+        }
+      }
+
+      if (directContactUpdate.email) {
+        await updateFooterContent("email", directContactUpdate.email, directContactUpdate.email);
+        await updatePageContent("info.email", directContactUpdate.email, directContactUpdate.email);
+
+        const emailLinkRow = footerLinks.find((item: any) => item.link_type === "social" && /email/i.test(item.title));
+        if (emailLinkRow) {
+          const { data, error } = await adminClient
+            .from("footer_links")
+            .update({ url: `mailto:${directContactUpdate.email}` })
+            .eq("id", emailLinkRow.id)
+            .select();
+
+          actionResults.push({ success: !error, table: "footer_links", type: "update", data, error: error?.message });
+        }
+      }
+
+      if (directContactUpdate.address) {
+        const addressEn = directContactUpdate.address;
+        const addressBn = inferBanglaAddress(addressEn);
+        await updateFooterContent("address", addressEn, addressBn);
+        await updatePageContent("info.address", addressEn, addressBn);
+      }
+
+      return new Response(
+        JSON.stringify({
+          message: "যোগাযোগের তথ্য সফলভাবে আপডেট করা হয়েছে।",
+          actions_executed: actionResults,
+          has_actions: actionResults.length > 0,
+        }),
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        }
+      );
+    }
 
     const systemPrompt = `You are "Alpha Assistant" — an intelligent admin assistant for the Alpha Academy website. You help the admin manage the entire website through natural conversation.
 
@@ -82,6 +228,8 @@ You can perform CRUD operations on these database tables:
 3. **team_members** — Team members (fields: name, role, bio, image_url, is_active, order_index, facebook_url, instagram_url, etc.)
 4. **page_content** — Page text content (fields: page_name, content_key, content_bn, content_en)
 5. **courses** — LMS courses (fields: title, description, price, is_published, course_type, trainer_name)
+6. **footer_content** — Contact/footer text (fields: content_key, content_bn, content_en). Common keys: phone, email, address, description, tagline
+7. **footer_links** — Social/footer links (fields: title, url, icon, link_type, is_active, order_index). Use this for WhatsApp/social link updates
 
 ## Current Database State:
 ${JSON.stringify(dbContext, null, 2)}
@@ -109,7 +257,7 @@ When you need to perform a database action, include it in your response wrapped 
 <action>
 {
   "type": "insert" | "update" | "delete",
-  "table": "works" | "services" | "team_members" | "page_content" | "courses",
+  "table": "works" | "services" | "team_members" | "page_content" | "courses" | "footer_content" | "footer_links",
   "data": { ... },
   "id": "uuid (for update/delete only)"
 }
@@ -118,7 +266,11 @@ When you need to perform a database action, include it in your response wrapped 
 You can include multiple <action> blocks for multiple operations.
 
 ## Important Rules:
-- For works: default is_published=true, is_featured=false
+ - For works: default is_published=true, is_featured=false
+ - If admin asks to update phone/email/address, update **footer_content** rows with content_key phone/email/address
+ - If admin asks to update WhatsApp number/link, update the WhatsApp row in **footer_links** (title usually includes WhatsApp)
+ - For footer_content updates, use the existing row id from the database context
+ - For footer_links updates, preserve existing icon/link_type/is_active/order_index unless changing them is necessary
 - For image_url: if admin provides an image URL, use it directly
 - NEVER ask the admin for title/description/category if they gave an image — auto-generate them
 - If something is truly unclear (like which table to use), ask briefly

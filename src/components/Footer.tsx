@@ -56,8 +56,7 @@ const Footer = () => {
     { name: "Email", url: "mailto:agency.alphazero@gmail.com", icon: "Mail" },
   ];
 
-  // Always use default social links (ignore database for now)
-  const displaySocialLinks = defaultSocialLinks;
+  const displaySocialLinks = socialLinks.length > 0 ? socialLinks : defaultSocialLinks;
 
   const quickLinks = [
     { name: t("nav.about"), href: "/about" },
@@ -201,7 +200,7 @@ const Footer = () => {
                   </h4>
                   <div className="space-y-1.5 sm:space-y-3 text-xs sm:text-sm">
                     <a 
-                      href={`tel:${phone.replace(/\s/g, '')}`}
+                       href={`tel:${phone.replace(/[^\d+]/g, '')}`}
                       className="block text-foreground hover:text-primary transition-colors"
                     >
                       {phone}

@@ -9,9 +9,12 @@ const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?:
 );
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useFooterContent, useFooterLinks } from "@/hooks/useFooterData";
 
 const ContactPage = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const { data: footerContents } = useFooterContent();
+  const { data: footerLinks } = useFooterLinks();
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,9 +26,28 @@ const ContactPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const getContent = (key: string) => {
+    const content = footerContents?.find((item) => item.content_key === key);
+    if (!content) return null;
+
+    return language === "bn"
+      ? content.content_bn || content.content_en
+      : content.content_en || content.content_bn;
+  };
+
+  const normalizePhoneForHref = (value: string) => value.replace(/[^\d+]/g, "");
+  const normalizePhoneForWhatsApp = (value: string) => value.replace(/\D/g, "");
+
+  const phone = getContent("phone") || "+880 1344-497808";
+  const email = (getContent("email") || "contact@alphazero.online").trim();
+  const address = getContent("address") || t("contact.locationValue");
+  const whatsappLink = footerLinks?.find(
+    (link) => link.link_type === "social" && /whatsapp/i.test(link.title)
+  )?.url?.trim() || `https://wa.me/${normalizePhoneForWhatsApp(phone)}`;
+
   const socialLinks = [
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook },
-    { name: "WhatsApp", url: "https://wa.me/8801846484200", icon: MessageCircle },
+    { name: "WhatsApp", url: whatsappLink, icon: MessageCircle },
     { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram },
     { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin },
     { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter },
@@ -54,11 +76,11 @@ const ContactPage = () => {
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
               className="flex flex-wrap justify-center gap-3">
-              <a href="mailto:agency.alphazero@gmail.com"
+              <a href={`mailto:${email}`}
                 className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold transition-all duration-300 glow-primary hover:scale-[1.02]">
                 <Mail size={18} /> {t("contact.emailUs")}
               </a>
-              <a href="https://wa.me/8801846484200" target="_blank" rel="noopener noreferrer"
+              <a href={whatsappLink} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-7 py-3.5 border-2 border-border text-foreground rounded-full font-semibold hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
                 <MessageCircle size={18} /> {t("contact.whatsapp")}
               </a>
@@ -80,9 +102,9 @@ const ContactPage = () => {
 
               <div className="space-y-4">
                 {[
-                  { icon: Phone, title: t("contact.callUs"), value: "+880 1410-190019", href: "tel:+8801410190019" },
-                  { icon: Mail, title: t("contact.emailUsLabel"), value: "agency.alphazero@gmail.com", href: "mailto:agency.alphazero@gmail.com" },
-                  { icon: MapPin, title: t("contact.location"), value: t("contact.locationValue") },
+                  { icon: Phone, title: t("contact.callUs"), value: phone, href: `tel:${normalizePhoneForHref(phone)}` },
+                  { icon: Mail, title: t("contact.emailUsLabel"), value: email, href: `mailto:${email}` },
+                  { icon: MapPin, title: t("contact.location"), value: address },
                   { icon: Clock, title: t("contact.workingHours"), value: t("contact.workingHoursValue") },
                 ].map((item, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }}
