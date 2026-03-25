@@ -22,11 +22,13 @@ interface Message {
 
 const capabilities = [
   { icon: Palette, labelBn: "Works ম্যানেজ", labelEn: "Manage Works", color: "from-pink-500 to-rose-500" },
-  { icon: FileText, labelBn: "পেজ কনটেন্ট", labelEn: "Page Content", color: "from-blue-500 to-cyan-500" },
+  { icon: FileText, labelBn: "পেজ এডিট ✨", labelEn: "Edit Pages ✨", color: "from-blue-500 to-cyan-500" },
   { icon: Users, labelBn: "Team ম্যানেজ", labelEn: "Team Members", color: "from-emerald-500 to-green-500" },
   { icon: BookOpen, labelBn: "Courses", labelEn: "Courses", color: "from-violet-500 to-purple-500" },
   { icon: Database, labelBn: "Services", labelEn: "Services", color: "from-amber-500 to-orange-500" },
-  { icon: MessageSquare, labelBn: "Contact Info", labelEn: "Contact Info", color: "from-sky-500 to-blue-500" },
+  { icon: MessageSquare, labelBn: "যোগাযোগ ও Footer", labelEn: "Contact & Footer", color: "from-sky-500 to-blue-500" },
+  { icon: Zap, labelBn: "সাইট সেটিংস", labelEn: "Site Settings", color: "from-red-500 to-orange-500" },
+  { icon: Sparkles, labelBn: "Vibe Coding 🎨", labelEn: "Vibe Coding 🎨", color: "from-fuchsia-500 to-pink-500" },
 ];
 
 interface AdminAssistantProps {
@@ -185,8 +187,8 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
   };
 
   const quickActions = language === "bn"
-    ? ["সব Works দেখাও", "নতুন Work যোগ করো", "Services দেখাও", "Team Members দেখাও"]
-    : ["Show all Works", "Add a new Work", "Show Services", "Show Team Members"];
+    ? ["হোম পেজে কি কি আছে?", "হোম পেজের টাইটেল বদলাও", "নতুন Work যোগ করো", "সব Services দেখাও", "Contact info আপডেট", "About পেজ এডিট"]
+    : ["What's on Home page?", "Change Home title", "Add new Work", "Show Services", "Update Contact", "Edit About page"];
 
   if (!isOpen) return null;
 
@@ -232,8 +234,8 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
             </h3>
             <p className="text-xs text-muted-foreground text-center mb-5 max-w-[260px]">
               {language === "bn"
-                ? "আমাকে বলুন কি করতে হবে — ছবি, ফাইল সব দিতে পারবেন ⚡"
-                : "Tell me what to do — you can attach images & files ⚡"}
+                ? "আমাকে বলুন — পেজের টেক্সট বদলান, Works যোগ করুন, ছবি দিন — সবই পারি ⚡🎨"
+                : "Tell me — edit page text, add works, upload images — I can do it all ⚡🎨"}
             </p>
 
             {/* Capabilities */}
