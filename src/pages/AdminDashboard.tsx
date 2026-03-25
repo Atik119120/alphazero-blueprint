@@ -1001,21 +1001,40 @@ export default function AdminDashboard() {
                 {language === 'bn' ? 'আজ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setShowProfileDialog(true)}
-              className="gap-2"
-            >
-              {profile?.avatar_url ? (
-                <img src={profile.avatar_url} alt="" className="w-5 h-5 rounded-full object-cover" />
-              ) : (
-                <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center text-[10px] font-bold text-white">
-                  {profile?.full_name?.charAt(0)}
-                </div>
-              )}
-              <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* Alpha AI Button */}
+              <button
+                onClick={() => setIsAssistantOpen(!isAssistantOpen)}
+                className={`h-9 px-3.5 rounded-xl flex items-center gap-2 text-sm font-semibold transition-all duration-300 group ${
+                  isAssistantOpen
+                    ? 'bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-purple-500/25'
+                    : 'bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 text-white shadow-md shadow-purple-500/20 hover:shadow-lg hover:shadow-purple-500/30 hover:scale-[1.03]'
+                }`}
+              >
+                <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                <span className="hidden sm:inline tracking-wide">Alpha AI</span>
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+                </span>
+              </button>
+              {/* Profile Button */}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowProfileDialog(true)}
+                className="gap-2"
+              >
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="" className="w-5 h-5 rounded-full object-cover" />
+                ) : (
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center text-[10px] font-bold text-white">
+                    {profile?.full_name?.charAt(0)}
+                  </div>
+                )}
+                <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
+              </Button>
+            </div>
           </div>
 
           {/* Quick Stats - Minimal Cards */}
