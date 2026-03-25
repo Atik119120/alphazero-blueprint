@@ -820,11 +820,13 @@ export default function AdminDashboard() {
   ];
 
   const settingsItems = [
-    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant' },
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
   ];
+
+  // AI Assistant panel state
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
   const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
 
