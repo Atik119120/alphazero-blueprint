@@ -234,8 +234,8 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
             </h3>
             <p className="text-xs text-muted-foreground text-center mb-5 max-w-[260px]">
               {language === "bn"
-                ? "আমাকে বলুন কি করতে হবে — ছবি, ফাইল সব দিতে পারবেন ⚡"
-                : "Tell me what to do — you can attach images & files ⚡"}
+                ? "আমাকে বলুন — পেজের টেক্সট বদলান, Works যোগ করুন, ছবি দিন — সবই পারি ⚡🎨"
+                : "Tell me — edit page text, add works, upload images — I can do it all ⚡🎨"}
             </p>
 
             {/* Capabilities */}
