@@ -828,14 +828,8 @@ export default function AdminDashboard() {
 
   const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'lms': return 'from-sky-500 to-cyan-500';
-      case 'cms': return 'from-violet-500 to-purple-500';
-      case 'settings': return 'from-amber-500 to-orange-500';
-      default: return 'from-primary to-cyan-600';
-    }
-  };
+
+
 
   // Auto-expand group when its item is active
   useEffect(() => {
