@@ -104,14 +104,15 @@ Deno.serve(async (req) => {
     const { message, conversation_history } = await req.json();
 
     // Get current data context
-    const [worksRes, servicesRes, teamRes, coursesRes, pageContentRes, footerContentRes, footerLinksRes] = await Promise.all([
+    const [worksRes, servicesRes, teamRes, coursesRes, pageContentRes, footerContentRes, footerLinksRes, siteSettingsRes] = await Promise.all([
       adminClient.from("works").select("id, title, category, is_published, is_featured, image_url, project_url, description, order_index").order("order_index"),
-      adminClient.from("services").select("id, title, description, icon, is_active, order_index, features").order("order_index"),
-      adminClient.from("team_members").select("id, name, role, is_active, image_url, order_index").order("order_index"),
-      adminClient.from("courses").select("id, title, is_published, price, course_type, trainer_name").order("created_at", { ascending: false }),
+      adminClient.from("services").select("id, title, description, icon, is_active, order_index, features, show_on_homepage").order("order_index"),
+      adminClient.from("team_members").select("id, name, role, is_active, image_url, order_index, show_on_homepage, bio, facebook_url, instagram_url, linkedin_url").order("order_index"),
+      adminClient.from("courses").select("id, title, is_published, price, course_type, trainer_name, show_on_homepage, description, thumbnail_url").order("created_at", { ascending: false }),
       adminClient.from("page_content").select("id, page_name, content_key, content_bn, content_en"),
       adminClient.from("footer_content").select("id, content_key, content_bn, content_en"),
       adminClient.from("footer_links").select("id, title, url, icon, link_type, is_active, order_index").order("order_index"),
+      adminClient.from("site_settings").select("id, setting_key, setting_value, setting_type"),
     ]);
 
     const dbContext = {
