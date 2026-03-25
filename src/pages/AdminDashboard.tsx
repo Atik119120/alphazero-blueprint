@@ -781,29 +781,68 @@ export default function AdminDashboard() {
     color: CHART_COLORS[index % CHART_COLORS.length]
   }));
 
-  // Navigation items configuration
-  const navItems = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses', category: 'lms' },
-    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students', category: 'lms' },
-    { id: 'passcodes', icon: Key, label: 'Pass Code', category: 'lms' },
-    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', category: 'lms', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
-    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', category: 'lms' },
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', category: 'lms' },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', category: 'lms' },
-    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery', category: 'lms' },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments', category: 'lms' },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons', category: 'lms' },
-    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
-    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
-    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
-    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', category: 'cms' },
-    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', category: 'cms' },
-    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant', category: 'settings' },
-    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', category: 'settings' },
-    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', category: 'settings' },
-    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', category: 'settings' },
+  // Collapsible sidebar state
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+    lms_core: true,
+    lms_more: false,
+    cms: true,
+    settings: true,
+  });
+
+  const toggleGroup = (group: string) => {
+    setExpandedGroups(prev => ({ ...prev, [group]: !prev[group] }));
+  };
+
+  // Navigation items - grouped logically
+  const lmsCoreItems = [
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
+    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students' },
+    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers' },
+    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
   ];
+
+  const lmsMoreItems = [
+    { id: 'passcodes', icon: Key, label: 'Pass Code' },
+    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
+    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
+    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
+    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery' },
+    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments' },
+    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons' },
+  ];
+
+  const cmsItems = [
+    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages' },
+    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works' },
+    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team' },
+    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services' },
+    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer' },
+  ];
+
+  const settingsItems = [
+    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant' },
+    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
+    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
+    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
+  ];
+
+  const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
+
+  const getCategoryColor = (category: string) => {
+    switch (category) {
+      case 'lms': return 'from-sky-500 to-cyan-500';
+      case 'cms': return 'from-violet-500 to-purple-500';
+      case 'settings': return 'from-amber-500 to-orange-500';
+      default: return 'from-primary to-cyan-600';
+    }
+  };
+
+  // Auto-expand group when its item is active
+  useEffect(() => {
+    if (lmsMoreItems.some(item => item.id === activeTab) && !expandedGroups.lms_more) {
+      setExpandedGroups(prev => ({ ...prev, lms_more: true }));
+    }
+  }, [activeTab]);
 
   const getCategoryColor = (category: string) => {
     switch (category) {
