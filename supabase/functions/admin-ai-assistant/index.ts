@@ -123,6 +123,7 @@ Deno.serve(async (req) => {
       page_content: pageContentRes.data || [],
       footer_content: footerContentRes.data || [],
       footer_links: footerLinksRes.data || [],
+      site_settings: siteSettingsRes.data || [],
     };
 
     const directContactUpdate = extractContactUpdate(message);
