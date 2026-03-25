@@ -942,20 +942,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* AI Assistant Quick Access */}
-          <div className="mt-2 pt-2 border-t border-border/30">
-            <button
-              onClick={() => setIsAssistantOpen(!isAssistantOpen)}
-              className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isAssistantOpen
-                  ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md'
-                  : 'bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 hover:from-violet-500/20 hover:to-fuchsia-500/20 border border-violet-500/20 text-violet-600 dark:text-violet-400'
-              }`}
-            >
-              <Sparkles className="w-4 h-4 flex-shrink-0" />
-              <span className="hidden md:inline">AI Assistant</span>
-            </button>
-          </div>
         </nav>
 
         {/* Footer Actions - Language, Theme, Logout */}
