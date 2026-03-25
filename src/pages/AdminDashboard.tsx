@@ -2588,6 +2588,19 @@ export default function AdminDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* Floating AI Assistant Button */}
+      {!isAssistantOpen && (
+        <button
+          onClick={() => setIsAssistantOpen(true)}
+          className="fixed bottom-6 right-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-2xl shadow-purple-500/30 flex items-center justify-center z-50 hover:scale-110 transition-transform group"
+          title={language === 'bn' ? 'AI সহকারী' : 'AI Assistant'}
+        >
+          <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+        </button>
+      )}
+
+      {/* AI Assistant Side Panel */}
+      <AdminAssistant isOpen={isAssistantOpen} onToggle={() => setIsAssistantOpen(false)} />
     </div>
   );
 }
