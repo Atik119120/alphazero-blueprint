@@ -3,10 +3,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Send, Bot, User, Loader2, CheckCircle2, XCircle, Image as ImageIcon, Sparkles, Zap, Database, Palette, Users, BookOpen, FileText, MessageSquare } from "lucide-react";
+import { Send, Bot, User, Loader2, CheckCircle2, XCircle, Image as ImageIcon, Sparkles, Zap, Palette, Users, BookOpen, FileText, MessageSquare, Database, Paperclip, X, File, Minimize2, Maximize2 } from "lucide-react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
-import ImageUploader from "./ImageUploader";
 
 interface Message {
   role: "user" | "assistant";
@@ -17,27 +16,35 @@ interface Message {
     type: string;
     error?: string;
   }>;
+  attachments?: Array<{ name: string; url: string; type: string }>;
   timestamp: Date;
 }
 
 const capabilities = [
-  { icon: Palette, labelBn: "Works/Portfolio ম্যানেজ", labelEn: "Manage Works/Portfolio", color: "from-pink-500 to-rose-500" },
-  { icon: FileText, labelBn: "পেজ কনটেন্ট আপডেট", labelEn: "Update Page Content", color: "from-blue-500 to-cyan-500" },
-  { icon: Users, labelBn: "Team Members ম্যানেজ", labelEn: "Manage Team Members", color: "from-emerald-500 to-green-500" },
-  { icon: BookOpen, labelBn: "Courses ম্যানেজ", labelEn: "Manage Courses", color: "from-violet-500 to-purple-500" },
-  { icon: Database, labelBn: "Services আপডেট", labelEn: "Update Services", color: "from-amber-500 to-orange-500" },
-  { icon: MessageSquare, labelBn: "Contact তথ্য পরিবর্তন", labelEn: "Change Contact Info", color: "from-sky-500 to-blue-500" },
+  { icon: Palette, labelBn: "Works ম্যানেজ", labelEn: "Manage Works", color: "from-pink-500 to-rose-500" },
+  { icon: FileText, labelBn: "পেজ কনটেন্ট", labelEn: "Page Content", color: "from-blue-500 to-cyan-500" },
+  { icon: Users, labelBn: "Team ম্যানেজ", labelEn: "Team Members", color: "from-emerald-500 to-green-500" },
+  { icon: BookOpen, labelBn: "Courses", labelEn: "Courses", color: "from-violet-500 to-purple-500" },
+  { icon: Database, labelBn: "Services", labelEn: "Services", color: "from-amber-500 to-orange-500" },
+  { icon: MessageSquare, labelBn: "Contact Info", labelEn: "Contact Info", color: "from-sky-500 to-blue-500" },
 ];
 
-export default function AdminAssistant() {
+interface AdminAssistantProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps) {
   const { language } = useLanguage();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [showImageUploader, setShowImageUploader] = useState(false);
+  const [attachments, setAttachments] = useState<Array<{ name: string; url: string; type: string; file?: File }>>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const hasStarted = messages.length > 0;
 
@@ -47,25 +54,83 @@ export default function AdminAssistant() {
     }
   }, [messages]);
 
+  // Upload file to storage
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    const newAttachments: typeof attachments = [];
+
+    for (const file of Array.from(files)) {
+      // 10MB limit
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error(`${file.name} is too large (max 10MB)`);
+        continue;
+      }
+
+      try {
+        const ext = file.name.split('.').pop();
+        const path = `assistant/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('media-uploads')
+          .upload(path, file, { upsert: true });
+
+        if (uploadError) {
+          toast.error(`Failed to upload ${file.name}`);
+          continue;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('media-uploads')
+          .getPublicUrl(path);
+
+        const isImage = file.type.startsWith('image/');
+        newAttachments.push({
+          name: file.name,
+          url: publicUrl,
+          type: isImage ? 'image' : 'file',
+        });
+      } catch (err) {
+        toast.error(`Error uploading ${file.name}`);
+      }
+    }
+
+    setAttachments(prev => [...prev, ...newAttachments]);
+    setIsUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments(prev => prev.filter((_, i) => i !== index));
+  };
+
   const sendMessage = async (text?: string) => {
     const trimmed = (text || input).trim();
-    if (!trimmed && !imageUrl) return;
+    if (!trimmed && attachments.length === 0) return;
 
     let fullMessage = trimmed;
-    if (imageUrl) {
-      fullMessage += `\n\n[Image URL: ${imageUrl}]`;
+    
+    // Append attachment info
+    for (const att of attachments) {
+      if (att.type === 'image') {
+        fullMessage += `\n\n[Image URL: ${att.url}]`;
+      } else {
+        fullMessage += `\n\n[File: ${att.name} - ${att.url}]`;
+      }
     }
 
     const userMessage: Message = {
       role: "user",
-      content: fullMessage,
+      content: trimmed,
+      attachments: attachments.length > 0 ? [...attachments] : undefined,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    setImageUrl("");
-    setShowImageUploader(false);
+    setAttachments([]);
     setIsLoading(true);
 
     try {
@@ -93,7 +158,7 @@ export default function AdminAssistant() {
       setMessages((prev) => [...prev, assistantMessage]);
 
       if (data.has_actions && data.actions_executed?.some((a: any) => a.success)) {
-        toast.success(language === "bn" ? "✅ অ্যাকশন সফল হয়েছে!" : "✅ Action completed!");
+        toast.success(language === "bn" ? "✅ অ্যাকশন সফল!" : "✅ Action completed!");
       }
     } catch (error: any) {
       console.error("Assistant error:", error);
@@ -120,293 +185,264 @@ export default function AdminAssistant() {
   };
 
   const quickActions = language === "bn"
-    ? [
-        "আমাদের সব Works দেখাও",
-        "নতুন একটা Work যোগ করো",
-        "Services গুলো দেখাও",
-        "Team Members দেখাও",
-      ]
-    : [
-        "Show all Works",
-        "Add a new Work",
-        "Show Services",
-        "Show Team Members",
-      ];
+    ? ["সব Works দেখাও", "নতুন Work যোগ করো", "Services দেখাও", "Team Members দেখাও"]
+    : ["Show all Works", "Add a new Work", "Show Services", "Show Team Members"];
 
-  // Landing / Welcome view
-  if (!hasStarted) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[70vh] max-w-3xl mx-auto">
-        {/* Hero */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-purple-500/25 animate-pulse">
-            <Sparkles className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 bg-clip-text text-transparent mb-3">
-            Alpha Assistant
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-md mx-auto">
-            {language === "bn"
-              ? "আমাকে বলুন কি করতে হবে — আমি আপনার পুরো ওয়েবসাইট ম্যানেজ করে দিবো ⚡"
-              : "Tell me what to do — I'll manage your entire website for you ⚡"}
-          </p>
-        </div>
+  if (!isOpen) return null;
 
-        {/* Capabilities Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 w-full mb-8">
-          {capabilities.map((cap, i) => (
-            <div
-              key={i}
-              className="group flex items-center gap-3 p-3 rounded-2xl border border-border/50 bg-card hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/5 transition-all cursor-default"
-            >
-              <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${cap.color} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
-                <cap.icon className="w-4 h-4 text-white" />
-              </div>
-              <span className="text-sm font-medium text-foreground/80">
-                {language === "bn" ? cap.labelBn : cap.labelEn}
-              </span>
-            </div>
-          ))}
-        </div>
+  const panelWidth = isExpanded ? "w-[600px]" : "w-[380px]";
 
-        {/* Quick Suggestions */}
-        <div className="flex flex-wrap justify-center gap-2 mb-6">
-          {quickActions.map((action) => (
-            <Button
-              key={action}
-              variant="outline"
-              size="sm"
-              className="rounded-full text-xs border-purple-500/20 hover:bg-purple-500/10 hover:border-purple-500/40 transition-all"
-              onClick={() => sendMessage(action)}
-            >
-              <Zap className="w-3 h-3 mr-1 text-purple-500" />
-              {action}
-            </Button>
-          ))}
-        </div>
-
-        {/* Input */}
-        <div className="w-full max-w-xl">
-          {showImageUploader && (
-            <div className="mb-3 p-3 border border-border rounded-xl bg-secondary/30">
-              <ImageUploader
-                value={imageUrl}
-                onChange={(url) => setImageUrl(url)}
-                folder="works"
-                label={language === "bn" ? "ছবি আপলোড / URL দিন" : "Upload image / paste URL"}
-                placeholder="https://..."
-                aspectRatio="video"
-                maxSizeMB={10}
-              />
-              {imageUrl && (
-                <div className="mt-2 flex items-center gap-2">
-                  <img src={imageUrl} alt="preview" className="w-16 h-16 rounded-lg object-cover" />
-                  <Badge variant="secondary" className="text-xs">✅ {language === "bn" ? "ছবি রেডি" : "Image ready"}</Badge>
-                </div>
-              )}
-            </div>
-          )}
-          <div className="flex items-end gap-2 border border-border/60 rounded-2xl bg-card p-2 shadow-lg shadow-black/5">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-xl flex-shrink-0 h-9 w-9"
-              onClick={() => setShowImageUploader(!showImageUploader)}
-              title={language === "bn" ? "ছবি যোগ করুন" : "Add image"}
-            >
-              <ImageIcon className={`w-4 h-4 ${imageUrl ? "text-emerald-500" : ""}`} />
-            </Button>
-            <Textarea
-              ref={textareaRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={
-                language === "bn"
-                  ? "আমাকে বলুন কি করতে হবে..."
-                  : "Tell me what to do..."
-              }
-              className="min-h-[44px] max-h-[120px] border-0 resize-none focus-visible:ring-0 text-sm bg-transparent"
-              rows={1}
-            />
-            <Button
-              size="icon"
-              className="rounded-xl flex-shrink-0 h-9 w-9 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 shadow-lg shadow-purple-500/20"
-              onClick={() => sendMessage()}
-              disabled={isLoading || (!input.trim() && !imageUrl)}
-            >
-              <Send className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Chat view (after first message)
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] max-h-[800px]">
-      {/* Compact Header */}
-      <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border/50">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
+    <div className={`fixed right-0 top-0 bottom-0 ${panelWidth} bg-white dark:bg-slate-900 border-l border-border/50 shadow-2xl z-50 flex flex-col transition-all duration-300`}>
+      {/* Header */}
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-border/50 bg-gradient-to-r from-violet-500/5 to-fuchsia-500/5">
+        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-purple-500/20">
           <Sparkles className="w-4 h-4 text-white" />
         </div>
-        <div className="flex-1">
-          <h2 className="text-base font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+        <div className="flex-1 min-w-0">
+          <h2 className="text-sm font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
             Alpha Assistant
           </h2>
-          <p className="text-[11px] text-muted-foreground">
-            {language === "bn" ? "AI দিয়ে পুরো ওয়েবসাইট ম্যানেজ করুন" : "Manage your website with AI"}
+          <p className="text-[10px] text-muted-foreground truncate">
+            {language === "bn" ? "AI দিয়ে সাইট ম্যানেজ করুন" : "Manage your site with AI"}
           </p>
         </div>
-        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
-          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1.5 animate-pulse" />
+        <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-[10px] h-5">
+          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-1 animate-pulse" />
           Online
         </Badge>
+        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIsExpanded(!isExpanded)}>
+          {isExpanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+        </Button>
+        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onToggle}>
+          <X className="w-4 h-4" />
+        </Button>
       </div>
 
-      {/* Messages */}
-      <div
-        ref={scrollRef}
-        className="flex-1 overflow-y-auto space-y-4 pr-2 mb-4 scrollbar-thin"
-      >
-        {messages.map((msg, i) => (
-          <div
-            key={i}
-            className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
-          >
-            <div
-              className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 ${
-                msg.role === "user"
-                  ? "bg-primary/10 text-primary"
-                  : "bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white"
-              }`}
-            >
-              {msg.role === "user" ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
+      {/* Messages / Welcome */}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-thin">
+        {!hasStarted ? (
+          <div className="flex flex-col items-center justify-center h-full px-4 py-6">
+            {/* Welcome */}
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 flex items-center justify-center mb-4 shadow-xl shadow-purple-500/25 animate-pulse">
+              <Sparkles className="w-7 h-7 text-white" />
             </div>
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
-                msg.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-md"
-                  : "bg-muted/50 border border-border/50 rounded-bl-md"
-              }`}
-            >
-              <div className="whitespace-pre-wrap leading-relaxed">
-                {msg.content.split(/(\*\*.*?\*\*)/).map((part, j) =>
-                  part.startsWith("**") && part.endsWith("**") ? (
-                    <strong key={j}>{part.slice(2, -2)}</strong>
-                  ) : (
-                    <span key={j}>{part}</span>
-                  )
-                )}
-              </div>
+            <h3 className="text-lg font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent mb-2">
+              {language === "bn" ? "আমি কি সাহায্য করতে পারি?" : "How can I help?"}
+            </h3>
+            <p className="text-xs text-muted-foreground text-center mb-5 max-w-[260px]">
+              {language === "bn"
+                ? "আমাকে বলুন কি করতে হবে — ছবি, ফাইল সব দিতে পারবেন ⚡"
+                : "Tell me what to do — you can attach images & files ⚡"}
+            </p>
 
-              {msg.actions && msg.actions.length > 0 && (
-                <div className="mt-3 space-y-1.5 border-t border-border/30 pt-2">
-                  {msg.actions.map((action, j) => (
-                    <div
-                      key={j}
-                      className={`flex items-center gap-2 text-xs px-2 py-1 rounded-lg ${
-                        action.success
-                          ? "bg-emerald-500/10 text-emerald-600"
-                          : "bg-red-500/10 text-red-500"
-                      }`}
-                    >
-                      {action.success ? (
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                      ) : (
-                        <XCircle className="w-3.5 h-3.5" />
-                      )}
-                      <span>
-                        {action.type === "insert" && "➕ "}
-                        {action.type === "update" && "✏️ "}
-                        {action.type === "delete" && "🗑️ "}
-                        {action.table}
-                        {action.error && ` — ${action.error}`}
-                      </span>
-                    </div>
-                  ))}
+            {/* Capabilities */}
+            <div className="grid grid-cols-2 gap-2 w-full mb-5">
+              {capabilities.map((cap, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 p-2.5 rounded-xl border border-border/50 bg-card/50 hover:border-purple-500/30 transition-all"
+                >
+                  <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${cap.color} flex items-center justify-center flex-shrink-0`}>
+                    <cap.icon className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <span className="text-[11px] font-medium text-foreground/80 leading-tight">
+                    {language === "bn" ? cap.labelBn : cap.labelEn}
+                  </span>
                 </div>
-              )}
+              ))}
+            </div>
 
-              <p className="text-[10px] mt-2 opacity-40">
-                {msg.timestamp.toLocaleTimeString(language === "bn" ? "bn-BD" : "en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </p>
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-1.5 justify-center">
+              {quickActions.map((action) => (
+                <Button
+                  key={action}
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full text-[10px] h-7 px-3 border-purple-500/20 hover:bg-purple-500/10"
+                  onClick={() => sendMessage(action)}
+                >
+                  <Zap className="w-3 h-3 mr-1 text-purple-500" />
+                  {action}
+                </Button>
+              ))}
             </div>
           </div>
-        ))}
+        ) : (
+          <div className="p-3 space-y-3">
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`flex gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
+              >
+                <div
+                  className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 mt-1 ${
+                    msg.role === "user"
+                      ? "bg-primary/10 text-primary"
+                      : "bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white"
+                  }`}
+                >
+                  {msg.role === "user" ? <User className="w-3 h-3" /> : <Bot className="w-3 h-3" />}
+                </div>
+                <div
+                  className={`max-w-[85%] rounded-2xl px-3 py-2 text-xs ${
+                    msg.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-md"
+                      : "bg-muted/50 border border-border/50 rounded-bl-md"
+                  }`}
+                >
+                  {/* Attachments preview */}
+                  {msg.attachments && msg.attachments.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {msg.attachments.map((att, j) => (
+                        att.type === 'image' ? (
+                          <img key={j} src={att.url} alt={att.name} className="w-16 h-16 rounded-lg object-cover border border-white/20" />
+                        ) : (
+                          <div key={j} className="flex items-center gap-1 bg-white/10 rounded-lg px-2 py-1">
+                            <File className="w-3 h-3" />
+                            <span className="text-[10px] truncate max-w-[80px]">{att.name}</span>
+                          </div>
+                        )
+                      ))}
+                    </div>
+                  )}
 
-        {isLoading && (
-          <div className="flex gap-3">
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white flex items-center justify-center flex-shrink-0">
-              <Bot className="w-3.5 h-3.5" />
-            </div>
-            <div className="bg-muted/50 border border-border/50 rounded-2xl rounded-bl-md px-4 py-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="w-4 h-4 animate-spin" />
-                {language === "bn" ? "চিন্তা করছি..." : "Thinking..."}
+                  <div className="whitespace-pre-wrap leading-relaxed">
+                    {msg.content.split(/(\*\*.*?\*\*)/).map((part, j) =>
+                      part.startsWith("**") && part.endsWith("**") ? (
+                        <strong key={j}>{part.slice(2, -2)}</strong>
+                      ) : (
+                        <span key={j}>{part}</span>
+                      )
+                    )}
+                  </div>
+
+                  {msg.actions && msg.actions.length > 0 && (
+                    <div className="mt-2 space-y-1 border-t border-border/30 pt-1.5">
+                      {msg.actions.map((action, j) => (
+                        <div
+                          key={j}
+                          className={`flex items-center gap-1.5 text-[10px] px-1.5 py-0.5 rounded-lg ${
+                            action.success
+                              ? "bg-emerald-500/10 text-emerald-600"
+                              : "bg-red-500/10 text-red-500"
+                          }`}
+                        >
+                          {action.success ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                          <span>
+                            {action.type === "insert" && "➕ "}
+                            {action.type === "update" && "✏️ "}
+                            {action.type === "delete" && "🗑️ "}
+                            {action.table}
+                            {action.error && ` — ${action.error}`}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <p className="text-[9px] mt-1.5 opacity-30">
+                    {msg.timestamp.toLocaleTimeString(language === "bn" ? "bn-BD" : "en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex gap-2">
+                <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-3 h-3" />
+                </div>
+                <div className="bg-muted/50 border border-border/50 rounded-2xl rounded-bl-md px-3 py-2">
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    {language === "bn" ? "চিন্তা করছি..." : "Thinking..."}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
 
-      {/* Image uploader */}
-      {showImageUploader && (
-        <div className="mb-3 p-3 border border-border rounded-xl bg-secondary/30">
-          <ImageUploader
-            value={imageUrl}
-            onChange={(url) => setImageUrl(url)}
-            folder="works"
-            label={language === "bn" ? "ছবি আপলোড / URL দিন" : "Upload image / paste URL"}
-            placeholder="https://..."
-            aspectRatio="video"
-            maxSizeMB={10}
-          />
-          {imageUrl && (
-            <div className="mt-2 flex items-center gap-2">
-              <img src={imageUrl} alt="preview" className="w-16 h-16 rounded-lg object-cover" />
-              <Badge variant="secondary" className="text-xs">✅ {language === "bn" ? "ছবি রেডি" : "Image ready"}</Badge>
-            </div>
-          )}
+      {/* Attachments Preview */}
+      {attachments.length > 0 && (
+        <div className="px-3 py-2 border-t border-border/30 bg-secondary/20">
+          <div className="flex flex-wrap gap-2">
+            {attachments.map((att, i) => (
+              <div key={i} className="relative group">
+                {att.type === 'image' ? (
+                  <img src={att.url} alt={att.name} className="w-12 h-12 rounded-lg object-cover border border-border" />
+                ) : (
+                  <div className="w-12 h-12 rounded-lg bg-muted flex flex-col items-center justify-center border border-border">
+                    <File className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-[7px] text-muted-foreground truncate w-10 text-center mt-0.5">{att.name.split('.').pop()}</span>
+                  </div>
+                )}
+                <button
+                  onClick={() => removeAttachment(i)}
+                  className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-2.5 h-2.5" />
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
-      {/* Input */}
-      <div className="flex items-end gap-2 border border-border/60 rounded-2xl bg-card p-2 shadow-lg shadow-black/5">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-xl flex-shrink-0 h-9 w-9"
-          onClick={() => setShowImageUploader(!showImageUploader)}
-          title={language === "bn" ? "ছবি যোগ করুন" : "Add image"}
-        >
-          <ImageIcon className={`w-4 h-4 ${imageUrl ? "text-emerald-500" : ""}`} />
-        </Button>
-        <Textarea
-          ref={textareaRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={
-            language === "bn"
-              ? "আমাকে বলুন কি করতে হবে... (Enter চাপুন)"
-              : "Tell me what to do... (Press Enter)"
-          }
-          className="min-h-[40px] max-h-[120px] border-0 resize-none focus-visible:ring-0 text-sm bg-transparent"
-          rows={1}
-        />
-        <Button
-          size="icon"
-          className="rounded-xl flex-shrink-0 h-9 w-9 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 shadow-lg shadow-purple-500/20"
-          onClick={() => sendMessage()}
-          disabled={isLoading || (!input.trim() && !imageUrl)}
-        >
-          <Send className="w-4 h-4" />
-        </Button>
+      {/* Input Area */}
+      <div className="p-3 border-t border-border/50">
+        <div className="flex items-end gap-1.5 border border-border/60 rounded-xl bg-card p-1.5 shadow-sm">
+          {/* File Upload */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="image/*,.pdf,.doc,.docx,.txt,.csv,.xls,.xlsx"
+            className="hidden"
+            onChange={handleFileUpload}
+          />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-lg flex-shrink-0 h-8 w-8"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            title={language === "bn" ? "ফাইল/ছবি যোগ করুন" : "Attach files/images"}
+          >
+            {isUploading ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <Paperclip className={`w-3.5 h-3.5 ${attachments.length > 0 ? "text-violet-500" : ""}`} />
+            )}
+          </Button>
+          <Textarea
+            ref={textareaRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={
+              language === "bn"
+                ? "আমাকে বলুন কি করতে হবে..."
+                : "Tell me what to do..."
+            }
+            className="min-h-[36px] max-h-[100px] border-0 resize-none focus-visible:ring-0 text-xs bg-transparent py-2"
+            rows={1}
+          />
+          <Button
+            size="icon"
+            className="rounded-lg flex-shrink-0 h-8 w-8 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:from-violet-600 hover:to-fuchsia-600 shadow-md shadow-purple-500/20"
+            onClick={() => sendMessage()}
+            disabled={isLoading || (!input.trim() && attachments.length === 0)}
+          >
+            <Send className="w-3.5 h-3.5" />
+          </Button>
+        </div>
       </div>
     </div>
   );

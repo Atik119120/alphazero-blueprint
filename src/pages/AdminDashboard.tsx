@@ -820,11 +820,13 @@ export default function AdminDashboard() {
   ];
 
   const settingsItems = [
-    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant' },
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
   ];
+
+  // AI Assistant panel state
+  const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
   const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
 
@@ -939,6 +941,21 @@ export default function AdminDashboard() {
               {settingsItems.map((item) => renderNavButton(item, 'from-amber-500 to-orange-500'))}
             </div>
           </div>
+
+          {/* AI Assistant Quick Access */}
+          <div className="mt-2 pt-2 border-t border-border/30">
+            <button
+              onClick={() => setIsAssistantOpen(!isAssistantOpen)}
+              className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                isAssistantOpen
+                  ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md'
+                  : 'bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 hover:from-violet-500/20 hover:to-fuchsia-500/20 border border-violet-500/20 text-violet-600 dark:text-violet-400'
+              }`}
+            >
+              <Sparkles className="w-4 h-4 flex-shrink-0" />
+              <span className="hidden md:inline">AI Assistant</span>
+            </button>
+          </div>
         </nav>
 
         {/* Footer Actions - Language, Theme, Logout */}
@@ -985,7 +1002,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="ml-24 md:ml-64 p-4 md:p-6 min-h-screen">
+      <main className={`ml-24 md:ml-64 p-4 md:p-6 min-h-screen transition-all duration-300 ${isAssistantOpen ? 'mr-[380px]' : ''}`}>
         {/* Top Bar with Stats */}
         <div className="mb-6">
           {/* Greeting */}
@@ -1996,10 +2013,7 @@ export default function AdminDashboard() {
             <CommentManagement />
           </TabsContent>
 
-          {/* AI Assistant Tab */}
-          <TabsContent value="assistant" className="space-y-6">
-            <AdminAssistant />
-          </TabsContent>
+          {/* AI Assistant removed from tabs - now a persistent side panel */}
 
           {/* Coupons Tab */}
           <TabsContent value="coupons" className="space-y-6">
@@ -2589,6 +2603,19 @@ export default function AdminDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {/* Floating AI Assistant Button */}
+      {!isAssistantOpen && (
+        <button
+          onClick={() => setIsAssistantOpen(true)}
+          className="fixed bottom-6 right-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-2xl shadow-purple-500/30 flex items-center justify-center z-50 hover:scale-110 transition-transform group"
+          title={language === 'bn' ? 'AI সহকারী' : 'AI Assistant'}
+        >
+          <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+        </button>
+      )}
+
+      {/* AI Assistant Side Panel */}
+      <AdminAssistant isOpen={isAssistantOpen} onToggle={() => setIsAssistantOpen(false)} />
     </div>
   );
 }
