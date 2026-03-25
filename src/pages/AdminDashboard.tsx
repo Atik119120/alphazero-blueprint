@@ -987,7 +987,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="ml-24 md:ml-64 p-4 md:p-6 min-h-screen">
+      <main className={`ml-24 md:ml-64 p-4 md:p-6 min-h-screen transition-all duration-300 ${isAssistantOpen ? 'mr-[380px]' : ''}`}>
         {/* Top Bar with Stats */}
         <div className="mb-6">
           {/* Greeting */}
