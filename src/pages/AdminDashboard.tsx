@@ -2608,23 +2608,6 @@ export default function AdminDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {/* Top-Right AI Assistant Toggle */}
-      {!isAssistantOpen && (
-        <button
-          onClick={() => setIsAssistantOpen(true)}
-          className="fixed top-4 right-6 h-10 px-4 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-purple-500/25 flex items-center gap-2 z-50 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-[1.03] transition-all duration-300 group"
-          title={language === 'bn' ? 'AI সহকারী' : 'AI Assistant'}
-        >
-          <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-sm">
-            <Sparkles className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
-          </div>
-          <span className="text-sm font-semibold tracking-wide hidden sm:inline">Alpha AI</span>
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
-          </span>
-        </button>
-      )}
 
       {/* AI Assistant Side Panel */}
       <AdminAssistant isOpen={isAssistantOpen} onToggle={() => setIsAssistantOpen(false)} />
