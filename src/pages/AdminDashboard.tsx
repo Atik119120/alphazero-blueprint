@@ -1054,7 +1054,7 @@ export default function AdminDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Hidden TabsList - controlled by sidebar */}
           <TabsList className="hidden">
-            {navItems.map(item => (
+            {allNavItems.map(item => (
               <TabsTrigger key={item.id} value={item.id}>{item.label}</TabsTrigger>
             ))}
           </TabsList>
