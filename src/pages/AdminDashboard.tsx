@@ -942,20 +942,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* AI Assistant Quick Access */}
-          <div className="mt-2 pt-2 border-t border-border/30">
-            <button
-              onClick={() => setIsAssistantOpen(!isAssistantOpen)}
-              className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                isAssistantOpen
-                  ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-md'
-                  : 'bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 hover:from-violet-500/20 hover:to-fuchsia-500/20 border border-violet-500/20 text-violet-600 dark:text-violet-400'
-              }`}
-            >
-              <Sparkles className="w-4 h-4 flex-shrink-0" />
-              <span className="hidden md:inline">AI Assistant</span>
-            </button>
-          </div>
         </nav>
 
         {/* Footer Actions - Language, Theme, Logout */}
@@ -2603,14 +2589,21 @@ export default function AdminDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {/* Floating AI Assistant Button */}
+      {/* Top-Right AI Assistant Toggle */}
       {!isAssistantOpen && (
         <button
           onClick={() => setIsAssistantOpen(true)}
-          className="fixed bottom-6 right-6 w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-2xl shadow-purple-500/30 flex items-center justify-center z-50 hover:scale-110 transition-transform group"
+          className="fixed top-4 right-6 h-10 px-4 rounded-xl bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 text-white shadow-lg shadow-purple-500/25 flex items-center gap-2 z-50 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-[1.03] transition-all duration-300 group"
           title={language === 'bn' ? 'AI সহকারী' : 'AI Assistant'}
         >
-          <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
+          <div className="w-6 h-6 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-sm">
+            <Sparkles className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
+          </div>
+          <span className="text-sm font-semibold tracking-wide hidden sm:inline">Alpha AI</span>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400"></span>
+          </span>
         </button>
       )}
 
