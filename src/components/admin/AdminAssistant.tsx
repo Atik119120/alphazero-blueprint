@@ -187,8 +187,8 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
   };
 
   const quickActions = language === "bn"
-    ? ["সব Works দেখাও", "নতুন Work যোগ করো", "Services দেখাও", "Team Members দেখাও"]
-    : ["Show all Works", "Add a new Work", "Show Services", "Show Team Members"];
+    ? ["হোম পেজে কি কি আছে?", "হোম পেজের টাইটেল বদলাও", "নতুন Work যোগ করো", "সব Services দেখাও", "Contact info আপডেট", "About পেজ এডিট"]
+    : ["What's on Home page?", "Change Home title", "Add new Work", "Show Services", "Update Contact", "Edit About page"];
 
   if (!isOpen) return null;
 
