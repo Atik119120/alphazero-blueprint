@@ -781,38 +781,85 @@ export default function AdminDashboard() {
     color: CHART_COLORS[index % CHART_COLORS.length]
   }));
 
-  // Navigation items configuration
-  const navItems = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses', category: 'lms' },
-    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students', category: 'lms' },
-    { id: 'passcodes', icon: Key, label: 'Pass Code', category: 'lms' },
-    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', category: 'lms', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
-    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', category: 'lms' },
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', category: 'lms' },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', category: 'lms' },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', category: 'lms' },
-    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery', category: 'lms' },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments', category: 'lms' },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons', category: 'lms' },
-    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', category: 'cms' },
-    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', category: 'cms' },
-    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', category: 'cms' },
-    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', category: 'cms' },
-    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', category: 'cms' },
-    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant', category: 'settings' },
-    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', category: 'settings' },
-    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', category: 'settings' },
-    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', category: 'settings' },
+  // Collapsible sidebar state
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
+    lms_core: true,
+    lms_more: false,
+    cms: true,
+    settings: true,
+  });
+
+  const toggleGroup = (group: string) => {
+    setExpandedGroups(prev => ({ ...prev, [group]: !prev[group] }));
+  };
+
+  // Navigation items - grouped logically
+  const lmsCoreItems = [
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
+    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students' },
+    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers' },
+    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
   ];
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'lms': return 'from-sky-500 to-cyan-500';
-      case 'cms': return 'from-violet-500 to-purple-500';
-      case 'settings': return 'from-amber-500 to-orange-500';
-      default: return 'from-primary to-cyan-600';
+  const lmsMoreItems = [
+    { id: 'passcodes', icon: Key, label: 'Pass Code' },
+    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
+    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
+    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
+    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery' },
+    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments' },
+    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons' },
+  ];
+
+  const cmsItems = [
+    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages' },
+    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works' },
+    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team' },
+    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services' },
+    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer' },
+  ];
+
+  const settingsItems = [
+    { id: 'assistant', icon: Sparkles, label: language === 'bn' ? 'AI সহকারী' : 'AI Assistant' },
+    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
+    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
+    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
+  ];
+
+  const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
+
+
+
+
+  // Auto-expand group when its item is active
+  useEffect(() => {
+    if (lmsMoreItems.some(item => item.id === activeTab) && !expandedGroups.lms_more) {
+      setExpandedGroups(prev => ({ ...prev, lms_more: true }));
     }
-  };
+  }, [activeTab]);
+
+  // Render a nav button
+  const renderNavButton = (item: { id: string; icon: any; label: string; badge?: number }, colorClass: string) => (
+    <button
+      key={item.id}
+      onClick={() => setActiveTab(item.id)}
+      className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
+        activeTab === item.id
+          ? `bg-gradient-to-r ${colorClass} text-white shadow-md`
+          : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+      }`}
+    >
+      <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
+      <span className="hidden md:inline truncate">{item.label}</span>
+      {item.badge && item.badge > 0 && (
+        <span className={`absolute top-1 right-1 md:static md:ml-auto min-w-4 h-4 px-1 text-[10px] rounded-full flex items-center justify-center font-bold ${
+          activeTab === item.id ? 'bg-white/25 text-white' : 'bg-red-500 text-white animate-pulse'
+        }`}>
+          {item.badge}
+        </span>
+      )}
+    </button>
+  );
 
   return (
     <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
@@ -842,79 +889,54 @@ export default function AdminDashboard() {
 
         {/* Navigation */}
         <nav className="flex-1 p-2 md:p-3 space-y-1 overflow-y-auto scrollbar-none">
-          {/* LMS Section */}
-          <div className="mb-3">
-            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-2">
+          {/* LMS Core */}
+          <div className="mb-2">
+            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
               {language === 'bn' ? 'এলএমএস' : 'LMS'}
             </p>
             <div className="space-y-0.5">
-              {navItems.filter(item => item.category === 'lms').map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
-                    activeTab === item.id
-                      ? `bg-gradient-to-r ${getCategoryColor(item.category)} text-white shadow-lg`
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
-                  <span className="hidden md:inline truncate">{item.label}</span>
-                  {item.badge && item.badge > 0 && (
-                    <span className={`absolute top-1 right-1 md:static md:ml-auto min-w-4 h-4 px-1 text-[10px] rounded-full flex items-center justify-center font-bold ${
-                      activeTab === item.id ? 'bg-white/25 text-white' : 'bg-red-500 text-white animate-pulse'
-                    }`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              ))}
+              {lmsCoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
+            </div>
+          </div>
+
+          {/* LMS More - Collapsible */}
+          <div className="mb-2">
+            <button
+              onClick={() => toggleGroup('lms_more')}
+              className="hidden md:flex w-full items-center gap-1.5 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest hover:text-muted-foreground transition-colors"
+            >
+              <svg className={`w-3 h-3 transition-transform ${expandedGroups.lms_more ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              {language === 'bn' ? 'আরো টুলস' : 'More Tools'}
+              <Badge variant="secondary" className="ml-auto text-[9px] h-4 px-1">{lmsMoreItems.length}</Badge>
+            </button>
+            {expandedGroups.lms_more && (
+              <div className="space-y-0.5 mt-1 hidden md:block">
+                {lmsMoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
+              </div>
+            )}
+            {/* On mobile, always show icons */}
+            <div className="md:hidden space-y-0.5">
+              {lmsMoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
             </div>
           </div>
 
           {/* CMS Section */}
-          <div className="mb-3">
-            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-2">
+          <div className="mb-2">
+            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
               {language === 'bn' ? 'ওয়েবসাইট' : 'Website'}
             </p>
             <div className="space-y-0.5">
-              {navItems.filter(item => item.category === 'cms').map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
-                    activeTab === item.id
-                      ? `bg-gradient-to-r ${getCategoryColor(item.category)} text-white shadow-lg`
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
-                  <span className="hidden md:inline truncate">{item.label}</span>
-                </button>
-              ))}
+              {cmsItems.map((item) => renderNavButton(item, 'from-violet-500 to-purple-500'))}
             </div>
           </div>
 
           {/* Settings Section */}
           <div>
-            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-2">
+            <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
               {language === 'bn' ? 'সেটিংস' : 'Settings'}
             </p>
             <div className="space-y-0.5">
-              {navItems.filter(item => item.category === 'settings').map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2 md:py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative group ${
-                    activeTab === item.id
-                      ? `bg-gradient-to-r ${getCategoryColor(item.category)} text-white shadow-lg`
-                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  <item.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === item.id ? '' : 'group-hover:scale-110 transition-transform'}`} />
-                  <span className="hidden md:inline truncate">{item.label}</span>
-                </button>
-              ))}
+              {settingsItems.map((item) => renderNavButton(item, 'from-amber-500 to-orange-500'))}
             </div>
           </div>
         </nav>
@@ -1026,7 +1048,7 @@ export default function AdminDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           {/* Hidden TabsList - controlled by sidebar */}
           <TabsList className="hidden">
-            {navItems.map(item => (
+            {allNavItems.map(item => (
               <TabsTrigger key={item.id} value={item.id}>{item.label}</TabsTrigger>
             ))}
           </TabsList>
