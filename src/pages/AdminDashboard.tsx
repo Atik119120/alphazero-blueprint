@@ -1998,10 +1998,7 @@ export default function AdminDashboard() {
             <CommentManagement />
           </TabsContent>
 
-          {/* AI Assistant Tab */}
-          <TabsContent value="assistant" className="space-y-6">
-            <AdminAssistant />
-          </TabsContent>
+          {/* AI Assistant removed from tabs - now a persistent side panel */}
 
           {/* Coupons Tab */}
           <TabsContent value="coupons" className="space-y-6">
