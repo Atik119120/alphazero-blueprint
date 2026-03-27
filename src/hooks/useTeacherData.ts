@@ -202,19 +202,28 @@ export function useTeacherStudents() {
 
       const courseIds = courses.map(c => c.id);
 
-      // Get pass codes with courses
-      const { data: passCodes } = await supabase
-        .from('pass_code_courses')
-        .select(`
-          course_id,
-          pass_codes:pass_code_id(
-            student_id,
-            profiles:student_id(*)
-          )
-        `)
-        .in('course_id', courseIds);
+      // Get student course assignments
+      const { data: studentAssignments } = await supabase
+        .from('student_courses')
+        .select('course_id, user_id')
+        .in('course_id', courseIds)
+        .eq('is_active', true);
 
-      if (!passCodes) {
+      if (!studentAssignments || studentAssignments.length === 0) {
+        setStudents([]);
+        return;
+      }
+
+      // Get unique student user_ids
+      const studentUserIds = [...new Set(studentAssignments.map(sa => sa.user_id))];
+
+      // Fetch profiles for these students
+      const { data: studentProfiles } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('user_id', studentUserIds);
+
+      if (!studentProfiles) {
         setStudents([]);
         return;
       }
@@ -222,11 +231,10 @@ export function useTeacherStudents() {
       // Build student progress list
       const studentProgressList: StudentProgress[] = [];
 
-      for (const pc of passCodes) {
-        const passCode = pc.pass_codes as any;
-        if (!passCode?.profiles) continue;
+      for (const sa of studentAssignments) {
+        const student = studentProfiles.find(p => p.user_id === sa.user_id);
+        if (!student) continue;
 
-        const student = passCode.profiles;
         const course = courses.find(c => c.id === sa.course_id);
         if (!course) continue;
 
