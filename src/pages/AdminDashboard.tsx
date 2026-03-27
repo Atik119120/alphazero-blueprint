@@ -68,7 +68,7 @@ import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
-import GalleryManagement from '@/components/admin/GalleryManagement';
+
 import CommentManagement from '@/components/admin/CommentManagement';
 import CouponManagement from '@/components/admin/CouponManagement';
 import AdminAssistant from '@/components/admin/AdminAssistant';
