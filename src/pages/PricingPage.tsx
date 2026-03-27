@@ -116,6 +116,7 @@ const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent
 
 const MonthlyCard = ({ pkg, index }: { pkg: MonthlyPackage; index: number }) => {
   const isPopular = index === 2;
+  const [ordering, setOrdering] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -159,6 +160,18 @@ const MonthlyCard = ({ pkg, index }: { pkg: MonthlyPackage; index: number }) => 
           </li>
         ))}
       </ul>
+
+      {/* Order Button */}
+      <Button
+        onClick={() => handleUddoktaPayOrder(`${pkg.name} (Monthly)`, pkg.discountedPrice, setOrdering)}
+        disabled={ordering}
+        size="sm"
+        className="w-full mt-5 rounded-xl font-semibold bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white border border-amber-500/20 transition-all duration-300"
+        variant="ghost"
+      >
+        {ordering ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Wallet className="w-4 h-4 mr-1" />}
+        {ordering ? 'Processing...' : 'Order Now'}
+      </Button>
 
       <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
     </motion.div>
