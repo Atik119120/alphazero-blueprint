@@ -106,8 +106,8 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
               </div>
               <div className="flex gap-4">
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider opacity-60">Pass Code</p>
-                  <p className="font-mono text-xs">{passCode || 'N/A'}</p>
+                  <p className="text-[10px] uppercase tracking-wider opacity-60">Student ID</p>
+                  <p className="font-mono text-xs">{studentId}</p>
                 </div>
                 <div>
                   <p className="text-[10px] uppercase tracking-wider opacity-60">Member Since</p>
