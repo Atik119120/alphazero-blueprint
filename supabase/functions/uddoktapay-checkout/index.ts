@@ -13,6 +13,8 @@ interface CheckoutRequest {
   metadata: Record<string, string>;
   redirect_url: string;
   cancel_url: string;
+  success_url?: string;
+  fail_url?: string;
 }
 
 async function getApiConfig() {
