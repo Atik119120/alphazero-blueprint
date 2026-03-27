@@ -233,7 +233,7 @@ export default function CourseEnrollmentModal({
             coupon_code: appliedCoupon?.code || '',
           },
           redirect_url: `${baseUrl}/payment/callback?type=course`,
-          cancel_url: `${baseUrl}/courses`,
+          cancel_url: `${baseUrl}/payment/cancel`,
         },
       });
 

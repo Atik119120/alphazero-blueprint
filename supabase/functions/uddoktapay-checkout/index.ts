@@ -80,6 +80,7 @@ serve(async (req: Request) => {
       amount: amount.toString(),
       metadata: metadata || {},
       redirect_url,
+      return_type: "GET",
       cancel_url: cancel_url || redirect_url,
     };
 

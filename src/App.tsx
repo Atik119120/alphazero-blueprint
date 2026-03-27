@@ -45,6 +45,7 @@ import VerifyCertificatePage from "./pages/VerifyCertificatePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PaymentCallbackPage from "./pages/PaymentCallbackPage";
+import PaymentCancelPage from "./pages/PaymentCancelPage";
 
 // Lazy load only AI Chatbot (not critical for navigation)
 import { lazy } from "react";
@@ -132,6 +133,7 @@ function AppContent() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/payment/callback" element={<PaymentCallbackPage />} />
+        <Route path="/payment/cancel" element={<PaymentCancelPage />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
