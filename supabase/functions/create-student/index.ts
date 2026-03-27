@@ -9,18 +9,16 @@ interface CreateStudentRequest {
   full_name: string;
   email: string;
   password: string;
-  pass_code?: string;
   phone_number?: string;
+  course_ids?: string[];
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Only allow POST requests
     if (req.method !== "POST") {
       return new Response(
         JSON.stringify({ error: "Method not allowed" }),
@@ -28,7 +26,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Get authorization header to verify caller is admin
     const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
       return new Response(
@@ -41,12 +38,10 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // Create client with user's token to verify they are admin
     const userClient = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } }
     });
 
-    // Get current user
     const { data: { user: callerUser }, error: userError } = await userClient.auth.getUser();
     if (userError || !callerUser) {
       return new Response(
@@ -55,7 +50,6 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Check if caller is admin using service role
     const adminClient = createClient(supabaseUrl, supabaseServiceKey);
     
     const { data: roleData, error: roleError } = await adminClient
@@ -72,11 +66,9 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Parse request body
     const body: CreateStudentRequest = await req.json();
-    const { full_name, email, password, pass_code, phone_number } = body;
+    const { full_name, email, password, phone_number, course_ids } = body;
 
-    // Validate input
     if (!full_name || typeof full_name !== "string" || full_name.trim().length < 2) {
       return new Response(
         JSON.stringify({ error: "Invalid name (minimum 2 characters)" }),
@@ -100,11 +92,10 @@ Deno.serve(async (req) => {
 
     console.log("Creating student:", email);
 
-    // Create user using admin API (doesn't affect caller's session)
     const { data: authData, error: authError } = await adminClient.auth.admin.createUser({
       email: email.trim().toLowerCase(),
       password: password,
-      email_confirm: true, // Auto-confirm email
+      email_confirm: true,
       user_metadata: {
         full_name: full_name.trim(),
       },
@@ -134,7 +125,6 @@ Deno.serve(async (req) => {
     const newUserId = authData.user.id;
     console.log("User created:", newUserId);
 
-    // Create profile
     const { data: profileData, error: profileError } = await adminClient
       .from("profiles")
       .insert({
@@ -148,7 +138,6 @@ Deno.serve(async (req) => {
 
     if (profileError) {
       console.error("Profile error:", profileError);
-      // Try to clean up the auth user
       await adminClient.auth.admin.deleteUser(newUserId);
       return new Response(
         JSON.stringify({ error: "Failed to create profile" }),
@@ -161,65 +150,28 @@ Deno.serve(async (req) => {
     // Assign student role
     const { error: roleInsertError } = await adminClient
       .from("user_roles")
-      .insert({
-        user_id: newUserId,
-        role: "student",
-      });
+      .insert({ user_id: newUserId, role: "student" });
 
     if (roleInsertError) {
       console.error("Role error:", roleInsertError);
     }
 
-    // Link pass code if provided, otherwise create new one
-    let passCodeLinked = false;
-    let newPassCode = "";
-    
-    if (pass_code && pass_code.trim()) {
-      // Try to link existing pass code
-      const { data: passCodeData, error: pcError } = await adminClient
-        .from("pass_codes")
-        .select("id, student_id")
-        .eq("code", pass_code.trim().toUpperCase())
-        .eq("is_active", true)
-        .maybeSingle();
+    // Assign courses if provided
+    if (course_ids && course_ids.length > 0) {
+      const courseAssignments = course_ids.map(courseId => ({
+        user_id: newUserId,
+        course_id: courseId,
+        assigned_by: callerUser.id,
+      }));
 
-      if (!pcError && passCodeData && !passCodeData.student_id) {
-        const { error: linkError } = await adminClient
-          .from("pass_codes")
-          .update({ student_id: profileData.id })
-          .eq("id", passCodeData.id);
+      const { error: courseAssignError } = await adminClient
+        .from("student_courses")
+        .insert(courseAssignments);
 
-        if (!linkError) {
-          passCodeLinked = true;
-          newPassCode = pass_code.trim().toUpperCase();
-          console.log("Pass code linked:", pass_code);
-        }
-      }
-    }
-    
-    // If no pass code was linked, create a new one for the student
-    if (!passCodeLinked) {
-      // Generate unique pass code
-      const { data: generatedCode, error: genError } = await adminClient.rpc('generate_pass_code');
-      
-      if (!genError && generatedCode) {
-        const { error: createPcError } = await adminClient
-          .from("pass_codes")
-          .insert({
-            code: generatedCode,
-            student_id: profileData.id,
-            is_active: true,
-            created_by: callerUser.id,
-          });
-
-        if (!createPcError) {
-          newPassCode = generatedCode;
-          console.log("Pass code created:", generatedCode);
-        } else {
-          console.error("Create pass code error:", createPcError);
-        }
+      if (courseAssignError) {
+        console.error("Course assignment error:", courseAssignError);
       } else {
-        console.error("Generate pass code error:", genError);
+        console.log("Courses assigned:", course_ids.length);
       }
     }
 
@@ -235,12 +187,10 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           email: email.trim().toLowerCase(),
           name: full_name.trim(),
-          passCode: newPassCode,
         }),
       }).catch(err => console.error("Welcome email error:", err));
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
-      // Don't fail the request if email fails
     }
 
     return new Response(
@@ -248,8 +198,6 @@ Deno.serve(async (req) => {
         success: true,
         user_id: newUserId,
         profile_id: profileData.id,
-        pass_code: newPassCode,
-        pass_code_linked: passCodeLinked,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );

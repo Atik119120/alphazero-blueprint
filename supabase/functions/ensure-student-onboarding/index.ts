@@ -6,7 +6,6 @@ const corsHeaders = {
 };
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -31,7 +30,6 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // User-scoped client (to validate token and get user identity)
     const userClient = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } },
     });
@@ -49,7 +47,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Admin client (service role) to ensure rows exist reliably
     const adminClient = createClient(supabaseUrl, supabaseServiceKey);
 
     console.log("Ensuring onboarding for user:", user.id, user.email);
@@ -97,7 +94,7 @@ Deno.serve(async (req) => {
       console.log("Profile created:", profile.id);
     }
 
-    // 2) If user is admin or teacher, do NOT force student role/pass code
+    // 2) If user is admin or teacher, skip student role setup
     const { data: existingRoles } = await adminClient
       .from("user_roles")
       .select("role")
@@ -107,24 +104,14 @@ Deno.serve(async (req) => {
 
     if (roles.includes("admin")) {
       return new Response(
-        JSON.stringify({
-          success: true,
-          role: "admin",
-          profile_id: profile.id,
-          pass_code: null,
-        }),
+        JSON.stringify({ success: true, role: "admin", profile_id: profile.id }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
     if (roles.includes("teacher")) {
       return new Response(
-        JSON.stringify({
-          success: true,
-          role: "teacher",
-          profile_id: profile.id,
-          pass_code: null,
-        }),
+        JSON.stringify({ success: true, role: "teacher", profile_id: profile.id }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -149,49 +136,11 @@ Deno.serve(async (req) => {
       }
     }
 
-    // 4) Ensure active pass code exists
-    const { data: existingPassCode, error: passCodeReadError } = await adminClient
-      .from("pass_codes")
-      .select("code, created_at")
-      .eq("student_id", profile.id)
-      .eq("is_active", true)
-      .order("created_at", { ascending: false })
-      .maybeSingle();
-
-    if (passCodeReadError) {
-      console.error("Pass code read error:", passCodeReadError);
-    }
-
-    let ensuredPassCode: string | null = existingPassCode?.code ?? null;
-
-    if (!ensuredPassCode) {
-      const { data: generatedCode, error: genError } = await adminClient.rpc("generate_pass_code");
-
-      if (genError || !generatedCode) {
-        console.error("Generate pass code error:", genError);
-      } else {
-        const { error: pcInsertError } = await adminClient.from("pass_codes").insert({
-          code: generatedCode,
-          student_id: profile.id,
-          is_active: true,
-          created_by: user.id,
-        });
-
-        if (pcInsertError) {
-          console.error("Pass code insert error:", pcInsertError);
-        } else {
-          ensuredPassCode = generatedCode;
-          console.log("Pass code ensured:", ensuredPassCode);
-        }
-      }
-    }
-
     return new Response(
       JSON.stringify({
         success: true,
         role: "student",
         profile_id: profile.id,
-        pass_code: ensuredPassCode,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
