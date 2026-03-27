@@ -1,51 +1,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Palette, Shield, ChevronUp, Check, Wallet, Loader2 } from "lucide-react";
+import { ArrowRight, Globe, Palette, Shield, ChevronUp, Check } from "lucide-react";
 import LayoutComponent from "@/components/Layout";
-import { Button } from "@/components/ui/button";
 import { webPricing, graphicPricing, domainPricing, servicePolicies } from "@/data/pricing";
 import type { PricingItem, MonthlyPackage } from "@/data/pricing";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
 
 const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-IN")}`;
 
-const handleUddoktaPayOrder = async (itemName: string, price: number, setLoading: (v: boolean) => void) => {
-  setLoading(true);
-  try {
-    const baseUrl = window.location.origin;
-    const { data, error } = await supabase.functions.invoke('uddoktapay-checkout', {
-      body: {
-        full_name: 'Customer',
-        email: 'customer@order.com',
-        amount: price,
-        metadata: {
-          type: 'service',
-          item_name: itemName,
-          price: price.toString(),
-        },
-        redirect_url: `${baseUrl}/payment/callback?type=service`,
-        cancel_url: `${baseUrl}/pricing`,
-      },
-    });
-
-    if (error || !data?.success || !data?.payment_url) {
-      toast.error('পেমেন্ট গেটওয়ে এরর। WhatsApp-এ যোগাযোগ করুন।');
-      setLoading(false);
-      return;
-    }
-
-    window.location.href = data.payment_url;
-  } catch (err) {
-    console.error('Order checkout error:', err);
-    toast.error('পেমেন্ট শুরু করতে ব্যর্থ।');
-    setLoading(false);
-  }
-};
-
 const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent?: "blue" | "gold"; index: number }) => {
-  const [ordering, setOrdering] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -90,22 +53,6 @@ const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent
         ))}
       </ul>
 
-      {/* Order Button */}
-      <Button
-        onClick={() => handleUddoktaPayOrder(item.name, item.discountedPrice, setOrdering)}
-        disabled={ordering}
-        size="sm"
-        className={`w-full mt-5 rounded-xl font-semibold ${
-          accent === "blue" 
-            ? "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20" 
-            : "bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white border border-amber-500/20"
-        } transition-all duration-300`}
-        variant="ghost"
-      >
-        {ordering ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Wallet className="w-4 h-4 mr-1" />}
-        {ordering ? 'Processing...' : 'Order Now'}
-      </Button>
-
       {/* Bottom accent line */}
       <div className={`absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent ${
         accent === "blue" ? "via-primary/20" : "via-amber-400/20"
@@ -116,7 +63,6 @@ const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent
 
 const MonthlyCard = ({ pkg, index }: { pkg: MonthlyPackage; index: number }) => {
   const isPopular = index === 2;
-  const [ordering, setOrdering] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -160,18 +106,6 @@ const MonthlyCard = ({ pkg, index }: { pkg: MonthlyPackage; index: number }) => 
           </li>
         ))}
       </ul>
-
-      {/* Order Button */}
-      <Button
-        onClick={() => handleUddoktaPayOrder(`${pkg.name} (Monthly)`, pkg.discountedPrice, setOrdering)}
-        disabled={ordering}
-        size="sm"
-        className="w-full mt-5 rounded-xl font-semibold bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white border border-amber-500/20 transition-all duration-300"
-        variant="ghost"
-      >
-        {ordering ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Wallet className="w-4 h-4 mr-1" />}
-        {ordering ? 'Processing...' : 'Order Now'}
-      </Button>
 
       <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-amber-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
     </motion.div>

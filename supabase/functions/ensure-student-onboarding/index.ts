@@ -97,31 +97,19 @@ Deno.serve(async (req) => {
       console.log("Profile created:", profile.id);
     }
 
-    // 2) If user is admin or teacher, do NOT force student role/pass code
-    const { data: existingRoles } = await adminClient
+    // 2) If user is admin, do NOT force student role/pass code
+    const { data: adminRole } = await adminClient
       .from("user_roles")
       .select("role")
-      .eq("user_id", user.id);
+      .eq("user_id", user.id)
+      .eq("role", "admin")
+      .maybeSingle();
 
-    const roles = (existingRoles || []).map((r: any) => r.role);
-
-    if (roles.includes("admin")) {
+    if (adminRole) {
       return new Response(
         JSON.stringify({
           success: true,
           role: "admin",
-          profile_id: profile.id,
-          pass_code: null,
-        }),
-        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    if (roles.includes("teacher")) {
-      return new Response(
-        JSON.stringify({
-          success: true,
-          role: "teacher",
           profile_id: profile.id,
           pass_code: null,
         }),

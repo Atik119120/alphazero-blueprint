@@ -25,15 +25,6 @@ const AboutPage = () => {
     c("why1", "about.why1"), c("why2", "about.why2"), c("why3", "about.why3"), c("why4", "about.why4"), c("why5", "about.why5"),
   ];
 
-  const locationAddress =
-    getContent("location.address") ||
-    getContent("location.description") ||
-    t("about.location.address");
-
-  const locationDescription =
-    getContent("location.desc") ||
-    t("about.location.desc");
-
   return (
     <Layout>
       <div className="overflow-x-hidden">
@@ -177,8 +168,8 @@ const AboutPage = () => {
               <Globe size={28} className="text-primary" />
             </motion.div>
             <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">{c("location.title", "about.location.title")}</h2>
-            <p className="text-xl text-muted-foreground mb-2">{locationAddress}</p>
-            <p className="text-muted-foreground mb-10">{locationDescription}</p>
+            <p className="text-xl text-muted-foreground mb-2">{c("location.address", "about.location.address")}</p>
+            <p className="text-muted-foreground mb-10">{c("location.desc", "about.location.desc")}</p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/contact"
                 className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]">

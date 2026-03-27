@@ -1,1 +1,0 @@
-DELETE FROM user_roles WHERE user_id = '5089ea23-c4c7-4533-982d-71b7d71fbb15' AND role = 'student';

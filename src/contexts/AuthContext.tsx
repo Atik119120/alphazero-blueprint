@@ -37,18 +37,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
-  const resolvePrimaryRole = (roles: Array<{ role: AppRole }> | null | undefined): AppRole | null => {
-    if (!roles?.length) return null;
-
-    const roleSet = new Set(roles.map(({ role }) => role));
-
-    if (roleSet.has('admin')) return 'admin';
-    if (roleSet.has('teacher')) return 'teacher';
-    if (roleSet.has('student')) return 'student';
-
-    return null;
-  };
-
   const fetchUserData = async (userId: string): Promise<{ profile: Profile | null; role: AppRole | null }> => {
     try {
       // Fetch profile and role in parallel
@@ -62,11 +50,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           .from('user_roles')
           .select('role')
           .eq('user_id', userId)
-          .returns<Array<{ role: AppRole }>>()
+          .maybeSingle()
       ]);
 
       const fetchedProfile = profileResult.data ? (profileResult.data as Profile) : null;
-      const fetchedRole = resolvePrimaryRole(roleResult.data);
+      const fetchedRole = roleResult.data ? (roleResult.data.role as AppRole) : null;
 
       return { profile: fetchedProfile, role: fetchedRole };
     } catch (error) {
