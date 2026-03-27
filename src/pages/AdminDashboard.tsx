@@ -1187,7 +1187,7 @@ export default function AdminDashboard() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-gradient-to-br from-primary/10 to-cyan-500/10 rounded-xl p-4 text-center">
-                      <p className="text-3xl font-bold text-primary">{passCodes.filter(p => p.student).length}</p>
+                      <p className="text-3xl font-bold text-primary">{studentsList.length}</p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
                         {language === 'bn' ? 'মোট ছাত্র' : 'Total Students'}
                       </p>
