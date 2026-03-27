@@ -235,8 +235,8 @@ export default function CourseEnrollmentModal({
                 </p>
                 <p className="text-xs text-muted-foreground mb-2">
                   {language === 'bn' 
-                    ? 'বিকাশ, নগদ, রকেট ও অন্যান্য মাধ্যমে পেমেন্ট করুন'
-                    : 'Pay via bKash, Nagad, Rocket & more'}
+                    ? 'UddoktaPay এর মাধ্যমে পেমেন্ট করুন'
+                    : 'Pay via UddoktaPay'}
                 </p>
                 <p className="text-2xl font-bold text-primary">৳{coursePrice.toLocaleString()}</p>
               </div>
