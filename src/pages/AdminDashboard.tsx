@@ -94,14 +94,9 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('courses');
 
-  // Pass code form state
-  const [showPassCodeDialog, setShowPassCodeDialog] = useState(false);
-  const [selectedCoursesForPassCode, setSelectedCoursesForPassCode] = useState<string[]>([]);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
   // Assign course dialog
   const [showAssignDialog, setShowAssignDialog] = useState(false);
-  const [assigningPassCode, setAssigningPassCode] = useState<PassCodeWithCourses | null>(null);
+  const [assigningStudent, setAssigningStudent] = useState<StudentWithCourses | null>(null);
   const [selectedCourseToAssign, setSelectedCourseToAssign] = useState('');
 
   // Add student form state
