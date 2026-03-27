@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -9,17 +10,38 @@ interface VerifyRequest {
   invoice_id: string;
 }
 
+async function getApiConfig() {
+  let apiKey = Deno.env.get('UDDOKTAPAY_API_KEY');
+  let baseUrl = Deno.env.get('UDDOKTAPAY_BASE_URL');
+
+  if (!apiKey || !baseUrl) {
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+    const { data } = await supabaseAdmin
+      .from('site_settings')
+      .select('setting_key, setting_value')
+      .in('setting_key', ['uddoktapay_api_key', 'uddoktapay_base_url']);
+
+    for (const row of data || []) {
+      if (!apiKey && row.setting_key === 'uddoktapay_api_key') apiKey = row.setting_value;
+      if (!baseUrl && row.setting_key === 'uddoktapay_base_url') baseUrl = row.setting_value;
+    }
+  }
+
+  return { apiKey, baseUrl };
+}
+
 serve(async (req: Request) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const UDDOKTAPAY_API_KEY = Deno.env.get('UDDOKTAPAY_API_KEY');
-    const UDDOKTAPAY_BASE_URL = Deno.env.get('UDDOKTAPAY_BASE_URL');
+    const { apiKey, baseUrl } = await getApiConfig();
 
-    if (!UDDOKTAPAY_API_KEY || !UDDOKTAPAY_BASE_URL) {
+    if (!apiKey || !baseUrl) {
       console.error('UddoktaPay credentials not configured');
       return new Response(
         JSON.stringify({ error: 'Payment gateway not configured' }),
@@ -39,12 +61,11 @@ serve(async (req: Request) => {
 
     console.log('Verifying payment for invoice:', invoice_id);
 
-    // Verify payment with UddoktaPay
-    const response = await fetch(`${UDDOKTAPAY_BASE_URL}/api/verify-payment`, {
+    const response = await fetch(`${baseUrl}/api/verify-payment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'RT-UDDOKTAPAY-API-KEY': UDDOKTAPAY_API_KEY,
+        'RT-UDDOKTAPAY-API-KEY': apiKey,
       },
       body: JSON.stringify({ invoice_id }),
     });
@@ -71,7 +92,6 @@ serve(async (req: Request) => {
       );
     }
 
-    // Return verification result
     return new Response(
       JSON.stringify({
         success: true,

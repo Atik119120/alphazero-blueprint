@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,17 +15,38 @@ interface CheckoutRequest {
   cancel_url: string;
 }
 
+async function getApiConfig() {
+  let apiKey = Deno.env.get('UDDOKTAPAY_API_KEY');
+  let baseUrl = Deno.env.get('UDDOKTAPAY_BASE_URL');
+
+  if (!apiKey || !baseUrl) {
+    const supabaseAdmin = createClient(
+      Deno.env.get('SUPABASE_URL')!,
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    );
+    const { data } = await supabaseAdmin
+      .from('site_settings')
+      .select('setting_key, setting_value')
+      .in('setting_key', ['uddoktapay_api_key', 'uddoktapay_base_url']);
+
+    for (const row of data || []) {
+      if (!apiKey && row.setting_key === 'uddoktapay_api_key') apiKey = row.setting_value;
+      if (!baseUrl && row.setting_key === 'uddoktapay_base_url') baseUrl = row.setting_value;
+    }
+  }
+
+  return { apiKey, baseUrl };
+}
+
 serve(async (req: Request) => {
-  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders });
   }
 
   try {
-    const UDDOKTAPAY_API_KEY = Deno.env.get('UDDOKTAPAY_API_KEY');
-    const UDDOKTAPAY_BASE_URL = Deno.env.get('UDDOKTAPAY_BASE_URL');
+    const { apiKey, baseUrl } = await getApiConfig();
 
-    if (!UDDOKTAPAY_API_KEY) {
+    if (!apiKey) {
       console.error('UDDOKTAPAY_API_KEY not configured');
       return new Response(
         JSON.stringify({ error: 'Payment gateway not configured' }),
@@ -32,7 +54,7 @@ serve(async (req: Request) => {
       );
     }
 
-    if (!UDDOKTAPAY_BASE_URL) {
+    if (!baseUrl) {
       console.error('UDDOKTAPAY_BASE_URL not configured');
       return new Response(
         JSON.stringify({ error: 'Payment gateway URL not configured' }),
@@ -45,7 +67,6 @@ serve(async (req: Request) => {
 
     const { full_name, email, amount, metadata, redirect_url, cancel_url } = body;
 
-    // Validate required fields
     if (!full_name || !email || !amount || !redirect_url) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields: full_name, email, amount, redirect_url' }),
@@ -53,7 +74,6 @@ serve(async (req: Request) => {
       );
     }
 
-    // Create UddoktaPay checkout
     const checkoutPayload = {
       full_name,
       email,
@@ -64,13 +84,13 @@ serve(async (req: Request) => {
     };
 
     console.log('Sending to UddoktaPay:', JSON.stringify(checkoutPayload, null, 2));
-    console.log('API URL:', `${UDDOKTAPAY_BASE_URL}/api/checkout-v2`);
+    console.log('API URL:', `${baseUrl}/api/checkout-v2`);
 
-    const response = await fetch(`${UDDOKTAPAY_BASE_URL}/api/checkout-v2`, {
+    const response = await fetch(`${baseUrl}/api/checkout-v2`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'RT-UDDOKTAPAY-API-KEY': UDDOKTAPAY_API_KEY,
+        'RT-UDDOKTAPAY-API-KEY': apiKey,
       },
       body: JSON.stringify(checkoutPayload),
     });
@@ -98,7 +118,6 @@ serve(async (req: Request) => {
       );
     }
 
-    // Return the payment URL
     return new Response(
       JSON.stringify({
         success: true,
