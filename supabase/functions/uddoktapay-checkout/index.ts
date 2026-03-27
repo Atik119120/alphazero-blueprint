@@ -80,7 +80,7 @@ serve(async (req: Request) => {
       full_name,
       email,
       amount: amount.toString(),
-      metadata: typeof metadata === 'string' ? metadata : JSON.stringify(metadata || {}),
+      metadata: typeof metadata === 'string' ? JSON.parse(metadata) : (metadata || {}),
       redirect_url,
       return_type: "GET",
       cancel_url: cancel_url || redirect_url,
