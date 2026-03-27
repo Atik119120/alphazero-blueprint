@@ -55,6 +55,7 @@ import {
   
   Ticket,
   Sparkles,
+  RotateCcw,
 } from 'lucide-react';
 
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -275,6 +276,56 @@ export default function AdminDashboard() {
     } else {
       toast.success(language === 'bn' ? 'প্রত্যাখ্যান করা হয়েছে' : 'Request rejected');
       fetchEnrollmentRequests();
+    }
+  };
+
+  // Refund UddoktaPay payment
+  const refundPayment = async (request: typeof enrollmentRequests[0]) => {
+    if (!request.transaction_id || request.payment_method !== 'uddoktapay') {
+      toast.error(language === 'bn' ? 'রিফান্ড করা সম্ভব নয়' : 'Cannot refund this payment');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      language === 'bn' 
+        ? `আপনি কি নিশ্চিত যে ${request.student_name} কে রিফান্ড করতে চান?`
+        : `Are you sure you want to refund ${request.student_name}?`
+    );
+    if (!confirmed) return;
+
+    toast.loading(language === 'bn' ? 'রিফান্ড প্রসেস হচ্ছে...' : 'Processing refund...', { id: 'refund' });
+
+    try {
+      // Extract amount from message (format: "Amount: ৳XXX")
+      const amountMatch = request.message?.match(/Amount:\s*৳?([\d,.]+)/);
+      const amount = amountMatch ? amountMatch[1].replace(',', '') : '0';
+      // Extract payment method from message
+      const methodMatch = request.message?.match(/Method:\s*([^\s,]+)/);
+      const paymentMethodName = methodMatch ? methodMatch[1] : 'unknown';
+
+      const { data, error } = await supabase.functions.invoke('uddoktapay-refund', {
+        body: {
+          transaction_id: request.transaction_id,
+          payment_method: paymentMethodName,
+          amount: amount,
+          product_name: (request as any).course?.title || 'Course',
+          reason: 'Admin initiated refund',
+        },
+      });
+
+      if (error || !data?.success) {
+        toast.error(language === 'bn' ? 'রিফান্ড ব্যর্থ হয়েছে' : 'Refund failed', { id: 'refund' });
+        return;
+      }
+
+      // Delete the enrollment request after refund
+      await supabase.from('enrollment_requests').delete().eq('id', request.id);
+
+      toast.success(language === 'bn' ? 'রিফান্ড সফল হয়েছে!' : 'Refund successful!', { id: 'refund' });
+      fetchEnrollmentRequests();
+    } catch (err) {
+      console.error('Refund error:', err);
+      toast.error(language === 'bn' ? 'রিফান্ড করতে সমস্যা হয়েছে' : 'Error processing refund', { id: 'refund' });
     }
   };
 
@@ -1369,7 +1420,7 @@ export default function AdminDashboard() {
 
                       {/* Action Buttons */}
                       {request.status === 'pending' && (
-                        <div className="flex gap-2 pt-2">
+                        <div className="flex gap-2 pt-2 flex-wrap">
                           <Button 
                             size="sm" 
                             className="flex-1 gap-1"
@@ -1387,6 +1438,17 @@ export default function AdminDashboard() {
                             <X className="w-3 h-3" />
                             {language === 'bn' ? 'প্রত্যাখ্যান' : 'Reject'}
                           </Button>
+                          {request.payment_method === 'uddoktapay' && request.transaction_id && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="flex-1 gap-1 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/30"
+                              onClick={() => refundPayment(request)}
+                            >
+                              <RotateCcw className="w-3 h-3" />
+                              {language === 'bn' ? 'রিফান্ড' : 'Refund'}
+                            </Button>
+                          )}
                         </div>
                       )}
                     </CardContent>
