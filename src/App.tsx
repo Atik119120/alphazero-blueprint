@@ -59,7 +59,7 @@ const LMS_ROUTES = [
   '/teacher/login',
   '/auth',
   '/dashboard',
-  '/passcode',
+  
   '/admin',
   '/student',
   '/teacher',
