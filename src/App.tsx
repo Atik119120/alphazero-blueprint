@@ -67,7 +67,8 @@ const LMS_ROUTES = [
   '/certificate',
   '/verify-certificate',
   '/forgot-password',
-  '/reset-password'
+  '/reset-password',
+  '/payment'
 ];
 
 function AppContent() {
