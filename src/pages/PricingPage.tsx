@@ -9,7 +9,43 @@ import type { PricingItem, MonthlyPackage } from "@/data/pricing";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-IN")}`;
+
+const handleUddoktaPayOrder = async (itemName: string, price: number, setLoading: (v: boolean) => void) => {
+  setLoading(true);
+  try {
+    const baseUrl = window.location.origin;
+    const { data, error } = await supabase.functions.invoke('uddoktapay-checkout', {
+      body: {
+        full_name: 'Customer',
+        email: 'customer@order.com',
+        amount: price,
+        metadata: {
+          type: 'service',
+          item_name: itemName,
+          price: price.toString(),
+        },
+        redirect_url: `${baseUrl}/payment/callback?type=service`,
+        cancel_url: `${baseUrl}/pricing`,
+      },
+    });
+
+    if (error || !data?.success || !data?.payment_url) {
+      toast.error('পেমেন্ট গেটওয়ে এরর। WhatsApp-এ যোগাযোগ করুন।');
+      setLoading(false);
+      return;
+    }
+
+    window.location.href = data.payment_url;
+  } catch (err) {
+    console.error('Order checkout error:', err);
+    toast.error('পেমেন্ট শুরু করতে ব্যর্থ।');
+    setLoading(false);
+  }
+};
+
 const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent?: "blue" | "gold"; index: number }) => {
+  const [ordering, setOrdering] = useState(false);
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
