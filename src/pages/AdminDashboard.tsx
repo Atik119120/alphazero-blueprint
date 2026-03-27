@@ -56,7 +56,7 @@ import {
   Ticket,
   Sparkles,
 } from 'lucide-react';
-import { PassCodeWithCourses } from '@/types/lms';
+
 import CourseManagement from '@/components/admin/CourseManagement';
 import { WorksManagement } from '@/components/admin/WorksManagement';
 import { TeamManagement } from '@/components/admin/TeamManagement';
