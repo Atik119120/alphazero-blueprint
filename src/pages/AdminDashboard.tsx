@@ -84,15 +84,12 @@ export default function AdminDashboard() {
   const { theme, setTheme } = useTheme();
   const { courses, isLoading: coursesLoading, refetch: refetchCourses } = useCourses();
   const { 
-    passCodes, 
-    isLoading: passCodesLoading, 
-    refetch: refetchPassCodes,
-    createPassCode,
-    assignCourseToPassCode,
-    removeCourseFromPassCode,
-    togglePassCodeStatus,
-    deletePassCode
-  } = usePassCodes();
+    students: studentsList, 
+    isLoading: studentsLoading, 
+    refetch: refetchStudents,
+    assignCourse: assignCourseToStudent,
+    removeCourse: removeCourseFromStudent,
+  } = useStudentCourseManagement();
   
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('courses');
