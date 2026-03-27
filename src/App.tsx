@@ -130,6 +130,7 @@ function AppContent() {
         <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/payment/callback" element={<PaymentCallbackPage />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
