@@ -579,15 +579,14 @@ export default function CourseEnrollmentModal({
                       <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       {t.processing}
                     </>
-                ) : (
-                  <>
-                    <CreditCard className="w-5 h-5 mr-2" />
-                    {t.submitEnrollment}
-                  </>
-                )}
-              </Button>
-            </div>
-          ) : (
+                  ) : (
+                    <>
+                      <CreditCard className="w-5 h-5 mr-2" />
+                      {t.submitEnrollment}
+                    </>
+                  )}
+                </Button>
+              )}
             <div className="space-y-4">
               {appliedCoupon && !isFree && (
                 <div className="bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30 rounded-2xl p-5 border border-emerald-200 dark:border-emerald-800/50 text-center">
