@@ -496,7 +496,7 @@ export default function AdminDashboard() {
           full_name: newStudentName.trim(),
           email: newStudentEmail.trim(),
           password: newStudentPassword,
-          pass_code: newStudentPassCode.trim() || undefined,
+          phone_number: newStudentPhone.trim() || undefined,
         },
       });
 
@@ -517,8 +517,8 @@ export default function AdminDashboard() {
       setNewStudentName('');
       setNewStudentEmail('');
       setNewStudentPassword('');
-      setNewStudentPassCode('');
-      refetchPassCodes();
+      setNewStudentPhone('');
+      refetchStudents();
     } catch (error) {
       console.error('Add student error:', error);
       toast.error('কিছু ভুল হয়েছে');
