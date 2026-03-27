@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from 'next-themes';
 import { useCourses } from '@/hooks/useCourses';
-import { usePassCodes } from '@/hooks/usePassCodes';
+import { useStudentCourseManagement, StudentWithCourses } from '@/hooks/useStudentCourses';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
