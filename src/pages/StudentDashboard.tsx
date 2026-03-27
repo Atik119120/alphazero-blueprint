@@ -410,7 +410,7 @@ export default function StudentDashboard() {
                   <div className="text-center mt-3">
                     <h2 className="font-bold text-lg">{profile.full_name}</h2>
                     <p className="text-sm text-muted-foreground">{profile.email}</p>
-                    {passCode && <Badge variant="outline" className="mt-2 font-mono text-xs">{passCode}</Badge>}
+                    
                   </div>
                 </div>
               </div>
