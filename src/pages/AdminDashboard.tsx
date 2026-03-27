@@ -1206,7 +1206,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-violet-600">
-                        {courses.length > 0 ? Math.round((passCodes.filter(p => p.student).length / Math.max(courses.length, 1)) * 10) / 10 : 0}
+                        {courses.length > 0 ? Math.round((studentsList.length / Math.max(courses.length, 1)) * 10) / 10 : 0}
                       </p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
                         {language === 'bn' ? 'গড় ছাত্র/কোর্স' : 'Avg Students/Course'}
