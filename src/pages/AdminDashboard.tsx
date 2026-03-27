@@ -1426,7 +1426,7 @@ export default function AdminDashboard() {
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <input
                   type="checkbox"
-                  checked={selectedStudents.length > 0 && selectedStudents.length === filteredStudents.filter(pc => pc.student).length}
+                  checked={selectedStudents.length > 0 && selectedStudents.length === filteredStudents.length}
                   onChange={selectAllStudents}
                   className="rounded border-gray-300"
                 />
