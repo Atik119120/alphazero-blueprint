@@ -8,10 +8,9 @@ import jsPDF from 'jspdf';
 
 interface StudentIDCardProps {
   profile: Profile;
-  passCode?: string;
 }
 
-export default function StudentIDCard({ profile, passCode }: StudentIDCardProps) {
+export default function StudentIDCard({ profile }: StudentIDCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateStr: string) => {
@@ -107,8 +106,8 @@ export default function StudentIDCard({ profile, passCode }: StudentIDCardProps)
               </div>
               <div className="flex gap-4">
                 <div>
-                  <p className="text-[10px] uppercase tracking-wider opacity-60">Pass Code</p>
-                  <p className="font-mono text-xs">{passCode || 'N/A'}</p>
+                  <p className="text-[10px] uppercase tracking-wider opacity-60">Student ID</p>
+                  <p className="font-mono text-xs">{studentId}</p>
                 </div>
                 <div>
                   <p className="text-[10px] uppercase tracking-wider opacity-60">Member Since</p>

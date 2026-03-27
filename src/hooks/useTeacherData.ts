@@ -46,9 +46,10 @@ export function useTeacherStats() {
 
       if (courseIds.length > 0) {
         const { count } = await supabase
-          .from('pass_code_courses')
+          .from('student_courses')
           .select('*', { count: 'exact', head: true })
-          .in('course_id', courseIds);
+          .in('course_id', courseIds)
+          .eq('is_active', true);
         totalStudents = count || 0;
       }
 
@@ -136,9 +137,10 @@ export function useTeacherCourses() {
       const coursesWithStats = await Promise.all(
         (data || []).map(async (course) => {
           const { count } = await supabase
-            .from('pass_code_courses')
+            .from('student_courses')
             .select('*', { count: 'exact', head: true })
-            .eq('course_id', course.id);
+            .eq('course_id', course.id)
+            .eq('is_active', true);
 
           const { data: revenueData } = await supabase
             .from('revenue_records')
@@ -200,19 +202,28 @@ export function useTeacherStudents() {
 
       const courseIds = courses.map(c => c.id);
 
-      // Get pass codes with courses
-      const { data: passCodes } = await supabase
-        .from('pass_code_courses')
-        .select(`
-          course_id,
-          pass_codes:pass_code_id(
-            student_id,
-            profiles:student_id(*)
-          )
-        `)
-        .in('course_id', courseIds);
+      // Get student course assignments
+      const { data: studentAssignments } = await supabase
+        .from('student_courses')
+        .select('course_id, user_id')
+        .in('course_id', courseIds)
+        .eq('is_active', true);
 
-      if (!passCodes) {
+      if (!studentAssignments || studentAssignments.length === 0) {
+        setStudents([]);
+        return;
+      }
+
+      // Get unique student user_ids
+      const studentUserIds = [...new Set(studentAssignments.map(sa => sa.user_id))];
+
+      // Fetch profiles for these students
+      const { data: studentProfiles } = await supabase
+        .from('profiles')
+        .select('*')
+        .in('user_id', studentUserIds);
+
+      if (!studentProfiles) {
         setStudents([]);
         return;
       }
@@ -220,26 +231,25 @@ export function useTeacherStudents() {
       // Build student progress list
       const studentProgressList: StudentProgress[] = [];
 
-      for (const pc of passCodes) {
-        const passCode = pc.pass_codes as any;
-        if (!passCode?.profiles) continue;
+      for (const sa of studentAssignments) {
+        const student = studentProfiles.find(p => p.user_id === sa.user_id);
+        if (!student) continue;
 
-        const student = passCode.profiles;
-        const course = courses.find(c => c.id === pc.course_id);
+        const course = courses.find(c => c.id === sa.course_id);
         if (!course) continue;
 
         // Get video count for course
         const { count: totalVideos } = await supabase
           .from('videos')
           .select('*', { count: 'exact', head: true })
-          .eq('course_id', pc.course_id);
+          .eq('course_id', sa.course_id);
 
         // Get completed videos for this student
         const { data: progress } = await supabase
           .from('video_progress')
           .select('video_id, is_completed, last_watched_at')
           .eq('user_id', student.user_id)
-          .in('video_id', (await supabase.from('videos').select('id').eq('course_id', pc.course_id)).data?.map(v => v.id) || []);
+          .in('video_id', (await supabase.from('videos').select('id').eq('course_id', sa.course_id)).data?.map(v => v.id) || []);
 
         const completedVideos = progress?.filter(p => p.is_completed).length || 0;
         const progressPercent = totalVideos ? Math.round((completedVideos / totalVideos) * 100) : 0;

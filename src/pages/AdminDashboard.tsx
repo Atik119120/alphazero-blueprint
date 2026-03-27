@@ -104,7 +104,7 @@ export default function AdminDashboard() {
   const [newStudentName, setNewStudentName] = useState('');
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [newStudentPassword, setNewStudentPassword] = useState('');
-  const [newStudentPassCode, setNewStudentPassCode] = useState('');
+  const [newStudentPhone, setNewStudentPhone] = useState('');
   const [addingStudent, setAddingStudent] = useState(false);
 
   // Admin profile state
@@ -256,7 +256,7 @@ export default function AdminDashboard() {
 
       toast.success(language === 'bn' ? 'অনুমোদিত! Student account তৈরি হয়েছে।' : 'Approved! Student account created.', { id: 'approve' });
       fetchEnrollmentRequests();
-      refetchPassCodes();
+      refetchStudents();
     } catch (error) {
       console.error('Error approving enrollment:', error);
       toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error approving enrollment', { id: 'approve' });
@@ -287,14 +287,13 @@ export default function AdminDashboard() {
   }, [user, isAdmin]);
 
   // Filter students by search
-  const filteredStudents = passCodes.filter(pc => {
-    if (!pc.student) return false;
+  const filteredStudents = studentsList.filter(s => {
     if (!studentSearch.trim()) return true;
     const searchLower = studentSearch.toLowerCase();
     return (
-      pc.student.full_name.toLowerCase().includes(searchLower) ||
-      pc.student.email.toLowerCase().includes(searchLower) ||
-      pc.code.toLowerCase().includes(searchLower)
+      s.full_name.toLowerCase().includes(searchLower) ||
+      s.email.toLowerCase().includes(searchLower) ||
+      (s.phone_number && s.phone_number.toLowerCase().includes(searchLower))
     );
   });
 
@@ -317,13 +316,13 @@ export default function AdminDashboard() {
     return Date.now() - created < 24 * 60 * 60 * 1000;
   };
 
-  const unassignedStudents = filteredStudents.filter(pc => pc.courses.length === 0);
-  const assignedStudents = filteredStudents.filter(pc => pc.courses.length > 0);
+  const unassignedStudents = filteredStudents.filter(s => s.courses.length === 0);
+  const assignedStudents = filteredStudents.filter(s => s.courses.length > 0);
 
   // Calculate course enrollment stats with sales
   const courseEnrollmentStats = courses.map(course => {
-    const enrollmentCount = passCodes.filter(pc => 
-      pc.courses.some(c => c.id === course.id) && pc.student
+    const enrollmentCount = studentsList.filter(s => 
+      s.courses.some(c => c.id === course.id)
     ).length;
     const coursePrice = (course as any).price || 0;
     const totalSales = enrollmentCount * coursePrice;
@@ -352,55 +351,17 @@ export default function AdminDashboard() {
     navigate('/');
   };
 
-  // Pass code
-  const handleCreatePassCode = async () => {
-    const result = await createPassCode(selectedCoursesForPassCode);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Pass Code তৈরি হয়েছে');
-    setShowPassCodeDialog(false);
-    setSelectedCoursesForPassCode([]);
-  };
-
-  const copyPassCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    toast.success('কপি হয়েছে');
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const handleTogglePassCode = async (passCode: PassCodeWithCourses) => {
-    const result = await togglePassCodeStatus(passCode.id, !passCode.is_active);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success(passCode.is_active ? 'Pass Code নিষ্ক্রিয় হয়েছে' : 'Pass Code সক্রিয় হয়েছে');
-  };
-
-  const handleDeletePassCode = async (passCodeId: string) => {
-    if (!confirm('এই Pass Code মুছতে চান?')) return;
-    
-    const result = await deletePassCode(passCodeId);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Pass Code মুছে ফেলা হয়েছে');
-  };
-
-  const openAssignDialog = (passCode: PassCodeWithCourses) => {
-    setAssigningPassCode(passCode);
+  // Student course assignment handlers
+  const openStudentAssignDialog = (student: StudentWithCourses) => {
+    setAssigningStudent(student);
     setSelectedCourseToAssign('');
     setShowAssignDialog(true);
   };
 
   const handleAssignCourse = async () => {
-    if (!assigningPassCode || !selectedCourseToAssign) return;
+    if (!assigningStudent || !selectedCourseToAssign) return;
 
-    const result = await assignCourseToPassCode(assigningPassCode.id, selectedCourseToAssign);
+    const result = await assignCourseToStudent(assigningStudent.user_id, selectedCourseToAssign);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -409,8 +370,8 @@ export default function AdminDashboard() {
     setShowAssignDialog(false);
   };
 
-  const handleRemoveCourse = async (passCodeId: string, courseId: string) => {
-    const result = await removeCourseFromPassCode(passCodeId, courseId);
+  const handleRemoveCourseFromStudent = async (userId: string, courseId: string) => {
+    const result = await removeCourseFromStudent(userId, courseId);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -418,8 +379,8 @@ export default function AdminDashboard() {
     toast.success('কোর্স সরানো হয়েছে');
   };
 
-  const availableCoursesForAssign = assigningPassCode 
-    ? courses.filter(c => !assigningPassCode.courses.some(ac => ac.id === c.id))
+  const availableCoursesForAssign = assigningStudent 
+    ? courses.filter(c => !assigningStudent.courses.some(ac => ac.id === c.id))
     : [];
 
   // Delete single student
@@ -444,7 +405,7 @@ export default function AdminDashboard() {
 
       if (data?.deleted_count > 0) {
         toast.success(language === 'bn' ? 'সফলভাবে মুছে ফেলা হয়েছে' : 'Successfully deleted', { id: 'delete-student' });
-        refetchPassCodes();
+        refetchStudents();
       } else {
         toast.error(data?.errors?.[0] || 'Failed to delete', { id: 'delete-student' });
       }
@@ -485,7 +446,7 @@ export default function AdminDashboard() {
       
       setSelectedStudents([]);
       setShowDeleteConfirm(false);
-      refetchPassCodes();
+      refetchStudents();
     } catch (error) {
       console.error('Bulk delete error:', error);
       toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error occurred', { id: 'bulk-delete' });
@@ -505,9 +466,7 @@ export default function AdminDashboard() {
 
   // Select all visible students
   const selectAllStudents = () => {
-    const allProfileIds = filteredStudents
-      .filter(pc => pc.student)
-      .map(pc => pc.student!.id);
+    const allProfileIds = filteredStudents.map(s => s.id);
     
     if (selectedStudents.length === allProfileIds.length) {
       setSelectedStudents([]);
@@ -537,7 +496,7 @@ export default function AdminDashboard() {
           full_name: newStudentName.trim(),
           email: newStudentEmail.trim(),
           password: newStudentPassword,
-          pass_code: newStudentPassCode.trim() || undefined,
+          phone_number: newStudentPhone.trim() || undefined,
         },
       });
 
@@ -558,8 +517,8 @@ export default function AdminDashboard() {
       setNewStudentName('');
       setNewStudentEmail('');
       setNewStudentPassword('');
-      setNewStudentPassCode('');
-      refetchPassCodes();
+      setNewStudentPhone('');
+      refetchStudents();
     } catch (error) {
       console.error('Add student error:', error);
       toast.error('কিছু ভুল হয়েছে');
@@ -794,7 +753,6 @@ export default function AdminDashboard() {
   ];
 
   const lmsMoreItems = [
-    { id: 'passcodes', icon: Key, label: 'Pass Code' },
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
@@ -1033,8 +991,8 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
             {[
               { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'কোর্স' : 'Courses', color: 'text-sky-500' },
-              { icon: Users, value: passCodes.filter(p => p.student).length, label: language === 'bn' ? 'ছাত্র' : 'Students', color: 'text-emerald-500' },
-              { icon: Key, value: passCodes.filter(p => p.is_active).length, label: language === 'bn' ? 'Pass Code' : 'Active Codes', color: 'text-violet-500' },
+              { icon: Users, value: studentsList.length, label: language === 'bn' ? 'ছাত্র' : 'Students', color: 'text-emerald-500' },
+              { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
               { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500' },
               { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
             ].map((stat, index) => (
@@ -1228,7 +1186,7 @@ export default function AdminDashboard() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-gradient-to-br from-primary/10 to-cyan-500/10 rounded-xl p-4 text-center">
-                      <p className="text-3xl font-bold text-primary">{passCodes.filter(p => p.student).length}</p>
+                      <p className="text-3xl font-bold text-primary">{studentsList.length}</p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
                         {language === 'bn' ? 'মোট ছাত্র' : 'Total Students'}
                       </p>
@@ -1247,7 +1205,7 @@ export default function AdminDashboard() {
                     </div>
                     <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-violet-600">
-                        {courses.length > 0 ? Math.round((passCodes.filter(p => p.student).length / Math.max(courses.length, 1)) * 10) / 10 : 0}
+                        {courses.length > 0 ? Math.round((studentsList.length / Math.max(courses.length, 1)) * 10) / 10 : 0}
                       </p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
                         {language === 'bn' ? 'গড় ছাত্র/কোর্স' : 'Avg Students/Course'}
@@ -1438,157 +1396,7 @@ export default function AdminDashboard() {
             )}
           </TabsContent>
 
-          {/* Pass Codes Tab */}
-          <TabsContent value="passcodes" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'সব Pass Code' : 'All Pass Codes'}
-              </h2>
-              <Dialog open={showPassCodeDialog} onOpenChange={setShowPassCodeDialog}>
-                <DialogTrigger asChild>
-                  <Button className="gap-2">
-                    <Plus className="w-4 h-4" />
-                    {language === 'bn' ? 'নতুন Pass Code' : 'New Pass Code'}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{language === 'bn' ? 'নতুন Pass Code তৈরি' : 'Create New Pass Code'}</DialogTitle>
-                    <DialogDescription>
-                      {language === 'bn' ? 'কোর্স সিলেক্ট করুন যা এই Pass Code এ থাকবে' : 'Select courses to include in this Pass Code'}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="space-y-2">
-                      <Label>{language === 'bn' ? 'কোর্স সিলেক্ট করুন' : 'Select Courses'}</Label>
-                      <div className="space-y-2 max-h-48 overflow-y-auto">
-                        {courses.filter(c => c.is_published).map((course) => (
-                          <label 
-                            key={course.id} 
-                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted cursor-pointer"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedCoursesForPassCode.includes(course.id)}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectedCoursesForPassCode(prev => [...prev, course.id]);
-                                } else {
-                                  setSelectedCoursesForPassCode(prev => prev.filter(id => id !== course.id));
-                                }
-                              }}
-                              className="rounded"
-                            />
-                            <span className="text-sm">{course.title}</span>
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button variant="outline" onClick={() => setShowPassCodeDialog(false)}>
-                      {language === 'bn' ? 'বাতিল' : 'Cancel'}
-                    </Button>
-                    <Button onClick={handleCreatePassCode}>
-                      {language === 'bn' ? 'তৈরি করুন' : 'Create'}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
-
-            {passCodesLoading ? (
-              <div className="flex justify-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
-              </div>
-            ) : passCodes.length === 0 ? (
-              <Card className="border-dashed">
-                <CardContent className="py-12 text-center">
-                  <Key className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">{language === 'bn' ? 'কোনো Pass Code নেই' : 'No Pass Codes'}</p>
-                </CardContent>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {passCodes.map((passCode) => (
-                  <Card key={passCode.id}>
-                    <CardContent className="p-4">
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-3">
-                            <code className="text-lg font-mono bg-muted px-3 py-1 rounded-lg">
-                              {passCode.code}
-                            </code>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => copyPassCode(passCode.code)}
-                            >
-                              {copiedCode === passCode.code ? (
-                                <Check className="w-4 h-4 text-primary" />
-                              ) : (
-                                <Copy className="w-4 h-4" />
-                              )}
-                            </Button>
-                            <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                              {passCode.is_active ? (language === 'bn' ? 'সক্রিয়' : 'Active') : (language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive')}
-                            </Badge>
-                          </div>
-                          
-                          {passCode.student && (
-                            <p className="text-sm text-muted-foreground">
-                              {language === 'bn' ? 'ছাত্র' : 'Student'}: {passCode.student.full_name} ({passCode.student.email})
-                            </p>
-                          )}
-                          
-                          <div className="flex flex-wrap gap-2">
-                            {passCode.courses.map((course) => (
-                              <Badge 
-                                key={course.id} 
-                                variant="outline"
-                                className="gap-1"
-                              >
-                                {course.title}
-                                <button
-                                  onClick={() => handleRemoveCourse(passCode.id, course.id)}
-                                  className="ml-1 hover:text-destructive"
-                                >
-                                  <X className="w-3 h-3" />
-                                </button>
-                              </Badge>
-                            ))}
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-6 text-xs gap-1"
-                              onClick={() => openAssignDialog(passCode)}
-                            >
-                              <Plus className="w-3 h-3" />
-                              {language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
-                            </Button>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                          <Switch
-                            checked={passCode.is_active}
-                            onCheckedChange={() => handleTogglePassCode(passCode)}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeletePassCode(passCode.id)}
-                          >
-                            <Trash2 className="w-4 h-4 text-destructive" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
+          {/* Pass Codes Tab - Removed */}
 
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
@@ -1600,7 +1408,7 @@ export default function AdminDashboard() {
                 <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder={language === 'bn' ? 'নাম, ইমেইল বা Pass Code...' : 'Name, email or Pass Code...'}
+                    placeholder={language === 'bn' ? 'নাম, ইমেইল বা ফোন...' : 'Name, email or phone...'}
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
                     className="pl-9 w-full sm:w-64"
@@ -1618,7 +1426,7 @@ export default function AdminDashboard() {
               <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
                 <input
                   type="checkbox"
-                  checked={selectedStudents.length > 0 && selectedStudents.length === filteredStudents.filter(pc => pc.student).length}
+                  checked={selectedStudents.length > 0 && selectedStudents.length === filteredStudents.length}
                   onChange={selectAllStudents}
                   className="rounded border-gray-300"
                 />
@@ -1754,97 +1562,39 @@ export default function AdminDashboard() {
                 {!studentSearch && unassignedStudents.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                        {language === 'bn' ? 'নতুন / কোর্স দেওয়া হয়নি' : 'New / Unassigned'}
-                      </h3>
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'নতুন / কোর্স দেওয়া হয়নি' : 'New / Unassigned'}</h3>
                       <Badge variant="outline">{unassignedStudents.length}</Badge>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                      {unassignedStudents.map((passCode) => (
-                        <Card
-                          key={passCode.id}
-                          className={`overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors ${
-                            passCode.student && selectedStudents.includes(passCode.student.id) ? 'ring-2 ring-destructive' : ''
-                          }`}
-                        >
+                      {unassignedStudents.map((student) => (
+                        <Card key={student.id} className={`overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors ${selectedStudents.includes(student.id) ? 'ring-2 ring-destructive' : ''}`}>
                           <CardHeader className="pb-2">
                             <div className="flex items-center gap-3">
-                              {/* Selection Checkbox */}
-                              {passCode.student && (
-                                <input
-                                  type="checkbox"
-                                  checked={selectedStudents.includes(passCode.student.id)}
-                                  onChange={() => toggleStudentSelection(passCode.student!.id)}
-                                  className="rounded border-gray-300"
-                                  onClick={(e) => e.stopPropagation()}
-                                />
-                              )}
+                              <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
                               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">
-                                  {passCode.student?.full_name?.charAt(0).toUpperCase()}
-                                </span>
+                                <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
-                                  {isRecent(passCode.created_at) && (
-                                    <Badge variant="secondary" className="text-xs">
-                                      {language === 'bn' ? 'নতুন' : 'New'}
-                                    </Badge>
-                                  )}
+                                  <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
+                                  {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
                                 </div>
-                                <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                                <CardDescription className="truncate">{student.email}</CardDescription>
                               </div>
-                              {/* Delete Button */}
-                              {passCode.student && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                                  onClick={() => handleDeleteStudent(passCode.student!.id, passCode.student!.full_name)}
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              )}
+                              <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => handleDeleteStudent(student.id, student.full_name)}>
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
                             </div>
                           </CardHeader>
                           <CardContent className="pt-0 space-y-3">
-                            <div className="flex items-center gap-2">
-                              <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
-                                {passCode.code}
-                              </code>
-                              <Button variant="ghost" size="sm" onClick={() => copyPassCode(passCode.code)}>
-                                {copiedCode === passCode.code ? (
-                                  <Check className="w-3 h-3 text-primary" />
-                                ) : (
-                                  <Copy className="w-3 h-3" />
-                                )}
+                            {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
+                            <div className="flex items-center justify-between text-sm">
+                              <Badge variant="outline" className="text-xs">{language === 'bn' ? 'কোর্স নেই' : 'No course'}</Badge>
+                              <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
+                                <Plus className="w-3 h-3" />{language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
                               </Button>
                             </div>
-
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-muted-foreground">
-                                {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
-                              </span>
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-xs">
-                                  {language === 'bn' ? 'কোর্স নেই' : 'No course'}
-                                </Badge>
-                                <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                                  {passCode.is_active
-                                    ? language === 'bn'
-                                      ? 'সক্রিয়'
-                                      : 'Active'
-                                    : language === 'bn'
-                                      ? 'নিষ্ক্রিয়'
-                                      : 'Inactive'}
-                                </Badge>
-                              </div>
-                            </div>
-
-                            <p className="text-xs text-muted-foreground">
-                              {language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(passCode.created_at)}
-                            </p>
+                            <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
                           </CardContent>
                         </Card>
                       ))}
@@ -1856,109 +1606,55 @@ export default function AdminDashboard() {
                 <div className="space-y-3">
                   {!studentSearch && (
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                        {language === 'bn' ? 'কোর্স দেওয়া আছে' : 'Assigned'}
-                      </h3>
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'কোর্স দেওয়া আছে' : 'Assigned'}</h3>
                       <Badge variant="outline">{assignedStudents.length}</Badge>
                     </div>
                   )}
-
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {(studentSearch ? filteredStudents : assignedStudents).map((passCode) => (
-                      <Card 
-                        key={passCode.id} 
-                        className={`overflow-hidden hover:border-primary/50 transition-colors ${
-                          passCode.student && selectedStudents.includes(passCode.student.id) ? 'ring-2 ring-destructive' : ''
-                        }`}
-                      >
+                    {(studentSearch ? filteredStudents : assignedStudents).map((student) => (
+                      <Card key={student.id} className={`overflow-hidden hover:border-primary/50 transition-colors ${selectedStudents.includes(student.id) ? 'ring-2 ring-destructive' : ''}`}>
                         <CardHeader className="pb-2">
                           <div className="flex items-center gap-3">
-                            {/* Selection Checkbox */}
-                            {passCode.student && (
-                              <input
-                                type="checkbox"
-                                checked={selectedStudents.includes(passCode.student.id)}
-                                onChange={() => toggleStudentSelection(passCode.student!.id)}
-                                className="rounded border-gray-300"
-                                onClick={(e) => e.stopPropagation()}
-                              />
-                            )}
+                            <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                              <span className="text-white font-bold text-lg">
-                                {passCode.student?.full_name?.charAt(0).toUpperCase()}
-                              </span>
+                              <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
-                                {isRecent(passCode.created_at) && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    {language === 'bn' ? 'নতুন' : 'New'}
-                                  </Badge>
-                                )}
+                                <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
+                                {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
                               </div>
-                              <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                              <CardDescription className="truncate">{student.email}</CardDescription>
                             </div>
-                            {/* Delete Button */}
-                            {passCode.student && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                                onClick={() => handleDeleteStudent(passCode.student!.id, passCode.student!.full_name)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            )}
+                            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => handleDeleteStudent(student.id, student.full_name)}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0 space-y-3">
-                          <div className="flex items-center gap-2">
-                            <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
-                              {passCode.code}
-                            </code>
-                            <Button variant="ghost" size="sm" onClick={() => copyPassCode(passCode.code)}>
-                              {copiedCode === passCode.code ? (
-                                <Check className="w-3 h-3 text-primary" />
-                              ) : (
-                                <Copy className="w-3 h-3" />
-                              )}
+                          {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">{student.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}</span>
+                            <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
+                              <Plus className="w-3 h-3" />{language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
                             </Button>
                           </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">
-                              {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
-                            </span>
-                            <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                              {passCode.is_active
-                                ? language === 'bn'
-                                  ? 'সক্রিয়'
-                                  : 'Active'
-                                : language === 'bn'
-                                  ? 'নিষ্ক্রিয়'
-                                  : 'Inactive'}
-                            </Badge>
-                          </div>
-                          {passCode.courses.length > 0 && (
+                          {student.courses.length > 0 && (
                             <div className="flex flex-wrap gap-1">
-                              {passCode.courses.slice(0, 3).map((course) => (
-                                <Badge key={course.id} variant="outline" className="text-xs">
+                              {student.courses.slice(0, 3).map((course) => (
+                                <Badge key={course.id} variant="outline" className="text-xs gap-1">
                                   {course.title.length > 15 ? course.title.slice(0, 15) + '...' : course.title}
+                                  <button onClick={() => handleRemoveCourseFromStudent(student.user_id, course.id)} className="ml-0.5 hover:text-destructive"><X className="w-3 h-3" /></button>
                                 </Badge>
                               ))}
-                              {passCode.courses.length > 3 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{passCode.courses.length - 3}
-                                </Badge>
-                              )}
+                              {student.courses.length > 3 && <Badge variant="outline" className="text-xs">+{student.courses.length - 3}</Badge>}
                             </div>
                           )}
-                          <p className="text-xs text-muted-foreground">
-                            {language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(passCode.created_at)}
-                          </p>
+                          <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
                         </CardContent>
                       </Card>
                     ))}
+                  </div>
                   </div>
                 </div>
               </div>
@@ -2242,8 +1938,8 @@ export default function AdminDashboard() {
             <DialogTitle>{language === 'bn' ? 'কোর্স যোগ করুন' : 'Add Course'}</DialogTitle>
             <DialogDescription>
               {language === 'bn' 
-                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন</>
-                : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code></>
+                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন</>
+                : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code></>
               }
             </DialogDescription>
           </DialogHeader>
@@ -2320,7 +2016,7 @@ export default function AdminDashboard() {
               {language === 'bn' ? 'নতুন ছাত্র যোগ করুন' : 'Add New Student'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'ছাত্রের তথ্য দিন এবং পাসকোড অ্যাসাইন করুন' : 'Enter student details and assign a passcode'}
+              {language === 'bn' ? 'ছাত্রের তথ্য দিন' : 'Enter student details'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -2366,19 +2062,19 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-passcode">{language === 'bn' ? 'Pass Code (ঐচ্ছিক)' : 'Pass Code (Optional)'}</Label>
+              <Label htmlFor="student-passcode">{language === 'bn' ? 'ফোন নম্বর (ঐচ্ছিক)' : 'Phone Number (Optional)'}</Label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="student-passcode"
-                  value={newStudentPassCode}
-                  onChange={(e) => setNewStudentPassCode(e.target.value.toUpperCase())}
-                  placeholder={language === 'bn' ? 'বিদ্যমান Pass Code' : 'Existing Pass Code'}
+                  value={newStudentPhone}
+                  onChange={(e) => setNewStudentPhone(e.target.value)}
+                  placeholder={language === 'bn' ? 'ফোন নম্বর' : 'Phone number'}
                   className="pl-10 font-mono"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'বিদ্যমান Pass Code দিলে ছাত্র সেটার সাথে লিংক হবে' : 'If provided, student will be linked to this Pass Code'}
+                {language === 'bn' ? 'ফোন নম্বর দিলে ছাত্র সেটার সাথে লিংক হবে' : 'Enter student phone number'}
               </p>
             </div>
           </div>

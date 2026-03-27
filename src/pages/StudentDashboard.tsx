@@ -33,7 +33,6 @@ export default function StudentDashboard() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [updatingProfile, setUpdatingProfile] = useState(false);
-  const [passCode, setPassCode] = useState('');
   const [allCourses, setAllCourses] = useState<Course[]>([]);
   const [enrollmentRequests, setEnrollmentRequests] = useState<any[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(false);
@@ -45,18 +44,12 @@ export default function StudentDashboard() {
   }, [user, authLoading, navigate]);
 
   useEffect(() => {
-    if (profile) { setProfileName(profile.full_name); fetchPassCode(); }
+    if (profile) { setProfileName(profile.full_name); }
   }, [profile]);
 
   useEffect(() => {
     if (activeTab === 'explore' && user) { fetchAllCourses(); fetchEnrollmentRequests(); }
   }, [activeTab, user]);
-
-  const fetchPassCode = async () => {
-    if (!user) return;
-    const { data } = await supabase.rpc('get_user_pass_code', { _user_id: user.id });
-    if (data) setPassCode(data);
-  };
 
   const fetchAllCourses = async () => {
     setLoadingCourses(true);
