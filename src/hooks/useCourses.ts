@@ -85,48 +85,32 @@ export function useStudentCourses() {
   const [courses, setCourses] = useState<CourseWithProgress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { user, profile } = useAuth();
+  const { user } = useAuth();
 
   const fetchStudentCourses = async () => {
-    if (!user || !profile) {
+    if (!user) {
       setIsLoading(false);
       return;
     }
 
     setIsLoading(true);
     try {
-      // Get pass codes linked to this profile
-      const { data: passCodeData, error: passCodeError } = await supabase
-        .from('pass_codes')
-        .select('id')
-        .eq('student_id', profile.id)
+      // Get course IDs assigned to this student via student_courses
+      const { data: studentCourseData, error: scError } = await supabase
+        .from('student_courses')
+        .select('course_id')
+        .eq('user_id', user.id)
         .eq('is_active', true);
 
-      if (passCodeError) throw passCodeError;
+      if (scError) throw scError;
 
-      if (!passCodeData || passCodeData.length === 0) {
+      if (!studentCourseData || studentCourseData.length === 0) {
         setCourses([]);
         setIsLoading(false);
         return;
       }
 
-      const passCodeIds = passCodeData.map(pc => pc.id);
-
-      // Get course IDs assigned to these pass codes
-      const { data: assignedCourses, error: assignedError } = await supabase
-        .from('pass_code_courses')
-        .select('course_id')
-        .in('pass_code_id', passCodeIds);
-
-      if (assignedError) throw assignedError;
-
-      if (!assignedCourses || assignedCourses.length === 0) {
-        setCourses([]);
-        setIsLoading(false);
-        return;
-      }
-
-      const courseIds = [...new Set(assignedCourses.map(ac => ac.course_id))];
+      const courseIds = [...new Set(studentCourseData.map(sc => sc.course_id))];
 
       // Fetch courses with videos
       const { data: coursesData, error: coursesError } = await supabase
@@ -178,7 +162,6 @@ export function useStudentCourses() {
             lastCompletedIndex = index;
           }
 
-          // Video is locked if previous video is not completed (except first video)
           const isLocked = index > 0 && lastCompletedIndex < index - 1;
 
           return {
@@ -188,7 +171,7 @@ export function useStudentCourses() {
           };
         });
 
-        // Recalculate locks after determining completed videos
+        // Recalculate locks
         for (let i = 1; i < videosWithProgress.length; i++) {
           const prevVideo = videosWithProgress[i - 1];
           videosWithProgress[i].is_locked = !prevVideo.progress?.is_completed;
@@ -218,7 +201,7 @@ export function useStudentCourses() {
 
   useEffect(() => {
     fetchStudentCourses();
-  }, [user, profile]);
+  }, [user]);
 
   return { courses, isLoading, error, refetch: fetchStudentCourses };
 }
