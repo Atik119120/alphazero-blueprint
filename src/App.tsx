@@ -121,7 +121,7 @@ function AppContent() {
         <Route path="/teacher/login" element={<TeacherLoginPage />} />
         <Route path="/auth" element={<StudentLoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/passcode" element={<PassCodePage />} />
+        
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/student" element={<StudentDashboard />} />
         <Route path="/student/course/:courseId" element={<CourseViewerPage />} />
