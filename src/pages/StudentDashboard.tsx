@@ -395,7 +395,7 @@ export default function StudentDashboard() {
                     <p className="text-xs text-muted-foreground">Download your official ID</p>
                   </div>
                 </div>
-                <StudentIDCard profile={profile} passCode={passCode} />
+                <StudentIDCard profile={profile} />
               </div>
             </div>
           )}
