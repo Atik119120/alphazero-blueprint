@@ -46,9 +46,10 @@ export function useTeacherStats() {
 
       if (courseIds.length > 0) {
         const { count } = await supabase
-          .from('pass_code_courses')
+          .from('student_courses')
           .select('*', { count: 'exact', head: true })
-          .in('course_id', courseIds);
+          .in('course_id', courseIds)
+          .eq('is_active', true);
         totalStudents = count || 0;
       }
 
