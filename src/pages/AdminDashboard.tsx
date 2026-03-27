@@ -321,8 +321,8 @@ export default function AdminDashboard() {
 
   // Calculate course enrollment stats with sales
   const courseEnrollmentStats = courses.map(course => {
-    const enrollmentCount = passCodes.filter(pc => 
-      pc.courses.some(c => c.id === course.id) && pc.student
+    const enrollmentCount = studentsList.filter(s => 
+      s.courses.some(c => c.id === course.id)
     ).length;
     const coursePrice = (course as any).price || 0;
     const totalSales = enrollmentCount * coursePrice;
