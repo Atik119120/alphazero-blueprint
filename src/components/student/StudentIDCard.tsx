@@ -8,10 +8,9 @@ import jsPDF from 'jspdf';
 
 interface StudentIDCardProps {
   profile: Profile;
-  passCode?: string;
 }
 
-export default function StudentIDCard({ profile, passCode }: StudentIDCardProps) {
+export default function StudentIDCard({ profile }: StudentIDCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateStr: string) => {
