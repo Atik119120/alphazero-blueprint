@@ -52,7 +52,7 @@ import {
   Link2,
   GraduationCap,
   Send,
-  Film,
+  
   Ticket,
   Sparkles,
 } from 'lucide-react';
@@ -68,7 +68,7 @@ import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
-import GalleryManagement from '@/components/admin/GalleryManagement';
+
 import CommentManagement from '@/components/admin/CommentManagement';
 import CouponManagement from '@/components/admin/CouponManagement';
 import AdminAssistant from '@/components/admin/AdminAssistant';
@@ -756,7 +756,7 @@ export default function AdminDashboard() {
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
-    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery' },
+    
     { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments' },
     { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons' },
   ];
@@ -1695,10 +1695,6 @@ export default function AdminDashboard() {
             <FeedbackViewer />
           </TabsContent>
 
-          {/* Gallery Tab */}
-          <TabsContent value="gallery" className="space-y-6">
-            <GalleryManagement />
-          </TabsContent>
 
           {/* Comments Tab */}
           <TabsContent value="comments" className="space-y-6">
