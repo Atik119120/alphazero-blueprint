@@ -33,7 +33,7 @@ import PricingPage from "./pages/PricingPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import StudentLoginPage from "./pages/StudentLoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import PassCodePage from "./pages/PassCodePage";
+
 import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
