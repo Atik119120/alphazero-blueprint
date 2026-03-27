@@ -1408,7 +1408,7 @@ export default function AdminDashboard() {
                 <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder={language === 'bn' ? 'নাম, ইমেইল বা Pass Code...' : 'Name, email or Pass Code...'}
+                    placeholder={language === 'bn' ? 'নাম, ইমেইল বা ফোন...' : 'Name, email or phone...'}
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
                     className="pl-9 w-full sm:w-64"
@@ -1562,97 +1562,39 @@ export default function AdminDashboard() {
                 {!studentSearch && unassignedStudents.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                        {language === 'bn' ? 'নতুন / কোর্স দেওয়া হয়নি' : 'New / Unassigned'}
-                      </h3>
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'নতুন / কোর্স দেওয়া হয়নি' : 'New / Unassigned'}</h3>
                       <Badge variant="outline">{unassignedStudents.length}</Badge>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                      {unassignedStudents.map((passCode) => (
-                        <Card
-                          key={passCode.id}
-                          className={`overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors ${
-                            passCode.student && selectedStudents.includes(passCode.student.id) ? 'ring-2 ring-destructive' : ''
-                          }`}
-                        >
+                      {unassignedStudents.map((student) => (
+                        <Card key={student.id} className={`overflow-hidden ring-1 ring-primary/15 bg-primary/5 hover:border-primary/50 transition-colors ${selectedStudents.includes(student.id) ? 'ring-2 ring-destructive' : ''}`}>
                           <CardHeader className="pb-2">
                             <div className="flex items-center gap-3">
-                              {/* Selection Checkbox */}
-                              {passCode.student && (
-                                <input
-                                  type="checkbox"
-                                  checked={selectedStudents.includes(passCode.student.id)}
-                                  onChange={() => toggleStudentSelection(passCode.student!.id)}
-                                  className="rounded border-gray-300"
-                                  onClick={(e) => e.stopPropagation()}
-                                />
-                              )}
+                              <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
                               <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">
-                                  {passCode.student?.full_name?.charAt(0).toUpperCase()}
-                                </span>
+                                <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
                               </div>
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                  <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
-                                  {isRecent(passCode.created_at) && (
-                                    <Badge variant="secondary" className="text-xs">
-                                      {language === 'bn' ? 'নতুন' : 'New'}
-                                    </Badge>
-                                  )}
+                                  <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
+                                  {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
                                 </div>
-                                <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                                <CardDescription className="truncate">{student.email}</CardDescription>
                               </div>
-                              {/* Delete Button */}
-                              {passCode.student && (
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                                  onClick={() => handleDeleteStudent(passCode.student!.id, passCode.student!.full_name)}
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              )}
+                              <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => handleDeleteStudent(student.id, student.full_name)}>
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
                             </div>
                           </CardHeader>
                           <CardContent className="pt-0 space-y-3">
-                            <div className="flex items-center gap-2">
-                              <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
-                                {passCode.code}
-                              </code>
-                              <Button variant="ghost" size="sm" onClick={() => copyPassCode(passCode.code)}>
-                                {copiedCode === passCode.code ? (
-                                  <Check className="w-3 h-3 text-primary" />
-                                ) : (
-                                  <Copy className="w-3 h-3" />
-                                )}
+                            {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
+                            <div className="flex items-center justify-between text-sm">
+                              <Badge variant="outline" className="text-xs">{language === 'bn' ? 'কোর্স নেই' : 'No course'}</Badge>
+                              <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
+                                <Plus className="w-3 h-3" />{language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
                               </Button>
                             </div>
-
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-muted-foreground">
-                                {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
-                              </span>
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-xs">
-                                  {language === 'bn' ? 'কোর্স নেই' : 'No course'}
-                                </Badge>
-                                <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                                  {passCode.is_active
-                                    ? language === 'bn'
-                                      ? 'সক্রিয়'
-                                      : 'Active'
-                                    : language === 'bn'
-                                      ? 'নিষ্ক্রিয়'
-                                      : 'Inactive'}
-                                </Badge>
-                              </div>
-                            </div>
-
-                            <p className="text-xs text-muted-foreground">
-                              {language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(passCode.created_at)}
-                            </p>
+                            <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
                           </CardContent>
                         </Card>
                       ))}
@@ -1664,109 +1606,55 @@ export default function AdminDashboard() {
                 <div className="space-y-3">
                   {!studentSearch && (
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                        {language === 'bn' ? 'কোর্স দেওয়া আছে' : 'Assigned'}
-                      </h3>
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'কোর্স দেওয়া আছে' : 'Assigned'}</h3>
                       <Badge variant="outline">{assignedStudents.length}</Badge>
                     </div>
                   )}
-
                   <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {(studentSearch ? filteredStudents : assignedStudents).map((passCode) => (
-                      <Card 
-                        key={passCode.id} 
-                        className={`overflow-hidden hover:border-primary/50 transition-colors ${
-                          passCode.student && selectedStudents.includes(passCode.student.id) ? 'ring-2 ring-destructive' : ''
-                        }`}
-                      >
+                    {(studentSearch ? filteredStudents : assignedStudents).map((student) => (
+                      <Card key={student.id} className={`overflow-hidden hover:border-primary/50 transition-colors ${selectedStudents.includes(student.id) ? 'ring-2 ring-destructive' : ''}`}>
                         <CardHeader className="pb-2">
                           <div className="flex items-center gap-3">
-                            {/* Selection Checkbox */}
-                            {passCode.student && (
-                              <input
-                                type="checkbox"
-                                checked={selectedStudents.includes(passCode.student.id)}
-                                onChange={() => toggleStudentSelection(passCode.student!.id)}
-                                className="rounded border-gray-300"
-                                onClick={(e) => e.stopPropagation()}
-                              />
-                            )}
+                            <input type="checkbox" checked={selectedStudents.includes(student.id)} onChange={() => toggleStudentSelection(student.id)} className="rounded border-gray-300" onClick={(e) => e.stopPropagation()} />
                             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-cyan-600 flex items-center justify-center">
-                              <span className="text-white font-bold text-lg">
-                                {passCode.student?.full_name?.charAt(0).toUpperCase()}
-                              </span>
+                              <span className="text-white font-bold text-lg">{student.full_name?.charAt(0).toUpperCase()}</span>
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
-                                <CardTitle className="text-base truncate">{passCode.student?.full_name}</CardTitle>
-                                {isRecent(passCode.created_at) && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    {language === 'bn' ? 'নতুন' : 'New'}
-                                  </Badge>
-                                )}
+                                <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
+                                {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
                               </div>
-                              <CardDescription className="truncate">{passCode.student?.email}</CardDescription>
+                              <CardDescription className="truncate">{student.email}</CardDescription>
                             </div>
-                            {/* Delete Button */}
-                            {passCode.student && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                                onClick={() => handleDeleteStudent(passCode.student!.id, passCode.student!.full_name)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            )}
+                            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10" onClick={() => handleDeleteStudent(student.id, student.full_name)}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0 space-y-3">
-                          <div className="flex items-center gap-2">
-                            <code className="text-xs font-mono bg-muted px-2 py-1 rounded flex-1 text-center">
-                              {passCode.code}
-                            </code>
-                            <Button variant="ghost" size="sm" onClick={() => copyPassCode(passCode.code)}>
-                              {copiedCode === passCode.code ? (
-                                <Check className="w-3 h-3 text-primary" />
-                              ) : (
-                                <Copy className="w-3 h-3" />
-                              )}
+                          {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">{student.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}</span>
+                            <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
+                              <Plus className="w-3 h-3" />{language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
                             </Button>
                           </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">
-                              {passCode.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}
-                            </span>
-                            <Badge variant={passCode.is_active ? 'default' : 'secondary'}>
-                              {passCode.is_active
-                                ? language === 'bn'
-                                  ? 'সক্রিয়'
-                                  : 'Active'
-                                : language === 'bn'
-                                  ? 'নিষ্ক্রিয়'
-                                  : 'Inactive'}
-                            </Badge>
-                          </div>
-                          {passCode.courses.length > 0 && (
+                          {student.courses.length > 0 && (
                             <div className="flex flex-wrap gap-1">
-                              {passCode.courses.slice(0, 3).map((course) => (
-                                <Badge key={course.id} variant="outline" className="text-xs">
+                              {student.courses.slice(0, 3).map((course) => (
+                                <Badge key={course.id} variant="outline" className="text-xs gap-1">
                                   {course.title.length > 15 ? course.title.slice(0, 15) + '...' : course.title}
+                                  <button onClick={() => handleRemoveCourseFromStudent(student.user_id, course.id)} className="ml-0.5 hover:text-destructive"><X className="w-3 h-3" /></button>
                                 </Badge>
                               ))}
-                              {passCode.courses.length > 3 && (
-                                <Badge variant="outline" className="text-xs">
-                                  +{passCode.courses.length - 3}
-                                </Badge>
-                              )}
+                              {student.courses.length > 3 && <Badge variant="outline" className="text-xs">+{student.courses.length - 3}</Badge>}
                             </div>
                           )}
-                          <p className="text-xs text-muted-foreground">
-                            {language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(passCode.created_at)}
-                          </p>
+                          <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
                         </CardContent>
                       </Card>
                     ))}
+                  </div>
                   </div>
                 </div>
               </div>
@@ -2050,8 +1938,8 @@ export default function AdminDashboard() {
             <DialogTitle>{language === 'bn' ? 'কোর্স যোগ করুন' : 'Add Course'}</DialogTitle>
             <DialogDescription>
               {language === 'bn' 
-                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন</>
-                : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningPassCode?.code}</code></>
+                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন</>
+                : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code></>
               }
             </DialogDescription>
           </DialogHeader>
@@ -2128,7 +2016,7 @@ export default function AdminDashboard() {
               {language === 'bn' ? 'নতুন ছাত্র যোগ করুন' : 'Add New Student'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'ছাত্রের তথ্য দিন এবং পাসকোড অ্যাসাইন করুন' : 'Enter student details and assign a passcode'}
+              {language === 'bn' ? 'ছাত্রের তথ্য দিন' : 'Enter student details'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -2174,19 +2062,19 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-passcode">{language === 'bn' ? 'Pass Code (ঐচ্ছিক)' : 'Pass Code (Optional)'}</Label>
+              <Label htmlFor="student-passcode">{language === 'bn' ? 'ফোন নম্বর (ঐচ্ছিক)' : 'Phone Number (Optional)'}</Label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="student-passcode"
-                  value={newStudentPassCode}
-                  onChange={(e) => setNewStudentPassCode(e.target.value.toUpperCase())}
-                  placeholder={language === 'bn' ? 'বিদ্যমান Pass Code' : 'Existing Pass Code'}
+                  value={newStudentPhone}
+                  onChange={(e) => setNewStudentPhone(e.target.value)}
+                  placeholder={language === 'bn' ? 'ফোন নম্বর' : 'Phone number'}
                   className="pl-10 font-mono"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'বিদ্যমান Pass Code দিলে ছাত্র সেটার সাথে লিংক হবে' : 'If provided, student will be linked to this Pass Code'}
+                {language === 'bn' ? 'ফোন নম্বর দিলে ছাত্র সেটার সাথে লিংক হবে' : 'Enter student phone number'}
               </p>
             </div>
           </div>
