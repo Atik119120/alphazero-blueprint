@@ -53,7 +53,38 @@ export interface Video {
 }
 
 export interface VideoProgress {
+  id: string;
+  user_id: string;
+  video_id: string;
+  progress_percent: number;
+  is_completed: boolean;
+  last_watched_at: string;
+  watched_seconds?: number;
+  last_position?: number;
+}
 
+export interface CourseCompletion {
+  id: string;
+  user_id: string;
+  course_id: string;
+  completed_at: string;
+  certificate_id: string;
+}
+
+export interface Certificate {
+  id: string;
+  certificate_id: string;
+  user_id: string;
+  course_id: string;
+  student_name: string;
+  course_name: string;
+  issued_at: string;
+}
+
+// Extended types with relations
+export interface CourseWithVideos extends Course {
+  videos: Video[];
+}
 export interface VideoWithProgress extends Video {
   progress?: VideoProgress;
   is_locked: boolean;
