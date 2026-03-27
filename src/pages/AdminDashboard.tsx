@@ -1695,10 +1695,6 @@ export default function AdminDashboard() {
             <FeedbackViewer />
           </TabsContent>
 
-          {/* Gallery Tab */}
-          <TabsContent value="gallery" className="space-y-6">
-            <GalleryManagement />
-          </TabsContent>
 
           {/* Comments Tab */}
           <TabsContent value="comments" className="space-y-6">
