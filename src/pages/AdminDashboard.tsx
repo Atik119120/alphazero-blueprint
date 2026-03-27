@@ -1420,7 +1420,7 @@ export default function AdminDashboard() {
 
                       {/* Action Buttons */}
                       {request.status === 'pending' && (
-                        <div className="flex gap-2 pt-2">
+                        <div className="flex gap-2 pt-2 flex-wrap">
                           <Button 
                             size="sm" 
                             className="flex-1 gap-1"
@@ -1438,6 +1438,17 @@ export default function AdminDashboard() {
                             <X className="w-3 h-3" />
                             {language === 'bn' ? 'প্রত্যাখ্যান' : 'Reject'}
                           </Button>
+                          {request.payment_method === 'uddoktapay' && request.transaction_id && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="flex-1 gap-1 border-orange-500 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950/30"
+                              onClick={() => refundPayment(request)}
+                            >
+                              <RotateCcw className="w-3 h-3" />
+                              {language === 'bn' ? 'রিফান্ড' : 'Refund'}
+                            </Button>
+                          )}
                         </div>
                       )}
                     </CardContent>
