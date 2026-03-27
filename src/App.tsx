@@ -44,6 +44,7 @@ import CertificatePage from "./pages/CertificatePage";
 import VerifyCertificatePage from "./pages/VerifyCertificatePage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+import PaymentCallbackPage from "./pages/PaymentCallbackPage";
 
 // Lazy load only AI Chatbot (not critical for navigation)
 import { lazy } from "react";
