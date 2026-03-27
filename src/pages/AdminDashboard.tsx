@@ -287,14 +287,13 @@ export default function AdminDashboard() {
   }, [user, isAdmin]);
 
   // Filter students by search
-  const filteredStudents = passCodes.filter(pc => {
-    if (!pc.student) return false;
+  const filteredStudents = studentsList.filter(s => {
     if (!studentSearch.trim()) return true;
     const searchLower = studentSearch.toLowerCase();
     return (
-      pc.student.full_name.toLowerCase().includes(searchLower) ||
-      pc.student.email.toLowerCase().includes(searchLower) ||
-      pc.code.toLowerCase().includes(searchLower)
+      s.full_name.toLowerCase().includes(searchLower) ||
+      s.email.toLowerCase().includes(searchLower) ||
+      (s.phone_number && s.phone_number.toLowerCase().includes(searchLower))
     );
   });
 
