@@ -992,8 +992,8 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
             {[
               { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'কোর্স' : 'Courses', color: 'text-sky-500' },
-              { icon: Users, value: passCodes.filter(p => p.student).length, label: language === 'bn' ? 'ছাত্র' : 'Students', color: 'text-emerald-500' },
-              { icon: Key, value: passCodes.filter(p => p.is_active).length, label: language === 'bn' ? 'Pass Code' : 'Active Codes', color: 'text-violet-500' },
+              { icon: Users, value: studentsList.length, label: language === 'bn' ? 'ছাত্র' : 'Students', color: 'text-emerald-500' },
+              { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
               { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500' },
               { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
             ].map((stat, index) => (
