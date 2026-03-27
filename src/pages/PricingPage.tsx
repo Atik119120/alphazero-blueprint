@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Globe, Palette, Shield, ChevronUp, Check } from "lucide-react";
+import { ArrowRight, Globe, Palette, Shield, ChevronUp, Check, Wallet, Loader2 } from "lucide-react";
 import LayoutComponent from "@/components/Layout";
+import { Button } from "@/components/ui/button";
 import { webPricing, graphicPricing, domainPricing, servicePolicies } from "@/data/pricing";
 import type { PricingItem, MonthlyPackage } from "@/data/pricing";
-
-const formatPrice = (price: number) => `৳ ${price.toLocaleString("en-IN")}`;
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent?: "blue" | "gold"; index: number }) => {
   return (
