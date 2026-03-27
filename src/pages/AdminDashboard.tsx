@@ -104,7 +104,7 @@ export default function AdminDashboard() {
   const [newStudentName, setNewStudentName] = useState('');
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [newStudentPassword, setNewStudentPassword] = useState('');
-  const [newStudentPassCode, setNewStudentPassCode] = useState('');
+  const [newStudentPhone, setNewStudentPhone] = useState('');
   const [addingStudent, setAddingStudent] = useState(false);
 
   // Admin profile state
