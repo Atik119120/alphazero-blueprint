@@ -466,9 +466,7 @@ export default function AdminDashboard() {
 
   // Select all visible students
   const selectAllStudents = () => {
-    const allProfileIds = filteredStudents
-      .filter(pc => pc.student)
-      .map(pc => pc.student!.id);
+    const allProfileIds = filteredStudents.map(s => s.id);
     
     if (selectedStudents.length === allProfileIds.length) {
       setSelectedStudents([]);
