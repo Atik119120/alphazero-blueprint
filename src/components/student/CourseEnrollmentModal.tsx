@@ -14,7 +14,8 @@ import {
   Loader2,
   Ticket,
   CheckCircle,
-  X
+  X,
+  Wallet
 } from 'lucide-react';
 import { Course } from '@/types/lms';
 import bkashLogo from '@/assets/bkash-logo.png';
@@ -99,6 +100,7 @@ export default function CourseEnrollmentModal({
   const [transactionId, setTransactionId] = useState('');
   const [bkashNumber, setBkashNumber] = useState('01776965533');
   const [nagadNumber, setNagadNumber] = useState('01776965533');
+  const [isRedirecting, setIsRedirecting] = useState(false);
   
   // Coupon state
   const [couponCode, setCouponCode] = useState('');
@@ -204,6 +206,61 @@ export default function CourseEnrollmentModal({
   const getDiscountAmount = () => {
     const originalPrice = course?.price || 0;
     return originalPrice - getDiscountedPrice();
+  };
+
+  const handleUddoktaPayCheckout = async () => {
+    if (!course) return;
+    setIsRedirecting(true);
+    try {
+      const finalAmount = getDiscountedPrice();
+      const baseUrl = window.location.origin;
+      
+      const { data, error } = await supabase.functions.invoke('uddoktapay-checkout', {
+        body: {
+          full_name: userName,
+          email: userEmail,
+          amount: finalAmount,
+          metadata: {
+            course_id: course.id,
+            user_id: userId,
+            student_name: userName,
+            student_email: userEmail,
+            course_name: course.title,
+            coupon_code: appliedCoupon?.code || '',
+          },
+          redirect_url: `${baseUrl}/payment/callback?type=course`,
+          cancel_url: `${baseUrl}/courses`,
+        },
+      });
+
+      if (error || !data?.success || !data?.payment_url) {
+        toast.error(language === 'bn' ? 'পেমেন্ট গেটওয়ে এরর' : 'Payment gateway error');
+        setIsRedirecting(false);
+        return;
+      }
+
+      // Increment coupon usage before redirect
+      if (appliedCoupon) {
+        const { data: couponData } = await supabase
+          .from('coupons')
+          .select('used_count')
+          .eq('id', appliedCoupon.id)
+          .single();
+        if (couponData) {
+          await supabase
+            .from('coupons')
+            .update({ used_count: (couponData.used_count || 0) + 1 })
+            .eq('id', appliedCoupon.id);
+        }
+      }
+
+      // Redirect to UddoktaPay payment page
+      window.location.href = data.payment_url;
+    } catch (err) {
+      console.error('UddoktaPay checkout error:', err);
+      toast.error(language === 'bn' ? 'পেমেন্ট শুরু করতে ব্যর্থ' : 'Failed to start payment');
+      setIsRedirecting(false);
+    }
   };
 
   const handleSubmit = async () => {
@@ -401,24 +458,65 @@ export default function CourseEnrollmentModal({
                     <SelectValue placeholder={t.selectMethod} />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="uddoktapay">
+                      <div className="flex items-center gap-2">
+                        <Wallet className="w-5 h-5 text-primary" />
+                        অনলাইন পেমেন্ট (UddoktaPay)
+                      </div>
+                    </SelectItem>
                     <SelectItem value="bkash">
                       <div className="flex items-center gap-2">
                         <img src={bkashLogo} alt="bKash" className="w-5 h-5 object-contain" />
-                        বিকাশ (bKash)
+                        বিকাশ (bKash) - ম্যানুয়াল
                       </div>
                     </SelectItem>
                     <SelectItem value="nagad">
                       <div className="flex items-center gap-2">
                         <img src={nagadLogo} alt="Nagad" className="w-5 h-5 object-contain" />
-                        নগদ (Nagad)
+                        নগদ (Nagad) - ম্যানুয়াল
                       </div>
                     </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Payment Instructions */}
-              {paymentMethod && (
+              {/* UddoktaPay Online Payment */}
+              {paymentMethod === 'uddoktapay' && (
+                <div className="space-y-4">
+                  <div className="p-4 rounded-xl bg-primary/10 border border-primary/30 text-center">
+                    <Wallet className="w-8 h-8 text-primary mx-auto mb-2" />
+                    <p className="text-sm font-medium text-foreground mb-1">
+                      {language === 'bn' ? 'অনলাইন পেমেন্ট' : 'Online Payment'}
+                    </p>
+                    <p className="text-xs text-muted-foreground mb-1">
+                      {language === 'bn' 
+                        ? 'বিকাশ, নগদ, রকেট ও অন্যান্য মাধ্যমে পেমেন্ট করুন'
+                        : 'Pay via bKash, Nagad, Rocket & more'}
+                    </p>
+                    <p className="text-lg font-bold text-primary">৳{finalPrice.toLocaleString()}</p>
+                  </div>
+                  <Button 
+                    onClick={handleUddoktaPayCheckout}
+                    disabled={isRedirecting}
+                    className="w-full h-14 text-base font-bold rounded-2xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg shadow-primary/30 transition-all duration-300"
+                  >
+                    {isRedirecting ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        {language === 'bn' ? 'রিডাইরেক্ট হচ্ছে...' : 'Redirecting...'}
+                      </>
+                    ) : (
+                      <>
+                        <Wallet className="w-5 h-5 mr-2" />
+                        {language === 'bn' ? 'এখনই পেমেন্ট করুন' : 'Pay Now'}
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+
+              {/* Manual Payment Instructions (bKash/Nagad) */}
+              {paymentMethod && paymentMethod !== 'uddoktapay' && (
                 <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
                   <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-2">
                     {t.paymentInstructions}
@@ -442,8 +540,8 @@ export default function CourseEnrollmentModal({
                 </div>
               )}
 
-              {/* Transaction ID */}
-              {paymentMethod && (
+              {/* Transaction ID - only for manual methods */}
+              {paymentMethod && paymentMethod !== 'uddoktapay' && (
                 <div className="space-y-2">
                   <Label className="flex items-center gap-2">
                     <CreditCard className="w-4 h-4 text-primary" />
@@ -469,24 +567,26 @@ export default function CourseEnrollmentModal({
                 </p>
               </div>
 
-              {/* Submit Button */}
-              <Button 
-                onClick={handleSubmit}
-                disabled={isSubmitting || !canSubmit}
-                className="w-full h-14 text-base font-bold rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-lg shadow-emerald-500/30 transition-all duration-300"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    {t.processing}
-                  </>
-                ) : (
-                  <>
-                    <CreditCard className="w-5 h-5 mr-2" />
-                    {t.submitEnrollment}
-                  </>
-                )}
-              </Button>
+              {/* Submit Button - only for manual methods */}
+              {paymentMethod !== 'uddoktapay' && (
+                <Button 
+                  onClick={handleSubmit}
+                  disabled={isSubmitting || !canSubmit}
+                  className="w-full h-14 text-base font-bold rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 shadow-lg shadow-emerald-500/30 transition-all duration-300"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      {t.processing}
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-5 h-5 mr-2" />
+                      {t.submitEnrollment}
+                    </>
+                  )}
+                </Button>
+              )}
             </div>
           ) : (
             <div className="space-y-4">
