@@ -34,6 +34,7 @@ async function getApiConfig() {
     }
   }
 
+  if (baseUrl) baseUrl = baseUrl.replace(/\/api\/?$/, '');
   return { apiKey, baseUrl };
 }
 
