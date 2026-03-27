@@ -446,7 +446,7 @@ export default function AdminDashboard() {
       
       setSelectedStudents([]);
       setShowDeleteConfirm(false);
-      refetchPassCodes();
+      refetchStudents();
     } catch (error) {
       console.error('Bulk delete error:', error);
       toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error occurred', { id: 'bulk-delete' });
