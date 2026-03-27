@@ -17,7 +17,7 @@ const PaymentCallbackPage = () => {
   useEffect(() => {
     const verifyPayment = async () => {
       const invoiceId = searchParams.get('invoice_id');
-      const paymentType = searchParams.get('type'); // 'course' or 'service'
+      const paymentType = searchParams.get('type');
 
       if (!invoiceId) {
         setStatus('failed');
@@ -37,7 +37,6 @@ const PaymentCallbackPage = () => {
         }
 
         if (data.status === 'COMPLETED') {
-          // If course enrollment, create enrollment request
           if (paymentType === 'course') {
             const metadata = data.metadata || {};
             const courseId = metadata.course_id;
@@ -46,46 +45,40 @@ const PaymentCallbackPage = () => {
             const studentEmail = metadata.student_email;
 
             if (courseId && userId) {
-              // Check if already enrolled
+              // Directly assign course to the student (auto-approve)
               const { data: existing } = await supabase
-                .from('enrollment_requests')
+                .from('student_courses')
                 .select('id')
                 .eq('user_id', userId)
                 .eq('course_id', courseId)
-                .eq('status', 'pending')
                 .maybeSingle();
 
               if (!existing) {
-                await supabase.from('enrollment_requests').insert({
+                await supabase.from('student_courses').insert({
                   user_id: userId,
                   course_id: courseId,
-                  student_name: studentName || 'Student',
-                  student_email: studentEmail || '',
-                  payment_method: 'uddoktapay',
-                  transaction_id: data.transaction_id || invoiceId,
-                  message: `UddoktaPay Payment - Invoice: ${invoiceId}, Amount: ৳${data.amount}, Method: ${data.payment_method || 'N/A'}`,
-                  status: 'pending',
+                  is_active: true,
                 });
-
-                // Send notification
-                try {
-                  await supabase.functions.invoke('student-enrollment-notify', {
-                    body: {
-                      studentName: studentName || 'Student',
-                      studentEmail: studentEmail || '',
-                      courseName: metadata.course_name || 'Course',
-                      coursePrice: data.amount,
-                      paymentMethod: 'uddoktapay',
-                      transactionId: data.transaction_id || invoiceId,
-                    },
-                  });
-                } catch {}
               }
+
+              // Send notification
+              try {
+                await supabase.functions.invoke('student-enrollment-notify', {
+                  body: {
+                    studentName: studentName || 'Student',
+                    studentEmail: studentEmail || '',
+                    courseName: metadata.course_name || 'Course',
+                    coursePrice: data.amount,
+                    paymentMethod: 'uddoktapay',
+                    transactionId: data.transaction_id || invoiceId,
+                  },
+                });
+              } catch {}
             }
           }
 
           setStatus('success');
-          setMessage('পেমেন্ট সফল হয়েছে! আপনার রিকুয়েস্ট প্রসেস করা হচ্ছে।');
+          setMessage('পেমেন্ট সফল হয়েছে! আপনার কোর্স এখন অ্যাক্সেসযোগ্য।');
           toast.success('পেমেন্ট সফল!');
         } else {
           setStatus('failed');
