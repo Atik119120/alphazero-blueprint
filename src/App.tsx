@@ -33,7 +33,7 @@ import PricingPage from "./pages/PricingPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import StudentLoginPage from "./pages/StudentLoginPage";
 import DashboardPage from "./pages/DashboardPage";
-import PassCodePage from "./pages/PassCodePage";
+
 import AdminDashboard from "./pages/AdminDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
@@ -59,7 +59,7 @@ const LMS_ROUTES = [
   '/teacher/login',
   '/auth',
   '/dashboard',
-  '/passcode',
+  
   '/admin',
   '/student',
   '/teacher',
@@ -121,7 +121,7 @@ function AppContent() {
         <Route path="/teacher/login" element={<TeacherLoginPage />} />
         <Route path="/auth" element={<StudentLoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/passcode" element={<PassCodePage />} />
+        
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/student" element={<StudentDashboard />} />
         <Route path="/student/course/:courseId" element={<CourseViewerPage />} />

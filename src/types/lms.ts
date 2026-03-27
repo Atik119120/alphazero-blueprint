@@ -52,23 +52,6 @@ export interface Video {
   updated_at: string;
 }
 
-export interface PassCode {
-  id: string;
-  code: string;
-  student_id: string | null;
-  is_active: boolean;
-  created_by: string | null;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface PassCodeCourse {
-  id: string;
-  pass_code_id: string;
-  course_id: string;
-  assigned_at: string;
-}
-
 export interface VideoProgress {
   id: string;
   user_id: string;
@@ -102,12 +85,6 @@ export interface Certificate {
 export interface CourseWithVideos extends Course {
   videos: Video[];
 }
-
-export interface PassCodeWithCourses extends PassCode {
-  courses: Course[];
-  student?: Profile;
-}
-
 export interface VideoWithProgress extends Video {
   progress?: VideoProgress;
   is_locked: boolean;

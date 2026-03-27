@@ -21,7 +21,7 @@ export default function DashboardPage() {
     } else if (role === 'teacher') {
       navigate('/teacher');
     } else {
-      navigate('/passcode');
+      navigate('/student');
     }
   }, [user, role, isLoading, navigate]);
 

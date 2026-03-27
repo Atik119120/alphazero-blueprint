@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from 'next-themes';
 import { useCourses } from '@/hooks/useCourses';
-import { usePassCodes } from '@/hooks/usePassCodes';
+import { useStudentCourseManagement, StudentWithCourses } from '@/hooks/useStudentCourses';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,7 +56,7 @@ import {
   Ticket,
   Sparkles,
 } from 'lucide-react';
-import { PassCodeWithCourses } from '@/types/lms';
+
 import CourseManagement from '@/components/admin/CourseManagement';
 import { WorksManagement } from '@/components/admin/WorksManagement';
 import { TeamManagement } from '@/components/admin/TeamManagement';
@@ -84,27 +84,19 @@ export default function AdminDashboard() {
   const { theme, setTheme } = useTheme();
   const { courses, isLoading: coursesLoading, refetch: refetchCourses } = useCourses();
   const { 
-    passCodes, 
-    isLoading: passCodesLoading, 
-    refetch: refetchPassCodes,
-    createPassCode,
-    assignCourseToPassCode,
-    removeCourseFromPassCode,
-    togglePassCodeStatus,
-    deletePassCode
-  } = usePassCodes();
+    students: studentsList, 
+    isLoading: studentsLoading, 
+    refetch: refetchStudents,
+    assignCourse: assignCourseToStudent,
+    removeCourse: removeCourseFromStudent,
+  } = useStudentCourseManagement();
   
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('courses');
 
-  // Pass code form state
-  const [showPassCodeDialog, setShowPassCodeDialog] = useState(false);
-  const [selectedCoursesForPassCode, setSelectedCoursesForPassCode] = useState<string[]>([]);
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
-
   // Assign course dialog
   const [showAssignDialog, setShowAssignDialog] = useState(false);
-  const [assigningPassCode, setAssigningPassCode] = useState<PassCodeWithCourses | null>(null);
+  const [assigningStudent, setAssigningStudent] = useState<StudentWithCourses | null>(null);
   const [selectedCourseToAssign, setSelectedCourseToAssign] = useState('');
 
   // Add student form state

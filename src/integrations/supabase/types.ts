@@ -1188,6 +1188,41 @@ export type Database = {
         }
         Relationships: []
       }
+      student_courses: {
+        Row: {
+          assigned_at: string | null
+          assigned_by: string | null
+          course_id: string
+          id: string
+          is_active: boolean | null
+          user_id: string
+        }
+        Insert: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          course_id: string
+          id?: string
+          is_active?: boolean | null
+          user_id: string
+        }
+        Update: {
+          assigned_at?: string | null
+          assigned_by?: string | null
+          course_id?: string
+          id?: string
+          is_active?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_courses_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       support_tickets: {
         Row: {
           course_id: string | null
