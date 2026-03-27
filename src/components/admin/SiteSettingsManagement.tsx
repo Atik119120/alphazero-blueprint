@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Settings, Image, Type, Save, Loader2 } from "lucide-react";
 
@@ -66,13 +67,20 @@ const SiteSettingsManagement = () => {
     }
   };
 
+  const handleToggle = (key: string, currentValue: string | null) => {
+    const newValue = currentValue === 'true' ? 'false' : 'true';
+    updateMutation.mutate({ key, value: newValue });
+  };
+
   const getSettingLabel = (key: string) => {
     const labels: Record<string, string> = {
       'favicon_url': 'Favicon URL',
       'logo_url': 'Logo URL',
       'site_name': 'Site Name',
       'bkash_number': 'বিকাশ নাম্বার',
-      'nagad_number': 'নগদ নাম্বার'
+      'nagad_number': 'নগদ নাম্বার',
+      'bkash_enabled': 'বিকাশ পেমেন্ট',
+      'nagad_enabled': 'নগদ পেমেন্ট',
     };
     return labels[key] || key;
   };
@@ -83,7 +91,9 @@ const SiteSettingsManagement = () => {
       'logo_url': 'সাইটের মূল লোগো (URL দিন)',
       'site_name': 'সাইটের নাম',
       'bkash_number': 'কোর্স পেমেন্টের জন্য বিকাশ নাম্বার',
-      'nagad_number': 'কোর্স পেমেন্টের জন্য নগদ নাম্বার'
+      'nagad_number': 'কোর্স পেমেন্টের জন্য নগদ নাম্বার',
+      'bkash_enabled': 'বিকাশ ম্যানুয়াল পেমেন্ট অপশন চালু/বন্ধ করুন',
+      'nagad_enabled': 'নগদ ম্যানুয়াল পেমেন্ট অপশন চালু/বন্ধ করুন',
     };
     return descriptions[key] || '';
   };
@@ -105,6 +115,9 @@ const SiteSettingsManagement = () => {
     );
   }
 
+  const toggleSettings = settings?.filter(s => s.setting_type === 'toggle') || [];
+  const otherSettings = settings?.filter(s => s.setting_type !== 'toggle') || [];
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -115,8 +128,33 @@ const SiteSettingsManagement = () => {
         </div>
       </div>
 
+      {/* Toggle Settings - bKash/Nagad on/off */}
+      {toggleSettings.length > 0 && (
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg">💳 পেমেন্ট অপশন</CardTitle>
+            <CardDescription>ম্যানুয়াল পেমেন্ট মেথড চালু/বন্ধ করুন</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {toggleSettings.map((setting) => (
+              <div key={setting.id} className="flex items-center justify-between p-3 rounded-lg border border-border/50 bg-secondary/30">
+                <div>
+                  <p className="font-medium">{getSettingLabel(setting.setting_key)}</p>
+                  <p className="text-xs text-muted-foreground">{getSettingDescription(setting.setting_key)}</p>
+                </div>
+                <Switch
+                  checked={setting.setting_value === 'true'}
+                  onCheckedChange={() => handleToggle(setting.setting_key, setting.setting_value)}
+                  disabled={updateMutation.isPending}
+                />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {settings?.map((setting) => {
+        {otherSettings.map((setting) => {
           const currentValue = editedSettings[setting.setting_key] ?? setting.setting_value ?? '';
           const hasChanges = editedSettings[setting.setting_key] !== undefined;
           

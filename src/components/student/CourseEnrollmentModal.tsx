@@ -468,18 +468,22 @@ export default function CourseEnrollmentModal({
                         অনলাইন পেমেন্ট (UddoktaPay)
                       </div>
                     </SelectItem>
-                    <SelectItem value="bkash">
-                      <div className="flex items-center gap-2">
-                        <img src={bkashLogo} alt="bKash" className="w-5 h-5 object-contain" />
-                        বিকাশ (bKash) - ম্যানুয়াল
-                      </div>
-                    </SelectItem>
-                    <SelectItem value="nagad">
-                      <div className="flex items-center gap-2">
-                        <img src={nagadLogo} alt="Nagad" className="w-5 h-5 object-contain" />
-                        নগদ (Nagad) - ম্যানুয়াল
-                      </div>
-                    </SelectItem>
+                    {bkashEnabled && (
+                      <SelectItem value="bkash">
+                        <div className="flex items-center gap-2">
+                          <img src={bkashLogo} alt="bKash" className="w-5 h-5 object-contain" />
+                          বিকাশ (bKash) - ম্যানুয়াল
+                        </div>
+                      </SelectItem>
+                    )}
+                    {nagadEnabled && (
+                      <SelectItem value="nagad">
+                        <div className="flex items-center gap-2">
+                          <img src={nagadLogo} alt="Nagad" className="w-5 h-5 object-contain" />
+                          নগদ (Nagad) - ম্যানুয়াল
+                        </div>
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
