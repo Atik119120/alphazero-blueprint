@@ -133,6 +133,7 @@ function AppContent() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/payment/callback" element={<PaymentCallbackPage />} />
+        <Route path="/payment/cancel" element={<PaymentCancelPage />} />
         
         <Route path="*" element={<NotFound />} />
       </Routes>
