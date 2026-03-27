@@ -14,7 +14,8 @@ import {
   Loader2,
   Ticket,
   CheckCircle,
-  X
+  X,
+  Wallet
 } from 'lucide-react';
 import { Course } from '@/types/lms';
 import bkashLogo from '@/assets/bkash-logo.png';
