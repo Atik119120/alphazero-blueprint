@@ -405,7 +405,7 @@ export default function AdminDashboard() {
 
       if (data?.deleted_count > 0) {
         toast.success(language === 'bn' ? 'সফলভাবে মুছে ফেলা হয়েছে' : 'Successfully deleted', { id: 'delete-student' });
-        refetchPassCodes();
+        refetchStudents();
       } else {
         toast.error(data?.errors?.[0] || 'Failed to delete', { id: 'delete-student' });
       }
