@@ -100,6 +100,8 @@ export default function CourseEnrollmentModal({
   const [transactionId, setTransactionId] = useState('');
   const [bkashNumber, setBkashNumber] = useState('01776965533');
   const [nagadNumber, setNagadNumber] = useState('01776965533');
+  const [bkashEnabled, setBkashEnabled] = useState(true);
+  const [nagadEnabled, setNagadEnabled] = useState(true);
   const [isRedirecting, setIsRedirecting] = useState(false);
   
   // Coupon state
@@ -119,12 +121,14 @@ export default function CourseEnrollmentModal({
       const { data } = await supabase
         .from('site_settings')
         .select('setting_key, setting_value')
-        .in('setting_key', ['bkash_number', 'nagad_number']);
+        .in('setting_key', ['bkash_number', 'nagad_number', 'bkash_enabled', 'nagad_enabled']);
       
       if (data) {
         data.forEach(s => {
           if (s.setting_key === 'bkash_number' && s.setting_value) setBkashNumber(s.setting_value);
           if (s.setting_key === 'nagad_number' && s.setting_value) setNagadNumber(s.setting_value);
+          if (s.setting_key === 'bkash_enabled') setBkashEnabled(s.setting_value === 'true');
+          if (s.setting_key === 'nagad_enabled') setNagadEnabled(s.setting_value === 'true');
         });
       }
     };
