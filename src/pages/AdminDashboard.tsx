@@ -256,7 +256,7 @@ export default function AdminDashboard() {
 
       toast.success(language === 'bn' ? 'অনুমোদিত! Student account তৈরি হয়েছে।' : 'Approved! Student account created.', { id: 'approve' });
       fetchEnrollmentRequests();
-      refetchPassCodes();
+      refetchStudents();
     } catch (error) {
       console.error('Error approving enrollment:', error);
       toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error approving enrollment', { id: 'approve' });
