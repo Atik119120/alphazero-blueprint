@@ -100,6 +100,7 @@ export default function CourseEnrollmentModal({
   const [transactionId, setTransactionId] = useState('');
   const [bkashNumber, setBkashNumber] = useState('01776965533');
   const [nagadNumber, setNagadNumber] = useState('01776965533');
+  const [isRedirecting, setIsRedirecting] = useState(false);
   
   // Coupon state
   const [couponCode, setCouponCode] = useState('');
