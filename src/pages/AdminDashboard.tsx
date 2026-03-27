@@ -52,7 +52,7 @@ import {
   Link2,
   GraduationCap,
   Send,
-  Film,
+  
   Ticket,
   Sparkles,
 } from 'lucide-react';
