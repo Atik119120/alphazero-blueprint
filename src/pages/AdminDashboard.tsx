@@ -756,7 +756,7 @@ export default function AdminDashboard() {
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
-    { id: 'gallery', icon: Film, label: language === 'bn' ? 'গ্যালারি' : 'Gallery' },
+    
     { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments' },
     { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons' },
   ];
