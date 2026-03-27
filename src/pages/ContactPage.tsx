@@ -10,11 +10,13 @@ const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?:
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFooterContent, useFooterLinks } from "@/hooks/useFooterData";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const ContactPage = () => {
   const { t, language } = useLanguage();
   const { data: footerContents } = useFooterContent();
   const { data: footerLinks } = useFooterLinks();
+  const { getContent: getPageContent } = usePageContent("contact");
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -26,7 +28,7 @@ const ContactPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const getContent = (key: string) => {
+  const getFooterContent = (key: string) => {
     const content = footerContents?.find((item) => item.content_key === key);
     if (!content) return null;
 
@@ -38,12 +40,19 @@ const ContactPage = () => {
   const normalizePhoneForHref = (value: string) => value.replace(/[^\d+]/g, "");
   const normalizePhoneForWhatsApp = (value: string) => value.replace(/\D/g, "");
 
-  const phone = getContent("phone") || "+880 1344-497808";
-  const email = (getContent("email") || "contact@alphazero.online").trim();
-  const address = getContent("address") || t("contact.locationValue");
-  const whatsappLink = footerLinks?.find(
-    (link) => link.link_type === "social" && /whatsapp/i.test(link.title)
-  )?.url?.trim() || `https://wa.me/${normalizePhoneForWhatsApp(phone)}`;
+  const getPreferredContent = (pageKey: string, footerKey: string, fallback: string) => {
+    return getPageContent(pageKey) || getFooterContent(footerKey) || fallback;
+  };
+
+  const phone = getPreferredContent("info.phone", "phone", "+880 1344-497808");
+  const email = getPreferredContent("info.email", "email", "contact@alphazero.online").trim();
+  const address = getPreferredContent("info.address", "address", t("contact.locationValue"));
+  const whatsappValue = getPageContent("info.whatsapp")?.trim();
+  const whatsappLink =
+    (whatsappValue
+      ? (whatsappValue.startsWith("http") ? whatsappValue : `https://wa.me/${normalizePhoneForWhatsApp(whatsappValue)}`)
+      : footerLinks?.find((link) => link.link_type === "social" && /whatsapp/i.test(link.title))?.url?.trim()) ||
+    `https://wa.me/${normalizePhoneForWhatsApp(phone)}`;
 
   const socialLinks = [
     { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook },
