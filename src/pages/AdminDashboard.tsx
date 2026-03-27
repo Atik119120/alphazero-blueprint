@@ -351,55 +351,17 @@ export default function AdminDashboard() {
     navigate('/');
   };
 
-  // Pass code
-  const handleCreatePassCode = async () => {
-    const result = await createPassCode(selectedCoursesForPassCode);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Pass Code তৈরি হয়েছে');
-    setShowPassCodeDialog(false);
-    setSelectedCoursesForPassCode([]);
-  };
-
-  const copyPassCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    toast.success('কপি হয়েছে');
-    setTimeout(() => setCopiedCode(null), 2000);
-  };
-
-  const handleTogglePassCode = async (passCode: PassCodeWithCourses) => {
-    const result = await togglePassCodeStatus(passCode.id, !passCode.is_active);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success(passCode.is_active ? 'Pass Code নিষ্ক্রিয় হয়েছে' : 'Pass Code সক্রিয় হয়েছে');
-  };
-
-  const handleDeletePassCode = async (passCodeId: string) => {
-    if (!confirm('এই Pass Code মুছতে চান?')) return;
-    
-    const result = await deletePassCode(passCodeId);
-    if (result.error) {
-      toast.error(result.error);
-      return;
-    }
-    toast.success('Pass Code মুছে ফেলা হয়েছে');
-  };
-
-  const openAssignDialog = (passCode: PassCodeWithCourses) => {
-    setAssigningPassCode(passCode);
+  // Student course assignment handlers
+  const openStudentAssignDialog = (student: StudentWithCourses) => {
+    setAssigningStudent(student);
     setSelectedCourseToAssign('');
     setShowAssignDialog(true);
   };
 
   const handleAssignCourse = async () => {
-    if (!assigningPassCode || !selectedCourseToAssign) return;
+    if (!assigningStudent || !selectedCourseToAssign) return;
 
-    const result = await assignCourseToPassCode(assigningPassCode.id, selectedCourseToAssign);
+    const result = await assignCourseToStudent(assigningStudent.user_id, selectedCourseToAssign);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -408,8 +370,8 @@ export default function AdminDashboard() {
     setShowAssignDialog(false);
   };
 
-  const handleRemoveCourse = async (passCodeId: string, courseId: string) => {
-    const result = await removeCourseFromPassCode(passCodeId, courseId);
+  const handleRemoveCourseFromStudent = async (userId: string, courseId: string) => {
+    const result = await removeCourseFromStudent(userId, courseId);
     if (result.error) {
       toast.error(result.error);
       return;
@@ -417,8 +379,8 @@ export default function AdminDashboard() {
     toast.success('কোর্স সরানো হয়েছে');
   };
 
-  const availableCoursesForAssign = assigningPassCode 
-    ? courses.filter(c => !assigningPassCode.courses.some(ac => ac.id === c.id))
+  const availableCoursesForAssign = assigningStudent 
+    ? courses.filter(c => !assigningStudent.courses.some(ac => ac.id === c.id))
     : [];
 
   // Delete single student
