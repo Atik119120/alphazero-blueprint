@@ -13,6 +13,8 @@ interface CheckoutRequest {
   metadata: Record<string, string>;
   redirect_url: string;
   cancel_url: string;
+  success_url?: string;
+  fail_url?: string;
 }
 
 async function getApiConfig() {
@@ -67,7 +69,7 @@ serve(async (req: Request) => {
     const body: CheckoutRequest = await req.json();
     console.log('Checkout request:', JSON.stringify(body, null, 2));
 
-    const { full_name, email, amount, metadata, redirect_url, cancel_url } = body;
+    const { full_name, email, amount, metadata, redirect_url, cancel_url, success_url, fail_url } = body;
 
     if (!full_name || !email || !amount || !redirect_url) {
       return new Response(
@@ -76,7 +78,7 @@ serve(async (req: Request) => {
       );
     }
 
-    const checkoutPayload = {
+    const checkoutPayload: Record<string, unknown> = {
       full_name,
       email,
       amount: amount.toString(),
@@ -85,6 +87,9 @@ serve(async (req: Request) => {
       return_type: "GET",
       cancel_url: cancel_url || redirect_url,
     };
+
+    if (success_url) checkoutPayload.success_url = success_url;
+    if (fail_url) checkoutPayload.fail_url = fail_url;
 
     console.log('Sending to UddoktaPay:', JSON.stringify(checkoutPayload, null, 2));
     console.log('API URL:', `${baseUrl}/api/checkout-v2`);

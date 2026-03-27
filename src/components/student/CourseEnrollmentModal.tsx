@@ -83,6 +83,8 @@ export default function CourseEnrollmentModal({
             course_name: course.title,
           },
           redirect_url: `${baseUrl}/payment/callback?type=course`,
+          success_url: `${baseUrl}/payment/callback?type=course`,
+          fail_url: `${baseUrl}/payment/cancel`,
           cancel_url: `${baseUrl}/payment/cancel`,
         },
       });
