@@ -458,16 +458,22 @@ export default function CourseEnrollmentModal({
                     <SelectValue placeholder={t.selectMethod} />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="uddoktapay">
+                      <div className="flex items-center gap-2">
+                        <Wallet className="w-5 h-5 text-primary" />
+                        অনলাইন পেমেন্ট (UddoktaPay)
+                      </div>
+                    </SelectItem>
                     <SelectItem value="bkash">
                       <div className="flex items-center gap-2">
                         <img src={bkashLogo} alt="bKash" className="w-5 h-5 object-contain" />
-                        বিকাশ (bKash)
+                        বিকাশ (bKash) - ম্যানুয়াল
                       </div>
                     </SelectItem>
                     <SelectItem value="nagad">
                       <div className="flex items-center gap-2">
                         <img src={nagadLogo} alt="Nagad" className="w-5 h-5 object-contain" />
-                        নগদ (Nagad)
+                        নগদ (Nagad) - ম্যানুয়াল
                       </div>
                     </SelectItem>
                   </SelectContent>
