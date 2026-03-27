@@ -753,7 +753,6 @@ export default function AdminDashboard() {
   ];
 
   const lmsMoreItems = [
-    { id: 'passcodes', icon: Key, label: 'Pass Code' },
     { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
     { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
     { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
