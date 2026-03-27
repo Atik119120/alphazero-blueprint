@@ -227,21 +227,21 @@ export function useTeacherStudents() {
         if (!passCode?.profiles) continue;
 
         const student = passCode.profiles;
-        const course = courses.find(c => c.id === pc.course_id);
+        const course = courses.find(c => c.id === sa.course_id);
         if (!course) continue;
 
         // Get video count for course
         const { count: totalVideos } = await supabase
           .from('videos')
           .select('*', { count: 'exact', head: true })
-          .eq('course_id', pc.course_id);
+          .eq('course_id', sa.course_id);
 
         // Get completed videos for this student
         const { data: progress } = await supabase
           .from('video_progress')
           .select('video_id, is_completed, last_watched_at')
           .eq('user_id', student.user_id)
-          .in('video_id', (await supabase.from('videos').select('id').eq('course_id', pc.course_id)).data?.map(v => v.id) || []);
+          .in('video_id', (await supabase.from('videos').select('id').eq('course_id', sa.course_id)).data?.map(v => v.id) || []);
 
         const completedVideos = progress?.filter(p => p.is_completed).length || 0;
         const progressPercent = totalVideos ? Math.round((completedVideos / totalVideos) * 100) : 0;
