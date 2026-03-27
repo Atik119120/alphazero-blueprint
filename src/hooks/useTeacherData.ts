@@ -137,9 +137,10 @@ export function useTeacherCourses() {
       const coursesWithStats = await Promise.all(
         (data || []).map(async (course) => {
           const { count } = await supabase
-            .from('pass_code_courses')
+            .from('student_courses')
             .select('*', { count: 'exact', head: true })
-            .eq('course_id', course.id);
+            .eq('course_id', course.id)
+            .eq('is_active', true);
 
           const { data: revenueData } = await supabase
             .from('revenue_records')
