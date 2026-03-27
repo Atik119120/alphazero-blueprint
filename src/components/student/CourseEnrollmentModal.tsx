@@ -208,6 +208,61 @@ export default function CourseEnrollmentModal({
     return originalPrice - getDiscountedPrice();
   };
 
+  const handleUddoktaPayCheckout = async () => {
+    if (!course) return;
+    setIsRedirecting(true);
+    try {
+      const finalAmount = getDiscountedPrice();
+      const baseUrl = window.location.origin;
+      
+      const { data, error } = await supabase.functions.invoke('uddoktapay-checkout', {
+        body: {
+          full_name: userName,
+          email: userEmail,
+          amount: finalAmount,
+          metadata: {
+            course_id: course.id,
+            user_id: userId,
+            student_name: userName,
+            student_email: userEmail,
+            course_name: course.title,
+            coupon_code: appliedCoupon?.code || '',
+          },
+          redirect_url: `${baseUrl}/payment/callback?type=course`,
+          cancel_url: `${baseUrl}/courses`,
+        },
+      });
+
+      if (error || !data?.success || !data?.payment_url) {
+        toast.error(language === 'bn' ? 'পেমেন্ট গেটওয়ে এরর' : 'Payment gateway error');
+        setIsRedirecting(false);
+        return;
+      }
+
+      // Increment coupon usage before redirect
+      if (appliedCoupon) {
+        const { data: couponData } = await supabase
+          .from('coupons')
+          .select('used_count')
+          .eq('id', appliedCoupon.id)
+          .single();
+        if (couponData) {
+          await supabase
+            .from('coupons')
+            .update({ used_count: (couponData.used_count || 0) + 1 })
+            .eq('id', appliedCoupon.id);
+        }
+      }
+
+      // Redirect to UddoktaPay payment page
+      window.location.href = data.payment_url;
+    } catch (err) {
+      console.error('UddoktaPay checkout error:', err);
+      toast.error(language === 'bn' ? 'পেমেন্ট শুরু করতে ব্যর্থ' : 'Failed to start payment');
+      setIsRedirecting(false);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!course) return;
 
