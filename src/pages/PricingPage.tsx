@@ -90,6 +90,22 @@ const PriceCard = ({ item, accent = "blue", index }: { item: PricingItem; accent
         ))}
       </ul>
 
+      {/* Order Button */}
+      <Button
+        onClick={() => handleUddoktaPayOrder(item.name, item.discountedPrice, setOrdering)}
+        disabled={ordering}
+        size="sm"
+        className={`w-full mt-5 rounded-xl font-semibold ${
+          accent === "blue" 
+            ? "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20" 
+            : "bg-amber-500/10 text-amber-500 hover:bg-amber-500 hover:text-white border border-amber-500/20"
+        } transition-all duration-300`}
+        variant="ghost"
+      >
+        {ordering ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Wallet className="w-4 h-4 mr-1" />}
+        {ordering ? 'Processing...' : 'Order Now'}
+      </Button>
+
       {/* Bottom accent line */}
       <div className={`absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent ${
         accent === "blue" ? "via-primary/20" : "via-amber-400/20"
