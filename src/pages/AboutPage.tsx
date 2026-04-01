@@ -1,14 +1,18 @@
 import { motion } from "framer-motion";
-import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart } from "lucide-react";
+import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart, Camera, Palette, Code, Instagram, Facebook, Linkedin, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import logo from "@/assets/logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useTeamMembers } from "@/hooks/useTeamMembers";
 
 const AboutPage = () => {
   const { t } = useLanguage();
   const { getContent } = usePageContent('about');
+  const { data: teamMembers } = useTeamMembers();
+
+  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || m.role.toLowerCase().includes('founder'));
 
   const c = (key: string, translationKey: string) => {
     const dbContent = getContent(key);
@@ -34,6 +38,12 @@ const AboutPage = () => {
     getContent("location.desc") ||
     t("about.location.desc");
 
+  const founderExpertise = [
+    { icon: Camera, label: "Photography" },
+    { icon: Palette, label: "Graphic Design" },
+    { icon: Code, label: "Web Development" },
+  ];
+
   return (
     <Layout>
       <div className="overflow-x-hidden">
@@ -58,6 +68,138 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Founder Section */}
+      {founder && (
+        <section className="py-24 lg:py-32 relative" itemScope itemType="https://schema.org/Person">
+          <meta itemProp="name" content="Sofiullah Ahammad" />
+          <meta itemProp="alternateName" content="Atik Ahmed" />
+          <meta itemProp="jobTitle" content="Photographer, Founder & Graphic Designer" />
+          <link itemProp="url" href="https://alphazero.online/about" />
+          <div className="container mx-auto px-6">
+            <div className="max-w-6xl mx-auto">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
+                  <Sparkles size={14} className="text-primary" />
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Meet The Founder</span>
+                </div>
+                <h2 className="text-3xl lg:text-5xl font-display font-bold">
+                  The Visionary Behind <span className="gradient-text">AlphaZero</span>
+                </h2>
+              </motion.div>
+
+              <div className="grid lg:grid-cols-5 gap-8 items-center">
+                {/* Founder Image */}
+                <motion.div
+                  initial={{ opacity: 0, x: -40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="lg:col-span-2"
+                >
+                  <div className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="relative rounded-3xl overflow-hidden border-2 border-primary/20">
+                      <img
+                        src={founder.image_url || '/placeholder.svg'}
+                        alt={`${founder.name} - Founder of AlphaZero`}
+                        itemProp="image"
+                        className="w-full aspect-[4/5] object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                        loading="eager"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder.name}</h3>
+                        <p className="text-primary font-semibold text-sm mt-1">Photographer, Founder & Graphic Designer</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Founder Info */}
+                <motion.div
+                  initial={{ opacity: 0, x: 40 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="lg:col-span-3 space-y-6"
+                >
+                  <div>
+                    <h3 className="text-2xl lg:text-3xl font-display font-bold mb-2">
+                      {founder.name}
+                    </h3>
+                    <p className="text-primary font-semibold mb-4">Photographer, Founder & Graphic Designer</p>
+                    <p className="text-muted-foreground leading-relaxed text-base" itemProp="description">
+                      {founder.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
+                    </p>
+                  </div>
+
+                  {/* Expertise Tags */}
+                  <div className="flex flex-wrap gap-3">
+                    {founderExpertise.map((item, i) => (
+                      <motion.div
+                        key={item.label}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 }}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card border border-border/30 hover:border-primary/30 transition-colors"
+                      >
+                        <item.icon size={16} className="text-primary" />
+                        <span className="text-sm font-medium">{item.label}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Stats-like highlights */}
+                  <div className="grid grid-cols-3 gap-4">
+                    {[
+                      { value: "3+", label: "Years Experience" },
+                      { value: "AlphaZero", label: "Founded" },
+                      { value: "🇧🇩", label: "Rajshahi, BD" },
+                    ].map((stat, i) => (
+                      <motion.div
+                        key={stat.label}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 + i * 0.1 }}
+                        className="text-center p-4 rounded-xl glass-card"
+                      >
+                        <div className="text-xl font-display font-bold text-primary">{stat.value}</div>
+                        <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Social Links */}
+                  <div className="flex items-center gap-3">
+                    {founder.facebook_url && (
+                      <a href={founder.facebook_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
+                        className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
+                        <Facebook size={16} className="text-muted-foreground hover:text-primary" />
+                      </a>
+                    )}
+                    {founder.instagram_url && (
+                      <a href={founder.instagram_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
+                        className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
+                        <Instagram size={16} className="text-muted-foreground hover:text-primary" />
+                      </a>
+                    )}
+                    {founder.linkedin_url && (
+                      <a href={founder.linkedin_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
+                        className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
+                        <Linkedin size={16} className="text-muted-foreground hover:text-primary" />
+                      </a>
+                    )}
+                    <a href="https://alphazero.online/team" className="ml-auto inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline">
+                      View Full Team <ArrowRight size={14} />
+                    </a>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Story */}
       <section className="py-24 lg:py-32 relative">
