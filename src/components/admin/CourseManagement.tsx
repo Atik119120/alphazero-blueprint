@@ -972,16 +972,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   />
                   <p className="text-xs text-muted-foreground">Gallery থেকে লিংক কপি করে এখানে পেস্ট করুন</p>
                 </div>
-              ) : (
-                <div className="space-y-2">
-                  <Label>ভিডিও URL</Label>
-                  <Input
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                    placeholder="https://youtube.com/watch?v=..."
-                  />
-                </div>
-              )}
+              ) : null}
               <div className="space-y-2">
                 <Label>সময়কাল (মিনিট)</Label>
                 <Input
