@@ -236,7 +236,6 @@ export default function CourseViewerPage() {
             {selectedVideo && user && (
               <SecureVideoPlayer
                 videoUrl={selectedVideo.video_url}
-                videoType={selectedVideo.video_type}
                 videoId={selectedVideo.id}
                 userId={user.id}
                 onComplete={handleVideoComplete}
