@@ -341,12 +341,12 @@ function YouTubeCustomPlayer({
       )}
 
 
-      {!isPlaying && !isLoading && !showIntro && playerReady && (
-        <button onClick={togglePlay} className="absolute inset-0 flex items-center justify-center z-20 group">
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
+      {!isPlaying && !isLoading && !showIntro && !showEndOverlay && playerReady && (
+        <div className="absolute inset-0 z-20 bg-black/60 flex items-center justify-center cursor-pointer" onClick={togglePlay}>
+          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all">
             <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
           </div>
-        </button>
+        </div>
       )}
 
       {/* Loading */}
