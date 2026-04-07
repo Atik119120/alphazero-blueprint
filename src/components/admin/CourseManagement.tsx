@@ -927,6 +927,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   <SelectContent>
                     <SelectItem value="cloudinary">ডাইরেক্ট আপলোড</SelectItem>
                     <SelectItem value="cloudinary_url">ভিডিও URL (লিংক পেস্ট)</SelectItem>
+                    <SelectItem value="youtube">YouTube লিংক</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
