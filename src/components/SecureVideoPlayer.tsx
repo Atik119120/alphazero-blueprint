@@ -116,7 +116,7 @@ function YouTubeCustomPlayer({
     videoNodeRef.current.appendChild(videoEl);
 
     const player = videojs(videoEl, {
-      techOrder: ['youtube'],
+      techOrder: ['Youtube'],
       sources: [{ type: 'video/youtube', src: ytUrl }],
       youtube: {
         ytControls: 0,
