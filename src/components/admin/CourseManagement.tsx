@@ -927,6 +927,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   <SelectContent>
                     <SelectItem value="cloudinary">ডাইরেক্ট আপলোড</SelectItem>
                     <SelectItem value="cloudinary_url">ভিডিও URL (লিংক পেস্ট)</SelectItem>
+                    <SelectItem value="youtube">YouTube লিংক</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -971,6 +972,16 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                     placeholder="https://res.cloudinary.com/..."
                   />
                   <p className="text-xs text-muted-foreground">Gallery থেকে লিংক কপি করে এখানে পেস্ট করুন</p>
+                </div>
+              ) : videoType === 'youtube' ? (
+                <div className="space-y-2">
+                  <Label>YouTube ভিডিও লিংক</Label>
+                  <Input
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=... অথবা https://youtu.be/..."
+                  />
+                  <p className="text-xs text-muted-foreground">YouTube ভিডিওর লিংক পেস্ট করুন</p>
                 </div>
               ) : null}
               <div className="space-y-2">
