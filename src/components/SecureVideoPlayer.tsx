@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
-  SkipBack, CheckCircle, Loader2, Settings
+  SkipBack, CheckCircle, Loader2, Settings, RotateCcw
 } from 'lucide-react';
 
 // Declare global YT types
@@ -81,6 +81,7 @@ function YouTubeCustomPlayer({
   const [showIntro, setShowIntro] = useState(autoPlay);
   const [thresholdNotified, setThresholdNotified] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+  const [showEndOverlay, setShowEndOverlay] = useState(false);
 
   const hideControlsTimer = useRef<ReturnType<typeof setTimeout>>();
 
@@ -148,6 +149,7 @@ function YouTubeCustomPlayer({
             else if (e.data === window.YT.PlayerState.ENDED) {
               setIsPlaying(false);
               setIsCompleted(true);
+              setShowEndOverlay(true);
               saveProgress(playerRef.current?.getDuration() || duration, true);
               onComplete();
             }
@@ -198,7 +200,18 @@ function YouTubeCustomPlayer({
   const togglePlay = () => {
     const p = playerRef.current;
     if (!p) return;
+    if (showEndOverlay) setShowEndOverlay(false);
     if (isPlaying) { p.pauseVideo(); } else { p.playVideo(); }
+  };
+
+  const handleReplay = () => {
+    const p = playerRef.current;
+    if (!p) return;
+    setShowEndOverlay(false);
+    p.seekTo(0, true);
+    p.playVideo();
+    setIsPlaying(true);
+    setCurrentTime(0);
   };
 
   const handleSeek = (value: number[]) => {
@@ -303,7 +316,23 @@ function YouTubeCustomPlayer({
       {/* Overlay to capture clicks (prevents YouTube controls) */}
       <div className="absolute inset-0 z-10" onClick={togglePlay} />
 
-      {/* Center Play Button */}
+      {/* End Overlay - covers YouTube recommended videos */}
+      {showEndOverlay && (
+        <div className="absolute inset-0 z-40 bg-black flex flex-col items-center justify-center gap-4">
+          <img src="/logo.png" alt="Logo" className="w-16 h-16 dark:invert opacity-80" />
+          <p className="text-white/80 text-sm font-medium">ভিডিও শেষ হয়েছে</p>
+          <Button
+            variant="outline"
+            className="text-white border-white/30 hover:bg-white/10"
+            onClick={handleReplay}
+          >
+            <RotateCcw className="w-4 h-4 mr-2" />
+            আবার দেখুন
+          </Button>
+        </div>
+      )}
+
+
       {!isPlaying && !isLoading && !showIntro && playerReady && (
         <button onClick={togglePlay} className="absolute inset-0 flex items-center justify-center z-20 group">
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
