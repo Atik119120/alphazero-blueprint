@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
-  SkipBack, CheckCircle, Loader2, Settings
+  SkipBack, CheckCircle, Loader2, Settings, RotateCcw
 } from 'lucide-react';
 
 // Declare global YT types
