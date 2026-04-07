@@ -973,6 +973,16 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   />
                   <p className="text-xs text-muted-foreground">Gallery থেকে লিংক কপি করে এখানে পেস্ট করুন</p>
                 </div>
+              ) : videoType === 'youtube' ? (
+                <div className="space-y-2">
+                  <Label>YouTube ভিডিও লিংক</Label>
+                  <Input
+                    value={videoUrl}
+                    onChange={(e) => setVideoUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=... অথবা https://youtu.be/..."
+                  />
+                  <p className="text-xs text-muted-foreground">YouTube ভিডিওর লিংক পেস্ট করুন</p>
+                </div>
               ) : null}
               <div className="space-y-2">
                 <Label>সময়কাল (মিনিট)</Label>
