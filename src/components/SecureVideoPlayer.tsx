@@ -10,6 +10,7 @@ import {
 
 interface SecureVideoPlayerProps {
   videoUrl: string;
+  videoType?: string;
   videoId: string;
   userId: string;
   onComplete: () => void;
