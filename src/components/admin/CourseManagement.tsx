@@ -58,7 +58,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   const [showVideoDialog, setShowVideoDialog] = useState(false);
   const [videoTitle, setVideoTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
-  const [videoType, setVideoType] = useState('youtube');
+  const [videoType, setVideoType] = useState('cloudinary');
   const [videoDuration, setVideoDuration] = useState('');
   const [courseVideos, setCourseVideos] = useState<Video[]>([]);
   const [loadingVideos, setLoadingVideos] = useState(false);
@@ -297,7 +297,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       setEditingVideo(null);
       setVideoTitle('');
       setVideoUrl('');
-      setVideoType('youtube');
+      setVideoType('cloudinary');
       setVideoDuration('');
       setVideoTopicId('');
     }
@@ -925,10 +925,8 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="youtube">YouTube</SelectItem>
-                    <SelectItem value="vimeo">Vimeo</SelectItem>
-                    <SelectItem value="cloudinary">Cloudinary (Direct Upload)</SelectItem>
-                    <SelectItem value="cloudinary_url">Cloudinary URL (লিংক পেস্ট)</SelectItem>
+                    <SelectItem value="cloudinary">ডাইরেক্ট আপলোড</SelectItem>
+                    <SelectItem value="cloudinary_url">ভিডিও URL (লিংক পেস্ট)</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -974,16 +972,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   />
                   <p className="text-xs text-muted-foreground">Gallery থেকে লিংক কপি করে এখানে পেস্ট করুন</p>
                 </div>
-              ) : (
-                <div className="space-y-2">
-                  <Label>ভিডিও URL</Label>
-                  <Input
-                    value={videoUrl}
-                    onChange={(e) => setVideoUrl(e.target.value)}
-                    placeholder="https://youtube.com/watch?v=..."
-                  />
-                </div>
-              )}
+              ) : null}
               <div className="space-y-2">
                 <Label>সময়কাল (মিনিট)</Label>
                 <Input
