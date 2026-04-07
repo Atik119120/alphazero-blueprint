@@ -825,7 +825,7 @@ export default function SecureVideoPlayer({
           {/* Resolution */}
           <div className="relative">
             <Button variant="ghost" size="sm" className="h-6 md:h-7 text-[10px] md:text-xs text-white hover:bg-white/20 px-1.5 md:px-2 gap-1" onClick={() => setShowResMenu(!showResMenu)}>
-              <Settings className="w-3 h-3" />
+              <span className="w-3 h-3 text-[8px] font-bold">⚙</span>
               {selectedRes === 'auto' ? 'Auto' : `${selectedRes}p`}
             </Button>
             {showResMenu && (
