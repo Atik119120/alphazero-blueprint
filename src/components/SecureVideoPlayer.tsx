@@ -81,6 +81,7 @@ function YouTubeCustomPlayer({
   const [showIntro, setShowIntro] = useState(autoPlay);
   const [thresholdNotified, setThresholdNotified] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+  const [showEndOverlay, setShowEndOverlay] = useState(false);
 
   const hideControlsTimer = useRef<ReturnType<typeof setTimeout>>();
 
@@ -148,6 +149,7 @@ function YouTubeCustomPlayer({
             else if (e.data === window.YT.PlayerState.ENDED) {
               setIsPlaying(false);
               setIsCompleted(true);
+              setShowEndOverlay(true);
               saveProgress(playerRef.current?.getDuration() || duration, true);
               onComplete();
             }
@@ -198,7 +200,18 @@ function YouTubeCustomPlayer({
   const togglePlay = () => {
     const p = playerRef.current;
     if (!p) return;
+    if (showEndOverlay) setShowEndOverlay(false);
     if (isPlaying) { p.pauseVideo(); } else { p.playVideo(); }
+  };
+
+  const handleReplay = () => {
+    const p = playerRef.current;
+    if (!p) return;
+    setShowEndOverlay(false);
+    p.seekTo(0, true);
+    p.playVideo();
+    setIsPlaying(true);
+    setCurrentTime(0);
   };
 
   const handleSeek = (value: number[]) => {
