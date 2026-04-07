@@ -10,6 +10,7 @@ import {
 
 interface SecureVideoPlayerProps {
   videoUrl: string;
+  videoType?: string;
   videoId: string;
   userId: string;
   onComplete: () => void;
@@ -26,6 +27,7 @@ const PROGRESS_SAVE_INTERVAL = 5000; // 5 seconds
 
 export default function SecureVideoPlayer({
   videoUrl,
+  videoType,
   videoId,
   userId,
   onComplete,
@@ -271,6 +273,28 @@ export default function SecureVideoPlayer({
     }, 100);
   };
 
+
+  // YouTube/Vimeo iframe fallback for legacy videos
+  if (videoType === 'youtube' || videoType === 'vimeo') {
+    const getEmbedUrl = () => {
+      if (videoType === 'youtube') {
+        const id = videoUrl.includes('youtu.be')
+          ? videoUrl.split('/').pop()?.split('?')[0]
+          : videoUrl.includes('v=')
+            ? videoUrl.split('v=')[1]?.split('&')[0]
+            : videoUrl;
+        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&iv_load_policy=3&fs=1`;
+      }
+      const id = videoUrl.split('/').pop();
+      return `https://player.vimeo.com/video/${id}`;
+    };
+
+    return (
+      <div className="relative aspect-video bg-black rounded-lg overflow-hidden" onContextMenu={e => e.preventDefault()}>
+        <iframe src={getEmbedUrl()} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+      </div>
+    );
+  }
 
   // Poster/thumbnail screen
   if (showPoster) {
