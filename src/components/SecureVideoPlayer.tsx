@@ -274,24 +274,30 @@ export default function SecureVideoPlayer({
   };
 
 
-  // YouTube/Vimeo iframe fallback for legacy videos
-  if (videoType === 'youtube' || videoType === 'vimeo') {
-    const getEmbedUrl = () => {
-      if (videoType === 'youtube') {
-        const id = videoUrl.includes('youtu.be')
-          ? videoUrl.split('/').pop()?.split('?')[0]
-          : videoUrl.includes('v=')
-            ? videoUrl.split('v=')[1]?.split('&')[0]
-            : videoUrl;
-        return `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&iv_load_policy=3&fs=1`;
-      }
-      const id = videoUrl.split('/').pop();
-      return `https://player.vimeo.com/video/${id}`;
-    };
+  // YouTube custom player using IFrame API
+  if (videoType === 'youtube') {
+    return (
+      <YouTubeCustomPlayer
+        videoUrl={videoUrl}
+        videoId={videoId}
+        userId={userId}
+        onComplete={onComplete}
+        initialPosition={initialPosition}
+        maxWatchedSeconds={maxWatchedSeconds}
+        isLessonCompleted={isLessonCompleted}
+        posterUrl={posterUrl}
+        autoPlay={autoPlay}
+        onThresholdMet={onThresholdMet}
+      />
+    );
+  }
 
+  // Vimeo iframe fallback for legacy videos
+  if (videoType === 'vimeo') {
+    const vimeoId = videoUrl.split('/').pop();
     return (
       <div className="relative aspect-video bg-black rounded-lg overflow-hidden" onContextMenu={e => e.preventDefault()}>
-        <iframe src={getEmbedUrl()} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+        <iframe src={`https://player.vimeo.com/video/${vimeoId}`} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
       </div>
     );
   }
