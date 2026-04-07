@@ -5,33 +5,11 @@ import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import {
   Play, Pause, Volume2, VolumeX, Maximize, Minimize,
-  SkipBack, CheckCircle, Loader2, Settings, RotateCcw
+  SkipBack, SkipForward, CheckCircle, Loader2, RotateCcw
 } from 'lucide-react';
-
-// Declare global YT types
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
-// Load YouTube IFrame API once
-let ytApiLoaded = false;
-let ytApiLoadPromise: Promise<void> | null = null;
-function loadYouTubeAPI(): Promise<void> {
-  if (ytApiLoaded && window.YT?.Player) return Promise.resolve();
-  if (ytApiLoadPromise) return ytApiLoadPromise;
-  ytApiLoadPromise = new Promise((resolve) => {
-    if (window.YT?.Player) { ytApiLoaded = true; resolve(); return; }
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    const firstScript = document.getElementsByTagName('script')[0];
-    firstScript.parentNode?.insertBefore(tag, firstScript);
-    window.onYouTubeIframeAPIReady = () => { ytApiLoaded = true; resolve(); };
-  });
-  return ytApiLoadPromise;
-}
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
+import 'videojs-youtube';
 
 function extractYouTubeId(url: string): string {
   if (url.includes('youtu.be')) return url.split('/').pop()?.split('?')[0] || url;
@@ -61,8 +39,8 @@ function YouTubeCustomPlayer({
   isLessonCompleted = false, posterUrl, autoPlay = false, onThresholdMet,
 }: YouTubeCustomPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const playerDivRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
+  const videoNodeRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<ReturnType<typeof videojs> | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval>>();
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -84,6 +62,11 @@ function YouTubeCustomPlayer({
   const [showEndOverlay, setShowEndOverlay] = useState(false);
 
   const hideControlsTimer = useRef<ReturnType<typeof setTimeout>>();
+  const highestWatchedRef = useRef(maxWatchedSeconds);
+  const isCompletedRef = useRef(isLessonCompleted);
+
+  useEffect(() => { highestWatchedRef.current = highestWatched; }, [highestWatched]);
+  useEffect(() => { isCompletedRef.current = isCompleted; }, [isCompleted]);
 
   // Disable right-click
   useEffect(() => {
@@ -104,7 +87,8 @@ function YouTubeCustomPlayer({
       if (data) {
         const maxW = Math.max(data.watched_seconds || 0, data.last_position || 0, maxWatchedSeconds);
         setHighestWatched(maxW);
-        if (data.is_completed) setIsCompleted(true);
+        highestWatchedRef.current = maxW;
+        if (data.is_completed) { setIsCompleted(true); isCompletedRef.current = true; }
       }
     };
     loadProgress();
@@ -113,65 +97,105 @@ function YouTubeCustomPlayer({
   // Intro splash
   useEffect(() => {
     if (!showIntro) return;
-    const timer = setTimeout(() => {
-      setShowIntro(false);
-    }, 3000);
+    const timer = setTimeout(() => setShowIntro(false), 3000);
     return () => clearTimeout(timer);
   }, [showIntro]);
 
-  // Initialize YouTube player
+  // Initialize VideoJS player with YouTube tech
   useEffect(() => {
     if (showPoster || showIntro) return;
+    if (!videoNodeRef.current) return;
 
-    let cancelled = false;
-    loadYouTubeAPI().then(() => {
-      if (cancelled || !playerDivRef.current) return;
-      const ytId = extractYouTubeId(videoUrl);
-      playerRef.current = new window.YT.Player(playerDivRef.current, {
-        videoId: ytId,
-        playerVars: {
-          controls: 0, rel: 0, modestbranding: 1, iv_load_policy: 3,
-          disablekb: 1, fs: 0, playsinline: 1, showinfo: 0,
-          cc_load_policy: 0, origin: window.location.origin,
-        },
-        events: {
-          onReady: (e: any) => {
-            setPlayerReady(true);
-            setDuration(e.target.getDuration());
-            setIsLoading(false);
-            if (initialPosition > 0) e.target.seekTo(initialPosition, true);
-            if (autoPlay) { e.target.playVideo(); setIsPlaying(true); }
-          },
-          onStateChange: (e: any) => {
-            if (e.data === window.YT.PlayerState.PLAYING) { setIsPlaying(true); setIsLoading(false); }
-            else if (e.data === window.YT.PlayerState.PAUSED) setIsPlaying(false);
-            else if (e.data === window.YT.PlayerState.BUFFERING) setIsLoading(true);
-            else if (e.data === window.YT.PlayerState.ENDED) {
-              setIsPlaying(false);
-              setIsCompleted(true);
-              setShowEndOverlay(true);
-              saveProgress(playerRef.current?.getDuration() || duration, true);
-              onComplete();
-            }
-          },
-        },
-      });
+    const ytId = extractYouTubeId(videoUrl);
+    const ytUrl = `https://www.youtube.com/watch?v=${ytId}`;
+
+    const videoEl = document.createElement('video-js');
+    videoEl.classList.add('vjs-big-play-centered');
+    videoEl.style.width = '100%';
+    videoEl.style.height = '100%';
+    videoNodeRef.current.appendChild(videoEl);
+
+    const player = videojs(videoEl, {
+      techOrder: ['youtube'],
+      sources: [{ type: 'video/youtube', src: ytUrl }],
+      youtube: {
+        ytControls: 0,
+        rel: 0,
+        modestBranding: 1,
+        iv_load_policy: 3,
+        disablekb: 1,
+        fs: 0,
+        playsinline: 1,
+        showinfo: 0,
+        cc_load_policy: 0,
+        customVars: { origin: window.location.origin },
+      },
+      controls: false,
+      autoplay: autoPlay,
+      preload: 'auto',
+      fluid: false,
+      responsive: false,
     });
 
-    return () => { cancelled = true; playerRef.current?.destroy?.(); };
+    playerRef.current = player;
+
+    player.ready(() => {
+      setPlayerReady(true);
+      setIsLoading(false);
+
+      player.on('durationchange', () => {
+        const d = player.duration();
+        if (d && d > 0) setDuration(d);
+      });
+
+      player.on('play', () => { setIsPlaying(true); setIsLoading(false); });
+      player.on('pause', () => setIsPlaying(false));
+      player.on('waiting', () => setIsLoading(true));
+      player.on('playing', () => setIsLoading(false));
+
+      player.on('ended', () => {
+        setIsPlaying(false);
+        setIsCompleted(true);
+        isCompletedRef.current = true;
+        setShowEndOverlay(true);
+        const dur = player.duration() || 0;
+        saveProgressFn(dur, true);
+        onComplete();
+      });
+
+      if (initialPosition > 0) {
+        player.currentTime(initialPosition);
+      }
+      if (autoPlay) {
+        player.play();
+      }
+    });
+
+    return () => {
+      if (playerRef.current) {
+        playerRef.current.dispose();
+        playerRef.current = null;
+      }
+    };
   }, [showPoster, showIntro, videoUrl]);
 
   // Poll time updates
   useEffect(() => {
-    if (!playerReady || !isPlaying) { if (pollRef.current) clearInterval(pollRef.current); return; }
+    if (!playerReady || !isPlaying) {
+      if (pollRef.current) clearInterval(pollRef.current);
+      return;
+    }
     pollRef.current = setInterval(() => {
       const p = playerRef.current;
-      if (!p?.getCurrentTime) return;
-      const ct = p.getCurrentTime();
+      if (!p || p.isDisposed()) return;
+      const ct = p.currentTime() || 0;
       setCurrentTime(ct);
-      if (ct > highestWatched) setHighestWatched(ct);
+      if (ct > highestWatchedRef.current) {
+        setHighestWatched(ct);
+        highestWatchedRef.current = ct;
+      }
 
-      const dur = p.getDuration();
+      const dur = p.duration() || 0;
       if (dur > 0 && ct / dur >= YT_COMPLETION_THRESHOLD && !thresholdNotified) {
         setThresholdNotified(true);
         onThresholdMet?.();
@@ -179,82 +203,97 @@ function YouTubeCustomPlayer({
 
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
       saveTimerRef.current = setTimeout(() => {
-        saveProgress(Math.max(ct, highestWatched), isCompleted);
+        saveProgressFn(Math.max(ct, highestWatchedRef.current), isCompletedRef.current);
       }, YT_PROGRESS_SAVE_INTERVAL);
     }, 500);
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
-  }, [playerReady, isPlaying, highestWatched, thresholdNotified, isCompleted]);
+  }, [playerReady, isPlaying, thresholdNotified]);
 
-  const saveProgress = useCallback(async (seconds: number, completed: boolean) => {
-    const dur = playerRef.current?.getDuration?.() || duration;
+  const saveProgressFn = useCallback(async (seconds: number, completed: boolean) => {
+    const dur = playerRef.current?.duration?.() || duration;
     const percent = dur > 0 ? Math.round((seconds / dur) * 100) : 0;
     await supabase.from('video_progress').upsert({
       user_id: userId, video_id: videoId,
       progress_percent: Math.min(percent, 100), is_completed: completed,
       last_watched_at: new Date().toISOString(),
-      watched_seconds: Math.round(Math.max(seconds, highestWatched)),
+      watched_seconds: Math.round(Math.max(seconds, highestWatchedRef.current)),
       last_position: Math.round(seconds),
     }, { onConflict: 'user_id,video_id' });
-  }, [userId, videoId, duration, highestWatched]);
+  }, [userId, videoId, duration]);
 
   const togglePlay = () => {
     const p = playerRef.current;
-    if (!p) return;
+    if (!p || p.isDisposed()) return;
     if (showEndOverlay) setShowEndOverlay(false);
-    if (isPlaying) { p.pauseVideo(); } else { p.playVideo(); }
+    if (p.paused()) { p.play(); } else { p.pause(); }
   };
 
   const handleReplay = () => {
     const p = playerRef.current;
-    if (!p) return;
+    if (!p || p.isDisposed()) return;
     setShowEndOverlay(false);
-    p.seekTo(0, true);
-    p.playVideo();
+    p.currentTime(0);
+    p.play();
     setIsPlaying(true);
     setCurrentTime(0);
   };
 
   const handleSeek = (value: number[]) => {
     const p = playerRef.current;
-    if (!p) return;
+    if (!p || p.isDisposed()) return;
     const seekTo = value[0];
-    if (isCompleted) { p.seekTo(seekTo, true); setCurrentTime(seekTo); return; }
-    if (seekTo > highestWatched + 2) {
+    if (isCompleted) { p.currentTime(seekTo); setCurrentTime(seekTo); return; }
+    if (seekTo > highestWatchedRef.current + 2) {
       toast.error('আপনি এখনো এই অংশ পর্যন্ত দেখেননি');
-      p.seekTo(highestWatched, true);
+      p.currentTime(highestWatchedRef.current);
       return;
     }
-    p.seekTo(seekTo, true);
+    p.currentTime(seekTo);
     setCurrentTime(seekTo);
   };
 
   const skipBack = () => {
     const p = playerRef.current;
-    if (!p) return;
-    p.seekTo(Math.max(0, (p.getCurrentTime() || 0) - 10), true);
+    if (!p || p.isDisposed()) return;
+    p.currentTime(Math.max(0, (p.currentTime() || 0) - 10));
+  };
+
+  const skipForward = () => {
+    const p = playerRef.current;
+    if (!p || p.isDisposed()) return;
+    const ct = p.currentTime() || 0;
+    const target = ct + 10;
+    if (!isCompleted && target > highestWatchedRef.current + 2) {
+      toast.error('আপনি এখনো এই অংশ পর্যন্ত দেখেননি');
+      return;
+    }
+    p.currentTime(target);
   };
 
   const toggleMute = () => {
     const p = playerRef.current;
-    if (!p) return;
-    if (p.isMuted()) { p.unMute(); setIsMuted(false); } else { p.mute(); setIsMuted(true); }
+    if (!p || p.isDisposed()) return;
+    const newMuted = !p.muted();
+    p.muted(newMuted);
+    setIsMuted(newMuted);
   };
 
   const changeVolume = (value: number[]) => {
     const p = playerRef.current;
-    if (!p) return;
-    p.setVolume(value[0]);
+    if (!p || p.isDisposed()) return;
+    p.volume(value[0] / 100);
     setVolume(value[0]);
     setIsMuted(value[0] === 0);
+    if (value[0] > 0) p.muted(false);
   };
 
   const changePlaybackRate = () => {
     const p = playerRef.current;
-    if (!p) return;
+    if (!p || p.isDisposed()) return;
     const rates = [0.5, 0.75, 1, 1.25, 1.5, 2];
     const idx = rates.indexOf(playbackRate);
     const next = rates[(idx + 1) % rates.length];
-    p.setPlaybackRate(next);
+    p.playbackRate(next);
     setPlaybackRate(next);
   };
 
@@ -281,13 +320,9 @@ function YouTubeCustomPlayer({
     return `${m}:${sec.toString().padStart(2, '0')}`;
   };
 
-  const startFromPoster = () => {
-    setShowPoster(false);
-  };
-
   if (showPoster) {
     return (
-      <div className="relative aspect-video bg-black rounded-lg overflow-hidden cursor-pointer group" onClick={startFromPoster} onContextMenu={e => e.preventDefault()}>
+      <div className="relative aspect-video bg-black rounded-lg overflow-hidden cursor-pointer group" onClick={() => setShowPoster(false)} onContextMenu={e => e.preventDefault()}>
         {posterUrl ? <img src={posterUrl} alt="" className="w-full h-full object-cover" /> : <div className="w-full h-full bg-gradient-to-b from-slate-800 to-slate-950" />}
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-white/30 group-hover:scale-110 transition-all">
@@ -300,7 +335,6 @@ function YouTubeCustomPlayer({
 
   return (
     <div ref={containerRef} className="relative aspect-video bg-black rounded-lg overflow-hidden select-none" onMouseMove={handleMouseMove} onContextMenu={e => e.preventDefault()}>
-      {/* Logo Intro */}
       {showIntro && (
         <div className="absolute inset-0 z-50 bg-black flex items-center justify-center">
           <div className="text-center animate-pulse">
@@ -310,59 +344,39 @@ function YouTubeCustomPlayer({
         </div>
       )}
 
-      {/* YouTube Player (hidden controls) */}
-      <div ref={playerDivRef} className="w-full h-full absolute inset-0" />
+      {/* VideoJS Player - completely replaces YouTube UI */}
+      <div ref={videoNodeRef} className="w-full h-full absolute inset-0 [&_.video-js]:!bg-black [&_.vjs-poster]:!hidden [&_.vjs-big-play-button]:!hidden [&_.vjs-control-bar]:!hidden [&_.vjs-loading-spinner]:!hidden [&_.vjs-text-track-display]:!hidden" />
 
-      {/* Overlay to capture clicks and hide YouTube branding */}
+      {/* Click overlay */}
       <div className="absolute inset-0 z-10" onClick={togglePlay} />
-      
-      {/* Branding cover - aggressively hide YouTube channel name/title/logo/watermark */}
-      {!showEndOverlay && !showIntro && (
-        <>
-          {/* Top bar - solid black covers YouTube title/channel info */}
-          <div className="absolute top-0 left-0 right-0 h-14 z-[15] bg-black pointer-events-none" />
-          <div className="absolute top-14 left-0 right-0 h-10 z-[15] bg-gradient-to-b from-black to-transparent pointer-events-none" />
-          {/* Bottom bar - solid black covers YouTube logo/watermark/controls */}
-          <div className="absolute bottom-0 left-0 right-0 h-14 z-[15] bg-black pointer-events-none" />
-          <div className="absolute bottom-14 left-0 right-0 h-10 z-[15] bg-gradient-to-t from-black to-transparent pointer-events-none" />
-          {/* Right side watermark cover */}
-          <div className="absolute bottom-14 right-0 w-24 h-16 z-[15] bg-gradient-to-l from-black/90 to-transparent pointer-events-none" />
-        </>
-      )}
 
-      {/* End Overlay - covers YouTube recommended videos */}
+      {/* End Overlay */}
       {showEndOverlay && (
         <div className="absolute inset-0 z-40 bg-black flex flex-col items-center justify-center gap-4">
           <img src="/logo.png" alt="Logo" className="w-16 h-16 dark:invert opacity-80" />
           <p className="text-white/80 text-sm font-medium">ভিডিও শেষ হয়েছে</p>
-          <Button
-            variant="outline"
-            className="text-white border-white/30 hover:bg-white/10"
-            onClick={handleReplay}
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            আবার দেখুন
+          <Button variant="outline" className="text-white border-white/30 hover:bg-white/10" onClick={handleReplay}>
+            <RotateCcw className="w-4 h-4 mr-2" /> আবার দেখুন
           </Button>
         </div>
       )}
 
-
+      {/* Play button when paused */}
       {!isPlaying && !isLoading && !showIntro && !showEndOverlay && playerReady && (
-        <div className="absolute inset-0 z-20 bg-black/60 flex items-center justify-center cursor-pointer" onClick={togglePlay}>
+        <div className="absolute inset-0 z-20 bg-black/40 flex items-center justify-center cursor-pointer" onClick={togglePlay}>
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 hover:scale-110 transition-all">
             <Play className="w-8 h-8 md:w-10 md:h-10 text-white fill-white ml-1" />
           </div>
         </div>
       )}
 
-      {/* Loading */}
       {isLoading && !showIntro && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 z-20">
           <Loader2 className="w-10 h-10 text-white animate-spin" />
         </div>
       )}
 
-      {/* Controls */}
+      {/* Custom Controls */}
       <div className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 md:p-4 transition-opacity duration-300 z-30 ${showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <div className="mb-2 md:mb-3">
           <Slider value={[currentTime]} max={duration || 100} step={0.1} onValueChange={handleSeek} className="cursor-pointer" />
@@ -377,8 +391,11 @@ function YouTubeCustomPlayer({
           <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={togglePlay}>
             {isPlaying ? <Pause className="w-3.5 h-3.5 md:w-4 md:h-4" /> : <Play className="w-3.5 h-3.5 md:w-4 md:h-4" />}
           </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={skipBack}>
+          <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={skipBack} title="১০ সেকেন্ড পিছনে">
             <SkipBack className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-7 w-7 md:h-8 md:w-8 text-white hover:bg-white/20" onClick={skipForward} title="১০ সেকেন্ড সামনে">
+            <SkipForward className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </Button>
           <span className="text-[10px] md:text-xs tabular-nums">{formatTime(currentTime)} / {formatTime(duration)}</span>
           <div className="flex-1" />
@@ -402,7 +419,6 @@ function YouTubeCustomPlayer({
         </div>
       </div>
 
-      {/* Threshold Indicator */}
       {thresholdNotified && !isCompleted && (
         <div className="absolute top-3 right-3 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs flex items-center gap-1 animate-bounce z-30">
           <CheckCircle className="w-3 h-3" /> Ready to complete!
@@ -809,7 +825,7 @@ export default function SecureVideoPlayer({
           {/* Resolution */}
           <div className="relative">
             <Button variant="ghost" size="sm" className="h-6 md:h-7 text-[10px] md:text-xs text-white hover:bg-white/20 px-1.5 md:px-2 gap-1" onClick={() => setShowResMenu(!showResMenu)}>
-              <Settings className="w-3 h-3" />
+              <span className="w-3 h-3 text-[8px] font-bold">⚙</span>
               {selectedRes === 'auto' ? 'Auto' : `${selectedRes}p`}
             </Button>
             {showResMenu && (
