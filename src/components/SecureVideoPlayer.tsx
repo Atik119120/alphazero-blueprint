@@ -316,11 +316,17 @@ function YouTubeCustomPlayer({
       {/* Overlay to capture clicks and hide YouTube branding */}
       <div className="absolute inset-0 z-10" onClick={togglePlay} />
       
-      {/* Branding cover - always hide YouTube channel name/title/logo */}
+      {/* Branding cover - aggressively hide YouTube channel name/title/logo/watermark */}
       {!showEndOverlay && !showIntro && (
         <>
-          <div className="absolute top-0 left-0 right-0 h-24 z-[15] bg-gradient-to-b from-black via-black/90 to-transparent pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 h-24 z-[15] bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none" />
+          {/* Top bar - solid black covers YouTube title/channel info */}
+          <div className="absolute top-0 left-0 right-0 h-14 z-[15] bg-black pointer-events-none" />
+          <div className="absolute top-14 left-0 right-0 h-10 z-[15] bg-gradient-to-b from-black to-transparent pointer-events-none" />
+          {/* Bottom bar - solid black covers YouTube logo/watermark/controls */}
+          <div className="absolute bottom-0 left-0 right-0 h-14 z-[15] bg-black pointer-events-none" />
+          <div className="absolute bottom-14 left-0 right-0 h-10 z-[15] bg-gradient-to-t from-black to-transparent pointer-events-none" />
+          {/* Right side watermark cover */}
+          <div className="absolute bottom-14 right-0 w-24 h-16 z-[15] bg-gradient-to-l from-black/90 to-transparent pointer-events-none" />
         </>
       )}
 
