@@ -11,7 +11,6 @@ import {
 interface SecureVideoPlayerProps {
   videoUrl: string;
   videoId: string;
-  videoId: string;
   userId: string;
   onComplete: () => void;
   initialPosition?: number;
@@ -27,7 +26,6 @@ const PROGRESS_SAVE_INTERVAL = 5000; // 5 seconds
 
 export default function SecureVideoPlayer({
   videoUrl,
-  videoType,
   videoId,
   userId,
   onComplete,
