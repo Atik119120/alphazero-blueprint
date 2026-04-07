@@ -316,12 +316,12 @@ function YouTubeCustomPlayer({
       {/* Overlay to capture clicks and hide YouTube branding */}
       <div className="absolute inset-0 z-10" onClick={togglePlay} />
       
-      {/* Branding cover - hides YouTube channel name/title when paused or loading */}
-      {(!isPlaying || isLoading) && !showEndOverlay && !showIntro && (
-        <div className="absolute top-0 left-0 right-0 h-20 z-[15] bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none" />
-      )}
-      {(!isPlaying || isLoading) && !showEndOverlay && !showIntro && (
-        <div className="absolute bottom-0 left-0 right-0 h-16 z-[15] bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none" />
+      {/* Branding cover - always hide YouTube channel name/title/logo */}
+      {!showEndOverlay && !showIntro && (
+        <>
+          <div className="absolute top-0 left-0 right-0 h-24 z-[15] bg-gradient-to-b from-black via-black/90 to-transparent pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-24 z-[15] bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none" />
+        </>
       )}
 
       {/* End Overlay - covers YouTube recommended videos */}
