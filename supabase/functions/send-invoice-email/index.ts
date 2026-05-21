@@ -11,13 +11,15 @@ const corsHeaders = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
-    const { to, subject, html, pdfBase64, filename } = await req.json();
+    const { to, subject, html, text, pdfBase64, filename } = await req.json();
     const r = await resend.emails.send({
       from: "AlphaZero Agency <noreply@alphazero.online>",
       reply_to: "support@alphazero.online",
       to: [to],
       subject,
       html,
+      text,
+      headers: { "X-Entity-Ref-ID": crypto.randomUUID() },
       attachments: pdfBase64 ? [{ filename: filename || "invoice.pdf", content: pdfBase64 }] : undefined,
     });
     return new Response(JSON.stringify({ success: true, data: r }), {
