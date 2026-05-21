@@ -1,27 +1,9 @@
 project_id = "ayqbpqgahtycrncbknvj"
 
-[functions.ai-assistant]
-verify_jwt = false
-
-[functions.verify-certificate]
-verify_jwt = false
-
-[functions.create-student]
-verify_jwt = false
-
-[functions.ensure-student-onboarding]
-verify_jwt = false
-
-[functions.public-enrollment]
-verify_jwt = false
-
-[functions.approve-enrollment]
-verify_jwt = false
-
 [functions.send-otp]
 verify_jwt = false
 
-[functions.student-enrollment-notify]
+[functions.public-enrollment]
 verify_jwt = false
 
 [functions.uddoktapay-checkout]
@@ -30,17 +12,11 @@ verify_jwt = false
 [functions.uddoktapay-verify]
 verify_jwt = false
 
-[functions.uddoktapay-refund]
-verify_jwt = false
-
-[functions.send-custom-email]
-verify_jwt = false
-
 [functions.email-inbound-webhook]
 verify_jwt = false
 
-[functions.upload-video]
+[functions.verify-certificate]
 verify_jwt = false
 
-[functions.sign-upload]
+[functions.send-invoice-email]
 verify_jwt = false
