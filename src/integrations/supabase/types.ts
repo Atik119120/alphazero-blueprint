@@ -14,6 +14,125 @@ export type Database = {
   }
   public: {
     Tables: {
+      api_clients: {
+        Row: {
+          api_key_hash: string
+          api_key_prefix: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          name: string
+          owner_email: string | null
+          updated_at: string
+          webhook_secret: string | null
+          webhook_url: string | null
+          website_url: string | null
+        }
+        Insert: {
+          api_key_hash: string
+          api_key_prefix: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          owner_email?: string | null
+          updated_at?: string
+          webhook_secret?: string | null
+          webhook_url?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          api_key_hash?: string
+          api_key_prefix?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          owner_email?: string | null
+          updated_at?: string
+          webhook_secret?: string | null
+          webhook_url?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      api_payments: {
+        Row: {
+          amount: number
+          client_id: string
+          created_at: string
+          currency: string
+          customer_email: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          external_reference: string | null
+          id: string
+          invoice_id: string
+          metadata: Json | null
+          paid_at: string | null
+          payment_method: string | null
+          redirect_url: string | null
+          sender_number: string | null
+          status: string
+          transaction_id: string | null
+          uddoktapay_invoice_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          client_id: string
+          created_at?: string
+          currency?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          external_reference?: string | null
+          id?: string
+          invoice_id: string
+          metadata?: Json | null
+          paid_at?: string | null
+          payment_method?: string | null
+          redirect_url?: string | null
+          sender_number?: string | null
+          status?: string
+          transaction_id?: string | null
+          uddoktapay_invoice_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          client_id?: string
+          created_at?: string
+          currency?: string
+          customer_email?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          external_reference?: string | null
+          id?: string
+          invoice_id?: string
+          metadata?: Json | null
+          paid_at?: string | null
+          payment_method?: string | null
+          redirect_url?: string | null
+          sender_number?: string | null
+          status?: string
+          transaction_id?: string | null
+          uddoktapay_invoice_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "api_payments_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "api_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       certificates: {
         Row: {
           certificate_id: string

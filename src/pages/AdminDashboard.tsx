@@ -68,6 +68,7 @@ import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
+import PaymentApiManagement from '@/components/admin/PaymentApiManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
 
 import CommentManagement from '@/components/admin/CommentManagement';
@@ -823,6 +824,7 @@ export default function AdminDashboard() {
   const settingsItems = [
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
+    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'পেমেন্ট API' : 'Payment API' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
   ];
 
@@ -1779,6 +1781,13 @@ export default function AdminDashboard() {
           <TabsContent value="apikeys" className="space-y-6">
             <ApiKeyManagement />
           </TabsContent>
+
+          {/* Payment API Tab */}
+          <TabsContent value="paymentapi" className="space-y-6">
+            <PaymentApiManagement />
+          </TabsContent>
+
+
 
           {/* Profile Tab */}
           <TabsContent value="profile" className="space-y-6">

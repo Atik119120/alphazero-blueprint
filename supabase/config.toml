@@ -20,3 +20,12 @@ verify_jwt = false
 
 [functions.send-invoice-email]
 verify_jwt = false
+
+[functions.api-create-payment]
+verify_jwt = false
+
+[functions.api-verify-payment]
+verify_jwt = false
+
+[functions.api-payment-callback]
+verify_jwt = false
