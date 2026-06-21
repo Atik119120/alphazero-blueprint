@@ -171,8 +171,15 @@ export default function PaymentApiManagement() {
                 <p className="text-xs text-muted-foreground truncate">
                   {c.owner_email} · {c.website_url} · key: <code>{c.api_key_prefix}…</code>
                 </p>
+                <p className="text-xs text-muted-foreground truncate mt-1">
+                  Webhook: {c.webhook_url ? <code>{c.webhook_url}</code> : <span className="italic">none</span>}
+                  {c.webhook_secret && <Badge variant="outline" className="ml-2">HMAC signed</Badge>}
+                </p>
               </div>
               <div className="flex gap-1">
+                <Button size="sm" variant="outline" onClick={() => openWebhookEdit(c)} title="Edit Webhook">
+                  <Webhook className="w-4 h-4" />
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => toggleActive(c)}>
                   <Power className="w-4 h-4" />
                 </Button>
