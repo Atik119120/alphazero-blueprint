@@ -122,6 +122,30 @@ export default function PaymentApiManagement() {
     load();
   };
 
+  const openBrandEdit = (c: Client) => {
+    setBrandForm({
+      logo_url: c.logo_url || '',
+      brand_color: c.brand_color || '#3B82F6',
+      checkout_title: c.checkout_title || '',
+      checkout_description: c.checkout_description || '',
+    });
+    setEditBrand(c);
+  };
+
+  const saveBrand = async () => {
+    if (!editBrand) return;
+    const { error } = await supabase.from('api_clients').update({
+      logo_url: brandForm.logo_url || null,
+      brand_color: brandForm.brand_color || null,
+      checkout_title: brandForm.checkout_title || null,
+      checkout_description: brandForm.checkout_description || null,
+    }).eq('id', editBrand.id);
+    if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
+    toast({ title: 'Branding updated' });
+    setEditBrand(null);
+    load();
+  };
+
   const genSecret = () => {
     const bytes = new Uint8Array(32);
     crypto.getRandomValues(bytes);
@@ -184,6 +208,9 @@ export default function PaymentApiManagement() {
                 </p>
               </div>
               <div className="flex gap-1">
+                <Button size="sm" variant="outline" onClick={() => openBrandEdit(c)} title="Branding">
+                  <Palette className="w-4 h-4" />
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => openWebhookEdit(c)} title="Edit Webhook">
                   <Webhook className="w-4 h-4" />
                 </Button>
