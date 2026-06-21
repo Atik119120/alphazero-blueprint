@@ -7,24 +7,11 @@ const corsHeaders = {
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
+const SITE_URL = (Deno.env.get('PUBLIC_SITE_URL') || 'https://alphazero.online').replace(/\/$/, '');
+
 async function sha256(input: string): Promise<string> {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
-async function getUddoktaPayConfig(supabase: any) {
-  let apiKey = Deno.env.get('UDDOKTAPAY_API_KEY');
-  let baseUrl = Deno.env.get('UDDOKTAPAY_BASE_URL');
-  if (!apiKey || !baseUrl) {
-    const { data } = await supabase.from('site_settings').select('setting_key, setting_value')
-      .in('setting_key', ['uddoktapay_api_key', 'uddoktapay_base_url']);
-    for (const r of data || []) {
-      if (!apiKey && r.setting_key === 'uddoktapay_api_key') apiKey = r.setting_value;
-      if (!baseUrl && r.setting_key === 'uddoktapay_base_url') baseUrl = r.setting_value;
-    }
-  }
-  if (baseUrl) baseUrl = baseUrl.replace(/\/api\/?$/, '');
-  return { apiKey, baseUrl };
 }
 
 function json(body: any, status = 200) {
@@ -62,42 +49,11 @@ serve(async (req) => {
 
     const invoiceId = 'AZ-' + crypto.randomUUID().replace(/-/g, '').slice(0, 16).toUpperCase();
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const projectRef = supabaseUrl.replace('https://', '').split('.')[0];
-    const callbackUrl = `https://${projectRef}.functions.supabase.co/api-payment-callback?invoice=${invoiceId}`;
-
-    const { apiKey: upayKey, baseUrl } = await getUddoktaPayConfig(supabase);
-    if (!upayKey || !baseUrl) return json({ error: 'Payment gateway not configured' }, 500);
-
-    const payload = {
-      full_name: customer_name,
-      email: customer_email,
-      amount: Number(amount).toString(),
-      metadata: {
-        api_client_id: client.id,
-        internal_invoice: invoiceId,
-        external_reference: external_reference || '',
-        ...(metadata || {}),
-      },
-      redirect_url: callbackUrl,
-      return_type: 'GET',
-      cancel_url: redirect_url,
-    };
-
-    const upayRes = await fetch(`${baseUrl}/api/checkout-v2`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'RT-UDDOKTAPAY-API-KEY': upayKey },
-      body: JSON.stringify(payload),
-    });
-    const upayData = await upayRes.json();
-    if (!upayRes.ok || !upayData.payment_url) {
-      return json({ error: upayData.message || 'Gateway error', detail: upayData }, 502);
-    }
-
+    // Defer gateway session creation — store as pending intent.
     await supabase.from('api_payments').insert({
       client_id: client.id,
       invoice_id: invoiceId,
-      uddoktapay_invoice_id: upayData.invoice_id,
+      uddoktapay_invoice_id: null,
       external_reference: external_reference || null,
       amount: Number(amount),
       currency: 'BDT',
@@ -109,10 +65,13 @@ serve(async (req) => {
       redirect_url,
     });
 
+    const checkoutUrl = `${SITE_URL}/pay/${invoiceId}`;
+
     return json({
       success: true,
       invoice_id: invoiceId,
-      payment_url: upayData.payment_url,
+      payment_url: checkoutUrl,
+      checkout_url: checkoutUrl,
     });
   } catch (e) {
     console.error('create-payment error', e);

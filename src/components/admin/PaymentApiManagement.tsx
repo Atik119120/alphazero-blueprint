@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, Plus, Power, Trash2, RefreshCw, Code, Webhook } from 'lucide-react';
+import { Copy, Plus, Power, Trash2, RefreshCw, Code, Webhook, Palette } from 'lucide-react';
+import ImageUploader from './ImageUploader';
 
 interface Client {
   id: string;
@@ -19,6 +20,10 @@ interface Client {
   is_active: boolean;
   webhook_url: string | null;
   webhook_secret: string | null;
+  logo_url: string | null;
+  brand_color: string | null;
+  checkout_title: string | null;
+  checkout_description: string | null;
   created_at: string;
 }
 
@@ -57,7 +62,9 @@ export default function PaymentApiManagement() {
   const [showCreate, setShowCreate] = useState(false);
   const [showKey, setShowKey] = useState<string | null>(null);
   const [editWebhook, setEditWebhook] = useState<Client | null>(null);
+  const [editBrand, setEditBrand] = useState<Client | null>(null);
   const [webhookForm, setWebhookForm] = useState({ webhook_url: '', webhook_secret: '' });
+  const [brandForm, setBrandForm] = useState({ logo_url: '', brand_color: '#3B82F6', checkout_title: '', checkout_description: '' });
   const [form, setForm] = useState({ name: '', owner_email: '', website_url: '', webhook_url: '', webhook_secret: '' });
 
   const load = async () => {
@@ -112,6 +119,30 @@ export default function PaymentApiManagement() {
     if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
     toast({ title: 'Webhook updated' });
     setEditWebhook(null);
+    load();
+  };
+
+  const openBrandEdit = (c: Client) => {
+    setBrandForm({
+      logo_url: c.logo_url || '',
+      brand_color: c.brand_color || '#3B82F6',
+      checkout_title: c.checkout_title || '',
+      checkout_description: c.checkout_description || '',
+    });
+    setEditBrand(c);
+  };
+
+  const saveBrand = async () => {
+    if (!editBrand) return;
+    const { error } = await supabase.from('api_clients').update({
+      logo_url: brandForm.logo_url || null,
+      brand_color: brandForm.brand_color || null,
+      checkout_title: brandForm.checkout_title || null,
+      checkout_description: brandForm.checkout_description || null,
+    }).eq('id', editBrand.id);
+    if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
+    toast({ title: 'Branding updated' });
+    setEditBrand(null);
     load();
   };
 
@@ -177,6 +208,9 @@ export default function PaymentApiManagement() {
                 </p>
               </div>
               <div className="flex gap-1">
+                <Button size="sm" variant="outline" onClick={() => openBrandEdit(c)} title="Branding">
+                  <Palette className="w-4 h-4" />
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => openWebhookEdit(c)} title="Edit Webhook">
                   <Webhook className="w-4 h-4" />
                 </Button>
@@ -240,8 +274,13 @@ Content-Type: application/json
   "metadata": { "product": "Pro Plan" }
 }
 
-→ { "success": true, "invoice_id": "AZ-...", "payment_url": "https://..." }`}</pre>
-              <p className="text-xs text-muted-foreground mt-1">User কে <code>payment_url</code> এ redirect করুন। Payment শেষে user আপনার <code>redirect_url</code> এ ফিরে আসবে — query parameter এ <code>invoice_id</code> ও <code>status</code> থাকবে।</p>
+→ { "success": true, "invoice_id": "AZ-...", "payment_url": "https://alphazero.online/pay/AZ-..." }`}</pre>
+              <p className="text-xs text-muted-foreground mt-1">User কে <code>payment_url</code> এ redirect করুন। এটা একটা <strong>branded checkout page</strong> দেখাবে (আপনার logo + brand color সহ)। Pay button এ click করলে user UddoktaPay gateway এ যাবে এবং payment শেষে আপনার <code>redirect_url</code> এ ফিরে আসবে — query parameter এ <code>invoice_id</code> ও <code>status</code> থাকবে।</p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-1">🎨 Branding</h3>
+              <p className="text-xs text-muted-foreground">Client list থেকে <Palette className="w-3 h-3 inline" /> icon এ click করে logo, brand color, title, description set করুন। এগুলো checkout page এ দেখানো হবে।</p>
             </div>
 
             <div>
@@ -324,6 +363,43 @@ Authorization: Bearer <API_KEY>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditWebhook(null)}>Cancel</Button>
             <Button onClick={saveWebhook}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!editBrand} onOpenChange={() => setEditBrand(null)}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader><DialogTitle>Checkout Branding — {editBrand?.name}</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>Logo</Label>
+              <ImageUploader
+                value={brandForm.logo_url}
+                onChange={(url) => setBrandForm({ ...brandForm, logo_url: url })}
+                folder="payment-branding"
+                label=""
+              />
+            </div>
+            <div>
+              <Label>Brand Color</Label>
+              <div className="flex gap-2">
+                <Input type="color" value={brandForm.brand_color} onChange={e => setBrandForm({ ...brandForm, brand_color: e.target.value })} className="w-20 h-10 p-1" />
+                <Input value={brandForm.brand_color} onChange={e => setBrandForm({ ...brandForm, brand_color: e.target.value })} placeholder="#3B82F6" className="font-mono" />
+              </div>
+            </div>
+            <div>
+              <Label>Checkout Title</Label>
+              <Input value={brandForm.checkout_title} onChange={e => setBrandForm({ ...brandForm, checkout_title: e.target.value })} placeholder="Pay Amin One BD" />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Input value={brandForm.checkout_description} onChange={e => setBrandForm({ ...brandForm, checkout_description: e.target.value })} placeholder="Complete your order" />
+            </div>
+            <p className="text-xs text-muted-foreground">এই branding checkout page <code>{`/pay/<invoice_id>`}</code> এ দেখাবে।</p>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditBrand(null)}>Cancel</Button>
+            <Button onClick={saveBrand}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

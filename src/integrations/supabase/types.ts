@@ -18,10 +18,14 @@ export type Database = {
         Row: {
           api_key_hash: string
           api_key_prefix: string
+          brand_color: string | null
+          checkout_description: string | null
+          checkout_title: string | null
           created_at: string
           created_by: string | null
           id: string
           is_active: boolean
+          logo_url: string | null
           name: string
           owner_email: string | null
           updated_at: string
@@ -32,10 +36,14 @@ export type Database = {
         Insert: {
           api_key_hash: string
           api_key_prefix: string
+          brand_color?: string | null
+          checkout_description?: string | null
+          checkout_title?: string | null
           created_at?: string
           created_by?: string | null
           id?: string
           is_active?: boolean
+          logo_url?: string | null
           name: string
           owner_email?: string | null
           updated_at?: string
@@ -46,10 +54,14 @@ export type Database = {
         Update: {
           api_key_hash?: string
           api_key_prefix?: string
+          brand_color?: string | null
+          checkout_description?: string | null
+          checkout_title?: string | null
           created_at?: string
           created_by?: string | null
           id?: string
           is_active?: boolean
+          logo_url?: string | null
           name?: string
           owner_email?: string | null
           updated_at?: string

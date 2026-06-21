@@ -29,3 +29,9 @@ verify_jwt = false
 
 [functions.api-payment-callback]
 verify_jwt = false
+
+[functions.api-checkout-info]
+verify_jwt = false
+
+[functions.api-checkout-start]
+verify_jwt = false
