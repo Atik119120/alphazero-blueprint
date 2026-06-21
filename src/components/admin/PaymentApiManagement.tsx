@@ -303,6 +303,30 @@ Authorization: Bearer <API_KEY>
           <DialogFooter><Button onClick={() => setShowKey(null)}>Done</Button></DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={!!editWebhook} onOpenChange={() => setEditWebhook(null)}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit Webhook — {editWebhook?.name}</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>Webhook URL</Label>
+              <Input value={webhookForm.webhook_url} onChange={e => setWebhookForm({ ...webhookForm, webhook_url: e.target.value })} placeholder="https://site.com/api/payment-webhook" />
+            </div>
+            <div>
+              <Label>Webhook Secret (HMAC)</Label>
+              <div className="flex gap-2">
+                <Input value={webhookForm.webhook_secret} onChange={e => setWebhookForm({ ...webhookForm, webhook_secret: e.target.value })} placeholder="whsec_..." className="font-mono text-xs" />
+                <Button type="button" variant="outline" onClick={() => setWebhookForm({ ...webhookForm, webhook_secret: genSecret() })}>Generate</Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Payment complete হলে আমরা <code>POST</code> পাঠাব এবং <code>X-Signature: sha256=HMAC(secret, body)</code> header যোগ করব।</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditWebhook(null)}>Cancel</Button>
+            <Button onClick={saveWebhook}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
