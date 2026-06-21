@@ -1781,6 +1781,13 @@ export default function AdminDashboard() {
             <ApiKeyManagement />
           </TabsContent>
 
+          {/* Payment API Tab */}
+          <TabsContent value="paymentapi" className="space-y-6">
+            <PaymentApiManagement />
+          </TabsContent>
+
+
+
           {/* Profile Tab */}
           <TabsContent value="profile" className="space-y-6">
             <div className="flex items-center justify-between">
