@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, Plus, Power, Trash2, RefreshCw, Code } from 'lucide-react';
+import { Copy, Plus, Power, Trash2, RefreshCw, Code, Webhook } from 'lucide-react';
 
 interface Client {
   id: string;
@@ -18,6 +18,7 @@ interface Client {
   api_key_prefix: string;
   is_active: boolean;
   webhook_url: string | null;
+  webhook_secret: string | null;
   created_at: string;
 }
 
@@ -55,7 +56,9 @@ export default function PaymentApiManagement() {
   const [loading, setLoading] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showKey, setShowKey] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', owner_email: '', website_url: '', webhook_url: '' });
+  const [editWebhook, setEditWebhook] = useState<Client | null>(null);
+  const [webhookForm, setWebhookForm] = useState({ webhook_url: '', webhook_secret: '' });
+  const [form, setForm] = useState({ name: '', owner_email: '', website_url: '', webhook_url: '', webhook_secret: '' });
 
   const load = async () => {
     setLoading(true);
@@ -83,15 +86,39 @@ export default function PaymentApiManagement() {
       owner_email: form.owner_email || null,
       website_url: form.website_url || null,
       webhook_url: form.webhook_url || null,
+      webhook_secret: form.webhook_secret || null,
       api_key_hash: hash,
       api_key_prefix: key.slice(0, 12),
       created_by: user?.id,
     });
     if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
     setShowCreate(false);
-    setForm({ name: '', owner_email: '', website_url: '', webhook_url: '' });
+    setForm({ name: '', owner_email: '', website_url: '', webhook_url: '', webhook_secret: '' });
     setShowKey(key);
     load();
+  };
+
+  const openWebhookEdit = (c: Client) => {
+    setWebhookForm({ webhook_url: c.webhook_url || '', webhook_secret: c.webhook_secret || '' });
+    setEditWebhook(c);
+  };
+
+  const saveWebhook = async () => {
+    if (!editWebhook) return;
+    const { error } = await supabase.from('api_clients').update({
+      webhook_url: webhookForm.webhook_url || null,
+      webhook_secret: webhookForm.webhook_secret || null,
+    }).eq('id', editWebhook.id);
+    if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
+    toast({ title: 'Webhook updated' });
+    setEditWebhook(null);
+    load();
+  };
+
+  const genSecret = () => {
+    const bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    return 'whsec_' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
   };
 
   const toggleActive = async (c: Client) => {
@@ -144,8 +171,15 @@ export default function PaymentApiManagement() {
                 <p className="text-xs text-muted-foreground truncate">
                   {c.owner_email} · {c.website_url} · key: <code>{c.api_key_prefix}…</code>
                 </p>
+                <p className="text-xs text-muted-foreground truncate mt-1">
+                  Webhook: {c.webhook_url ? <code>{c.webhook_url}</code> : <span className="italic">none</span>}
+                  {c.webhook_secret && <Badge variant="outline" className="ml-2">HMAC signed</Badge>}
+                </p>
               </div>
               <div className="flex gap-1">
+                <Button size="sm" variant="outline" onClick={() => openWebhookEdit(c)} title="Edit Webhook">
+                  <Webhook className="w-4 h-4" />
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => toggleActive(c)}>
                   <Power className="w-4 h-4" />
                 </Button>
@@ -242,6 +276,14 @@ Authorization: Bearer <API_KEY>
             <div><Label>Owner Email</Label><Input value={form.owner_email} onChange={e => setForm({ ...form, owner_email: e.target.value })} placeholder="owner@site.com" /></div>
             <div><Label>Website URL</Label><Input value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://aminonebd.com" /></div>
             <div><Label>Webhook URL (optional)</Label><Input value={form.webhook_url} onChange={e => setForm({ ...form, webhook_url: e.target.value })} placeholder="https://site.com/api/payment-webhook" /></div>
+            <div>
+              <Label>Webhook Secret (HMAC, optional)</Label>
+              <div className="flex gap-2">
+                <Input value={form.webhook_secret} onChange={e => setForm({ ...form, webhook_secret: e.target.value })} placeholder="whsec_..." className="font-mono text-xs" />
+                <Button type="button" variant="outline" onClick={() => setForm({ ...form, webhook_secret: genSecret() })}>Generate</Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Set করলে আমরা প্রতিটি webhook এ <code>X-Signature: sha256=...</code> header পাঠাব। Client side এ এই secret দিয়ে verify করুন।</p>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
@@ -259,6 +301,30 @@ Authorization: Bearer <API_KEY>
             <Button onClick={() => showKey && copy(showKey)}><Copy className="w-4 h-4" /></Button>
           </div>
           <DialogFooter><Button onClick={() => setShowKey(null)}>Done</Button></DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!editWebhook} onOpenChange={() => setEditWebhook(null)}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit Webhook — {editWebhook?.name}</DialogTitle></DialogHeader>
+          <div className="space-y-3">
+            <div>
+              <Label>Webhook URL</Label>
+              <Input value={webhookForm.webhook_url} onChange={e => setWebhookForm({ ...webhookForm, webhook_url: e.target.value })} placeholder="https://site.com/api/payment-webhook" />
+            </div>
+            <div>
+              <Label>Webhook Secret (HMAC)</Label>
+              <div className="flex gap-2">
+                <Input value={webhookForm.webhook_secret} onChange={e => setWebhookForm({ ...webhookForm, webhook_secret: e.target.value })} placeholder="whsec_..." className="font-mono text-xs" />
+                <Button type="button" variant="outline" onClick={() => setWebhookForm({ ...webhookForm, webhook_secret: genSecret() })}>Generate</Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Payment complete হলে আমরা <code>POST</code> পাঠাব এবং <code>X-Signature: sha256=HMAC(secret, body)</code> header যোগ করব।</p>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditWebhook(null)}>Cancel</Button>
+            <Button onClick={saveWebhook}>Save</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
