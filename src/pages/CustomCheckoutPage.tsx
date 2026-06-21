@@ -57,7 +57,15 @@ export default function CustomCheckoutPage() {
       });
       const d = await r.json();
       if (d.payment_url) {
-        window.location.href = d.payment_url;
+        try {
+          if (window.top && window.top !== window.self) {
+            window.top.location.href = d.payment_url;
+          } else {
+            window.location.href = d.payment_url;
+          }
+        } catch {
+          window.open(d.payment_url, '_blank', 'noopener,noreferrer');
+        }
       } else {
         setErr(d.error || 'Failed to start payment');
         setPaying(false);
