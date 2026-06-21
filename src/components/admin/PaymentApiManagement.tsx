@@ -86,15 +86,39 @@ export default function PaymentApiManagement() {
       owner_email: form.owner_email || null,
       website_url: form.website_url || null,
       webhook_url: form.webhook_url || null,
+      webhook_secret: form.webhook_secret || null,
       api_key_hash: hash,
       api_key_prefix: key.slice(0, 12),
       created_by: user?.id,
     });
     if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
     setShowCreate(false);
-    setForm({ name: '', owner_email: '', website_url: '', webhook_url: '' });
+    setForm({ name: '', owner_email: '', website_url: '', webhook_url: '', webhook_secret: '' });
     setShowKey(key);
     load();
+  };
+
+  const openWebhookEdit = (c: Client) => {
+    setWebhookForm({ webhook_url: c.webhook_url || '', webhook_secret: c.webhook_secret || '' });
+    setEditWebhook(c);
+  };
+
+  const saveWebhook = async () => {
+    if (!editWebhook) return;
+    const { error } = await supabase.from('api_clients').update({
+      webhook_url: webhookForm.webhook_url || null,
+      webhook_secret: webhookForm.webhook_secret || null,
+    }).eq('id', editWebhook.id);
+    if (error) { toast({ title: error.message, variant: 'destructive' }); return; }
+    toast({ title: 'Webhook updated' });
+    setEditWebhook(null);
+    load();
+  };
+
+  const genSecret = () => {
+    const bytes = new Uint8Array(32);
+    crypto.getRandomValues(bytes);
+    return 'whsec_' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
   };
 
   const toggleActive = async (c: Client) => {
