@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, Plus, Power, Trash2, RefreshCw, Code } from 'lucide-react';
+import { Copy, Plus, Power, Trash2, RefreshCw, Code, Webhook } from 'lucide-react';
 
 interface Client {
   id: string;
