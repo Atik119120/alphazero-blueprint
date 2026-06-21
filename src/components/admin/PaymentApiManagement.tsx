@@ -374,9 +374,10 @@ Authorization: Bearer <API_KEY>
             <div>
               <Label>Logo</Label>
               <ImageUploader
-                currentImageUrl={brandForm.logo_url}
-                onUpload={(url) => setBrandForm({ ...brandForm, logo_url: url })}
+                value={brandForm.logo_url}
+                onChange={(url) => setBrandForm({ ...brandForm, logo_url: url })}
                 folder="payment-branding"
+                label=""
               />
             </div>
             <div>
