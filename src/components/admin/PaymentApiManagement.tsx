@@ -18,6 +18,7 @@ interface Client {
   api_key_prefix: string;
   is_active: boolean;
   webhook_url: string | null;
+  webhook_secret: string | null;
   created_at: string;
 }
 
