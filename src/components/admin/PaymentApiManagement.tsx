@@ -276,6 +276,14 @@ Authorization: Bearer <API_KEY>
             <div><Label>Owner Email</Label><Input value={form.owner_email} onChange={e => setForm({ ...form, owner_email: e.target.value })} placeholder="owner@site.com" /></div>
             <div><Label>Website URL</Label><Input value={form.website_url} onChange={e => setForm({ ...form, website_url: e.target.value })} placeholder="https://aminonebd.com" /></div>
             <div><Label>Webhook URL (optional)</Label><Input value={form.webhook_url} onChange={e => setForm({ ...form, webhook_url: e.target.value })} placeholder="https://site.com/api/payment-webhook" /></div>
+            <div>
+              <Label>Webhook Secret (HMAC, optional)</Label>
+              <div className="flex gap-2">
+                <Input value={form.webhook_secret} onChange={e => setForm({ ...form, webhook_secret: e.target.value })} placeholder="whsec_..." className="font-mono text-xs" />
+                <Button type="button" variant="outline" onClick={() => setForm({ ...form, webhook_secret: genSecret() })}>Generate</Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Set করলে আমরা প্রতিটি webhook এ <code>X-Signature: sha256=...</code> header পাঠাব। Client side এ এই secret দিয়ে verify করুন।</p>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
