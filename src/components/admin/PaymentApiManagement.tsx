@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Copy, Plus, Power, Trash2, RefreshCw, Code, Webhook } from 'lucide-react';
+import { Copy, Plus, Power, Trash2, RefreshCw, Code, Webhook, Palette } from 'lucide-react';
+import ImageUploader from './ImageUploader';
 
 interface Client {
   id: string;
@@ -19,6 +20,10 @@ interface Client {
   is_active: boolean;
   webhook_url: string | null;
   webhook_secret: string | null;
+  logo_url: string | null;
+  brand_color: string | null;
+  checkout_title: string | null;
+  checkout_description: string | null;
   created_at: string;
 }
 
@@ -57,7 +62,9 @@ export default function PaymentApiManagement() {
   const [showCreate, setShowCreate] = useState(false);
   const [showKey, setShowKey] = useState<string | null>(null);
   const [editWebhook, setEditWebhook] = useState<Client | null>(null);
+  const [editBrand, setEditBrand] = useState<Client | null>(null);
   const [webhookForm, setWebhookForm] = useState({ webhook_url: '', webhook_secret: '' });
+  const [brandForm, setBrandForm] = useState({ logo_url: '', brand_color: '#3B82F6', checkout_title: '', checkout_description: '' });
   const [form, setForm] = useState({ name: '', owner_email: '', website_url: '', webhook_url: '', webhook_secret: '' });
 
   const load = async () => {
