@@ -823,6 +823,7 @@ export default function AdminDashboard() {
   const settingsItems = [
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
+    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'পেমেন্ট API' : 'Payment API' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
   ];
 
