@@ -56,7 +56,9 @@ export default function PaymentApiManagement() {
   const [loading, setLoading] = useState(false);
   const [showCreate, setShowCreate] = useState(false);
   const [showKey, setShowKey] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: '', owner_email: '', website_url: '', webhook_url: '' });
+  const [editWebhook, setEditWebhook] = useState<Client | null>(null);
+  const [webhookForm, setWebhookForm] = useState({ webhook_url: '', webhook_secret: '' });
+  const [form, setForm] = useState({ name: '', owner_email: '', website_url: '', webhook_url: '', webhook_secret: '' });
 
   const load = async () => {
     setLoading(true);
