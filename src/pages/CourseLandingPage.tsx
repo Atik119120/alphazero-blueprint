@@ -166,27 +166,9 @@ export default function CourseLandingPage() {
     );
   }
 
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Course',
-    name: title,
-    description: seoDesc,
-    provider: { '@type': 'Organization', name: 'AlphaZero', sameAs: 'https://alphazero.online' },
-    image: c.thumbnail_url,
-    offers: { '@type': 'Offer', price: c.price, priceCurrency: 'BDT' },
-  };
-
   return (
     <div className="min-h-screen mesh-bg text-foreground">
-      <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
-        <link rel="canonical" href={`https://alphazero.online/${SLUG}`} />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDesc} />
-        {c.thumbnail_url && <meta property="og:image" content={c.thumbnail_url} />}
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
+
 
       {/* Minimal top bar */}
       <header className="border-b border-border/40 backdrop-blur-md bg-background/60 sticky top-0 z-50">
