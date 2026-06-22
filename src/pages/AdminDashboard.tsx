@@ -1789,6 +1789,12 @@ export default function AdminDashboard() {
             <PaymentApiManagement />
           </TabsContent>
 
+          <TabsContent value="landing" className="space-y-6">
+            <LandingPageManagement />
+          </TabsContent>
+
+
+
 
 
           {/* Profile Tab */}
