@@ -139,6 +139,7 @@ function AppContent() {
         <Route path="/payment/cancel" element={<PaymentCancelPage />} />
         <Route path="/pay/:invoiceId" element={<CustomCheckoutPage />} />
         <Route path="/vibe-coding" element={<CourseLandingPage />} />
+        <Route path="/courses/vibe-coding" element={<CourseLandingPage />} />
 
         
         <Route path="*" element={<NotFound />} />
