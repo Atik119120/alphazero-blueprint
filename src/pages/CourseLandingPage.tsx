@@ -211,10 +211,8 @@ export default function CourseLandingPage() {
               )}
             </div>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button size="lg" asChild className="text-base">
-                <a href={enrollHref}>
-                  {isBn ? 'এখনই এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
+              <Button size="lg" onClick={handleEnroll} className="text-base">
+                {isBn ? 'এখনই এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <a href="#syllabus">{isBn ? 'সিলেবাস দেখুন' : 'View Syllabus'}</a>
