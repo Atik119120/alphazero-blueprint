@@ -816,6 +816,7 @@ export default function AdminDashboard() {
 
   const cmsItems = [
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages' },
+    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team' },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services' },
