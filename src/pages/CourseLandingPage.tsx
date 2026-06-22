@@ -186,7 +186,7 @@ export default function CourseLandingPage() {
           <Link to="/" className="font-display text-lg font-bold">AlphaZero</Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild><a href={loginHref}>{isBn ? 'লগইন' : 'Login'}</a></Button>
-            <Button size="sm" asChild><a href={enrollHref}>{isBn ? 'এনরোল' : 'Enroll'}</a></Button>
+            <Button size="sm" onClick={handleEnroll}>{isBn ? 'এনরোল' : 'Enroll'}</Button>
           </div>
         </div>
       </header>
