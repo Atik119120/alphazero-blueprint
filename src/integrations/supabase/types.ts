@@ -449,57 +449,90 @@ export type Database = {
       }
       courses: {
         Row: {
+          class_time: string | null
           course_type: string | null
           created_at: string | null
           description: string | null
           description_en: string | null
+          duration: string | null
+          faqs: Json
           id: string
           is_approved: boolean | null
           is_published: boolean | null
+          landing_slug: string | null
+          learning_outcomes: Json
           price: number | null
+          short_description: string | null
+          short_description_en: string | null
           show_on_homepage: boolean | null
+          start_date: string | null
           teacher_id: string | null
           thumbnail_url: string | null
           title: string
           title_en: string | null
+          total_classes: string | null
+          trainer_bio: string | null
+          trainer_bio_en: string | null
           trainer_designation: string | null
           trainer_image: string | null
           trainer_name: string | null
           updated_at: string | null
         }
         Insert: {
+          class_time?: string | null
           course_type?: string | null
           created_at?: string | null
           description?: string | null
           description_en?: string | null
+          duration?: string | null
+          faqs?: Json
           id?: string
           is_approved?: boolean | null
           is_published?: boolean | null
+          landing_slug?: string | null
+          learning_outcomes?: Json
           price?: number | null
+          short_description?: string | null
+          short_description_en?: string | null
           show_on_homepage?: boolean | null
+          start_date?: string | null
           teacher_id?: string | null
           thumbnail_url?: string | null
           title: string
           title_en?: string | null
+          total_classes?: string | null
+          trainer_bio?: string | null
+          trainer_bio_en?: string | null
           trainer_designation?: string | null
           trainer_image?: string | null
           trainer_name?: string | null
           updated_at?: string | null
         }
         Update: {
+          class_time?: string | null
           course_type?: string | null
           created_at?: string | null
           description?: string | null
           description_en?: string | null
+          duration?: string | null
+          faqs?: Json
           id?: string
           is_approved?: boolean | null
           is_published?: boolean | null
+          landing_slug?: string | null
+          learning_outcomes?: Json
           price?: number | null
+          short_description?: string | null
+          short_description_en?: string | null
           show_on_homepage?: boolean | null
+          start_date?: string | null
           teacher_id?: string | null
           thumbnail_url?: string | null
           title?: string
           title_en?: string | null
+          total_classes?: string | null
+          trainer_bio?: string | null
+          trainer_bio_en?: string | null
           trainer_designation?: string | null
           trainer_image?: string | null
           trainer_name?: string | null
