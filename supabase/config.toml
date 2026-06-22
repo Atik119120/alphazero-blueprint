@@ -35,3 +35,6 @@ verify_jwt = false
 
 [functions.api-checkout-start]
 verify_jwt = false
+
+[functions.public-course-info]
+verify_jwt = false
