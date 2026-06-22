@@ -69,6 +69,7 @@ import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import PaymentApiManagement from '@/components/admin/PaymentApiManagement';
+import LandingPageManagement from '@/components/admin/LandingPageManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
 
 import CommentManagement from '@/components/admin/CommentManagement';
@@ -815,6 +816,7 @@ export default function AdminDashboard() {
 
   const cmsItems = [
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages' },
+    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page' },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works' },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team' },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services' },
@@ -1786,6 +1788,12 @@ export default function AdminDashboard() {
           <TabsContent value="paymentapi" className="space-y-6">
             <PaymentApiManagement />
           </TabsContent>
+
+          <TabsContent value="landing" className="space-y-6">
+            <LandingPageManagement />
+          </TabsContent>
+
+
 
 
 

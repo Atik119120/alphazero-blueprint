@@ -47,6 +47,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 import PaymentCallbackPage from "./pages/PaymentCallbackPage";
 import PaymentCancelPage from "./pages/PaymentCancelPage";
 import CustomCheckoutPage from "./pages/CustomCheckoutPage";
+import CourseLandingPage from "./pages/CourseLandingPage";
 
 // Lazy load only AI Chatbot (not critical for navigation)
 import { lazy } from "react";
@@ -137,6 +138,8 @@ function AppContent() {
         <Route path="/payment/callback" element={<PaymentCallbackPage />} />
         <Route path="/payment/cancel" element={<PaymentCancelPage />} />
         <Route path="/pay/:invoiceId" element={<CustomCheckoutPage />} />
+        <Route path="/vibe-coding" element={<CourseLandingPage />} />
+
         
         <Route path="*" element={<NotFound />} />
       </Routes>
