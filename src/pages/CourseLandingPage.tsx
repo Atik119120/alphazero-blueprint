@@ -1,11 +1,12 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   CheckCircle2, Calendar, Clock, Users, GraduationCap,
   PlayCircle, Sparkles, BookOpen, ArrowRight, AlertCircle,
@@ -49,6 +50,8 @@ type CourseData = {
 
 export default function CourseLandingPage() {
   const { language } = useLanguage();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const isBn = language === 'bn';
   const [data, setData] = useState<CourseData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -133,9 +136,16 @@ export default function CourseLandingPage() {
   }, [c, seoTitle, seoDesc, title]);
 
 
-  const enrollHref = '/courses';
-  const signupHref = '/auth';
   const loginHref = '/student/login';
+  const signupHref = '/student/login?mode=signup';
+  const handleEnroll = () => {
+    if (user) {
+      navigate(`/student?enroll=${c?.id ?? ''}`);
+    } else {
+      const next = encodeURIComponent(`/student?enroll=${c?.id ?? ''}`);
+      navigate(`/student/login?redirect=${next}`);
+    }
+  };
 
   if (loading) {
     return (
@@ -176,7 +186,7 @@ export default function CourseLandingPage() {
           <Link to="/" className="font-display text-lg font-bold">AlphaZero</Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild><a href={loginHref}>{isBn ? 'লগইন' : 'Login'}</a></Button>
-            <Button size="sm" asChild><a href={enrollHref}>{isBn ? 'এনরোল' : 'Enroll'}</a></Button>
+            <Button size="sm" onClick={handleEnroll}>{isBn ? 'এনরোল' : 'Enroll'}</Button>
           </div>
         </div>
       </header>
@@ -201,10 +211,8 @@ export default function CourseLandingPage() {
               )}
             </div>
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button size="lg" asChild className="text-base">
-                <a href={enrollHref}>
-                  {isBn ? 'এখনই এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
+              <Button size="lg" onClick={handleEnroll} className="text-base">
+                {isBn ? 'এখনই এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <a href="#syllabus">{isBn ? 'সিলেবাস দেখুন' : 'View Syllabus'}</a>
@@ -368,8 +376,8 @@ export default function CourseLandingPage() {
                 : 'Enroll now or create an account to get started. Already have an account? Log in.'}
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-2">
-              <Button size="lg" asChild className="text-base">
-                <a href={enrollHref}>{isBn ? 'এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" /></a>
+              <Button size="lg" onClick={handleEnroll} className="text-base">
+                {isBn ? 'এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <a href={signupHref}>{isBn ? 'সাইন আপ' : 'Sign Up'}</a>
