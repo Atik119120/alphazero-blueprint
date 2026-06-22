@@ -376,8 +376,8 @@ export default function CourseLandingPage() {
                 : 'Enroll now or create an account to get started. Already have an account? Log in.'}
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-2">
-              <Button size="lg" asChild className="text-base">
-                <a href={enrollHref}>{isBn ? 'এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" /></a>
+              <Button size="lg" onClick={handleEnroll} className="text-base">
+                {isBn ? 'এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <a href={signupHref}>{isBn ? 'সাইন আপ' : 'Sign Up'}</a>
