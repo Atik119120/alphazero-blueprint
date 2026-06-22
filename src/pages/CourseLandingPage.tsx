@@ -136,9 +136,16 @@ export default function CourseLandingPage() {
   }, [c, seoTitle, seoDesc, title]);
 
 
-  const enrollHref = '/courses';
-  const signupHref = '/auth';
   const loginHref = '/student/login';
+  const signupHref = '/student/login?mode=signup';
+  const handleEnroll = () => {
+    if (user) {
+      navigate(`/student?enroll=${c?.id ?? ''}`);
+    } else {
+      const next = encodeURIComponent(`/student?enroll=${c?.id ?? ''}`);
+      navigate(`/student/login?redirect=${next}`);
+    }
+  };
 
   if (loading) {
     return (
