@@ -69,6 +69,7 @@ import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
 import ApiKeyManagement from '@/components/admin/ApiKeyManagement';
 import PaymentApiManagement from '@/components/admin/PaymentApiManagement';
+import LandingPageManagement from '@/components/admin/LandingPageManagement';
 import FeedbackViewer from '@/components/admin/FeedbackViewer';
 
 import CommentManagement from '@/components/admin/CommentManagement';
