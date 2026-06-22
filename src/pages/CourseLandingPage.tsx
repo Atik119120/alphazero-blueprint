@@ -88,6 +88,51 @@ export default function CourseLandingPage() {
   );
   const seoDesc = (shortDesc || desc || '').slice(0, 155);
 
+  // SEO: set title, meta description, canonical, OG, and JSON-LD without react-helmet
+  useEffect(() => {
+    if (!c) return;
+    document.title = seoTitle;
+    const setMeta = (selector: string, attr: string, value: string) => {
+      let el = document.head.querySelector<HTMLMetaElement | HTMLLinkElement>(selector);
+      if (!el) {
+        if (selector.startsWith('link')) {
+          el = document.createElement('link');
+          (el as HTMLLinkElement).rel = 'canonical';
+        } else {
+          el = document.createElement('meta');
+          const m = selector.match(/\[(name|property)="([^"]+)"\]/);
+          if (m) el.setAttribute(m[1], m[2]);
+        }
+        document.head.appendChild(el);
+      }
+      el.setAttribute(attr, value);
+    };
+    setMeta('meta[name="description"]', 'content', seoDesc);
+    setMeta('link[rel="canonical"]', 'href', `https://alphazero.online/${SLUG}`);
+    setMeta('meta[property="og:title"]', 'content', seoTitle);
+    setMeta('meta[property="og:description"]', 'content', seoDesc);
+    if (c.thumbnail_url) setMeta('meta[property="og:image"]', 'content', c.thumbnail_url);
+
+    const ldId = 'course-landing-jsonld';
+    let ld = document.getElementById(ldId) as HTMLScriptElement | null;
+    if (!ld) {
+      ld = document.createElement('script');
+      ld.type = 'application/ld+json';
+      ld.id = ldId;
+      document.head.appendChild(ld);
+    }
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Course',
+      name: title,
+      description: seoDesc,
+      provider: { '@type': 'Organization', name: 'AlphaZero', sameAs: 'https://alphazero.online' },
+      image: c.thumbnail_url,
+      offers: { '@type': 'Offer', price: c.price, priceCurrency: 'BDT' },
+    });
+  }, [c, seoTitle, seoDesc, title]);
+
+
   const enrollHref = '/courses';
   const signupHref = '/auth';
   const loginHref = '/student/login';
