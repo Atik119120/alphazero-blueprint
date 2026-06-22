@@ -50,6 +50,8 @@ type CourseData = {
 
 export default function CourseLandingPage() {
   const { language } = useLanguage();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const isBn = language === 'bn';
   const [data, setData] = useState<CourseData | null>(null);
   const [loading, setLoading] = useState(true);
