@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useWorks, type Work } from "@/hooks/useWorks";
 
 import badam from "@/assets/marquee/badam.jpg.asset.json";
@@ -38,6 +38,8 @@ const extras: Item[] = [
   { id: "ex-poster-trend", image_url: posterTrend.url, title: "Poster Design Trend 2026" },
 ];
 
+const HERO_CTA_GAP_PX = 48;
+
 const Card = ({ item }: { item: Item }) => {
   return (
     <div className="group relative shrink-0 h-full aspect-square rounded-2xl overflow-hidden mx-2 shadow-md bg-white">
@@ -56,6 +58,8 @@ const Card = ({ item }: { item: Item }) => {
 
 export default function ProjectMarquee() {
   const { data: works } = useWorks();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [topOffset, setTopOffset] = useState(0);
   const items = useMemo<Item[]>(() => {
     const g = (works || []).filter(isGraphics).map((w) => ({
       id: String(w.id),
@@ -89,8 +93,39 @@ export default function ProjectMarquee() {
   const dup1 = [...row1, ...row1, ...row1];
   const dup2 = [...row2, ...row2, ...row2];
 
+  useEffect(() => {
+    let frame = 0;
+    const schedulePosition = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const marquee = sectionRef.current;
+        const cta = document.querySelector<HTMLElement>("[data-hero-cta]");
+
+        if (!marquee || !cta) return;
+
+        const desiredTop = cta.getBoundingClientRect().bottom + HERO_CTA_GAP_PX;
+        const currentTop = marquee.getBoundingClientRect().top;
+        const nextOffset = Math.round(topOffset + desiredTop - currentTop);
+
+        setTopOffset((current) => (Math.abs(nextOffset - current) > 1 ? nextOffset : current));
+      });
+    };
+
+    schedulePosition();
+    const timers = [150, 500, 1000].map((delay) => window.setTimeout(schedulePosition, delay));
+    window.addEventListener("resize", schedulePosition);
+    window.addEventListener("orientationchange", schedulePosition);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      window.removeEventListener("resize", schedulePosition);
+      window.removeEventListener("orientationchange", schedulePosition);
+    };
+  }, [items.length, topOffset]);
+
   return (
-    <section className="relative -mt-48 sm:-mt-44 md:-mt-44 lg:-mt-[28rem] pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
+    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
       <div className="relative h-[180px] sm:h-[200px] md:h-[240px]">
 
 

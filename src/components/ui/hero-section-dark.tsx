@@ -112,6 +112,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
                         <a
                           href={ctaHref}
+                          data-hero-cta
                           className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
                         >
                           {ctaText}
