@@ -149,8 +149,8 @@ export default function AsciiMosaic({
       }
       ctx.restore();
 
-      // Bloom: subtle glow only
-      if (bloom > 0) {
+      // Bloom: subtle glow only (skip in light mode to prevent burn-out)
+      if (bloom > 0 && !isLight) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
         ctx.globalAlpha = (bloom / 100) * 0.12;
@@ -165,8 +165,10 @@ export default function AsciiMosaic({
           W / 2, H / 2, Math.min(W, H) * 0.35,
           W / 2, H / 2, Math.max(W, H) * 0.75
         );
-        grad.addColorStop(0, "rgba(0,0,0,0)");
-        grad.addColorStop(1, `rgba(0,0,0,${(vignette / 100) * 0.95})`);
+        const vColor = isLight ? "255,255,255" : "0,0,0";
+        const vAlpha = isLight ? (vignette / 100) * 0.5 : (vignette / 100) * 0.95;
+        grad.addColorStop(0, `rgba(${vColor},0)`);
+        grad.addColorStop(1, `rgba(${vColor},${vAlpha})`);
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
       }
