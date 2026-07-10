@@ -81,7 +81,7 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
-      <section ref={heroRef} className="relative overflow-hidden -mt-20">
+      <section ref={heroRef} className="relative overflow-hidden -mt-20 bg-[#050505]">
         <HeroSection
           title={c("badge", "home.badge")}
           subtitle={{
@@ -100,72 +100,72 @@ const Index = () => {
             darkLineColor: "hsl(185 60% 40%)",
           }}
         />
-      </section>
 
-      {/* ══════════ TRUSTED BY — dark horizon (like reference) ══════════ */}
-      <section className="relative bg-[#050505] overflow-hidden">
-        {/* Heading + logos */}
-        <div className="relative z-20 container mx-auto px-6 pt-20 md:pt-24 pb-4 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-display font-medium text-xl md:text-3xl leading-tight tracking-tight text-white/90"
-          >
-            <span className="block">Trusted by experts.</span>
-            <span className="block">Used by the leaders.</span>
-          </motion.h2>
+        {/* ── Trusted-by horizon: ends the hero ── */}
+        <div className="relative z-10 -mt-10 md:-mt-16">
+          {/* Heading + logos */}
+          <div className="relative z-20 container mx-auto px-6 pt-4 md:pt-6 pb-2 text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display font-medium text-xl md:text-3xl leading-tight tracking-tight text-white/90"
+            >
+              <span className="block">Trusted by experts.</span>
+              <span className="block">Used by the leaders.</span>
+            </motion.h2>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-x-10 md:gap-x-14 gap-y-6"
-          >
-            {[
-              { name: "Retool", Icon: LayoutGrid },
-              { name: "Vercel", Icon: Triangle },
-              { name: "Remote", Icon: Radio },
-              { name: "Arc", Icon: Compass },
-              { name: "Raycast", Icon: Zap },
-            ].map(({ name, Icon }) => (
-              <span
-                key={name}
-                className="inline-flex items-center gap-2 text-base md:text-lg font-display font-semibold text-white/85 hover:text-white transition-colors"
-              >
-                <Icon size={18} className="text-white" />
-                {name}
-              </span>
-            ))}
-          </motion.div>
-        </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="mt-8 md:mt-12 flex flex-wrap items-center justify-center gap-x-10 md:gap-x-14 gap-y-6"
+            >
+              {[
+                { name: "Retool", Icon: LayoutGrid },
+                { name: "Vercel", Icon: Triangle },
+                { name: "Remote", Icon: Radio },
+                { name: "Arc", Icon: Compass },
+                { name: "Raycast", Icon: Zap },
+              ].map(({ name, Icon }) => (
+                <span
+                  key={name}
+                  className="inline-flex items-center gap-2 text-base md:text-lg font-display font-semibold text-white/85 hover:text-white transition-colors"
+                >
+                  <Icon size={18} className="text-white" />
+                  {name}
+                </span>
+              ))}
+            </motion.div>
+          </div>
 
-        {/* Purple horizon glow */}
-        <div className="relative h-[180px] md:h-[240px] -mt-6">
-          {/* radial glow above the curve */}
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 h-full"
-            style={{
-              background:
-                "radial-gradient(ellipse 55% 90% at 50% 100%, hsl(265 85% 55% / 0.55), hsl(265 85% 55% / 0.15) 45%, transparent 70%)",
-            }}
-          />
-          {/* the curved horizon */}
-          <div className="absolute inset-x-0 bottom-0 h-full overflow-hidden">
+          {/* Purple horizon glow — hero's closing curve */}
+          <div className="relative h-[180px] md:h-[240px] -mt-6">
             <div
-              className="absolute left-1/2 -translate-x-1/2 top-1/2 w-[200%] aspect-[4/1] rounded-[50%]"
+              className="pointer-events-none absolute inset-x-0 top-0 h-full"
               style={{
-                borderTop: "1px solid rgba(255,255,255,0.35)",
-                boxShadow:
-                  "0 -8px 40px 0 hsl(265 85% 55% / 0.5), 0 -1px 0 0 rgba(255,255,255,0.15)",
                 background:
-                  "radial-gradient(ellipse at 50% 0%, hsl(0 0% 8%) 0%, hsl(0 0% 4%) 60%)",
+                  "radial-gradient(ellipse 55% 90% at 50% 100%, hsl(265 85% 55% / 0.55), hsl(265 85% 55% / 0.15) 45%, transparent 70%)",
               }}
             />
+            <div className="absolute inset-x-0 bottom-0 h-full overflow-hidden">
+              <div
+                className="absolute left-1/2 -translate-x-1/2 top-1/2 w-[200%] aspect-[4/1] rounded-[50%]"
+                style={{
+                  borderTop: "1px solid rgba(255,255,255,0.35)",
+                  boxShadow:
+                    "0 -8px 40px 0 hsl(265 85% 55% / 0.5), 0 -1px 0 0 rgba(255,255,255,0.15)",
+                  background:
+                    "radial-gradient(ellipse at 50% 0%, hsl(0 0% 8%) 0%, hsl(0 0% 4%) 60%)",
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
+
+
 
 
 
