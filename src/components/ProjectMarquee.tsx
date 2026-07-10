@@ -41,7 +41,7 @@ export default function ProjectMarquee() {
       {/* Row 1 — thin, scrolls left */}
       <div className="relative h-[180px] md:h-[220px]">
         <div className="flex marquee-left w-max h-full items-center">
-          {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} idx={i} />)}
+          {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
         </div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
@@ -50,7 +50,7 @@ export default function ProjectMarquee() {
       {/* Row 2 — thin, scrolls right */}
       <div className="relative h-[180px] md:h-[220px] mt-4">
         <div className="flex marquee-right w-max h-full items-center">
-          {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} idx={i + 3} />)}
+          {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
