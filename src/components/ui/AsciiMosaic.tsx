@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
+import { useTheme } from "next-themes";
 
 interface AsciiMosaicProps {
-  src: string;
+  src?: string;
+  srcLight?: string;
+  srcDark?: string;
   className?: string;
   cellSize?: number;
   brightness?: number; // -100..100
@@ -16,6 +19,8 @@ interface AsciiMosaicProps {
 
 export default function AsciiMosaic({
   src,
+  srcLight,
+  srcDark,
   className,
   cellSize = 16,
   brightness = 12,
@@ -29,15 +34,17 @@ export default function AsciiMosaic({
 }: AsciiMosaicProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+  const { resolvedTheme } = useTheme();
+  const activeSrc = (resolvedTheme === "light" ? srcLight : srcDark) || src || srcDark || srcLight || "";
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const wrap = wrapRef.current;
-    if (!canvas || !wrap) return;
+    if (!canvas || !wrap || !activeSrc) return;
 
     const img = new Image();
     img.crossOrigin = "anonymous";
-    img.src = src;
+    img.src = activeSrc;
 
     let raf = 0;
     let mounted = true;
@@ -179,7 +186,7 @@ export default function AsciiMosaic({
       ro.disconnect();
       img.removeEventListener("load", onLoad);
     };
-  }, [src, cellSize, brightness, contrast, vignette, bloom, animSpeed, animIntensity, animStyle, bgOpacity]);
+  }, [activeSrc, cellSize, brightness, contrast, vignette, bloom, animSpeed, animIntensity, animStyle, bgOpacity]);
 
   return (
     <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", aspectRatio: "3 / 2" }}>
