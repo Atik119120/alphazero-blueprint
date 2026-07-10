@@ -99,43 +99,44 @@ const Index = () => {
 
       </section>
 
-      {/* ══════════ SPARKLES ARC — dome under hero ══════════ */}
-      <section className="relative -mt-40 md:-mt-56 h-[380px] md:h-[500px] overflow-hidden bg-background">
-        {/* Sparkles field masked as a dome */}
+      {/* ══════════ SPARKLES ARC — horizon under hero ══════════ */}
+      <section className="relative -mt-24 md:-mt-32 h-[320px] md:h-[380px] overflow-hidden bg-background">
+        {/* Sparkles concentrated in the upper half, fading out toward the arc */}
         <div
-          className="pointer-events-none absolute inset-x-0 -top-1/2 h-[200%]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[70%]"
           style={{
             WebkitMaskImage:
-              "radial-gradient(ellipse 70% 45% at 50% 55%, black 40%, transparent 72%)",
+              "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
             maskImage:
-              "radial-gradient(ellipse 70% 45% at 50% 55%, black 40%, transparent 72%)",
+              "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
           }}
         >
           <SparklesFx
             className="absolute inset-0 w-full h-full"
-            color="hsl(var(--primary))"
-            density={900}
-            size={1.6}
-            speed={0.6}
-            opacity={1}
+            color="#ffffff"
+            density={700}
+            size={1.4}
+            speed={0.5}
+            opacity={0.9}
           />
         </div>
 
-        {/* Curved arc line (the horizon glow) */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] overflow-hidden">
+        {/* Curved arc line — the horizon */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] overflow-hidden">
           <div
-            className="absolute left-1/2 -translate-x-1/2 bottom-[10%] w-[180%] aspect-[3/1] rounded-[50%] border-t"
+            className="absolute left-1/2 -translate-x-1/2 top-0 w-[220%] aspect-[4/1] rounded-[50%]"
             style={{
-              borderColor: "hsl(var(--primary) / 0.55)",
+              borderTop: "1px solid hsl(var(--primary) / 0.5)",
               boxShadow:
-                "0 -1px 40px 0 hsl(var(--primary) / 0.35), inset 0 20px 60px -20px hsl(var(--primary) / 0.25)",
+                "0 -2px 30px 0 hsl(var(--primary) / 0.25)",
             }}
           />
         </div>
 
         {/* Top fade blends into hero */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent" />
       </section>
+
 
 
 
