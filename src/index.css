@@ -347,10 +347,10 @@
     100% { transform: translateX(0); }
   }
   .marquee-left {
-    animation: marquee-scroll-left 45s linear infinite;
+    animation: marquee-scroll-left 120s linear infinite;
   }
   .marquee-right {
-    animation: marquee-scroll-right 50s linear infinite;
+    animation: marquee-scroll-right 130s linear infinite;
   }
   /* marquee runs continuously — no pause on hover */
 }
