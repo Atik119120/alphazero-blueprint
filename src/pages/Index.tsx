@@ -142,7 +142,7 @@ const Index = () => {
         </div>
 
         {/* Purple horizon glow */}
-        <div className="relative h-[260px] md:h-[340px] mt-6">
+        <div className="relative h-[180px] md:h-[240px] -mt-6">
           {/* radial glow above the curve */}
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-full"
