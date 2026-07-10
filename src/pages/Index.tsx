@@ -32,6 +32,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
 import { useTheme } from "next-themes";
+import designShowcase from "@/assets/design-showcase.png.asset.json";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -91,7 +92,7 @@ const Index = () => {
           description={c("description", "home.description")}
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
-          bottomImage={undefined}
+          bottomImage={{ light: designShowcase.url, dark: designShowcase.url }}
           gridOptions={{
             angle: 65,
             opacity: 0.35,
