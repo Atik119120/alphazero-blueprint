@@ -462,7 +462,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.startProject": "প্রজেক্ট শুরু করুন",
     
     // Home Page
-    "home.badge": "ক্রিয়েটিভ ডিজাইন ও আইটি এজেন্সি",
+    "home.badge": "✦ পুরস্কারপ্রাপ্ত ডিজাইন ও ডিজিটাল স্টুডিও",
     "home.title1": "প্রতিটি আইডিয়া শুরু হয়",
     "home.title2": "শূন্য থেকে",
     "home.tagline": "শূন্য থেকে প্রভাব",
