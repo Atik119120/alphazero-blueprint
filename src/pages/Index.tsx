@@ -96,18 +96,6 @@ const Index = () => {
           }}
         />
 
-        {/* Animated tagline + secondary CTA overlay */}
-        <div className="container mx-auto px-6 -mt-16 pb-20 relative z-10">
-          <div className="max-w-4xl mx-auto text-center flex flex-col items-center gap-6">
-            <ContainerTextFlip
-              words={["Creative Design", "Web Development", "Brand Building", "SEO Optimization", "UI/UX Design"]}
-              interval={3000}
-              variant="glass"
-              animationDuration={700}
-            />
-
-          </div>
-        </div>
       </section>
 
 
