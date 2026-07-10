@@ -76,7 +76,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
   ) => {
     return (
       <div className={cn("relative", className)} ref={ref} {...props}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-[0] h-[600px] w-[900px] max-w-full bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.25),transparent_65%)] blur-2xl pointer-events-none" />
+        <div className="absolute top-0 z-[0] h-screen w-screen bg-primary/10 dark:bg-primary/20 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,hsl(var(--primary)/0.35),transparent)]" />
         <section className="relative max-w-full mx-auto z-1">
           <RetroGrid {...gridOptions} />
           <div className="max-w-screen-xl z-10 mx-auto px-4 py-28 gap-12 md:px-8">
