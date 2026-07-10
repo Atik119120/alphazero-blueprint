@@ -40,18 +40,19 @@ const extras: Item[] = [
 
 const Card = ({ item }: { item: Item }) => {
   return (
-    <div className="group relative shrink-0 h-full rounded-2xl overflow-hidden mx-2 shadow-md bg-white">
+    <div className="group relative shrink-0 h-full aspect-square rounded-2xl overflow-hidden mx-2 shadow-md bg-white">
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
         loading="lazy"
         referrerPolicy="no-referrer"
-        className="block h-full w-auto max-w-none object-contain transition-transform duration-700 group-hover:scale-105"
+        className="block h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
         onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'; }}
       />
     </div>
   );
 };
+
 
 export default function ProjectMarquee() {
   const { data: works } = useWorks();
@@ -89,8 +90,9 @@ export default function ProjectMarquee() {
   const dup2 = [...row2, ...row2, ...row2];
 
   return (
-    <section className="relative -mt-16 sm:-mt-40 md:-mt-56 pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
-      <div className="relative h-[140px] sm:h-[180px] md:h-[220px]">
+    <section className="relative -mt-24 sm:-mt-40 md:-mt-56 pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
+      <div className="relative h-[180px] sm:h-[200px] md:h-[240px]">
+
 
         <div className="flex marquee-left w-max h-full items-center">
           {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
@@ -99,7 +101,7 @@ export default function ProjectMarquee() {
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
       </div>
 
-      <div className="relative h-[140px] sm:h-[180px] md:h-[220px] mt-3 sm:mt-4">
+      <div className="relative h-[180px] sm:h-[200px] md:h-[240px] mt-4">
         <div className="flex marquee-right w-max h-full items-center">
           {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
