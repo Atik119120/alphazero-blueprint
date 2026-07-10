@@ -352,9 +352,7 @@
   .marquee-right {
     animation: marquee-scroll-right 50s linear infinite;
   }
-  .marquee-left:hover, .marquee-right:hover {
-    animation-play-state: paused;
-  }
+  /* marquee runs continuously — no pause on hover */
 }
 
 /* Add bottom padding to body on mobile for bottom nav */
