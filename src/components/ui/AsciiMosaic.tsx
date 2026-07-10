@@ -50,14 +50,19 @@ export default function AsciiMosaic({
   const { resolvedTheme } = useTheme();
   const activeSrc = (resolvedTheme === "light" ? srcLight : srcDark) || src || srcDark || srcLight || "";
 
+  // Warm the cache for both themes so switching is instant
+  useEffect(() => {
+    if (srcLight) loadImg(srcLight);
+    if (srcDark) loadImg(srcDark);
+    if (src) loadImg(src);
+  }, [srcLight, srcDark, src]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const wrap = wrapRef.current;
     if (!canvas || !wrap || !activeSrc) return;
 
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = activeSrc;
+    const img = loadImg(activeSrc);
 
     let raf = 0;
     let mounted = true;
