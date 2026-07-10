@@ -106,13 +106,6 @@ const Index = () => {
               animationDuration={700}
             />
 
-            <Link
-              to="/work"
-              className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/40 backdrop-blur-md px-8 py-3.5 text-sm font-semibold text-foreground hover:border-primary/40 hover:bg-primary/5 transition-colors"
-            >
-              {c("cta2", "home.cta2")}
-              <ArrowRight size={16} className="opacity-70 group-hover:translate-x-1 transition-transform" />
-            </Link>
           </div>
         </div>
       </section>
