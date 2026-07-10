@@ -81,6 +81,10 @@ export default {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
+        "grid": {
+          "0%": { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -89,6 +93,7 @@ export default {
         
         "fade-up": "fade-up 0.6s ease-out forwards",
         "spin-slow": "spin-slow 3s linear infinite",
+        "grid": "grid 15s linear infinite",
       },
     },
   },
