@@ -28,6 +28,7 @@ import { HeroSection } from "@/components/ui/hero-section-dark";
 import { Sparkles as SparklesFx } from "@/components/ui/sparkles";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
+import ProjectMarquee from "@/components/ProjectMarquee";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
