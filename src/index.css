@@ -37,6 +37,9 @@
 
 @layer base {
   :root {
+    --gradient-color: #8350e8;
+    --sparkles-color: #8350e8;
+
     --background: 210 25% 97%;
     --foreground: 215 25% 10%;
 
@@ -85,6 +88,9 @@
   }
 
   .dark {
+    --gradient-color: #8350e8;
+    --sparkles-color: #ffffff;
+
     --background: 220 15% 4%;
     --foreground: 0 0% 98%;
     --card: 220 15% 7%;
