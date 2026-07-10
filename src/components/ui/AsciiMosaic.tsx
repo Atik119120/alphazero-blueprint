@@ -148,8 +148,8 @@ export default function AsciiMosaic({
       if (bloom > 0) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        ctx.globalAlpha = (bloom / 100) * 0.55;
-        ctx.filter = `blur(${8 * dpr}px) brightness(1.3)`;
+        ctx.globalAlpha = (bloom / 100) * 0.25;
+        ctx.filter = `blur(${3 * dpr}px) brightness(1.2)`;
         ctx.drawImage(canvas, 0, 0);
         ctx.restore();
       }
