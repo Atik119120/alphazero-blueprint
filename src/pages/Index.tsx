@@ -401,7 +401,7 @@ const TrustedByExperts = () => {
   const sparkleColor = isDark ? "#ffffff" : "#8350e8";
 
   return (
-    <div className="relative isolate z-10 -mt-6 min-h-[560px] overflow-hidden bg-[#050505] md:-mt-12 md:min-h-[640px]">
+    <div className="relative isolate z-10 -mt-6 min-h-[700px] overflow-hidden bg-[#050505] md:-mt-12 md:min-h-[760px]">
       <SparklesFx
         density={900}
         speed={0.45}
@@ -428,7 +428,7 @@ const TrustedByExperts = () => {
       />
 
       <div
-        className="pointer-events-none absolute inset-x-0 top-[150px] mx-auto h-[260px] max-w-[1180px]"
+        className="pointer-events-none absolute inset-x-0 top-[165px] mx-auto h-[300px] max-w-[1180px]"
         style={{
           background:
             "radial-gradient(ellipse 52% 62% at 50% 46%, rgba(131,80,232,0.46) 0%, rgba(131,80,232,0.2) 38%, rgba(5,5,5,0) 74%)",
@@ -451,7 +451,7 @@ const TrustedByExperts = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.12 }}
-          className="mx-auto mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-x-10 gap-y-5 md:gap-x-12"
+        className="mx-auto mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-x-10 gap-y-5 md:gap-x-12"
         >
           <Retool />
           <Vercel />
@@ -461,9 +461,9 @@ const TrustedByExperts = () => {
         </motion.div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-[285px] h-[245px] overflow-hidden md:top-[305px] md:h-[280px]">
+      <div className="pointer-events-none absolute inset-x-0 top-[330px] h-[315px] overflow-hidden md:top-[345px] md:h-[340px]">
         <div
-          className="absolute left-1/2 top-[16px] aspect-[4/1] w-[1700px] max-w-[190vw] -translate-x-1/2 rounded-[50%] md:w-[1820px]"
+          className="absolute left-1/2 top-[20px] aspect-[4/1] w-[1900px] max-w-[220vw] -translate-x-1/2 rounded-[50%] md:w-[2050px]"
           style={{
             background:
               "radial-gradient(ellipse at 50% 0%, rgba(22,22,26,0.98) 0%, rgba(11,11,13,0.98) 58%, rgba(5,5,5,1) 100%)",
