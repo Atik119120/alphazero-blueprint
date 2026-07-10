@@ -90,7 +90,7 @@ export default function ProjectMarquee() {
   const dup2 = [...row2, ...row2, ...row2];
 
   return (
-    <section className="relative -mt-32 sm:-mt-28 md:-mt-28 lg:-mt-[28rem] pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
+    <section className="relative -mt-48 sm:-mt-44 md:-mt-44 lg:-mt-[28rem] pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
       <div className="relative h-[180px] sm:h-[200px] md:h-[240px]">
 
 
