@@ -6,26 +6,15 @@ function isGraphics(w: Work) {
   return c === "design" || c === "graphics" || c.startsWith("graphics_");
 }
 
-// Fixed widths — keeps ONE row height, cards vary in width (small ↔ big)
-const widths = [
-  "w-[160px] md:w-[200px]",  // sm
-  "w-[240px] md:w-[300px]",  // md
-  "w-[340px] md:w-[440px]",  // lg
-  "w-[200px] md:w-[260px]",  // sm+
-  "w-[280px] md:w-[360px]",  // md+
-  "w-[400px] md:w-[520px]",  // xl
-];
-
-const Card = ({ item, idx }: { item: Work; idx: number }) => {
-  const width = widths[idx % widths.length];
+const Card = ({ item }: { item: Work }) => {
   return (
-    <div className={`group relative shrink-0 h-full ${width} rounded-2xl overflow-hidden mx-2 shadow-md bg-white`}>
+    <div className="group relative shrink-0 h-full rounded-2xl overflow-hidden mx-2 shadow-md bg-white">
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
         loading="lazy"
         referrerPolicy="no-referrer"
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        className="block h-full w-auto max-w-none object-contain transition-transform duration-700 group-hover:scale-105"
         onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'; }}
       />
     </div>
@@ -52,7 +41,7 @@ export default function ProjectMarquee() {
       {/* Row 1 — thin, scrolls left */}
       <div className="relative h-[180px] md:h-[220px]">
         <div className="flex marquee-left w-max h-full items-center">
-          {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} idx={i} />)}
+          {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
         </div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
@@ -61,7 +50,7 @@ export default function ProjectMarquee() {
       {/* Row 2 — thin, scrolls right */}
       <div className="relative h-[180px] md:h-[220px] mt-4">
         <div className="flex marquee-right w-max h-full items-center">
-          {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} idx={i + 3} />)}
+          {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
         <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
