@@ -28,18 +28,6 @@ const Card = ({ item, idx }: { item: Work; idx: number }) => {
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'; }}
       />
-      {item.category && (
-        <div className="absolute top-3 left-3">
-          <span className="text-[9px] uppercase tracking-[0.25em] text-white font-semibold px-2 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20">
-            {item.category.replace(/_/g, ' ')}
-          </span>
-        </div>
-      )}
-      <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
-        <h3 className="font-display text-sm md:text-base font-semibold text-white tracking-tight line-clamp-1">
-          {item.title}
-        </h3>
-      </div>
     </div>
   );
 };
