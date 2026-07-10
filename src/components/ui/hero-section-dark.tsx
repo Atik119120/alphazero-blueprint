@@ -76,9 +76,22 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
   ) => {
     return (
       <div className={cn("relative", className)} ref={ref} {...props}>
-        <div className="absolute top-0 z-[0] h-screen w-screen bg-primary/10 dark:bg-primary/20 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,hsl(var(--primary)/0.35),transparent)]" />
         <section className="relative max-w-full mx-auto z-1">
-          <div className="max-w-screen-xl z-10 mx-auto px-4 pt-40 pb-12 md:pt-56 md:pb-14 lg:pt-60 lg:pb-16 gap-12 md:px-8">
+          <div className="max-w-screen-xl z-10 mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-14 lg:pt-44 lg:pb-16 gap-12 md:px-8">
+            {bottomImage && (
+              <div className="mb-12 relative z-10 w-full">
+                <img
+                  src={bottomImage.light}
+                  className="w-full h-auto dark:hidden"
+                  alt="Design showcase"
+                />
+                <img
+                  src={bottomImage.dark}
+                  className="hidden w-full h-auto dark:block"
+                  alt="Design showcase"
+                />
+              </div>
+            )}
             <div className="space-y-7 max-w-6xl leading-0 lg:leading-5 mx-auto text-center">
               <h1 className="text-sm text-foreground/80 group font-geist mx-auto px-5 py-2 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit">
                 {title}
@@ -107,20 +120,6 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 </span>
               </div>
             </div>
-            {bottomImage && (
-              <div className="mt-20 relative z-10 w-full">
-                <img
-                  src={bottomImage.light}
-                  className="w-full h-auto shadow-2xl rounded-none dark:hidden"
-                  alt="Design showcase"
-                />
-                <img
-                  src={bottomImage.dark}
-                  className="hidden w-full h-auto shadow-2xl rounded-none dark:block"
-                  alt="Design showcase"
-                />
-              </div>
-            )}
           </div>
         </section>
       </div>
