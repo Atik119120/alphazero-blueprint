@@ -76,7 +76,7 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
-      <section ref={heroRef} className="relative overflow-hidden -mt-20 pt-20">
+      <section ref={heroRef} className="relative overflow-hidden -mt-20">
         <HeroSection
           title={c("badge", "home.badge")}
           subtitle={{
