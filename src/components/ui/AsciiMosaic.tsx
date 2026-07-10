@@ -46,7 +46,9 @@ export default function AsciiMosaic({
   animIntensity = 60,
   animStyle = "wave",
   bgOpacity = 90,
+  aspectRatio,
 }: AsciiMosaicProps) {
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
