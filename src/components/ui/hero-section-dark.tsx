@@ -77,50 +77,54 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     return (
       <div className={cn("relative", className)} ref={ref} {...props}>
         <section className="relative max-w-full mx-auto z-1">
-          <div className="max-w-screen-xl z-10 mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-14 lg:pt-44 lg:pb-16 gap-12 md:px-8">
-            {bottomImage && (
-              <div className="mb-12 relative z-10 w-full">
-                <img
-                  src={bottomImage.light}
-                  className="w-full h-auto dark:hidden"
-                  alt="Design showcase"
-                />
-                <img
-                  src={bottomImage.dark}
-                  className="hidden w-full h-auto dark:block"
-                  alt="Design showcase"
-                />
-              </div>
-            )}
-            <div className="space-y-7 max-w-6xl leading-0 lg:leading-5 mx-auto text-center">
-              <h1 className="text-sm text-foreground/80 group font-geist mx-auto px-5 py-2 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit">
-                {title}
-                <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
-              </h1>
-              <h2 className="text-4xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-6xl lg:text-7xl lg:whitespace-nowrap bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.75)_100%)]">
-                {subtitle.regular}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
-                  {subtitle.gradient}
-                </span>
-              </h2>
-              <p className="max-w-2xl mx-auto text-muted-foreground text-lg md:text-xl">
-                {description}
-              </p>
-              <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
-                <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
-                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
-                  <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
-                    <a
-                      href={ctaHref}
-                      className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
-                    >
-                      {ctaText}
-                    </a>
+          {bottomImage && (
+            <div className="relative w-full">
+              <img
+                src={bottomImage.light}
+                className="w-full h-auto dark:hidden"
+                alt="Design showcase"
+              />
+              <img
+                src={bottomImage.dark}
+                className="hidden w-full h-auto dark:block"
+                alt="Design showcase"
+              />
+              {/* dark overlay for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/30 to-background/80" />
+
+              {/* Overlayed text + button */}
+              <div className="absolute inset-0 flex items-center justify-center px-4">
+                <div className="space-y-6 max-w-6xl leading-0 lg:leading-5 mx-auto text-center">
+                  <h1 className="text-sm text-foreground/90 group font-geist mx-auto px-5 py-2 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
+                    {title}
+                    <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
+                  </h1>
+                  <h2 className="text-3xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-5xl lg:text-6xl lg:whitespace-nowrap bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.75)_100%)] drop-shadow-2xl">
+                    {subtitle.regular}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
+                      {subtitle.gradient}
+                    </span>
+                  </h2>
+                  <p className="max-w-2xl mx-auto text-foreground/90 text-base md:text-lg drop-shadow-lg">
+                    {description}
+                  </p>
+                  <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
+                    <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
+                      <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
+                      <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
+                        <a
+                          href={ctaHref}
+                          className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
+                        >
+                          {ctaText}
+                        </a>
+                      </div>
+                    </span>
                   </div>
-                </span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
       </div>
     )
