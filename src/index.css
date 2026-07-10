@@ -361,3 +361,14 @@
     padding-bottom: 80px;
   }
 }
+/* Swiper pagination theming */
+.testimonials-swiper .swiper-pagination-bullet {
+  background: hsl(var(--muted-foreground));
+  opacity: 0.4;
+}
+.testimonials-swiper .swiper-pagination-bullet-active {
+  background: hsl(var(--primary));
+  opacity: 1;
+  width: 22px;
+  border-radius: 999px;
+}
