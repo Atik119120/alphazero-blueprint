@@ -62,9 +62,17 @@ export default function ProjectMarquee() {
       title: w.title,
     }));
     const merged = [...g, ...extras];
-    // deterministic shuffle for variety without hydration jumps
+    // hash-based deterministic shuffle so new & old items are spread out
+    const hash = (s: string) => {
+      let h = 2166136261;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0) / 4294967295;
+    };
     const seeded = merged
-      .map((it, i) => ({ it, k: ((i * 9301 + 49297) % 233280) / 233280 }))
+      .map((it) => ({ it, k: hash(it.id) }))
       .sort((a, b) => a.k - b.k)
       .map((x) => x.it);
     return seeded.length ? seeded : extras;
