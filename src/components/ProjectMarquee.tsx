@@ -89,7 +89,7 @@ export default function ProjectMarquee() {
   const dup2 = [...row2, ...row2, ...row2];
 
   return (
-    <section className="relative -mt-96 md:-mt-[28rem] pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
+    <section className="relative -mt-[26rem] md:-mt-[32rem] pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
       <div className="relative h-[180px] md:h-[220px]">
         <div className="flex marquee-left w-max h-full items-center">
           {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
