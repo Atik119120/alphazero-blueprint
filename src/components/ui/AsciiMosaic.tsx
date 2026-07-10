@@ -90,8 +90,9 @@ export default function AsciiMosaic({
       const dx = (W - dw) / 2;
       const dy = (H - dh) / 2;
 
-      // Solid black background — gaps between mosaic tiles stay black
-      ctx.fillStyle = "#000";
+      // Background — white in light mode, black in dark mode
+      const isLight = resolvedTheme === "light";
+      ctx.fillStyle = isLight ? "#ffffff" : "#000000";
       ctx.fillRect(0, 0, W, H);
 
       // Sample downscaled image at cell grid resolution
