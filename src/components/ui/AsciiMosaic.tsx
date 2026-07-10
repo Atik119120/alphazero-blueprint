@@ -90,9 +90,9 @@ export default function AsciiMosaic({
       const dx = (W - dw) / 2;
       const dy = (H - dh) / 2;
 
-      // Background — white in light mode, black in dark mode
+      // Background — soft light in light mode, black in dark mode
       const isLight = resolvedTheme === "light";
-      ctx.fillStyle = isLight ? "#ffffff" : "#000000";
+      ctx.fillStyle = isLight ? "#f4f4f5" : "#000000";
       ctx.fillRect(0, 0, W, H);
 
       // Sample downscaled image at cell grid resolution
