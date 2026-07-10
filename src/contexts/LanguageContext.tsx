@@ -22,7 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.startProject": "Start a Project",
     
     // Home Page
-    "home.badge": "✦ Award-Winning Design & Digital Studio",
+    "home.badge": "✦ Crafting Bold Brands Since Day Zero",
     "home.title1": "Starting every idea from",
     "home.title2": "zero",
     "home.tagline": "From zero to impact",
