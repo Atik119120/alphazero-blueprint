@@ -37,11 +37,12 @@ export function Sparkles({
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setIsReady(true);
-    });
+    if (!enginePromise) {
+      enginePromise = initParticlesEngine(async (engine) => {
+        await loadSlim(engine);
+      });
+    }
+    enginePromise.then(() => setIsReady(true));
   }, []);
 
   const id = useId();
