@@ -6,13 +6,20 @@ function isGraphics(w: Work) {
   return c === "design" || c === "graphics" || c.startsWith("graphics_");
 }
 
-// Fallback aspect ratios for varied widths — keeps a thin, consistent row height
-const ratios = ["aspect-[4/3]", "aspect-[1/1]", "aspect-[16/10]", "aspect-[3/4]", "aspect-[5/4]", "aspect-[3/2]"];
+// Fixed widths — keeps ONE row height, cards vary in width (small ↔ big)
+const widths = [
+  "w-[160px] md:w-[200px]",  // sm
+  "w-[240px] md:w-[300px]",  // md
+  "w-[340px] md:w-[440px]",  // lg
+  "w-[200px] md:w-[260px]",  // sm+
+  "w-[280px] md:w-[360px]",  // md+
+  "w-[400px] md:w-[520px]",  // xl
+];
 
 const Card = ({ item, idx }: { item: Work; idx: number }) => {
-  const ratio = ratios[idx % ratios.length];
+  const width = widths[idx % widths.length];
   return (
-    <div className={`group relative shrink-0 h-full ${ratio} rounded-2xl overflow-hidden mx-2 border border-border/50 shadow-md bg-white`}>
+    <div className={`group relative shrink-0 h-full ${width} rounded-2xl overflow-hidden mx-2 border border-border/60 shadow-md bg-white`}>
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
