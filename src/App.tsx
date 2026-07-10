@@ -9,6 +9,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
+import SmoothScroll from "@/components/SmoothScroll";
 
 // Preload logos immediately
 import logoSrc from "@/assets/logo.png";
@@ -100,6 +101,7 @@ function AppContent() {
   return (
     <>
       {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
+      {!isLmsRoute && <SmoothScroll />}
       <ScrollToTop />
       
       {/* Lazy load chatbot */}
