@@ -101,7 +101,7 @@ const Index = () => {
           }}
         />
 
-        <TrustedByExperts />
+        
       </section>
 
 
