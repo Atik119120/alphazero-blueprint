@@ -61,21 +61,21 @@ export default function ProjectMarquee() {
       image_url: w.image_url || "/placeholder.svg",
       title: w.title,
     }));
-    // Interleave extras with graphics works so posters spread across both rows
-    const merged: Item[] = [];
-    const maxLen = Math.max(g.length, extras.length);
-    for (let i = 0; i < maxLen; i++) {
-      if (i < g.length) merged.push(g[i]);
-      if (i < extras.length) merged.push(extras[i]);
-    }
-    return merged.length ? merged : extras;
+    const merged = [...g, ...extras];
+    // deterministic shuffle for variety without hydration jumps
+    const seeded = merged
+      .map((it, i) => ({ it, k: ((i * 9301 + 49297) % 233280) / 233280 }))
+      .sort((a, b) => a.k - b.k)
+      .map((x) => x.it);
+    return seeded.length ? seeded : extras;
   }, [works]);
 
   if (items.length === 0) return null;
 
-  const mid = Math.ceil(items.length / 2);
-  const row1 = items.slice(0, mid);
-  const row2 = items.slice(mid).concat(items.slice(0, Math.max(0, mid - (items.length - mid))));
+  // alternate items into two rows so each row shows different images
+  const row1: Item[] = [];
+  const row2: Item[] = [];
+  items.forEach((it, i) => (i % 2 === 0 ? row1 : row2).push(it));
 
   const dup1 = [...row1, ...row1, ...row1];
   const dup2 = [...row2, ...row2, ...row2];
