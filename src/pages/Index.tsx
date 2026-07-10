@@ -17,7 +17,8 @@ import {
   Quote,
   MessageCircle,
   Zap,
-  CheckCircle2
+  CheckCircle2,
+  ChevronRight
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
 import { Link } from "react-router-dom";
