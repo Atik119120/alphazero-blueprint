@@ -86,13 +86,13 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
 
               {/* Overlayed text + button */}
-              <div className="absolute inset-0 flex items-start justify-center px-4 pt-[16%] md:pt-[12%]">
-                <div className="space-y-7 max-w-6xl leading-0 lg:leading-5 mx-auto text-center">
-                  <h1 className="text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
+              <div className="absolute inset-0 flex items-start justify-center px-4 pt-[22%] sm:pt-[16%] md:pt-[12%]">
+                <div className="space-y-4 sm:space-y-7 max-w-6xl leading-tight lg:leading-5 mx-auto text-center">
+                  <h1 className="text-[11px] sm:text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
                     {title}
                     <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
                   </h1>
-                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl whitespace-nowrap">
+                  <h2 className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl sm:whitespace-nowrap">
                     <span className="bg-clip-text text-transparent bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.7)_100%)]">
                       {subtitle.regular}
                     </span>
@@ -100,9 +100,10 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       {subtitle.gradient}
                     </span>
                   </h2>
-                  <p className="max-w-3xl mx-auto text-foreground/90 text-lg md:text-2xl drop-shadow-lg">
+                  <p className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
                     {description}
                   </p>
+
                   <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
                     <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
                       <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
