@@ -81,32 +81,29 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement);
 
     React.useEffect(() => {
-      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
       const root = innerRef.current;
       if (!root) return;
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
       const ctx = gsap.context(() => {
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-        tl.from("[data-hero-badge]", { y: 20, opacity: 0, duration: 0.6 })
-          .from("[data-hero-title] .hero-word", {
-            y: 40,
-            opacity: 0,
+        const targets = ["[data-hero-badge]", "[data-hero-title]", "[data-hero-desc]", "[data-hero-cta]"];
+        gsap.fromTo(
+          targets,
+          { y: 24, autoAlpha: 0 },
+          {
+            y: 0,
+            autoAlpha: 1,
             duration: 0.7,
-            stagger: 0.06,
-          }, "-=0.3")
-          .from("[data-hero-desc]", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
-          .from("[data-hero-cta]", { y: 15, opacity: 0, scale: 0.9, duration: 0.5, ease: "back.out(1.6)" }, "-=0.3");
+            ease: "power3.out",
+            stagger: 0.12,
+            clearProps: "transform,opacity,visibility",
+          }
+        );
       }, root);
       return () => ctx.revert();
     }, []);
 
-    const splitWords = (text: string) =>
-      text.split(/(\s+)/).map((chunk, i) =>
-        /\s+/.test(chunk) ? (
-          <span key={i}>{chunk}</span>
-        ) : (
-          <span key={i} className="hero-word inline-block">{chunk}</span>
-        )
-      );
+    const splitWords = (text: string) => text;
 
     return (
       <div className={cn("relative", className)} ref={innerRef} {...props}>
