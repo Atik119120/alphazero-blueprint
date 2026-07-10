@@ -80,10 +80,11 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       <div className={cn("relative", className)} ref={ref} {...props}>
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
-            <div className="relative w-full min-h-[85vh] sm:min-h-0">
-              <AsciiMosaic srcLight={bottomImage.light} srcDark={bottomImage.dark} className="w-full h-full" cellSize={5} bloom={0} bgOpacity={0} animIntensity={20} />
+            <div className="relative w-full">
+              <AsciiMosaic srcLight={bottomImage.light} srcDark={bottomImage.dark} className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2]" cellSize={5} bloom={0} bgOpacity={0} animIntensity={20} aspectRatio="auto" />
               {/* dark overlay for text readability */}
-              <div className="absolute inset-x-0 bottom-0 h-1/2 sm:h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+
 
 
               {/* Overlayed text + button */}
