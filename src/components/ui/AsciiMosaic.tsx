@@ -28,7 +28,9 @@ interface AsciiMosaicProps {
   animIntensity?: number; // 0..100
   animStyle?: "wave" | "pulse" | "shimmer" | "ripple" | "flicker";
   bgOpacity?: number; // 0..100
+  aspectRatio?: string;
 }
+
 
 export default function AsciiMosaic({
   src,
@@ -44,7 +46,9 @@ export default function AsciiMosaic({
   animIntensity = 60,
   animStyle = "wave",
   bgOpacity = 90,
+  aspectRatio,
 }: AsciiMosaicProps) {
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const { resolvedTheme } = useTheme();
@@ -212,8 +216,9 @@ export default function AsciiMosaic({
   }, [activeSrc, cellSize, brightness, contrast, vignette, bloom, animSpeed, animIntensity, animStyle, bgOpacity]);
 
   return (
-    <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", aspectRatio: "3 / 2" }}>
+    <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", ...(aspectRatio === "auto" ? {} : { aspectRatio: aspectRatio || "3 / 2" }) }}>
       <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: resolvedTheme === "light" ? "#d4d4d8" : "#000000" }} />
     </div>
+
   );
 }
