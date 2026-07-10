@@ -18,7 +18,11 @@ import {
   MessageCircle,
   Zap,
   CheckCircle2,
-  ChevronRight
+  ChevronRight,
+  LayoutGrid,
+  Triangle,
+  Radio,
+  Compass
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
 import { HeroSection } from "@/components/ui/hero-section-dark";
