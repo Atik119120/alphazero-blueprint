@@ -141,12 +141,12 @@ export default function AsciiMosaic({
       }
       ctx.restore();
 
-      // Bloom: draw a bright blurred pass on top
+      // Bloom: subtle glow only
       if (bloom > 0) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        ctx.globalAlpha = (bloom / 100) * 0.25;
-        ctx.filter = `blur(${3 * dpr}px) brightness(1.2)`;
+        ctx.globalAlpha = (bloom / 100) * 0.12;
+        ctx.filter = `blur(${1.5 * dpr}px) brightness(1.15)`;
         ctx.drawImage(canvas, 0, 0);
         ctx.restore();
       }
