@@ -90,8 +90,9 @@ export default function AsciiMosaic({
       const dx = (W - dw) / 2;
       const dy = (H - dh) / 2;
 
-      // Solid black background — gaps between mosaic tiles stay black
-      ctx.fillStyle = "#000";
+      // Background — white in light mode, black in dark mode
+      const isLight = resolvedTheme === "light";
+      ctx.fillStyle = isLight ? "#ffffff" : "#000000";
       ctx.fillRect(0, 0, W, H);
 
       // Sample downscaled image at cell grid resolution
@@ -190,7 +191,7 @@ export default function AsciiMosaic({
 
   return (
     <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", aspectRatio: "3 / 2" }}>
-      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: "#000" }} />
+      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: resolvedTheme === "light" ? "#ffffff" : "#000000" }} />
     </div>
   );
 }
