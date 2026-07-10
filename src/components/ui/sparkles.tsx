@@ -5,6 +5,8 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { ISourceOptions } from "@tsparticles/engine";
 
+let enginePromise: Promise<void> | null = null;
+
 interface SparklesProps {
   className?: string;
   size?: number;
