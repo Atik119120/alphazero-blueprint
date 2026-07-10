@@ -83,12 +83,14 @@ export default function AsciiMosaic({
       const dx = (W - dw) / 2;
       const dy = (H - dh) / 2;
 
-      // Draw background (blurred + brightness/contrast) faded
-      ctx.save();
-      ctx.globalAlpha = bgOpacity / 100 * 0.35;
-      ctx.filter = `brightness(${1 + brightness / 100}) contrast(${contrast}%) blur(18px)`;
-      ctx.drawImage(img, dx, dy, dw, dh);
-      ctx.restore();
+      // Draw background (very subtle, no blur so mosaic stays crisp)
+      if (bgOpacity > 0) {
+        ctx.save();
+        ctx.globalAlpha = (bgOpacity / 100) * 0.12;
+        ctx.filter = `brightness(${1 + brightness / 100}) contrast(${contrast}%)`;
+        ctx.drawImage(img, dx, dy, dw, dh);
+        ctx.restore();
+      }
 
       // Sample downscaled image at cell grid resolution
       const cs = cellSize * dpr;
@@ -146,8 +148,8 @@ export default function AsciiMosaic({
       if (bloom > 0) {
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        ctx.globalAlpha = (bloom / 100) * 0.55;
-        ctx.filter = `blur(${8 * dpr}px) brightness(1.3)`;
+        ctx.globalAlpha = (bloom / 100) * 0.25;
+        ctx.filter = `blur(${3 * dpr}px) brightness(1.2)`;
         ctx.drawImage(canvas, 0, 0);
         ctx.restore();
       }
