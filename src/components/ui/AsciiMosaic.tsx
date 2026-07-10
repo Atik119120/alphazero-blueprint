@@ -1,6 +1,19 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
+// Module-level image cache so theme toggles / remounts are instant
+const imgCache = new Map<string, HTMLImageElement>();
+const loadImg = (src: string): HTMLImageElement => {
+  let img = imgCache.get(src);
+  if (img) return img;
+  img = new Image();
+  img.crossOrigin = "anonymous";
+  img.decoding = "async";
+  img.src = src;
+  imgCache.set(src, img);
+  return img;
+};
+
 interface AsciiMosaicProps {
   src?: string;
   srcLight?: string;
