@@ -86,7 +86,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
 
               {/* Overlayed text + button */}
-              <div className="absolute inset-0 flex items-start justify-center px-4 pt-[18%] md:pt-[14%]">
+              <div className="absolute inset-0 flex items-start justify-center px-4 pt-[12%] md:pt-[9%]">
                 <div className="space-y-7 max-w-6xl leading-0 lg:leading-5 mx-auto text-center">
                   <h1 className="text-base md:text-lg text-foreground/95 group font-geist mx-auto px-6 py-2.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
                     {title}
