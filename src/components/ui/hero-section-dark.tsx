@@ -1,6 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ChevronRight } from "lucide-react"
+import gsap from "gsap"
 import AsciiMosaic from "./AsciiMosaic"
 
 
@@ -76,8 +77,39 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     },
     ref,
   ) => {
+    const innerRef = React.useRef<HTMLDivElement>(null);
+    React.useImperativeHandle(ref, () => innerRef.current as HTMLDivElement);
+
+    React.useEffect(() => {
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+      const root = innerRef.current;
+      if (!root) return;
+      const ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        tl.from("[data-hero-badge]", { y: 20, opacity: 0, duration: 0.6 })
+          .from("[data-hero-title] .hero-word", {
+            y: 40,
+            opacity: 0,
+            duration: 0.7,
+            stagger: 0.06,
+          }, "-=0.3")
+          .from("[data-hero-desc]", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
+          .from("[data-hero-cta]", { y: 15, opacity: 0, scale: 0.9, duration: 0.5, ease: "back.out(1.6)" }, "-=0.3");
+      }, root);
+      return () => ctx.revert();
+    }, []);
+
+    const splitWords = (text: string) =>
+      text.split(/(\s+)/).map((chunk, i) =>
+        /\s+/.test(chunk) ? (
+          <span key={i}>{chunk}</span>
+        ) : (
+          <span key={i} className="hero-word inline-block">{chunk}</span>
+        )
+      );
+
     return (
-      <div className={cn("relative", className)} ref={ref} {...props}>
+      <div className={cn("relative", className)} ref={innerRef} {...props}>
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <div className="relative w-full">
@@ -90,19 +122,19 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               {/* Overlayed text + button */}
               <div className="absolute inset-0 flex items-start justify-center px-4 pt-[22%] sm:pt-[16%] md:pt-[12%]">
                 <div className="space-y-4 sm:space-y-7 max-w-6xl leading-tight lg:leading-5 mx-auto text-center">
-                  <h1 className="text-[11px] sm:text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
+                  <h1 data-hero-badge className="text-[11px] sm:text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
                     {title}
                     <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
                   </h1>
-                  <h2 className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl sm:whitespace-nowrap">
+                  <h2 data-hero-title className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl sm:whitespace-nowrap">
                     <span className="bg-clip-text text-transparent bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.7)_100%)]">
-                      {subtitle.regular}
+                      {splitWords(subtitle.regular)}
                     </span>
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] [text-shadow:0_0_40px_hsl(var(--gradient-mid)/0.4)]">
-                      {subtitle.gradient}
+                      {splitWords(subtitle.gradient)}
                     </span>
                   </h2>
-                  <p className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
+                  <p data-hero-desc className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
                     {description}
                   </p>
 
