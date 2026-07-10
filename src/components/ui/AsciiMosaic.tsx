@@ -83,14 +83,9 @@ export default function AsciiMosaic({
       const dx = (W - dw) / 2;
       const dy = (H - dh) / 2;
 
-      // Draw background (very subtle, no blur so mosaic stays crisp)
-      if (bgOpacity > 0) {
-        ctx.save();
-        ctx.globalAlpha = (bgOpacity / 100) * 0.12;
-        ctx.filter = `brightness(${1 + brightness / 100}) contrast(${contrast}%)`;
-        ctx.drawImage(img, dx, dy, dw, dh);
-        ctx.restore();
-      }
+      // Solid black background — gaps between mosaic tiles stay black
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
 
       // Sample downscaled image at cell grid resolution
       const cs = cellSize * dpr;
@@ -135,7 +130,9 @@ export default function AsciiMosaic({
             mod = 1 + (Math.random() - 0.5) * 0.3 * intensity;
           }
 
-          const size = Math.max(1, cs * (0.35 + lum * 0.65) * mod);
+          // Uniform box grid — fixed gap between tiles
+          const gap = Math.max(1, cs * 0.18);
+          const size = Math.max(1, (cs - gap) * mod);
           const px = x * cs + (cs - size) / 2;
           const py = y * cs + (cs - size) / 2;
           ctx.fillStyle = `rgb(${r},${g},${b})`;
