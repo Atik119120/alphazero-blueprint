@@ -92,7 +92,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                     {title}
                     <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
                   </h1>
-                  <h2 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter font-geist mx-auto lg:whitespace-nowrap drop-shadow-2xl italic">
+                  <h2 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter font-geist mx-auto lg:whitespace-nowrap drop-shadow-2xl">
                     <span className="bg-clip-text text-transparent bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.7)_100%)]">
                       {subtitle.regular}
                     </span>
