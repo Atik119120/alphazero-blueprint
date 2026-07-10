@@ -130,8 +130,8 @@ export default function AsciiMosaic({
             mod = 1 + (Math.random() - 0.5) * 0.3 * intensity;
           }
 
-          // Uniform box grid — fixed gap between tiles
-          const gap = Math.max(1, cs * 0.18);
+          // Bigger tiles, smaller gap
+          const gap = Math.max(1, cs * 0.08);
           const size = Math.max(1, (cs - gap) * mod);
           const px = x * cs + (cs - size) / 2;
           const py = y * cs + (cs - size) / 2;
