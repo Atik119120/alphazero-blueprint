@@ -21,6 +21,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
+import { HeroSection } from "@/components/ui/hero-section-dark";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
