@@ -88,9 +88,9 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               {/* Overlayed text + button */}
               <div className="absolute inset-0 flex items-start justify-center px-4 pt-[12%] md:pt-[9%]">
                 <div className="space-y-7 max-w-6xl leading-0 lg:leading-5 mx-auto text-center">
-                  <h1 className="text-base md:text-lg text-foreground/95 group font-geist mx-auto px-6 py-2.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
+                  <h1 className="text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
                     {title}
-                    <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
+                    <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
                   </h1>
                   <h2 className="text-5xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-7xl lg:text-8xl lg:whitespace-nowrap bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.75)_100%)] drop-shadow-2xl">
                     {subtitle.regular}
