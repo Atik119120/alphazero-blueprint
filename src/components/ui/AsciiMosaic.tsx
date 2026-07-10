@@ -186,7 +186,7 @@ export default function AsciiMosaic({
       ro.disconnect();
       img.removeEventListener("load", onLoad);
     };
-  }, [src, cellSize, brightness, contrast, vignette, bloom, animSpeed, animIntensity, animStyle, bgOpacity]);
+  }, [activeSrc, cellSize, brightness, contrast, vignette, bloom, animSpeed, animIntensity, animStyle, bgOpacity]);
 
   return (
     <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", aspectRatio: "3 / 2" }}>
