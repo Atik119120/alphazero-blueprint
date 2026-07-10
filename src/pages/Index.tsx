@@ -19,7 +19,6 @@ import {
   Zap,
   CheckCircle2,
   ChevronRight,
-  LayoutGrid,
   Triangle,
   Radio,
   Compass
@@ -31,7 +30,7 @@ import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 
 const Index = () => {
@@ -478,7 +477,7 @@ const TrustedByExperts = () => {
   );
 };
 
-const LogoMark = ({ children }: { children: React.ReactNode }) => (
+const LogoMark = ({ children }: { children: ReactNode }) => (
   <span className="inline-flex h-7 items-center justify-center text-[#f3efff] opacity-95 transition-opacity hover:opacity-100">
     {children}
   </span>
