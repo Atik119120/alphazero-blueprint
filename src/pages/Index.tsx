@@ -100,15 +100,15 @@ const Index = () => {
       </section>
 
       {/* ══════════ SPARKLES SECTION — Trusted by leaders ══════════ */}
-      <section className="relative -mt-64 md:-mt-80 h-[640px] md:h-[720px] overflow-hidden bg-transparent">
+      <section className="relative -mt-48 md:-mt-56 h-[640px] md:h-[720px] overflow-hidden">
         {/* Sparkles field masked to fade toward the horizon */}
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-[70%]"
           style={{
             WebkitMaskImage:
-              "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
+              "linear-gradient(to bottom, transparent 0%, black 25%, black 60%, transparent 95%)",
             maskImage:
-              "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
+              "linear-gradient(to bottom, transparent 0%, black 25%, black 60%, transparent 95%)",
           }}
         >
           <SparklesFx
@@ -121,11 +121,9 @@ const Index = () => {
           />
         </div>
 
-        {/* Top fade blends into hero */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent z-10" />
-
         {/* Content: heading + logos */}
-        <div className="relative z-20 container mx-auto px-6 pt-24 md:pt-32 text-center">
+        <div className="relative z-20 container mx-auto px-6 pt-40 md:pt-48 text-center">
+
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
