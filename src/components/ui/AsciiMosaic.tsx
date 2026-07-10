@@ -101,7 +101,9 @@ export default function AsciiMosaic({
       const rows = Math.ceil(H / cs);
       sample.width = cols;
       sample.height = rows;
-      sctx.filter = `brightness(${1 + brightness / 100}) contrast(${contrast}%)`;
+      const effBrightness = isLight ? brightness - 25 : brightness;
+      const effContrast = isLight ? Math.min(contrast + 20, 200) : contrast;
+      sctx.filter = `brightness(${1 + effBrightness / 100}) contrast(${effContrast}%)`;
       sctx.clearRect(0, 0, cols, rows);
       // draw cover-fit into sample
       const sScale = Math.max(cols / iw, rows / ih);
