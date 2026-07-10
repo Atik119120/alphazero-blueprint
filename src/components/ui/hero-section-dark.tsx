@@ -1,6 +1,8 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { ChevronRight } from "lucide-react"
+import AsciiMosaic from "./AsciiMosaic"
+
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string
@@ -79,18 +81,9 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <div className="relative w-full">
-              <img
-                src={bottomImage.light}
-                className="w-full h-auto dark:hidden"
-                alt="Design showcase"
-              />
-              <img
-                src={bottomImage.dark}
-                className="hidden w-full h-auto dark:block"
-                alt="Design showcase"
-              />
+              <AsciiMosaic src={bottomImage.dark} className="w-full" />
               {/* dark overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/30 to-background/80" />
+              <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/20 to-background/80" />
 
               {/* Overlayed text + button */}
               <div className="absolute inset-0 flex items-center justify-center px-4">
