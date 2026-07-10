@@ -83,7 +83,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
             <div className="relative w-full">
               <AsciiMosaic srcLight={bottomImage.light} srcDark={bottomImage.dark} className="w-full" cellSize={5} bloom={0} bgOpacity={0} animIntensity={20} />
               {/* dark overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background/80" />
+              {/* overlay removed for clean image */}
 
               {/* Overlayed text + button */}
               <div className="absolute inset-0 flex items-start justify-center px-4 pt-[18%] md:pt-[14%]">
