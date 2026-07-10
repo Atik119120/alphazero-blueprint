@@ -396,4 +396,131 @@ const Index = () => {
   );
 };
 
+const TrustedByExperts = () => {
+  const { theme } = useTheme();
+  const isDark = theme !== "light";
+  const sparkleColor = isDark ? "#ffffff" : "#8350e8";
+
+  return (
+    <div className="relative isolate z-10 -mt-6 min-h-[560px] overflow-hidden bg-[#050505] md:-mt-12 md:min-h-[640px]">
+      <SparklesFx
+        density={900}
+        speed={0.45}
+        size={1.35}
+        opacity={0.85}
+        color={sparkleColor}
+        className="absolute inset-0 h-full w-full"
+        options={{
+          particles: {
+            move: { enable: true, direction: "none", speed: { min: 0.04, max: 0.45 }, straight: false },
+            number: { value: 900 },
+            opacity: { value: { min: 0.08, max: 0.75 }, animation: { enable: true, speed: 2.6, sync: false } },
+            size: { value: { min: 0.35, max: 1.35 } },
+          },
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[70%]"
+        style={{
+          background:
+            "linear-gradient(180deg, #050505 0%, rgba(5,5,5,0.78) 16%, rgba(5,5,5,0.05) 46%, #050505 100%)",
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-x-0 top-[150px] mx-auto h-[260px] max-w-[1180px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 52% 62% at 50% 46%, rgba(131,80,232,0.46) 0%, rgba(131,80,232,0.2) 38%, rgba(5,5,5,0) 74%)",
+        }}
+      />
+
+      <div className="relative z-20 mx-auto max-w-5xl px-6 pt-20 text-center md:pt-24">
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="font-display text-2xl font-medium leading-[1.25] text-[#cfd6ff] md:text-[28px]"
+        >
+          <span className="block">Trusted by experts.</span>
+          <span className="block text-[#f5f3ff]">Used by the leaders.</span>
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.12 }}
+          className="mx-auto mt-16 flex max-w-3xl flex-wrap items-center justify-center gap-x-10 gap-y-5 md:gap-x-12"
+        >
+          <Retool />
+          <Vercel />
+          <Remote />
+          <Arc />
+          <Raycast />
+        </motion.div>
+      </div>
+
+      <div className="pointer-events-none absolute inset-x-0 top-[285px] h-[245px] overflow-hidden md:top-[305px] md:h-[280px]">
+        <div
+          className="absolute left-1/2 top-[16px] aspect-[4/1] w-[1700px] max-w-[190vw] -translate-x-1/2 rounded-[50%] md:w-[1820px]"
+          style={{
+            background:
+              "radial-gradient(ellipse at 50% 0%, rgba(22,22,26,0.98) 0%, rgba(11,11,13,0.98) 58%, rgba(5,5,5,1) 100%)",
+            borderTop: "1px solid rgba(255,255,255,0.14)",
+            boxShadow:
+              "0 -22px 80px rgba(131,80,232,0.55), 0 -2px 18px rgba(255,255,255,0.14), inset 0 26px 70px rgba(255,255,255,0.02)",
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const LogoMark = ({ children }: { children: React.ReactNode }) => (
+  <span className="inline-flex h-7 items-center justify-center text-[#f3efff] opacity-95 transition-opacity hover:opacity-100">
+    {children}
+  </span>
+);
+
+const Retool = () => (
+  <LogoMark>
+    <span className="mr-2 inline-flex flex-col gap-[3px]">
+      <span className="block h-[3px] w-[16px] rounded-full bg-current" />
+      <span className="block h-[3px] w-[11px] rounded-full bg-current" />
+      <span className="block h-[3px] w-[16px] rounded-full bg-current" />
+    </span>
+    <span className="font-display text-[18px] font-bold leading-none">Retool</span>
+  </LogoMark>
+);
+
+const Vercel = () => (
+  <LogoMark>
+    <Triangle size={20} className="mr-1.5 fill-current stroke-current" />
+    <span className="font-display text-[18px] font-bold leading-none">Vercel</span>
+  </LogoMark>
+);
+
+const Remote = () => (
+  <LogoMark>
+    <Radio size={20} className="mr-1.5 stroke-[3]" />
+    <span className="font-display text-[18px] font-bold leading-none">remote</span>
+  </LogoMark>
+);
+
+const Arc = () => (
+  <LogoMark>
+    <Compass size={22} className="mr-1.5 stroke-[1.8]" />
+    <span className="font-display text-[15px] font-medium uppercase leading-none tracking-[0.22em]">Arc</span>
+  </LogoMark>
+);
+
+const Raycast = () => (
+  <LogoMark>
+    <Zap size={20} className="mr-1.5 fill-current stroke-current" />
+    <span className="font-display text-[16px] font-bold leading-none">Raycast</span>
+  </LogoMark>
+);
+
 export default Index;
