@@ -73,10 +73,11 @@ const Index = () => {
 
   return (
     <LayoutComponent>
-      {/* ══════════ HERO ══════════ */}
+      {/* ══════════ HERO — Retro Grid Dark Style ══════════ */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20 pt-20">
-        {/* Mesh background base */}
-        <div className="absolute inset-0 mesh-bg" />
+        {/* Top radial glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 h-[720px] w-[1280px] rounded-full
+          [background:radial-gradient(closest-side,hsl(var(--primary)/0.35),transparent_70%)] blur-2xl" />
 
         {/* Retro perspective grid */}
         <div
@@ -84,7 +85,7 @@ const Index = () => {
           style={{
             ["--grid-angle" as any]: "65deg",
             ["--cell-size" as any]: "60px",
-            ["--opacity" as any]: 0.45,
+            ["--opacity" as any]: 0.5,
           }}
         >
           <div className="retro-grid-inner">
@@ -93,36 +94,32 @@ const Index = () => {
           <div className="retro-grid-fade" />
         </div>
 
-        {/* Soft primary glow */}
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-primary/[0.08] blur-[130px]"
-          animate={{ scale: [1, 1.08, 1] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto text-center">
-            {/* Badge */}
-            <motion.div
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Chevron pill badge */}
+            <motion.a
+              href="#services"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8"
+              className="group mx-auto mb-8 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.06] backdrop-blur-sm px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-primary transition-colors hover:bg-primary/[0.12]"
             >
-              <Sparkles size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("badge", "home.badge")}</span>
-            </motion.div>
+              <Sparkles size={12} />
+              <span>{c("badge", "home.badge")}</span>
+              <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
+            </motion.a>
 
-            {/* Headline */}
+            {/* Headline: title1 + gradient title2 */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-5xl sm:text-6xl lg:text-8xl xl:text-[6.5rem] font-display font-bold leading-[0.92] tracking-tight mb-6"
+              className="mx-auto max-w-4xl font-display font-semibold tracking-tight text-4xl sm:text-6xl md:text-7xl leading-[1.05] mb-6"
             >
-              <span className="text-foreground">{c("title1", "home.title1")} </span>
-              <span className="gradient-text">{c("title2", "home.title2")}</span>
+              <span className="text-foreground">{c("title1", "home.title1")}</span>{" "}
+              <span className="bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
+                {c("title2", "home.title2")}
+              </span>
             </motion.h1>
 
             {/* Animated tagline */}
@@ -145,58 +142,61 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+              className="mx-auto max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed mb-10"
             >
               {c("description", "home.description")}
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA — pill with gradient border + chevron */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <Link
-                to="/contact"
-                className="group relative px-9 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 flex items-center gap-2 glow-primary hover:scale-[1.02]"
-              >
-                {c("cta1", "home.cta1")}
-                <ArrowRight size={20} className="group-hover:translate-x-1.5 transition-transform duration-300" />
-              </Link>
+              <div className="relative rounded-full p-[1.5px] bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)]">
+                <Link
+                  to="/contact"
+                  className="group inline-flex items-center gap-2 rounded-full bg-background/80 backdrop-blur-md px-8 py-3.5 text-sm font-semibold text-foreground hover:bg-background transition-colors"
+                >
+                  {c("cta1", "home.cta1")}
+                  <ChevronRight size={16} className="text-primary transition-transform group-hover:translate-x-1" />
+                </Link>
+              </div>
+
               <Link
                 to="/work"
-                className="group px-9 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 flex items-center gap-2"
+                className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/40 backdrop-blur-md px-8 py-3.5 text-sm font-semibold text-foreground hover:border-primary/40 hover:bg-primary/5 transition-colors"
               >
                 {c("cta2", "home.cta2")}
-                <Eye size={18} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <ArrowRight size={16} className="opacity-70 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
-          </div>
 
-          {/* Scroll Indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.6 }}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          >
-            <motion.div 
-              className="flex flex-col items-center gap-2"
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            {/* Framed preview panel */}
+            <motion.div
+              initial={{ opacity: 0, y: 60 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.6 }}
+              className="relative mx-auto mt-16 max-w-4xl"
             >
-              <div className="w-5 h-9 rounded-full border-2 border-muted-foreground/20 flex justify-center pt-1.5">
-                <motion.div
-                  animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="w-1 h-2 bg-primary rounded-full"
-                />
+              <div className="absolute inset-x-8 -top-6 h-16 rounded-full bg-primary/25 blur-3xl" />
+              <div className="relative rounded-2xl p-[1.5px] bg-gradient-to-b from-primary/40 via-primary/10 to-transparent">
+                <div className="rounded-2xl bg-card/70 backdrop-blur-md p-4 sm:p-6 shadow-[0_20px_80px_-20px_hsl(var(--primary)/0.35)]">
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4">
+                    {[Palette, Layout, Monitor].map((Icon, i) => (
+                      <div key={i} className="aspect-[4/3] rounded-xl border border-border/50 bg-gradient-to-br from-primary/[0.08] to-transparent flex items-center justify-center">
+                        <Icon className="text-primary/70" size={32} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         </motion.div>
       </section>
+
 
       {/* ══════════ STATS BANNER ══════════ */}
       <section className="relative -mt-1">
