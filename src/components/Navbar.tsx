@@ -338,8 +338,6 @@ const Navbar = () => {
             </motion.div>
           )}
         </AnimatePresence>
-          </motion.div>
-        </div>
       </nav>
 
       {/* ═══ Mobile Bottom Navigation Bar ═══ */}
