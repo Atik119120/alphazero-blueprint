@@ -100,7 +100,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ SPARKLES SECTION — Trusted by leaders ══════════ */}
-      <section className="relative -mt-24 md:-mt-32 h-[640px] md:h-[720px] overflow-hidden bg-background">
+      <section className="relative -mt-64 md:-mt-80 h-[640px] md:h-[720px] overflow-hidden bg-transparent">
         {/* Sparkles field masked to fade toward the horizon */}
         <div
           className="pointer-events-none absolute inset-x-0 top-0 h-[70%]"
