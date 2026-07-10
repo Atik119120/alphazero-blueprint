@@ -28,7 +28,9 @@ interface AsciiMosaicProps {
   animIntensity?: number; // 0..100
   animStyle?: "wave" | "pulse" | "shimmer" | "ripple" | "flicker";
   bgOpacity?: number; // 0..100
+  aspectRatio?: string;
 }
+
 
 export default function AsciiMosaic({
   src,
