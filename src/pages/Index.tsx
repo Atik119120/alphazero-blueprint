@@ -107,6 +107,10 @@ const Index = () => {
         
       </section>
 
+      {/* ══════════ PROJECT MARQUEE — 2 rows opposite scroll ══════════ */}
+      <ProjectMarquee />
+
+
 
 
 
