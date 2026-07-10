@@ -115,6 +115,15 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                         </a>
                       </div>
                     </span>
+                    <a
+                      href="/work"
+                      className="group inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] border border-[hsl(var(--gradient-mid)/0.35)] hover:border-[hsl(var(--gradient-mid)/0.7)] backdrop-blur-sm transition-all"
+                    >
+                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
+                        Explore More Products & Apps
+                      </span>
+                      <ChevronRight className="w-4 h-4 text-[hsl(var(--gradient-mid))] group-hover:translate-x-1 transition-transform" />
+                    </a>
                   </div>
                 </div>
               </div>
