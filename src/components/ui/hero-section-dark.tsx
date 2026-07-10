@@ -78,19 +78,19 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       <div className={cn("relative", className)} ref={ref} {...props}>
         <div className="absolute top-0 z-[0] h-screen w-screen bg-primary/10 dark:bg-primary/20 bg-[radial-gradient(ellipse_20%_80%_at_50%_-20%,hsl(var(--primary)/0.35),transparent)]" />
         <section className="relative max-w-full mx-auto z-1">
-          <div className="max-w-screen-xl z-10 mx-auto px-4 py-28 gap-12 md:px-8">
-            <div className="space-y-5 max-w-3xl leading-0 lg:leading-5 mx-auto text-center">
+          <div className="max-w-screen-xl z-10 mx-auto px-4 py-40 md:py-56 lg:py-64 gap-12 md:px-8">
+            <div className="space-y-7 max-w-4xl leading-0 lg:leading-5 mx-auto text-center">
               <h1 className="text-sm text-foreground/80 group font-geist mx-auto px-5 py-2 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit">
                 {title}
                 <ChevronRight className="inline w-4 h-4 ml-2 group-hover:translate-x-1 duration-300" />
               </h1>
-              <h2 className="text-4xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-6xl bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.75)_100%)]">
+              <h2 className="text-5xl tracking-tighter font-geist bg-clip-text text-transparent mx-auto md:text-7xl lg:text-8xl bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.75)_100%)]">
                 {subtitle.regular}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
                   {subtitle.gradient}
                 </span>
               </h2>
-              <p className="max-w-2xl mx-auto text-muted-foreground">
+              <p className="max-w-2xl mx-auto text-muted-foreground text-lg md:text-xl">
                 {description}
               </p>
               <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
