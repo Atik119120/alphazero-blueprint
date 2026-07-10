@@ -46,7 +46,7 @@ export function Sparkles({
 
   const id = useId();
 
-  const defaultOptions = {
+  const defaultOptions: ISourceOptions = {
     background: { color: { value: background } },
     fullScreen: { enable: false, zIndex: 1 },
     fpsLimit: 120,
