@@ -93,6 +93,7 @@ export default {
         
         "fade-up": "fade-up 0.6s ease-out forwards",
         "spin-slow": "spin-slow 3s linear infinite",
+        "grid": "grid 15s linear infinite",
       },
     },
   },
