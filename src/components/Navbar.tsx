@@ -91,10 +91,10 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-xl backdrop-saturate-150 border ${
+            className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
               isScrolled
-                ? "bg-background/40 dark:bg-card/30 shadow-[0_8px_32px_-12px_hsl(var(--primary)/0.15)] border-white/20 dark:border-white/10"
-                : "bg-background/20 dark:bg-card/15 border-white/15 dark:border-white/10"
+                ? "bg-background/40 dark:bg-card/30 backdrop-blur-xl backdrop-saturate-150 shadow-[0_8px_32px_-12px_hsl(var(--primary)/0.15)] border border-white/20 dark:border-white/10"
+                : "bg-transparent backdrop-blur-none border border-transparent"
             }`}
           >
             {/* Logo */}
