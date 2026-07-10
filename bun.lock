@@ -36,7 +36,7 @@
         "@radix-ui/react-tooltip": "^1.2.7",
         "@supabase/supabase-js": "^2.90.1",
         "@tanstack/react-query": "^5.83.0",
-        "@tsparticles/react": "^4.3.2",
+        "@tsparticles/react": "3.0.0",
         "@tsparticles/slim": "^4.3.2",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -436,7 +436,7 @@
 
     "@tsparticles/plugin-rgb-color": ["@tsparticles/plugin-rgb-color@4.3.2", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@tsparticles/plugin-rgb-color/-/plugin-rgb-color-4.3.2.tgz", { "peerDependencies": { "@tsparticles/engine": "4.3.2" } }, "sha512-/4xZBlEWqqG7VscJzC2VimA62fxDboe4XO1+m8LeM2ytxrhEpNk14TeBJt+zCc8jBkFjpKOdmTZ0VYyuK4FtDQ=="],
 
-    "@tsparticles/react": ["@tsparticles/react@4.3.2", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@tsparticles/react/-/react-4.3.2.tgz", { "peerDependencies": { "@tsparticles/engine": "4.3.2", "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-aCTqFkGBnT1BitrlmyjkR+FNQ+RKuO8UfhadLfW51YSHwTdR0erB1ZFab+wCout1SWGIR7mirRWfjwewxiDMeA=="],
+    "@tsparticles/react": ["@tsparticles/react@3.0.0", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@tsparticles/react/-/react-3.0.0.tgz", { "peerDependencies": { "@tsparticles/engine": "^3.0.2", "react": ">=16.8.0", "react-dom": ">=16.8.0" } }, "sha512-hjGEtTT1cwv6BcjL+GcVgH++KYs52bIuQGW3PWv7z3tMa8g0bd6RI/vWSLj7p//NZ3uTjEIeilYIUPBh7Jfq/Q=="],
 
     "@tsparticles/shape-circle": ["@tsparticles/shape-circle@4.3.2", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@tsparticles/shape-circle/-/shape-circle-4.3.2.tgz", { "peerDependencies": { "@tsparticles/engine": "4.3.2" } }, "sha512-IOStpEafsK9vIZsXtrO1zpqF3pW5ydstD8db4omioAnoYFfKwbgyfkQz9l4pDnJy8636RbnQNVbYGlyxKuJ0cw=="],
 
