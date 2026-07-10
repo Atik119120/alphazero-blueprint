@@ -191,7 +191,7 @@ export default function AsciiMosaic({
 
   return (
     <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", aspectRatio: "3 / 2" }}>
-      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: "#000" }} />
+      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: resolvedTheme === "light" ? "#ffffff" : "#000000" }} />
     </div>
   );
 }
