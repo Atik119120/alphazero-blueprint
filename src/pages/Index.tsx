@@ -99,6 +99,24 @@ const Index = () => {
 
       </section>
 
+      {/* ══════════ SPARKLES BRIDGE (blends from hero) ══════════ */}
+      <section className="relative -mt-32 md:-mt-40 h-64 md:h-80 overflow-hidden pointer-events-none">
+        {/* top fade into hero */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent z-10" />
+        {/* bottom fade into next section */}
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent z-10" />
+        <SparklesFx
+          className="absolute inset-0 w-full h-full"
+          color="hsl(var(--primary))"
+          density={500}
+          size={1.4}
+          speed={0.8}
+          opacity={0.9}
+        />
+      </section>
+
+
+
 
 
       {/* ══════════ STATS BANNER ══════════ */}
