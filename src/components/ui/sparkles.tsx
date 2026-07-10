@@ -5,6 +5,8 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import type { ISourceOptions } from "@tsparticles/engine";
 
+let enginePromise: Promise<void> | null = null;
+
 interface SparklesProps {
   className?: string;
   size?: number;
@@ -37,11 +39,12 @@ export function Sparkles({
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
-      await loadSlim(engine);
-    }).then(() => {
-      setIsReady(true);
-    });
+    if (!enginePromise) {
+      enginePromise = initParticlesEngine(async (engine) => {
+        await loadSlim(engine);
+      });
+    }
+    enginePromise.then(() => setIsReady(true));
   }, []);
 
   const id = useId();

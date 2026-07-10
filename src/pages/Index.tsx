@@ -97,20 +97,46 @@ const Index = () => {
           }}
         />
 
-        {/* Sparkles blended into bottom of hero — no visible seam */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[55%] z-[2]">
+      </section>
+
+      {/* ══════════ SPARKLES ARC — dome under hero ══════════ */}
+      <section className="relative -mt-40 md:-mt-56 h-[380px] md:h-[500px] overflow-hidden bg-background">
+        {/* Sparkles field masked as a dome */}
+        <div
+          className="pointer-events-none absolute inset-x-0 -top-1/2 h-[200%]"
+          style={{
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 45% at 50% 55%, black 40%, transparent 72%)",
+            maskImage:
+              "radial-gradient(ellipse 70% 45% at 50% 55%, black 40%, transparent 72%)",
+          }}
+        >
           <SparklesFx
             className="absolute inset-0 w-full h-full"
             color="hsl(var(--primary))"
-            density={450}
+            density={900}
             size={1.6}
             speed={0.6}
             opacity={1}
           />
-          {/* fade top so sparkles emerge softly from within the hero */}
-          <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-background/0 via-background/0 to-transparent" />
         </div>
+
+        {/* Curved arc line (the horizon glow) */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] overflow-hidden">
+          <div
+            className="absolute left-1/2 -translate-x-1/2 bottom-[10%] w-[180%] aspect-[3/1] rounded-[50%] border-t"
+            style={{
+              borderColor: "hsl(var(--primary) / 0.55)",
+              boxShadow:
+                "0 -1px 40px 0 hsl(var(--primary) / 0.35), inset 0 20px 60px -20px hsl(var(--primary) / 0.25)",
+            }}
+          />
+        </div>
+
+        {/* Top fade blends into hero */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background to-transparent" />
       </section>
+
 
 
 
