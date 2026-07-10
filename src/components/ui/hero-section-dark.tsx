@@ -108,16 +108,16 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               </div>
             </div>
             {bottomImage && (
-              <div className="mt-32 mx-10 relative z-10">
+              <div className="mt-20 relative z-10 w-full">
                 <img
                   src={bottomImage.light}
-                  className="w-full shadow-lg rounded-lg border border-border dark:hidden"
-                  alt="Dashboard preview"
+                  className="w-full h-auto shadow-2xl rounded-none dark:hidden"
+                  alt="Design showcase"
                 />
                 <img
                   src={bottomImage.dark}
-                  className="hidden w-full shadow-lg rounded-lg border border-border dark:block"
-                  alt="Dashboard preview"
+                  className="hidden w-full h-auto shadow-2xl rounded-none dark:block"
+                  alt="Design showcase"
                 />
               </div>
             )}
