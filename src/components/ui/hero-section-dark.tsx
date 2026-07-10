@@ -81,7 +81,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <div className="relative w-full">
-              <AsciiMosaic src={bottomImage.dark} className="w-full" cellSize={8} bloom={12} bgOpacity={40} animIntensity={35} />
+              <AsciiMosaic src={bottomImage.dark} className="w-full" cellSize={10} bloom={0} bgOpacity={0} animIntensity={25} />
               {/* dark overlay for text readability */}
               <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/20 to-background/80" />
 
