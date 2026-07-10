@@ -26,7 +26,7 @@ const translations: Record<Language, Record<string, string>> = {
     "home.title1": "Starting every idea from",
     "home.title2": "zero",
     "home.tagline": "From zero to impact",
-    "home.description": "Creative IT agency for design, web & brand identity.",
+    "home.description": "Creative IT agency for graphic design & web development.",
     "home.cta1": "Start Your Project",
     "home.cta2": "View Our Work",
     "home.stats.projects": "Projects Delivered",
