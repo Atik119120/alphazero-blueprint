@@ -19,7 +19,7 @@ const widths = [
 const Card = ({ item, idx }: { item: Work; idx: number }) => {
   const width = widths[idx % widths.length];
   return (
-    <div className={`group relative shrink-0 h-full ${width} rounded-2xl overflow-hidden mx-2 border border-border/60 shadow-md bg-white`}>
+    <div className={`group relative shrink-0 h-full ${width} rounded-2xl overflow-hidden mx-2 shadow-md bg-white`}>
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
