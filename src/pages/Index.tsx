@@ -97,76 +97,73 @@ const Index = () => {
           }}
         />
 
-      </section>
-
-      {/* ══════════ SPARKLES SECTION — Trusted by leaders ══════════ */}
-      <section className="relative -mt-24 md:-mt-32 h-[640px] md:h-[720px] overflow-hidden bg-background">
-        {/* Sparkles field masked to fade toward the horizon */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-[70%]"
-          style={{
-            WebkitMaskImage:
-              "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
-            maskImage:
-              "linear-gradient(to bottom, black 0%, black 55%, transparent 95%)",
-          }}
-        >
-          <SparklesFx
-            className="absolute inset-0 w-full h-full"
-            color="#ffffff"
-            density={700}
-            size={1.4}
-            speed={0.5}
-            opacity={0.9}
-          />
-        </div>
-
-        {/* Top fade blends into hero */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-background to-transparent z-10" />
-
-        {/* Content: heading + logos */}
-        <div className="relative z-20 container mx-auto px-6 pt-24 md:pt-32 text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-display font-bold text-4xl md:text-6xl lg:text-7xl leading-tight tracking-tight"
-          >
-            <span className="block text-foreground">Trusted by experts.</span>
-            <span className="block bg-gradient-to-b from-foreground to-foreground/40 bg-clip-text text-transparent">
-              Used by the leaders.
-            </span>
-          </motion.h2>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="mt-14 md:mt-20 flex flex-wrap items-center justify-center gap-x-10 md:gap-x-16 gap-y-6"
-          >
-            {["Retool", "Vercel", "Remote", "Arc", "Raycast"].map((brand) => (
-              <span
-                key={brand}
-                className="text-lg md:text-2xl font-display font-bold text-foreground/80 hover:text-foreground transition-colors"
-              >
-                {brand}
-              </span>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Curved arc line — the horizon */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[35%] overflow-hidden">
+        {/* ══════════ SPARKLES + TRUSTED BY (inside hero, one continuous piece) ══════════ */}
+        <div className="relative -mt-24 md:-mt-32 h-[560px] md:h-[640px]">
+          {/* Sparkles field */}
           <div
-            className="absolute left-1/2 -translate-x-1/2 top-0 w-[220%] aspect-[4/1] rounded-[50%]"
+            className="pointer-events-none absolute inset-x-0 top-0 h-[75%]"
             style={{
-              borderTop: "1px solid hsl(var(--primary) / 0.5)",
-              boxShadow: "0 -2px 30px 0 hsl(var(--primary) / 0.25)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, transparent 0%, black 20%, black 65%, transparent 100%)",
+              maskImage:
+                "linear-gradient(to bottom, transparent 0%, black 20%, black 65%, transparent 100%)",
             }}
-          />
+          >
+            <SparklesFx
+              className="absolute inset-0 w-full h-full"
+              color="#ffffff"
+              density={700}
+              size={1.4}
+              speed={0.5}
+              opacity={0.9}
+            />
+          </div>
+
+          {/* Heading + logos */}
+          <div className="relative z-20 container mx-auto px-6 pt-24 md:pt-32 text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="font-display font-bold text-4xl md:text-6xl lg:text-7xl leading-tight tracking-tight"
+            >
+              <span className="block text-foreground">Trusted by experts.</span>
+              <span className="block bg-gradient-to-b from-foreground to-foreground/40 bg-clip-text text-transparent">
+                Used by the leaders.
+              </span>
+            </motion.h2>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.15 }}
+              className="mt-14 md:mt-20 flex flex-wrap items-center justify-center gap-x-10 md:gap-x-16 gap-y-6"
+            >
+              {["Retool", "Vercel", "Remote", "Arc", "Raycast"].map((brand) => (
+                <span
+                  key={brand}
+                  className="text-lg md:text-2xl font-display font-bold text-foreground/80 hover:text-foreground transition-colors"
+                >
+                  {brand}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Curved arc line — the horizon */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[35%] overflow-hidden">
+            <div
+              className="absolute left-1/2 -translate-x-1/2 top-0 w-[220%] aspect-[4/1] rounded-[50%]"
+              style={{
+                borderTop: "1px solid hsl(var(--primary) / 0.5)",
+                boxShadow: "0 -2px 30px 0 hsl(var(--primary) / 0.25)",
+              }}
+            />
+          </div>
         </div>
       </section>
+
 
 
 
