@@ -32,8 +32,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
 import { useTheme } from "next-themes";
-import designShowcase from "@/assets/design-showcase-hero.png";
-import designShowcaseLight from "@/assets/design-showcase-hero-light.png";
+import designShowcase from "@/assets/design-showcase-hero.webp";
+import designShowcaseLight from "@/assets/design-showcase-hero-light.webp";
 
 const Index = () => {
   const { t } = useLanguage();

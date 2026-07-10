@@ -1,6 +1,19 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
+// Module-level image cache so theme toggles / remounts are instant
+const imgCache = new Map<string, HTMLImageElement>();
+const loadImg = (src: string): HTMLImageElement => {
+  let img = imgCache.get(src);
+  if (img) return img;
+  img = new Image();
+  img.crossOrigin = "anonymous";
+  img.decoding = "async";
+  img.src = src;
+  imgCache.set(src, img);
+  return img;
+};
+
 interface AsciiMosaicProps {
   src?: string;
   srcLight?: string;
@@ -37,14 +50,19 @@ export default function AsciiMosaic({
   const { resolvedTheme } = useTheme();
   const activeSrc = (resolvedTheme === "light" ? srcLight : srcDark) || src || srcDark || srcLight || "";
 
+  // Warm the cache for both themes so switching is instant
+  useEffect(() => {
+    if (srcLight) loadImg(srcLight);
+    if (srcDark) loadImg(srcDark);
+    if (src) loadImg(src);
+  }, [srcLight, srcDark, src]);
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const wrap = wrapRef.current;
     if (!canvas || !wrap || !activeSrc) return;
 
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = activeSrc;
+    const img = loadImg(activeSrc);
 
     let raf = 0;
     let mounted = true;
