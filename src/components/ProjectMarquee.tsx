@@ -99,7 +99,7 @@ export default function ProjectMarquee() {
         <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent" />
       </div>
 
-      <div className="relative h-[180px] md:h-[220px] mt-4">
+      <div className="relative h-[140px] sm:h-[180px] md:h-[220px] mt-3 sm:mt-4">
         <div className="flex marquee-right w-max h-full items-center">
           {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
