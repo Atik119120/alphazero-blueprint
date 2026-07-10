@@ -90,9 +90,9 @@ export default function AsciiMosaic({
       const dx = (W - dw) / 2;
       const dy = (H - dh) / 2;
 
-      // Background — white in light mode, black in dark mode
+      // Background — soft light in light mode, black in dark mode
       const isLight = resolvedTheme === "light";
-      ctx.fillStyle = isLight ? "#ffffff" : "#000000";
+      ctx.fillStyle = isLight ? "#f4f4f5" : "#000000";
       ctx.fillRect(0, 0, W, H);
 
       // Sample downscaled image at cell grid resolution
@@ -101,7 +101,9 @@ export default function AsciiMosaic({
       const rows = Math.ceil(H / cs);
       sample.width = cols;
       sample.height = rows;
-      sctx.filter = `brightness(${1 + brightness / 100}) contrast(${contrast}%)`;
+      const effBrightness = isLight ? brightness - 25 : brightness;
+      const effContrast = isLight ? Math.min(contrast + 20, 200) : contrast;
+      sctx.filter = `brightness(${1 + effBrightness / 100}) contrast(${effContrast}%)`;
       sctx.clearRect(0, 0, cols, rows);
       // draw cover-fit into sample
       const sScale = Math.max(cols / iw, rows / ih);
@@ -193,7 +195,7 @@ export default function AsciiMosaic({
 
   return (
     <div ref={wrapRef} className={className} style={{ position: "relative", width: "100%", aspectRatio: "3 / 2" }}>
-      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: resolvedTheme === "light" ? "#ffffff" : "#000000" }} />
+      <canvas ref={canvasRef} style={{ display: "block", width: "100%", height: "100%", background: resolvedTheme === "light" ? "#f4f4f5" : "#000000" }} />
     </div>
   );
 }
