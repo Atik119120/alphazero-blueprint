@@ -261,7 +261,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Mobile: login + theme on top bar */}
+            {/* Mobile: login + theme + menu on top bar */}
             <div className="flex items-center gap-1.5 lg:hidden">
               <Link
                 to="/student/login"
@@ -277,9 +277,67 @@ const Navbar = () => {
                   {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
                 </button>
               )}
+              <button
+                onClick={() => setIsMobileMenuOpen((v) => !v)}
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center hover:bg-primary/30 transition-colors"
+              >
+                {isMobileMenuOpen ? <X size={16} className="text-primary" /> : <Menu size={16} className="text-primary" />}
+              </button>
             </div>
           </motion.div>
         </div>
+
+        {/* Mobile menu drawer */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.2 }}
+              className="lg:hidden container mx-auto px-4 sm:px-6 mt-2"
+            >
+              <div className="rounded-2xl bg-background/90 dark:bg-card/90 backdrop-blur-xl border border-border/50 shadow-xl overflow-hidden">
+                <div className="grid grid-cols-2 gap-1 p-2">
+                  {navLinksWithIcons.map((link) => {
+                    const IconComp = link.icon;
+                    const isActive = location.pathname === link.href;
+                    return (
+                      <Link
+                        key={link.href}
+                        to={link.href}
+                        onClick={handleNavClick}
+                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
+                          isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
+                        }`}
+                      >
+                        <IconComp size={16} className={isActive ? "" : "text-primary/70"} />
+                        {link.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center justify-between gap-2 p-2 border-t border-border/40">
+                  <button
+                    onClick={() => { setLanguage(language === "en" ? "bn" : "en"); }}
+                    className="flex-1 h-9 rounded-xl bg-primary/15 border border-primary/30 text-xs font-bold text-primary"
+                  >
+                    {language === "en" ? "বাংলা" : "English"}
+                  </button>
+                  <Link
+                    to="/contact"
+                    onClick={handleNavClick}
+                    className="flex-1 h-9 rounded-xl bg-primary text-primary-foreground font-semibold text-xs flex items-center justify-center gap-1"
+                  >
+                    {t("nav.startProject")}
+                    <ArrowUpRight size={13} />
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* ═══ Mobile Bottom Navigation Bar ═══ */}
