@@ -1,47 +1,45 @@
 const row1 = [
-  { name: "THE GRIDLINE", tag: "Furniture", gradient: "from-amber-900/80 via-amber-700/60 to-stone-800/80", size: "lg" },
-  { name: "Steve Krug", tag: "Editorial", gradient: "from-rose-900/70 via-red-800/60 to-neutral-900/80", size: "sm" },
-  { name: "Foter", tag: "Mobile App", gradient: "from-stone-800/80 via-amber-900/60 to-stone-900/80", size: "md" },
-  { name: "OH! MY Coffee", tag: "Café Brand", gradient: "from-amber-800/70 via-yellow-900/60 to-stone-900/80", size: "sm" },
-  { name: "NÓRAE", tag: "Skincare", gradient: "from-rose-950/80 via-red-900/70 to-neutral-900/90", size: "md" },
-  { name: "Triply", tag: "Travel SaaS", gradient: "from-sky-800/70 via-cyan-700/60 to-blue-900/80", size: "lg" },
+  { name: "THE GRIDLINE", tag: "Furniture", accent: "from-amber-500/20 to-orange-500/10", size: "lg" },
+  { name: "Steve Krug", tag: "Editorial", accent: "from-rose-500/20 to-red-500/10", size: "sm" },
+  { name: "Foter", tag: "Mobile App", accent: "from-sky-500/20 to-blue-500/10", size: "md" },
+  { name: "OH! MY Coffee", tag: "Café Brand", accent: "from-amber-500/20 to-yellow-500/10", size: "xl" },
+  { name: "NÓRAE", tag: "Skincare", accent: "from-rose-500/20 to-pink-500/10", size: "sm" },
+  { name: "Triply", tag: "Travel SaaS", accent: "from-cyan-500/20 to-teal-500/10", size: "md" },
 ];
 
 const row2 = [
-  { name: "Affine Risk", tag: "FinTech", gradient: "from-emerald-900/80 via-green-800/60 to-neutral-900/80", size: "md" },
-  { name: "যান্ত্রিক", tag: "Auto App", gradient: "from-neutral-800/80 via-zinc-700/60 to-stone-900/80", size: "sm" },
-  { name: "THE GREAT GOLF CLUB", tag: "Sports", gradient: "from-emerald-800/80 via-green-900/70 to-neutral-900/90", size: "lg" },
-  { name: "Alpine Empower", tag: "Banking", gradient: "from-indigo-900/80 via-purple-800/60 to-violet-950/80", size: "md" },
-  { name: "VENEX", tag: "Energy", gradient: "from-sky-900/70 via-blue-800/60 to-slate-900/80", size: "sm" },
-  { name: "ZINNGO", tag: "Retail", gradient: "from-orange-800/70 via-amber-900/60 to-red-950/80", size: "md" },
+  { name: "Affine Risk", tag: "FinTech", accent: "from-emerald-500/20 to-green-500/10", size: "md" },
+  { name: "যান্ত্রিক", tag: "Auto App", accent: "from-neutral-500/20 to-zinc-500/10", size: "xl" },
+  { name: "THE GREAT GOLF CLUB", tag: "Sports", accent: "from-emerald-500/20 to-lime-500/10", size: "sm" },
+  { name: "Alpine Empower", tag: "Banking", accent: "from-indigo-500/20 to-violet-500/10", size: "lg" },
+  { name: "VENEX", tag: "Energy", accent: "from-sky-500/20 to-blue-500/10", size: "sm" },
+  { name: "ZINNGO", tag: "Retail", accent: "from-orange-500/20 to-amber-500/10", size: "md" },
 ];
 
 const sizeMap: Record<string, string> = {
-  sm: "w-[220px] md:w-[260px] aspect-[4/3]",
-  md: "w-[300px] md:w-[360px] aspect-[4/3]",
-  lg: "w-[380px] md:w-[480px] aspect-[16/10]",
+  sm: "w-[200px] md:w-[240px] aspect-[4/3]",
+  md: "w-[280px] md:w-[340px] aspect-[4/3]",
+  lg: "w-[360px] md:w-[440px] aspect-[16/10]",
+  xl: "w-[440px] md:w-[560px] aspect-[16/9]",
 };
 
-const Card = ({ name, tag, gradient, size }: { name: string; tag: string; gradient: string; size: string }) => (
-  <div className={`group relative shrink-0 ${sizeMap[size]} rounded-3xl overflow-hidden mx-3 border border-border/40 shadow-xl`}>
-    <div className={`absolute inset-0 bg-gradient-to-br ${gradient}`} />
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.12),transparent_60%)]" />
-    <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay" style={{
-      backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23n)'/%3E%3C/svg%3E\")"
-    }} />
+const Card = ({ name, tag, accent, size }: { name: string; tag: string; accent: string; size: string }) => (
+  <div className={`group relative shrink-0 ${sizeMap[size]} rounded-3xl overflow-hidden mx-3 border border-border/60 shadow-lg bg-white dark:bg-white`}>
+    <div className={`absolute inset-0 bg-gradient-to-br ${accent}`} />
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.04),transparent_60%)]" />
     <div className="absolute top-5 left-5 right-5 flex items-start justify-between">
-      <span className="text-[10px] uppercase tracking-[0.25em] text-white/70 font-medium px-2 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
+      <span className="text-[10px] uppercase tracking-[0.25em] text-neutral-600 font-medium px-2 py-1 rounded-full bg-neutral-100 border border-neutral-200">
         {tag}
       </span>
     </div>
     <div className="absolute bottom-5 left-5 right-5">
-      <h3 className="font-display text-2xl md:text-3xl font-bold text-white drop-shadow-lg tracking-tight">
+      <h3 className="font-display text-2xl md:text-3xl font-bold text-neutral-900 tracking-tight">
         {name}
       </h3>
     </div>
-    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
   </div>
 );
+
 
 export default function ProjectMarquee() {
   return (
