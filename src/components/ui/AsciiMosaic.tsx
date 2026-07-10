@@ -130,7 +130,9 @@ export default function AsciiMosaic({
             mod = 1 + (Math.random() - 0.5) * 0.3 * intensity;
           }
 
-          const size = Math.max(1, cs * (0.35 + lum * 0.65) * mod);
+          // Uniform box grid — fixed gap between tiles
+          const gap = Math.max(1, cs * 0.18);
+          const size = Math.max(1, (cs - gap) * mod);
           const px = x * cs + (cs - size) / 2;
           const py = y * cs + (cs - size) / 2;
           ctx.fillStyle = `rgb(${r},${g},${b})`;
