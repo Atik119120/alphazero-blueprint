@@ -120,7 +120,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 />
               </picture>
               {/* soft blur fade at top — 70% of image height */}
-              <div className="absolute inset-x-0 top-0 h-[70%] backdrop-blur-md bg-gradient-to-b from-background/60 to-transparent pointer-events-none [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+              <div className="absolute inset-x-0 top-0 h-[85%] backdrop-blur-md bg-gradient-to-b from-background/60 to-transparent pointer-events-none [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
               {/* dark overlay for text readability */}
               <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
