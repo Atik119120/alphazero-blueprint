@@ -20,74 +20,85 @@ const defaultLogos: Logo[] = [
   { alt: "Brand 4", label: "Brand 04" },
   { alt: "Brand 5", label: "Brand 05" },
   { alt: "Brand 6", label: "Brand 06" },
+  { alt: "Brand 7", label: "Brand 07" },
+  { alt: "Brand 8", label: "Brand 08" },
 ];
 
 export function LogoCloud({ className, logos = defaultLogos, ...props }: LogoCloudProps) {
   return (
     <div
       className={cn(
-        "relative mx-auto grid max-w-5xl grid-cols-2 md:grid-cols-3 border border-border/60 rounded-2xl overflow-hidden bg-background/40 backdrop-blur-sm",
+        "relative mx-auto grid max-w-4xl grid-cols-2 md:grid-cols-4",
         className,
       )}
       {...props}
     >
-      {/* corner plus icons */}
-      <PlusIcon className="absolute -top-2 -left-2 w-4 h-4 text-primary/70" />
-      <PlusIcon className="absolute -top-2 -right-2 w-4 h-4 text-primary/70" />
-      <PlusIcon className="absolute -bottom-2 -left-2 w-4 h-4 text-primary/70" />
-      <PlusIcon className="absolute -bottom-2 -right-2 w-4 h-4 text-primary/70" />
-
       {logos.map((logo, i) => (
-        <LogoCard key={i} logo={logo} index={i} total={logos.length} />
+        <LogoCard
+          key={i}
+          logo={logo}
+          className={cn(
+            // checkerboard: shade cells where (row+col) is even
+            (Math.floor(i / 4) + (i % 4)) % 2 === 0 ? "bg-muted/40" : "bg-transparent",
+          )}
+        >
+          {/* plus icons at each internal intersection */}
+          {i % 4 !== 3 && (
+            <PlusIcon
+              aria-hidden
+              className="pointer-events-none absolute -right-2 top-1/2 z-10 hidden h-4 w-4 -translate-y-1/2 text-muted-foreground/60 md:block"
+            />
+          )}
+          {i < 4 && i % 4 !== 3 && (
+            <PlusIcon
+              aria-hidden
+              className="pointer-events-none absolute -bottom-2 -right-2 z-10 hidden h-4 w-4 text-muted-foreground/60 md:block"
+            />
+          )}
+        </LogoCard>
       ))}
     </div>
   );
 }
 
-type LogoCardProps = {
+type LogoCardProps = React.ComponentProps<"div"> & {
   logo: Logo;
-  index: number;
-  total: number;
 };
 
-function LogoCard({ logo, index, total }: LogoCardProps) {
-  const cols = 3;
-  const isLastCol = (index + 1) % cols === 0;
-  const isLastRow = index >= total - (total % cols === 0 ? cols : total % cols);
-
+function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
   const inner = (
-    <div className="flex items-center justify-center h-32 md:h-40 group transition-colors hover:bg-primary/[0.04]">
+    <>
       {logo.src ? (
         <img
           src={logo.src}
           alt={logo.alt}
-          className="max-h-14 md:max-h-16 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity"
+          className="max-h-8 md:max-h-10 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100"
           loading="lazy"
         />
       ) : (
-        <span className="text-muted-foreground/60 group-hover:text-foreground text-sm font-medium tracking-wider uppercase transition-colors">
+        <span className="text-sm font-semibold tracking-wider uppercase text-muted-foreground group-hover:text-foreground transition-colors">
           {logo.label || logo.alt}
         </span>
       )}
-    </div>
+    </>
   );
 
   return (
     <div
       className={cn(
-        "relative",
-        !isLastCol && "md:border-r border-border/60",
-        (index + 1) % 2 === 0 ? "" : "border-r md:border-r border-border/60",
-        !isLastRow && "border-b border-border/60",
+        "group relative flex h-28 md:h-32 items-center justify-center",
+        className,
       )}
+      {...props}
     >
       {logo.href ? (
-        <a href={logo.href} target="_blank" rel="noopener noreferrer">
+        <a href={logo.href} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-full h-full">
           {inner}
         </a>
       ) : (
         inner
       )}
+      {children}
     </div>
   );
 }
