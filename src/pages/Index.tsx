@@ -210,7 +210,15 @@ const ServicePair = ({
   );
 };
 
-const MemoServicePair = memo(ServicePair);
+const MemoServicePair = memo(
+  ServicePair,
+  (prev, next) =>
+    prev.color === next.color &&
+    prev.Icon === next.Icon &&
+    prev.primaryImage === next.primaryImage &&
+    prev.secondaryImage === next.secondaryImage &&
+    prev.priority === next.priority
+);
 
 
 
@@ -296,6 +304,17 @@ const Index = () => {
     },
   ];
   const [activeService, setActiveService] = useState(0);
+
+  useEffect(() => {
+    services.forEach((service) => {
+      [service.primaryImage, service.secondaryImage].forEach((src) => {
+        if (!src) return;
+        const img = new Image();
+        img.decoding = "async";
+        img.src = src;
+      });
+    });
+  }, []);
 
   const stats = [
     { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
@@ -500,13 +519,14 @@ const Index = () => {
               {services.map((s, i) => {
                 const Icon = s.icon;
                 return (
-                  <ServicePair
+                  <MemoServicePair
                     key={s.title}
                     color={s.stripe}
                     Icon={Icon}
                     onActive={() => setActiveService(i)}
                     primaryImage={(s as any).primaryImage}
                     secondaryImage={(s as any).secondaryImage}
+                    priority={i === 0}
                   />
 
                 );
