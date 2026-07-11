@@ -432,7 +432,8 @@ const Index = () => {
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       {/* ══════════ PROJECT MARQUEE — 2 rows opposite scroll ══════════ */}
       <ProjectMarquee />
