@@ -49,73 +49,72 @@ import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
 const designShowcase = heroBgAsset.url;
 const designShowcaseLight = heroBgLightAsset.url;
 
-// Scroll-story panel — reports itself as active when centered in viewport
-const ServicePanel = ({
-  index,
+// Tilted device mockup card (browser or phone)
+const MockupCard = ({
   color,
   Icon,
-  onActive,
+  variant,
+  tilt,
+  delay = 0,
 }: {
-  index: number;
   color: string;
   Icon: any;
-  onActive: () => void;
+  variant: "browser" | "phone";
+  tilt: number;
+  delay?: number;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
-  useEffect(() => {
-    if (inView) onActive();
-  }, [inView, onActive]);
-
   return (
-    <div ref={ref} className="min-h-[85vh] flex items-center">
-      <motion.div
-        initial={{ opacity: 0, y: 80, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]"
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
+      style={{
+        background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}aa 45%, ${color}55 100%)`,
+      }}
+    >
+      <div
+        className="absolute inset-0 opacity-25 pointer-events-none"
         style={{
-          background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}88 45%, ${color}44 100%)`,
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 3px, transparent 3px 12px)`,
         }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
+
+      <motion.div
+        animate={{ y: [0, -12, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{ rotate: tilt }}
       >
-        {/* vertical stripe texture */}
-        <div
-          className="absolute inset-0 opacity-25 pointer-events-none"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.6) 0 3px, transparent 3px 10px)`,
-          }}
-        />
-        {/* soft top vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
-
-        {/* Device mockup — browser frame */}
-        <motion.div
-          animate={{ y: [0, -14, 0], rotate: [-1.5, 1.5, -1.5] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[78%] aspect-[16/11] rounded-2xl bg-white shadow-2xl overflow-hidden"
-          style={{ rotate: index % 2 === 0 ? -4 : 4 }}
-        >
-          {/* Browser dots */}
-          <div className="flex items-center gap-1.5 px-4 h-8 bg-gray-100 border-b border-gray-200">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+        {variant === "browser" ? (
+          <div className="w-[16rem] md:w-[18rem] aspect-[16/11] rounded-xl bg-white shadow-2xl overflow-hidden">
+            <div className="flex items-center gap-1.5 px-3 h-6 bg-gray-100 border-b border-gray-200">
+              <div className="w-2 h-2 rounded-full bg-red-400" />
+              <div className="w-2 h-2 rounded-full bg-yellow-400" />
+              <div className="w-2 h-2 rounded-full bg-green-400" />
+            </div>
+            <div
+              className="w-full h-[calc(100%-1.5rem)] flex items-center justify-center"
+              style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
+            >
+              <Icon size={64} strokeWidth={1.4} className="drop-shadow-xl" style={{ color }} />
+            </div>
           </div>
-          <div
-            className="w-full h-[calc(100%-2rem)] flex items-center justify-center"
-            style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
-          >
-            <Icon size={72} strokeWidth={1.4} className="drop-shadow-xl" />
+        ) : (
+          <div className="w-[7.5rem] md:w-[9rem] aspect-[9/19] rounded-[2rem] bg-neutral-900 shadow-2xl overflow-hidden ring-2 ring-black/40 relative">
+            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-3 rounded-full bg-black z-10" />
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{ background: `linear-gradient(160deg, ${color}44, ${color}88)` }}
+            >
+              <Icon size={44} strokeWidth={1.6} className="drop-shadow-xl text-white" />
+            </div>
           </div>
-        </motion.div>
-
-        {/* Big number */}
-        <span className="absolute bottom-6 right-8 text-8xl md:text-9xl font-display font-black text-white/20 leading-none select-none">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+        )}
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -318,74 +317,62 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Scroll-story: sticky text left, images scroll on right */}
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 relative">
-            {/* LEFT — sticky text that swaps as you scroll */}
-            <div className="lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
-              {services.map((s, i) => (
-                <motion.div
+          {/* Stacked service rows — text left, two tilted mockups right */}
+          <div className="max-w-7xl mx-auto flex flex-col gap-24 lg:gap-32">
+            {services.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <div
                   key={s.title}
-                  initial={false}
-                  animate={{
-                    opacity: activeService === i ? 1 : 0,
-                    y: activeService === i ? 0 : 20,
-                    pointerEvents: activeService === i ? "auto" : "none",
-                  }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className={activeService === i ? "relative" : "absolute inset-0"}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center"
                 >
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-6">
-                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-cyan-400">
-                      {s.label}
-                    </span>
-                  </div>
-                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 leading-[1.05] tracking-tight">
-                    <span className="text-foreground">{s.title.split(" ").slice(0, -1).join(" ")} </span>
-                    <span className="italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                      {s.title.split(" ").slice(-1)}
-                    </span>
-                  </h3>
-                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
-                    {s.description}
-                  </p>
-                  <div className="flex gap-8 mb-8">
-                    {s.meta.map((m) => (
-                      <div key={m.k}>
-                        <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">{m.k}</div>
-                        <div className="text-base font-bold text-foreground">{m.v}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group"
+                  {/* LEFT — text */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-15% 0px" }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="lg:col-span-4"
                   >
-                    <span className="relative">
-                      {t("common.learnMore") || "See More"}
-                      <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-cyan-400 origin-left" />
-                    </span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-6">
+                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-cyan-400">
+                        {s.label}
+                      </span>
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-display font-bold mb-6 leading-[1.05] tracking-tight">
+                      <span className="text-foreground">{s.title.split(" ").slice(0, -1).join(" ")} </span>
+                      <span className="italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                        {s.title.split(" ").slice(-1)}
+                      </span>
+                    </h3>
+                    <div className="h-px w-full bg-border/60 mb-6" />
+                    <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                      {s.description}
+                    </p>
+                    <Link
+                      to="/services"
+                      className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group"
+                    >
+                      <span className="relative">
+                        {t("common.learnMore") || "See More"}
+                        <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-cyan-400 origin-left" />
+                      </span>
+                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </motion.div>
 
-            {/* RIGHT — scrolling image panels */}
-            <div className="flex flex-col gap-8">
-              {services.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <ServicePanel
-                    key={s.title}
-                    index={i}
-                    color={s.stripe}
-                    Icon={Icon}
-                    onActive={() => setActiveService(i)}
-                  />
-                );
-              })}
-            </div>
+                  {/* RIGHT — two tilted mockups */}
+                  <div className="lg:col-span-8 grid grid-cols-2 gap-4 md:gap-6">
+                    <MockupCard color={s.stripe} Icon={Icon} variant="browser" tilt={-4} />
+                    <div className="mt-8 md:mt-12">
+                      <MockupCard color={s.stripe} Icon={Icon} variant="phone" tilt={5} delay={0.15} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
