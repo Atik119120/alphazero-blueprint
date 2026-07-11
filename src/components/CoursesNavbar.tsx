@@ -18,12 +18,17 @@ const CoursesNavbar = () => {
 
   const isBn = language === "bn";
 
+  const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
+  const mainSiteHref = isLearnSubdomain ? "https://alphazero.online" : "/";
+  const allCoursesHref = isLearnSubdomain ? "/" : "/courses";
+
   const navLinks = [
-    { name: isBn ? "সকল কোর্স" : "All Courses", href: "/courses", icon: LayoutGrid },
+    { name: isBn ? "সকল কোর্স" : "All Courses", href: allCoursesHref, icon: LayoutGrid },
     { name: isBn ? "সার্টিফিকেট" : "Certificate", href: "/certificate", icon: Award },
     { name: isBn ? "সাহায্য" : "Help", href: "/contact", icon: HelpCircle },
-    { name: isBn ? "মূল সাইট" : "Main Site", href: "/", icon: Home },
+    { name: isBn ? "মূল সাইট" : "Main Site", href: mainSiteHref, icon: Home },
   ];
+
 
   useEffect(() => { setMounted(true); }, []);
 
