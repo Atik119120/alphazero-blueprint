@@ -307,7 +307,7 @@ const CoursesPage = () => {
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, type: "spring", stiffness: 50 }}
               className="mb-4 flex justify-center">
-              <img src={learnLogo} alt={t.title} className="h-28 md:h-40 lg:h-52 w-auto dark:brightness-0 dark:invert transition-all" loading="eager" />
+              <img src={learnLogo} alt={t.title} className="h-20 md:h-28 lg:h-36 w-auto dark:brightness-0 dark:invert transition-all" loading="eager" />
             </motion.div>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
               className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
