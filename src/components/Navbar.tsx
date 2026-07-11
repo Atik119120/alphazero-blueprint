@@ -388,11 +388,14 @@ const Navbar = () => {
                     </>
                   );
                   const cls = "relative flex flex-col items-center gap-0.5 py-1";
-                  return (
+                  return item.href.startsWith("http") ? (
+                    <a key={item.href} href={item.href} className={cls}>{inner}</a>
+                  ) : (
                     <Link key={item.href} to={item.href} className={cls}>
                       {inner}
                     </Link>
                   );
+
                 })}
               </div>
             </div>
