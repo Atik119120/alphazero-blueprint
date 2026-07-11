@@ -70,12 +70,10 @@ const CoursesNavbar = () => {
             <div className="hidden lg:flex items-center gap-1 bg-primary/[0.06] rounded-full px-1.5 py-1 border border-primary/15">
               {navLinks.map((link) => {
                 const active = isActive(link.href);
-                return (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5"
-                  >
+                const isExternal = link.href.startsWith("http");
+                const commonClass = "relative px-4 py-2 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5";
+                const inner = (
+                  <>
                     {active && (
                       <motion.div
                         layoutId="courses-nav-pill"
@@ -87,9 +85,15 @@ const CoursesNavbar = () => {
                     <span className={`relative z-10 ${active ? "text-primary-foreground font-semibold" : "text-foreground/80 hover:text-foreground"}`}>
                       {link.name}
                     </span>
-                  </Link>
+                  </>
+                );
+                return isExternal ? (
+                  <a key={link.href} href={link.href} className={commonClass}>{inner}</a>
+                ) : (
+                  <Link key={link.href} to={link.href} className={commonClass}>{inner}</Link>
                 );
               })}
+
             </div>
 
             {/* Right controls */}
