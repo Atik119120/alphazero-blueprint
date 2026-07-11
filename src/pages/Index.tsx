@@ -143,10 +143,19 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center mb-6"
+            className="max-w-4xl mx-auto text-center mb-10"
           >
-            <h2 className="text-3xl lg:text-5xl font-display font-bold whitespace-nowrap">
-              Brands we <span className="gradient-text">build & back</span>
+            <div className="inline-flex items-center gap-3 mb-4">
+              <span className="h-px w-10 bg-gradient-to-r from-transparent to-primary/60" />
+              <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-primary/80">The Ecosystem</span>
+              <span className="h-px w-10 bg-gradient-to-l from-transparent to-primary/60" />
+            </div>
+            <h2 className="font-display font-bold leading-[0.95] tracking-tight">
+              <span className="block text-3xl lg:text-5xl text-foreground">Not just clients —</span>
+              <span className="block text-4xl lg:text-6xl mt-2">
+                <span className="italic font-light text-muted-foreground">our</span>{" "}
+                <span className="gradient-text">constellation.</span>
+              </span>
             </h2>
           </motion.div>
           <motion.div
