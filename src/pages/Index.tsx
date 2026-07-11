@@ -149,7 +149,7 @@ const Index = () => {
               <Sparkles size={14} className="text-primary" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Our Sister Brands</span>
             </div>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold whitespace-nowrap">
               Brands we <span className="gradient-text">build & back</span>
             </h2>
           </motion.div>
