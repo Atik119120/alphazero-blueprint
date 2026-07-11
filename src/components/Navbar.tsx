@@ -42,16 +42,11 @@ const Navbar = () => {
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },
     { name: t("nav.about"), href: "/about", num: "02" },
-    { name: t("nav.services"), href: "/services", num: "03", hasDropdown: true },
+    { name: t("nav.services"), href: "/services", num: "03" },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
     { name: t("nav.courses"), href: "https://learn.alphazero.online", num: "06" },
     { name: t("nav.contact"), href: "/contact", num: "07" },
-  ];
-
-  const servicesDropdownItems = [
-    { name: language === "bn" ? "আমাদের সেবা" : "Our Services", href: "/services", icon: Briefcase },
-    { name: language === "bn" ? "মূল্য তালিকা" : "Pricing", href: "/pricing", icon: Tag },
   ];
 
   const navLinksWithIcons = [
