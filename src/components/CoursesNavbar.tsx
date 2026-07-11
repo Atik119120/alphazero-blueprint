@@ -196,20 +196,25 @@ const CoursesNavbar = () => {
               <div className="rounded-2xl bg-background/95 dark:bg-card/95 backdrop-blur-xl border border-primary/15 shadow-xl overflow-hidden">
                 <div className="grid grid-cols-2 gap-1 p-2">
                   {navLinks.map((link) => {
-                    const active = isActive(link.href);
-                    const isExternal = link.href.startsWith("http");
+                    const active = !link.external && activeSection === link.id;
                     const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm ${
                       active ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
                     }`;
                     const inner = (<><link.icon size={16} className={active ? "" : "text-primary/70"} />{link.name}</>);
-                    return isExternal ? (
-                      <a key={link.href} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</a>
-                    ) : (
-                      <Link key={link.href} to={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</Link>
+                    if (link.external) {
+                      return (
+                        <a key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</a>
+                      );
+                    }
+                    return (
+                      <button key={link.name} onClick={() => handleNavClick(link.id!)} className={cls}>
+                        {inner}
+                      </button>
                     );
                   })}
 
                 </div>
+
                 <div className="flex items-center gap-2 p-2 border-t border-border/40">
                   <button
                     onClick={() => setLanguage(language === "en" ? "bn" : "en")}
