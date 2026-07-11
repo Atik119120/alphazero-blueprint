@@ -38,18 +38,16 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-// Service mockup images use resized WebP delivery for faster loading on Vercel.
-const SERVICE_RENDER_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/render/image/public/media-uploads/services";
-const serviceImage = (file: string, width = 900) =>
-  `${SERVICE_RENDER_IMG}/${file}?width=${width}&quality=70&resize=contain&format=webp`;
-const brandingStartio = { url: serviceImage("branding-startio.png") };
-const brandingPhoneMockup = { url: serviceImage("branding-phone.png", 640) };
-const webDevDashboard = { url: serviceImage("web-dev-dashboard.png") };
-const webDevTablet = { url: serviceImage("web-dev-tablet.png", 640) };
-const uiuxDesktop = { url: serviceImage("uiux-desktop.png") };
-const uiuxPhone = { url: serviceImage("uiux-phone.png", 640) };
-const seoMonitor = { url: serviceImage("seo-monitor.png") };
-const seoTablet = { url: serviceImage("seo-tablet.png", 640) };
+// Service mockup images — use direct public URLs (CDN-cached, no on-the-fly transform lag).
+const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
+const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
+const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
+const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
+const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.png` };
+const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.png` };
+const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.png` };
+const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.png` };
+const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 
 
@@ -175,13 +173,13 @@ const ServicePair = ({
   priority?: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
+  const inView = useInView(ref, { margin: "-40% 0px -40% 0px" });
   useEffect(() => {
     if (inView) onActive();
   }, [inView, onActive]);
 
   return (
-    <div ref={ref} className="min-h-[85vh] flex items-center">
+    <div ref={ref} className="min-h-[55vh] md:min-h-[60vh] flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
           <MemoMockupCard
@@ -455,45 +453,28 @@ const Index = () => {
                     activeService === i ? (
                       <motion.div
                         key={s.title}
-                        initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
+                        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
                         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: -30, filter: "blur(12px)" }}
-                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                        exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                       >
-                        <motion.h3
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
-                          className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full"
-                        >
+                        <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
                           {s.title}
-                        </motion.h3>
+                        </h3>
 
-                        <motion.div
-                          initial={{ scaleX: 0, opacity: 0 }}
-                          animate={{ scaleX: 1, opacity: 1 }}
-                          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                        <div
                           style={{ transformOrigin: "left" }}
                           className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full"
                         >
                           <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
                           <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
-                        </motion.div>
+                        </div>
 
-                        <motion.p
-                          initial={{ opacity: 0, y: 15 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                          className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md"
-                        >
+                        <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
                           {s.description}
-                        </motion.p>
+                        </p>
 
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        >
+                        <div>
                           <Link
                             to="/services"
                             className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
@@ -504,7 +485,7 @@ const Index = () => {
                             </span>
                             <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                           </Link>
-                        </motion.div>
+                        </div>
                       </motion.div>
                     ) : null
                   )}
@@ -515,7 +496,7 @@ const Index = () => {
 
 
             {/* RIGHT — scrolling image pairs */}
-            <div className="lg:col-span-8 flex flex-col gap-20 lg:gap-28">
+            <div className="lg:col-span-8 flex flex-col gap-8 lg:gap-12">
               {services.map((s, i) => {
                 const Icon = s.icon;
                 return (
