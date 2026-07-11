@@ -183,13 +183,13 @@ const Navbar = () => {
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
-                          className="absolute inset-0 bg-primary rounded-full"
+                          className="absolute inset-0 rounded-full bg-gradient-to-r from-[hsl(190_95%_50%)] to-[hsl(220_95%_55%)] shadow-[0_4px_12px_-2px_hsl(210_100%_50%/0.5),inset_0_1px_0_0_hsl(0_0%_100%/0.45),inset_0_-2px_0_0_hsl(220_80%_30%/0.45)]"
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
                       <span className={`relative z-10 transition-colors duration-200 ${
-                        isActive 
-                          ? "text-primary-foreground font-semibold" 
+                        isActive
+                          ? "text-white font-semibold drop-shadow-[0_1px_1px_hsl(220_80%_25%/0.55)]"
                           : "text-muted-foreground hover:text-foreground"
                       }`}>
                         {link.name}
