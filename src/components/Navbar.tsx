@@ -107,8 +107,8 @@ const Navbar = () => {
               />
             </Link>
 
-            {/* Desktop Navigation - Pill style */}
-            <div className="hidden lg:flex items-center">
+            {/* Desktop Navigation - Pill style (centered) */}
+            <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
               <div className="flex items-center bg-white/10 dark:bg-white/5 backdrop-blur-xl backdrop-saturate-150 rounded-full px-1.5 py-1 border border-white/20 dark:border-white/10 shadow-[inset_0_1px_0_0_hsl(0_0%_100%/0.15),0_4px_16px_-4px_hsl(220_50%_10%/0.25)]">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
@@ -141,44 +141,40 @@ const Navbar = () => {
                     </Link>
                   );
 
-                })}
               </div>
-              
-              {/* Controls */}
-              <div className="flex items-center gap-1.5 ml-3">
+            </div>
 
-                {/* Language Toggle */}
-                <button
-                  onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                  className="relative h-9 px-3 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center overflow-hidden group hover:bg-primary/30 transition-all duration-200"
-                  title={language === "en" ? "বাংলা" : "English"}
-                >
-                  <span className="text-xs font-bold text-primary">
-                    {language === "en" ? "EN" : "বা"}
-                  </span>
-                </button>
-                
+            {/* Right-aligned Controls (desktop) */}
+            <div className="hidden lg:flex items-center gap-1.5">
 
+              {/* Language Toggle */}
+              <button
+                onClick={() => setLanguage(language === "en" ? "bn" : "en")}
+                className="relative h-9 px-3 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center overflow-hidden group hover:bg-primary/30 transition-all duration-200"
+                title={language === "en" ? "বাংলা" : "English"}
+              >
+                <span className="text-xs font-bold text-primary">
+                  {language === "en" ? "EN" : "বা"}
+                </span>
+              </button>
 
-                
-                {/* CTA Button — Liquid Glass */}
-                <Link
-                  to="/contact"
-                  className="ml-1 group relative flex items-center gap-2 px-6 py-2.5 rounded-full overflow-hidden transition-all duration-300 active:scale-95"
-                >
-                  {/* Satin gradient base */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
-                  {/* Internal lighting overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
-                  {/* Inner highlight edge */}
-                  <div className="absolute inset-[1px] rounded-full border-t border-white/40 pointer-events-none" />
-                  {/* Outer bloom on hover */}
-                  <div className="absolute inset-0 rounded-full shadow-[0_6px_24px_rgba(6,182,212,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              {/* CTA Button — Liquid Glass */}
+              <Link
+                to="/contact"
+                className="ml-1 group relative flex items-center gap-2 px-6 py-2.5 rounded-full overflow-hidden transition-all duration-300 active:scale-95"
+              >
+                {/* Satin gradient base */}
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
+                {/* Internal lighting overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
+                {/* Inner highlight edge */}
+                <div className="absolute inset-[1px] rounded-full border-t border-white/40 pointer-events-none" />
+                {/* Outer bloom on hover */}
+                <div className="absolute inset-0 rounded-full shadow-[0_6px_24px_rgba(6,182,212,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                  <span className="relative z-10 text-sm font-semibold text-white tracking-wide">{t("nav.startProject")}</span>
-                  <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </Link>
-              </div>
+                <span className="relative z-10 text-sm font-semibold text-white tracking-wide">{t("nav.startProject")}</span>
+                <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
             </div>
 
             {/* Mobile: login + theme + menu on top bar */}
