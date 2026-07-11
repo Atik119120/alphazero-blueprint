@@ -471,7 +471,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10 lg:mb-14"
+            className="text-center mb-20 lg:mb-28"
           >
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
               {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
