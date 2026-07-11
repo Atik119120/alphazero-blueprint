@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Sparkles, 
@@ -261,8 +261,8 @@ const Index = () => {
         { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
       ],
       bg: "#cffafe", text: "#083344", stripe: "#06b6d4",
-      primaryImage: uiuxDesktop.url,
-      secondaryImage: uiuxPhone.url,
+      primaryImage: webDesktopMockup.url,
+      secondaryImage: webPhoneMockup.url,
     },
 
     {
@@ -302,10 +302,51 @@ const Index = () => {
         if (!src) return;
         const img = new Image();
         img.decoding = "async";
+        img.loading = "eager";
         img.src = src;
       });
     });
   }, []);
+
+  useEffect(() => {
+    let frame = 0;
+    const updateActiveService = () => {
+      frame = 0;
+      const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-service-index]"));
+      if (!rows.length) return;
+
+      const viewportTarget = window.innerHeight * 0.48;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      rows.forEach((row) => {
+        const rect = row.getBoundingClientRect();
+        const rowCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(rowCenter - viewportTarget);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = Number(row.dataset.serviceIndex || 0);
+        }
+      });
+
+      setActiveService((current) => (current === closestIndex ? current : closestIndex));
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveService);
+    };
+
+    updateActiveService();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [services.length]);
 
   const stats = [
     { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
@@ -441,7 +482,7 @@ const Index = () => {
             {/* LEFT — sticky text swaps with active service */}
             <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
               <div className="relative">
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="popLayout" initial={false}>
                   {services.map((s, i) =>
                     activeService === i ? (
                       <motion.div
@@ -449,7 +490,7 @@ const Index = () => {
                         initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
                         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                         exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
                       >
                         <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
                           {s.title}
@@ -485,9 +526,9 @@ const Index = () => {
                 return (
                   <MemoServicePair
                     key={s.title}
+                    index={i}
                     color={s.stripe}
                     Icon={Icon}
-                    onActive={() => setActiveService(i)}
                     primaryImage={(s as any).primaryImage}
                     secondaryImage={(s as any).secondaryImage}
                     priority={i === 0}
