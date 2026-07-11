@@ -136,17 +136,18 @@ const ServicePair = ({
 
   return (
     <div ref={ref} className="min-h-[85vh] flex items-center">
-      <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-center">
-        {/* first mockup — sits higher */}
-        <div className="-mt-6 md:-mt-10">
+      <div className="w-full grid grid-cols-12 gap-4 md:gap-6 items-center">
+        {/* larger mockup — sits higher */}
+        <div className="col-span-7 -mt-8 md:-mt-14">
           <MockupCard color={color} Icon={Icon} variant="browser" tilt={-3} />
         </div>
-        {/* second mockup — sits lower */}
-        <div className="mt-10 md:mt-16">
+        {/* smaller mockup — sits lower */}
+        <div className="col-span-5 mt-12 md:mt-20 scale-[0.88]">
           <MockupCard color={color} Icon={Icon} variant="phone" tilt={4} delay={0.15} />
         </div>
       </div>
     </div>
+
   );
 };
 
