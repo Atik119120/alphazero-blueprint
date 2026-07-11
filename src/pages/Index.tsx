@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { 
   ArrowRight, 
   Sparkles, 
@@ -42,12 +42,83 @@ import brand4 from "@/assets/brands/b4.png.asset.json";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
 import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
 const designShowcase = heroBgAsset.url;
 const designShowcaseLight = heroBgLightAsset.url;
+
+// Scroll-story panel — reports itself as active when centered in viewport
+const ServicePanel = ({
+  index,
+  color,
+  Icon,
+  onActive,
+}: {
+  index: number;
+  color: string;
+  Icon: any;
+  onActive: () => void;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
+  useEffect(() => {
+    if (inView) onActive();
+  }, [inView, onActive]);
+
+  return (
+    <div ref={ref} className="min-h-[85vh] flex items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 80, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]"
+        style={{
+          background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}88 45%, ${color}44 100%)`,
+        }}
+      >
+        {/* vertical stripe texture */}
+        <div
+          className="absolute inset-0 opacity-25 pointer-events-none"
+          style={{
+            backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.6) 0 3px, transparent 3px 10px)`,
+          }}
+        />
+        {/* soft top vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
+
+        {/* Device mockup — browser frame */}
+        <motion.div
+          animate={{ y: [0, -14, 0], rotate: [-1.5, 1.5, -1.5] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[78%] aspect-[16/11] rounded-2xl bg-white shadow-2xl overflow-hidden"
+          style={{ rotate: index % 2 === 0 ? -4 : 4 }}
+        >
+          {/* Browser dots */}
+          <div className="flex items-center gap-1.5 px-4 h-8 bg-gray-100 border-b border-gray-200">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+          </div>
+          <div
+            className="w-full h-[calc(100%-2rem)] flex items-center justify-center"
+            style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
+          >
+            <Icon size={72} strokeWidth={1.4} className="drop-shadow-xl" />
+          </div>
+        </motion.div>
+
+        {/* Big number */}
+        <span className="absolute bottom-6 right-8 text-8xl md:text-9xl font-display font-black text-white/20 leading-none select-none">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </motion.div>
+    </div>
+  );
+};
+
 
 const Index = () => {
   const { t, language } = useLanguage();
@@ -247,106 +318,73 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Sticky-stack services */}
-          <div className="max-w-6xl mx-auto relative">
-            {services.map((service, index) => {
-              const Icon = service.icon;
-              const topOffset = 100 + index * 24;
-              return (
-                <div
-                  key={service.title}
-                  className="sticky mb-6"
-                  style={{ top: `${topOffset}px` }}
+          {/* Scroll-story: sticky text left, images scroll on right */}
+          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 relative">
+            {/* LEFT — sticky text that swaps as you scroll */}
+            <div className="lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
+              {services.map((s, i) => (
+                <motion.div
+                  key={s.title}
+                  initial={false}
+                  animate={{
+                    opacity: activeService === i ? 1 : 0,
+                    y: activeService === i ? 0 : 20,
+                    pointerEvents: activeService === i ? "auto" : "none",
+                  }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className={activeService === i ? "relative" : "absolute inset-0"}
                 >
-                  <motion.div
-                    initial={{ opacity: 0, y: 60 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative rounded-3xl overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)]"
-                    style={{ backgroundColor: service.bg, color: service.text }}
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-6">
+                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-cyan-400">
+                      {s.label}
+                    </span>
+                  </div>
+                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 leading-[1.05] tracking-tight">
+                    <span className="text-foreground">{s.title.split(" ").slice(0, -1).join(" ")} </span>
+                    <span className="italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                      {s.title.split(" ").slice(-1)}
+                    </span>
+                  </h3>
+                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                    {s.description}
+                  </p>
+                  <div className="flex gap-8 mb-8">
+                    {s.meta.map((m) => (
+                      <div key={m.k}>
+                        <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">{m.k}</div>
+                        <div className="text-base font-bold text-foreground">{m.v}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group"
                   >
-                    {/* Stripe pattern on the right */}
-                    <div
-                      className="absolute top-0 right-0 h-full w-1/2 opacity-40 pointer-events-none"
-                      style={{
-                        backgroundImage: `repeating-linear-gradient(90deg, ${service.stripe} 0 6px, transparent 6px 14px)`,
-                        maskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
-                        WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
-                      }}
-                    />
+                    <span className="relative">
+                      {t("common.learnMore") || "See More"}
+                      <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-cyan-400 origin-left" />
+                    </span>
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
 
-                    {/* Label */}
-                    <div className="relative px-6 md:px-10 pt-6 md:pt-8 flex items-center justify-between">
-                      <span
-                        className="italic font-serif text-xl md:text-2xl font-semibold"
-                        style={{ color: service.text }}
-                      >
-                        {service.label}
-                      </span>
-                      <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: service.stripe }}
-                      >
-                        <ArrowRight size={16} className="text-white" strokeWidth={2.5} />
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 px-6 md:px-10 pt-4 pb-8 md:pb-10">
-                      <div>
-                        <h3 className="text-2xl md:text-4xl font-display font-bold mb-3 leading-tight" style={{ color: service.text }}>
-                          {service.title}
-                        </h3>
-                        <p className="text-sm md:text-base leading-relaxed opacity-80 mb-6 max-w-md" style={{ color: service.text }}>
-                          {service.description}
-                        </p>
-                        <div className="flex gap-8 mb-6">
-                          {service.meta.map((m) => (
-                            <div key={m.k}>
-                              <div className="text-xs uppercase tracking-wider opacity-60 mb-1" style={{ color: service.text }}>{m.k}</div>
-                              <div className="text-base md:text-lg font-bold" style={{ color: service.text }}>{m.v}</div>
-                            </div>
-                          ))}
-                        </div>
-                        <Link
-                          to="/services"
-                          className="inline-flex items-center justify-between gap-3 px-4 py-3 rounded-xl w-full max-w-sm font-semibold text-sm transition-transform hover:translate-x-1"
-                          style={{ backgroundColor: `${service.stripe}33`, color: service.text }}
-                        >
-                          <span className="flex items-center gap-3">
-                            <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: service.stripe }}>
-                              <Icon size={14} className="text-white" />
-                            </span>
-                            {t("common.learnMore") || "Learn more"}
-                          </span>
-                          <ArrowRight size={16} />
-                        </Link>
-                      </div>
-
-                      <div
-                        className="relative rounded-2xl overflow-hidden min-h-[240px] flex items-center justify-center"
-                        style={{ background: `linear-gradient(135deg, ${service.stripe}, ${service.stripe}cc)` }}
-                      >
-                        <div
-                          className="absolute inset-0 opacity-30"
-                          style={{ backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 4px, transparent 4px 12px)` }}
-                        />
-                        <motion.div
-                          animate={{ y: [0, -8, 0], rotate: [0, 3, 0] }}
-                          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                          className="relative w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-white/95 shadow-2xl flex items-center justify-center backdrop-blur"
-                        >
-                          <Icon size={64} style={{ color: service.stripe }} strokeWidth={1.6} />
-                        </motion.div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              );
-            })}
-            {/* Spacer to give scroll room for stacking */}
-            <div className="h-[40vh]" />
+            {/* RIGHT — scrolling image panels */}
+            <div className="flex flex-col gap-8">
+              {services.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <ServicePanel
+                    key={s.title}
+                    index={i}
+                    color={s.stripe}
+                    Icon={Icon}
+                    onActive={() => setActiveService(i)}
+                  />
+                );
+              })}
+            </div>
           </div>
 
           <motion.div
