@@ -113,7 +113,7 @@ const Index = () => {
         { k: language === "bn" ? "ডেলিভারেবল" : "Deliverable", v: language === "bn" ? "লোগো + গাইডলাইন" : "Logo + Guidelines" },
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
       ],
-      bg: "#a7f3d0", text: "#022c22", stripe: "#2dd4bf",
+      bg: "#ccfbf1", text: "#042f2e", stripe: "#14b8a6",
     },
   ];
   const [activeService, setActiveService] = useState(0);
