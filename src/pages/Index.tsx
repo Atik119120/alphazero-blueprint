@@ -247,117 +247,106 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Stacked accordion services */}
-          <div className="max-w-6xl mx-auto flex flex-col gap-3">
+          {/* Sticky-stack services */}
+          <div className="max-w-6xl mx-auto relative">
             {services.map((service, index) => {
-              const isActive = activeService === index;
               const Icon = service.icon;
+              const topOffset = 100 + index * 24;
               return (
-                <motion.div
+                <div
                   key={service.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ delay: index * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  onMouseEnter={() => setActiveService(index)}
-                  onClick={() => setActiveService(index)}
-                  animate={{ height: isActive ? "auto" : 84 }}
-                  layout
-                  className="relative rounded-3xl overflow-hidden cursor-pointer"
-                  style={{ backgroundColor: service.bg, color: service.text }}
+                  className="sticky mb-6"
+                  style={{ top: `${topOffset}px` }}
                 >
-                  {/* Vertical stripe pattern on the right */}
-                  <div
-                    className="absolute top-0 right-0 h-full w-1/2 opacity-40 pointer-events-none"
-                    style={{
-                      backgroundImage: `repeating-linear-gradient(90deg, ${service.stripe} 0 6px, transparent 6px 14px)`,
-                      maskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
-                      WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
-                    }}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="relative rounded-3xl overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.35)]"
+                    style={{ backgroundColor: service.bg, color: service.text }}
+                  >
+                    {/* Stripe pattern on the right */}
+                    <div
+                      className="absolute top-0 right-0 h-full w-1/2 opacity-40 pointer-events-none"
+                      style={{
+                        backgroundImage: `repeating-linear-gradient(90deg, ${service.stripe} 0 6px, transparent 6px 14px)`,
+                        maskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
+                        WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
+                      }}
+                    />
 
-                  {/* Header row (always visible) */}
-                  <div className="relative flex items-center justify-between px-6 md:px-10 h-[84px]">
-                    <div className="flex items-center gap-4">
+                    {/* Label */}
+                    <div className="relative px-6 md:px-10 pt-6 md:pt-8 flex items-center justify-between">
                       <span
                         className="italic font-serif text-xl md:text-2xl font-semibold"
                         style={{ color: service.text }}
                       >
                         {service.label}
                       </span>
-                    </div>
-                    <motion.div
-                      animate={{ rotate: isActive ? 45 : 0, scale: isActive ? 1.1 : 1 }}
-                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                      className="w-9 h-9 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: `${service.stripe}` }}
-                    >
-                      <ArrowRight size={16} className="text-white" strokeWidth={2.5} />
-                    </motion.div>
-                  </div>
-
-                  {/* Expanded content */}
-                  <motion.div
-                    initial={false}
-                    animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: isActive ? 0.15 : 0 }}
-                    className="relative grid grid-cols-1 md:grid-cols-2 gap-6 px-6 md:px-10 pb-8 md:pb-10"
-                  >
-                    {/* Left */}
-                    <div>
-                      <h3 className="text-2xl md:text-4xl font-display font-bold mb-3 leading-tight" style={{ color: service.text }}>
-                        {service.title}
-                      </h3>
-                      <p className="text-sm md:text-base leading-relaxed opacity-80 mb-6 max-w-md" style={{ color: service.text }}>
-                        {service.description}
-                      </p>
-                      <div className="flex gap-8 mb-6">
-                        {service.meta.map((m) => (
-                          <div key={m.k}>
-                            <div className="text-xs uppercase tracking-wider opacity-60 mb-1" style={{ color: service.text }}>{m.k}</div>
-                            <div className="text-base md:text-lg font-bold" style={{ color: service.text }}>{m.v}</div>
-                          </div>
-                        ))}
-                      </div>
-                      <Link
-                        to="/services"
-                        className="inline-flex items-center justify-between gap-3 px-4 py-3 rounded-xl w-full max-w-sm font-semibold text-sm transition-transform hover:translate-x-1"
-                        style={{ backgroundColor: `${service.stripe}33`, color: service.text }}
-                      >
-                        <span className="flex items-center gap-3">
-                          <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: service.stripe }}>
-                            <Icon size={14} className="text-white" />
-                          </span>
-                          {t("common.learnMore") || "Learn more"}
-                        </span>
-                        <ArrowRight size={16} />
-                      </Link>
-                    </div>
-
-                    {/* Right visual */}
-                    <div className="relative rounded-2xl overflow-hidden min-h-[220px] flex items-center justify-center"
-                      style={{
-                        background: `linear-gradient(135deg, ${service.stripe}, ${service.stripe}cc)`,
-                      }}
-                    >
                       <div
-                        className="absolute inset-0 opacity-30"
-                        style={{
-                          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 4px, transparent 4px 12px)`,
-                        }}
-                      />
-                      <motion.div
-                        animate={{ y: [0, -8, 0], rotate: [0, 3, 0] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="relative w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-white/95 shadow-2xl flex items-center justify-center backdrop-blur"
+                        className="w-9 h-9 rounded-full flex items-center justify-center"
+                        style={{ backgroundColor: service.stripe }}
                       >
-                        <Icon size={64} style={{ color: service.stripe }} strokeWidth={1.6} />
-                      </motion.div>
+                        <ArrowRight size={16} className="text-white" strokeWidth={2.5} />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6 px-6 md:px-10 pt-4 pb-8 md:pb-10">
+                      <div>
+                        <h3 className="text-2xl md:text-4xl font-display font-bold mb-3 leading-tight" style={{ color: service.text }}>
+                          {service.title}
+                        </h3>
+                        <p className="text-sm md:text-base leading-relaxed opacity-80 mb-6 max-w-md" style={{ color: service.text }}>
+                          {service.description}
+                        </p>
+                        <div className="flex gap-8 mb-6">
+                          {service.meta.map((m) => (
+                            <div key={m.k}>
+                              <div className="text-xs uppercase tracking-wider opacity-60 mb-1" style={{ color: service.text }}>{m.k}</div>
+                              <div className="text-base md:text-lg font-bold" style={{ color: service.text }}>{m.v}</div>
+                            </div>
+                          ))}
+                        </div>
+                        <Link
+                          to="/services"
+                          className="inline-flex items-center justify-between gap-3 px-4 py-3 rounded-xl w-full max-w-sm font-semibold text-sm transition-transform hover:translate-x-1"
+                          style={{ backgroundColor: `${service.stripe}33`, color: service.text }}
+                        >
+                          <span className="flex items-center gap-3">
+                            <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: service.stripe }}>
+                              <Icon size={14} className="text-white" />
+                            </span>
+                            {t("common.learnMore") || "Learn more"}
+                          </span>
+                          <ArrowRight size={16} />
+                        </Link>
+                      </div>
+
+                      <div
+                        className="relative rounded-2xl overflow-hidden min-h-[240px] flex items-center justify-center"
+                        style={{ background: `linear-gradient(135deg, ${service.stripe}, ${service.stripe}cc)` }}
+                      >
+                        <div
+                          className="absolute inset-0 opacity-30"
+                          style={{ backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 4px, transparent 4px 12px)` }}
+                        />
+                        <motion.div
+                          animate={{ y: [0, -8, 0], rotate: [0, 3, 0] }}
+                          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                          className="relative w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-white/95 shadow-2xl flex items-center justify-center backdrop-blur"
+                        >
+                          <Icon size={64} style={{ color: service.stripe }} strokeWidth={1.6} />
+                        </motion.div>
+                      </div>
                     </div>
                   </motion.div>
-                </motion.div>
+                </div>
               );
             })}
+            {/* Spacer to give scroll room for stacking */}
+            <div className="h-[40vh]" />
           </div>
 
           <motion.div
