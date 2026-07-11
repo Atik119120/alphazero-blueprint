@@ -56,15 +56,6 @@ export function LogoCloud({ className, logos = defaultLogos, ...props }: LogoClo
         ))}
       </div>
 
-      {/* Decorative technical sub-label */}
-      <div className="mt-8 flex justify-center">
-        <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-medium">
-            Global Portfolio v2.0
-          </span>
-        </div>
-      </div>
     </div>
   );
 }
