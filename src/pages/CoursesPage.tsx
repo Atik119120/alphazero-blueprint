@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
-import coursesHeroBg from "@/assets/courses-hero-bg.png";
+import coursesHeroBgAsset from "@/assets/courses-hero-bg.png.asset.json";
+const coursesHeroBg = coursesHeroBgAsset.url;
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
