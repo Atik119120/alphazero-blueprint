@@ -139,7 +139,7 @@
       hsl(210 25% 97%) 60%,
       hsl(195 15% 96%) 100%
     );
-    background-attachment: fixed;
+    }
   }
 
   .dark body {
