@@ -375,13 +375,8 @@ const Navbar = () => {
                   const IconComp = item.icon;
                   const isActive = location.pathname === item.href;
 
-                  return (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      className="relative flex flex-col items-center gap-0.5 py-1"
-                    >
-                      {/* Active glow */}
+                  const inner = (
+                    <>
                       {isActive && (
                         <motion.div
                           layoutId="bottom-nav-active"
@@ -389,9 +384,7 @@ const Navbar = () => {
                           transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                         />
                       )}
-                      
                       <div className="relative z-10 flex flex-col items-center">
-                        {/* Active top bar indicator */}
                         {isActive && (
                           <motion.div
                             layoutId="bottom-nav-bar"
@@ -399,24 +392,32 @@ const Navbar = () => {
                             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
                           />
                         )}
-                        
                         <motion.div
                           animate={isActive ? { y: -2, scale: 1.15 } : { y: 0, scale: 1 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         >
-                          <IconComp 
-                            size={19} 
-                            strokeWidth={isActive ? 2.5 : 1.5} 
+                          <IconComp
+                            size={19}
+                            strokeWidth={isActive ? 2.5 : 1.5}
                             className={`transition-colors duration-200 ${isActive ? "text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.4)]" : "text-muted-foreground/70"}`}
                           />
                         </motion.div>
-                        
                         <span className={`text-[8.5px] leading-tight mt-0.5 transition-all duration-200 ${
                           isActive ? "font-bold text-primary" : "font-medium text-muted-foreground/60"
                         }`}>
                           {item.name}
                         </span>
                       </div>
+                    </>
+                  );
+                  const cls = "relative flex flex-col items-center gap-0.5 py-1";
+                  return item.external ? (
+                    <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                      {inner}
+                    </a>
+                  ) : (
+                    <Link key={item.href} to={item.href} className={cls}>
+                      {inner}
                     </Link>
                   );
                 })}
