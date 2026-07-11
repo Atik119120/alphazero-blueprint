@@ -137,7 +137,7 @@ const Index = () => {
 
 
       {/* ══════════ SISTER BRANDS ══════════ */}
-      <section className="relative py-16 lg:py-24">
+      <section className="relative pt-4 pb-16 lg:pt-6 lg:pb-24">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
