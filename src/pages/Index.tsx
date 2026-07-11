@@ -42,7 +42,7 @@ import brand4 from "@/assets/brands/b4.png.asset.json";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useRef, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
 import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
@@ -50,7 +50,7 @@ const designShowcase = heroBgAsset.url;
 const designShowcaseLight = heroBgLightAsset.url;
 
 const Index = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { getContent } = usePageContent('home');
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -71,11 +71,52 @@ const Index = () => {
   ];
 
   const services = [
-    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc"), gradient: "from-cyan-400 via-sky-500 to-blue-600" },
-    { icon: PenTool, title: c("service.graphics", "home.service.graphics") || "Graphic Design", description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel precision.", gradient: "from-sky-400 via-cyan-500 to-teal-500" },
-    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc"), gradient: "from-blue-500 via-cyan-500 to-sky-400" },
-    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc"), gradient: "from-teal-400 via-cyan-500 to-blue-500" },
+    {
+      icon: Monitor,
+      label: language === "bn" ? "ওয়েবসাইট" : "Website",
+      title: c("service.web", "home.service.web"),
+      description: c("service.webDesc", "home.service.webDesc"),
+      meta: [
+        { k: language === "bn" ? "স্কোপ" : "Scope", v: language === "bn" ? "ডিজাইন ও ডেভেলপমেন্ট" : "Design & Development" },
+        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "২–৪ সপ্তাহ" : "2–4 Weeks" },
+      ],
+      bg: "#c7d2fe", text: "#1e1b4b", stripe: "#818cf8",
+    },
+    {
+      icon: PenTool,
+      label: language === "bn" ? "গ্রাফিক" : "Graphic",
+      title: c("service.graphics", "home.service.graphics") || "Graphic Design",
+      description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel-precise care.",
+      meta: [
+        { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৪৮ ঘন্টা" : "48 Hours" },
+        { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
+      ],
+      bg: "#fecaca", text: "#4c1d1d", stripe: "#fb7185",
+    },
+    {
+      icon: Search,
+      label: "SEO",
+      title: c("service.seo", "home.service.seo"),
+      description: c("service.seoDesc", "home.service.seoDesc"),
+      meta: [
+        { k: language === "bn" ? "রিপোর্ট" : "Reporting", v: language === "bn" ? "মাসিক" : "Monthly" },
+        { k: language === "bn" ? "ফোকাস" : "Focus", v: "On-page + Off-page" },
+      ],
+      bg: "#fde68a", text: "#422006", stripe: "#f59e0b",
+    },
+    {
+      icon: PenTool,
+      label: language === "bn" ? "ব্র্যান্ডিং" : "Branding",
+      title: c("service.branding", "home.service.branding"),
+      description: c("service.brandingDesc", "home.service.brandingDesc"),
+      meta: [
+        { k: language === "bn" ? "ডেলিভারেবল" : "Deliverable", v: language === "bn" ? "লোগো + গাইডলাইন" : "Logo + Guidelines" },
+        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
+      ],
+      bg: "#a7f3d0", text: "#022c22", stripe: "#2dd4bf",
+    },
   ];
+  const [activeService, setActiveService] = useState(0);
 
   const stats = [
     { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
@@ -206,72 +247,114 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Unique animated grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-5xl mx-auto">
+          {/* Stacked accordion services */}
+          <div className="max-w-6xl mx-auto flex flex-col gap-3">
             {services.map((service, index) => {
+              const isActive = activeService === index;
+              const Icon = service.icon;
               return (
                 <motion.div
                   key={service.title}
-                  initial={{ opacity: 0, y: 60, rotateX: -15 }}
-                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ delay: index * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  whileHover={{ y: -8, transition: { duration: 0.35, ease: "easeOut" } }}
-                  style={{ transformPerspective: 1000 }}
-                  className="group relative rounded-3xl overflow-hidden"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ delay: index * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  onMouseEnter={() => setActiveService(index)}
+                  onClick={() => setActiveService(index)}
+                  animate={{ height: isActive ? "auto" : 84 }}
+                  layout
+                  className="relative rounded-3xl overflow-hidden cursor-pointer"
+                  style={{ backgroundColor: service.bg, color: service.text }}
                 >
-                  {/* Animated gradient border */}
-                  <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${service.gradient} opacity-40 group-hover:opacity-100 transition-opacity duration-500`} />
-                  <div className="absolute inset-[1.5px] rounded-3xl bg-background/95 backdrop-blur-xl" />
-
-                  {/* Rotating conic glow on hover */}
-                  <motion.div
-                    aria-hidden
-                    className="absolute -inset-24 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
+                  {/* Vertical stripe pattern on the right */}
+                  <div
+                    className="absolute top-0 right-0 h-full w-1/2 opacity-40 pointer-events-none"
                     style={{
-                      background: `conic-gradient(from 0deg, transparent, hsl(190 95% 55% / 0.5), transparent 40%)`,
+                      backgroundImage: `repeating-linear-gradient(90deg, ${service.stripe} 0 6px, transparent 6px 14px)`,
+                      maskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
+                      WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 30%)",
                     }}
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                   />
 
-                  <div className="relative p-7 lg:p-9">
-                    {/* Big number */}
-                    <span className={`absolute top-5 right-6 text-7xl font-display font-black leading-none select-none bg-gradient-to-br ${service.gradient} bg-clip-text text-transparent opacity-15 group-hover:opacity-40 transition-opacity duration-500`}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    {/* Icon with float */}
-                    <motion.div
-                      whileHover={{ rotate: [0, -8, 8, -4, 0], scale: 1.1 }}
-                      transition={{ duration: 0.6 }}
-                      className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 shadow-[0_8px_24px_-6px_rgba(6,182,212,0.5)]`}
-                    >
-                      <service.icon size={28} className="text-white drop-shadow-md" strokeWidth={2.2} />
-                      <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </motion.div>
-
-                    <h3 className="text-xl lg:text-2xl font-display font-bold mb-3 tracking-tight">
-                      {service.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm lg:text-[15px] leading-relaxed mb-5">
-                      {service.description}
-                    </p>
-
-                    {/* Animated underline arrow */}
-                    <div className="flex items-center gap-2 text-sm font-semibold">
-                      <span className={`bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent`}>
-                        {t("common.learnMore") || "Learn more"}
-                      </span>
-                      <motion.div
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 4 }}
-                        className="text-cyan-500"
+                  {/* Header row (always visible) */}
+                  <div className="relative flex items-center justify-between px-6 md:px-10 h-[84px]">
+                    <div className="flex items-center gap-4">
+                      <span
+                        className="italic font-serif text-xl md:text-2xl font-semibold"
+                        style={{ color: service.text }}
                       >
-                        <ArrowRight size={15} />
+                        {service.label}
+                      </span>
+                    </div>
+                    <motion.div
+                      animate={{ rotate: isActive ? 45 : 0, scale: isActive ? 1.1 : 1 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className="w-9 h-9 rounded-full flex items-center justify-center"
+                      style={{ backgroundColor: `${service.stripe}` }}
+                    >
+                      <ArrowRight size={16} className="text-white" strokeWidth={2.5} />
+                    </motion.div>
+                  </div>
+
+                  {/* Expanded content */}
+                  <motion.div
+                    initial={false}
+                    animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
+                    transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: isActive ? 0.15 : 0 }}
+                    className="relative grid grid-cols-1 md:grid-cols-2 gap-6 px-6 md:px-10 pb-8 md:pb-10"
+                  >
+                    {/* Left */}
+                    <div>
+                      <h3 className="text-2xl md:text-4xl font-display font-bold mb-3 leading-tight" style={{ color: service.text }}>
+                        {service.title}
+                      </h3>
+                      <p className="text-sm md:text-base leading-relaxed opacity-80 mb-6 max-w-md" style={{ color: service.text }}>
+                        {service.description}
+                      </p>
+                      <div className="flex gap-8 mb-6">
+                        {service.meta.map((m) => (
+                          <div key={m.k}>
+                            <div className="text-xs uppercase tracking-wider opacity-60 mb-1" style={{ color: service.text }}>{m.k}</div>
+                            <div className="text-base md:text-lg font-bold" style={{ color: service.text }}>{m.v}</div>
+                          </div>
+                        ))}
+                      </div>
+                      <Link
+                        to="/services"
+                        className="inline-flex items-center justify-between gap-3 px-4 py-3 rounded-xl w-full max-w-sm font-semibold text-sm transition-transform hover:translate-x-1"
+                        style={{ backgroundColor: `${service.stripe}33`, color: service.text }}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className="w-8 h-8 rounded-full flex items-center justify-center" style={{ backgroundColor: service.stripe }}>
+                            <Icon size={14} className="text-white" />
+                          </span>
+                          {t("common.learnMore") || "Learn more"}
+                        </span>
+                        <ArrowRight size={16} />
+                      </Link>
+                    </div>
+
+                    {/* Right visual */}
+                    <div className="relative rounded-2xl overflow-hidden min-h-[220px] flex items-center justify-center"
+                      style={{
+                        background: `linear-gradient(135deg, ${service.stripe}, ${service.stripe}cc)`,
+                      }}
+                    >
+                      <div
+                        className="absolute inset-0 opacity-30"
+                        style={{
+                          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 4px, transparent 4px 12px)`,
+                        }}
+                      />
+                      <motion.div
+                        animate={{ y: [0, -8, 0], rotate: [0, 3, 0] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="relative w-28 h-28 md:w-36 md:h-36 rounded-3xl bg-white/95 shadow-2xl flex items-center justify-center backdrop-blur"
+                      >
+                        <Icon size={64} style={{ color: service.stripe }} strokeWidth={1.6} />
                       </motion.div>
                     </div>
-                  </div>
+                  </motion.div>
                 </motion.div>
               );
             })}
