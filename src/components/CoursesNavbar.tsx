@@ -57,7 +57,7 @@ const CoursesNavbar = () => {
             }`}
           >
             {/* Learn Logo */}
-            <Link to="/courses" className="flex items-center gap-2 group shrink-0">
+            <Link to={allCoursesHref} className="flex items-center gap-2 group shrink-0">
               <img
                 src={learnLogo}
                 alt="Learn with AlphaZero"
