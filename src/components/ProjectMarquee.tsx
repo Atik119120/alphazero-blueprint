@@ -125,7 +125,7 @@ export default function ProjectMarquee() {
   }, [items.length, topOffset]);
 
   return (
-    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-4 md:pb-6 overflow-hidden bg-transparent z-20">
+    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-transparent z-20">
       <div className="relative h-[130px] sm:h-[150px] md:h-[180px]">
 
 
