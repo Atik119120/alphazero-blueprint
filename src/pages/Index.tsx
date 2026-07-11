@@ -145,10 +145,6 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center mb-6"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-              <Sparkles size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Our Sister Brands</span>
-            </div>
             <h2 className="text-3xl lg:text-5xl font-display font-bold whitespace-nowrap">
               Brands we <span className="gradient-text">build & back</span>
             </h2>
