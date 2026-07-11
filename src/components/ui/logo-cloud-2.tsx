@@ -74,9 +74,13 @@ function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
         <img
           src={logo.src}
           alt={logo.alt}
-          className="max-h-8 md:max-h-10 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100"
+          className={cn(
+            "max-h-8 md:max-h-10 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100",
+            logo.invert && "invert brightness-0 dark:invert-0 dark:brightness-100",
+          )}
           loading="lazy"
         />
+
       ) : (
         <span className="text-sm font-semibold tracking-wider uppercase text-muted-foreground group-hover:text-foreground transition-colors">
           {logo.label || logo.alt}
