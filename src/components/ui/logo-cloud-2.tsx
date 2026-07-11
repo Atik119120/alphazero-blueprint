@@ -75,7 +75,7 @@ function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
           src={logo.src}
           alt={logo.alt}
           className={cn(
-            "max-h-8 md:max-h-10 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100",
+            "max-h-16 md:max-h-20 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100",
             logo.invert && "brightness-0 invert",
           )}
           loading="lazy"
@@ -92,7 +92,7 @@ function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
   return (
     <div
       className={cn(
-        "group relative flex h-28 md:h-32 items-center justify-center",
+        "group relative flex h-36 md:h-40 items-center justify-center px-4",
         className,
       )}
       {...props}
