@@ -38,6 +38,7 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
+import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
 
 
 import { useLanguage } from "@/contexts/LanguageContext";
