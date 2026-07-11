@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
-import coursesHeroBg from "@/assets/courses-hero-bg.png.asset.json";
+import coursesHeroBg from "@/assets/courses-hero-bg.png";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -326,7 +326,7 @@ const CoursesPage = () => {
         {/* Blue wave background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${coursesHeroBg.url})` }}
+          style={{ backgroundImage: `url(${coursesHeroBg})` }}
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/80" />
