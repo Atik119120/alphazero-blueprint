@@ -105,10 +105,7 @@ function AppContent() {
       {!isLmsRoute && <ScrollReveal />}
       <ScrollToTop />
       
-      {/* Lazy load chatbot */}
-      <Suspense fallback={null}>
-        <AIChatbot />
-      </Suspense>
+      <AIChatbot />
       
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
