@@ -386,6 +386,77 @@ const CoursesPage = () => {
         </motion.div>
       </section>
 
+      {/* Courses Carousel (auto-scroll marquee) */}
+      {displayCourses.length > 0 && (
+        <section className="py-10 border-y border-border/40 overflow-hidden">
+          <div className="container mx-auto px-6 mb-6 flex items-end justify-between">
+            <div>
+              <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary block">
+                {isBn ? "এক নজরে" : "At a glance"}
+              </span>
+              <h3 className="text-xl lg:text-2xl font-display font-bold mt-1">
+                {isBn ? "আমাদের কোর্সসমূহ" : "Our Courses"}
+              </h3>
+            </div>
+            <a href="#courses" className="hidden sm:inline-flex items-center gap-1 text-xs text-primary hover:underline">
+              {isBn ? "সব দেখুন" : "View all"} <ArrowRight className="w-3 h-3" />
+            </a>
+          </div>
+
+          <div className="relative group">
+            {/* Edge fades */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
+
+            <motion.div
+              className="flex gap-4 w-max"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{ duration: Math.max(20, displayCourses.length * 5), ease: "linear", repeat: Infinity }}
+            >
+              {[...displayCourses, ...displayCourses].map((course, i) => {
+                const metadata = getCourseMetadata(course.titleEn);
+                const CourseIcon = metadata.icon;
+                const isFree = !course.price || course.price === 0;
+                return (
+                  <button
+                    key={`${course.id}-${i}`}
+                    onClick={() => {
+                      document.getElementById('courses')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    className="group/card w-[280px] shrink-0 text-left rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]"
+                  >
+                    {course.thumbnail_url ? (
+                      <div className="relative h-36 overflow-hidden">
+                        <img src={course.thumbnail_url} alt={isBn ? course.titleBn : course.titleEn}
+                          className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+                      </div>
+                    ) : (
+                      <div className={`relative h-36 bg-gradient-to-br ${metadata.color} flex items-center justify-center`}>
+                        <CourseIcon className="w-10 h-10 text-white/90" />
+                      </div>
+                    )}
+                    <div className="p-4">
+                      <h4 className="text-sm font-display font-bold line-clamp-2 group-hover/card:text-primary transition-colors mb-2">
+                        {isBn ? course.titleBn : course.titleEn}
+                      </h4>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
+                          {isFree ? t.free : `৳${(course.price || 0).toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
+                        </span>
+                        <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/card:opacity-100 group-hover/card:translate-x-1 transition-all" />
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+
+
 
       {/* Stats bar */}
       <section className="border-y border-border/40">
