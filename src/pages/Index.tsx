@@ -38,14 +38,15 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
-import brandingPhoneMockup from "@/assets/branding-phone-mockup.png.asset.json";
-import webDevDashboard from "@/assets/web-dev-dashboard.png.asset.json";
-import webDevTablet from "@/assets/web-dev-tablet.png.asset.json";
-import webDesktopMockup from "@/assets/web-desktop-mockup.png.asset.json";
-import webPhoneMockup from "@/assets/web-phone-mockup.png.asset.json";
-import seoMonitor from "@/assets/seo-monitor.png.asset.json";
-import seoTablet from "@/assets/seo-tablet.png.asset.json";
+const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
+const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
+const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
+const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
+const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.png` };
+const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.png` };
+const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.png` };
+const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.png` };
+const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 
 
@@ -108,8 +109,8 @@ const MockupCard = ({
         <img
           src={image}
           alt=""
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "low"}
+          loading="eager"
+          fetchPriority={priority ? "high" : "auto"}
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -261,8 +262,8 @@ const Index = () => {
         { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
       ],
       bg: "#cffafe", text: "#083344", stripe: "#06b6d4",
-      primaryImage: webDesktopMockup.url,
-      secondaryImage: webPhoneMockup.url,
+      primaryImage: uiuxDesktop.url,
+      secondaryImage: uiuxPhone.url,
     },
 
     {
@@ -304,6 +305,14 @@ const Index = () => {
         img.decoding = "async";
         img.loading = "eager";
         img.src = src;
+
+        if (!document.querySelector(`link[href="${src}"]`)) {
+          const link = document.createElement("link");
+          link.rel = "preload";
+          link.as = "image";
+          link.href = src;
+          document.head.appendChild(link);
+        }
       });
     });
   }, []);
