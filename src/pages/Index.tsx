@@ -246,6 +246,7 @@ const Index = () => {
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
       ],
       bg: "#ccfbf1", text: "#042f2e", stripe: "#14b8a6",
+      primaryImage: brandingStartio.url,
     },
   ];
   const [activeService, setActiveService] = useState(0);
