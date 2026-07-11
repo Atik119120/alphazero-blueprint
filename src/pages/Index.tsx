@@ -102,7 +102,7 @@ const Index = () => {
         { k: language === "bn" ? "রিপোর্ট" : "Reporting", v: language === "bn" ? "মাসিক" : "Monthly" },
         { k: language === "bn" ? "ফোকাস" : "Focus", v: "On-page + Off-page" },
       ],
-      bg: "#fde68a", text: "#422006", stripe: "#f59e0b",
+      bg: "#e0f2fe", text: "#0c1e3d", stripe: "#0ea5e9",
     },
     {
       icon: PenTool,
