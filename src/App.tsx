@@ -4,12 +4,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
 import SmoothScroll from "@/components/SmoothScroll";
+import ScrollReveal from "@/components/ScrollReveal";
 
 // Preload logos immediately
 import logoSrc from "@/assets/logo.png";
@@ -102,6 +104,7 @@ function AppContent() {
     <>
       {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
       {!isLmsRoute && <SmoothScroll />}
+      {!isLmsRoute && <ScrollReveal />}
       <ScrollToTop />
       
       {/* Lazy load chatbot */}
@@ -109,44 +112,54 @@ function AppContent() {
         <AIChatbot />
       </Suspense>
       
-      <Routes>
-        {/* Main site routes */}
-        <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -12, filter: "blur(8px)" }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Routes location={location}>
+            {/* Main site routes */}
+            <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
 
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/work" element={<WorkPage />} />
-        <Route path="/team" element={<TeamPage />} />
-        <Route path="/join-team" element={<JoinTeamPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/courses" element={<CoursesPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        
-        {/* LMS routes */}
-        <Route path="/admin/login" element={<AdminLoginPage />} />
-        <Route path="/student/login" element={<StudentLoginPage />} />
-        <Route path="/teacher/login" element={<TeacherLoginPage />} />
-        <Route path="/auth" element={<StudentLoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/student" element={<StudentDashboard />} />
-        <Route path="/student/course/:courseId" element={<CourseViewerPage />} />
-        <Route path="/teacher" element={<TeacherDashboard />} />
-        <Route path="/my-certificates" element={<MyCertificatesPage />} />
-        <Route path="/certificate/:certificateId" element={<CertificatePage />} />
-        <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/payment/callback" element={<PaymentCallbackPage />} />
-        <Route path="/payment/cancel" element={<PaymentCancelPage />} />
-        <Route path="/pay/:invoiceId" element={<CustomCheckoutPage />} />
-        <Route path="/vibe-coding" element={<CourseLandingPage />} />
-        <Route path="/courses/vibe-coding" element={<CourseLandingPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/work" element={<WorkPage />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/join-team" element={<JoinTeamPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/pricing" element={<PricingPage />} />
 
-        
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+            {/* LMS routes */}
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/student/login" element={<StudentLoginPage />} />
+            <Route path="/teacher/login" element={<TeacherLoginPage />} />
+            <Route path="/auth" element={<StudentLoginPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/student" element={<StudentDashboard />} />
+            <Route path="/student/course/:courseId" element={<CourseViewerPage />} />
+            <Route path="/teacher" element={<TeacherDashboard />} />
+            <Route path="/my-certificates" element={<MyCertificatesPage />} />
+            <Route path="/certificate/:certificateId" element={<CertificatePage />} />
+            <Route path="/verify-certificate" element={<VerifyCertificatePage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/payment/callback" element={<PaymentCallbackPage />} />
+            <Route path="/payment/cancel" element={<PaymentCancelPage />} />
+            <Route path="/pay/:invoiceId" element={<CustomCheckoutPage />} />
+            <Route path="/vibe-coding" element={<CourseLandingPage />} />
+            <Route path="/courses/vibe-coding" element={<CourseLandingPage />} />
+
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
     </>
   );
 }
