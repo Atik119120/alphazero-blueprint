@@ -472,8 +472,6 @@ const Index = () => {
             </div>
 
 
-              ))}
-            </div>
 
             {/* RIGHT — scrolling image pairs */}
             <div className="lg:col-span-8 flex flex-col gap-20 lg:gap-28">
