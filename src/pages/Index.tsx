@@ -58,7 +58,7 @@ const ServicePanel = ({
 }: {
   index: number;
   color: string;
-  Icon: React.ComponentType<{ size?: number; className?: string; strokeWidth?: number }>;
+  Icon: any;
   onActive: () => void;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
