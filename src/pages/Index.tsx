@@ -34,6 +34,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import ProjectMarquee from "@/components/ProjectMarquee";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
+import brand1 from "@/assets/brands/b1.png.asset.json";
+import brand2 from "@/assets/brands/b2.png.asset.json";
+import brand3 from "@/assets/brands/b3.png.asset.json";
+
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
@@ -154,7 +158,14 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto"
           >
-            <LogoCloud />
+            <LogoCloud
+              logos={[
+                { src: brand1.url, alt: "AlphaZero" },
+                { src: brand2.url, alt: "Sister Brand" },
+                { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
+              ]}
+            />
+
           </motion.div>
         </div>
       </section>
