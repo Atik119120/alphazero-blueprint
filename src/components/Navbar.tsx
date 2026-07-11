@@ -227,15 +227,15 @@ const Navbar = () => {
                 {/* CTA Button */}
                 <Link
                   to="/contact"
-                  className="ml-1 group relative px-5 py-2 rounded-full font-semibold text-sm text-primary-foreground flex items-center gap-1.5
-                    bg-gradient-to-r from-[hsl(185_100%_50%)] via-[hsl(210_100%_55%)] to-[hsl(260_90%_60%)]
-                    shadow-[0_6px_16px_-4px_hsl(210_100%_50%/0.6),0_2px_4px_-1px_hsl(260_90%_50%/0.4),inset_0_1px_0_0_hsl(0_0%_100%/0.4),inset_0_-2px_0_0_hsl(260_80%_35%/0.5)]
-                    hover:shadow-[0_12px_28px_-6px_hsl(210_100%_55%/0.7),0_4px_10px_-2px_hsl(260_90%_55%/0.5),inset_0_1px_0_0_hsl(0_0%_100%/0.5),inset_0_-2px_0_0_hsl(260_80%_35%/0.5)]
+                  className="ml-1 group relative px-5 py-2 rounded-full font-semibold text-sm text-white flex items-center gap-1.5
+                    bg-gradient-to-r from-[hsl(190_95%_50%)] to-[hsl(220_95%_55%)]
+                    shadow-[0_6px_16px_-4px_hsl(210_100%_50%/0.55),0_2px_4px_-1px_hsl(220_95%_45%/0.4),inset_0_1px_0_0_hsl(0_0%_100%/0.45),inset_0_-2px_0_0_hsl(220_80%_30%/0.5)]
+                    hover:shadow-[0_12px_28px_-6px_hsl(210_100%_55%/0.7),0_4px_10px_-2px_hsl(220_95%_50%/0.5),inset_0_1px_0_0_hsl(0_0%_100%/0.55),inset_0_-2px_0_0_hsl(220_80%_30%/0.5)]
                     hover:-translate-y-0.5 active:translate-y-0
                     transition-all duration-300"
                 >
-                  <span className="relative z-10 drop-shadow-[0_1px_0_hsl(var(--primary)/0.5)]">{t("nav.startProject")}</span>
-                  <ArrowUpRight size={14} className="relative z-10 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  <span className="relative z-10 drop-shadow-[0_1px_1px_hsl(220_80%_25%/0.55)]">{t("nav.startProject")}</span>
+                  <ArrowUpRight size={14} className="relative z-10 drop-shadow-[0_1px_1px_hsl(220_80%_25%/0.55)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
