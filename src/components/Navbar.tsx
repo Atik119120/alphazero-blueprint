@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
-  const COURSES_URL = "https://learn.alphazero.online";
+  const COURSES_URL = "/courses";
 
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },
@@ -45,7 +45,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", num: "03", hasDropdown: true },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.courses"), href: COURSES_URL, num: "06", external: true },
+    { name: t("nav.courses"), href: "/courses", num: "06" },
     { name: t("nav.contact"), href: "/contact", num: "07" },
   ];
 
@@ -60,7 +60,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
     { name: t("nav.team"), href: "/team", icon: Users },
-    { name: t("nav.courses"), href: COURSES_URL, icon: GraduationCap, external: true },
+    { name: t("nav.courses"), href: "/courses", icon: GraduationCap },
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
 
@@ -196,11 +196,7 @@ const Navbar = () => {
                       </span>
                     </>
                   );
-                  return link.external ? (
-                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>
-                      {linkInner}
-                    </a>
-                  ) : (
+                  return (
                     <Link key={link.href} to={link.href} className={linkClasses}>
                       {linkInner}
                     </Link>
@@ -315,11 +311,7 @@ const Navbar = () => {
                       isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
                     }`;
                     const inner = (<><IconComp size={16} className={isActive ? "" : "text-primary/70"} />{link.name}</>);
-                    return link.external ? (
-                      <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>
-                        {inner}
-                      </a>
-                    ) : (
+                    return (
                       <Link key={link.href} to={link.href} onClick={handleNavClick} className={cls}>
                         {inner}
                       </Link>
@@ -360,7 +352,7 @@ const Navbar = () => {
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
-          { name: language === "bn" ? "কোর্স" : "Courses", href: COURSES_URL, icon: GraduationCap, external: true },
+          { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
 
@@ -411,11 +403,7 @@ const Navbar = () => {
                     </>
                   );
                   const cls = "relative flex flex-col items-center gap-0.5 py-1";
-                  return item.external ? (
-                    <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>
-                      {inner}
-                    </a>
-                  ) : (
+                  return (
                     <Link key={item.href} to={item.href} className={cls}>
                       {inner}
                     </Link>
