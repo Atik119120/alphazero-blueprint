@@ -38,6 +38,7 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
+import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
 
 
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -49,19 +50,21 @@ import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
 const designShowcase = heroBgAsset.url;
 const designShowcaseLight = heroBgLightAsset.url;
 
-// Tilted device mockup card (browser or phone)
+// Tilted device mockup card (browser / phone / image)
 const MockupCard = ({
   color,
   Icon,
   variant,
   tilt,
   delay = 0,
+  image,
 }: {
   color: string;
   Icon: any;
-  variant: "browser" | "phone";
+  variant: "browser" | "phone" | "image";
   tilt: number;
   delay?: number;
+  image?: string;
 }) => {
   return (
     <motion.div
@@ -74,59 +77,72 @@ const MockupCard = ({
         background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}aa 45%, ${color}55 100%)`,
       }}
     >
-      <div
-        className="absolute inset-0 opacity-25 pointer-events-none"
-        style={{
-          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 3px, transparent 3px 12px)`,
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
+      {variant !== "image" && (
+        <>
+          <div
+            className="absolute inset-0 opacity-25 pointer-events-none"
+            style={{
+              backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 3px, transparent 3px 12px)`,
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
+        </>
+      )}
 
-      <motion.div
-        animate={{ y: [0, -12, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay }}
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-        style={{ rotate: tilt }}
-      >
-        {variant === "browser" ? (
-          <div className="w-[16rem] md:w-[18rem] aspect-[16/11] rounded-xl bg-white shadow-2xl overflow-hidden">
-            <div className="flex items-center gap-1.5 px-3 h-6 bg-gray-100 border-b border-gray-200">
-              <div className="w-2 h-2 rounded-full bg-red-400" />
-              <div className="w-2 h-2 rounded-full bg-yellow-400" />
-              <div className="w-2 h-2 rounded-full bg-green-400" />
+      {variant === "image" && image ? (
+        <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+      ) : (
+        <motion.div
+          animate={{ y: [0, -12, 0] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ rotate: tilt }}
+        >
+          {variant === "browser" ? (
+            <div className="w-[16rem] md:w-[18rem] aspect-[16/11] rounded-xl bg-white shadow-2xl overflow-hidden">
+              <div className="flex items-center gap-1.5 px-3 h-6 bg-gray-100 border-b border-gray-200">
+                <div className="w-2 h-2 rounded-full bg-red-400" />
+                <div className="w-2 h-2 rounded-full bg-yellow-400" />
+                <div className="w-2 h-2 rounded-full bg-green-400" />
+              </div>
+              <div
+                className="w-full h-[calc(100%-1.5rem)] flex items-center justify-center"
+                style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
+              >
+                <Icon size={64} strokeWidth={1.4} className="drop-shadow-xl" style={{ color }} />
+              </div>
             </div>
-            <div
-              className="w-full h-[calc(100%-1.5rem)] flex items-center justify-center"
-              style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
-            >
-              <Icon size={64} strokeWidth={1.4} className="drop-shadow-xl" style={{ color }} />
+          ) : (
+            <div className="w-[7.5rem] md:w-[9rem] aspect-[9/19] rounded-[2rem] bg-neutral-900 shadow-2xl overflow-hidden ring-2 ring-black/40 relative">
+              <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-3 rounded-full bg-black z-10" />
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{ background: `linear-gradient(160deg, ${color}44, ${color}88)` }}
+              >
+                <Icon size={44} strokeWidth={1.6} className="drop-shadow-xl text-white" />
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="w-[7.5rem] md:w-[9rem] aspect-[9/19] rounded-[2rem] bg-neutral-900 shadow-2xl overflow-hidden ring-2 ring-black/40 relative">
-            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-3 rounded-full bg-black z-10" />
-            <div
-              className="w-full h-full flex items-center justify-center"
-              style={{ background: `linear-gradient(160deg, ${color}44, ${color}88)` }}
-            >
-              <Icon size={44} strokeWidth={1.6} className="drop-shadow-xl text-white" />
-            </div>
-          </div>
-        )}
-      </motion.div>
+          )}
+        </motion.div>
+      )}
     </motion.div>
   );
 };
+
 
 // Pair of tilted mockups (browser + phone) that reports itself active when centered
 const ServicePair = ({
   color,
   Icon,
   onActive,
+  primaryImage,
+  secondaryImage,
 }: {
   color: string;
   Icon: any;
   onActive: () => void;
+  primaryImage?: string;
+  secondaryImage?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
@@ -137,19 +153,30 @@ const ServicePair = ({
   return (
     <div ref={ref} className="min-h-[85vh] flex items-center">
       <div className="w-full grid grid-cols-12 gap-4 md:gap-6 items-center">
-        {/* larger mockup — sits higher */}
         <div className="col-span-7 -mt-8 md:-mt-14">
-          <MockupCard color={color} Icon={Icon} variant="browser" tilt={-3} />
+          <MockupCard
+            color={color}
+            Icon={Icon}
+            variant={primaryImage ? "image" : "browser"}
+            image={primaryImage}
+            tilt={-3}
+          />
         </div>
-        {/* smaller mockup — sits lower */}
         <div className="col-span-5 mt-12 md:mt-20 scale-[0.88]">
-          <MockupCard color={color} Icon={Icon} variant="phone" tilt={4} delay={0.15} />
+          <MockupCard
+            color={color}
+            Icon={Icon}
+            variant={secondaryImage ? "image" : "phone"}
+            image={secondaryImage}
+            tilt={4}
+            delay={0.15}
+          />
         </div>
       </div>
     </div>
-
   );
 };
+
 
 
 
@@ -219,6 +246,7 @@ const Index = () => {
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
       ],
       bg: "#ccfbf1", text: "#042f2e", stripe: "#14b8a6",
+      primaryImage: brandingStartio.url,
     },
   ];
   const [activeService, setActiveService] = useState(0);
@@ -402,7 +430,10 @@ const Index = () => {
                     color={s.stripe}
                     Icon={Icon}
                     onActive={() => setActiveService(i)}
+                    primaryImage={(s as any).primaryImage}
+                    secondaryImage={(s as any).secondaryImage}
                   />
+
                 );
               })}
             </div>
