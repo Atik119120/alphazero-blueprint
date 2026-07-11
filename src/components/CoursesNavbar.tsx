@@ -93,20 +93,22 @@ const CoursesNavbar = () => {
             }`}
           >
             {/* Learn Logo */}
-            <Link to={allCoursesHref} className="flex items-center gap-2 group shrink-0">
+            <button
+              onClick={() => handleNavClick("home")}
+              className="flex items-center gap-2 group shrink-0"
+            >
               <img
                 src={learnLogo}
                 alt="Learn with AlphaZero"
                 className="h-8 sm:h-9 w-auto dark:brightness-0 dark:invert transition-all"
                 loading="eager"
               />
-            </Link>
+            </button>
 
             {/* Desktop nav */}
             <div className="hidden lg:flex items-center gap-1 bg-primary/[0.06] rounded-full px-1.5 py-1 border border-primary/15">
               {navLinks.map((link) => {
-                const active = isActive(link.href);
-                const isExternal = link.href.startsWith("http");
+                const active = !link.external && activeSection === link.id;
                 const commonClass = "relative px-4 py-2 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5";
                 const inner = (
                   <>
@@ -123,14 +125,20 @@ const CoursesNavbar = () => {
                     </span>
                   </>
                 );
-                return isExternal ? (
-                  <a key={link.href} href={link.href} className={commonClass}>{inner}</a>
-                ) : (
-                  <Link key={link.href} to={link.href} className={commonClass}>{inner}</Link>
+                if (link.external) {
+                  return (
+                    <a key={link.name} href={link.href} className={commonClass}>{inner}</a>
+                  );
+                }
+                return (
+                  <button key={link.name} onClick={() => handleNavClick(link.id!)} className={commonClass}>
+                    {inner}
+                  </button>
                 );
               })}
 
             </div>
+
 
             {/* Right controls */}
             <div className="hidden lg:flex items-center gap-1.5">
