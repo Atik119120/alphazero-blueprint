@@ -445,10 +445,8 @@ const Index = () => {
               </span>
             </div>
             <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
-              <span className="italic font-light text-muted-foreground">Our</span>{" "}
-              <span className="text-foreground">brand</span>{" "}
               <span className="gradient-text relative">
-                constellation
+                Our brand constellation
                 <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
               </span>
             </h2>
