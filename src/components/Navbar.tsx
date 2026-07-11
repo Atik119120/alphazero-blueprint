@@ -196,11 +196,7 @@ const Navbar = () => {
                       </span>
                     </>
                   );
-                  return link.external ? (
-                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>
-                      {linkInner}
-                    </a>
-                  ) : (
+                  return (
                     <Link key={link.href} to={link.href} className={linkClasses}>
                       {linkInner}
                     </Link>
