@@ -508,10 +508,10 @@ const Index = () => {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <h3 className="text-3xl sm:text-4xl font-display font-bold leading-[1.1] tracking-tight text-foreground mb-4">
+                  <h3 className="text-3xl sm:text-4xl font-display font-bold leading-[1.1] tracking-tight text-foreground mb-2">
                     {s.title}
                   </h3>
-                  <div className="relative h-[2px] w-full max-w-[180px] mb-5 overflow-hidden rounded-full">
+                  <div className="relative h-[2px] w-full max-w-[180px] mb-2 overflow-hidden rounded-full">
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
                   </div>
