@@ -35,7 +35,7 @@ const Navbar = () => {
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
 
-  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  
 
   const COURSES_URL = "https://learn.alphazero.online";
 
