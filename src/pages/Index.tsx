@@ -118,6 +118,40 @@ const MockupCard = ({
   );
 };
 
+// Pair of tilted mockups (browser + phone) that reports itself active when centered
+const ServicePair = ({
+  color,
+  Icon,
+  onActive,
+}: {
+  color: string;
+  Icon: any;
+  onActive: () => void;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
+  useEffect(() => {
+    if (inView) onActive();
+  }, [inView, onActive]);
+
+  return (
+    <div ref={ref} className="min-h-[85vh] flex items-center">
+      <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-center">
+        {/* first mockup — sits higher */}
+        <div className="-mt-6 md:-mt-10">
+          <MockupCard color={color} Icon={Icon} variant="browser" tilt={-3} />
+        </div>
+        {/* second mockup — sits lower */}
+        <div className="mt-10 md:mt-16">
+          <MockupCard color={color} Icon={Icon} variant="phone" tilt={4} delay={0.15} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
 
 const Index = () => {
   const { t, language } = useLanguage();
