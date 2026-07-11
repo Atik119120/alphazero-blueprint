@@ -104,7 +104,21 @@ const Index = () => {
             regular: `${c("title1", "home.title1")} `,
             gradient: c("title2", "home.title2"),
           }}
-          description={c("description", "home.description")}
+          description={(() => {
+            const full = c("description", "home.description") || "";
+            const match = full.match(/^(We craft|আমরা তৈরি করি)(.*)$/);
+            if (match) {
+              return (
+                <>
+                  <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
+                    {match[1]}
+                  </span>
+                  {match[2]}
+                </>
+              );
+            }
+            return full;
+          })()}
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
           bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
