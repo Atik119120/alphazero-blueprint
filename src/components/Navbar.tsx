@@ -111,66 +111,8 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center">
               <div className="flex items-center bg-white/10 dark:bg-white/5 backdrop-blur-xl backdrop-saturate-150 rounded-full px-1.5 py-1 border border-white/20 dark:border-white/10 shadow-[inset_0_1px_0_0_hsl(0_0%_100%/0.15),0_4px_16px_-4px_hsl(220_50%_10%/0.25)]">
                 {navLinks.map((link) => {
-                  const isActive = location.pathname === link.href || (link.hasDropdown && location.pathname === "/pricing");
-                  
-                  if (link.hasDropdown) {
-                    return (
-                      <div
-                        key={link.href}
-                        className="relative"
-                        onMouseEnter={() => setServicesDropdownOpen(true)}
-                        onMouseLeave={() => setServicesDropdownOpen(false)}
-                      >
-                        <button
-                          className="relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full flex items-center gap-1"
-                        >
-                          {isActive && (
-                            <motion.div
-                              layoutId="navbar-active-pill"
-                              className="absolute inset-0 rounded-full bg-cyan-500/10 border border-cyan-500/25 shadow-[0_0_14px_-2px_rgba(6,182,212,0.35)]"
-                              transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
-                            />
-                          )}
-                          <span className={`relative z-10 transition-colors duration-200 ${
-                            isActive
-                              ? "text-cyan-400 font-semibold"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}>
-                            {link.name}
-                          </span>
-                          <ChevronDown size={12} className={`relative z-10 transition-all duration-200 ${
-                            isActive ? "text-cyan-400" : "text-muted-foreground"
-                          } ${servicesDropdownOpen ? "rotate-180" : ""}`} />
-                        </button>
-                        
-                        <AnimatePresence>
-                          {servicesDropdownOpen && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 8, scale: 0.96 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                              transition={{ duration: 0.15 }}
-                              className="absolute top-full left-0 mt-1 w-48 bg-background/95 dark:bg-card/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-xl overflow-hidden z-50"
-                            >
-                              {servicesDropdownItems.map((item) => (
-                                <Link
-                                  key={item.href}
-                                  to={item.href}
-                                  onClick={() => setServicesDropdownOpen(false)}
-                                  className={`flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors hover:bg-primary/10 ${
-                                    location.pathname === item.href ? "text-primary font-semibold" : "text-foreground/80"
-                                  }`}
-                                >
-                                  <item.icon size={15} className="text-primary/70" />
-                                  {item.name}
-                                </Link>
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    );
-                  }
+                  const isActive = location.pathname === link.href;
+
 
                   const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
                   const linkInner = (
