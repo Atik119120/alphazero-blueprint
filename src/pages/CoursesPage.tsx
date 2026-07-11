@@ -283,8 +283,16 @@ const CoursesPage = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
+  // Redirect to learn subdomain when accessed from main site
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.location.hostname.startsWith("learn.") && window.location.hostname.includes("alphazero.online")) {
+      window.location.replace("https://learn.alphazero.online" + window.location.pathname.replace(/^\/courses/, "") + window.location.search);
+    }
+  }, []);
+
   return (
     <Layout>
+
 
       <Helmet>
         <title>Learn with AlphaZero — Design, Development & AI Courses in Bangla</title>
