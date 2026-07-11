@@ -283,54 +283,71 @@ const CoursesPage = () => {
 
   return (
     <Layout>
-      {/* Hero - editorial cinematic */}
-      <section ref={heroRef} className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 mesh-bg" />
-        {/* Floating course icons */}
+      {/* Hero - logo-forward editorial */}
+      <section ref={heroRef} className="relative flex items-center justify-center overflow-hidden py-16 lg:py-24">
+        <div className="absolute inset-0 mesh-bg opacity-70" />
+        {/* Soft radial spotlight */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.10), transparent 70%)" }} />
+        {/* Subtle floating icons */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[GraduationCap, Palette, Code, Camera, Bot].map((Icon, i) => (
             <motion.div key={i}
-              className="absolute text-primary/[0.04]"
-              style={{ left: `${15 + i * 18}%`, top: `${20 + (i % 3) * 25}%` }}
-              animate={{ y: [0, -20, 0], rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 6 + i, repeat: Infinity, ease: "easeInOut" }}>
-              <Icon className="w-16 h-16 lg:w-24 lg:h-24" strokeWidth={1} />
+              className="absolute text-primary/[0.035]"
+              style={{ left: `${10 + i * 19}%`, top: `${15 + (i % 3) * 28}%` }}
+              animate={{ y: [0, -18, 0], rotate: [0, 4, -4, 0] }}
+              transition={{ duration: 7 + i, repeat: Infinity, ease: "easeInOut" }}>
+              <Icon className="w-14 h-14 lg:w-20 lg:h-20" strokeWidth={1} />
             </motion.div>
           ))}
         </div>
-        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10 py-12 lg:py-20">
-          <div className="max-w-5xl mx-auto text-center">
-            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, type: "spring", stiffness: 50 }}
-              className="mb-4 flex justify-center">
-              <img src={learnLogo} alt={t.title} className="h-20 md:h-28 lg:h-36 w-auto dark:brightness-0 dark:invert transition-all" loading="eager" />
+
+        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
+          <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+            {/* Thin accent line */}
+            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.1 }}
+              className="h-px w-24 bg-gradient-to-r from-transparent via-primary to-transparent mb-6 origin-center" />
+
+            {/* Logo */}
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, type: "spring", stiffness: 60 }}
+              className="mb-5">
+              <img src={learnLogo} alt={t.title}
+                className="h-20 md:h-28 lg:h-36 w-auto dark:brightness-0 dark:invert drop-shadow-[0_8px_24px_hsl(var(--primary)/0.25)]"
+                loading="eager" />
             </motion.div>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-              className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
+
+            {/* Tagline chip */}
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/15 bg-primary/[0.05] mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-primary">{t.badge}</span>
+            </motion.div>
+
+            {/* Subtitle */}
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+              className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mb-7 leading-relaxed">
               {t.subtitle}
             </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-              className="flex flex-wrap justify-center gap-4">
+
+            {/* Feature chips */}
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}
+              className="flex flex-wrap justify-center gap-3">
               {[
                 { icon: Target, label: t.beginnerFriendly },
                 { icon: Award, label: t.certificate },
                 { icon: Star, label: t.expertTrainer },
               ].map((item, i) => (
                 <motion.div key={i} whileHover={{ scale: 1.05, y: -2 }}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full glass-card cursor-default">
-                  <item.icon className="w-4 h-4 text-primary" /><span className="text-sm font-medium">{item.label}</span>
+                  className="flex items-center gap-2 px-4 py-2 rounded-full glass-card cursor-default">
+                  <item.icon className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-xs md:text-sm font-medium">{item.label}</span>
                 </motion.div>
               ))}
             </motion.div>
           </div>
         </motion.div>
-        {/* Scroll indicator */}
-        <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/20 flex justify-center pt-2">
-            <div className="w-1 h-2.5 rounded-full bg-primary/60" />
-          </div>
-        </motion.div>
       </section>
+
 
       {/* Stats bar */}
       <section className="border-y border-border/40">
