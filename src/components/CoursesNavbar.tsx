@@ -4,10 +4,8 @@ import { Menu, X, Sun, Moon, Search, User, ArrowUpRight, BookOpen, LayoutGrid, A
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import learnLogoAsset from "@/assets/learn-with-alphazero-logo.png.asset.json";
+import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 import SearchModal from "./SearchModal";
-
-const learnLogo = learnLogoAsset.url;
 
 const CoursesNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
