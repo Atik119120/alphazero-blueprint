@@ -132,19 +132,19 @@ const Navbar = () => {
                           {isActive && (
                             <motion.div
                               layoutId="navbar-active-pill"
-                              className="absolute inset-0 rounded-full bg-gradient-to-r from-[hsl(190_95%_50%)] to-[hsl(220_95%_55%)] shadow-[0_4px_12px_-2px_hsl(210_100%_50%/0.5),inset_0_1px_0_0_hsl(0_0%_100%/0.45),inset_0_-2px_0_0_hsl(220_80%_30%/0.45)]"
+                              className="absolute inset-0 rounded-full bg-cyan-500/10 border border-cyan-500/25 shadow-[0_0_14px_-2px_rgba(6,182,212,0.35)]"
                               transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                             />
                           )}
                           <span className={`relative z-10 transition-colors duration-200 ${
-                            isActive 
-                              ? "text-primary-foreground font-semibold" 
+                            isActive
+                              ? "text-cyan-400 font-semibold"
                               : "text-muted-foreground hover:text-foreground"
                           }`}>
                             {link.name}
                           </span>
                           <ChevronDown size={12} className={`relative z-10 transition-all duration-200 ${
-                            isActive ? "text-primary-foreground" : "text-muted-foreground"
+                            isActive ? "text-cyan-400" : "text-muted-foreground"
                           } ${servicesDropdownOpen ? "rotate-180" : ""}`} />
                         </button>
                         
@@ -183,13 +183,13 @@ const Navbar = () => {
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
-                          className="absolute inset-0 rounded-full bg-gradient-to-r from-[hsl(190_95%_50%)] to-[hsl(220_95%_55%)] shadow-[0_4px_12px_-2px_hsl(210_100%_50%/0.5),inset_0_1px_0_0_hsl(0_0%_100%/0.45),inset_0_-2px_0_0_hsl(220_80%_30%/0.45)]"
+                          className="absolute inset-0 rounded-full bg-cyan-500/10 border border-cyan-500/25 shadow-[0_0_14px_-2px_rgba(6,182,212,0.35)]"
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
                       <span className={`relative z-10 transition-colors duration-200 ${
                         isActive
-                          ? "text-white font-semibold drop-shadow-[0_1px_1px_hsl(220_80%_25%/0.55)]"
+                          ? "text-cyan-400 font-semibold"
                           : "text-muted-foreground hover:text-foreground"
                       }`}>
                         {link.name}
@@ -224,18 +224,22 @@ const Navbar = () => {
 
 
                 
-                {/* CTA Button */}
+                {/* CTA Button — Liquid Glass */}
                 <Link
                   to="/contact"
-                  className="ml-1 group relative px-5 py-2 rounded-full font-semibold text-sm text-white flex items-center gap-1.5
-                    bg-gradient-to-r from-[hsl(190_95%_50%)] to-[hsl(220_95%_55%)]
-                    shadow-[0_6px_16px_-4px_hsl(210_100%_50%/0.55),0_2px_4px_-1px_hsl(220_95%_45%/0.4),inset_0_1px_0_0_hsl(0_0%_100%/0.45),inset_0_-2px_0_0_hsl(220_80%_30%/0.5)]
-                    hover:shadow-[0_12px_28px_-6px_hsl(210_100%_55%/0.7),0_4px_10px_-2px_hsl(220_95%_50%/0.5),inset_0_1px_0_0_hsl(0_0%_100%/0.55),inset_0_-2px_0_0_hsl(220_80%_30%/0.5)]
-                    hover:-translate-y-0.5 active:translate-y-0
-                    transition-all duration-300"
+                  className="ml-1 group relative flex items-center gap-2 px-6 py-2.5 rounded-full overflow-hidden transition-all duration-300 active:scale-95"
                 >
-                  <span className="relative z-10 drop-shadow-[0_1px_1px_hsl(220_80%_25%/0.55)]">{t("nav.startProject")}</span>
-                  <ArrowUpRight size={14} className="relative z-10 drop-shadow-[0_1px_1px_hsl(220_80%_25%/0.55)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  {/* Satin gradient base */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
+                  {/* Internal lighting overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
+                  {/* Inner highlight edge */}
+                  <div className="absolute inset-[1px] rounded-full border-t border-white/40 pointer-events-none" />
+                  {/* Outer bloom on hover */}
+                  <div className="absolute inset-0 rounded-full shadow-[0_6px_24px_rgba(6,182,212,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  <span className="relative z-10 text-sm font-semibold text-white tracking-wide">{t("nav.startProject")}</span>
+                  <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Link>
               </div>
             </div>
