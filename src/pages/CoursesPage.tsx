@@ -285,8 +285,7 @@ const CoursesPage = () => {
 
   return (
     <Layout>
-  return (
-    <Layout>
+
       <Helmet>
         <title>Learn with AlphaZero — Design, Development & AI Courses in Bangla</title>
         <meta name="description" content="Master graphic design, web development, AI, and freelancing with expert-led Bangla courses. Get certified with Learn with AlphaZero." />
