@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
-  const COURSES_URL = "https://learn.alphazero.online";
+  const COURSES_URL = "/courses";
 
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },
