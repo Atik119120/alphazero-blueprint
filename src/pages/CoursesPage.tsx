@@ -326,10 +326,16 @@ const CoursesPage = () => {
         {/* Blue wave background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${coursesHeroBg})`, filter: "blur(8px)", transform: "scale(1.05)" }}
+          style={{
+            backgroundImage: `url(${coursesHeroBg})`,
+            filter: "blur(8px)",
+            transform: "scale(1.05)",
+            maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
+          }}
         />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/80" />
+        {/* Dark overlay for text readability + bottom fade to background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/10 to-background" />
         {/* Soft radial spotlight */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
