@@ -438,15 +438,13 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto text-center mb-10"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-400/25 bg-cyan-400/[0.06] mb-4">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(103,232,249,0.9)] animate-pulse" />
-              <span className="text-[10px] uppercase tracking-[0.2em] font-semibold bg-gradient-to-r from-cyan-300 to-sky-400 bg-clip-text text-transparent">
-                Ecosystem
-              </span>
-            </div>
             <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
-              <span className="gradient-text relative">
-                Our brand constellation
+              <span className="relative inline-block">
+                <span className="gradient-text">Our brand</span>
+                <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 rounded-full opacity-70" />
+              </span>{" "}
+              <span className="text-foreground relative">
+                constellation
                 <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
               </span>
             </h2>
