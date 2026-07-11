@@ -165,20 +165,18 @@ const CoursesNavbar = () => {
                 <div className="grid grid-cols-2 gap-1 p-2">
                   {navLinks.map((link) => {
                     const active = isActive(link.href);
-                    return (
-                      <Link
-                        key={link.href}
-                        to={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm ${
-                          active ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
-                        }`}
-                      >
-                        <link.icon size={16} className={active ? "" : "text-primary/70"} />
-                        {link.name}
-                      </Link>
+                    const isExternal = link.href.startsWith("http");
+                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm ${
+                      active ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
+                    }`;
+                    const inner = (<><link.icon size={16} className={active ? "" : "text-primary/70"} />{link.name}</>);
+                    return isExternal ? (
+                      <a key={link.href} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</a>
+                    ) : (
+                      <Link key={link.href} to={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</Link>
                     );
                   })}
+
                 </div>
                 <div className="flex items-center gap-2 p-2 border-t border-border/40">
                   <button
