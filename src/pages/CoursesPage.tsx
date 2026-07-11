@@ -8,7 +8,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   GraduationCap, Monitor, Palette, Video, Camera, TrendingUp, Code, Sparkles, Bot, Globe,
   CheckCircle2, BookOpen, Star, Zap, Target, Award, Clock, Wrench, Lock, Loader2, LucideIcon,
-  ArrowRight, Users, Play
+  ArrowRight, ArrowLeft, Users, Play
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
