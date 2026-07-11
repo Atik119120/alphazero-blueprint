@@ -37,8 +37,9 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
 import { useTheme } from "next-themes";
-import designShowcase from "@/assets/design-showcase-hero.webp";
-import designShowcaseLight from "@/assets/design-showcase-hero-light.webp";
+import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
+const designShowcase = heroBgAsset.url;
+const designShowcaseLight = heroBgAsset.url;
 
 const Index = () => {
   const { t } = useLanguage();
