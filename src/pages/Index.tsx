@@ -695,53 +695,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ══════════ CTA SECTION ══════════ */}
-      <section className="py-24 lg:py-36 relative overflow-hidden">
-        {/* Background mesh */}
-        <div className="absolute inset-0 mesh-bg" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center"
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-8"
-            >
-              <Sparkles size={28} className="text-primary" />
-            </motion.div>
-
-            <h2 className="text-4xl lg:text-6xl xl:text-7xl font-display font-bold mb-6 leading-tight">
-              {c("letsBuild", "home.letsBuild")} <span className="gradient-text">{c("brand", "home.brand")}</span>
-            </h2>
-            <p className="text-muted-foreground mb-12 text-lg max-w-xl mx-auto leading-relaxed">
-              {c("readyTo", "home.readyTo")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]"
-              >
-                {c("freeConsultation", "home.freeConsultation")} <ArrowRight size={18} />
-              </Link>
-              <a
-                href="https://wa.me/8801846484200"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-              >
-                <MessageCircle size={18} />
-                {c("whatsappUs", "home.whatsappUs")}
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </LayoutComponent>
   );
 };
