@@ -300,16 +300,16 @@ const CoursesPage = () => {
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10 py-12 lg:py-20">
           <div className="max-w-5xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-4">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t.badge}</span>
             </motion.div>
             <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, type: "spring", stiffness: 50 }}
-              className="mb-6 flex justify-center">
+              className="mb-4 flex justify-center">
               <img src={learnLogo} alt={t.title} className="h-16 md:h-24 lg:h-28 w-auto dark:brightness-0 dark:invert transition-all" loading="eager" />
             </motion.div>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
-              className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+              className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6">
               {t.subtitle}
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
