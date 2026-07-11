@@ -11,7 +11,7 @@ interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
     regular: string
     gradient: string
   }
-  description?: string
+  description?: React.ReactNode
   ctaText?: string
   ctaHref?: string
   bottomImage?: {
