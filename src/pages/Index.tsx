@@ -317,74 +317,62 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Scroll-story: sticky text left, images scroll on right */}
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 relative">
-            {/* LEFT — sticky text that swaps as you scroll */}
-            <div className="lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
-              {services.map((s, i) => (
-                <motion.div
+          {/* Stacked service rows — text left, two tilted mockups right */}
+          <div className="max-w-7xl mx-auto flex flex-col gap-24 lg:gap-32">
+            {services.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <div
                   key={s.title}
-                  initial={false}
-                  animate={{
-                    opacity: activeService === i ? 1 : 0,
-                    y: activeService === i ? 0 : 20,
-                    pointerEvents: activeService === i ? "auto" : "none",
-                  }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className={activeService === i ? "relative" : "absolute inset-0"}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center"
                 >
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-6">
-                    <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-cyan-400">
-                      {s.label}
-                    </span>
-                  </div>
-                  <h3 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 leading-[1.05] tracking-tight">
-                    <span className="text-foreground">{s.title.split(" ").slice(0, -1).join(" ")} </span>
-                    <span className="italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                      {s.title.split(" ").slice(-1)}
-                    </span>
-                  </h3>
-                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
-                    {s.description}
-                  </p>
-                  <div className="flex gap-8 mb-8">
-                    {s.meta.map((m) => (
-                      <div key={m.k}>
-                        <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-1">{m.k}</div>
-                        <div className="text-base font-bold text-foreground">{m.v}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group"
+                  {/* LEFT — text */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-15% 0px" }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="lg:col-span-4"
                   >
-                    <span className="relative">
-                      {t("common.learnMore") || "See More"}
-                      <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-cyan-400 origin-left" />
-                    </span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 mb-6">
+                      <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-cyan-400">
+                        {s.label}
+                      </span>
+                    </div>
+                    <h3 className="text-4xl md:text-5xl font-display font-bold mb-6 leading-[1.05] tracking-tight">
+                      <span className="text-foreground">{s.title.split(" ").slice(0, -1).join(" ")} </span>
+                      <span className="italic font-serif text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                        {s.title.split(" ").slice(-1)}
+                      </span>
+                    </h3>
+                    <div className="h-px w-full bg-border/60 mb-6" />
+                    <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                      {s.description}
+                    </p>
+                    <Link
+                      to="/services"
+                      className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group"
+                    >
+                      <span className="relative">
+                        {t("common.learnMore") || "See More"}
+                        <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-cyan-400 origin-left" />
+                      </span>
+                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </motion.div>
 
-            {/* RIGHT — scrolling image panels */}
-            <div className="flex flex-col gap-8">
-              {services.map((s, i) => {
-                const Icon = s.icon;
-                return (
-                  <ServicePanel
-                    key={s.title}
-                    index={i}
-                    color={s.stripe}
-                    Icon={Icon}
-                    onActive={() => setActiveService(i)}
-                  />
-                );
-              })}
-            </div>
+                  {/* RIGHT — two tilted mockups */}
+                  <div className="lg:col-span-8 grid grid-cols-2 gap-4 md:gap-6">
+                    <MockupCard color={s.stripe} Icon={Icon} variant="browser" tilt={-4} />
+                    <div className="mt-8 md:mt-12">
+                      <MockupCard color={s.stripe} Icon={Icon} variant="phone" tilt={5} delay={0.15} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
+
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
