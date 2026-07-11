@@ -140,7 +140,7 @@ const Navbar = () => {
                       {linkInner}
                     </Link>
                   );
-
+                })}
               </div>
             </div>
 
