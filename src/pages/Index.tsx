@@ -50,7 +50,7 @@ const designShowcase = heroBgAsset.url;
 const designShowcaseLight = heroBgLightAsset.url;
 
 const Index = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { getContent } = usePageContent('home');
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
