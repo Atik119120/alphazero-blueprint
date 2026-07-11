@@ -38,16 +38,18 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-// Service mockup images hosted on Supabase storage so they render on Vercel too
-const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
-const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
-const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
-const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
-const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.png` };
-const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.png` };
-const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.png` };
-const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.png` };
-const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
+// Service mockup images use resized WebP delivery for faster loading on Vercel.
+const SERVICE_RENDER_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/render/image/public/media-uploads/services";
+const serviceImage = (file: string, width = 900) =>
+  `${SERVICE_RENDER_IMG}/${file}?width=${width}&quality=70&resize=contain&format=webp`;
+const brandingStartio = { url: serviceImage("branding-startio.png") };
+const brandingPhoneMockup = { url: serviceImage("branding-phone.png", 640) };
+const webDevDashboard = { url: serviceImage("web-dev-dashboard.png") };
+const webDevTablet = { url: serviceImage("web-dev-tablet.png", 640) };
+const uiuxDesktop = { url: serviceImage("uiux-desktop.png") };
+const uiuxPhone = { url: serviceImage("uiux-phone.png", 640) };
+const seoMonitor = { url: serviceImage("seo-monitor.png") };
+const seoTablet = { url: serviceImage("seo-tablet.png", 640) };
 
 
 
@@ -58,7 +60,7 @@ const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useRef, useState, useEffect, type ReactNode } from "react";
+import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
 import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
@@ -73,6 +75,7 @@ const MockupCard = ({
   tilt,
   delay = 0,
   image,
+  priority = false,
 }: {
   color: string;
   Icon: any;
@@ -80,6 +83,7 @@ const MockupCard = ({
   tilt: number;
   delay?: number;
   image?: string;
+  priority?: boolean;
 }) => {
   return (
     <motion.div
@@ -105,7 +109,14 @@ const MockupCard = ({
       )}
 
       {variant === "image" && image ? (
-        <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img
+          src={image}
+          alt=""
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "low"}
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       ) : (
         <motion.div
           animate={{ y: [0, -12, 0] }}
@@ -144,6 +155,8 @@ const MockupCard = ({
   );
 };
 
+const MemoMockupCard = memo(MockupCard);
+
 
 // Pair of tilted mockups (browser + phone) that reports itself active when centered
 const ServicePair = ({
@@ -152,12 +165,14 @@ const ServicePair = ({
   onActive,
   primaryImage,
   secondaryImage,
+  priority = false,
 }: {
   color: string;
   Icon: any;
   onActive: () => void;
   primaryImage?: string;
   secondaryImage?: string;
+  priority?: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
@@ -169,20 +184,22 @@ const ServicePair = ({
     <div ref={ref} className="min-h-[85vh] flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
-          <MockupCard
+          <MemoMockupCard
             color={color}
             Icon={Icon}
             variant={primaryImage ? "image" : "browser"}
             image={primaryImage}
+            priority={priority}
             tilt={-3}
           />
         </div>
         <div className="mt-8 md:mt-16">
-          <MockupCard
+          <MemoMockupCard
             color={color}
             Icon={Icon}
             variant={secondaryImage ? "image" : "phone"}
             image={secondaryImage}
+            priority={priority}
             tilt={4}
             delay={0.15}
           />
@@ -192,6 +209,16 @@ const ServicePair = ({
     </div>
   );
 };
+
+const MemoServicePair = memo(
+  ServicePair,
+  (prev, next) =>
+    prev.color === next.color &&
+    prev.Icon === next.Icon &&
+    prev.primaryImage === next.primaryImage &&
+    prev.secondaryImage === next.secondaryImage &&
+    prev.priority === next.priority
+);
 
 
 
@@ -277,6 +304,17 @@ const Index = () => {
     },
   ];
   const [activeService, setActiveService] = useState(0);
+
+  useEffect(() => {
+    services.forEach((service) => {
+      [service.primaryImage, service.secondaryImage].forEach((src) => {
+        if (!src) return;
+        const img = new Image();
+        img.decoding = "async";
+        img.src = src;
+      });
+    });
+  }, []);
 
   const stats = [
     { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
@@ -481,13 +519,14 @@ const Index = () => {
               {services.map((s, i) => {
                 const Icon = s.icon;
                 return (
-                  <ServicePair
+                  <MemoServicePair
                     key={s.title}
                     color={s.stripe}
                     Icon={Icon}
                     onActive={() => setActiveService(i)}
                     primaryImage={(s as any).primaryImage}
                     secondaryImage={(s as any).secondaryImage}
+                    priority={i === 0}
                   />
 
                 );
