@@ -52,9 +52,7 @@ import PaymentCancelPage from "./pages/PaymentCancelPage";
 import CustomCheckoutPage from "./pages/CustomCheckoutPage";
 import CourseLandingPage from "./pages/CourseLandingPage";
 
-// Lazy load only AI Chatbot (not critical for navigation)
-import { lazy } from "react";
-const AIChatbot = lazy(() => import("./components/AIChatbot"));
+import AIChatbot from "./components/AIChatbot";
 
 const queryClient = new QueryClient();
 
@@ -107,10 +105,7 @@ function AppContent() {
       {!isLmsRoute && <ScrollReveal />}
       <ScrollToTop />
       
-      {/* Lazy load chatbot */}
-      <Suspense fallback={null}>
-        <AIChatbot />
-      </Suspense>
+      <AIChatbot />
       
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
