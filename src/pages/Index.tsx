@@ -397,9 +397,10 @@ const Index = () => {
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   className={activeService === i ? "relative" : "absolute inset-0"}
                 >
-                  <h3 className="text-4xl md:text-5xl lg:text-[3.25rem] font-display font-bold mb-5 leading-[1.05] tracking-tight text-foreground">
+                  <h3 className="text-4xl md:text-5xl lg:text-[2.75rem] xl:text-5xl font-display font-bold mb-5 leading-[1.05] tracking-tight text-foreground whitespace-nowrap">
                     {s.title}
                   </h3>
+
                   <div className="h-px w-full max-w-md bg-violet-500 mb-6" />
                   <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
                     {s.description}
