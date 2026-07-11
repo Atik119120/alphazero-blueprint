@@ -326,7 +326,7 @@ const CoursesPage = () => {
         {/* Blue wave background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${coursesHeroBg})`, filter: "blur(16px)", transform: "scale(1.1)" }}
+          style={{ backgroundImage: `url(${coursesHeroBg})`, filter: "blur(8px)", transform: "scale(1.05)" }}
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/80" />
