@@ -152,8 +152,8 @@ const ServicePair = ({
 
   return (
     <div ref={ref} className="min-h-[85vh] flex items-center">
-      <div className="w-full grid grid-cols-12 gap-4 md:gap-6 items-center">
-        <div className="col-span-7 -mt-8 md:-mt-14">
+      <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
+        <div className="-mt-4 md:-mt-8">
           <MockupCard
             color={color}
             Icon={Icon}
@@ -162,7 +162,7 @@ const ServicePair = ({
             tilt={-3}
           />
         </div>
-        <div className="col-span-5 mt-12 md:mt-20 scale-[0.88]">
+        <div className="mt-8 md:mt-16">
           <MockupCard
             color={color}
             Icon={Icon}
@@ -173,6 +173,7 @@ const ServicePair = ({
           />
         </div>
       </div>
+
     </div>
   );
 };
