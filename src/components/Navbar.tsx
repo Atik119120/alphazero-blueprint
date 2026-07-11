@@ -265,6 +265,7 @@ const Navbar = () => {
                   {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
                 </button>
               )}
+
               <button
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
