@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Sparkles, 
@@ -408,48 +408,70 @@ const Index = () => {
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 relative">
             {/* LEFT — sticky text swaps with active service */}
             <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
-              {services.map((s, i) => (
-                <motion.div
-                  key={s.title}
-                  initial={false}
-                  animate={{
-                    opacity: activeService === i ? 1 : 0,
-                    y: activeService === i ? 0 : 24,
-                    filter: activeService === i ? "blur(0px)" : "blur(8px)",
-                    pointerEvents: activeService === i ? "auto" : "none",
-                  }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className={activeService === i ? "relative" : "absolute inset-0"}
-                >
-                  <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
-                    {s.title}
-                  </h3>
+              <div className="relative">
+                <AnimatePresence mode="wait" initial={false}>
+                  {services.map((s, i) =>
+                    activeService === i ? (
+                      <motion.div
+                        key={s.title}
+                        initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, y: -30, filter: "blur(12px)" }}
+                        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <motion.h3
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
+                          className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full"
+                        >
+                          {s.title}
+                        </motion.h3>
 
+                        <motion.div
+                          initial={{ scaleX: 0, opacity: 0 }}
+                          animate={{ scaleX: 1, opacity: 1 }}
+                          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                          style={{ transformOrigin: "left" }}
+                          className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                        </motion.div>
 
+                        <motion.p
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                          className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md"
+                        >
+                          {s.description}
+                        </motion.p>
 
-                  <div className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full">
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
-                  </div>
-                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
-                    {s.description}
-                  </p>
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
-                  >
-                    <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
-                      {t("common.learnMore") || "See More"}
-                      <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
-                    </span>
-                    <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
-                  </Link>
-
-
-                </motion.div>
-
-              ))}
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <Link
+                            to="/services"
+                            className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
+                          >
+                            <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+                              {t("common.learnMore") || "See More"}
+                              <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
+                            </span>
+                            <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                          </Link>
+                        </motion.div>
+                      </motion.div>
+                    ) : null
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
+
+
 
             {/* RIGHT — scrolling image pairs */}
             <div className="lg:col-span-8 flex flex-col gap-20 lg:gap-28">
