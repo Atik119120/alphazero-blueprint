@@ -110,9 +110,18 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <div className="relative w-full">
-              <AsciiMosaic srcLight={bottomImage.light} srcDark={bottomImage.dark} className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2]" cellSize={5} bloom={0} bgOpacity={0} animIntensity={20} aspectRatio="auto" />
+              <picture>
+                <source srcSet={bottomImage.dark} media="(prefers-color-scheme: dark)" />
+                <img
+                  src={bottomImage.light}
+                  alt=""
+                  className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover"
+                  loading="eager"
+                />
+              </picture>
               {/* dark overlay for text readability */}
               <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
+
 
 
 
