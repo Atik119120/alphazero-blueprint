@@ -37,13 +37,15 @@ const Navbar = () => {
 
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
+  const COURSES_URL = "https://learn.alphazero.online";
+
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },
     { name: t("nav.about"), href: "/about", num: "02" },
     { name: t("nav.services"), href: "/services", num: "03", hasDropdown: true },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.courses"), href: "/courses", num: "06" },
+    { name: t("nav.courses"), href: COURSES_URL, num: "06", external: true },
     { name: t("nav.contact"), href: "/contact", num: "07" },
   ];
 
@@ -58,7 +60,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
     { name: t("nav.team"), href: "/team", icon: Users },
-    { name: t("nav.courses"), href: "/courses", icon: GraduationCap },
+    { name: t("nav.courses"), href: COURSES_URL, icon: GraduationCap, external: true },
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
 
