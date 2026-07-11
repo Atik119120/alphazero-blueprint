@@ -135,10 +135,14 @@ const ServicePair = ({
   color,
   Icon,
   onActive,
+  primaryImage,
+  secondaryImage,
 }: {
   color: string;
   Icon: any;
   onActive: () => void;
+  primaryImage?: string;
+  secondaryImage?: string;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
@@ -149,19 +153,30 @@ const ServicePair = ({
   return (
     <div ref={ref} className="min-h-[85vh] flex items-center">
       <div className="w-full grid grid-cols-12 gap-4 md:gap-6 items-center">
-        {/* larger mockup — sits higher */}
         <div className="col-span-7 -mt-8 md:-mt-14">
-          <MockupCard color={color} Icon={Icon} variant="browser" tilt={-3} />
+          <MockupCard
+            color={color}
+            Icon={Icon}
+            variant={primaryImage ? "image" : "browser"}
+            image={primaryImage}
+            tilt={-3}
+          />
         </div>
-        {/* smaller mockup — sits lower */}
         <div className="col-span-5 mt-12 md:mt-20 scale-[0.88]">
-          <MockupCard color={color} Icon={Icon} variant="phone" tilt={4} delay={0.15} />
+          <MockupCard
+            color={color}
+            Icon={Icon}
+            variant={secondaryImage ? "image" : "phone"}
+            image={secondaryImage}
+            tilt={4}
+            delay={0.15}
+          />
         </div>
       </div>
     </div>
-
   );
 };
+
 
 
 
