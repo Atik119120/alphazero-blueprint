@@ -467,6 +467,15 @@ const Index = () => {
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
       <section className="pt-8 pb-16 lg:pt-10 lg:pb-24 relative">
         <div className="container mx-auto px-6 relative z-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-10 lg:mb-14"
+          >
+            {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
+          </motion.h2>
+
 
           {/* Sticky text left, scrolling image pairs right */}
           <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 relative">
