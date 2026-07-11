@@ -40,6 +40,9 @@ import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
 import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
 import brandingPhoneMockup from "@/assets/branding-phone-mockup.png.asset.json";
+import webDesktopMockup from "@/assets/web-desktop-mockup.png.asset.json";
+import webPhoneMockup from "@/assets/web-phone-mockup.png.asset.json";
+
 
 
 
@@ -216,7 +219,10 @@ const Index = () => {
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "২–৪ সপ্তাহ" : "2–4 Weeks" },
       ],
       bg: "#dbeafe", text: "#0c1e3d", stripe: "#3b82f6",
+      primaryImage: webDesktopMockup.url,
+      secondaryImage: webPhoneMockup.url,
     },
+
     {
       icon: PenTool,
       label: language === "bn" ? "গ্রাফিক" : "Graphic",
