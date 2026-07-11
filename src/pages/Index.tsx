@@ -422,14 +422,14 @@ const Index = () => {
 
 
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
-      <section className="py-24 lg:py-32 relative">
+      <section className="pt-8 pb-16 lg:pt-10 lg:pb-24 relative">
         <div className="container mx-auto px-6 relative z-10">
           {/* Section Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 lg:mb-12"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
               <Zap size={14} className="text-primary" />
