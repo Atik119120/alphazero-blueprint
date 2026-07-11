@@ -71,12 +71,10 @@ const Index = () => {
   ];
 
   const services = [
-    { icon: Layout, title: c("service.uiux", "home.service.uiux"), description: c("service.uiuxDesc", "home.service.uiuxDesc"), accent: "from-[hsl(185,100%,50%)]" },
-    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc"), accent: "from-[hsl(200,100%,55%)]" },
-    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc"), accent: "from-[hsl(210,100%,60%)]" },
-    { icon: ShoppingCart, title: c("service.ecommerce", "home.service.ecommerce"), description: c("service.ecommerceDesc", "home.service.ecommerceDesc"), accent: "from-[hsl(190,100%,45%)]" },
-    { icon: Share2, title: c("service.social", "home.service.social"), description: c("service.socialDesc", "home.service.socialDesc"), accent: "from-[hsl(195,100%,50%)]" },
-    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc"), accent: "from-[hsl(205,100%,55%)]" },
+    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc"), gradient: "from-cyan-400 via-sky-500 to-blue-600" },
+    { icon: PenTool, title: c("service.graphics", "home.service.graphics") || "Graphic Design", description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel precision.", gradient: "from-sky-400 via-cyan-500 to-teal-500" },
+    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc"), gradient: "from-blue-500 via-cyan-500 to-sky-400" },
+    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc"), gradient: "from-teal-400 via-cyan-500 to-blue-500" },
   ];
 
   const stats = [
