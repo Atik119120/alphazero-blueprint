@@ -72,7 +72,7 @@ const MockupCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
+      className="relative w-full aspect-[5/7] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
       style={{
         background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}aa 45%, ${color}55 100%)`,
       }}
