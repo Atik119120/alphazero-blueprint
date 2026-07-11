@@ -196,11 +196,14 @@ const Navbar = () => {
                       </span>
                     </>
                   );
-                  return (
+                  return link.href.startsWith("http") ? (
+                    <a key={link.href} href={link.href} className={linkClasses}>{linkInner}</a>
+                  ) : (
                     <Link key={link.href} to={link.href} className={linkClasses}>
                       {linkInner}
                     </Link>
                   );
+
                 })}
               </div>
               
