@@ -75,6 +75,7 @@ const MockupCard = ({
   tilt,
   delay = 0,
   image,
+  priority = false,
 }: {
   color: string;
   Icon: any;
@@ -82,6 +83,7 @@ const MockupCard = ({
   tilt: number;
   delay?: number;
   image?: string;
+  priority?: boolean;
 }) => {
   return (
     <motion.div
@@ -107,7 +109,14 @@ const MockupCard = ({
       )}
 
       {variant === "image" && image ? (
-        <img src={image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <img
+          src={image}
+          alt=""
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "low"}
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
       ) : (
         <motion.div
           animate={{ y: [0, -12, 0] }}
@@ -146,6 +155,8 @@ const MockupCard = ({
   );
 };
 
+const MemoMockupCard = memo(MockupCard);
+
 
 // Pair of tilted mockups (browser + phone) that reports itself active when centered
 const ServicePair = ({
@@ -154,12 +165,14 @@ const ServicePair = ({
   onActive,
   primaryImage,
   secondaryImage,
+  priority = false,
 }: {
   color: string;
   Icon: any;
   onActive: () => void;
   primaryImage?: string;
   secondaryImage?: string;
+  priority?: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
@@ -171,20 +184,22 @@ const ServicePair = ({
     <div ref={ref} className="min-h-[85vh] flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
-          <MockupCard
+          <MemoMockupCard
             color={color}
             Icon={Icon}
             variant={primaryImage ? "image" : "browser"}
             image={primaryImage}
+            priority={priority}
             tilt={-3}
           />
         </div>
         <div className="mt-8 md:mt-16">
-          <MockupCard
+          <MemoMockupCard
             color={color}
             Icon={Icon}
             variant={secondaryImage ? "image" : "phone"}
             image={secondaryImage}
+            priority={priority}
             tilt={4}
             delay={0.15}
           />
@@ -194,6 +209,8 @@ const ServicePair = ({
     </div>
   );
 };
+
+const MemoServicePair = memo(ServicePair);
 
 
 
