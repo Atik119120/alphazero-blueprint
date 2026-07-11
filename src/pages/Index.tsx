@@ -85,8 +85,8 @@ const Index = () => {
     {
       icon: PenTool,
       label: language === "bn" ? "গ্রাফিক" : "Graphic",
-      title: c("service.graphics", "home.service.graphics") || "Graphic Design",
-      description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel-precise care.",
+      title: language === "bn" ? "গ্রাফিক ডিজাইন" : "Graphic Design",
+      description: language === "bn" ? "পোস্টার, ব্যানার, থাম্বনেইল ও ব্র্যান্ড কোলেটারাল পিক্সেল-পারফেক্ট ডিজাইন।" : "Posters, banners, thumbnails & brand collateral crafted with pixel-precise care.",
       meta: [
         { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৪৮ ঘন্টা" : "48 Hours" },
         { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
