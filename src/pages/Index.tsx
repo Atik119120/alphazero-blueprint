@@ -34,6 +34,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import ProjectMarquee from "@/components/ProjectMarquee";
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
+import brand1 from "@/assets/brands/b1.png.asset.json";
+import brand2 from "@/assets/brands/b2.png.asset.json";
+import brand3 from "@/assets/brands/b3.png.asset.json";
+
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
