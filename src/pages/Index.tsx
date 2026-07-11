@@ -430,7 +430,10 @@ const Index = () => {
                     color={s.stripe}
                     Icon={Icon}
                     onActive={() => setActiveService(i)}
+                    primaryImage={(s as any).primaryImage}
+                    secondaryImage={(s as any).secondaryImage}
                   />
+
                 );
               })}
             </div>
