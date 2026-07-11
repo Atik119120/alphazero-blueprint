@@ -98,7 +98,7 @@ function LogoCard({ logo, className, ...props }: LogoCardProps) {
   return (
     <div
       className={cn(
-        "group relative aspect-[4/3] lg:aspect-auto lg:h-48 flex items-center justify-center transition-all duration-500 overflow-hidden",
+        "group relative aspect-[16/9] lg:aspect-auto lg:h-32 flex items-center justify-center transition-all duration-500 overflow-hidden",
         className,
       )}
       {...props}
