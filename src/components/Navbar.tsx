@@ -37,13 +37,15 @@ const Navbar = () => {
 
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
+  const COURSES_URL = "https://learn.alphazero.online";
+
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },
     { name: t("nav.about"), href: "/about", num: "02" },
     { name: t("nav.services"), href: "/services", num: "03", hasDropdown: true },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.courses"), href: "/courses", num: "06" },
+    { name: t("nav.courses"), href: COURSES_URL, num: "06", external: true },
     { name: t("nav.contact"), href: "/contact", num: "07" },
   ];
 
@@ -58,7 +60,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
     { name: t("nav.team"), href: "/team", icon: Users },
-    { name: t("nav.courses"), href: "/courses", icon: GraduationCap },
+    { name: t("nav.courses"), href: COURSES_URL, icon: GraduationCap, external: true },
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
 
@@ -175,12 +177,9 @@ const Navbar = () => {
                     );
                   }
 
-                  return (
-                    <Link
-                      key={link.href}
-                      to={link.href}
-                      className="relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full"
-                    >
+                  const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
+                  const linkInner = (
+                    <>
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
@@ -195,6 +194,15 @@ const Navbar = () => {
                       }`}>
                         {link.name}
                       </span>
+                    </>
+                  );
+                  return link.external ? (
+                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>
+                      {linkInner}
+                    </a>
+                  ) : (
+                    <Link key={link.href} to={link.href} className={linkClasses}>
+                      {linkInner}
                     </Link>
                   );
                 })}
@@ -303,17 +311,17 @@ const Navbar = () => {
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
                     const isActive = location.pathname === link.href;
-                    return (
-                      <Link
-                        key={link.href}
-                        to={link.href}
-                        onClick={handleNavClick}
-                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
-                          isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
-                        }`}
-                      >
-                        <IconComp size={16} className={isActive ? "" : "text-primary/70"} />
-                        {link.name}
+                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
+                      isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
+                    }`;
+                    const inner = (<><IconComp size={16} className={isActive ? "" : "text-primary/70"} />{link.name}</>);
+                    return link.external ? (
+                      <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link key={link.href} to={link.href} onClick={handleNavClick} className={cls}>
+                        {inner}
                       </Link>
                     );
                   })}
@@ -352,7 +360,7 @@ const Navbar = () => {
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
-          { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
+          { name: language === "bn" ? "কোর্স" : "Courses", href: COURSES_URL, icon: GraduationCap, external: true },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
 
@@ -367,13 +375,8 @@ const Navbar = () => {
                   const IconComp = item.icon;
                   const isActive = location.pathname === item.href;
 
-                  return (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      className="relative flex flex-col items-center gap-0.5 py-1"
-                    >
-                      {/* Active glow */}
+                  const inner = (
+                    <>
                       {isActive && (
                         <motion.div
                           layoutId="bottom-nav-active"
@@ -381,9 +384,7 @@ const Navbar = () => {
                           transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
                         />
                       )}
-                      
                       <div className="relative z-10 flex flex-col items-center">
-                        {/* Active top bar indicator */}
                         {isActive && (
                           <motion.div
                             layoutId="bottom-nav-bar"
@@ -391,24 +392,32 @@ const Navbar = () => {
                             transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
                           />
                         )}
-                        
                         <motion.div
                           animate={isActive ? { y: -2, scale: 1.15 } : { y: 0, scale: 1 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
                         >
-                          <IconComp 
-                            size={19} 
-                            strokeWidth={isActive ? 2.5 : 1.5} 
+                          <IconComp
+                            size={19}
+                            strokeWidth={isActive ? 2.5 : 1.5}
                             className={`transition-colors duration-200 ${isActive ? "text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.4)]" : "text-muted-foreground/70"}`}
                           />
                         </motion.div>
-                        
                         <span className={`text-[8.5px] leading-tight mt-0.5 transition-all duration-200 ${
                           isActive ? "font-bold text-primary" : "font-medium text-muted-foreground/60"
                         }`}>
                           {item.name}
                         </span>
                       </div>
+                    </>
+                  );
+                  const cls = "relative flex flex-col items-center gap-0.5 py-1";
+                  return item.external ? (
+                    <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                      {inner}
+                    </a>
+                  ) : (
+                    <Link key={item.href} to={item.href} className={cls}>
+                      {inner}
                     </Link>
                   );
                 })}
