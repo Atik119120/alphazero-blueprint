@@ -412,28 +412,6 @@ const Index = () => {
         
       </section>
 
-      {/* ══════════ TRUSTED BY ══════════ */}
-      <section className="py-12 relative">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto glass-card rounded-2xl py-8 px-6">
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-14">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground font-bold shrink-0">{c("trustedBy", "home.trustedBy")}</span>
-              {clientLogos.map((client, index) => (
-                <motion.div
-                  key={client}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08 }}
-                  className="text-base font-display font-bold text-muted-foreground/70 hover:text-primary transition-colors duration-300 cursor-default"
-                >
-                  {client}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ══════════ PROJECT MARQUEE — 2 rows opposite scroll ══════════ */}
       <ProjectMarquee />
