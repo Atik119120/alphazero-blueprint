@@ -387,185 +387,6 @@ const CoursesPage = () => {
         </motion.div>
       </section>
 
-      {/* Courses Carousel */}
-      {displayCourses.length > 0 && (
-        <section className="py-10 border-y border-border/40 overflow-hidden">
-          <div className="container mx-auto px-6 mb-6 flex items-end justify-between gap-4">
-            <div>
-              <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary block">
-                {isBn ? "এক নজরে" : "At a glance"}
-              </span>
-              <h3 className="text-xl lg:text-2xl font-display font-bold mt-1">
-                {isBn ? "আমাদের কোর্সসমূহ" : "Our Courses"}
-              </h3>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => carouselRef.current?.scrollBy({ left: -320, behavior: 'smooth' })}
-                aria-label="Previous"
-                className="w-10 h-10 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => carouselRef.current?.scrollBy({ left: 320, behavior: 'smooth' })}
-                aria-label="Next"
-                className="w-10 h-10 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-              >
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <a href="#courses" className="hidden sm:inline-flex items-center gap-1 text-xs text-primary hover:underline ml-2">
-                {isBn ? "সব দেখুন" : "View all"} <ArrowRight className="w-3 h-3" />
-              </a>
-            </div>
-          </div>
-
-          <div className="relative">
-            {/* Edge fades */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
-
-            <div
-              ref={carouselRef}
-              className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-            >
-              {displayCourses.map((course, i) => {
-                const metadata = getCourseMetadata(course.titleEn);
-                const CourseIcon = metadata.icon;
-                const isFree = !course.price || course.price === 0;
-                return (
-                  <button
-                    key={course.id}
-                    onClick={() => {
-                      document.getElementById('courses')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }}
-                    className="group/card snap-start w-[280px] shrink-0 text-left rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]"
-                  >
-                    {course.thumbnail_url ? (
-                      <div className="relative h-36 overflow-hidden">
-                        <img src={course.thumbnail_url} alt={isBn ? course.titleBn : course.titleEn}
-                          className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-700" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
-                      </div>
-                    ) : (
-                      <div className={`relative h-36 bg-gradient-to-br ${metadata.color} flex items-center justify-center`}>
-                        <CourseIcon className="w-10 h-10 text-white/90" />
-                      </div>
-                    )}
-                    <div className="p-4">
-                      <h4 className="text-sm font-display font-bold line-clamp-2 group-hover/card:text-primary transition-colors mb-2">
-                        {isBn ? course.titleBn : course.titleEn}
-                      </h4>
-                      <div className="flex items-center justify-between">
-                        <span className={`text-sm font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
-                          {isFree ? t.free : `৳${(course.price || 0).toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                        </span>
-                        <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover/card:opacity-100 group-hover/card:translate-x-1 transition-all" />
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-
-
-
-
-      {/* Stats bar */}
-      <section className="border-y border-border/40">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center divide-x divide-border/40 py-6">
-            {[
-              { num: `${displayCourses.length}+`, label: isBn ? "কোর্স" : "Courses" },
-              { num: "100%", label: isBn ? "অনলাইন" : "Online" },
-              { num: "24/7", label: isBn ? "সাপোর্ট" : "Support" },
-            ].map((stat, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className="px-8 lg:px-16 py-2 text-center">
-                <p className="text-2xl lg:text-3xl font-display font-bold gradient-text">{stat.num}</p>
-                <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* About section */}
-      <section id="about" className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 mesh-bg opacity-30" />
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "আমাদের সম্পর্কে" : "About Us"}
-            </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight mb-6">
-              {t.aboutTitle} <span className="gradient-text">Learn with AlphaZero</span>
-            </h2>
-            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-              {t.aboutDesc}
-            </p>
-            <div className="grid sm:grid-cols-3 gap-4 mt-10">
-              {[
-                { icon: Target, label: t.beginnerFriendly, desc: isBn ? "শুরু থেকে সবকিছু" : "From absolute basics" },
-                { icon: Award, label: t.certificate, desc: isBn ? "কোর্স শেষে সার্টিফিকেট" : "On course completion" },
-                { icon: Star, label: t.expertTrainer, desc: isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে" : "Learn from industry pros" },
-              ].map((f, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  className="glass-card rounded-2xl p-6 text-left">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                    <f.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-sm mb-1">{f.label}</h3>
-                  <p className="text-xs text-muted-foreground">{f.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Instructors section */}
-      <section id="instructors" className="py-20 border-t border-border/40">
-        <div className="container mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center mb-14 max-w-3xl mx-auto">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "আমাদের টিম" : "Our Team"}
-            </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
-              {isBn ? "এক্সপার্ট" : "Expert"} <span className="gradient-text">{isBn ? "ইনস্ট্রাক্টর" : "Instructors"}</span>
-            </h2>
-            <p className="text-muted-foreground mt-4">
-              {isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।" : "Learn directly from industry experts."}
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
-            {Object.values(trainers).map((tr, i) => (
-              <motion.div key={tr.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
-                className="group">
-                <div className="glass-card rounded-2xl p-4 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]">
-                  <div className="relative w-24 h-24 mx-auto mb-3">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
-                    <img src={tr.image} alt={tr.name}
-                      className="relative w-24 h-24 rounded-full object-cover ring-2 ring-primary/20"
-                      onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                  </div>
-                  <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
-                  <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
-                    {isBn ? tr.qualificationBn : tr.qualificationEn}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Courses Grid */}
       <section className="py-20 border-t border-border/40" id="courses">
 
@@ -762,6 +583,98 @@ const CoursesPage = () => {
           )}
         </div>
       </section>
+
+      {/* Stats bar */}
+      <section className="border-y border-border/40">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-wrap items-center justify-center divide-x divide-border/40 py-6">
+            {[
+              { num: `${displayCourses.length}+`, label: isBn ? "কোর্স" : "Courses" },
+              { num: "100%", label: isBn ? "অনলাইন" : "Online" },
+              { num: "24/7", label: isBn ? "সাপোর্ট" : "Support" },
+            ].map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                className="px-8 lg:px-16 py-2 text-center">
+                <p className="text-2xl lg:text-3xl font-display font-bold gradient-text">{stat.num}</p>
+                <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About section */}
+      <section id="about" className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 mesh-bg opacity-30" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
+              {isBn ? "আমাদের সম্পর্কে" : "About Us"}
+            </span>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight mb-6">
+              {t.aboutTitle} <span className="gradient-text">Learn with AlphaZero</span>
+            </h2>
+            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
+              {t.aboutDesc}
+            </p>
+            <div className="grid sm:grid-cols-3 gap-4 mt-10">
+              {[
+                { icon: Target, label: t.beginnerFriendly, desc: isBn ? "শুরু থেকে সবকিছু" : "From absolute basics" },
+                { icon: Award, label: t.certificate, desc: isBn ? "কোর্স শেষে সার্টিফিকেট" : "On course completion" },
+                { icon: Star, label: t.expertTrainer, desc: isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে" : "Learn from industry pros" },
+              ].map((f, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  className="glass-card rounded-2xl p-6 text-left">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                    <f.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="font-semibold text-sm mb-1">{f.label}</h3>
+                  <p className="text-xs text-muted-foreground">{f.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Instructors section */}
+      <section id="instructors" className="py-20 border-t border-border/40">
+        <div className="container mx-auto px-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="text-center mb-14 max-w-3xl mx-auto">
+            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
+              {isBn ? "আমাদের টিম" : "Our Team"}
+            </span>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
+              {isBn ? "এক্সপার্ট" : "Expert"} <span className="gradient-text">{isBn ? "ইনস্ট্রাক্টর" : "Instructors"}</span>
+            </h2>
+            <p className="text-muted-foreground mt-4">
+              {isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।" : "Learn directly from industry experts."}
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
+            {Object.values(trainers).map((tr, i) => (
+              <motion.div key={tr.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
+                className="group">
+                <div className="glass-card rounded-2xl p-4 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]">
+                  <div className="relative w-24 h-24 mx-auto mb-3">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
+                    <img src={tr.image} alt={tr.name}
+                      className="relative w-24 h-24 rounded-full object-cover ring-2 ring-primary/20"
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                  </div>
+                  <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
+                  <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
+                    {isBn ? tr.qualificationBn : tr.qualificationEn}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* Contact / CTA Section */}
       <section id="contact" className="py-20 relative overflow-hidden border-t border-border/40">
