@@ -413,14 +413,15 @@ const Index = () => {
                   </p>
                   <Link
                     to="/services"
-                    className="inline-flex items-center gap-2 font-semibold text-sm group bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent"
+                    className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
                   >
-                    <span className="relative">
+                    <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
                       {t("common.learnMore") || "See More"}
                       <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
                     </span>
                     <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                   </Link>
+
 
                 </motion.div>
 
