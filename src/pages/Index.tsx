@@ -485,7 +485,7 @@ const Index = () => {
 
 
           {/* MOBILE — stacked: title + underline + link + image pair per service */}
-          <div className="lg:hidden max-w-2xl mx-auto flex flex-col gap-10">
+          <div className="lg:hidden max-w-2xl mx-auto flex flex-col gap-4">
             {services.map((s, i) => {
               const Icon = s.icon;
               return (
