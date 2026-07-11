@@ -40,8 +40,9 @@ import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
 import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
 import brandingPhoneMockup from "@/assets/branding-phone-mockup.png.asset.json";
-import webDesktopMockup from "@/assets/web-desktop-mockup.png.asset.json";
-import webPhoneMockup from "@/assets/web-phone-mockup.png.asset.json";
+import webDesktopMockup from "@/assets/web-dev-dashboard.png.asset.json";
+import webPhoneMockup from "@/assets/web-dev-tablet.png.asset.json";
+
 
 
 
