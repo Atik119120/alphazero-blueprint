@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, 
   Sparkles, 
@@ -38,8 +38,7 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-// Service mockup images — use direct public URLs (CDN-cached, no on-the-fly transform lag).
-const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
+const SERVICE_IMG = "/services";
 const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
 const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
 const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
@@ -110,8 +109,8 @@ const MockupCard = ({
         <img
           src={image}
           alt=""
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "low"}
+          loading="eager"
+          fetchPriority={priority ? "high" : "auto"}
           decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -158,28 +157,22 @@ const MemoMockupCard = memo(MockupCard);
 
 // Pair of tilted mockups (browser + phone) that reports itself active when centered
 const ServicePair = ({
+  index,
   color,
   Icon,
-  onActive,
   primaryImage,
   secondaryImage,
   priority = false,
 }: {
+  index: number;
   color: string;
   Icon: any;
-  onActive: () => void;
   primaryImage?: string;
   secondaryImage?: string;
   priority?: boolean;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-40% 0px -40% 0px" });
-  useEffect(() => {
-    if (inView) onActive();
-  }, [inView, onActive]);
-
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center">
+    <div data-service-index={index} className="min-h-[70vh] flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
           <MemoMockupCard
@@ -211,6 +204,7 @@ const ServicePair = ({
 const MemoServicePair = memo(
   ServicePair,
   (prev, next) =>
+    prev.index === next.index &&
     prev.color === next.color &&
     prev.Icon === next.Icon &&
     prev.primaryImage === next.primaryImage &&
@@ -309,10 +303,59 @@ const Index = () => {
         if (!src) return;
         const img = new Image();
         img.decoding = "async";
+        img.loading = "eager";
         img.src = src;
+
+        if (!document.querySelector(`link[href="${src}"]`)) {
+          const link = document.createElement("link");
+          link.rel = "preload";
+          link.as = "image";
+          link.href = src;
+          document.head.appendChild(link);
+        }
       });
     });
   }, []);
+
+  useEffect(() => {
+    let frame = 0;
+    const updateActiveService = () => {
+      frame = 0;
+      const rows = Array.from(document.querySelectorAll<HTMLElement>("[data-service-index]"));
+      if (!rows.length) return;
+
+      const viewportTarget = window.innerHeight * 0.48;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      rows.forEach((row) => {
+        const rect = row.getBoundingClientRect();
+        const rowCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(rowCenter - viewportTarget);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = Number(row.dataset.serviceIndex || 0);
+        }
+      });
+
+      setActiveService((current) => (current === closestIndex ? current : closestIndex));
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveService);
+    };
+
+    updateActiveService();
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", requestUpdate);
+      window.removeEventListener("resize", requestUpdate);
+    };
+  }, [services.length]);
 
   const stats = [
     { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
@@ -448,15 +491,15 @@ const Index = () => {
             {/* LEFT — sticky text swaps with active service */}
             <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
               <div className="relative">
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="popLayout" initial={false}>
                   {services.map((s, i) =>
                     activeService === i ? (
                       <motion.div
                         key={s.title}
-                        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.12, ease: [0.16, 1, 0.3, 1] }}
                       >
                         <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
                           {s.title}
@@ -492,9 +535,9 @@ const Index = () => {
                 return (
                   <MemoServicePair
                     key={s.title}
+                    index={i}
                     color={s.stripe}
                     Icon={Icon}
-                    onActive={() => setActiveService(i)}
                     primaryImage={(s as any).primaryImage}
                     secondaryImage={(s as any).secondaryImage}
                     priority={i === 0}
