@@ -589,19 +589,6 @@ const Index = () => {
 
 
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mt-14"
-          >
-            <Link
-              to="/services"
-              className="inline-flex items-center gap-3 px-8 py-4 text-sm font-bold uppercase tracking-[0.1em] text-primary-foreground bg-primary hover:bg-primary/90 rounded-full transition-all duration-300 glow-primary hover:scale-[1.02]"
-            >
-              {c("viewAllServices", "home.viewAllServices")} <ArrowRight size={16} />
-            </Link>
-          </motion.div>
         </div>
       </section>
 
