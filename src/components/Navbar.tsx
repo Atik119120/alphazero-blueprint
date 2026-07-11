@@ -209,23 +209,6 @@ const Navbar = () => {
               
               {/* Controls */}
               <div className="flex items-center gap-1.5 ml-3">
-                {/* Search */}
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200 group"
-                  title={language === "bn" ? "সার্চ করুন" : "Search"}
-                >
-                  <Search size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
-                </button>
-
-                {/* Login */}
-                <Link
-                  to="/student/login"
-                  className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200 group"
-                  title={language === "bn" ? "লগইন" : "Login"}
-                >
-                  <User size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
-                </Link>
 
                 {/* Language Toggle */}
                 <button
