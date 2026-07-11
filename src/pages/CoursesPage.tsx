@@ -7,6 +7,7 @@ import {
   ArrowRight, Users, Play
 } from "lucide-react";
 import Layout from "@/components/Layout";
+import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useRef } from "react";
@@ -145,10 +146,10 @@ const getCourseMetadata = (title: string): CourseMetadata => {
 
 const translations = {
   en: {
-    badge: "100% Online-Based Courses", title: "Alpha Academy",
+    badge: "100% Online-Based Courses", title: "Learn with AlphaZero",
     subtitle: "Learn practical, job-ready and AI-powered skills. Build websites, brands and digital careers without deep technical knowledge.",
     beginnerFriendly: "Beginner-Friendly", certificate: "Certificate Provided", expertTrainer: "Expert Trainers",
-    aboutTitle: "About", aboutDesc: "Alpha Academy teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
+    aboutTitle: "About", aboutDesc: "Learn with AlphaZero teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our", coursesTitle: "Courses", coursesSubtitle: "Professional Online Courses - Start Your Career Today",
     special: "Special", upcoming: "Coming Soon", trainer: "Trainer", courseFee: "Course Fee",
     enrollNow: "Enroll Now", free: "Free", readMore: "Read More", readLess: "Show Less",
@@ -159,10 +160,10 @@ const translations = {
     loginFirst: "Please login first to enroll",
   },
   bn: {
-    badge: "১০০% অনলাইন-ভিত্তিক কোর্স", title: "Alpha Academy",
+    badge: "১০০% অনলাইন-ভিত্তিক কোর্স", title: "Learn with AlphaZero",
     subtitle: "প্র্যাক্টিক্যাল, জব-রেডি ও AI-পাওয়ার্ড স্কিল শিখুন। কোনো টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড ও ডিজিটাল ক্যারিয়ার গড়ুন।",
     beginnerFriendly: "বিগিনার-ফ্রেন্ডলি", certificate: "সার্টিফিকেট প্রদান", expertTrainer: "এক্সপার্ট ট্রেইনার",
-    aboutTitle: "সম্পর্কে", aboutDesc: "Alpha Academy প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
+    aboutTitle: "সম্পর্কে", aboutDesc: "Learn with AlphaZero প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
     ourCourses: "আমাদের", coursesTitle: "কোর্সসমূহ", coursesSubtitle: "প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
     special: "স্পেশাল", upcoming: "আসছে শীঘ্রই", trainer: "ট্রেইনার", courseFee: "কোর্স ফি",
     enrollNow: "এখনই ভর্তি হন", free: "ফ্রি", readMore: "আরো দেখুন", readLess: "কম দেখুন",
@@ -303,10 +304,10 @@ const CoursesPage = () => {
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t.badge}</span>
             </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, type: "spring", stiffness: 50 }}
-              className="text-5xl lg:text-8xl font-display font-bold mb-6 leading-[0.95] tracking-tight">
-              <span className="gradient-text">{t.title}</span>
-            </motion.h1>
+            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, type: "spring", stiffness: 50 }}
+              className="mb-6 flex justify-center">
+              <img src={learnLogo} alt={t.title} className="h-20 md:h-28 lg:h-36 w-auto dark:invert transition-all" loading="eager" />
+            </motion.div>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
               className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
               {t.subtitle}
