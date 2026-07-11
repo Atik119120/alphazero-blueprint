@@ -7,7 +7,8 @@ import {
   ArrowRight, Users, Play
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import learnLogo from "@/assets/learn-with-alphazero-logo.png";
+import learnLogoAsset from "@/assets/learn-with-alphazero-logo.png.asset.json";
+const learnLogo = learnLogoAsset.url;
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useRef } from "react";
