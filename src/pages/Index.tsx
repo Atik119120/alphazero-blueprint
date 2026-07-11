@@ -63,7 +63,9 @@ const ServicePanel = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
-  if (inView) onActive();
+  useEffect(() => {
+    if (inView) onActive();
+  }, [inView, onActive]);
 
   return (
     <div ref={ref} className="min-h-[85vh] flex items-center">
