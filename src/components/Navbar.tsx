@@ -235,24 +235,8 @@ const Navbar = () => {
                   </span>
                 </button>
                 
-                {/* Theme Toggle */}
-                {mounted && (
-                  <button
-                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                    className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center overflow-hidden group hover:bg-secondary dark:hover:bg-secondary/70 transition-all duration-200"
-                  >
-                    <motion.div
-                      animate={{ rotate: theme === "dark" ? 0 : 180 }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      {theme === "dark" ? (
-                        <Sun size={16} className="text-primary" />
-                      ) : (
-                        <Moon size={16} className="text-primary" />
-                      )}
-                    </motion.div>
-                  </button>
-                )}
+
+
                 
                 {/* CTA Button */}
                 <Link
@@ -273,14 +257,9 @@ const Navbar = () => {
               >
                 <User size={15} className="text-muted-foreground" />
               </Link>
-              {mounted && (
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="w-9 h-9 rounded-full bg-secondary/80 dark:bg-secondary/50 border border-border/50 dark:border-border/30 flex items-center justify-center"
-                >
-                  {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
-                </button>
-              )}
+
+
+
               <button
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}

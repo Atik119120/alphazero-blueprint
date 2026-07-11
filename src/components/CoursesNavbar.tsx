@@ -110,14 +110,8 @@ const CoursesNavbar = () => {
               >
                 <span className="text-xs font-bold text-primary">{language === "en" ? "EN" : "বা"}</span>
               </button>
-              {mounted && (
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                >
-                  {theme === "dark" ? <Sun size={16} className="text-primary" /> : <Moon size={16} className="text-primary" />}
-                </button>
-              )}
+
+
               <Link
                 to="/student/login"
                 className="ml-1 group px-5 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
@@ -133,14 +127,8 @@ const CoursesNavbar = () => {
               <Link to="/student/login" className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                 <User size={15} className="text-primary" />
               </Link>
-              {mounted && (
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center"
-                >
-                  {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
-                </button>
-              )}
+
+
               <button
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
                 className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center"
