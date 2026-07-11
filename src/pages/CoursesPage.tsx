@@ -297,28 +297,83 @@ const CoursesPage = () => {
 
 
       <Helmet>
-        <title>Learn with AlphaZero — Design, Development & AI Courses in Bangla</title>
-        <meta name="description" content="Master graphic design, web development, AI, and freelancing with expert-led Bangla courses. Get certified with Learn with AlphaZero." />
+        <title>AlphaZero Academy — Learn Graphic Design, Web Development, Vibe Coding, AI & Digital Marketing in Bangla</title>
+        <meta name="description" content="AlphaZero Academy (Learn with AlphaZero) — Bangla online courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing & digital products. Learn from experts & get certified." />
+        <meta name="keywords" content="AlphaZero Academy, Learn with AlphaZero, graphic design course Bangla, web development Bangla, vibe coding, digital marketing Bangla, AI automation, prompt engineering, motion graphics, Figma course, Fiverr freelancing, digital product course, online course Bangladesh" />
+        <meta name="author" content="AlphaZero Academy" />
+        <meta name="robots" content="index, follow, max-image-preview:large" />
         <link rel="canonical" href="https://learn.alphazero.online/" />
-        <meta property="og:title" content="Learn with AlphaZero — Design, Development & AI Courses" />
-        <meta property="og:description" content="Master graphic design, web development, AI, and freelancing with expert-led Bangla courses." />
+
+        <meta property="og:site_name" content="AlphaZero Academy" />
+        <meta property="og:title" content="AlphaZero Academy — Learn Design, Web Dev, Vibe Coding, AI & Digital Marketing" />
+        <meta property="og:description" content="Bangla online courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma & Fiverr freelancing." />
         <meta property="og:url" content="https://learn.alphazero.online/" />
         <meta property="og:type" content="website" />
+        <meta property="og:locale" content="bn_BD" />
+        <meta property="og:locale:alternate" content="en_US" />
         <meta property="og:image" content={learnOgImage.url} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="AlphaZero Academy — Learn with AlphaZero" />
+
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Learn with AlphaZero — Design, Development & AI Courses" />
-        <meta name="twitter:description" content="Expert-led Bangla courses in design, development, AI & freelancing." />
+        <meta name="twitter:title" content="AlphaZero Academy — Design, Web Dev, Vibe Coding, AI & Digital Marketing" />
+        <meta name="twitter:description" content="Bangla courses on graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma & Fiverr freelancing." />
         <meta name="twitter:image" content={learnOgImage.url} />
+        <meta name="twitter:image:alt" content="AlphaZero Academy — Learn with AlphaZero" />
+
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "EducationalOrganization",
-          "name": "Learn with AlphaZero",
+          "name": "AlphaZero Academy",
+          "alternateName": ["Learn with AlphaZero", "AlphaZero Learn"],
           "url": "https://learn.alphazero.online/",
           "logo": "https://alphazero.online/logo.png",
-          "description": "Bangla online learning platform for design, development, AI & freelancing.",
-          "sameAs": ["https://alphazero.online"]
+          "description": "AlphaZero Academy — Bangla online learning platform teaching graphic design, web development, vibe coding, digital marketing, AI automation, prompt engineering, motion graphics, Figma, Fiverr freelancing and digital products.",
+          "sameAs": [
+            "https://alphazero.online",
+            "https://www.facebook.com/alphazero.online",
+            "https://www.youtube.com/@alphazero.online"
+          ],
+          "areaServed": "BD",
+          "inLanguage": ["bn", "en"],
+          "knowsAbout": [
+            "Graphic Design", "Web Development", "Vibe Coding", "Digital Marketing",
+            "AI Automation", "Prompt Engineering", "Motion Graphics", "Figma",
+            "Fiverr Freelancing", "Digital Products"
+          ]
+        })}</script>
+
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "AlphaZero Academy",
+          "alternateName": "Learn with AlphaZero",
+          "url": "https://learn.alphazero.online/",
+          "inLanguage": ["bn", "en"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://learn.alphazero.online/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        })}</script>
+
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "AlphaZero Academy Courses",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Graphic Design Course (Bangla)" },
+            { "@type": "ListItem", "position": 2, "name": "Web Development Course (Bangla)" },
+            { "@type": "ListItem", "position": 3, "name": "Vibe Coding Course" },
+            { "@type": "ListItem", "position": 4, "name": "Digital Marketing Course (Bangla)" },
+            { "@type": "ListItem", "position": 5, "name": "AI Automation Course" },
+            { "@type": "ListItem", "position": 6, "name": "Prompt Engineering Course" },
+            { "@type": "ListItem", "position": 7, "name": "Motion Graphics Course" },
+            { "@type": "ListItem", "position": 8, "name": "Figma UI/UX Design Course" },
+            { "@type": "ListItem", "position": 9, "name": "Fiverr Freelancing Course" },
+            { "@type": "ListItem", "position": 10, "name": "Digital Product Course" }
+          ]
         })}</script>
       </Helmet>
       {/* Hero - logo-forward editorial */}
