@@ -38,8 +38,9 @@ import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
+import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
 const designShowcase = heroBgAsset.url;
-const designShowcaseLight = heroBgAsset.url;
+const designShowcaseLight = heroBgLightAsset.url;
 
 const Index = () => {
   const { t } = useLanguage();
