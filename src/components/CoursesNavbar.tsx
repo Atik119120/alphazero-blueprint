@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sun, Moon, Search, User, ArrowUpRight, BookOpen, LayoutGrid, Award, HelpCircle, Home } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Menu, X, Search, User, ArrowUpRight, LayoutGrid, Info, Users as UsersIcon, Phone, Home, Building2 } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
@@ -12,34 +12,70 @@ const CoursesNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   const location = useLocation();
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   const { language, setLanguage } = useLanguage();
 
   const isBn = language === "bn";
 
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
-  const mainSiteHref = isLearnSubdomain ? "https://alphazero.online" : "/";
-  const allCoursesHref = isLearnSubdomain ? "/" : "/courses";
+  const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
+  const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
   const navLinks = [
-    { name: isBn ? "সকল কোর্স" : "All Courses", href: allCoursesHref, icon: LayoutGrid },
-    { name: isBn ? "সার্টিফিকেট" : "Certificate", href: "/certificate", icon: Award },
-    { name: isBn ? "সাহায্য" : "Help", href: "/contact", icon: HelpCircle },
-    { name: isBn ? "মূল সাইট" : "Main Site", href: mainSiteHref, icon: Home },
+    { name: isBn ? "হোম" : "Home", id: "home", icon: Home },
+    { name: isBn ? "সম্পর্কে" : "About Us", id: "about", icon: Info },
+    { name: isBn ? "ইনস্ট্রাক্টর" : "Instructors", id: "instructors", icon: UsersIcon },
+    { name: isBn ? "কোর্স" : "Courses", id: "courses", icon: LayoutGrid },
+    { name: isBn ? "যোগাযোগ" : "Contact", id: "contact", icon: Phone },
+    { name: isBn ? "আমাদের এজেন্সি" : "Our Agency", href: agencyHref, icon: Building2, external: true },
   ];
 
 
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+      // Detect active section
+      const ids = ["home", "about", "instructors", "courses", "contact"];
+      let current = "home";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 120) current = id;
+        }
+      }
+      setActiveSection(current);
+    };
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isActive = (href: string) =>
-    href === allCoursesHref ? (location.pathname === "/" || location.pathname === "/courses") : location.pathname === href;
+  const handleNavClick = (id: string) => {
+    setIsMobileMenuOpen(false);
+    // If not on courses/learn page, navigate there first
+    const onCoursesPage = isLearnSubdomain || location.pathname === "/courses" || location.pathname === "/";
+    if (!onCoursesPage) {
+      navigate(coursesHomeHref);
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 250);
+      return;
+    }
+    if (id === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const el = document.getElementById(id);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
 
 
   return (
