@@ -177,12 +177,9 @@ const Navbar = () => {
                     );
                   }
 
-                  return (
-                    <Link
-                      key={link.href}
-                      to={link.href}
-                      className="relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full"
-                    >
+                  const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
+                  const linkInner = (
+                    <>
                       {isActive && (
                         <motion.div
                           layoutId="navbar-active-pill"
@@ -197,6 +194,15 @@ const Navbar = () => {
                       }`}>
                         {link.name}
                       </span>
+                    </>
+                  );
+                  return link.external ? (
+                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>
+                      {linkInner}
+                    </a>
+                  ) : (
+                    <Link key={link.href} to={link.href} className={linkClasses}>
+                      {linkInner}
                     </Link>
                   );
                 })}
