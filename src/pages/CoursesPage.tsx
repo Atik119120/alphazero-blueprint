@@ -1,5 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
+
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   GraduationCap, Monitor, Palette, Video, Camera, TrendingUp, Code, Sparkles, Bot, Globe,
@@ -282,8 +285,35 @@ const CoursesPage = () => {
 
   return (
     <Layout>
+
+      <Helmet>
+        <title>Learn with AlphaZero — Design, Development & AI Courses in Bangla</title>
+        <meta name="description" content="Master graphic design, web development, AI, and freelancing with expert-led Bangla courses. Get certified with Learn with AlphaZero." />
+        <link rel="canonical" href="https://learn.alphazero.online/" />
+        <meta property="og:title" content="Learn with AlphaZero — Design, Development & AI Courses" />
+        <meta property="og:description" content="Master graphic design, web development, AI, and freelancing with expert-led Bangla courses." />
+        <meta property="og:url" content="https://learn.alphazero.online/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={learnOgImage.url} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Learn with AlphaZero — Design, Development & AI Courses" />
+        <meta name="twitter:description" content="Expert-led Bangla courses in design, development, AI & freelancing." />
+        <meta name="twitter:image" content={learnOgImage.url} />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "EducationalOrganization",
+          "name": "Learn with AlphaZero",
+          "url": "https://learn.alphazero.online/",
+          "logo": "https://alphazero.online/logo.png",
+          "description": "Bangla online learning platform for design, development, AI & freelancing.",
+          "sameAs": ["https://alphazero.online"]
+        })}</script>
+      </Helmet>
       {/* Hero - logo-forward editorial */}
       <section ref={heroRef} className="relative flex items-center justify-center overflow-hidden py-16 lg:py-24">
+
         <div className="absolute inset-0 mesh-bg opacity-70" />
         {/* Soft radial spotlight */}
         <div className="absolute inset-0 pointer-events-none"
