@@ -71,12 +71,10 @@ const Index = () => {
   ];
 
   const services = [
-    { icon: Layout, title: c("service.uiux", "home.service.uiux"), description: c("service.uiuxDesc", "home.service.uiuxDesc"), accent: "from-[hsl(185,100%,50%)]" },
-    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc"), accent: "from-[hsl(200,100%,55%)]" },
-    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc"), accent: "from-[hsl(210,100%,60%)]" },
-    { icon: ShoppingCart, title: c("service.ecommerce", "home.service.ecommerce"), description: c("service.ecommerceDesc", "home.service.ecommerceDesc"), accent: "from-[hsl(190,100%,45%)]" },
-    { icon: Share2, title: c("service.social", "home.service.social"), description: c("service.socialDesc", "home.service.socialDesc"), accent: "from-[hsl(195,100%,50%)]" },
-    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc"), accent: "from-[hsl(205,100%,55%)]" },
+    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc"), gradient: "from-cyan-400 via-sky-500 to-blue-600" },
+    { icon: PenTool, title: c("service.graphics", "home.service.graphics") || "Graphic Design", description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel precision.", gradient: "from-sky-400 via-cyan-500 to-teal-500" },
+    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc"), gradient: "from-blue-500 via-cyan-500 to-sky-400" },
+    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc"), gradient: "from-teal-400 via-cyan-500 to-blue-500" },
   ];
 
   const stats = [
@@ -208,40 +206,71 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+          {/* Unique animated grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-5xl mx-auto">
             {services.map((service, index) => {
-              const isLarge = index === 0 || index === 3;
               return (
                 <motion.div
                   key={service.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.06 }}
-                  whileHover={{ y: -6, transition: { duration: 0.3 } }}
-                  className={`group relative p-7 lg:p-8 rounded-2xl glass-card overflow-hidden ${isLarge ? 'md:col-span-2 lg:col-span-1' : ''}`}
+                  initial={{ opacity: 0, y: 60, rotateX: -15 }}
+                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ delay: index * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -8, transition: { duration: 0.35, ease: "easeOut" } }}
+                  style={{ transformPerspective: 1000 }}
+                  className="group relative rounded-3xl overflow-hidden"
                 >
-                  {/* Top gradient line */}
-                  <div className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${service.accent} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                  
-                  {/* Icon */}
-                  <div className="w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-6 group-hover:bg-primary/[0.15] transition-colors duration-300">
-                    <service.icon size={24} className="text-primary" />
-                  </div>
+                  {/* Animated gradient border */}
+                  <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${service.gradient} opacity-40 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div className="absolute inset-[1.5px] rounded-3xl bg-background/95 backdrop-blur-xl" />
 
-                  {/* Number */}
-                  <span className="absolute top-6 right-6 text-6xl font-display font-bold text-muted-foreground/[0.06] dark:text-muted-foreground/[0.04] leading-none select-none">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+                  {/* Rotating conic glow on hover */}
+                  <motion.div
+                    aria-hidden
+                    className="absolute -inset-24 opacity-0 group-hover:opacity-40 transition-opacity duration-700 pointer-events-none"
+                    style={{
+                      background: `conic-gradient(from 0deg, transparent, hsl(190 95% 55% / 0.5), transparent 40%)`,
+                    }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                  />
 
-                  <h3 className="text-lg lg:text-xl font-display font-bold mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
-                  
-                  {/* Hover arrow */}
-                  <div className="mt-6 flex items-center gap-2 text-primary text-sm font-semibold opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                    <span>{t("common.learnMore") || "Learn more"}</span>
-                    <ArrowRight size={14} />
+                  <div className="relative p-7 lg:p-9">
+                    {/* Big number */}
+                    <span className={`absolute top-5 right-6 text-7xl font-display font-black leading-none select-none bg-gradient-to-br ${service.gradient} bg-clip-text text-transparent opacity-15 group-hover:opacity-40 transition-opacity duration-500`}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+
+                    {/* Icon with float */}
+                    <motion.div
+                      whileHover={{ rotate: [0, -8, 8, -4, 0], scale: 1.1 }}
+                      transition={{ duration: 0.6 }}
+                      className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${service.gradient} flex items-center justify-center mb-6 shadow-[0_8px_24px_-6px_rgba(6,182,212,0.5)]`}
+                    >
+                      <service.icon size={28} className="text-white drop-shadow-md" strokeWidth={2.2} />
+                      <div className="absolute inset-0 rounded-2xl bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </motion.div>
+
+                    <h3 className="text-xl lg:text-2xl font-display font-bold mb-3 tracking-tight">
+                      {service.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm lg:text-[15px] leading-relaxed mb-5">
+                      {service.description}
+                    </p>
+
+                    {/* Animated underline arrow */}
+                    <div className="flex items-center gap-2 text-sm font-semibold">
+                      <span className={`bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent`}>
+                        {t("common.learnMore") || "Learn more"}
+                      </span>
+                      <motion.div
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 4 }}
+                        className="text-cyan-500"
+                      >
+                        <ArrowRight size={15} />
+                      </motion.div>
+                    </div>
                   </div>
                 </motion.div>
               );
