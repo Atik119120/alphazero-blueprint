@@ -170,6 +170,13 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Hero main title uses the bold display Bangla font */
+  html.font-bengali [data-hero-title] {
+    font-family: var(--font-display-bn) !important;
+    font-weight: 400;
+  }
+
+
   html.font-bengali h4,
   html.font-bengali h5,
   html.font-bengali h6 {
