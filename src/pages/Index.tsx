@@ -49,73 +49,72 @@ import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
 const designShowcase = heroBgAsset.url;
 const designShowcaseLight = heroBgLightAsset.url;
 
-// Scroll-story panel — reports itself as active when centered in viewport
-const ServicePanel = ({
-  index,
+// Tilted device mockup card (browser or phone)
+const MockupCard = ({
   color,
   Icon,
-  onActive,
+  variant,
+  tilt,
+  delay = 0,
 }: {
-  index: number;
   color: string;
   Icon: any;
-  onActive: () => void;
+  variant: "browser" | "phone";
+  tilt: number;
+  delay?: number;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
-  useEffect(() => {
-    if (inView) onActive();
-  }, [inView, onActive]);
-
   return (
-    <div ref={ref} className="min-h-[85vh] flex items-center">
-      <motion.div
-        initial={{ opacity: 0, y: 80, scale: 0.95 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full aspect-[4/5] md:aspect-[5/6] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.5)]"
+    <motion.div
+      initial={{ opacity: 0, y: 60 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10% 0px" }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+      className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
+      style={{
+        background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}aa 45%, ${color}55 100%)`,
+      }}
+    >
+      <div
+        className="absolute inset-0 opacity-25 pointer-events-none"
         style={{
-          background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}88 45%, ${color}44 100%)`,
+          backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.5) 0 3px, transparent 3px 12px)`,
         }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
+
+      <motion.div
+        animate={{ y: [0, -12, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{ rotate: tilt }}
       >
-        {/* vertical stripe texture */}
-        <div
-          className="absolute inset-0 opacity-25 pointer-events-none"
-          style={{
-            backgroundImage: `repeating-linear-gradient(90deg, rgba(255,255,255,0.6) 0 3px, transparent 3px 10px)`,
-          }}
-        />
-        {/* soft top vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25 pointer-events-none" />
-
-        {/* Device mockup — browser frame */}
-        <motion.div
-          animate={{ y: [0, -14, 0], rotate: [-1.5, 1.5, -1.5] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[78%] aspect-[16/11] rounded-2xl bg-white shadow-2xl overflow-hidden"
-          style={{ rotate: index % 2 === 0 ? -4 : 4 }}
-        >
-          {/* Browser dots */}
-          <div className="flex items-center gap-1.5 px-4 h-8 bg-gray-100 border-b border-gray-200">
-            <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-            <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-            <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+        {variant === "browser" ? (
+          <div className="w-[16rem] md:w-[18rem] aspect-[16/11] rounded-xl bg-white shadow-2xl overflow-hidden">
+            <div className="flex items-center gap-1.5 px-3 h-6 bg-gray-100 border-b border-gray-200">
+              <div className="w-2 h-2 rounded-full bg-red-400" />
+              <div className="w-2 h-2 rounded-full bg-yellow-400" />
+              <div className="w-2 h-2 rounded-full bg-green-400" />
+            </div>
+            <div
+              className="w-full h-[calc(100%-1.5rem)] flex items-center justify-center"
+              style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
+            >
+              <Icon size={64} strokeWidth={1.4} className="drop-shadow-xl" style={{ color }} />
+            </div>
           </div>
-          <div
-            className="w-full h-[calc(100%-2rem)] flex items-center justify-center"
-            style={{ background: `linear-gradient(135deg, ${color}22, ${color}55)` }}
-          >
-            <Icon size={72} strokeWidth={1.4} className="drop-shadow-xl" />
+        ) : (
+          <div className="w-[7.5rem] md:w-[9rem] aspect-[9/19] rounded-[2rem] bg-neutral-900 shadow-2xl overflow-hidden ring-2 ring-black/40 relative">
+            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-14 h-3 rounded-full bg-black z-10" />
+            <div
+              className="w-full h-full flex items-center justify-center"
+              style={{ background: `linear-gradient(160deg, ${color}44, ${color}88)` }}
+            >
+              <Icon size={44} strokeWidth={1.6} className="drop-shadow-xl text-white" />
+            </div>
           </div>
-        </motion.div>
-
-        {/* Big number */}
-        <span className="absolute bottom-6 right-8 text-8xl md:text-9xl font-display font-black text-white/20 leading-none select-none">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+        )}
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
