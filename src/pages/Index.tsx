@@ -391,10 +391,11 @@ const Index = () => {
                   initial={false}
                   animate={{
                     opacity: activeService === i ? 1 : 0,
-                    y: activeService === i ? 0 : 16,
+                    y: activeService === i ? 0 : 24,
+                    filter: activeService === i ? "blur(0px)" : "blur(8px)",
                     pointerEvents: activeService === i ? "auto" : "none",
                   }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                   className={activeService === i ? "relative" : "absolute inset-0"}
                 >
                   <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
@@ -403,22 +404,26 @@ const Index = () => {
 
 
 
-                  <div className="h-px w-full max-w-md bg-violet-500 mb-6" />
+                  <div className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full">
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                  </div>
                   <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
                     {s.description}
                   </p>
                   <Link
                     to="/services"
-                    className="inline-flex items-center gap-2 text-violet-500 hover:text-violet-400 font-semibold text-sm group"
+                    className="inline-flex items-center gap-2 font-semibold text-sm group bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent"
                   >
                     <span className="relative">
                       {t("common.learnMore") || "See More"}
-                      <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-violet-500 origin-left" />
+                      <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
                     </span>
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                   </Link>
 
                 </motion.div>
+
               ))}
             </div>
 
