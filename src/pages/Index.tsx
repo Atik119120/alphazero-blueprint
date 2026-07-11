@@ -158,7 +158,14 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto"
           >
-            <LogoCloud />
+            <LogoCloud
+              logos={[
+                { src: brand1.url, alt: "AlphaZero" },
+                { src: brand2.url, alt: "Sister Brand" },
+                { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
+              ]}
+            />
+
           </motion.div>
         </div>
       </section>
