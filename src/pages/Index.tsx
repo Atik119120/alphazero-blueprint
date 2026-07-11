@@ -80,7 +80,7 @@ const Index = () => {
         { k: language === "bn" ? "স্কোপ" : "Scope", v: language === "bn" ? "ডিজাইন ও ডেভেলপমেন্ট" : "Design & Development" },
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "২–৪ সপ্তাহ" : "2–4 Weeks" },
       ],
-      bg: "#c7d2fe", text: "#1e1b4b", stripe: "#818cf8",
+      bg: "#dbeafe", text: "#0c1e3d", stripe: "#3b82f6",
     },
     {
       icon: PenTool,
