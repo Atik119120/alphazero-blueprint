@@ -293,11 +293,14 @@ const Navbar = () => {
                       isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
                     }`;
                     const inner = (<><IconComp size={16} className={isActive ? "" : "text-primary/70"} />{link.name}</>);
-                    return (
+                    return link.href.startsWith("http") ? (
+                      <a key={link.href} href={link.href} onClick={handleNavClick} className={cls}>{inner}</a>
+                    ) : (
                       <Link key={link.href} to={link.href} onClick={handleNavClick} className={cls}>
                         {inner}
                       </Link>
                     );
+
                   })}
                 </div>
                 <div className="flex items-center justify-between gap-2 p-2 border-t border-border/40">
