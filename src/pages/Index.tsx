@@ -91,7 +91,7 @@ const Index = () => {
         { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৪৮ ঘন্টা" : "48 Hours" },
         { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
       ],
-      bg: "#fecaca", text: "#4c1d1d", stripe: "#fb7185",
+      bg: "#cffafe", text: "#083344", stripe: "#06b6d4",
     },
     {
       icon: Search,
