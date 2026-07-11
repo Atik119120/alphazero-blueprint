@@ -38,7 +38,7 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
+const SERVICE_IMG = "/services";
 const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
 const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
 const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
@@ -496,10 +496,10 @@ const Index = () => {
                     activeService === i ? (
                       <motion.div
                         key={s.title}
-                        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-                        transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.12, ease: [0.16, 1, 0.3, 1] }}
                       >
                         <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
                           {s.title}
