@@ -114,7 +114,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 src={bottomImage.light}
                 alt=""
                 className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover block dark:hidden"
-                style={{ filter: "blur(40px)" }}
+                style={{ filter: "blur(15px)" }}
                 loading="eager"
               />
               <img
