@@ -111,7 +111,7 @@ function AppContent() {
       
       <Routes>
         {/* Main site routes */}
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
 
         <Route path="/about" element={<AboutPage />} />
         <Route path="/services" element={<ServicesPage />} />
