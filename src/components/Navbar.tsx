@@ -311,11 +311,7 @@ const Navbar = () => {
                       isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
                     }`;
                     const inner = (<><IconComp size={16} className={isActive ? "" : "text-primary/70"} />{link.name}</>);
-                    return link.external ? (
-                      <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>
-                        {inner}
-                      </a>
-                    ) : (
+                    return (
                       <Link key={link.href} to={link.href} onClick={handleNavClick} className={cls}>
                         {inner}
                       </Link>
