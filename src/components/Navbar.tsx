@@ -403,11 +403,7 @@ const Navbar = () => {
                     </>
                   );
                   const cls = "relative flex flex-col items-center gap-0.5 py-1";
-                  return item.external ? (
-                    <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>
-                      {inner}
-                    </a>
-                  ) : (
+                  return (
                     <Link key={item.href} to={item.href} className={cls}>
                       {inner}
                     </Link>
