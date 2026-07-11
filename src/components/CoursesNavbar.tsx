@@ -18,12 +18,17 @@ const CoursesNavbar = () => {
 
   const isBn = language === "bn";
 
+  const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
+  const mainSiteHref = isLearnSubdomain ? "https://alphazero.online" : "/";
+  const allCoursesHref = isLearnSubdomain ? "/" : "/courses";
+
   const navLinks = [
-    { name: isBn ? "সকল কোর্স" : "All Courses", href: "/courses", icon: LayoutGrid },
+    { name: isBn ? "সকল কোর্স" : "All Courses", href: allCoursesHref, icon: LayoutGrid },
     { name: isBn ? "সার্টিফিকেট" : "Certificate", href: "/certificate", icon: Award },
     { name: isBn ? "সাহায্য" : "Help", href: "/contact", icon: HelpCircle },
-    { name: isBn ? "মূল সাইট" : "Main Site", href: "/", icon: Home },
+    { name: isBn ? "মূল সাইট" : "Main Site", href: mainSiteHref, icon: Home },
   ];
+
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -34,7 +39,8 @@ const CoursesNavbar = () => {
   }, []);
 
   const isActive = (href: string) =>
-    href === "/courses" ? location.pathname === "/courses" : location.pathname === href;
+    href === allCoursesHref ? (location.pathname === "/" || location.pathname === "/courses") : location.pathname === href;
+
 
   return (
     <>
@@ -51,7 +57,7 @@ const CoursesNavbar = () => {
             }`}
           >
             {/* Learn Logo */}
-            <Link to="/courses" className="flex items-center gap-2 group shrink-0">
+            <Link to={allCoursesHref} className="flex items-center gap-2 group shrink-0">
               <img
                 src={learnLogo}
                 alt="Learn with AlphaZero"
@@ -64,12 +70,10 @@ const CoursesNavbar = () => {
             <div className="hidden lg:flex items-center gap-1 bg-primary/[0.06] rounded-full px-1.5 py-1 border border-primary/15">
               {navLinks.map((link) => {
                 const active = isActive(link.href);
-                return (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    className="relative px-4 py-2 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5"
-                  >
+                const isExternal = link.href.startsWith("http");
+                const commonClass = "relative px-4 py-2 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5";
+                const inner = (
+                  <>
                     {active && (
                       <motion.div
                         layoutId="courses-nav-pill"
@@ -81,9 +85,15 @@ const CoursesNavbar = () => {
                     <span className={`relative z-10 ${active ? "text-primary-foreground font-semibold" : "text-foreground/80 hover:text-foreground"}`}>
                       {link.name}
                     </span>
-                  </Link>
+                  </>
+                );
+                return isExternal ? (
+                  <a key={link.href} href={link.href} className={commonClass}>{inner}</a>
+                ) : (
+                  <Link key={link.href} to={link.href} className={commonClass}>{inner}</Link>
                 );
               })}
+
             </div>
 
             {/* Right controls */}
@@ -155,20 +165,18 @@ const CoursesNavbar = () => {
                 <div className="grid grid-cols-2 gap-1 p-2">
                   {navLinks.map((link) => {
                     const active = isActive(link.href);
-                    return (
-                      <Link
-                        key={link.href}
-                        to={link.href}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm ${
-                          active ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
-                        }`}
-                      >
-                        <link.icon size={16} className={active ? "" : "text-primary/70"} />
-                        {link.name}
-                      </Link>
+                    const isExternal = link.href.startsWith("http");
+                    const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm ${
+                      active ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
+                    }`;
+                    const inner = (<><link.icon size={16} className={active ? "" : "text-primary/70"} />{link.name}</>);
+                    return isExternal ? (
+                      <a key={link.href} href={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</a>
+                    ) : (
+                      <Link key={link.href} to={link.href} onClick={() => setIsMobileMenuOpen(false)} className={cls}>{inner}</Link>
                     );
                   })}
+
                 </div>
                 <div className="flex items-center gap-2 p-2 border-t border-border/40">
                   <button

@@ -9,8 +9,9 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  const location = useLocation();
-  const isCoursesArea = location.pathname === "/courses" || location.pathname.startsWith("/courses/");
+  const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
+  const isCoursesArea = isLearnSubdomain || location.pathname === "/courses" || location.pathname.startsWith("/courses/");
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
