@@ -443,59 +443,65 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Each service: text left + image pair right, scrolling together */}
-          <div className="max-w-7xl mx-auto flex flex-col gap-16 lg:gap-24 relative">
-            {services.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={s.title}
-                  className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center"
-                >
-                  {/* LEFT — text for this service */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-15% 0px" }}
-                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                    className="lg:col-span-4"
-                  >
-                    <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground">
-                      {s.title}
-                    </h3>
-                    <div className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full">
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
-                    </div>
-                    <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
-                      {s.description}
-                    </p>
-                    <Link
-                      to="/services"
-                      className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
-                    >
-                      <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
-                        {t("common.learnMore") || "See More"}
-                        <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
-                      </span>
-                      <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
-                    </Link>
-                  </motion.div>
+          {/* Sticky text left, scrolling image pairs right */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 relative">
+            {/* LEFT — sticky text swaps with active service */}
+            <div className="lg:col-span-4 lg:sticky lg:top-32 lg:h-[calc(100vh-8rem)] flex flex-col justify-center">
+              <div className="relative">
+                <AnimatePresence mode="wait" initial={false}>
+                  {services.map((s, i) =>
+                    activeService === i ? (
+                      <motion.div
+                        key={s.title}
+                        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+                        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+                        transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
+                          {s.title}
+                        </h3>
+                        <div className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full">
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                        </div>
+                        <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                          {s.description}
+                        </p>
+                        <Link
+                          to="/services"
+                          className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
+                        >
+                          <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+                            {t("common.learnMore") || "See More"}
+                            <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
+                          </span>
+                          <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                        </Link>
+                      </motion.div>
+                    ) : null
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
 
-                  {/* RIGHT — image pair */}
-                  <div className="lg:col-span-8">
-                    <MemoServicePair
-                      color={s.stripe}
-                      Icon={Icon}
-                      onActive={() => {}}
-                      primaryImage={(s as any).primaryImage}
-                      secondaryImage={(s as any).secondaryImage}
-                      priority={i === 0}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+            {/* RIGHT — scrolling image pairs */}
+            <div className="lg:col-span-8 flex flex-col gap-16 lg:gap-24">
+              {services.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <MemoServicePair
+                    key={s.title}
+                    color={s.stripe}
+                    Icon={Icon}
+                    onActive={() => setActiveService(i)}
+                    primaryImage={(s as any).primaryImage}
+                    secondaryImage={(s as any).secondaryImage}
+                    priority={i === 0}
+                  />
+                );
+              })}
+            </div>
           </div>
 
 
