@@ -8,6 +8,7 @@ type Logo = {
   label?: string;
   href?: string;
   invert?: boolean;
+  large?: boolean;
 };
 
 
@@ -75,7 +76,8 @@ function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
           src={logo.src}
           alt={logo.alt}
           className={cn(
-            "max-h-16 md:max-h-20 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100",
+            "w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100",
+            logo.large ? "max-h-20 md:max-h-28" : "max-h-8 md:max-h-10",
             logo.invert && "brightness-0 invert",
           )}
           loading="lazy"
@@ -92,7 +94,7 @@ function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
   return (
     <div
       className={cn(
-        "group relative flex h-36 md:h-40 items-center justify-center px-4",
+        "group relative flex h-28 md:h-32 items-center justify-center",
         className,
       )}
       {...props}
