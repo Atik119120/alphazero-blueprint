@@ -179,7 +179,7 @@ const ServicePair = ({
   }, [inView, onActive]);
 
   return (
-    <div ref={ref} className="min-h-[55vh] md:min-h-[60vh] flex items-center">
+    <div ref={ref} className="flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
           <MemoMockupCard
