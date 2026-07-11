@@ -287,13 +287,6 @@ const Navbar = () => {
                         />
                       )}
                       <div className="relative z-10 flex flex-col items-center">
-                        {isActive && (
-                          <motion.div
-                            layoutId="bottom-nav-bar"
-                            className="absolute -top-2.5 w-6 h-[2.5px] rounded-full bg-primary"
-                            transition={{ type: "spring", bounce: 0.3, duration: 0.5 }}
-                          />
-                        )}
                         <motion.div
                           animate={isActive ? { y: -2, scale: 1.15 } : { y: 0, scale: 1 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
