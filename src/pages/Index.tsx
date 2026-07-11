@@ -39,6 +39,8 @@ import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
 import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
+import brandingPhoneMockup from "@/assets/branding-phone-mockup.png.asset.json";
+
 
 
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -248,6 +250,8 @@ const Index = () => {
       ],
       bg: "#ccfbf1", text: "#042f2e", stripe: "#14b8a6",
       primaryImage: brandingStartio.url,
+      secondaryImage: brandingPhoneMockup.url,
+
     },
   ];
   const [activeService, setActiveService] = useState(0);
