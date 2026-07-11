@@ -7,7 +7,9 @@ type Logo = {
   alt: string;
   label?: string;
   href?: string;
+  invert?: boolean;
 };
+
 
 type LogoCloudProps = React.ComponentProps<"div"> & {
   logos?: Logo[];
