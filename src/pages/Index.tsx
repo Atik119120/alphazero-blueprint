@@ -173,13 +173,13 @@ const ServicePair = ({
   priority?: boolean;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-45% 0px -45% 0px" });
+  const inView = useInView(ref, { margin: "-40% 0px -40% 0px" });
   useEffect(() => {
     if (inView) onActive();
   }, [inView, onActive]);
 
   return (
-    <div ref={ref} className="min-h-[85vh] flex items-center">
+    <div ref={ref} className="min-h-[55vh] md:min-h-[60vh] flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
           <MemoMockupCard
