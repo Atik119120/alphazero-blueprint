@@ -42,7 +42,7 @@ import brand4 from "@/assets/brands/b4.png.asset.json";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
 import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
