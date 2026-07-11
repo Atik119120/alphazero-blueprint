@@ -88,7 +88,7 @@ const MockupCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-10% 0px" }}
       transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="relative w-full aspect-[5/7] rounded-[2rem] overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
+      className="relative w-full aspect-[5/7] rounded-2xl overflow-hidden shadow-[0_30px_80px_-20px_rgba(0,0,0,0.55)]"
       style={{
         background: `radial-gradient(120% 100% at 30% 20%, ${color}ee 0%, ${color}aa 45%, ${color}55 100%)`,
       }}
@@ -472,7 +472,7 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-20 lg:mb-28"
+            className="text-center mb-10 lg:mb-28"
           >
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
               {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
@@ -485,7 +485,7 @@ const Index = () => {
 
 
           {/* MOBILE — stacked: title + underline + link + image pair per service */}
-          <div className="lg:hidden max-w-2xl mx-auto flex flex-col gap-20">
+          <div className="lg:hidden max-w-2xl mx-auto flex flex-col gap-10">
             {services.map((s, i) => {
               const Icon = s.icon;
               return (
@@ -505,7 +505,7 @@ const Index = () => {
                   </div>
                   <Link
                     to="/services"
-                    className="inline-flex items-center gap-2 font-semibold text-sm group mb-8"
+                    className="inline-flex items-center gap-2 font-semibold text-sm group mb-4"
                   >
                     <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
                       {t("common.learnMore") || "See More"}
