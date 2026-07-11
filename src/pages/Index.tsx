@@ -38,16 +38,14 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-// Service mockup images — use direct public URLs (CDN-cached, no on-the-fly transform lag).
-const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
-const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
-const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
-const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
-const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.png` };
-const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.png` };
-const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.png` };
-const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.png` };
-const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
+import brandingStartio from "@/assets/services/branding-startio.png.asset.json";
+import brandingPhoneMockup from "@/assets/branding-phone-mockup.png.asset.json";
+import webDevDashboard from "@/assets/web-dev-dashboard.png.asset.json";
+import webDevTablet from "@/assets/web-dev-tablet.png.asset.json";
+import webDesktopMockup from "@/assets/web-desktop-mockup.png.asset.json";
+import webPhoneMockup from "@/assets/web-phone-mockup.png.asset.json";
+import seoMonitor from "@/assets/seo-monitor.png.asset.json";
+import seoTablet from "@/assets/seo-tablet.png.asset.json";
 
 
 
@@ -158,28 +156,22 @@ const MemoMockupCard = memo(MockupCard);
 
 // Pair of tilted mockups (browser + phone) that reports itself active when centered
 const ServicePair = ({
+  index,
   color,
   Icon,
-  onActive,
   primaryImage,
   secondaryImage,
   priority = false,
 }: {
+  index: number;
   color: string;
   Icon: any;
-  onActive: () => void;
   primaryImage?: string;
   secondaryImage?: string;
   priority?: boolean;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-40% 0px -40% 0px" });
-  useEffect(() => {
-    if (inView) onActive();
-  }, [inView, onActive]);
-
   return (
-    <div ref={ref} className="min-h-[70vh] flex items-center">
+    <div data-service-index={index} className="min-h-[70vh] flex items-center">
       <div className="w-full grid grid-cols-2 gap-4 md:gap-6 items-start">
         <div className="-mt-4 md:-mt-8">
           <MemoMockupCard
@@ -211,6 +203,7 @@ const ServicePair = ({
 const MemoServicePair = memo(
   ServicePair,
   (prev, next) =>
+    prev.index === next.index &&
     prev.color === next.color &&
     prev.Icon === next.Icon &&
     prev.primaryImage === next.primaryImage &&
