@@ -80,7 +80,7 @@ const Index = () => {
         { k: language === "bn" ? "স্কোপ" : "Scope", v: language === "bn" ? "ডিজাইন ও ডেভেলপমেন্ট" : "Design & Development" },
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "২–৪ সপ্তাহ" : "2–4 Weeks" },
       ],
-      bg: "#c7d2fe", text: "#1e1b4b", stripe: "#818cf8",
+      bg: "#dbeafe", text: "#0c1e3d", stripe: "#3b82f6",
     },
     {
       icon: PenTool,
@@ -91,7 +91,7 @@ const Index = () => {
         { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৪৮ ঘন্টা" : "48 Hours" },
         { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
       ],
-      bg: "#fecaca", text: "#4c1d1d", stripe: "#fb7185",
+      bg: "#cffafe", text: "#083344", stripe: "#06b6d4",
     },
     {
       icon: Search,
@@ -102,7 +102,7 @@ const Index = () => {
         { k: language === "bn" ? "রিপোর্ট" : "Reporting", v: language === "bn" ? "মাসিক" : "Monthly" },
         { k: language === "bn" ? "ফোকাস" : "Focus", v: "On-page + Off-page" },
       ],
-      bg: "#fde68a", text: "#422006", stripe: "#f59e0b",
+      bg: "#e0f2fe", text: "#0c1e3d", stripe: "#0ea5e9",
     },
     {
       icon: PenTool,
@@ -113,7 +113,7 @@ const Index = () => {
         { k: language === "bn" ? "ডেলিভারেবল" : "Deliverable", v: language === "bn" ? "লোগো + গাইডলাইন" : "Logo + Guidelines" },
         { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
       ],
-      bg: "#a7f3d0", text: "#022c22", stripe: "#2dd4bf",
+      bg: "#ccfbf1", text: "#042f2e", stripe: "#14b8a6",
     },
   ];
   const [activeService, setActiveService] = useState(0);
