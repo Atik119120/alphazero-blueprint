@@ -7,9 +7,13 @@ const SmoothScroll = () => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 1.6,
+      easing: (t) => (t === 1 ? 1 : 1 - Math.pow(2, -12 * t)),
       smoothWheel: true,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1.4,
+      lerp: 0.08,
+      syncTouch: true,
     });
 
     let rafId = 0;
