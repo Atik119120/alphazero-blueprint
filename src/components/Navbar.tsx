@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
-  const COURSES_URL = "/courses";
+  const COURSES_URL = "https://learn.alphazero.online";
 
   const navLinks = [
     { name: t("nav.home"), href: "/", num: "01" },
@@ -45,7 +45,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", num: "03", hasDropdown: true },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.courses"), href: "/courses", num: "06" },
+    { name: t("nav.courses"), href: "https://learn.alphazero.online", num: "06" },
     { name: t("nav.contact"), href: "/contact", num: "07" },
   ];
 
@@ -60,7 +60,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
     { name: t("nav.team"), href: "/team", icon: Users },
-    { name: t("nav.courses"), href: "/courses", icon: GraduationCap },
+    { name: t("nav.courses"), href: "https://learn.alphazero.online", icon: GraduationCap },
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
 
@@ -331,7 +331,7 @@ const Navbar = () => {
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
-          { name: language === "bn" ? "কোর্স" : "Courses", href: "/courses", icon: GraduationCap },
+          { name: language === "bn" ? "কোর্স" : "Courses", href: "https://learn.alphazero.online", icon: GraduationCap },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
 
