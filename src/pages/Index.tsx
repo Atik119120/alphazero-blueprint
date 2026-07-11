@@ -44,6 +44,9 @@ import webDevDashboard from "@/assets/web-dev-dashboard.png.asset.json";
 import webDevTablet from "@/assets/web-dev-tablet.png.asset.json";
 import uiuxDesktop from "@/assets/web-desktop-mockup.png.asset.json";
 import uiuxPhone from "@/assets/web-phone-mockup.png.asset.json";
+import seoMonitor from "@/assets/seo-monitor.png.asset.json";
+import seoTablet from "@/assets/seo-tablet.png.asset.json";
+
 
 
 
@@ -251,7 +254,10 @@ const Index = () => {
         { k: language === "bn" ? "ফোকাস" : "Focus", v: "On-page + Off-page" },
       ],
       bg: "#e0f2fe", text: "#0c1e3d", stripe: "#0ea5e9",
+      primaryImage: seoTablet.url,
+      secondaryImage: seoMonitor.url,
     },
+
     {
       icon: PenTool,
       label: language === "bn" ? "ব্র্যান্ডিং" : "Branding",
