@@ -38,16 +38,18 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
-// Service mockup images hosted on Supabase storage so they render on Vercel too
-const SERVICE_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/services";
-const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
-const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
-const webDevDashboard = { url: `${SERVICE_IMG}/web-dev-dashboard.png` };
-const webDevTablet = { url: `${SERVICE_IMG}/web-dev-tablet.png` };
-const uiuxDesktop = { url: `${SERVICE_IMG}/uiux-desktop.png` };
-const uiuxPhone = { url: `${SERVICE_IMG}/uiux-phone.png` };
-const seoMonitor = { url: `${SERVICE_IMG}/seo-monitor.png` };
-const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
+// Service mockup images use resized WebP delivery for faster loading on Vercel.
+const SERVICE_RENDER_IMG = "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/render/image/public/media-uploads/services";
+const serviceImage = (file: string, width = 900) =>
+  `${SERVICE_RENDER_IMG}/${file}?width=${width}&quality=70&resize=contain&format=webp`;
+const brandingStartio = { url: serviceImage("branding-startio.png") };
+const brandingPhoneMockup = { url: serviceImage("branding-phone.png", 640) };
+const webDevDashboard = { url: serviceImage("web-dev-dashboard.png") };
+const webDevTablet = { url: serviceImage("web-dev-tablet.png", 640) };
+const uiuxDesktop = { url: serviceImage("uiux-desktop.png") };
+const uiuxPhone = { url: serviceImage("uiux-phone.png", 640) };
+const seoMonitor = { url: serviceImage("seo-monitor.png") };
+const seoTablet = { url: serviceImage("seo-tablet.png", 640) };
 
 
 
@@ -58,7 +60,7 @@ const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
-import { useRef, useState, useEffect, type ReactNode } from "react";
+import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
 import heroBgLightAsset from "@/assets/hero-bg-light.png.asset.json";
