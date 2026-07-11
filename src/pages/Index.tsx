@@ -33,6 +33,8 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import ProjectMarquee from "@/components/ProjectMarquee";
+import { LogoCloud } from "@/components/ui/logo-cloud-2";
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
