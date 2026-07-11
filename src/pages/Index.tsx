@@ -37,6 +37,7 @@ import { LogoCloud } from "@/components/ui/logo-cloud-2";
 import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
+import brand4 from "@/assets/brands/b4.png.asset.json";
 
 
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -163,6 +164,7 @@ const Index = () => {
                 { src: brand1.url, alt: "AlphaZero", invert: true },
                 { src: brand2.url, alt: "Sister Brand", invert: true },
                 { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
+                { src: brand4.url, alt: "Learn with AlphaZero", invert: true },
               ]}
 
             />
