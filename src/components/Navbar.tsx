@@ -114,7 +114,7 @@ const Navbar = () => {
 
             {/* Desktop Navigation - Pill style */}
             <div className="hidden lg:flex items-center">
-              <div className="flex items-center bg-secondary/80 dark:bg-secondary/50 rounded-full px-1.5 py-1 border border-border/50 dark:border-border/30">
+              <div className="flex items-center bg-white/10 dark:bg-white/5 backdrop-blur-xl backdrop-saturate-150 rounded-full px-1.5 py-1 border border-white/20 dark:border-white/10 shadow-[inset_0_1px_0_0_hsl(0_0%_100%/0.15),0_4px_16px_-4px_hsl(220_50%_10%/0.25)]">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href || (link.hasDropdown && location.pathname === "/pricing");
                   
