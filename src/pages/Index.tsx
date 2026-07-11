@@ -71,11 +71,52 @@ const Index = () => {
   ];
 
   const services = [
-    { icon: Monitor, title: c("service.web", "home.service.web"), description: c("service.webDesc", "home.service.webDesc"), gradient: "from-cyan-400 via-sky-500 to-blue-600" },
-    { icon: PenTool, title: c("service.graphics", "home.service.graphics") || "Graphic Design", description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel precision.", gradient: "from-sky-400 via-cyan-500 to-teal-500" },
-    { icon: Search, title: c("service.seo", "home.service.seo"), description: c("service.seoDesc", "home.service.seoDesc"), gradient: "from-blue-500 via-cyan-500 to-sky-400" },
-    { icon: PenTool, title: c("service.branding", "home.service.branding"), description: c("service.brandingDesc", "home.service.brandingDesc"), gradient: "from-teal-400 via-cyan-500 to-blue-500" },
+    {
+      icon: Monitor,
+      label: language === "bn" ? "ওয়েবসাইট" : "Website",
+      title: c("service.web", "home.service.web"),
+      description: c("service.webDesc", "home.service.webDesc"),
+      meta: [
+        { k: language === "bn" ? "স্কোপ" : "Scope", v: language === "bn" ? "ডিজাইন ও ডেভেলপমেন্ট" : "Design & Development" },
+        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "২–৪ সপ্তাহ" : "2–4 Weeks" },
+      ],
+      bg: "#c7d2fe", text: "#1e1b4b", stripe: "#818cf8",
+    },
+    {
+      icon: PenTool,
+      label: language === "bn" ? "গ্রাফিক" : "Graphic",
+      title: c("service.graphics", "home.service.graphics") || "Graphic Design",
+      description: c("service.graphicsDesc", "home.service.graphicsDesc") || "Posters, banners, thumbnails & brand collateral crafted with pixel-precise care.",
+      meta: [
+        { k: language === "bn" ? "ডেলিভারি" : "Delivery", v: language === "bn" ? "৪৮ ঘন্টা" : "48 Hours" },
+        { k: language === "bn" ? "ফরম্যাট" : "Format", v: "Print + Digital" },
+      ],
+      bg: "#fecaca", text: "#4c1d1d", stripe: "#fb7185",
+    },
+    {
+      icon: Search,
+      label: "SEO",
+      title: c("service.seo", "home.service.seo"),
+      description: c("service.seoDesc", "home.service.seoDesc"),
+      meta: [
+        { k: language === "bn" ? "রিপোর্ট" : "Reporting", v: language === "bn" ? "মাসিক" : "Monthly" },
+        { k: language === "bn" ? "ফোকাস" : "Focus", v: "On-page + Off-page" },
+      ],
+      bg: "#fde68a", text: "#422006", stripe: "#f59e0b",
+    },
+    {
+      icon: PenTool,
+      label: language === "bn" ? "ব্র্যান্ডিং" : "Branding",
+      title: c("service.branding", "home.service.branding"),
+      description: c("service.brandingDesc", "home.service.brandingDesc"),
+      meta: [
+        { k: language === "bn" ? "ডেলিভারেবল" : "Deliverable", v: language === "bn" ? "লোগো + গাইডলাইন" : "Logo + Guidelines" },
+        { k: language === "bn" ? "সময়" : "Timeline", v: language === "bn" ? "১–২ সপ্তাহ" : "1–2 Weeks" },
+      ],
+      bg: "#a7f3d0", text: "#022c22", stripe: "#2dd4bf",
+    },
   ];
+  const [activeService, setActiveService] = useState(0);
 
   const stats = [
     { value: "50+", label: c("stats.projects_label", "home.stats.projects") || "Projects" },
