@@ -226,7 +226,7 @@ const Index = () => {
 
 
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
-      <section className="py-24 lg:py-32 relative overflow-hidden">
+      <section className="py-24 lg:py-32 relative">
         <div className="container mx-auto px-6 relative z-10">
           {/* Section Header */}
           <motion.div
