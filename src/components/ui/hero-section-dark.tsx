@@ -114,6 +114,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 src={bottomImage.light}
                 alt=""
                 className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover block dark:hidden"
+                style={{ filter: "blur(85px)" }}
                 loading="eager"
               />
               <img
@@ -123,8 +124,8 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 loading="eager"
               />
 
-              {/* soft blur fade at top — 70% of image height */}
-              <div className="absolute inset-x-0 top-0 h-[85%] backdrop-blur-md bg-gradient-to-b from-background/60 to-transparent pointer-events-none [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+              {/* soft blur fade at top — dark mode only */}
+              <div className="hidden dark:block absolute inset-x-0 top-0 h-[85%] backdrop-blur-md bg-gradient-to-b from-background/60 to-transparent pointer-events-none [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
               {/* dark overlay for text readability */}
               <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-b from-transparent to-background pointer-events-none" />
