@@ -110,15 +110,19 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <div className="relative w-full">
-              <picture>
-                <source srcSet={bottomImage.dark} media="(prefers-color-scheme: dark)" />
-                <img
-                  src={bottomImage.light}
-                  alt=""
-                  className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover"
-                  loading="eager"
-                />
-              </picture>
+              <img
+                src={bottomImage.light}
+                alt=""
+                className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover block dark:hidden"
+                loading="eager"
+              />
+              <img
+                src={bottomImage.dark}
+                alt=""
+                className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover hidden dark:block"
+                loading="eager"
+              />
+
               {/* soft blur fade at top — 70% of image height */}
               <div className="absolute inset-x-0 top-0 h-[85%] backdrop-blur-md bg-gradient-to-b from-background/60 to-transparent pointer-events-none [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
