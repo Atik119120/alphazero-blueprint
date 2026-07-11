@@ -126,7 +126,7 @@ export default function ProjectMarquee() {
 
   return (
     <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-16 md:pb-24 overflow-hidden bg-transparent z-20">
-      <div className="relative h-[180px] sm:h-[200px] md:h-[240px]">
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px]">
 
 
         <div className="flex marquee-left w-max h-full items-center">
