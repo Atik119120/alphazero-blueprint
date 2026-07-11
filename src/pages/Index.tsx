@@ -33,6 +33,8 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import ProjectMarquee from "@/components/ProjectMarquee";
+import { LogoCloud } from "@/components/ui/logo-cloud-2";
+
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useRef, type ReactNode } from "react";
@@ -129,29 +131,34 @@ const Index = () => {
 
 
 
-      {/* ══════════ STATS BANNER ══════════ */}
-      <section className="relative -mt-1">
+      {/* ══════════ SISTER BRANDS ══════════ */}
+      <section className="relative py-16 lg:py-24">
         <div className="container mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-5xl mx-auto glass-card rounded-2xl p-1"
+            className="max-w-3xl mx-auto text-center mb-12"
           >
-            <div className="grid grid-cols-2 lg:grid-cols-4">
-              {stats.map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className={`text-center py-8 px-4 ${index < stats.length - 1 ? 'border-r border-border/30 dark:border-border/20' : ''} ${index < 2 ? 'border-b lg:border-b-0 border-border/30 dark:border-border/20' : ''}`}
-                >
-                  <div className="text-3xl lg:text-4xl font-display font-bold gradient-text tracking-tight mb-1">{stat.value}</div>
-                  <div className="text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium">{stat.label}</div>
-                </div>
-              ))}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
+              <Sparkles size={14} className="text-primary" />
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Our Sister Brands</span>
             </div>
+            <h2 className="text-3xl lg:text-5xl font-display font-bold">
+              Brands we <span className="gradient-text">build & back</span>
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            <LogoCloud />
           </motion.div>
         </div>
       </section>
+
 
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
       <section className="py-24 lg:py-32 relative overflow-hidden">
