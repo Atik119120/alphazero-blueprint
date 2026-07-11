@@ -8,7 +8,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { 
   GraduationCap, Monitor, Palette, Video, Camera, TrendingUp, Code, Sparkles, Bot, Globe,
   CheckCircle2, BookOpen, Star, Zap, Target, Award, Clock, Wrench, Lock, Loader2, LucideIcon,
-  ArrowRight, Users, Play
+  ArrowRight, ArrowLeft, Users, Play
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
@@ -280,6 +280,7 @@ const CoursesPage = () => {
   };
 
   const heroRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
@@ -386,10 +387,10 @@ const CoursesPage = () => {
         </motion.div>
       </section>
 
-      {/* Courses Carousel (auto-scroll marquee) */}
+      {/* Courses Carousel */}
       {displayCourses.length > 0 && (
         <section className="py-10 border-y border-border/40 overflow-hidden">
-          <div className="container mx-auto px-6 mb-6 flex items-end justify-between">
+          <div className="container mx-auto px-6 mb-6 flex items-end justify-between gap-4">
             <div>
               <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-primary block">
                 {isBn ? "এক নজরে" : "At a glance"}
@@ -398,32 +399,47 @@ const CoursesPage = () => {
                 {isBn ? "আমাদের কোর্সসমূহ" : "Our Courses"}
               </h3>
             </div>
-            <a href="#courses" className="hidden sm:inline-flex items-center gap-1 text-xs text-primary hover:underline">
-              {isBn ? "সব দেখুন" : "View all"} <ArrowRight className="w-3 h-3" />
-            </a>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => carouselRef.current?.scrollBy({ left: -320, behavior: 'smooth' })}
+                aria-label="Previous"
+                className="w-10 h-10 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => carouselRef.current?.scrollBy({ left: 320, behavior: 'smooth' })}
+                aria-label="Next"
+                className="w-10 h-10 rounded-full bg-primary/10 border border-primary/25 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <a href="#courses" className="hidden sm:inline-flex items-center gap-1 text-xs text-primary hover:underline ml-2">
+                {isBn ? "সব দেখুন" : "View all"} <ArrowRight className="w-3 h-3" />
+              </a>
+            </div>
           </div>
 
-          <div className="relative group">
+          <div className="relative">
             {/* Edge fades */}
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
 
-            <motion.div
-              className="flex gap-4 w-max"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: Math.max(20, displayCourses.length * 5), ease: "linear", repeat: Infinity }}
+            <div
+              ref={carouselRef}
+              className="flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
-              {[...displayCourses, ...displayCourses].map((course, i) => {
+              {displayCourses.map((course, i) => {
                 const metadata = getCourseMetadata(course.titleEn);
                 const CourseIcon = metadata.icon;
                 const isFree = !course.price || course.price === 0;
                 return (
                   <button
-                    key={`${course.id}-${i}`}
+                    key={course.id}
                     onClick={() => {
                       document.getElementById('courses')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
-                    className="group/card w-[280px] shrink-0 text-left rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]"
+                    className="group/card snap-start w-[280px] shrink-0 text-left rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]"
                   >
                     {course.thumbnail_url ? (
                       <div className="relative h-36 overflow-hidden">
@@ -450,10 +466,11 @@ const CoursesPage = () => {
                   </button>
                 );
               })}
-            </motion.div>
+            </div>
           </div>
         </section>
       )}
+
 
 
 
