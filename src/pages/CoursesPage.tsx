@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
+import coursesHeroBg from "@/assets/courses-hero-bg.png.asset.json";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -320,24 +321,18 @@ const CoursesPage = () => {
         })}</script>
       </Helmet>
       {/* Hero - logo-forward editorial */}
-      <section ref={heroRef} className="relative flex items-center justify-center overflow-hidden py-16 lg:py-24">
+      <section ref={heroRef} className="relative flex items-center justify-center overflow-hidden py-20 lg:py-32">
 
-        <div className="absolute inset-0 mesh-bg opacity-70" />
+        {/* Blue wave background image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${coursesHeroBg.url})` }}
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/20 to-background/80" />
         {/* Soft radial spotlight */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.10), transparent 70%)" }} />
-        {/* Subtle floating icons */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[GraduationCap, Palette, Code, Camera, Bot].map((Icon, i) => (
-            <motion.div key={i}
-              className="absolute text-primary/[0.035]"
-              style={{ left: `${10 + i * 19}%`, top: `${15 + (i % 3) * 28}%` }}
-              animate={{ y: [0, -18, 0], rotate: [0, 4, -4, 0] }}
-              transition={{ duration: 7 + i, repeat: Infinity, ease: "easeInOut" }}>
-              <Icon className="w-14 h-14 lg:w-20 lg:h-20" strokeWidth={1} />
-            </motion.div>
-          ))}
-        </div>
+          style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
