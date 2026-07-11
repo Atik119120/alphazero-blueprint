@@ -39,7 +39,8 @@ const CoursesNavbar = () => {
   }, []);
 
   const isActive = (href: string) =>
-    href === "/courses" ? location.pathname === "/courses" : location.pathname === href;
+    href === allCoursesHref ? (location.pathname === "/" || location.pathname === "/courses") : location.pathname === href;
+
 
   return (
     <>
