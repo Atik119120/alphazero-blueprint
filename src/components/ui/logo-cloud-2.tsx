@@ -76,7 +76,7 @@ function LogoCard({ logo, className, children, ...props }: LogoCardProps) {
           alt={logo.alt}
           className={cn(
             "max-h-8 md:max-h-10 w-auto object-contain opacity-80 transition-opacity group-hover:opacity-100",
-            logo.invert && "invert brightness-0 dark:invert-0 dark:brightness-100",
+            logo.invert && "brightness-0 invert",
           )}
           loading="lazy"
         />
