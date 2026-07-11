@@ -127,14 +127,8 @@ const CoursesNavbar = () => {
               <Link to="/student/login" className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
                 <User size={15} className="text-primary" />
               </Link>
-              {mounted && (
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center"
-                >
-                  {theme === "dark" ? <Sun size={15} className="text-primary" /> : <Moon size={15} className="text-primary" />}
-                </button>
-              )}
+
+
               <button
                 onClick={() => setIsMobileMenuOpen((v) => !v)}
                 className="w-9 h-9 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center"
