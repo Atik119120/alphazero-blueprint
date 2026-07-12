@@ -59,7 +59,7 @@ const CoursesNavbar = () => {
   const handleNavClick = (id: string) => {
     setIsMobileMenuOpen(false);
     // If not on courses/learn page, navigate there first
-    const onCoursesPage = isLearnSubdomain || location.pathname === "/courses" || location.pathname === "/";
+    const onCoursesPage = location.pathname === "/courses" || location.pathname.startsWith("/courses/");
     if (!onCoursesPage) {
       navigate(coursesHomeHref);
       setTimeout(() => {
