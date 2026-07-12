@@ -620,39 +620,40 @@ const Index = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
-            {[
-              { src: clientAlokchitra.url, alt: "Alokchitra", invert: true },
-              { src: clientAura.url, alt: "Aura Signature", invert: true },
+          {(() => {
+            const logos = [
+              { src: clientAlokchitra.url, alt: "Alokchitra" },
+              { src: clientAura.url, alt: "Aura Signature" },
               { src: clientGreenpeak.url, alt: "GreenPeak" },
-              { src: clientBlackzen.url, alt: "BlackZen", invert: true },
-              { src: clientDarkAura.url, alt: "Dark Aura", invertLight: true },
+              { src: clientBlackzen.url, alt: "BlackZen" },
+              { src: clientDarkAura.url, alt: "Dark Aura" },
               { src: "https://syoenzqclizidypesxqq.supabase.co/storage/v1/object/public/banners/logo-1777311397835.png", alt: "Client Logo 6" },
               { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Client Logo 7" },
-              { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Client Logo 8", invertLight: true },
+              { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Client Logo 8" },
               { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy" },
-            ].map((logo, index) => (
-              <motion.div
-                key={logo.alt}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.08 }}
-                whileHover={{ y: -4 }}
-                className="group relative aspect-[3/2] rounded-2xl glass-card flex items-center justify-center p-4 sm:p-5 overflow-hidden"
-              >
-                <div className="relative w-full h-14 sm:h-16 flex items-center justify-center">
-                  <img
-                    src={logo.src}
-                    alt={logo.alt}
-                    loading="lazy"
-                    className="max-h-full max-w-full w-auto h-auto object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                  />
+            ];
+            const loop = [...logos, ...logos];
+            return (
+              <div className="relative overflow-hidden max-w-6xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                <div className="flex gap-6 sm:gap-10 animate-[marquee_40s_linear_infinite] w-max">
+                  {loop.map((logo, index) => (
+                    <div
+                      key={`${logo.alt}-${index}`}
+                      className="shrink-0 flex items-center justify-center h-20 sm:h-24 w-40 sm:w-52"
+                    >
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        loading="lazy"
+                        className="max-h-full max-w-full w-auto h-auto object-contain brightness-0 invert opacity-70 hover:opacity-100 transition-opacity duration-300"
+                      />
+                    </div>
+                  ))}
                 </div>
-
-              </motion.div>
-            ))}
-          </div>
+                <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
+              </div>
+            );
+          })()}
 
 
         </div>
