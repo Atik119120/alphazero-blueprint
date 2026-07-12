@@ -44,6 +44,8 @@ import clientAura from "@/assets/clients/aura-signature.png.asset.json";
 import clientGreenpeak from "@/assets/clients/greenpeak.png.asset.json";
 import clientBlackzen from "@/assets/clients/blackzen.png.asset.json";
 import clientDarkAura from "@/assets/clients/darkaura.png.asset.json";
+import clientAtix from "@/assets/clients/atix.png.asset.json";
+import clientSA from "@/assets/clients/sa.png.asset.json";
 const SERVICE_IMG = "/services";
 const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
 const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
