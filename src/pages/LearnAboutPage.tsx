@@ -5,9 +5,11 @@ import CoursesNavbar from "@/components/CoursesNavbar";
 import CoursesFooter from "@/components/CoursesFooter";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTeamMembers } from "@/hooks/useTeamMembers";
 
 const LearnAboutPage = () => {
   const { language } = useLanguage();
+  const { data: teamMembers } = useTeamMembers();
   const isBn = language === "bn";
 
   const t = (bn: string, en: string) => (isBn ? bn : en);
@@ -312,6 +314,70 @@ const LearnAboutPage = () => {
                     </div>
                     <h3 className="text-lg font-display font-bold mb-2">{v.title}</h3>
                     <p className="text-muted-foreground text-sm leading-relaxed">{v.desc}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Instructors */}
+        <section id="instructors" className="py-20 lg:py-28 relative border-t border-border/40">
+          <div className="container mx-auto px-6">
+            <div className="max-w-6xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-12"
+              >
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
+                  <Users size={14} className="text-primary" />
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">
+                    {t("আমাদের টিম", "Our Team")}
+                  </span>
+                </div>
+                <h2 className="text-3xl lg:text-5xl font-display font-bold">
+                  {t("এক্সপার্ট ", "Expert ")}
+                  <span className="gradient-text">{t("ইনস্ট্রাক্টর", "Instructors")}</span>
+                </h2>
+                <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
+                  {t(
+                    "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।",
+                    "Learn directly from industry experts."
+                  )}
+                </p>
+              </motion.div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                {(teamMembers || []).map((tr, i) => (
+                  <motion.div
+                    key={tr.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.05 }}
+                    className="group"
+                  >
+                    <div className="glass-card rounded-2xl p-4 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]">
+                      <div className="relative w-24 h-24 mx-auto mb-3">
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
+                        <img
+                          src={tr.image_url || "/placeholder.svg"}
+                          alt={tr.name}
+                          className="relative w-24 h-24 rounded-full object-cover ring-2 ring-primary/20"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/placeholder.svg";
+                          }}
+                        />
+                      </div>
+                      <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">
+                        {tr.name}
+                      </h3>
+                      <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
+                        {tr.role}
+                      </p>
+                    </div>
                   </motion.div>
                 ))}
               </div>
