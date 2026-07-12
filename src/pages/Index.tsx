@@ -622,12 +622,12 @@ const Index = () => {
           </motion.div>
 
           {(() => {
-            const logos = [
+            const logos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra" },
-              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature" },
-              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak" },
-              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen" },
-              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura" },
+              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 2.65 },
+              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 1.65 },
+              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 2 },
+              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 2.1 },
               { src: "https://syoenzqclizidypesxqq.supabase.co/storage/v1/object/public/banners/logo-1777311397835.png", alt: "Unavailable Attire" },
               { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Amin One" },
               { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes" },
@@ -640,12 +640,13 @@ const Index = () => {
                   {loop.map((logo, index) => (
                     <div
                       key={`${logo.alt}-${index}`}
-                      className="shrink-0 flex items-center justify-center h-20 sm:h-24 w-48 sm:w-60 px-3"
+                      className="shrink-0 flex items-center justify-center h-20 sm:h-24 w-48 sm:w-60 px-3 overflow-hidden"
                     >
                       <img
                         src={logo.src}
                         alt={logo.alt}
                         loading="lazy"
+                        style={{ transform: `scale(${logo.scale ?? 1})` }}
                         className="block h-auto max-h-14 sm:max-h-16 w-auto max-w-full object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity duration-300"
                       />
                     </div>
