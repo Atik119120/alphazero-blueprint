@@ -382,7 +382,7 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
-      <section ref={heroRef} className="dark relative overflow-hidden -mt-20 bg-background text-foreground">
+      <section ref={heroRef} className="relative overflow-hidden -mt-20 bg-background text-foreground">
         <HeroSection
           title={c("badge", "home.badge")}
           subtitle={{
@@ -406,7 +406,7 @@ const Index = () => {
           })()}
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
-          bottomImage={{ light: designShowcase, dark: designShowcase }}
+          bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
           gridOptions={{
             angle: 65,
             opacity: 0.35,
@@ -466,7 +466,7 @@ const Index = () => {
               logos={[
                 { src: brand1.url, alt: "AlphaZero", invert: true },
                 { src: brand2.url, alt: "Sister Brand", invert: true },
-                { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/", invert: true },
+                { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
                 { src: brand4.url, alt: "Learn with AlphaZero", invert: true, large: true },
               ]}
 
@@ -605,7 +605,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ WHY CHOOSE US — CARD GRID ══════════ */}
-      <section className="py-12 lg:py-16 relative mesh-bg bg-gradient-to-b from-primary/[0.12] via-primary/[0.05] to-transparent dark:from-transparent dark:via-transparent dark:to-transparent">
+      <section className="py-12 lg:py-16 relative mesh-bg">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -644,7 +644,7 @@ const Index = () => {
                         alt={logo.alt}
                         loading="lazy"
                         style={{ transform: `scale(${logo.scale ?? 1})` }}
-                        className="block h-auto max-h-14 sm:max-h-16 w-auto max-w-full object-contain brightness-0 dark:invert opacity-80 hover:opacity-100 transition-opacity duration-300"
+                        className="block h-auto max-h-14 sm:max-h-16 w-auto max-w-full object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity duration-300"
                       />
                     </div>
                   ))}

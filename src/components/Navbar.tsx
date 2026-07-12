@@ -88,7 +88,7 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 bg-white/10 dark:bg-white/5 backdrop-blur-2xl backdrop-saturate-200 border-0 ${
+            className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 bg-background/60 dark:bg-card/40 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 ${
               isScrolled
                 ? "shadow-[0_8px_32px_-12px_hsl(var(--primary)/0.2)]"
                 : "shadow-[0_4px_20px_-12px_hsl(var(--primary)/0.1)]"
