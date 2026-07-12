@@ -615,32 +615,32 @@ const Index = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-            {whyChooseUs.map((item, index) => (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+            {[
+              { src: brand1.url, alt: "AlphaZero", invert: true },
+              { src: brand2.url, alt: "Sister Brand", invert: true },
+              { src: brand3.url, alt: "Alpha Portfolio" },
+              { src: brand4.url, alt: "Learn with AlphaZero", invert: true },
+            ].map((logo, index) => (
               <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
+                key={logo.alt}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.06 }}
+                transition={{ delay: index * 0.08 }}
                 whileHover={{ y: -4 }}
-                className={`group relative p-7 rounded-2xl glass-card overflow-hidden ${index === 0 ? 'sm:col-span-2 lg:col-span-1' : ''}`}
+                className="group relative aspect-[3/2] rounded-2xl glass-card flex items-center justify-center p-6 overflow-hidden"
               >
-                {/* Large number bg */}
-                <span className="absolute -bottom-4 -right-2 text-[7rem] font-display font-bold text-muted-foreground/[0.04] leading-none select-none">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
-                    <item.icon size={22} className="text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-bold mb-2">{item.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
-                </div>
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
+                  className={`max-h-16 sm:max-h-20 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""}`}
+                />
               </motion.div>
             ))}
           </div>
+
         </div>
       </section>
 
