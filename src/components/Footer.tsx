@@ -279,7 +279,7 @@ const Footer = () => {
           alphazero
         </div>
       </div>
-
+    </footer>
   );
 };
 
