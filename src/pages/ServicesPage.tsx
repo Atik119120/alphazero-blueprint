@@ -89,7 +89,7 @@ const ServicesPage = () => {
           src={servicesHeroBg.url}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-top"
-          style={{ filter: "blur(12px)" }}
+          style={{ filter: "blur(16px)" }}
         />
 
 
