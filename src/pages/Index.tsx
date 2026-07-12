@@ -443,16 +443,17 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-5xl mx-auto text-center mb-10"
+            className="max-w-5xl mx-auto text-center mb-10 relative"
           >
-            <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
+            <span aria-hidden className="ghost-title">Our brand constellation</span>
+            <h2 className="relative font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
               <span className="gradient-text">Our brand</span>{" "}
               <span className="text-foreground relative">
                 constellation
                 <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
               </span>
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
+            <p className="relative mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
               A family of ventures orbiting one vision — design, learning, and craft.
             </p>
           </motion.div>
