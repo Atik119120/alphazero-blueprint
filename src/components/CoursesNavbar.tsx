@@ -21,7 +21,7 @@ const CoursesNavbar = () => {
   const isBn = language === "bn";
 
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
-  const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
+  const coursesHomeHref = "/courses";
   const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
   const navLinks = [
