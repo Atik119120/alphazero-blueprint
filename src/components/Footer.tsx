@@ -253,40 +253,59 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Giant Wordmark with motion blur + glow (designmonks style) */}
-      <div className="relative overflow-hidden pt-6 sm:pt-10 pb-[6vw]">
-        {/* Bright horizontal glow bar at bottom */}
+      {/* Giant cropped wordmark with scan glow */}
+      <div className="relative h-[25vw] min-h-[180px] max-h-[480px] overflow-hidden bg-background">
+        {/* Deep top fade */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[35%] pointer-events-none"
+          className="absolute inset-x-0 top-0 h-[38%] pointer-events-none z-[3]"
           style={{
             background:
-              "linear-gradient(to top, hsl(var(--primary) / 0.9) 0%, hsl(var(--primary) / 0.55) 30%, hsl(var(--primary) / 0.2) 60%, transparent 100%)",
-            filter: "blur(30px)",
-          }}
-        />
-        {/* Horizontal streak lines */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen"
-          style={{
-            background:
-              "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, hsl(var(--primary) / 0.08) 3px, hsl(var(--primary) / 0.08) 4px)",
+              "linear-gradient(to bottom, hsl(var(--background)) 0%, hsl(var(--background) / 0.9) 38%, transparent 100%)",
           }}
         />
 
-        {/* Reflection (flipped) */}
+        {/* Wide green wash */}
+        <div
+          className="absolute inset-x-[-6%] bottom-[-14%] h-[66%] pointer-events-none z-[2]"
+          style={{
+            background:
+              "linear-gradient(to top, hsl(var(--primary) / 0.9) 0%, hsl(var(--primary) / 0.62) 34%, hsl(var(--primary) / 0.22) 70%, transparent 100%)",
+            filter: "blur(18px)",
+          }}
+        />
+
+        {/* Fast horizontal light trails */}
+        <div
+          className="absolute inset-x-[-8%] bottom-[20%] h-[36%] pointer-events-none z-[4] opacity-80 mix-blend-screen"
+          style={{
+            background:
+              "linear-gradient(to right, transparent 0%, hsl(var(--primary) / 0.08) 14%, hsl(var(--primary) / 0.52) 48%, hsl(var(--foreground) / 0.25) 62%, hsl(var(--primary) / 0.34) 78%, transparent 100%)",
+            filter: "blur(10px)",
+          }}
+        />
+
+        {/* Horizontal scan lines */}
+        <div
+          className="absolute inset-0 pointer-events-none z-[5] opacity-70 mix-blend-screen"
+          style={{
+            background:
+              "repeating-linear-gradient(0deg, transparent 0px, transparent 4px, hsl(var(--foreground) / 0.05) 4px, hsl(var(--foreground) / 0.05) 5px, transparent 5px, transparent 9px)",
+          }}
+        />
+
+        {/* Blurred lower duplicate */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-[42%] text-center leading-[0.8] font-display font-black select-none tracking-tighter pointer-events-none"
+          className="absolute inset-x-0 bottom-[-16%] z-[1] text-center leading-[0.72] font-display font-black select-none tracking-tighter pointer-events-none"
           style={{
-            fontSize: "clamp(4rem, 22vw, 20rem)",
+            fontSize: "clamp(6.5rem, 17.5vw, 21rem)",
             background:
-              "linear-gradient(to bottom, hsl(var(--primary) / 0.5) 0%, transparent 60%)",
+              "linear-gradient(to bottom, hsl(var(--foreground) / 0.22) 0%, hsl(var(--primary) / 0.55) 56%, transparent 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
-            transform: "scaleY(-1)",
-            filter: "blur(6px)",
-            opacity: 0.5,
+            filter: "blur(9px)",
+            opacity: 0.8,
           }}
         >
           alphazero
@@ -295,16 +314,15 @@ const Footer = () => {
         {/* Main wordmark */}
         <div
           aria-hidden="true"
-          className="relative text-center leading-[0.8] font-display font-black select-none tracking-tighter"
+          className="absolute inset-x-0 bottom-[6%] z-[3] text-center leading-[0.72] font-display font-black select-none tracking-tighter"
           style={{
-            fontSize: "clamp(4rem, 22vw, 20rem)",
+            fontSize: "clamp(6.5rem, 17.5vw, 21rem)",
             background:
-              "linear-gradient(to bottom, hsl(var(--foreground) / 0.9) 0%, hsl(var(--foreground) / 0.6) 55%, hsl(var(--primary) / 0.9) 100%)",
+              "linear-gradient(to bottom, hsl(var(--foreground) / 0.78) 0%, hsl(var(--foreground) / 0.54) 45%, hsl(var(--foreground) / 0.18) 66%, hsl(var(--primary) / 0.42) 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
-            filter: "drop-shadow(0 0 40px hsl(var(--primary) / 0.5)) drop-shadow(0 0 80px hsl(var(--primary) / 0.3))",
-            paddingBottom: "0.05em",
+            filter: "drop-shadow(0 10px 28px hsl(var(--background) / 0.65)) drop-shadow(0 0 34px hsl(var(--primary) / 0.22))",
           }}
         >
           alphazero
