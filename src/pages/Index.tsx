@@ -443,16 +443,17 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-5xl mx-auto text-center mb-10"
+            className="max-w-5xl mx-auto text-center mb-10 relative"
           >
-            <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
+            <span aria-hidden className="ghost-title">Our brand constellation</span>
+            <h2 className="relative font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
               <span className="gradient-text">Our brand</span>{" "}
               <span className="text-foreground relative">
                 constellation
                 <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
               </span>
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
+            <p className="relative mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
               A family of ventures orbiting one vision — design, learning, and craft.
             </p>
           </motion.div>
@@ -484,12 +485,13 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10 lg:mb-28"
+            className="text-center mb-10 lg:mb-28 relative"
           >
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
+            <span aria-hidden className="ghost-title">{c("whatWeDo", "home.whatWeDo")} {c("do", "home.do")}</span>
+            <h2 className="relative text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
               {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
+            <p className="relative text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
               We craft designs, websites & brand visuals that stand out.
             </p>
           </motion.div>
@@ -611,9 +613,10 @@ const Index = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8"
+            className="text-center mb-8 relative"
           >
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
+            <span aria-hidden className="ghost-title">Our Clients</span>
+            <h2 className="relative text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
           </motion.div>

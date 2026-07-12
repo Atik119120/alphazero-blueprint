@@ -379,3 +379,22 @@
   width: 22px;
   border-radius: 999px;
 }
+
+/* Ghost background title (large faded text behind headings) */
+.ghost-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display, 'Playfair Display', serif);
+  font-weight: 800;
+  font-size: clamp(3.5rem, 14vw, 12rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: hsl(var(--foreground) / 0.06);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  text-transform: capitalize;
+}
