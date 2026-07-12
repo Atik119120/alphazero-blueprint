@@ -582,10 +582,10 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Services Page
     "services.subtitle": "আমাদের সেবাসমূহ",
-    "services.title": "ফুল-স্ট্যাক",
-    "services.title2": "ক্রিয়েটিভ",
-    "services.title3": "সেবাসমূহ",
-    "services.description": "ডিজাইন থেকে ডেভেলপমেন্ট পর্যন্ত, আমরা আপনার ডিজিটাল উপস্থিতি তৈরি এবং বৃদ্ধি করতে সম্পূর্ণ সমাধান প্রদান করি।",
+    "services.title": "শূন্য থেকে",
+    "services.title2": "সাহসী",
+    "services.title3": "ব্র্যান্ড যা",
+    "services.description": "ডিজাইন, ওয়েবসাইট ও ব্র্যান্ড ভিজ্যুয়াল — শূন্য থেকে আপনার উপস্থিতিকে আলাদা করে তোলার জন্য তৈরি।",
     "services.whatWeOffer": "আমরা কী অফার করি",
     "services.whatWeOfferDesc": "আপনার ব্র্যান্ডকে শূন্য থেকে প্রভাবে নিয়ে যেতে ডিজাইন করা এজেন্সি-স্তরের সেবা",
     "services.graphicDesign": "গ্রাফিক ডিজাইন সেবা",
