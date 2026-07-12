@@ -158,8 +158,7 @@ export default function StudentLoginPage() {
 
       if (error) throw error;
 
-      if (data?.otp) {
-        setGeneratedOtp(data.otp);
+      if (data?.success) {
         setShowOtpVerification(true);
         setIsTeacherOtp(forTeacher);
         setOtpTimer(120); // 2 minutes
@@ -171,7 +170,7 @@ export default function StudentLoginPage() {
           otpInputRefs.current[0]?.focus();
         }, 100);
       } else {
-        throw new Error('Failed to generate OTP');
+        throw new Error(data?.error || 'Failed to send OTP');
       }
     } catch (error: any) {
       console.error('OTP send error:', error);
@@ -223,15 +222,25 @@ export default function StudentLoginPage() {
       return;
     }
 
-    if (enteredOtp !== generatedOtp) {
-      toast.error('ভুল কোড! আবার চেষ্টা করুন');
-      setOtp(['', '', '', '', '', '']);
-      otpInputRefs.current[0]?.focus();
+    if (otpTimer === 0) {
+      toast.error('কোডের মেয়াদ শেষ। নতুন কোড নিন');
       return;
     }
 
-    if (otpTimer === 0) {
-      toast.error('কোডের মেয়াদ শেষ। নতুন কোড নিন');
+    const emailForVerify = isTeacherOtp ? teacherEmail : signupEmail;
+    try {
+      const { data: verifyData, error: verifyError } = await supabase.functions.invoke('verify-otp', {
+        body: { email: emailForVerify, otp: enteredOtp }
+      });
+      if (verifyError) throw verifyError;
+      if (!verifyData?.success) {
+        toast.error(verifyData?.error || 'ভুল কোড! আবার চেষ্টা করুন');
+        setOtp(['', '', '', '', '', '']);
+        otpInputRefs.current[0]?.focus();
+        return;
+      }
+    } catch (err: any) {
+      toast.error(err.message || 'OTP যাচাই করতে সমস্যা হয়েছে');
       return;
     }
 
