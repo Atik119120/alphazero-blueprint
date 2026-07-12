@@ -5,9 +5,11 @@ import CoursesNavbar from "@/components/CoursesNavbar";
 import CoursesFooter from "@/components/CoursesFooter";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTeamMembers } from "@/hooks/useTeamMembers";
 
 const LearnAboutPage = () => {
   const { language } = useLanguage();
+  const { data: teamMembers } = useTeamMembers();
   const isBn = language === "bn";
 
   const t = (bn: string, en: string) => (isBn ? bn : en);
