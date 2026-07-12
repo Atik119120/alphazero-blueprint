@@ -21,7 +21,7 @@ const CoursesNavbar = () => {
   const isBn = language === "bn";
 
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
-  const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
+  const coursesHomeHref = "/courses";
   const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
   const navLinks = [
@@ -59,7 +59,7 @@ const CoursesNavbar = () => {
   const handleNavClick = (id: string) => {
     setIsMobileMenuOpen(false);
     // If not on courses/learn page, navigate there first
-    const onCoursesPage = isLearnSubdomain || location.pathname === "/courses" || location.pathname === "/";
+    const onCoursesPage = location.pathname === "/courses" || location.pathname.startsWith("/courses/");
     if (!onCoursesPage) {
       navigate(coursesHomeHref);
       setTimeout(() => {
