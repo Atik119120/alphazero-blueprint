@@ -90,7 +90,7 @@ const ServicesPage = () => {
         <img
           src={servicesHeroBg.url}
           alt=""
-          className="absolute inset-x-0 top-0 w-full h-1/2 object-cover object-top"
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top"
           style={{ filter: "blur(16px)" }}
         />
 
