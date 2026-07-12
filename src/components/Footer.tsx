@@ -252,6 +252,33 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      {/* Giant Wordmark */}
+      <div className="relative overflow-hidden pt-4 sm:pt-8">
+        <div
+          className="absolute inset-x-0 -bottom-8 h-40 sm:h-72 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 100% at 50% 100%, hsl(var(--primary) / 0.35) 0%, hsl(var(--primary) / 0.15) 30%, transparent 70%)",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="relative text-center leading-[0.8] font-display font-bold select-none tracking-tighter"
+          style={{
+            fontSize: "clamp(4rem, 22vw, 20rem)",
+            background:
+              "linear-gradient(to bottom, hsl(var(--foreground) / 0.15) 0%, hsl(var(--foreground) / 0.35) 60%, hsl(var(--primary) / 0.5) 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+            filter: "blur(0.5px)",
+            paddingBottom: "0.1em",
+          }}
+        >
+          alphazero
+        </div>
+      </div>
     </footer>
   );
 };
