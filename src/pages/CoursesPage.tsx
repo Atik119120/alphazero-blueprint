@@ -218,7 +218,7 @@ const CoursesPage = () => {
     // If not logged in, redirect to student login
     if (!user) {
       toast.info(t.loginFirst);
-      navigate('/student/login');
+      window.open('/student/login', '_blank', 'noopener,noreferrer');
       return;
     }
 
