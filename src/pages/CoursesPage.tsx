@@ -398,10 +398,6 @@ const CoursesPage = () => {
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
-            {/* Thin accent line */}
-            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.1 }}
-              className="h-px w-24 bg-gradient-to-r from-transparent via-primary to-transparent mb-6 origin-center" />
-
             {/* Logo */}
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, type: "spring", stiffness: 60 }}
               className="mb-5">
@@ -410,12 +406,6 @@ const CoursesPage = () => {
                 loading="eager" />
             </motion.div>
 
-            {/* Tagline chip */}
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/15 bg-primary/[0.05] mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-[11px] font-semibold tracking-[0.25em] uppercase text-primary">{t.badge}</span>
-            </motion.div>
 
             {/* Subtitle */}
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
