@@ -42,6 +42,7 @@ import clientAlokchitra from "@/assets/clients/alokchitra.png.asset.json";
 import clientAura from "@/assets/clients/aura-signature.png.asset.json";
 import clientGreenpeak from "@/assets/clients/greenpeak.png.asset.json";
 import clientBlackzen from "@/assets/clients/blackzen.png.asset.json";
+import clientDarkAura from "@/assets/clients/darkaura.png.asset.json";
 const SERVICE_IMG = "/services";
 const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
 const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
@@ -619,12 +620,13 @@ const Index = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {[
               { src: clientAlokchitra.url, alt: "Alokchitra", invert: true },
               { src: clientAura.url, alt: "Aura Signature", invert: true },
               { src: clientGreenpeak.url, alt: "GreenPeak" },
               { src: clientBlackzen.url, alt: "BlackZen", invert: true },
+              { src: clientDarkAura.url, alt: "Dark Aura", invertLight: true },
             ].map((logo, index) => (
               <motion.div
                 key={logo.alt}
@@ -639,11 +641,12 @@ const Index = () => {
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  className={`max-h-16 sm:max-h-20 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""}`}
+                  className={`max-h-16 sm:max-h-20 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""} ${logo.invertLight ? "brightness-0 dark:brightness-100 dark:invert-0" : ""}`}
                 />
               </motion.div>
             ))}
           </div>
+
 
         </div>
       </section>
