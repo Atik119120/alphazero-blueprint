@@ -24,6 +24,7 @@ preloadImg(logoFullSrc);
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AboutPage from "./pages/AboutPage";
+import LearnAboutPage from "./pages/LearnAboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import WorkPage from "./pages/WorkPage";
 import TeamPage from "./pages/TeamPage";
