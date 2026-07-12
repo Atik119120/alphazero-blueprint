@@ -84,22 +84,16 @@ const ServicesPage = () => {
     <LayoutComponent>
       {/* Hero */}
       <section className="relative overflow-hidden pt-28 pb-24 lg:pt-36 lg:pb-32 rounded-b-[2.5rem]">
-        {/* Dark base + green radial glow */}
+        {/* Dark base + uploaded background image */}
         <div className="absolute inset-0 bg-black" />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 90% 70% at 50% 100%, rgba(16,185,129,0.35) 0%, rgba(6,78,59,0.25) 35%, rgba(0,0,0,0) 70%)",
-          }}
+        <img
+          src={servicesHeroBg.url}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-70"
         />
-        {/* Subtle arc lines */}
-        <div className="absolute inset-x-0 bottom-0 h-2/3 opacity-30 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 60% 40% at 50% 100%, transparent 55%, rgba(255,255,255,0.06) 56%, transparent 58%), radial-gradient(ellipse 80% 55% at 50% 100%, transparent 65%, rgba(255,255,255,0.05) 66%, transparent 68%)",
-          }}
-        />
+        {/* Vignette to keep text readable */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
+
 
         {/* Left decorative image slot — add your image here */}
         <div className="absolute -left-10 top-24 lg:left-4 lg:top-32 w-32 h-32 lg:w-56 lg:h-56 pointer-events-none z-[5]">
