@@ -485,12 +485,13 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-10 lg:mb-28"
+            className="text-center mb-10 lg:mb-28 relative"
           >
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
+            <span aria-hidden className="ghost-title">{c("whatWeDo", "home.whatWeDo")} {c("do", "home.do")}</span>
+            <h2 className="relative text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
               {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
             </h2>
-            <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
+            <p className="relative text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
               We craft designs, websites & brand visuals that stand out.
             </p>
           </motion.div>
