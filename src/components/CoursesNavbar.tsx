@@ -205,7 +205,7 @@ const CoursesNavbar = () => {
               <div className="rounded-2xl bg-background/95 dark:bg-card/95 backdrop-blur-xl border border-primary/15 shadow-xl overflow-hidden">
                 <div className="grid grid-cols-2 gap-1 p-2">
                   {navLinks.map((link) => {
-                    const active = !link.external && !link.internal && activeSection === link.id;
+                    const active = link.internal ? location.pathname === link.to : (!link.external && activeSection === link.id);
                     const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm ${
                       active ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
                     }`;
