@@ -262,7 +262,7 @@ const Navbar = () => {
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
           { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
-          { name: language === "bn" ? "কোর্স" : "Courses", href: "https://learn.alphazero.online", icon: GraduationCap },
+          { name: language === "bn" ? "আমাদের একাডেমী" : "Our Academy", href: "https://learn.alphazero.online", icon: GraduationCap },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
 
