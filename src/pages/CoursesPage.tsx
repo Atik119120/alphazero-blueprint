@@ -310,6 +310,27 @@ const CoursesPage = () => {
     }
   }, []);
 
+  // Scroll to the section matching the current route
+  const location = useLocation();
+  useEffect(() => {
+    const map: Record<string, string> = {
+      "/instructors": "instructors",
+      "/contact": "contact",
+      "/courses": "courses",
+    };
+    const targetId = map[location.pathname];
+    if (targetId) {
+      // Wait for content mount before scrolling
+      const t = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+      return () => clearTimeout(t);
+    } else if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [location.pathname]);
+
   return (
     <Layout>
 
