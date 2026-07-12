@@ -38,6 +38,10 @@ import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
 import brand3 from "@/assets/brands/b3.png.asset.json";
 import brand4 from "@/assets/brands/b4.png.asset.json";
+import clientAlokchitra from "@/assets/clients/alokchitra.png.asset.json";
+import clientAura from "@/assets/clients/aura-signature.png.asset.json";
+import clientGreenpeak from "@/assets/clients/greenpeak.png.asset.json";
+import clientBlackzen from "@/assets/clients/blackzen.png.asset.json";
 const SERVICE_IMG = "/services";
 const brandingStartio = { url: `${SERVICE_IMG}/branding-startio.png` };
 const brandingPhoneMockup = { url: `${SERVICE_IMG}/branding-phone.png` };
@@ -617,10 +621,10 @@ const Index = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
             {[
-              { src: brand1.url, alt: "AlphaZero", invert: true },
-              { src: brand2.url, alt: "Sister Brand", invert: true },
-              { src: brand3.url, alt: "Alpha Portfolio" },
-              { src: brand4.url, alt: "Learn with AlphaZero", invert: true },
+              { src: clientAlokchitra.url, alt: "Alokchitra", invert: true },
+              { src: clientAura.url, alt: "Aura Signature", invert: true },
+              { src: clientGreenpeak.url, alt: "GreenPeak" },
+              { src: clientBlackzen.url, alt: "BlackZen", invert: true },
             ].map((logo, index) => (
               <motion.div
                 key={logo.alt}
