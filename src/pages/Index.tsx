@@ -406,7 +406,7 @@ const Index = () => {
           })()}
           ctaText={c("cta1", "home.cta1")}
           ctaHref="/contact"
-          bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
+          bottomImage={{ light: designShowcase, dark: designShowcase }}
           gridOptions={{
             angle: 65,
             opacity: 0.35,
