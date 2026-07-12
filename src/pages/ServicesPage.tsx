@@ -44,6 +44,8 @@ import {
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useServices } from "@/hooks/useServices";
+import servicesHeroBg from "@/assets/services-hero-bg.jpg.asset.json";
+
 
 // Icon mapping for dynamic services
 const iconMap: Record<string, typeof Sparkles> = {
