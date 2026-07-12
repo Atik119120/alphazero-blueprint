@@ -134,7 +134,7 @@ const Navbar = () => {
                     </>
                   );
                   return link.href.startsWith("http") ? (
-                    <a key={link.href} href={link.href} className={linkClasses}>{linkInner}</a>
+                    <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" className={linkClasses}>{linkInner}</a>
                   ) : (
                     <Link key={link.href} to={link.href} className={linkClasses}>
                       {linkInner}
@@ -219,7 +219,7 @@ const Navbar = () => {
                     }`;
                     const inner = (<><IconComp size={16} className={isActive ? "" : "text-primary/70"} />{link.name}</>);
                     return link.href.startsWith("http") ? (
-                      <a key={link.href} href={link.href} onClick={handleNavClick} className={cls}>{inner}</a>
+                      <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>{inner}</a>
                     ) : (
                       <Link key={link.href} to={link.href} onClick={handleNavClick} className={cls}>
                         {inner}
@@ -307,7 +307,7 @@ const Navbar = () => {
                   );
                   const cls = "relative flex flex-col items-center gap-0.5 py-1";
                   return item.href.startsWith("http") ? (
-                    <a key={item.href} href={item.href} className={cls}>{inner}</a>
+                    <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>
                   ) : (
                     <Link key={item.href} to={item.href} className={cls}>
                       {inner}
