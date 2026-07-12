@@ -253,32 +253,64 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Giant Wordmark */}
-      <div className="relative overflow-hidden pt-4 sm:pt-8">
+      {/* Giant Wordmark with motion blur + glow (designmonks style) */}
+      <div className="relative overflow-hidden pt-6 sm:pt-10 pb-[6vw]">
+        {/* Bright horizontal glow bar at bottom */}
         <div
-          className="absolute inset-x-0 -bottom-8 h-40 sm:h-72 pointer-events-none"
+          className="absolute inset-x-0 bottom-0 h-[35%] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 80% 100% at 50% 100%, hsl(var(--primary) / 0.35) 0%, hsl(var(--primary) / 0.15) 30%, transparent 70%)",
+              "linear-gradient(to top, hsl(var(--primary) / 0.9) 0%, hsl(var(--primary) / 0.55) 30%, hsl(var(--primary) / 0.2) 60%, transparent 100%)",
+            filter: "blur(30px)",
           }}
         />
+        {/* Horizontal streak lines */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen"
+          style={{
+            background:
+              "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, hsl(var(--primary) / 0.08) 3px, hsl(var(--primary) / 0.08) 4px)",
+          }}
+        />
+
+        {/* Reflection (flipped) */}
         <div
           aria-hidden="true"
-          className="relative text-center leading-[0.8] font-display font-bold select-none tracking-tighter"
+          className="absolute inset-x-0 top-[42%] text-center leading-[0.8] font-display font-black select-none tracking-tighter pointer-events-none"
           style={{
             fontSize: "clamp(4rem, 22vw, 20rem)",
             background:
-              "linear-gradient(to bottom, hsl(var(--foreground) / 0.15) 0%, hsl(var(--foreground) / 0.35) 60%, hsl(var(--primary) / 0.5) 100%)",
+              "linear-gradient(to bottom, hsl(var(--primary) / 0.5) 0%, transparent 60%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
-            filter: "blur(0.5px)",
-            paddingBottom: "0.1em",
+            transform: "scaleY(-1)",
+            filter: "blur(6px)",
+            opacity: 0.5,
+          }}
+        >
+          alphazero
+        </div>
+
+        {/* Main wordmark */}
+        <div
+          aria-hidden="true"
+          className="relative text-center leading-[0.8] font-display font-black select-none tracking-tighter"
+          style={{
+            fontSize: "clamp(4rem, 22vw, 20rem)",
+            background:
+              "linear-gradient(to bottom, hsl(var(--foreground) / 0.9) 0%, hsl(var(--foreground) / 0.6) 55%, hsl(var(--primary) / 0.9) 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+            filter: "blur(1.5px) drop-shadow(0 0 30px hsl(var(--primary) / 0.4))",
+            paddingBottom: "0.05em",
           }}
         >
           alphazero
         </div>
       </div>
+
     </footer>
   );
 };
