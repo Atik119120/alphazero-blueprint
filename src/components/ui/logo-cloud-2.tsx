@@ -50,7 +50,7 @@ export function LogoCloud({ className, logos = defaultLogos, ...props }: LogoClo
             className={cn(
               "border-r border-b border-foreground/15 dark:border-white/5",
               gradientDirections[i % gradientDirections.length],
-              "from-foreground/[0.03] dark:from-white/[0.02] to-transparent hover:from-foreground/[0.06] dark:hover:from-white/[0.05]",
+              "from-primary/[0.18] via-primary/[0.08] dark:from-white/[0.02] dark:via-transparent to-transparent hover:from-primary/[0.28] dark:hover:from-white/[0.05]",
             )}
           />
         ))}
