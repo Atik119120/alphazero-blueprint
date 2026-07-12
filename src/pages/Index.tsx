@@ -639,14 +639,17 @@ const Index = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
                 whileHover={{ y: -4 }}
-                className="group relative aspect-[3/2] rounded-2xl glass-card flex items-center justify-center p-6 overflow-hidden"
+                className="group relative aspect-[3/2] rounded-2xl glass-card flex items-center justify-center p-4 sm:p-5 overflow-hidden"
               >
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  loading="lazy"
-                  className={`max-h-10 sm:max-h-12 max-w-[70%] w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""} ${logo.invertLight ? "brightness-0 dark:brightness-100 dark:invert-0" : ""}`}
-                />
+                <div className="relative w-full h-14 sm:h-16 flex items-center justify-center">
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    loading="lazy"
+                    className={`max-h-full max-w-full w-auto h-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""} ${logo.invertLight ? "brightness-0 dark:brightness-100 dark:invert-0" : ""}`}
+                  />
+                </div>
+
               </motion.div>
             ))}
           </div>
