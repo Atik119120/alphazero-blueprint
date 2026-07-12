@@ -197,6 +197,15 @@ const CoursesPage = () => {
   const [enrollmentCourse, setEnrollmentCourse] = useState<Course | null>(null);
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+
+  const categories = useMemo(() => ([
+    { id: "all", label: t.catAll, match: null as RegExp | null },
+    { id: "graphic", label: t.catGraphic, match: /graphic|multimedia|photo|design|ui|ux|brand/i },
+    { id: "web", label: t.catWeb, match: /web|software|code|coding|vibe|develop|program/i },
+    { id: "marketing", label: t.catMarketing, match: /market|seo|social|digital market|facebook|ad/i },
+    { id: "3d", label: t.cat3D, match: /3d|animation|motion|video|vfx|render/i },
+  ]), [t]);
 
   const toggleExpand = (courseId: string) => {
     setExpandedCards(prev => {
