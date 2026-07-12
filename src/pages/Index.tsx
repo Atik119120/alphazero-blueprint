@@ -604,13 +604,13 @@ const Index = () => {
       </section>
 
       {/* ══════════ WHY CHOOSE US — CARD GRID ══════════ */}
-      <section className="py-24 lg:py-32 relative mesh-bg">
+      <section className="py-12 lg:py-16 relative mesh-bg">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8"
           >
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
