@@ -77,7 +77,7 @@ const Footer = () => {
       {/* Main Footer Content */}
       <div className="border-t border-border">
         {/* CTA Section */}
-        <div className="container mx-auto px-5 sm:px-6 py-6 sm:py-20">
+        <div className="container mx-auto px-5 sm:px-6 py-6 sm:py-10">
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-4 sm:gap-12 items-end">
               <div>
