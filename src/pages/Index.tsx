@@ -613,9 +613,10 @@ const Index = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8"
+            className="text-center mb-8 relative"
           >
-            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
+            <span aria-hidden className="ghost-title">Our Clients</span>
+            <h2 className="relative text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
           </motion.div>
