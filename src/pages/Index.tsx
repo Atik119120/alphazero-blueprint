@@ -33,7 +33,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import ProjectMarquee from "@/components/ProjectMarquee";
-import HomeTeamSection from "@/components/HomeTeamSection";
+
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
 import brand1 from "@/assets/brands/b1.png.asset.json";
 import brand2 from "@/assets/brands/b2.png.asset.json";
@@ -659,7 +659,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ OUR TEAM ══════════ */}
-      <HomeTeamSection />
+      
 
       {/* ══════════ TESTIMONIALS ══════════ */}
       <section className="py-24 lg:py-32 relative">
