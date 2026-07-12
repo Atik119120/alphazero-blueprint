@@ -168,8 +168,8 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
 
     try {
       const fileExt = file.name.split('.').pop();
-      const fileName = `${profile.user_id}-${Date.now()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const fileName = `${profile.user_id}/${Date.now()}.${fileExt}`;
+      const filePath = fileName;
 
       const { error: uploadError } = await supabase.storage
         .from('avatars')
