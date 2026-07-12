@@ -91,6 +91,8 @@ const ServicesPage = () => {
           className="absolute inset-0 w-full h-full object-cover object-top"
           style={{ filter: "blur(12px)" }}
         />
+        {/* Bottom dark fade */}
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-b from-transparent via-black/60 to-black pointer-events-none" />
 
 
 
