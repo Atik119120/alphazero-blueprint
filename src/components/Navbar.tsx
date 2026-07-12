@@ -147,16 +147,27 @@ const Navbar = () => {
             {/* Right-aligned Controls (desktop) */}
             <div className="hidden lg:flex items-center gap-1.5">
 
-              {/* Language Toggle */}
+              {/* Language Toggle — Sliding Pill */}
               <button
                 onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                className="relative h-9 px-3 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center overflow-hidden group hover:bg-primary/30 transition-all duration-200"
-                title={language === "en" ? "বাংলা" : "English"}
+                className="relative h-9 w-[92px] rounded-full bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30 backdrop-blur-md flex items-center overflow-hidden group hover:border-primary/50 transition-all duration-300 shadow-inner"
+                title={language === "en" ? "Switch to বাংলা" : "Switch to English"}
+                aria-label="Toggle language"
               >
-                <span className="text-xs font-bold text-primary">
-                  {language === "en" ? "EN" : "বা"}
+                {/* Sliding thumb */}
+                <motion.div
+                  layout
+                  transition={{ type: "spring", stiffness: 500, damping: 32 }}
+                  className={`absolute top-1 bottom-1 w-[42px] rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_2px_10px_rgba(6,182,212,0.5)] ${language === "en" ? "left-1" : "left-[47px]"}`}
+                />
+                <span className={`relative z-10 flex-1 text-center text-[11px] font-bold tracking-wider transition-colors duration-200 ${language === "en" ? "text-white" : "text-primary/70"}`}>
+                  EN
+                </span>
+                <span className={`relative z-10 flex-1 text-center text-[12px] font-bold transition-colors duration-200 ${language === "bn" ? "text-white" : "text-primary/70"}`}>
+                  বাং
                 </span>
               </button>
+
 
               {/* CTA Button — Liquid Glass */}
               <Link
