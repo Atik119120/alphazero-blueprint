@@ -617,6 +617,8 @@ const Index = () => {
               { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 1.65 },
               { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 2 },
               { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 2.1 },
+              { src: resolveLogoUrl(clientAtix.url), alt: "Atix", scale: 1.8 },
+              { src: resolveLogoUrl(clientSA.url), alt: "SA", scale: 1.8 },
               { src: "https://syoenzqclizidypesxqq.supabase.co/storage/v1/object/public/banners/logo-1777311397835.png", alt: "Unavailable Attire" },
               { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Amin One" },
               { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes" },
