@@ -242,10 +242,18 @@ const Navbar = () => {
                 <div className="flex items-center justify-between gap-2 p-2 border-t border-border/40">
                   <button
                     onClick={() => { setLanguage(language === "en" ? "bn" : "en"); }}
-                    className="flex-1 h-9 rounded-xl bg-primary/15 border border-primary/30 text-xs font-bold text-primary"
+                    className="relative flex-1 h-9 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/30 flex items-center overflow-hidden shadow-inner"
+                    aria-label="Toggle language"
                   >
-                    {language === "en" ? "বাংলা" : "English"}
+                    <motion.div
+                      layout
+                      transition={{ type: "spring", stiffness: 500, damping: 32 }}
+                      className={`absolute top-1 bottom-1 w-[calc(50%-4px)] rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 shadow-[0_2px_10px_rgba(6,182,212,0.5)] ${language === "en" ? "left-1" : "left-[calc(50%+3px)]"}`}
+                    />
+                    <span className={`relative z-10 flex-1 text-center text-[11px] font-bold tracking-wider transition-colors ${language === "en" ? "text-white" : "text-primary/70"}`}>EN</span>
+                    <span className={`relative z-10 flex-1 text-center text-xs font-bold transition-colors ${language === "bn" ? "text-white" : "text-primary/70"}`}>বাং</span>
                   </button>
+
                   <Link
                     to="/contact"
                     onClick={handleNavClick}
