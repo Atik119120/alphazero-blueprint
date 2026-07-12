@@ -90,6 +90,9 @@ const ServicesPage = () => {
         <img
           src={servicesHeroBg.url}
           alt=""
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
           style={{ filter: "blur(16px)" }}
         />
