@@ -423,21 +423,6 @@ const CoursesPage = () => {
               {t.subtitle}
             </motion.p>
 
-            {/* Feature chips */}
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}
-              className="flex flex-wrap justify-center gap-3">
-              {[
-                { icon: Target, label: t.beginnerFriendly },
-                { icon: Award, label: t.certificate },
-                { icon: Star, label: t.expertTrainer },
-              ].map((item, i) => (
-                <motion.div key={i} whileHover={{ scale: 1.05, y: -2 }}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full glass-card cursor-default">
-                  <item.icon className="w-3.5 h-3.5 text-primary" />
-                  <span className="text-xs md:text-sm font-medium">{item.label}</span>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
         </motion.div>
       </section>
