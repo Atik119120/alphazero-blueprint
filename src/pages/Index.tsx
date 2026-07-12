@@ -658,6 +658,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ══════════ OUR TEAM ══════════ */}
+      <HomeTeamSection />
+
       {/* ══════════ TESTIMONIALS ══════════ */}
       <section className="py-24 lg:py-32 relative">
         <div className="container mx-auto px-6">
