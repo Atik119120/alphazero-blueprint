@@ -688,13 +688,17 @@ const Index = () => {
                     </div>
                   </div>
 
-                  {/* RIGHT — marquee of boxed logo cards */}
-                  <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] flex items-center">
+                  {/* RIGHT — two-row marquee of boxed logo cards */}
+                  <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] flex flex-col justify-center gap-2 py-1">
                     <div className="flex items-center animate-[marquee_40s_linear_infinite] w-max">
-                      {[...logos, ...logos].map((logo, i) => <LogoItem key={`m-${i}`} logo={logo} />)}
+                      {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
+                    </div>
+                    <div className="flex items-center animate-[marqueeReverse_45s_linear_infinite] w-max">
+                      {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
                     </div>
                     <style>{`
                       @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                      @keyframes marqueeReverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
                     `}</style>
                   </div>
                 </div>
