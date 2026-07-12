@@ -624,7 +624,7 @@ const Index = () => {
             const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
             const rowB = [...logos.slice(half), ...logos.slice(half)];
             const LogoItem = ({ logo }: { logo: typeof logos[number] }) => (
-              <div className="shrink-0 flex items-center justify-center h-14 sm:h-16 px-3 sm:px-4">
+              <div className="shrink-0 flex items-center justify-center h-14 sm:h-16 px-8">
                 <img
                   src={logo.src}
                   alt={logo.alt}
