@@ -655,7 +655,7 @@ const Index = () => {
                     </div>
 
                     <h3 className="text-4xl sm:text-5xl font-display font-black text-white leading-[0.95] mb-4 tracking-tight">
-                      600<span className="text-primary">+</span>{" "}
+                      47<span className="text-primary">+</span>{" "}
                       <span className="bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">Brands</span>
                     </h3>
 
