@@ -605,7 +605,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ WHY CHOOSE US — CARD GRID ══════════ */}
-      <section className="py-12 lg:py-16 relative mesh-bg">
+      <section className="py-12 lg:py-16 relative mesh-bg bg-gradient-to-b from-primary/[0.12] via-primary/[0.05] to-transparent dark:from-transparent dark:via-transparent dark:to-transparent">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
