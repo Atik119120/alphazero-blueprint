@@ -24,6 +24,7 @@ preloadImg(logoFullSrc);
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AboutPage from "./pages/AboutPage";
+import LearnAboutPage from "./pages/LearnAboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import WorkPage from "./pages/WorkPage";
 import TeamPage from "./pages/TeamPage";
@@ -119,7 +120,7 @@ function AppContent() {
             {/* Main site routes */}
             <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
 
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnAboutPage /> : <AboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/work" element={<WorkPage />} />
             <Route path="/team" element={<TeamPage />} />
