@@ -132,11 +132,11 @@ const ServicesPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
             >
-              <span className="italic font-normal" style={{ fontFamily: "'Instrument Serif', serif" }}>{t("services.title")}</span>{" "}
+              <span className="font-normal" style={{ fontFamily: "'Updock', cursive" }}>{t("services.title")}</span>{" "}
               {t("services.title2")}
               <br />
               {t("services.title3")}{" "}
-              <span className="italic font-normal gradient-text" style={{ fontFamily: "'Instrument Serif', serif" }}>Matter</span>
+              <span className="font-normal gradient-text" style={{ fontFamily: "'Updock', cursive" }}>Matter</span>
             </motion.h1>
 
             <motion.p
