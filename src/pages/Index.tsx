@@ -645,35 +645,54 @@ const Index = () => {
               </div>
             );
             return (
-              <div className="max-w-7xl mx-auto grid md:grid-cols-[auto_1fr] gap-8 md:gap-10 items-center border border-white/10 rounded-2xl bg-white/[0.02] p-6 sm:p-8">
-                {/* LEFT — stats */}
-                <div className="md:pr-10 md:border-r md:border-white/10">
-                  <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-2">Trusted by</p>
-                  <h3 className="text-3xl sm:text-4xl font-display font-bold text-white leading-none mb-3">
-                    600+ Brands
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <div className="flex gap-0.5 text-primary">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
-                      ))}
-                    </div>
-                    <span className="text-sm text-white/70"><span className="text-white font-semibold">4.8/5</span> Average user rating</span>
-                  </div>
-                </div>
+              <div className="relative max-w-7xl mx-auto">
+                {/* Ambient glow */}
+                <div className="pointer-events-none absolute -inset-px rounded-[28px] bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-40 blur-2xl" />
 
-                {/* RIGHT — two-row marquee */}
-                <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] flex flex-col gap-3">
-                  <div className="flex items-center animate-[marquee_35s_linear_infinite] w-max">
-                    {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
+                <div className="relative grid md:grid-cols-[auto_1fr] gap-0 md:gap-2 items-stretch rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent backdrop-blur-xl overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+                  {/* LEFT — stats */}
+                  <div className="relative p-8 sm:p-10 md:pr-12 md:border-r md:border-white/10 flex flex-col justify-center">
+                    <div className="inline-flex items-center gap-2 mb-4">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+                      </span>
+                      <p className="text-[10px] uppercase tracking-[0.28em] text-primary/90 font-bold">Trusted by</p>
+                    </div>
+
+                    <h3 className="text-4xl sm:text-5xl font-display font-black text-white leading-[0.95] mb-4 tracking-tight">
+                      600<span className="text-primary">+</span>{" "}
+                      <span className="bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">Brands</span>
+                    </h3>
+
+                    <div className="flex items-center gap-2.5">
+                      <div className="flex gap-0.5 text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
+                        ))}
+                      </div>
+                      <span className="text-sm text-white/70">
+                        <span className="text-white font-bold">4.8</span>
+                        <span className="text-white/40">/5</span>
+                        <span className="ml-1.5">Average rating</span>
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center animate-[marqueeReverse_40s_linear_infinite] w-max">
-                    {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
+
+                  {/* RIGHT — two-row marquee */}
+                  <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)] flex flex-col justify-center gap-4 py-6">
+                    <div className="flex items-center animate-[marquee_35s_linear_infinite] w-max">
+                      {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
+                    </div>
+                    <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                    <div className="flex items-center animate-[marqueeReverse_40s_linear_infinite] w-max">
+                      {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
+                    </div>
+                    <style>{`
+                      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                      @keyframes marqueeReverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+                    `}</style>
                   </div>
-                  <style>{`
-                    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-                    @keyframes marqueeReverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-                  `}</style>
                 </div>
               </div>
             );
