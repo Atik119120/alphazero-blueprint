@@ -645,7 +645,7 @@ const Index = () => {
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
-                  className={`max-h-16 sm:max-h-20 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""} ${logo.invertLight ? "brightness-0 dark:brightness-100 dark:invert-0" : ""}`}
+                  className={`max-h-10 sm:max-h-12 max-w-[70%] w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""} ${logo.invertLight ? "brightness-0 dark:brightness-100 dark:invert-0" : ""}`}
                 />
               </motion.div>
             ))}
