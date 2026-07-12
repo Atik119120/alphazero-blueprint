@@ -630,26 +630,54 @@ const Index = () => {
               { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes" },
               { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy" },
             ];
-            const loop = [...logos, ...logos];
+            const half = Math.ceil(logos.length / 2);
+            const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
+            const rowB = [...logos.slice(half), ...logos.slice(half)];
+            const LogoItem = ({ logo }: { logo: typeof logos[number] }) => (
+              <div className="shrink-0 flex items-center justify-center gap-3 h-14 sm:h-16 px-6">
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
+                  style={{ transform: `scale(${logo.scale ?? 1})` }}
+                  className="block h-auto max-h-8 sm:max-h-10 w-auto object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300"
+                />
+                <span className="text-lg sm:text-xl font-display font-medium text-white/60 whitespace-nowrap">
+                  {logo.alt}
+                </span>
+              </div>
+            );
             return (
-              <div className="relative overflow-hidden max-w-6xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="flex items-center gap-8 sm:gap-10 animate-[marquee_40s_linear_infinite] w-max">
-                  {loop.map((logo, index) => (
-                    <div
-                      key={`${logo.alt}-${index}`}
-                      className="shrink-0 flex items-center justify-center h-20 sm:h-24 w-48 sm:w-60 px-3 overflow-hidden"
-                    >
-                      <img
-                        src={logo.src}
-                        alt={logo.alt}
-                        loading="lazy"
-                        style={{ transform: `scale(${logo.scale ?? 1})` }}
-                        className="block h-auto max-h-14 sm:max-h-16 w-auto max-w-full object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity duration-300"
-                      />
+              <div className="max-w-7xl mx-auto grid md:grid-cols-[auto_1fr] gap-8 md:gap-10 items-center border border-white/10 rounded-2xl bg-white/[0.02] p-6 sm:p-8">
+                {/* LEFT — stats */}
+                <div className="md:pr-10 md:border-r md:border-white/10">
+                  <p className="text-xs uppercase tracking-[0.2em] text-white/50 mb-2">Trusted by</p>
+                  <h3 className="text-3xl sm:text-4xl font-display font-bold text-white leading-none mb-3">
+                    600+ Brands
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-0.5 text-primary">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
+                      ))}
                     </div>
-                  ))}
+                    <span className="text-sm text-white/70"><span className="text-white font-semibold">4.8/5</span> Average user rating</span>
+                  </div>
                 </div>
-                <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
+
+                {/* RIGHT — two-row marquee */}
+                <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] flex flex-col gap-3">
+                  <div className="flex items-center animate-[marquee_35s_linear_infinite] w-max">
+                    {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
+                  </div>
+                  <div className="flex items-center animate-[marqueeReverse_40s_linear_infinite] w-max">
+                    {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
+                  </div>
+                  <style>{`
+                    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                    @keyframes marqueeReverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+                  `}</style>
+                </div>
               </div>
             );
           })()}
