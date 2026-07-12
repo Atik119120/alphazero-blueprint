@@ -1,6 +1,9 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -12,21 +15,20 @@ interface OTPRequest {
   name: string;
 }
 
-const handler = async (req: Request): Promise<Response> => {
-  console.log("send-otp function called");
+async function sha256(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
 
-  // Handle CORS preflight requests
+const handler = async (req: Request): Promise<Response> => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const { email, name }: OTPRequest = await req.json();
-    console.log("Sending OTP to:", email);
 
-    // Validate inputs
     if (!email || !name) {
-      console.error("Missing email or name");
       return new Response(
         JSON.stringify({ error: "Email and name are required" }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
@@ -34,70 +36,75 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     if (!RESEND_API_KEY) {
-      console.error("RESEND_API_KEY not configured");
       return new Response(
         JSON.stringify({ error: "Email service not configured" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Generate 6-digit OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    console.log("Generated OTP for", email);
+    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const normalizedEmail = email.trim().toLowerCase();
 
-    // Send email with OTP using Resend API directly
+    // Per-email rate limit: max 3 OTPs per hour
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const { count } = await supabase
+      .from("otp_codes")
+      .select("*", { count: "exact", head: true })
+      .eq("email", normalizedEmail)
+      .gte("created_at", oneHourAgo);
+    if ((count ?? 0) >= 3) {
+      return new Response(
+        JSON.stringify({ error: "অনেক বেশি অনুরোধ। ১ ঘণ্টা পর আবার চেষ্টা করুন।" }),
+        { status: 429, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
+    // Generate 6-digit OTP, store hash server-side
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const codeHash = await sha256(otp);
+    const expiresAt = new Date(Date.now() + 2 * 60 * 1000).toISOString();
+
+    // Invalidate previous unverified codes for this email
+    await supabase
+      .from("otp_codes")
+      .update({ verified: true })
+      .eq("email", normalizedEmail)
+      .eq("verified", false);
+
+    const { error: insertErr } = await supabase.from("otp_codes").insert({
+      email: normalizedEmail,
+      code_hash: codeHash,
+      expires_at: expiresAt,
+    });
+    if (insertErr) {
+      console.error("OTP insert error:", insertErr);
+      return new Response(
+        JSON.stringify({ error: "OTP তৈরি করতে সমস্যা হয়েছে" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+
     const emailHtml = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      </head>
-      <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f5; margin: 0; padding: 20px;">
-        <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-          <!-- Header -->
-          <div style="background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); padding: 30px 20px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: bold;">AlphaZero Academy</h1>
-            <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">ইমেইল ভেরিফিকেশন</p>
+      <!DOCTYPE html><html><head><meta charset="utf-8"></head>
+      <body style="font-family: 'Segoe UI', sans-serif; background:#f4f4f5; margin:0; padding:20px;">
+        <div style="max-width:500px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+          <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);padding:30px 20px;text-align:center;">
+            <h1 style="color:#fff;margin:0;font-size:24px;">AlphaZero Academy</h1>
+            <p style="color:rgba(255,255,255,0.9);margin:8px 0 0;font-size:14px;">ইমেইল ভেরিফিকেশন</p>
           </div>
-          
-          <!-- Content -->
-          <div style="padding: 30px 25px;">
-            <p style="color: #374151; font-size: 16px; margin: 0 0 20px 0;">
-              প্রিয় <strong>${name}</strong>,
-            </p>
-            <p style="color: #6b7280; font-size: 14px; margin: 0 0 25px 0; line-height: 1.6;">
-              AlphaZero Academy তে আপনাকে স্বাগতম! আপনার ইমেইল ভেরিফাই করতে নিচের ৬ সংখ্যার কোডটি ব্যবহার করুন:
-            </p>
-            
-            <!-- OTP Box -->
-            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px dashed #6366f1; border-radius: 12px; padding: 25px; text-align: center; margin: 0 0 25px 0;">
-              <p style="color: #6b7280; font-size: 12px; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 1px;">আপনার ভেরিফিকেশন কোড</p>
-              <div style="font-size: 36px; font-weight: bold; letter-spacing: 8px; color: #6366f1; font-family: 'Courier New', monospace;">
-                ${otp}
-              </div>
+          <div style="padding:30px 25px;">
+            <p style="color:#374151;font-size:16px;margin:0 0 20px;">প্রিয় <strong>${name}</strong>,</p>
+            <p style="color:#6b7280;font-size:14px;margin:0 0 25px;line-height:1.6;">আপনার ভেরিফিকেশন কোড:</p>
+            <div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:2px dashed #6366f1;border-radius:12px;padding:25px;text-align:center;margin:0 0 25px;">
+              <div style="font-size:36px;font-weight:bold;letter-spacing:8px;color:#6366f1;font-family:'Courier New',monospace;">${otp}</div>
             </div>
-            
-            <p style="color: #9ca3af; font-size: 13px; margin: 0 0 10px 0; text-align: center;">
-              ⏰ এই কোডটি ২ মিনিটের মধ্যে মেয়াদ উত্তীর্ণ হবে
-            </p>
-            
-            <div style="border-top: 1px solid #e5e7eb; margin: 25px 0; padding-top: 20px;">
-              <p style="color: #9ca3af; font-size: 12px; margin: 0; line-height: 1.6;">
-                আপনি যদি এই অনুরোধ না করে থাকেন, তাহলে এই ইমেইলটি উপেক্ষা করুন।
-              </p>
-            </div>
+            <p style="color:#9ca3af;font-size:13px;text-align:center;">⏰ ২ মিনিটের মধ্যে মেয়াদ উত্তীর্ণ হবে</p>
           </div>
-          
-          <!-- Footer -->
-          <div style="background-color: #f9fafb; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb;">
-            <p style="color: #6b7280; font-size: 12px; margin: 0;">
-              © ${new Date().getFullYear()} AlphaZero Academy. সর্বস্বত্ব সংরক্ষিত।
-            </p>
+          <div style="background:#f9fafb;padding:20px;text-align:center;border-top:1px solid #e5e7eb;">
+            <p style="color:#6b7280;font-size:12px;margin:0;">© ${new Date().getFullYear()} AlphaZero Academy</p>
           </div>
         </div>
-      </body>
-      </html>
+      </body></html>
     `;
 
     const emailResponse = await fetch("https://api.resend.com/emails", {
@@ -115,32 +122,24 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     const emailResult = await emailResponse.json();
-    
     if (!emailResponse.ok) {
-      console.error("Resend API error:", emailResult);
+      console.error("Resend error:", emailResult);
       return new Response(
         JSON.stringify({ error: emailResult.message || "Failed to send email" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    console.log("Email sent successfully:", emailResult);
-
+    // Do NOT return the OTP to the client
     return new Response(
-      JSON.stringify({ success: true, otp }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      JSON.stringify({ success: true }),
+      { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   } catch (error: any) {
-    console.error("Error in send-otp function:", error);
+    console.error("send-otp error:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
 };
