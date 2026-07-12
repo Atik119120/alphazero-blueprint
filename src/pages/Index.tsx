@@ -640,62 +640,53 @@ const Index = () => {
             );
             return (
               <div className="relative max-w-7xl mx-auto">
-                {/* Corner ticks — brutalist frame */}
+                {/* Corner ticks — thin */}
                 {[
-                  "top-0 left-0 border-l-2 border-t-2",
-                  "top-0 right-0 border-r-2 border-t-2",
-                  "bottom-0 left-0 border-l-2 border-b-2",
-                  "bottom-0 right-0 border-r-2 border-b-2",
+                  "top-0 left-0 border-l border-t",
+                  "top-0 right-0 border-r border-t",
+                  "bottom-0 left-0 border-l border-b",
+                  "bottom-0 right-0 border-r border-b",
                 ].map((pos, i) => (
-                  <span key={i} className={`pointer-events-none absolute ${pos} w-5 h-5 border-primary/60`} />
+                  <span key={i} className={`pointer-events-none absolute ${pos} w-3 h-3 border-primary/50`} />
                 ))}
 
-                <div className="relative grid md:grid-cols-[320px_1fr] items-stretch bg-black/40 border border-white/[0.06]">
-                  {/* LEFT — stats, terminal-style */}
-                  <div className="relative p-8 sm:p-10 md:border-r md:border-dashed md:border-white/10 flex flex-col justify-center bg-[linear-gradient(135deg,rgba(255,255,255,0.03)_0%,transparent_100%)]">
-                    {/* Top row: dot + status */}
-                    <div className="flex items-center justify-between mb-6 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-                      <div className="flex items-center gap-2">
-                        <span className="relative flex h-1.5 w-1.5">
+                <div className="relative grid md:grid-cols-[280px_1fr] items-stretch border border-white/[0.06]">
+                  {/* LEFT — stats */}
+                  <div className="relative px-6 py-5 md:border-r md:border-dashed md:border-white/10 flex flex-col justify-center">
+                    <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
+                      <div className="flex items-center gap-1.5">
+                        <span className="relative flex h-1 w-1">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+                          <span className="relative inline-flex rounded-full h-1 w-1 bg-primary" />
                         </span>
-                        <span className="text-primary/90 font-bold">// TRUSTED</span>
+                        <span className="text-primary/90 font-semibold">// TRUSTED</span>
                       </div>
                       <span>[ 001 ]</span>
                     </div>
 
-                    <h3 className="text-6xl sm:text-7xl font-display font-black text-white leading-[0.85] mb-2 tracking-tighter">
-                      47<span className="text-primary">+</span>
+                    <h3 className="text-4xl sm:text-[2.75rem] font-display font-semibold text-white leading-none mb-1 tracking-tight">
+                      47<span className="text-primary font-light">+</span>
                     </h3>
-                    <p className="text-sm uppercase tracking-[0.3em] text-white/50 mb-6 font-mono">
+                    <p className="text-[11px] uppercase tracking-[0.28em] text-white/50 mb-4 font-mono">
                       Global Brands
                     </p>
 
-                    {/* Divider */}
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="h-px flex-1 bg-white/10" />
-                      <span className="font-mono text-[9px] text-white/30 tracking-widest">RATING</span>
-                      <div className="h-px flex-1 bg-white/10" />
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-0.5 text-primary drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]">
+                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-white/10">
+                      <div className="flex gap-0.5 text-primary">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
+                          <svg key={i} className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
                         ))}
                       </div>
-                      <span className="font-mono text-sm text-white/80">
-                        <span className="text-white font-bold text-base">4.8</span>
-                        <span className="text-white/30">/5.0</span>
+                      <span className="font-mono text-xs text-white/70">
+                        <span className="text-white">4.8</span>
+                        <span className="text-white/30">/5</span>
                       </span>
                     </div>
                   </div>
 
-                  {/* RIGHT — two-row marquee with header strip */}
-                  <div className="relative flex flex-col bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),transparent_70%)]">
-                    {/* Top label strip */}
-                    <div className="flex items-center justify-between px-6 py-2 border-b border-dashed border-white/10 font-mono text-[9px] uppercase tracking-[0.25em] text-white/30">
+                  {/* RIGHT — marquee */}
+                  <div className="relative flex flex-col">
+                    <div className="flex items-center justify-between px-5 py-1.5 border-b border-dashed border-white/10 font-mono text-[9px] uppercase tracking-[0.25em] text-white/30">
                       <span>Clients / Partners</span>
                       <span className="flex items-center gap-1.5">
                         <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
@@ -703,11 +694,11 @@ const Index = () => {
                       </span>
                     </div>
 
-                    <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] flex flex-col justify-center gap-3 py-6 flex-1">
+                    <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] flex flex-col justify-center gap-2 py-4 flex-1">
                       <div className="flex items-center animate-[marquee_35s_linear_infinite] w-max">
                         {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
                       </div>
-                      <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                      <div className="h-px bg-white/5" />
                       <div className="flex items-center animate-[marqueeReverse_40s_linear_infinite] w-max">
                         {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
                       </div>
