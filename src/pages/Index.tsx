@@ -621,10 +621,10 @@ const Index = () => {
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto">
             {[
-              { src: brand1.url, alt: "AlphaZero", invert: true },
-              { src: brand2.url, alt: "Sister Brand", invert: true },
-              { src: brand3.url, alt: "Alpha Portfolio" },
-              { src: brand4.url, alt: "Learn with AlphaZero", invert: true },
+              { src: clientAlokchitra.url, alt: "Alokchitra", invert: true },
+              { src: clientAura.url, alt: "Aura Signature", invert: true },
+              { src: clientGreenpeak.url, alt: "GreenPeak" },
+              { src: clientBlackzen.url, alt: "BlackZen", invert: true },
             ].map((logo, index) => (
               <motion.div
                 key={logo.alt}
