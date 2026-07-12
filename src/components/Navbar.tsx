@@ -45,8 +45,8 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", num: "03" },
     { name: t("nav.work"), href: "/work", num: "04" },
     { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.courses"), href: "https://learn.alphazero.online", num: "06" },
-    { name: t("nav.contact"), href: "/contact", num: "07" },
+    { name: t("nav.contact"), href: "/contact", num: "06" },
+
   ];
 
   const navLinksWithIcons = [
@@ -151,6 +151,17 @@ const Navbar = () => {
 
 
 
+              {/* Our Academy — outline pill */}
+              <a
+                href="https://learn.alphazero.online"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex items-center gap-1.5 px-4 py-2 rounded-full border border-cyan-400/40 bg-cyan-400/5 hover:bg-cyan-400/10 hover:border-cyan-400/70 transition-all duration-300"
+              >
+                <GraduationCap size={14} className="text-cyan-400" />
+                <span className="text-sm font-medium text-cyan-300 tracking-wide">{t("nav.courses")}</span>
+              </a>
+
               {/* CTA Button — Liquid Glass */}
               <Link
                 to="/contact"
@@ -168,6 +179,7 @@ const Navbar = () => {
                 <span className="relative z-10 text-sm font-semibold text-white tracking-wide">{t("nav.startProject")}</span>
                 <ArrowUpRight size={14} className="relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
+
             </div>
 
             {/* Mobile: login + theme + menu on top bar */}
