@@ -38,8 +38,9 @@ const translations: Record<Language, Record<string, string>> = {
     "home.do": "do",
     "home.expertiseDesc": "Full-stack creative services to build and grow your digital presence",
     "home.whyChoose": "Why Choose AlphaZero",
-    "home.builtFor": "Built for",
-    "home.yourSuccess": "your success",
+    "home.builtFor": "Our",
+    "home.yourSuccess": "Clients",
+
     "home.testimonials": "Testimonials",
     "home.whatClientsSay": "What our clients",
     "home.say": "say",
@@ -478,8 +479,9 @@ const translations: Record<Language, Record<string, string>> = {
     "home.do": "করি",
     "home.expertiseDesc": "আপনার ডিজিটাল উপস্থিতি তৈরি এবং বৃদ্ধি করতে সম্পূর্ণ ক্রিয়েটিভ সেবা",
     "home.whyChoose": "কেন আলফাজিরো বেছে নেবেন",
-    "home.builtFor": "তৈরি হয়েছে",
-    "home.yourSuccess": "আপনার সাফল্যের জন্য",
+    "home.builtFor": "আমাদের",
+    "home.yourSuccess": "ক্লায়েন্ট",
+
     "home.testimonials": "প্রশংসাপত্র",
     "home.whatClientsSay": "আমাদের ক্লায়েন্টরা কি",
     "home.say": "বলেন",
