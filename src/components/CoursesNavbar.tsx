@@ -21,15 +21,15 @@ const CoursesNavbar = () => {
   const isBn = language === "bn";
 
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
-  const coursesHomeHref = "/courses";
+  const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
   const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
   const navLinks = [
-    { name: isBn ? "হোম" : "Home", id: "home", icon: Home },
+    { name: isBn ? "হোম" : "Home", to: coursesHomeHref, id: "home", icon: Home, internal: true },
     { name: isBn ? "সম্পর্কে" : "About Us", to: "/about", icon: Info, internal: true },
-    { name: isBn ? "ইনস্ট্রাক্টর" : "Instructors", id: "instructors", icon: UsersIcon },
-    { name: isBn ? "কোর্স" : "Courses", id: "courses", icon: LayoutGrid },
-    { name: isBn ? "যোগাযোগ" : "Contact", id: "contact", icon: Phone },
+    { name: isBn ? "ইনস্ট্রাক্টর" : "Instructors", to: "/instructors", id: "instructors", icon: UsersIcon, internal: true },
+    { name: isBn ? "কোর্স" : "Courses", to: "/courses", id: "courses", icon: LayoutGrid, internal: true },
+    { name: isBn ? "যোগাযোগ" : "Contact", to: "/contact", id: "contact", icon: Phone, internal: true },
     { name: isBn ? "আমাদের এজেন্সি" : "Our Agency", href: agencyHref, icon: Building2, external: true },
   ];
 
