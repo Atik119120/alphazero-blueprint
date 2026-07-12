@@ -634,17 +634,14 @@ const Index = () => {
             const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
             const rowB = [...logos.slice(half), ...logos.slice(half)];
             const LogoItem = ({ logo }: { logo: typeof logos[number] }) => (
-              <div className="shrink-0 flex items-center justify-center gap-3 h-14 sm:h-16 px-6">
+              <div className="shrink-0 flex items-center justify-center h-14 sm:h-16 px-8">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
                   style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="block h-auto max-h-8 sm:max-h-10 w-auto object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300"
+                  className="block h-auto max-h-10 sm:max-h-12 w-auto object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300"
                 />
-                <span className="text-lg sm:text-xl font-display font-medium text-white/60 whitespace-nowrap">
-                  {logo.alt}
-                </span>
               </div>
             );
             return (
