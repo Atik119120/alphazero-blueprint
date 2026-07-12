@@ -108,7 +108,7 @@ const CoursesNavbar = () => {
             {/* Desktop nav */}
             <div className="hidden lg:flex items-center gap-1 bg-primary/[0.06] rounded-full px-1.5 py-1 border border-primary/15">
               {navLinks.map((link) => {
-                const active = !link.external && activeSection === link.id;
+                const active = !link.external && !link.internal && activeSection === link.id;
                 const commonClass = "relative px-4 py-2 text-sm font-medium rounded-full transition-colors flex items-center gap-1.5";
                 const inner = (
                   <>
@@ -128,6 +128,11 @@ const CoursesNavbar = () => {
                 if (link.external) {
                   return (
                     <a key={link.name} href={link.href} className={commonClass}>{inner}</a>
+                  );
+                }
+                if (link.internal) {
+                  return (
+                    <Link key={link.name} to={link.to!} className={commonClass}>{inner}</Link>
                   );
                 }
                 return (
