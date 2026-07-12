@@ -162,7 +162,7 @@ function AppContent() {
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} forcedTheme="light">
         <LanguageProvider>
           <AuthProvider>
             <TooltipProvider>
