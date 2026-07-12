@@ -439,15 +439,43 @@ const CoursesPage = () => {
       <section className="py-20 border-t border-border/40" id="courses">
 
         <div className="container mx-auto px-6">
+          {/* Centered header — Popular Courses */}
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="flex items-end justify-between mb-14 max-w-7xl mx-auto">
-            <div>
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">{isBn ? "কোর্স ক্যাটালগ" : "Course Catalog"}</span>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
-                {t.ourCourses} <span className="gradient-text">{t.coursesTitle}</span>
-              </h2>
-            </div>
+            className="max-w-3xl mx-auto text-center mb-10">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
+              {t.popularCourses}
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              {t.coursesDesc}
+            </p>
           </motion.div>
+
+          {/* Category tabs */}
+          <div className="max-w-7xl mx-auto mb-12 border-b border-border/40">
+            <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 overflow-x-auto no-scrollbar">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`relative py-4 text-sm md:text-base font-semibold whitespace-nowrap transition-colors ${
+                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {cat.label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeCatUnderline"
+                        className="absolute left-0 right-0 -bottom-px h-[3px] bg-primary rounded-full"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
 
           {coursesLoading && (
             <div className="flex flex-col items-center justify-center py-20">
