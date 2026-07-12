@@ -644,7 +644,7 @@ const Index = () => {
                         alt={logo.alt}
                         loading="lazy"
                         style={{ transform: `scale(${logo.scale ?? 1})` }}
-                        className="block h-auto max-h-14 sm:max-h-16 w-auto max-w-full object-contain brightness-0 invert opacity-80 hover:opacity-100 transition-opacity duration-300"
+                        className="block h-auto max-h-14 sm:max-h-16 w-auto max-w-full object-contain brightness-0 dark:invert opacity-80 hover:opacity-100 transition-opacity duration-300"
                       />
                     </div>
                   ))}
