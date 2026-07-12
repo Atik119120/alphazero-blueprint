@@ -117,14 +117,6 @@ const ServicesPage = () => {
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/15 bg-white/[0.06] backdrop-blur-md mb-8 text-sm"
-            >
-              <Link to="/" className="text-white/70 hover:text-white transition">Home</Link>
-              <ArrowRight size={12} className="text-white/40" />
-              <span className="text-white font-semibold">Services</span>
-            </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
