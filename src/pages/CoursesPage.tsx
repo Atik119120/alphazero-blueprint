@@ -217,14 +217,17 @@ const CoursesPage = () => {
   };
 
   const displayCourses = useMemo(() => {
-    return dbCourses.map(course => ({
+    const mapped = dbCourses.map(course => ({
       ...course,
       titleBn: course.title,
       titleEn: course.title_en || course.title,
       descriptionBn: course.description || '',
       descriptionEn: course.description_en || course.description || '',
     }));
-  }, [dbCourses]);
+    const activeCat = categories.find(c => c.id === activeCategory);
+    if (!activeCat?.match) return mapped;
+    return mapped.filter(c => activeCat.match!.test(c.titleEn));
+  }, [dbCourses, activeCategory, categories]);
 
   const handleEnrollClick = (course: typeof displayCourses[0]) => {
     const metadata = getCourseMetadata(course.titleEn);
