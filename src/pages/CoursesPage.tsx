@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
 import coursesHeroBg from "@/assets/courses-hero-bg.png";
@@ -309,6 +309,27 @@ const CoursesPage = () => {
       window.location.replace("https://learn.alphazero.online" + window.location.pathname.replace(/^\/courses/, "") + window.location.search);
     }
   }, []);
+
+  // Scroll to the section matching the current route
+  const location = useLocation();
+  useEffect(() => {
+    const map: Record<string, string> = {
+      "/instructors": "instructors",
+      "/contact": "contact",
+      "/courses": "courses",
+    };
+    const targetId = map[location.pathname];
+    if (targetId) {
+      // Wait for content mount before scrolling
+      const t = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
+      return () => clearTimeout(t);
+    } else if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [location.pathname]);
 
   return (
     <Layout>

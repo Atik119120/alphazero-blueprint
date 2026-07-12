@@ -125,8 +125,9 @@ function AppContent() {
             <Route path="/work" element={<WorkPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/join-team" element={<JoinTeamPage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/contact" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <ContactPage />} />
             <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/instructors" element={<CoursesPage />} />
             
 
             {/* LMS routes */}
