@@ -83,7 +83,7 @@ const ServicesPage = () => {
   return (
     <LayoutComponent>
       {/* Hero */}
-      <section className="relative overflow-hidden -mt-20 pt-40 pb-24 lg:pt-52 lg:pb-32 rounded-b-[2.5rem]">
+      <section className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
         {/* Dark base */}
         <div className="absolute inset-0 bg-black" />
         {/* Uploaded background image — only top half */}
