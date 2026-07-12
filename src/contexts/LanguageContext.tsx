@@ -141,10 +141,10 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Services Page
     "services.subtitle": "Our Services",
-    "services.title": "Full-Stack",
-    "services.title2": "Creative",
-    "services.title3": "Services",
-    "services.description": "From design to development, we provide comprehensive solutions to build and grow your digital presence.",
+    "services.title": "From Zero",
+    "services.title2": "to Bold",
+    "services.title3": "Brands That",
+    "services.description": "Design, websites, and brand visuals crafted to make your presence stand out — from day zero to lasting impact.",
     "services.whatWeOffer": "What We Offer",
     "services.whatWeOfferDesc": "Agency-level services designed to take your brand from zero to impact",
     "services.graphicDesign": "Graphic Design Services",
