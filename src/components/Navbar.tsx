@@ -109,7 +109,7 @@ const Navbar = () => {
 
             {/* Desktop Navigation - Pill style (centered) */}
             <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
-              <div className="flex items-center bg-white/10 dark:bg-white/5 backdrop-blur-xl backdrop-saturate-150 rounded-full px-1.5 py-1 border border-white/20 dark:border-white/10 shadow-[inset_0_1px_0_0_hsl(0_0%_100%/0.15),0_4px_16px_-4px_hsl(220_50%_10%/0.25)]">
+              <div className="flex items-center gap-1 px-1.5 py-1">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.href;
 
