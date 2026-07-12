@@ -155,6 +155,9 @@ const translations = {
     beginnerFriendly: "Beginner-Friendly", certificate: "Certificate Provided", expertTrainer: "Expert Trainers",
     aboutTitle: "About", aboutDesc: "Learn with AlphaZero teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our", coursesTitle: "Courses", coursesSubtitle: "Professional Online Courses - Start Your Career Today",
+    popularCourses: "Popular Courses",
+    coursesDesc: "We have designed our courses with the most demanding professional skills. The knowledge, experience, and expertise gained through the program will ensure your desired career in the global market. From the list below you can enroll in any online or offline course at any time.",
+    catAll: "All Course", catGraphic: "Graphic & Multimedia", catWeb: "Web & Software", catMarketing: "Digital Marketing", cat3D: "3D Animation & Visualization",
     special: "Special", upcoming: "Coming Soon", trainer: "Trainer", courseFee: "Course Fee",
     enrollNow: "Enroll Now", free: "Free", readMore: "Read More", readLess: "Show Less",
     startCareer: "Start Your Digital Career", startToday: "Today",
@@ -169,6 +172,9 @@ const translations = {
     beginnerFriendly: "বিগিনার-ফ্রেন্ডলি", certificate: "সার্টিফিকেট প্রদান", expertTrainer: "এক্সপার্ট ট্রেইনার",
     aboutTitle: "সম্পর্কে", aboutDesc: "Learn with AlphaZero প্র্যাক্টিক্যাল, জব-রেডি এবং AI-পাওয়ার্ড স্কিল শেখায় যাতে শিক্ষার্থীরা গভীর টেকনিক্যাল জ্ঞান ছাড়াই ওয়েবসাইট, ব্র্যান্ড এবং ডিজিটাল ক্যারিয়ার গড়ে তুলতে পারে। আমাদের সব কোর্স ১০০% অনলাইন-ভিত্তিক, বিগিনার ও আধুনিক শিক্ষার্থীদের জন্য ডিজাইন করা এবং বাংলাদেশের বাজারের জন্য সাশ্রয়ী মূল্যে।",
     ourCourses: "আমাদের", coursesTitle: "কোর্সসমূহ", coursesSubtitle: "প্রফেশনাল অনলাইন কোর্স - আপনার ক্যারিয়ার শুরু করুন আজই",
+    popularCourses: "জনপ্রিয় কোর্সসমূহ",
+    coursesDesc: "আমরা সবচেয়ে চাহিদাসম্পন্ন প্রফেশনাল স্কিল দিয়ে আমাদের কোর্সগুলো সাজিয়েছি। এই প্রোগ্রাম থেকে অর্জিত জ্ঞান, অভিজ্ঞতা ও দক্ষতা গ্লোবাল মার্কেটে আপনার কাঙ্ক্ষিত ক্যারিয়ার নিশ্চিত করবে। নিচের তালিকা থেকে যেকোনো সময় অনলাইন বা অফলাইন কোর্সে ভর্তি হতে পারবেন।",
+    catAll: "সব কোর্স", catGraphic: "গ্রাফিক ও মাল্টিমিডিয়া", catWeb: "ওয়েব ও সফটওয়্যার", catMarketing: "ডিজিটাল মার্কেটিং", cat3D: "৩ডি অ্যানিমেশন",
     special: "স্পেশাল", upcoming: "আসছে শীঘ্রই", trainer: "ট্রেইনার", courseFee: "কোর্স ফি",
     enrollNow: "এখনই ভর্তি হন", free: "ফ্রি", readMore: "আরো দেখুন", readLess: "কম দেখুন",
     startCareer: "আপনার ডিজিটাল ক্যারিয়ার", startToday: "শুরু করুন আজই",
@@ -191,6 +197,15 @@ const CoursesPage = () => {
   const [enrollmentCourse, setEnrollmentCourse] = useState<Course | null>(null);
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+
+  const categories = useMemo(() => ([
+    { id: "all", label: t.catAll, match: null as RegExp | null },
+    { id: "graphic", label: t.catGraphic, match: /graphic|multimedia|photo|design|ui|ux|brand/i },
+    { id: "web", label: t.catWeb, match: /web|software|code|coding|vibe|develop|program/i },
+    { id: "marketing", label: t.catMarketing, match: /market|seo|social|digital market|facebook|ad/i },
+    { id: "3d", label: t.cat3D, match: /3d|animation|motion|video|vfx|render/i },
+  ]), [t]);
 
   const toggleExpand = (courseId: string) => {
     setExpandedCards(prev => {
@@ -202,14 +217,17 @@ const CoursesPage = () => {
   };
 
   const displayCourses = useMemo(() => {
-    return dbCourses.map(course => ({
+    const mapped = dbCourses.map(course => ({
       ...course,
       titleBn: course.title,
       titleEn: course.title_en || course.title,
       descriptionBn: course.description || '',
       descriptionEn: course.description_en || course.description || '',
     }));
-  }, [dbCourses]);
+    const activeCat = categories.find(c => c.id === activeCategory);
+    if (!activeCat?.match) return mapped;
+    return mapped.filter(c => activeCat.match!.test(c.titleEn));
+  }, [dbCourses, activeCategory, categories]);
 
   const handleEnrollClick = (course: typeof displayCourses[0]) => {
     const metadata = getCourseMetadata(course.titleEn);
@@ -421,15 +439,43 @@ const CoursesPage = () => {
       <section className="py-20 border-t border-border/40" id="courses">
 
         <div className="container mx-auto px-6">
+          {/* Centered header — Popular Courses */}
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="flex items-end justify-between mb-14 max-w-7xl mx-auto">
-            <div>
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">{isBn ? "কোর্স ক্যাটালগ" : "Course Catalog"}</span>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
-                {t.ourCourses} <span className="gradient-text">{t.coursesTitle}</span>
-              </h2>
-            </div>
+            className="max-w-3xl mx-auto text-center mb-10">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
+              {t.popularCourses}
+            </h2>
+            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+              {t.coursesDesc}
+            </p>
           </motion.div>
+
+          {/* Category tabs */}
+          <div className="max-w-7xl mx-auto mb-12 border-b border-border/40">
+            <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 overflow-x-auto no-scrollbar">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`relative py-4 text-sm md:text-base font-semibold whitespace-nowrap transition-colors ${
+                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {cat.label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeCatUnderline"
+                        className="absolute left-0 right-0 -bottom-px h-[3px] bg-primary rounded-full"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
 
           {coursesLoading && (
             <div className="flex flex-col items-center justify-center py-20">
