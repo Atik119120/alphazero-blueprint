@@ -628,31 +628,35 @@ const Index = () => {
             const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
             const rowB = [...logos.slice(half), ...logos.slice(half)];
             const LogoItem = ({ logo }: { logo: typeof logos[number] }) => (
-              <div className="shrink-0 flex items-center justify-center h-14 sm:h-16 px-8">
+              <div className="shrink-0 mx-2 flex items-center justify-center h-20 w-48 sm:w-56 px-6 border border-white/[0.08] bg-white/[0.015]">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
                   style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="block h-auto max-h-10 sm:max-h-12 w-auto object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-opacity duration-300"
+                  className="block h-auto max-h-10 sm:max-h-12 w-auto object-contain brightness-0 invert opacity-70 hover:opacity-100 transition-opacity duration-300"
                 />
               </div>
             );
+            const PlusMark = ({ pos }: { pos: string }) => (
+              <span className={`pointer-events-none absolute ${pos} text-primary/70 text-sm font-light select-none leading-none`}>+</span>
+            );
             return (
               <div className="relative max-w-7xl mx-auto">
-                {/* Corner ticks — thin */}
-                {[
-                  "top-0 left-0 border-l border-t",
-                  "top-0 right-0 border-r border-t",
-                  "bottom-0 left-0 border-l border-b",
-                  "bottom-0 right-0 border-r border-b",
-                ].map((pos, i) => (
-                  <span key={i} className={`pointer-events-none absolute ${pos} w-3 h-3 border-primary/50`} />
-                ))}
+                {/* Outer + corners */}
+                <PlusMark pos="-top-1.5 -left-1.5" />
+                <PlusMark pos="-top-1.5 -right-1.5" />
+                <PlusMark pos="-bottom-1.5 -left-1.5" />
+                <PlusMark pos="-bottom-1.5 -right-1.5" />
 
-                <div className="relative grid md:grid-cols-[280px_1fr] items-stretch border border-white/[0.06]">
-                  {/* LEFT — stats */}
-                  <div className="relative px-6 py-5 md:border-r md:border-dashed md:border-white/10 flex flex-col justify-center">
+                <div className="relative grid md:grid-cols-[260px_1fr] items-stretch gap-3">
+                  {/* LEFT — stats card */}
+                  <div className="relative border border-white/[0.08] bg-white/[0.015] px-6 py-5 flex flex-col justify-center">
+                    <PlusMark pos="-top-1.5 -left-1.5" />
+                    <PlusMark pos="-top-1.5 -right-1.5" />
+                    <PlusMark pos="-bottom-1.5 -left-1.5" />
+                    <PlusMark pos="-bottom-1.5 -right-1.5" />
+
                     <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
                       <div className="flex items-center gap-1.5">
                         <span className="relative flex h-1 w-1">
@@ -664,10 +668,10 @@ const Index = () => {
                       <span>[ 001 ]</span>
                     </div>
 
-                    <h3 className="text-4xl sm:text-[2.75rem] font-display font-semibold text-white leading-none mb-1 tracking-tight">
+                    <h3 className="text-4xl sm:text-[2.5rem] font-display font-semibold text-white leading-none mb-1 tracking-tight">
                       47<span className="text-primary font-light">+</span>
                     </h3>
-                    <p className="text-[11px] uppercase tracking-[0.28em] text-white/50 mb-4 font-mono">
+                    <p className="text-[10px] uppercase tracking-[0.28em] text-white/50 mb-4 font-mono">
                       Global Brands
                     </p>
 
@@ -684,29 +688,13 @@ const Index = () => {
                     </div>
                   </div>
 
-                  {/* RIGHT — marquee */}
-                  <div className="relative flex flex-col">
-                    <div className="flex items-center justify-between px-5 py-1.5 border-b border-dashed border-white/10 font-mono text-[9px] uppercase tracking-[0.25em] text-white/30">
-                      <span>Clients / Partners</span>
-                      <span className="flex items-center gap-1.5">
-                        <span className="w-1 h-1 rounded-full bg-primary animate-pulse" />
-                        LIVE
-                      </span>
+                  {/* RIGHT — marquee of boxed logo cards */}
+                  <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] flex items-center">
+                    <div className="flex items-center animate-[marquee_40s_linear_infinite] w-max">
+                      {[...logos, ...logos].map((logo, i) => <LogoItem key={`m-${i}`} logo={logo} />)}
                     </div>
-
-                    <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] flex flex-col justify-center gap-2 py-4 flex-1">
-                      <div className="flex items-center animate-[marquee_35s_linear_infinite] w-max">
-                        {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
-                      </div>
-                      <div className="h-px bg-white/5" />
-                      <div className="flex items-center animate-[marqueeReverse_40s_linear_infinite] w-max">
-                        {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
-                      </div>
-                    </div>
-
                     <style>{`
                       @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-                      @keyframes marqueeReverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
                     `}</style>
                   </div>
                 </div>
