@@ -84,14 +84,14 @@ const ServicesPage = () => {
     <LayoutComponent>
       {/* Hero */}
       <section className="relative overflow-hidden -mt-20 pt-40 pb-24 lg:pt-52 lg:pb-32 rounded-b-[2.5rem]">
-        {/* Dark base + uploaded background image */}
-        <div className="absolute inset-0 bg-black" />
+        {/* Uploaded background image */}
         <img
           src={servicesHeroBg.url}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-top opacity-70"
+          className="absolute inset-0 w-full h-full object-cover object-top"
           style={{ filter: "blur(12px)" }}
         />
+
 
 
 
