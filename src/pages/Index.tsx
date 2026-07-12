@@ -646,7 +646,7 @@ const Index = () => {
                     src={logo.src}
                     alt={logo.alt}
                     loading="lazy"
-                    className={`max-h-full max-w-full w-auto h-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 ${logo.invert ? "dark:brightness-0 dark:invert" : ""} ${logo.invertLight ? "brightness-0 dark:brightness-100 dark:invert-0" : ""}`}
+                    className="max-h-full max-w-full w-auto h-auto object-contain brightness-0 invert opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                   />
                 </div>
 
