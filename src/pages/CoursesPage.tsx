@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
 import coursesHeroBg from "@/assets/courses-hero-bg.png";
