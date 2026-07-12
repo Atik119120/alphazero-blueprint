@@ -26,7 +26,7 @@ const CoursesNavbar = () => {
 
   const navLinks = [
     { name: isBn ? "হোম" : "Home", id: "home", icon: Home },
-    { name: isBn ? "সম্পর্কে" : "About Us", id: "about", icon: Info },
+    { name: isBn ? "সম্পর্কে" : "About Us", to: "/about", icon: Info, internal: true },
     { name: isBn ? "ইনস্ট্রাক্টর" : "Instructors", id: "instructors", icon: UsersIcon },
     { name: isBn ? "কোর্স" : "Courses", id: "courses", icon: LayoutGrid },
     { name: isBn ? "যোগাযোগ" : "Contact", id: "contact", icon: Phone },
