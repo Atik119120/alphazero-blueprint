@@ -620,13 +620,15 @@ const Index = () => {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {[
               { src: clientAlokchitra.url, alt: "Alokchitra", invert: true },
               { src: clientAura.url, alt: "Aura Signature", invert: true },
               { src: clientGreenpeak.url, alt: "GreenPeak" },
               { src: clientBlackzen.url, alt: "BlackZen", invert: true },
               { src: clientDarkAura.url, alt: "Dark Aura", invertLight: true },
+              { src: "https://syoenzqclizidypesxqq.supabase.co/storage/v1/object/public/banners/logo-1777311397835.png", alt: "Client Logo 6" },
+              { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Client Logo 7" },
             ].map((logo, index) => (
               <motion.div
                 key={logo.alt}
