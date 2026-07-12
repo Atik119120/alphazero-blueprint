@@ -37,9 +37,13 @@ const CoursesNavbar = () => {
   useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
+    const onCoursesPage = location.pathname === "/courses" || location.pathname.startsWith("/courses/");
+    if (!onCoursesPage) {
+      setActiveSection("");
+      return;
+    }
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 40);
-      // Detect active section
       const ids = ["home", "about", "instructors", "courses", "contact"];
       let current = "home";
       for (const id of ids) {
@@ -54,7 +58,7 @@ const CoursesNavbar = () => {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location.pathname]);
 
   const handleNavClick = (id: string) => {
     setIsMobileMenuOpen(false);
