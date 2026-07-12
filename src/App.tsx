@@ -30,6 +30,7 @@ import TeamPage from "./pages/TeamPage";
 import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
 import CoursesPage from "./pages/CoursesPage";
+import LearnAboutPage from "./pages/LearnAboutPage";
 
 
 // LMS pages - loaded immediately for fast access
@@ -119,7 +120,8 @@ function AppContent() {
             {/* Main site routes */}
             <Route path="/" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <Index />} />
 
-            <Route path="/about" element={<AboutPage />} />
+            <Route path="/about" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnAboutPage /> : <AboutPage />} />
+            <Route path="/learn/about" element={<LearnAboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/work" element={<WorkPage />} />
             <Route path="/team" element={<TeamPage />} />
