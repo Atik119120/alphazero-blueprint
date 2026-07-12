@@ -23,7 +23,8 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logoFull from "@/assets/logo-full.png";
+import logoFullAsset from "@/assets/alphazero-logo.png.asset.json";
+const logoFull = logoFullAsset.url;
 import SearchModal from "./SearchModal";
 
 const Navbar = () => {
