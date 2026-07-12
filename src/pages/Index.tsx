@@ -635,17 +635,17 @@ const Index = () => {
             const loop = [...logos, ...logos];
             return (
               <div className="relative overflow-hidden max-w-6xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                <div className="flex gap-6 sm:gap-10 animate-[marquee_40s_linear_infinite] w-max">
+                <div className="flex items-center gap-10 sm:gap-14 animate-[marquee_40s_linear_infinite] w-max">
                   {loop.map((logo, index) => (
                     <div
                       key={`${logo.alt}-${index}`}
-                      className="shrink-0 flex items-center justify-center h-20 sm:h-24 w-40 sm:w-52"
+                      className="shrink-0 flex items-center justify-center h-20 sm:h-24 min-w-44 sm:min-w-56 px-2"
                     >
                       <img
                         src={logo.src}
                         alt={logo.alt}
                         loading="lazy"
-                        className="max-h-full max-w-full w-auto h-auto object-contain brightness-0 invert opacity-70 hover:opacity-100 transition-opacity duration-300"
+                        className="h-11 sm:h-14 w-auto max-w-none object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-opacity duration-300"
                       />
                     </div>
                   ))}
