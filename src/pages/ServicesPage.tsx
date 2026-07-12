@@ -44,7 +44,7 @@ import {
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useServices } from "@/hooks/useServices";
-import servicesHeroBg from "@/assets/services-hero-bg.jpg.asset.json";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 
 
 // Icon mapping for dynamic services
