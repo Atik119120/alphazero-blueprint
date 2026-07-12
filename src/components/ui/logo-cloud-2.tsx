@@ -32,25 +32,25 @@ export function LogoCloud({ className, logos = defaultLogos, ...props }: LogoClo
   return (
     <div className={cn("relative mx-auto w-full max-w-6xl", className)} {...props}>
       {/* Grid Container */}
-      <div className="relative grid grid-cols-2 lg:grid-cols-4 border-t border-l border-white/5">
+      <div className="relative grid grid-cols-2 lg:grid-cols-4 border-t border-l border-foreground/15 dark:border-white/5">
         {/* Corner + intersection plus markers */}
-        <span aria-hidden className="absolute -top-1.5 -left-1.5 text-primary/40 text-xs font-light select-none">+</span>
-        <span aria-hidden className="absolute -top-1.5 -right-1.5 text-primary/40 text-xs font-light select-none">+</span>
-        <span aria-hidden className="absolute -bottom-1.5 -left-1.5 text-primary/40 text-xs font-light select-none">+</span>
-        <span aria-hidden className="absolute -bottom-1.5 -right-1.5 text-primary/40 text-xs font-light select-none">+</span>
-        <span aria-hidden className="absolute -top-1.5 left-1/2 -ml-1 text-primary/30 text-xs font-light select-none lg:hidden">+</span>
-        <span aria-hidden className="absolute -top-1.5 left-1/4 -ml-1 text-primary/30 text-xs font-light select-none hidden lg:block">+</span>
-        <span aria-hidden className="absolute -top-1.5 left-2/4 -ml-1 text-primary/30 text-xs font-light select-none hidden lg:block">+</span>
-        <span aria-hidden className="absolute -top-1.5 left-3/4 -ml-1 text-primary/30 text-xs font-light select-none hidden lg:block">+</span>
+        <span aria-hidden className="absolute -top-1.5 -left-1.5 text-primary/60 dark:text-primary/40 text-xs font-light select-none">+</span>
+        <span aria-hidden className="absolute -top-1.5 -right-1.5 text-primary/60 dark:text-primary/40 text-xs font-light select-none">+</span>
+        <span aria-hidden className="absolute -bottom-1.5 -left-1.5 text-primary/60 dark:text-primary/40 text-xs font-light select-none">+</span>
+        <span aria-hidden className="absolute -bottom-1.5 -right-1.5 text-primary/60 dark:text-primary/40 text-xs font-light select-none">+</span>
+        <span aria-hidden className="absolute -top-1.5 left-1/2 -ml-1 text-primary/50 dark:text-primary/30 text-xs font-light select-none lg:hidden">+</span>
+        <span aria-hidden className="absolute -top-1.5 left-1/4 -ml-1 text-primary/50 dark:text-primary/30 text-xs font-light select-none hidden lg:block">+</span>
+        <span aria-hidden className="absolute -top-1.5 left-2/4 -ml-1 text-primary/50 dark:text-primary/30 text-xs font-light select-none hidden lg:block">+</span>
+        <span aria-hidden className="absolute -top-1.5 left-3/4 -ml-1 text-primary/50 dark:text-primary/30 text-xs font-light select-none hidden lg:block">+</span>
 
         {logos.map((logo, i) => (
           <LogoCard
             key={i}
             logo={logo}
             className={cn(
-              "border-r border-b border-white/5",
+              "border-r border-b border-foreground/15 dark:border-white/5",
               gradientDirections[i % gradientDirections.length],
-              "from-white/[0.02] to-transparent hover:from-white/[0.05]",
+              "from-foreground/[0.03] dark:from-white/[0.02] to-transparent hover:from-foreground/[0.06] dark:hover:from-white/[0.05]",
             )}
           />
         ))}
