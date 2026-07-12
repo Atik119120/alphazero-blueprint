@@ -99,35 +99,16 @@ const ServicesPage = () => {
           }}
         />
 
-        {/* Prismatic cubes */}
-        <motion.div
-          initial={{ opacity: 0, x: -40, rotate: -15 }}
-          animate={{ opacity: 1, x: 0, rotate: 0, y: [0, -12, 0] }}
-          transition={{ opacity: { duration: 0.8 }, x: { duration: 0.8 }, rotate: { duration: 0.8 }, y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}
-          className="absolute -left-10 top-24 lg:left-4 lg:top-32 w-32 h-32 lg:w-56 lg:h-56 pointer-events-none"
-          style={{
-            background:
-              "conic-gradient(from 210deg at 50% 50%, #60a5fa, #a78bfa, #f472b6, #fbbf24, #34d399, #22d3ee, #60a5fa)",
-            transform: "perspective(600px) rotateX(20deg) rotateY(-25deg)",
-            borderRadius: "12px",
-            boxShadow: "0 30px 60px -20px rgba(96,165,250,0.5)",
-            filter: "saturate(1.2)",
-          }}
-        />
-        <motion.div
-          initial={{ opacity: 0, x: 40, rotate: 15 }}
-          animate={{ opacity: 1, x: 0, rotate: 0, y: [0, 14, 0] }}
-          transition={{ opacity: { duration: 0.8 }, x: { duration: 0.8 }, rotate: { duration: 0.8 }, y: { duration: 7, repeat: Infinity, ease: "easeInOut" } }}
-          className="absolute -right-10 -top-4 lg:right-6 lg:top-10 w-36 h-36 lg:w-64 lg:h-64 pointer-events-none"
-          style={{
-            background:
-              "conic-gradient(from 30deg at 50% 50%, #f472b6, #a78bfa, #60a5fa, #22d3ee, #34d399, #fbbf24, #f472b6)",
-            transform: "perspective(600px) rotateX(-15deg) rotateY(25deg)",
-            borderRadius: "14px",
-            boxShadow: "0 30px 60px -20px rgba(244,114,182,0.5)",
-            filter: "saturate(1.2)",
-          }}
-        />
+        {/* Left decorative image slot — add your image here */}
+        <div className="absolute -left-10 top-24 lg:left-4 lg:top-32 w-32 h-32 lg:w-56 lg:h-56 pointer-events-none z-[5]">
+          {/* <img src="/your-left-image.png" alt="" className="w-full h-full object-contain" /> */}
+        </div>
+
+        {/* Right decorative image slot — add your image here */}
+        <div className="absolute -right-10 -top-4 lg:right-6 lg:top-10 w-36 h-36 lg:w-64 lg:h-64 pointer-events-none z-[5]">
+          {/* <img src="/your-right-image.png" alt="" className="w-full h-full object-contain" /> */}
+        </div>
+
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
