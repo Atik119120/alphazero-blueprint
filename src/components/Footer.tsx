@@ -303,7 +303,7 @@ const Footer = () => {
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             color: "transparent",
-            filter: "blur(1.5px) drop-shadow(0 0 30px hsl(var(--primary) / 0.4))",
+            filter: "drop-shadow(0 0 40px hsl(var(--primary) / 0.5)) drop-shadow(0 0 80px hsl(var(--primary) / 0.3))",
             paddingBottom: "0.05em",
           }}
         >
