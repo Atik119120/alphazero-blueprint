@@ -637,9 +637,9 @@ const Index = () => {
             return (
               <div className="relative max-w-7xl mx-auto">
                 {/* Ambient glow */}
-                <div className="pointer-events-none absolute -inset-px rounded-[28px] bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-40 blur-2xl" />
+                <div className="pointer-events-none absolute -inset-px rounded-md bg-gradient-to-r from-primary/20 via-transparent to-primary/20 opacity-40 blur-2xl" />
 
-                <div className="relative grid md:grid-cols-[auto_1fr] gap-0 md:gap-2 items-stretch rounded-[24px] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent backdrop-blur-xl overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+                <div className="relative grid md:grid-cols-[auto_1fr] gap-0 md:gap-2 items-stretch rounded-md border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent backdrop-blur-xl overflow-hidden shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
                   {/* LEFT — stats */}
                   <div className="relative p-8 sm:p-10 md:pr-12 md:border-r md:border-white/10 flex flex-col justify-center">
                     <div className="inline-flex items-center gap-2 mb-4">
