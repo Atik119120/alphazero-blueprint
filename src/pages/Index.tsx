@@ -612,10 +612,6 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-              <CheckCircle2 size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("whyChoose", "home.whyChoose")}</span>
-            </div>
             <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold">
               {c("builtFor", "home.builtFor")} <span className="gradient-text">{c("yourSuccess", "home.yourSuccess")}</span>
             </h2>
