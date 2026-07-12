@@ -89,8 +89,9 @@ const ServicesPage = () => {
         <img
           src={servicesHeroBg.url}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-70"
+          className="absolute inset-0 w-full h-full object-cover object-top opacity-70"
         />
+
         {/* Vignette to keep text readable */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
 
