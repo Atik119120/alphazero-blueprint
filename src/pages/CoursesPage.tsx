@@ -460,6 +460,34 @@ const CoursesPage = () => {
                 loading="eager" />
             </motion.div>
 
+            {/* Animated rotating headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35 }}
+              className="font-playfair text-4xl md:text-6xl lg:text-7xl tracking-tight mb-5 max-w-4xl leading-[1.05]"
+            >
+              <span className="text-foreground/90">
+                {isBn ? "শিখুন কিছু " : "Learn something "}
+              </span>
+              <span className="relative inline-flex justify-center overflow-hidden align-baseline pb-2 h-[1.15em] w-[6ch] md:w-[7ch]">
+                {rotatingTitles.map((title, index) => (
+                  <motion.span
+                    key={title}
+                    className="absolute font-semibold bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent"
+                    initial={{ opacity: 0, y: 60 }}
+                    transition={{ type: "spring", stiffness: 50 }}
+                    animate={
+                      titleNumber === index
+                        ? { y: 0, opacity: 1 }
+                        : { y: titleNumber > index ? -100 : 100, opacity: 0 }
+                    }
+                  >
+                    {title}
+                  </motion.span>
+                ))}
+              </span>
+            </motion.h1>
 
             {/* Subtitle */}
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
