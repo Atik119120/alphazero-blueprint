@@ -32,7 +32,7 @@ const trainers = {
     name: "Sofiullah Ahammad",
     qualificationEn: "Graphics Designer, Vibe Coding Expert, Google Knowledge Expert, Freelance Photographer",
     qualificationBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট, গুগল নলেজ এক্সপার্ট, ফ্রিল্যান্স ফটোগ্রাফার",
-    image: "https://github.com/Atik119120/Sofiullah-Ahammad/blob/main/537405745_1227380375810727_5014246075421698846_n.jpg?raw=true"
+    image: instructorAtik.url
   },
   adib: {
     name: "Adib Sarkar",
@@ -57,12 +57,6 @@ const trainers = {
     qualificationEn: "Graphics Designer, Microsoft Office Expert, IT Support",
     qualificationBn: "গ্রাফিক্স ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
     image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
-  },
-  atik: {
-    name: "Atik",
-    qualificationEn: "Web Developer, UI/UX Designer",
-    qualificationBn: "ওয়েব ডেভেলপার, ইউআই/ইউএক্স ডিজাইনার",
-    image: instructorAtik.url
   },
   nayeem: {
     name: "Nayeem",
