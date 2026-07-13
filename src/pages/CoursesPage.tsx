@@ -496,7 +496,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
-              className={`${isBn ? "" : "font-playfair italic"} text-base md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mb-7 leading-relaxed`}
+              className={`${isBn ? "" : "font-playfair italic"} text-base md:text-xl lg:text-2xl text-muted-foreground max-w-4xl mb-7 leading-relaxed`}
             >
               {t.subtitle}
             </motion.p>
