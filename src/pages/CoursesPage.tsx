@@ -451,25 +451,49 @@ const CoursesPage = () => {
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
+          <div className="max-w-5xl mx-auto flex flex-col items-center text-center relative">
 
+            {/* Decorative editorial number */}
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              aria-hidden
+              className="hidden md:block absolute -top-10 -left-4 lg:-left-10 font-playfair italic text-[110px] lg:text-[150px] leading-none text-primary/10 select-none pointer-events-none"
+            >
+              01
+            </motion.span>
 
+            {/* Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <span className="h-px w-10 bg-primary/50" />
+              <span className="text-[11px] tracking-[0.35em] uppercase font-semibold text-primary/80">
+                {isBn ? "AlphaZero একাডেমি" : "AlphaZero Academy"}
+              </span>
+              <span className="h-px w-10 bg-primary/50" />
+            </motion.div>
 
             {/* Animated rotating headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-4xl md:text-6xl lg:text-7xl tracking-tight mb-5 max-w-4xl leading-[1.05]"
+              className="font-playfair text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 max-w-4xl leading-[1.02]"
             >
-              <span className="text-foreground/90">
-                {isBn ? "শিখুন কিছু " : "Learn something "}
+              <span className="text-foreground/95 font-normal">
+                {isBn ? "শিখুন কিছু" : "Learn something"}
               </span>
-              <span className="relative inline-flex justify-center overflow-hidden align-baseline pb-2 h-[1.15em] w-[6ch] md:w-[7ch]">
+              <br />
+              <span className="relative inline-flex justify-center overflow-hidden align-baseline pb-3 h-[1.15em] w-[7ch] md:w-[8ch]">
                 {rotatingTitles.map((title, index) => (
                   <motion.span
                     key={title}
-                    className="absolute font-semibold bg-gradient-to-r from-primary via-primary to-primary/70 bg-clip-text text-transparent"
+                    className="absolute italic font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]"
                     initial={{ opacity: 0, y: 60 }}
                     transition={{ type: "spring", stiffness: 50 }}
                     animate={
@@ -481,14 +505,46 @@ const CoursesPage = () => {
                     {title}
                   </motion.span>
                 ))}
+                {/* underline accent */}
+                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2/3 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
               </span>
             </motion.h1>
 
+            {/* Editorial divider */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <span className="h-px w-8 bg-border" />
+              <span className="w-1.5 h-1.5 rounded-full border border-primary/60" />
+              <span className="h-px w-8 bg-border" />
+            </motion.div>
+
             {/* Subtitle */}
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
-              className="text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mb-7 leading-relaxed">
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+              className={`${isBn ? "" : "font-playfair italic"} text-base md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mb-7 leading-relaxed`}
+            >
               {t.subtitle}
             </motion.p>
+
+            {/* Live indicator pill */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/[0.06] border border-primary/20 text-[11px] uppercase tracking-[0.25em] font-semibold text-primary/90"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-70 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+              </span>
+              {isBn ? "কোর্স এক্সপ্লোর করুন" : "Explore the Catalog"}
+            </motion.div>
 
           </div>
         </motion.div>
