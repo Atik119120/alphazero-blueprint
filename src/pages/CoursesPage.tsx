@@ -303,6 +303,21 @@ const CoursesPage = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
 
+  // Rotating headline words
+  const rotatingTitles = useMemo(
+    () => isBn
+      ? ["অসাধারণ", "নতুন", "চমৎকার", "সুন্দর", "স্মার্ট"]
+      : ["amazing", "new", "wonderful", "beautiful", "smart"],
+    [isBn]
+  );
+  const [titleNumber, setTitleNumber] = useState(0);
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setTitleNumber((n) => (n === rotatingTitles.length - 1 ? 0 : n + 1));
+    }, 2000);
+    return () => clearTimeout(timeoutId);
+  }, [titleNumber, rotatingTitles]);
+
   // Redirect to learn subdomain when accessed from main site
   useEffect(() => {
     if (typeof window !== "undefined" && !window.location.hostname.startsWith("learn.") && window.location.hostname.includes("alphazero.online")) {
