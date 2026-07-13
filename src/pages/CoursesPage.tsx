@@ -779,7 +779,7 @@ const CoursesPage = () => {
             </p>
           </motion.div>
           <div className="group/marquee relative overflow-hidden max-w-6xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-            <div className="flex gap-4 w-max animate-[marquee_28s_linear_infinite] group-hover/marquee:[animation-play-state:paused]">
+            <div className="flex gap-4 w-max marquee-left group-hover/marquee:[animation-play-state:paused] [animation-duration:40s]">
               {[...Object.values(trainers), ...Object.values(trainers)].map((tr, i) => (
                 <div key={`${tr.name}-${i}`} className="group w-[220px] sm:w-[240px] shrink-0">
                   <div className="glass-card rounded-2xl p-3 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.12]">
