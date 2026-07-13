@@ -57,6 +57,24 @@ const trainers = {
     qualificationEn: "Graphics Designer, Microsoft Office Expert, IT Support",
     qualificationBn: "গ্রাফিক্স ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
     image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
+  },
+  atik: {
+    name: "Atik",
+    qualificationEn: "Web Developer, UI/UX Designer",
+    qualificationBn: "ওয়েব ডেভেলপার, ইউআই/ইউএক্স ডিজাইনার",
+    image: instructorAtik.url
+  },
+  nayeem: {
+    name: "Nayeem",
+    qualificationEn: "Graphics Designer, Content Creator",
+    qualificationBn: "গ্রাফিক্স ডিজাইনার, কন্টেন্ট ক্রিয়েটর",
+    image: instructorNayeem.url
+  },
+  hh: {
+    name: "H. H.",
+    qualificationEn: "Instructor, Creative Team",
+    qualificationBn: "ইনস্ট্রাক্টর, ক্রিয়েটিভ টিম",
+    image: instructorHH.url
   }
 };
 
