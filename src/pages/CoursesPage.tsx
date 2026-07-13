@@ -38,7 +38,7 @@ const trainers = {
     name: "Adib Sarkar",
     qualificationEn: "Lead Designer, Entrepreneur",
     qualificationBn: "লিড ডিজাইনার, উদ্যোক্তা",
-    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/20260114_092617.jpg?raw=true"
+    image: instructorHH.url
   },
   kamrul: {
     name: "Md. Kamrul Hasan",
