@@ -471,7 +471,7 @@ const CoursesPage = () => {
                 {rotatingTitles.map((title, index) => (
                   <motion.span
                     key={title}
-                    className="absolute italic font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]"
+                    className="absolute font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]"
                     initial={{ opacity: 0, y: 60 }}
                     transition={{ type: "spring", stiffness: 50 }}
                     animate={
