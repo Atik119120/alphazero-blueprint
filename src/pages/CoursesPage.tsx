@@ -494,12 +494,12 @@ const CoursesPage = () => {
 
 
 
-            {/* CTA Buttons */}
+            {/* CTA Button */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-7"
+              className="flex items-center justify-center mb-7"
             >
               <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
                 <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
@@ -512,12 +512,6 @@ const CoursesPage = () => {
                   </a>
                 </div>
               </span>
-              <a
-                href="/contact"
-                className="inline-flex rounded-full text-center items-center justify-center border border-border/60 text-foreground hover:bg-foreground/5 transition-all py-4 px-10 text-sm font-medium backdrop-blur-sm"
-              >
-                {isBn ? "যোগাযোগ করুন" : "Contact Us"}
-              </a>
             </motion.div>
 
 
