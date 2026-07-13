@@ -461,13 +461,13 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 max-w-4xl leading-[1.12]"
+              className="font-playfair text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 max-w-4xl leading-[1.05]"
             >
               <span className="text-foreground/95 font-normal">
                 {isBn ? "শিখুন কিছু" : "Learn something"}
               </span>
               <br />
-              <span className="relative inline-flex justify-center overflow-visible align-baseline pb-10 pt-4 h-[1.85em] w-[7ch] md:w-[8ch] leading-[1.35]">
+              <span className="relative inline-flex justify-center overflow-visible align-baseline pb-6 pt-1 h-[1.35em] w-[7ch] md:w-[8ch] leading-[1.1]">
                 {rotatingTitles.map((title, index) => (
                   <motion.span
                     key={title}
