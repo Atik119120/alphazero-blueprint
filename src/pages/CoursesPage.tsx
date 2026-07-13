@@ -483,8 +483,8 @@ const CoursesPage = () => {
                     {title}
                   </motion.span>
                 ))}
-                {/* underline accent */}
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-2/3 h-[3px] bg-gradient-to-r from-transparent via-primary to-transparent rounded-full" />
+
+
               </span>
             </motion.h1>
 
