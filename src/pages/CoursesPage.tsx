@@ -778,20 +778,18 @@ const CoursesPage = () => {
               {isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।" : "Learn directly from industry experts."}
             </p>
           </motion.div>
-          <div className="group/marquee relative overflow-hidden max-w-6xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-            <div className="flex gap-4 w-max marquee-left group-hover/marquee:[animation-play-state:paused] [animation-duration:40s]">
+          <div className="group/marquee relative overflow-hidden max-w-5xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+            <div className="flex gap-3 w-max marquee-left group-hover/marquee:[animation-play-state:paused] [animation-duration:35s]">
               {[...Object.values(trainers), ...Object.values(trainers)].map((tr, i) => (
-                <div key={`${tr.name}-${i}`} className="group w-[220px] sm:w-[240px] shrink-0">
-                  <div className="glass-card rounded-2xl p-3 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.12]">
-                    <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
-                      <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-40 group-hover:opacity-70 transition-opacity" />
+                <div key={`${tr.name}-${i}`} className="group w-[170px] shrink-0">
+                  <div className="glass-card rounded-xl p-2.5 text-center hover:border-primary/40 transition-all">
+                    <div className="relative aspect-square w-full mb-2 overflow-hidden rounded-lg">
                       <img src={tr.image} alt={tr.name}
-                        className="relative w-full h-full object-cover rounded-xl ring-1 ring-primary/20 group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover rounded-lg ring-1 ring-primary/20 group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
-                    <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
+                    <h3 className="font-display font-semibold text-xs mb-0.5 group-hover:text-primary transition-colors truncate">{tr.name}</h3>
+                    <p className="text-[9px] text-muted-foreground leading-tight line-clamp-2">
                       {isBn ? tr.qualificationBn : tr.qualificationEn}
                     </p>
                   </div>
@@ -799,6 +797,7 @@ const CoursesPage = () => {
               ))}
             </div>
           </div>
+
         </div>
       </section>
 
