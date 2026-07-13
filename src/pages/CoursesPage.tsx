@@ -751,39 +751,6 @@ const CoursesPage = () => {
         </div>
       </section>
 
-      {/* About section */}
-      <section id="about" className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 mesh-bg opacity-30" />
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "আমাদের সম্পর্কে" : "About Us"}
-            </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight mb-6">
-              {t.aboutTitle} <span className="gradient-text">Learn with AlphaZero</span>
-            </h2>
-            <p className="text-base lg:text-lg text-muted-foreground leading-relaxed">
-              {t.aboutDesc}
-            </p>
-            <div className="grid sm:grid-cols-3 gap-4 mt-10">
-              {[
-                { icon: Target, label: t.beginnerFriendly, desc: isBn ? "শুরু থেকে সবকিছু" : "From absolute basics" },
-                { icon: Award, label: t.certificate, desc: isBn ? "কোর্স শেষে সার্টিফিকেট" : "On course completion" },
-                { icon: Star, label: t.expertTrainer, desc: isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে" : "Learn from industry pros" },
-              ].map((f, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  className="glass-card rounded-2xl p-6 text-left">
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                    <f.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="font-semibold text-sm mb-1">{f.label}</h3>
-                  <p className="text-xs text-muted-foreground">{f.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Instructors section */}
       <section id="instructors" className="py-20 border-t border-border/40">
