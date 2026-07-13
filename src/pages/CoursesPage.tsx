@@ -452,13 +452,8 @@ const CoursesPage = () => {
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col items-center text-center">
-            {/* Logo */}
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, type: "spring", stiffness: 60 }}
-              className="mb-5">
-              <img src={learnLogo} alt={t.title}
-                className="h-20 md:h-28 lg:h-36 w-auto dark:brightness-0 dark:invert drop-shadow-[0_8px_24px_hsl(var(--primary)/0.25)]"
-                loading="eager" />
-            </motion.div>
+
+
 
             {/* Animated rotating headline */}
             <motion.h1
