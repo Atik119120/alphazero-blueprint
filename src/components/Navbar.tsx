@@ -102,7 +102,7 @@ const Navbar = () => {
             <Link to="/" className="flex items-center group relative shrink-0">
               <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img 
-                src={logoFull} 
+                src={brandLogo} 
                 alt="AlphaZero Logo" 
                 className="h-7 sm:h-8 w-auto relative z-10 brightness-0 dark:invert transition-all duration-300"
                 loading="eager"
