@@ -766,8 +766,23 @@ const CoursesPage = () => {
 
 
       {/* Instructors section */}
-      <section id="instructors" className="py-20 border-t border-border/40">
-        <div className="container mx-auto px-6">
+      <section id="instructors" className="py-20 border-t border-border/40 relative overflow-hidden">
+        {/* Decorative background */}
+        <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-purple-500/10 blur-[120px] pointer-events-none" />
+        <div
+          className="absolute inset-0 opacity-[0.05] pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 75%)",
+          }}
+        />
+        <div className="container mx-auto px-6 relative z-10">
+
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-center mb-14 max-w-3xl mx-auto">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
