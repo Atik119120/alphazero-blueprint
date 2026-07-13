@@ -81,7 +81,7 @@ const getCourseMetadata = (title: string): CourseMetadata => {
       featuresEn: ["Google Search Optimization", "Brand Verification", "Wikipedia Entry Guide", "Social Profile Setup"] };
   }
   if (lowerTitle.includes('microsoft') || lowerTitle.includes('office')) {
-    return { icon: Monitor, color: "from-orange-500 to-red-500", trainer: trainers.kamrul,
+    return { icon: Monitor, color: "from-orange-500 to-red-500", trainer: trainers.prantik,
       featuresBn: ["MS Word মাস্টারি", "Excel ফর্মুলা ও ডাটা এনালাইসিস", "PowerPoint প্রেজেন্টেশন", "অফিস অটোমেশন"],
       featuresEn: ["MS Word Mastery", "Excel Formulas & Data Analysis", "PowerPoint Presentations", "Office Automation"] };
   }
