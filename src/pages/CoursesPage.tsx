@@ -30,8 +30,8 @@ import { Course } from "@/types/lms";
 const trainers = {
   sofiullah: {
     name: "Sofiullah Ahammad",
-    qualificationEn: "Graphics Designer, Vibe Coding Expert, Google Knowledge Expert, Freelance Photographer",
-    qualificationBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট, গুগল নলেজ এক্সপার্ট, ফ্রিল্যান্স ফটোগ্রাফার",
+    qualificationEn: "Graphics Designer, Vibe Coding Expert",
+    qualificationBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট",
     image: instructorAtik.url
   },
   adib: {
