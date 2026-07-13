@@ -48,8 +48,8 @@ const trainers = {
   },
   shafiul: {
     name: "Md. Shafiul Haque",
-    qualificationEn: "Web Designer, Video Editor, Cinematographer",
-    qualificationBn: "ওয়েব ডিজাইনার, ভিডিও এডিটর, সিনেমাটোগ্রাফার",
+    qualificationEn: "Video Editor, Cinematographer",
+    qualificationBn: "ভিডিও এডিটর, সিনেমাটোগ্রাফার",
     image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true"
   },
   prantik: {
