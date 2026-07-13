@@ -488,17 +488,8 @@ const CoursesPage = () => {
               </span>
             </motion.h1>
 
-            {/* Editorial divider */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <span className="h-px w-8 bg-border" />
-              <span className="w-1.5 h-1.5 rounded-full border border-primary/60" />
-              <span className="h-px w-8 bg-border" />
-            </motion.div>
+
+
 
             {/* Subtitle */}
             <motion.p
