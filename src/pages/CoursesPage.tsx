@@ -494,15 +494,31 @@ const CoursesPage = () => {
 
 
 
-            {/* Subtitle */}
-            <motion.p
+            {/* CTA Buttons */}
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
-              className={`${isBn ? "" : "font-playfair italic"} text-base md:text-xl lg:text-2xl text-muted-foreground max-w-4xl mb-7 leading-relaxed`}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-7"
             >
-              {t.subtitle}
-            </motion.p>
+              <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
+                <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-sm font-medium text-foreground">
+                  <a
+                    href="#courses"
+                    className="inline-flex rounded-full text-center group items-center justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all py-4 px-10"
+                  >
+                    {isBn ? "কোর্স দেখুন" : "Browse Courses"}
+                  </a>
+                </div>
+              </span>
+              <a
+                href="/contact"
+                className="inline-flex rounded-full text-center items-center justify-center border border-border/60 text-foreground hover:bg-foreground/5 transition-all py-4 px-10 text-sm font-medium backdrop-blur-sm"
+              >
+                {isBn ? "যোগাযোগ করুন" : "Contact Us"}
+              </a>
+            </motion.div>
 
 
           </div>
