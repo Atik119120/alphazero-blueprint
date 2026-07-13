@@ -24,7 +24,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
 import logoFullAsset from "@/assets/alphazero-logo.png.asset.json";
+import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 const logoFull = logoFullAsset.url;
+const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
+const brandLogo = isLearnSubdomain ? learnLogo : logoFull;
 import SearchModal from "./SearchModal";
 
 const Navbar = () => {
