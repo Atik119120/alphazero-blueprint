@@ -27,8 +27,9 @@ import logoFullAsset from "@/assets/alphazero-logo.png.asset.json";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 const logoFull = logoFullAsset.url;
 const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
-const brandLogo = isLearnSubdomain ? learnLogo : logoFull;
 import SearchModal from "./SearchModal";
+
+const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -36,6 +37,8 @@ const Navbar = () => {
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
+  const isLearnContext = isLearnSubdomain || LEARN_ROUTES.some((r) => location.pathname.startsWith(r));
+  const brandLogo = isLearnContext ? learnLogo : logoFull;
   const { theme, setTheme } = useTheme();
   const { language, setLanguage, t } = useLanguage();
 
