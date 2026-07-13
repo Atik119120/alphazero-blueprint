@@ -771,12 +771,13 @@ const CoursesPage = () => {
             {Object.values(trainers).map((tr, i) => (
               <motion.div key={tr.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}
                 className="group">
-                <div className="glass-card rounded-2xl p-4 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]">
-                  <div className="relative w-24 h-24 mx-auto mb-3">
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
+                <div className="glass-card rounded-2xl p-3 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.12]">
+                  <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
+                    <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-40 group-hover:opacity-70 transition-opacity" />
                     <img src={tr.image} alt={tr.name}
-                      className="relative w-24 h-24 rounded-full object-cover ring-2 ring-primary/20"
+                      className="relative w-full h-full object-cover rounded-xl ring-1 ring-primary/20 group-hover:scale-105 transition-transform duration-500"
                       onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                   <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
                   <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
