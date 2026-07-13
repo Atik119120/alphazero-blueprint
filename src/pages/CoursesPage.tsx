@@ -40,11 +40,11 @@ const trainers = {
     qualificationBn: "লিড ডিজাইনার, উদ্যোক্তা",
     image: instructorHH.url
   },
-  kamrul: {
-    name: "Md. Kamrul Hasan",
-    qualificationEn: "Microsoft Office Expert, Graphics Designer",
-    qualificationBn: "মাইক্রোসফট অফিস এক্সপার্ট, গ্রাফিক্স ডিজাইনার",
-    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/527331453_2607182776321491_4396943466664849166_n.jpg?raw=true"
+  nayeem: {
+    name: "Nayeem Ahmed",
+    qualificationEn: "Digital Marketer",
+    qualificationBn: "ডিজিটাল মার্কেটার",
+    image: instructorNayeem.url
   },
   shafiul: {
     name: "Md. Shafiul Haque",
@@ -57,12 +57,6 @@ const trainers = {
     qualificationEn: "Graphics Designer, Microsoft Office Expert, IT Support",
     qualificationBn: "গ্রাফিক্স ডিজাইনার, মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
     image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
-  },
-  nayeem: {
-    name: "Nayeem",
-    qualificationEn: "Graphics Designer, Content Creator",
-    qualificationBn: "গ্রাফিক্স ডিজাইনার, কন্টেন্ট ক্রিয়েটর",
-    image: instructorNayeem.url
   }
 };
 
@@ -87,7 +81,7 @@ const getCourseMetadata = (title: string): CourseMetadata => {
       featuresEn: ["Google Search Optimization", "Brand Verification", "Wikipedia Entry Guide", "Social Profile Setup"] };
   }
   if (lowerTitle.includes('microsoft') || lowerTitle.includes('office')) {
-    return { icon: Monitor, color: "from-orange-500 to-red-500", trainer: trainers.kamrul,
+    return { icon: Monitor, color: "from-orange-500 to-red-500", trainer: trainers.prantik,
       featuresBn: ["MS Word মাস্টারি", "Excel ফর্মুলা ও ডাটা এনালাইসিস", "PowerPoint প্রেজেন্টেশন", "অফিস অটোমেশন"],
       featuresEn: ["MS Word Mastery", "Excel Formulas & Data Analysis", "PowerPoint Presentations", "Office Automation"] };
   }
