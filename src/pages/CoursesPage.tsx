@@ -63,12 +63,6 @@ const trainers = {
     qualificationEn: "Graphics Designer, Content Creator",
     qualificationBn: "গ্রাফিক্স ডিজাইনার, কন্টেন্ট ক্রিয়েটর",
     image: instructorNayeem.url
-  },
-  hh: {
-    name: "H. H.",
-    qualificationEn: "Instructor, Creative Team",
-    qualificationBn: "ইনস্ট্রাক্টর, ক্রিয়েটিভ টিম",
-    image: instructorHH.url
   }
 };
 
