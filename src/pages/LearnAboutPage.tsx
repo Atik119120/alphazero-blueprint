@@ -102,7 +102,7 @@ const LearnAboutPage = () => {
 
   return (
     <>
-      <CoursesNavbar />
+      <Navbar />
       <div className="overflow-x-hidden bg-background">
         {/* Hero */}
         <section className="pt-32 pb-24 lg:pt-40 lg:pb-32 relative overflow-hidden">
