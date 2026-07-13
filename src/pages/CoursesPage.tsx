@@ -453,30 +453,8 @@ const CoursesPage = () => {
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col items-center text-center relative">
 
-            {/* Decorative editorial number */}
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              aria-hidden
-              className="hidden md:block absolute -top-10 -left-4 lg:-left-10 font-playfair italic text-[110px] lg:text-[150px] leading-none text-primary/10 select-none pointer-events-none"
-            >
-              01
-            </motion.span>
 
-            {/* Eyebrow */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center gap-3 mb-6"
-            >
-              <span className="h-px w-10 bg-primary/50" />
-              <span className="text-[11px] tracking-[0.35em] uppercase font-semibold text-primary/80">
-                {isBn ? "AlphaZero একাডেমি" : "AlphaZero Academy"}
-              </span>
-              <span className="h-px w-10 bg-primary/50" />
-            </motion.div>
+
 
             {/* Animated rotating headline */}
             <motion.h1
