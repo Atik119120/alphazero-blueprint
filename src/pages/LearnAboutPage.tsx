@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { GraduationCap, BookOpen, Users, Award, PlayCircle, Sparkles, Target, Rocket, Globe, CheckCircle, ArrowRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import CoursesNavbar from "@/components/CoursesNavbar";
+import Navbar from "@/components/Navbar";
 import CoursesFooter from "@/components/CoursesFooter";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
