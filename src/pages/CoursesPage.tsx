@@ -744,25 +744,8 @@ const CoursesPage = () => {
         </div>
       </section>
 
-      {/* Stats bar */}
-      <section className="border-y border-border/40">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center divide-x divide-border/40 py-6">
-            {[
-              { num: `${displayCourses.length}+`, label: isBn ? "কোর্স" : "Courses" },
-              { num: "100%", label: isBn ? "অনলাইন" : "Online" },
-              { num: "24/7", label: isBn ? "সাপোর্ট" : "Support" },
-            ].map((stat, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                className="px-8 lg:px-16 py-2 text-center">
-                <p className="text-2xl lg:text-3xl font-display font-bold gradient-text">{stat.num}</p>
-                <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
+
 
 
       {/* Instructors section */}
