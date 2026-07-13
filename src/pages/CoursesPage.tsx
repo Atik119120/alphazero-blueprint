@@ -467,7 +467,7 @@ const CoursesPage = () => {
                 {isBn ? "শিখুন কিছু" : "Learn something"}
               </span>
               <br />
-              <span className="relative inline-flex justify-center overflow-hidden align-baseline pb-3 h-[1.15em] w-[7ch] md:w-[8ch]">
+              <span className="relative inline-flex justify-center overflow-hidden align-baseline pb-6 pt-2 h-[1.5em] w-[7ch] md:w-[8ch] leading-[1.2]">
                 {rotatingTitles.map((title, index) => (
                   <motion.span
                     key={title}
