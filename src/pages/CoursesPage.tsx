@@ -41,7 +41,7 @@ const trainers = {
     image: instructorHH.url
   },
   nayeem: {
-    name: "Nayeem Ahmed",
+    name: "Md Nayeem Ahmed",
     qualificationEn: "Digital Marketer",
     qualificationBn: "ডিজিটাল মার্কেটার",
     image: instructorNayeem.url
