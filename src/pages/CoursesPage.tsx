@@ -501,19 +501,6 @@ const CoursesPage = () => {
               {t.subtitle}
             </motion.p>
 
-            {/* Live indicator pill */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/[0.06] border border-primary/20 text-[11px] uppercase tracking-[0.25em] font-semibold text-primary/90"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-70 animate-ping" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-              </span>
-              {isBn ? "কোর্স এক্সপ্লোর করুন" : "Explore the Catalog"}
-            </motion.div>
 
           </div>
         </motion.div>
