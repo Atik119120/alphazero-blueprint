@@ -231,8 +231,8 @@ export default function CourseViewerPage() {
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-y-auto">
-          {/* Video Player */}
-          <div className="relative w-full bg-black">
+          {/* Video Player - sticky at top like YouTube mobile */}
+          <div className="relative w-full bg-black sticky top-0 z-20 shadow-lg shadow-black/50">
             {selectedVideo && user && (
               <SecureVideoPlayer
                 videoUrl={selectedVideo.video_url}
