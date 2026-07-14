@@ -116,9 +116,9 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/20">
-            <div className="flex items-center gap-3 text-[10px] opacity-80">
+          {/* Footer with barcode */}
+          <div className="mt-3 pt-2 border-t border-white/20 space-y-2">
+            <div className="flex items-center justify-between text-[10px] opacity-80">
               <span className="flex items-center gap-1">
                 <Phone className="w-3 h-3" />
                 01776965533
@@ -128,13 +128,16 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
                 info@alphazero.com
               </span>
             </div>
-            <div className="w-11 h-11 bg-white rounded-lg flex items-center justify-center p-1 shrink-0">
-              <QRCodeSVG
-                value={`https://alphazero00.lovable.app/verify?id=${studentId}`}
-                size={40}
-                level="M"
-                bgColor="#ffffff"
-                fgColor="#0f172a"
+            <div className="bg-white rounded-md px-2 py-1 flex justify-center">
+              <Barcode
+                value={studentId}
+                format="CODE128"
+                width={1.2}
+                height={28}
+                displayValue={false}
+                margin={0}
+                background="#ffffff"
+                lineColor="#0f172a"
               />
             </div>
           </div>
