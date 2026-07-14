@@ -282,7 +282,7 @@ export default function AboutPageEditor() {
                 key={f.key}
                 className={cn(
                   "space-y-1.5",
-                  f.type === "textarea" && "md:col-span-2"
+                  (f.type === "textarea" || f.type === "image") && "md:col-span-2"
                 )}
               >
                 <Label className="font-semibold">{f.label}</Label>
@@ -297,6 +297,13 @@ export default function AboutPageEditor() {
                       setValues({ ...values, [f.key]: e.target.value })
                     }
                   />
+                ) : f.type === "image" ? (
+                  <ImageUploader
+                    value={values[f.key] ?? ""}
+                    onChange={(url) => setValues({ ...values, [f.key]: url })}
+                    folder="about-page"
+                    label=""
+                  />
                 ) : (
                   <Input
                     value={values[f.key] ?? ""}
@@ -305,6 +312,7 @@ export default function AboutPageEditor() {
                     }
                   />
                 )}
+
               </div>
             ))}
           </div>
