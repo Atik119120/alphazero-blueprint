@@ -174,7 +174,7 @@ const LearnAboutPage = () => {
                   className="h-24 md:h-32 w-auto mx-auto brightness-0 dark:invert mb-6"
                 />
                 <p className="text-primary text-lg font-semibold tracking-wide">
-                  {t("শেখো • তৈরি করো • এগিয়ে যাও", "Learn • Create • Grow")}
+                  {cms("mission.tagline.bn", "mission.tagline.en", "শেখো • তৈরি করো • এগিয়ে যাও", "Learn • Create • Grow")}
                 </p>
                 <div className="flex justify-center gap-3 mt-4">
                   <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium text-xs">
@@ -195,17 +195,17 @@ const LearnAboutPage = () => {
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06]">
                   <Rocket size={14} className="text-primary" />
                   <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">
-                    {t("আমাদের মিশন", "Our Mission")}
+                    {cms("mission.badge.bn", "mission.badge.en", "আমাদের মিশন", "Our Mission")}
                   </span>
                 </div>
                 <h2 className="text-3xl lg:text-4xl font-display font-bold leading-tight">
-                  {t("বাংলাদেশের ক্রিয়েটরদের জন্য একটি ", "A modern learning home for ")}
+                  {cms("mission.title.bn", "mission.title.en", "বাংলাদেশের ক্রিয়েটরদের জন্য একটি ", "A modern learning home for ")}
                   <span className="gradient-text">
-                    {t("আধুনিক শিক্ষা প্ল্যাটফর্ম", "Bangladeshi creators")}
+                    {cms("mission.title2.bn", "mission.title2.en", "আধুনিক শিক্ষা প্ল্যাটফর্ম", "Bangladeshi creators")}
                   </span>
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  {t(
+                  {cms("mission.desc.bn", "mission.desc.en",
                     "Learn with AlphaZero হলো AlphaZero এজেন্সির লার্নিং শাখা। এখানে আমরা এমন কোর্স তৈরি করি যা শুধু থিওরি নয় — আসল ক্লায়েন্ট প্রজেক্টে ব্যবহৃত টুলস, প্রসেস ও ওয়ার্কফ্লো শেখায়। শিক্ষার্থীরা শেখেন, তৈরি করেন এবং সরাসরি পোর্টফোলিও গড়ে তোলেন।",
                     "Learn with AlphaZero is the education arm of the AlphaZero agency. We build courses that go beyond theory — teaching the exact tools, processes, and workflows used on real client projects. Students learn, build, and grow a portfolio at the same time."
                   )}
@@ -214,7 +214,7 @@ const LearnAboutPage = () => {
                 <div className="p-5 rounded-2xl glass-card">
                   <h4 className="text-base font-bold mb-3 flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-primary" />
-                    {t("কেন Learn with AlphaZero?", "Why Learn with AlphaZero?")}
+                    {cms("mission.whyTitle.bn", "mission.whyTitle.en", "কেন Learn with AlphaZero?", "Why Learn with AlphaZero?")}
                   </h4>
                   <div className="space-y-2.5">
                     {whyChoose.map((item, i) => (
