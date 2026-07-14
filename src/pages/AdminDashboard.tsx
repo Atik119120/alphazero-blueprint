@@ -816,13 +816,7 @@ function AdminDashboardInner() {
     { id: 'requests', icon: Mail, label: language === 'bn' ? 'Request' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
   ];
 
-  const lmsMoreItemsAll = [
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'Comment' : 'Comments', scopeTag: 'learn' as const },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'Coupon' : 'Coupons', scopeTag: 'learn' as const },
-  ];
+  const lmsMoreItemsAll: any[] = [];
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
@@ -839,6 +833,11 @@ function AdminDashboardInner() {
     { id: 'settings', icon: Settings, label: language === 'bn' ? 'Settings' : 'Settings', scopeTag: 'both' as const },
     { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API Key' : 'API Keys', scopeTag: 'both' as const },
     { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'Payment API' : 'Payment API', scopeTag: 'both' as const },
+    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
+    { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
+    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
+    { id: 'comments', icon: FileText, label: language === 'bn' ? 'Comment' : 'Comments', scopeTag: 'learn' as const },
+    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'Coupon' : 'Coupons', scopeTag: 'learn' as const },
     { id: 'profile', icon: User, label: language === 'bn' ? 'Admin' : 'Admins', scopeTag: 'both' as const },
   ];
 
@@ -930,26 +929,6 @@ function AdminDashboardInner() {
             </div>
           </div>
 
-          {/* LMS More - Collapsible */}
-          <div className="mb-2">
-            <button
-              onClick={() => toggleGroup('lms_more')}
-              className="hidden md:flex w-full items-center gap-1.5 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest hover:text-muted-foreground transition-colors"
-            >
-              <svg className={`w-3 h-3 transition-transform ${expandedGroups.lms_more ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              {language === 'bn' ? 'আরো টুলস' : 'More Tools'}
-              <Badge variant="secondary" className="ml-auto text-[9px] h-4 px-1">{lmsMoreItems.length}</Badge>
-            </button>
-            {expandedGroups.lms_more && (
-              <div className="space-y-0.5 mt-1 hidden md:block">
-                {lmsMoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
-              </div>
-            )}
-            {/* On mobile, always show icons */}
-            <div className="md:hidden space-y-0.5">
-              {lmsMoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
-            </div>
-          </div>
 
           {/* CMS Section */}
           <div className="mb-2">
