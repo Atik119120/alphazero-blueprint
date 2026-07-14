@@ -69,16 +69,28 @@ const SECTION_SCHEMA: Record<string, SectionSchema> = {
     itemsMode: null,
   },
   courses_preview: {
-    label: "Courses Preview", hint: "কোর্স সেকশনের হেডিং",
+    label: "Featured Courses", hint: "কোর্স সেকশনের হেডিং + CTA",
     icon: GraduationCap, gradient: "from-indigo-500 to-blue-600",
     fields: ["title", "subtitle", "button_label", "button_url"],
     itemsMode: null,
   },
   instructors: {
-    label: "Instructors", hint: "ইন্সট্রাক্টরদের কার্ড",
+    label: "Instructors", hint: "ইন্সট্রাক্টরদের নাম, রোল ও ছবি",
     icon: GraduationCap, gradient: "from-violet-500 to-purple-600",
     fields: ["title", "subtitle"],
     itemsMode: "cards", itemLabel: "Instructor",
+  },
+  testimonials: {
+    label: "Testimonials", hint: "ক্লায়েন্টদের রিভিউ",
+    icon: MessageSquare, gradient: "from-rose-500 to-pink-600",
+    fields: ["title", "subtitle", "highlight"],
+    itemsMode: "cards", itemLabel: "Testimonial",
+  },
+  contact_cta: {
+    label: "Contact / CTA", hint: "যোগাযোগের ব্লক + বাটন",
+    icon: PhoneCall, gradient: "from-amber-500 to-orange-600",
+    fields: ["title", "subtitle", "description", "button_label", "button_url"],
+    itemsMode: null,
   },
 };
 
