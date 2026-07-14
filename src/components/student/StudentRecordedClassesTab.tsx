@@ -161,32 +161,78 @@ export default function StudentRecordedClassesTab({ language }: Props) {
         </DialogContent>
       </Dialog>
 
-      {/* Player dialog */}
+      {/* Player dialog - split view: video left, class list right */}
       <Dialog open={!!playing} onOpenChange={(o) => !o && setPlaying(null)}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden">
-          <DialogHeader className="p-4 pb-2">
-            <DialogTitle className="text-base">{playing?.title}</DialogTitle>
-            {playing && (
-              <p className="text-[11px] text-muted-foreground flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
-                {format(new Date(playing.recorded_at), 'PPp')}
-              </p>
-            )}
-          </DialogHeader>
-          <div className="aspect-video bg-black">
-            {playing && (
-              <iframe
-                src={`https://www.youtube.com/embed/${playing.youtube_video_id}?rel=0&modestbranding=1`}
-                title={playing.title}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            )}
+        <DialogContent className="max-w-6xl p-0 overflow-hidden">
+          <div className="flex flex-col md:flex-row max-h-[85vh]">
+            {/* Left: Video */}
+            <div className="flex-1 flex flex-col bg-black min-w-0">
+              <div className="aspect-video bg-black">
+                {playing && (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${playing.youtube_video_id}?rel=0&modestbranding=1&autoplay=1`}
+                    title={playing.title}
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                )}
+              </div>
+              <div className="p-4 bg-background border-t border-border/50">
+                <DialogHeader>
+                  <DialogTitle className="text-base leading-snug">{playing?.title}</DialogTitle>
+                </DialogHeader>
+                {playing && (
+                  <p className="text-[11px] text-muted-foreground flex items-center gap-1 mt-1">
+                    <Calendar className="w-3 h-3" />
+                    {format(new Date(playing.recorded_at), 'PPp')}
+                  </p>
+                )}
+                {playing?.description && (
+                  <p className="text-sm text-muted-foreground mt-2">{playing.description}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Class list */}
+            <aside className="w-full md:w-80 border-t md:border-t-0 md:border-l border-border/50 bg-background flex flex-col">
+              <div className="p-4 border-b border-border/50 shrink-0">
+                <p className="text-xs text-muted-foreground">{openFolder?.title}</p>
+                <p className="text-sm font-bold mt-0.5">
+                  {openFolder?.classes.length || 0} {t.classes}
+                </p>
+              </div>
+              <ScrollArea className="flex-1 max-h-[300px] md:max-h-none">
+                <div className="p-2 space-y-1">
+                  {openFolder?.classes.map((c, idx) => {
+                    const isActive = c.id === playing?.id;
+                    return (
+                      <button key={c.id} onClick={() => setPlaying(c)}
+                        className={`w-full flex items-start gap-2.5 p-2.5 rounded-lg text-left transition-colors ${
+                          isActive ? 'bg-primary/10 border border-primary/30' : 'hover:bg-secondary/70 border border-transparent'
+                        }`}>
+                        <div className={`w-8 h-8 rounded-md flex items-center justify-center text-[11px] font-bold shrink-0 ${
+                          isActive ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'
+                        }`}>
+                          {String((openFolder?.classes.length || 0) - idx).padStart(2, '0')}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-xs font-medium leading-snug break-words whitespace-normal line-clamp-2 ${isActive ? 'text-primary' : ''}`}>
+                            {c.title}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground mt-0.5 flex items-center gap-1">
+                            <Calendar className="w-2.5 h-2.5" />
+                            {format(new Date(c.recorded_at), 'PP')}
+                          </p>
+                        </div>
+                        {isActive && <Play className="w-3 h-3 fill-current text-primary shrink-0 mt-1" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </ScrollArea>
+            </aside>
           </div>
-          {playing?.description && (
-            <div className="p-4 text-sm text-muted-foreground border-t border-border/50">{playing.description}</div>
-          )}
         </DialogContent>
       </Dialog>
     </div>
