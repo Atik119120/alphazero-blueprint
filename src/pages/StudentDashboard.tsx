@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CourseEnrollmentModal from '@/components/student/CourseEnrollmentModal';
 import StudentLiveClassesTab from '@/components/student/StudentLiveClassesTab';
 import { Video as VideoIcon } from 'lucide-react';
+import learnLogo from '@/assets/learn-with-alphazero-logo.png';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
