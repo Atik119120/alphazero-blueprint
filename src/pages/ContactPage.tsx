@@ -32,9 +32,8 @@ const ContactPage = () => {
     const content = footerContents?.find((item) => item.content_key === key);
     if (!content) return null;
 
-    return language === "bn"
-      ? content.content_bn || content.content_en
-      : content.content_en || content.content_bn;
+    return content.content_en;
+
   };
 
   const normalizePhoneForHref = (value: string) => value.replace(/[^\d+]/g, "");

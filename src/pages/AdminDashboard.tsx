@@ -972,18 +972,8 @@ function AdminDashboardInner() {
 
         {/* Footer Actions - Language, Theme, Logout */}
         <div className="p-2 md:p-3 border-t border-border/50 space-y-2">
-          {/* Language Toggle */}
-          <button
-            onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
-            className="w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 hover:from-indigo-500/20 hover:to-purple-500/20 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400"
-          >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center flex-shrink-0">
-              <Languages className="w-4 h-4 text-white" />
-            </div>
-            <span className="hidden md:inline font-semibold">
-              {language === 'bn' ? 'English' : 'বাংলা'}
-            </span>
-          </button>
+          {/* Language toggle removed — English only */}
+
           
           {/* Theme Toggle */}
           <button

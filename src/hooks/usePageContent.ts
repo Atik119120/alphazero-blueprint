@@ -9,9 +9,9 @@ interface PageContent {
   page_name: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
   site_scope?: string;
 }
+
 
 export const usePageContent = (pageName: string, scopeOverride?: SiteScope) => {
   const queryClient = useQueryClient();
@@ -56,10 +56,8 @@ export const usePageContent = (pageName: string, scopeOverride?: SiteScope) => {
     return (key: string, fallback: string = '') => {
       const content = contents?.find(c => c.content_key === key);
       if (!content) return fallback;
-      const value = language === 'bn'
-        ? (content.content_bn || content.content_en)
-        : content.content_en;
-      return value || fallback;
+      return content.content_en || fallback;
+
     };
   }, [contents, language]);
 

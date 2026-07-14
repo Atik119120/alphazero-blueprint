@@ -25,7 +25,7 @@ const LearnContactPage = () => {
   const getFooterContent = (key: string) => {
     const c = footerContents?.find((i) => i.content_key === key);
     if (!c) return null;
-    return isBn ? c.content_bn || c.content_en : c.content_en || c.content_bn;
+    return c.content_en;
   };
   const phone = getPageContent("learn.phone") || getFooterContent("phone") || "+880 1344-497808";
   const email = (getPageContent("learn.email") || "support@learn.alphazero.online").trim();

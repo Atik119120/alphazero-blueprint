@@ -47,8 +47,8 @@ interface FooterContent {
   id: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
 }
+
 
 const ICON_OPTIONS = [
   { value: 'Facebook', label: 'Facebook', icon: Facebook },
@@ -80,9 +80,9 @@ const FooterManagement = () => {
   });
 
   const [contentForm, setContentForm] = useState({
-    content_en: '',
-    content_bn: ''
+    content_en: ''
   });
+
 
   const { data: links, isLoading: linksLoading } = useQuery({
     queryKey: ['footer-links', scope],
@@ -154,13 +154,14 @@ const FooterManagement = () => {
 
   // Content mutations
   const updateContentMutation = useMutation({
-    mutationFn: async ({ id, content_en, content_bn }: { id: string; content_en: string; content_bn: string }) => {
+    mutationFn: async ({ id, content_en }: { id: string; content_en: string }) => {
       const { error } = await supabase
         .from('footer_content')
-        .update({ content_en, content_bn })
+        .update({ content_en })
         .eq('id', id);
       if (error) throw error;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footer-content'] });
       toast.success('কনটেন্ট আপডেট হয়েছে!');
@@ -203,8 +204,7 @@ const FooterManagement = () => {
   const startEditContent = (content: FooterContent) => {
     setEditingContent(content);
     setContentForm({
-      content_en: content.content_en || '',
-      content_bn: content.content_bn || ''
+      content_en: content.content_en || ''
     });
   };
 
@@ -212,10 +212,10 @@ const FooterManagement = () => {
     if (!editingContent) return;
     updateContentMutation.mutate({
       id: editingContent.id,
-      content_en: contentForm.content_en,
-      content_bn: contentForm.content_bn
+      content_en: contentForm.content_en
     });
   };
+
 
   const toggleLinkStatus = (link: FooterLink) => {
     updateLinkMutation.mutate({ id: link.id, is_active: !link.is_active });
@@ -444,14 +444,8 @@ const FooterManagement = () => {
                         rows={2}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label>বাংলা</Label>
-                      <Textarea
-                        value={contentForm.content_bn}
-                        onChange={(e) => setContentForm(prev => ({ ...prev, content_bn: e.target.value }))}
-                        rows={2}
-                      />
-                    </div>
+                    {/* Bangla removed — English only */}
+
                     <div className="flex gap-2">
                       <Button onClick={handleUpdateContent} disabled={updateContentMutation.isPending}>
                         {updateContentMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
@@ -461,17 +455,12 @@ const FooterManagement = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <Label className="text-xs text-muted-foreground">English</Label>
-                      <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_en || '-'}</p>
-                    </div>
-                    <div className="space-y-1">
-                      <Label className="text-xs text-muted-foreground">বাংলা</Label>
-                      <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_bn || '-'}</p>
-                    </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">English</Label>
+                    <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_en || '-'}</p>
                   </div>
                 )}
+
               </CardContent>
             </Card>
           ))}

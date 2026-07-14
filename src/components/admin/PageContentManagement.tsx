@@ -18,8 +18,8 @@ interface PageContent {
   page_name: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
 }
+
 
 // Human-readable labels and descriptions for content keys
 const CONTENT_KEY_INFO: Record<string, Record<string, { label: string; labelEn: string; description: string }>> = {
@@ -154,10 +154,10 @@ const PageContentManagement = () => {
   const [showDescriptions, setShowDescriptions] = useState(true);
   const [formData, setFormData] = useState({
     content_key: '',
-    content_en: '',
-    content_bn: ''
+    content_en: ''
   });
-  const [editData, setEditData] = useState<Record<string, { content_en: string; content_bn: string }>>({});
+  const [editData, setEditData] = useState<Record<string, { content_en: string }>>({});
+
 
   const { data: contents, isLoading } = useQuery({
     queryKey: ['page-content', scope],
@@ -182,17 +182,18 @@ const PageContentManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
       toast.success('নতুন কনটেন্ট যোগ হয়েছে!');
       setIsAddDialogOpen(false);
-      setFormData({ content_key: '', content_en: '', content_bn: '' });
+      setFormData({ content_key: '', content_en: '' });
     },
     onError: () => toast.error('কনটেন্ট যোগ করতে সমস্যা হয়েছে')
   });
 
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, content_en, content_bn }: { id: string; content_en: string | null; content_bn: string | null }) => {
-      const { error } = await supabase.from('page_content').update({ content_en, content_bn }).eq('id', id);
+    mutationFn: async ({ id, content_en }: { id: string; content_en: string | null }) => {
+      const { error } = await supabase.from('page_content').update({ content_en }).eq('id', id);
       if (error) throw error;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
       toast.success('কনটেন্ট আপডেট হয়েছে!');
@@ -221,8 +222,7 @@ const PageContentManagement = () => {
     addMutation.mutate({
       page_name: selectedPage,
       content_key: formData.content_key,
-      content_en: formData.content_en || null,
-      content_bn: formData.content_bn || null
+      content_en: formData.content_en || null
     });
   };
 
@@ -231,8 +231,7 @@ const PageContentManagement = () => {
     setEditData(prev => ({
       ...prev,
       [content.id]: {
-        content_en: content.content_en || '',
-        content_bn: content.content_bn || ''
+        content_en: content.content_en || ''
       }
     }));
   };
@@ -242,10 +241,10 @@ const PageContentManagement = () => {
     if (!data) return;
     updateMutation.mutate({
       id,
-      content_en: data.content_en || null,
-      content_bn: data.content_bn || null
+      content_en: data.content_en || null
     });
   };
+
 
   const selectedPageInfo = PAGES.find(p => p.id === selectedPage);
   const pageKeyInfo = CONTENT_KEY_INFO[selectedPage] || {};
@@ -262,9 +261,9 @@ const PageContentManagement = () => {
     return (
       c.content_key.toLowerCase().includes(q) ||
       info.label.toLowerCase().includes(q) ||
-      (c.content_en || '').toLowerCase().includes(q) ||
-      (c.content_bn || '').toLowerCase().includes(q)
+      (c.content_en || '').toLowerCase().includes(q)
     );
+
   });
 
   // Group by section prefix
@@ -358,26 +357,16 @@ const PageContentManagement = () => {
                     ফরম্যাট: section.field (যেমন hero.title, cta.button)
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label className="text-xs flex items-center gap-1"><Globe className="w-3 h-3" /> English</Label>
-                    <Textarea
-                      value={formData.content_en}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content_en: e.target.value }))}
-                      placeholder="English text..."
-                      rows={4}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-xs flex items-center gap-1"><Languages className="w-3 h-3" /> বাংলা</Label>
-                    <Textarea
-                      value={formData.content_bn}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content_bn: e.target.value }))}
-                      placeholder="বাংলা টেক্সট..."
-                      rows={4}
-                    />
-                  </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs flex items-center gap-1"><Globe className="w-3 h-3" /> English</Label>
+                  <Textarea
+                    value={formData.content_en}
+                    onChange={(e) => setFormData(prev => ({ ...prev, content_en: e.target.value }))}
+                    placeholder="English text..."
+                    rows={4}
+                  />
                 </div>
+
                 <Button onClick={handleAdd} disabled={addMutation.isPending} className="w-full">
                   {addMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
                   যোগ করুন
@@ -546,52 +535,29 @@ const PageContentManagement = () => {
                       </div>
 
                       {isEditing && ed ? (
-                        <div className="grid md:grid-cols-2 gap-3">
-                          <div className="space-y-1">
-                            <Label className="text-xs flex items-center gap-1 text-muted-foreground"><Globe className="w-3 h-3" /> English</Label>
-                            <Textarea
-                              value={ed.content_en}
-                              onChange={(e) => setEditData(prev => ({
-                                ...prev,
-                                [content.id]: { ...prev[content.id], content_en: e.target.value }
-                              }))}
-                              rows={3}
-                              className="text-sm"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <Label className="text-xs flex items-center gap-1 text-muted-foreground"><Languages className="w-3 h-3" /> বাংলা</Label>
-                            <Textarea
-                              value={ed.content_bn}
-                              onChange={(e) => setEditData(prev => ({
-                                ...prev,
-                                [content.id]: { ...prev[content.id], content_bn: e.target.value }
-                              }))}
-                              rows={3}
-                              className="text-sm"
-                            />
-                          </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs flex items-center gap-1 text-muted-foreground"><Globe className="w-3 h-3" /> English</Label>
+                          <Textarea
+                            value={ed.content_en}
+                            onChange={(e) => setEditData(prev => ({
+                              ...prev,
+                              [content.id]: { ...prev[content.id], content_en: e.target.value }
+                            }))}
+                            rows={3}
+                            className="text-sm"
+                          />
                         </div>
                       ) : (
-                        <div className="grid md:grid-cols-2 gap-3">
-                          <div className="space-y-1">
-                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-                              <Globe className="w-3 h-3" /> English
-                            </p>
-                            <p className="text-sm bg-muted/40 p-2.5 rounded-lg min-h-[44px] leading-relaxed">
-                              {content.content_en || <span className="text-muted-foreground italic text-xs">Empty</span>}
-                            </p>
-                          </div>
-                          <div className="space-y-1">
-                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-                              <Languages className="w-3 h-3" /> বাংলা
-                            </p>
-                            <p className="text-sm bg-muted/40 p-2.5 rounded-lg min-h-[44px] leading-relaxed">
-                              {content.content_bn || <span className="text-muted-foreground italic text-xs">খালি</span>}
-                            </p>
-                          </div>
+                        <div className="space-y-1">
+                          <p className="text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+                            <Globe className="w-3 h-3" /> English
+                          </p>
+                          <p className="text-sm bg-muted/40 p-2.5 rounded-lg min-h-[44px] leading-relaxed">
+                            {content.content_en || <span className="text-muted-foreground italic text-xs">Empty</span>}
+                          </p>
                         </div>
                       )}
+
                     </CardContent>
                   </Card>
                 );

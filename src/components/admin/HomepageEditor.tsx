@@ -287,14 +287,15 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
     try {
       await updateSection.mutateAsync({
         id: form.id,
-        title: form.title, title_bn: form.title_bn,
-        subtitle: form.subtitle, subtitle_bn: form.subtitle_bn,
-        description: form.description, description_bn: form.description_bn,
-        highlight: form.highlight, highlight_bn: form.highlight_bn,
+        title: form.title,
+        subtitle: form.subtitle,
+        description: form.description,
+        highlight: form.highlight,
         image_url: form.image_url, image_url_2: form.image_url_2,
         button_label: form.button_label, button_url: form.button_url,
         is_active: form.is_active,
       });
+
       toast.success("সেভ হয়েছে");
       setDirty(false);
     } catch (e: any) {
@@ -341,39 +342,26 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
 
       {/* Section fields */}
       {showText && (
-        <FieldGroup title="Content" description="সেকশনের টেক্সট কন্টেন্ট (English + বাংলা)">
+        <FieldGroup title="Content" description="Section text content">
           <div className="grid md:grid-cols-2 gap-4">
             {has("title") && (
-              <>
-                <FieldInput label="Title (English)" value={form.title} onChange={(v) => set("title", v)} />
-                <FieldInput label="Title (বাংলা)" value={form.title_bn} onChange={(v) => set("title_bn", v)} />
-              </>
+              <FieldInput label="Title" value={form.title} onChange={(v) => set("title", v)} />
             )}
             {has("subtitle") && (
-              <>
-                <FieldInput label="Subtitle (English)" value={form.subtitle} onChange={(v) => set("subtitle", v)} />
-                <FieldInput label="Subtitle (বাংলা)" value={form.subtitle_bn} onChange={(v) => set("subtitle_bn", v)} />
-              </>
+              <FieldInput label="Subtitle" value={form.subtitle} onChange={(v) => set("subtitle", v)} />
             )}
             {has("highlight") && (
-              <>
-                <FieldInput label="Highlight (English)" placeholder="e.g. Graphic Design" value={form.highlight} onChange={(v) => set("highlight", v)} />
-                <FieldInput label="Highlight (বাংলা)" value={form.highlight_bn} onChange={(v) => set("highlight_bn", v)} />
-              </>
+              <FieldInput label="Highlight" placeholder="e.g. Graphic Design" value={form.highlight} onChange={(v) => set("highlight", v)} />
             )}
             {has("description") && (
-              <>
-                <div className="md:col-span-2">
-                  <FieldTextarea label="Description (English)" value={form.description} onChange={(v) => set("description", v)} />
-                </div>
-                <div className="md:col-span-2">
-                  <FieldTextarea label="Description (বাংলা)" value={form.description_bn} onChange={(v) => set("description_bn", v)} />
-                </div>
-              </>
+              <div className="md:col-span-2">
+                <FieldTextarea label="Description" value={form.description} onChange={(v) => set("description", v)} />
+              </div>
             )}
           </div>
         </FieldGroup>
       )}
+
 
       {showMedia && (
         <FieldGroup title="Media" description="সেকশনের জন্য ইমেজ" icon={ImagePlus}>
@@ -529,12 +517,13 @@ const ItemRow = ({
     try {
       await updateItem.mutateAsync({
         id: f.id,
-        title: f.title, title_bn: f.title_bn,
-        subtitle: f.subtitle, subtitle_bn: f.subtitle_bn,
-        description: f.description, description_bn: f.description_bn,
+        title: f.title,
+        subtitle: f.subtitle,
+        description: f.description,
         image_url: f.image_url, image_url_2: f.image_url_2,
         url: f.url, order_index: f.order_index, is_active: f.is_active,
       });
+
       toast.success("সেভ হয়েছে");
       setDirty(false);
     } catch (e: any) { toast.error(e.message); }
@@ -593,16 +582,13 @@ const ItemRow = ({
             )}
             {mode === "cards" && (
               <>
-                <FieldInput label="Title (English)" value={f.title} onChange={(v) => set("title", v)} />
-                <FieldInput label="Title (বাংলা)" value={f.title_bn} onChange={(v) => set("title_bn", v)} />
+                <FieldInput label="Title" value={f.title} onChange={(v) => set("title", v)} />
                 <div className="md:col-span-2">
-                  <FieldTextarea label="Description (English)" rows={2} value={f.description} onChange={(v) => set("description", v)} />
-                </div>
-                <div className="md:col-span-2">
-                  <FieldTextarea label="Description (বাংলা)" rows={2} value={f.description_bn} onChange={(v) => set("description_bn", v)} />
+                  <FieldTextarea label="Description" rows={2} value={f.description} onChange={(v) => set("description", v)} />
                 </div>
               </>
             )}
+
             <ImageUploader
               label={mode === "brands" ? "Brand Logo" : "Image 1"}
               value={f.image_url ?? ""} onChange={(url) => set("image_url", url)}
