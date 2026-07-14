@@ -195,7 +195,7 @@ const LearnContactPage = () => {
                   <Clock size={18} className="text-primary shrink-0 mt-0.5" />
                   <div>
                     <div className="text-xs text-muted-foreground uppercase tracking-wide">{t("সাপোর্ট সময়", "Support Hours")}</div>
-                    <div className="text-sm font-medium">{t("শনি — বৃহস্পতি, ১০টা — ১০টা", "Sat — Thu, 10am — 10pm")}</div>
+                    <div className="text-sm font-medium">{cms("info.hours.bn", "info.hours.en", "শনি — বৃহস্পতি, ১০টা — ১০টা", "Sat — Thu, 10am — 10pm")}</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
