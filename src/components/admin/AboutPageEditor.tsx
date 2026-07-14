@@ -18,9 +18,10 @@ interface Field {
   key: string;
   label: string;
   description?: string;
-  type?: "input" | "textarea";
+  type?: "input" | "textarea" | "image";
   fallback: string;
 }
+
 
 interface Section {
   id: string;
