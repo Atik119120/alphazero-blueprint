@@ -230,8 +230,9 @@ const MemoServicePair = memo(
 const Index = () => {
   const { t, language } = useLanguage();
   const { getContent } = usePageContent('home');
-  const { section: brandsSection } = useHomepageSection('sister_brands', 'agency', 'home');
+  const { section: brandsSection } = useHomepageSection('trusted_brands', 'agency', 'home');
   const { data: brandItems } = useHomepageSectionItems(brandsSection?.id);
+
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
