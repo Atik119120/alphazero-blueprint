@@ -444,14 +444,8 @@ const FooterManagement = () => {
                         rows={2}
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label>বাংলা</Label>
-                      <Textarea
-                        value={contentForm.content_bn}
-                        onChange={(e) => setContentForm(prev => ({ ...prev, content_bn: e.target.value }))}
-                        rows={2}
-                      />
-                    </div>
+                    {/* Bangla removed — English only */}
+
                     <div className="flex gap-2">
                       <Button onClick={handleUpdateContent} disabled={updateContentMutation.isPending}>
                         {updateContentMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
