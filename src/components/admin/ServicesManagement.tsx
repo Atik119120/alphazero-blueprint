@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import * as LucideIcons from "lucide-react";
+import PageHeroEditor from "./PageHeroEditor";
 
 interface Service {
   id: string;
