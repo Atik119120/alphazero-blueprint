@@ -350,20 +350,39 @@ export default function TeacherCoursesTab({ courses, isLoading, refetch, languag
                   </Badge>
                 </div>
 
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full gap-2"
-                  onClick={() => openEditDialog(course)}
-                >
-                  <Edit className="w-4 h-4" />
-                  {t.editCourse}
-                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1 gap-2"
+                    onClick={() => openEditDialog(course)}
+                  >
+                    <Edit className="w-4 h-4" />
+                    {t.editCourse}
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className="flex-1 gap-2"
+                    onClick={() => setVideoManagerCourse(course)}
+                  >
+                    <Video className="w-4 h-4" />
+                    {language === 'bn' ? 'ভিডিও' : 'Videos'}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
       )}
+
+      <TeacherVideoManager
+        course={videoManagerCourse}
+        open={!!videoManagerCourse}
+        onOpenChange={(v) => !v && setVideoManagerCourse(null)}
+        onChanged={refetch}
+        language={language}
+      />
     </motion.div>
   );
 }
