@@ -594,38 +594,42 @@ const WorkPage = () => {
 
   return (
     <Layout>
-      {/* Hero */}
-      <section className="relative py-28 lg:py-40 overflow-hidden">
-        <div className="absolute inset-0 mesh-bg" />
+      {/* Hero — Services style */}
+      <section className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
+        <div className="absolute inset-0 bg-black" />
+        <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
+          style={{ filter: "blur(16px)" }} />
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.06] backdrop-blur-sm mb-8">
               <Sparkles size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{hero("hero.subtitle", "Creative Portfolio")}</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/80">{hero("hero.subtitle", "Creative Portfolio")}</span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-tight mb-6">
+              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
               {(() => {
                 const raw = hero("hero.title", "Our Creative |Works & Projects|");
                 const parts = raw.split("|");
                 if (parts.length >= 3) {
-                  return <>{parts[0]}<span className="gradient-text">{parts[1]}</span>{parts.slice(2).join("|")}</>;
+                  return <>{parts[0]}<span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
                 }
                 return raw;
               })()}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
+              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto mb-8">
               {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
             </motion.p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card text-sm text-muted-foreground font-medium">
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.06] backdrop-blur-sm text-sm text-white/70 font-medium">
               ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} {hero("hero.badge", "Projects • Graphic Design • Web • Video")}
             </motion.div>
           </div>
         </div>
       </section>
+
 
       {isLoading ? (
         <div className="flex items-center justify-center py-32">
