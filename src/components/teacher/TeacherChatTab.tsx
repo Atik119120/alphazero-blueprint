@@ -235,13 +235,21 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
   }, [messages]);
 
   const createRoom = async () => {
-    if (!profile?.id || !formData.name.trim()) return;
+    if (!profile?.id) return;
+
+    const selectedStudent = students.find(s => s.id === formData.studentId);
+    const roomName = formData.name.trim() || (formData.roomType === 'direct' ? selectedStudent?.full_name : '');
+
+    if (!roomName) {
+      toast.error(formData.roomType === 'direct' ? 'Please select a student' : 'Please enter a room name');
+      return;
+    }
     
     try {
       const { data: room, error } = await supabase
         .from('chat_rooms')
         .insert({
-          name: formData.name.trim(),
+          name: roomName,
           room_type: formData.roomType,
           course_id: formData.courseId || null,
           created_by: profile.id,
@@ -261,13 +269,12 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
       
       // If direct message, add the student
       if (formData.roomType === 'direct' && formData.studentId) {
-        const student = students.find(s => s.id === formData.studentId);
-        if (student) {
+        if (selectedStudent) {
           await supabase
             .from('chat_room_members')
             .insert({
               room_id: room.id,
-              user_id: student.user_id,
+              user_id: selectedStudent.user_id,
             });
         }
       }
