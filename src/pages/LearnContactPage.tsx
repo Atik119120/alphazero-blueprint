@@ -62,16 +62,17 @@ const LearnContactPage = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 mb-6">
               <GraduationCap size={14} className="text-primary" />
               <span className="text-xs font-bold tracking-wider uppercase text-primary">
-                {t("লার্ন সাপোর্ট", "Learn Support")}
+                {cms("hero.badge.bn", "hero.badge.en", "লার্ন সাপোর্ট", "Learn Support")}
               </span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-5 leading-tight">
-              {t("শিখতে চান? ", "Learning? ")}<span className="gradient-text">{t("আমরা সাহায্য করব", "We're here to help")}</span>
+              {cms("hero.title.bn", "hero.title.en", "শিখতে চান? ", "Learning? ")}
+              <span className="gradient-text">{cms("hero.title2.bn", "hero.title2.en", "আমরা সাহায্য করব", "We're here to help")}</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t(
+              {cms("hero.description.bn", "hero.description.en",
                 "কোর্স, এনরোলমেন্ট বা পেমেন্ট সংক্রান্ত যেকোনো প্রশ্ন — আমাদের একাডেমী টিম ২৪ ঘন্টার মধ্যে উত্তর দেবে।",
                 "Any question about courses, enrollment or payment — our academy team responds within 24 hours."
               )}
