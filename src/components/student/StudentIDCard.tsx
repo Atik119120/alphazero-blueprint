@@ -5,6 +5,8 @@ import { Download, Phone, Mail, GraduationCap } from 'lucide-react';
 import { Profile } from '@/types/lms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { QRCodeSVG } from 'qrcode.react';
+import logoImg from '/logo.png';
 
 interface StudentIDCardProps {
   profile: Profile;
@@ -63,16 +65,16 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
         <div className="relative h-full p-5 flex flex-col text-white">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <img 
-              src="/logo.png" 
-              alt="Logo" 
-              className="w-10 h-10 object-contain brightness-0 invert"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+            <div className="w-11 h-11 rounded-lg bg-white flex items-center justify-center p-1.5 shrink-0">
+              <img
+                src={logoImg}
+                alt="AlphaZero"
+                className="w-full h-full object-contain"
+                crossOrigin="anonymous"
+              />
+            </div>
             <div>
-              <h3 className="text-lg font-bold tracking-wide">AlphaZero Academy</h3>
+              <h3 className="text-lg font-bold tracking-wide leading-tight">AlphaZero Academy</h3>
               <p className="text-xs opacity-80">Student Identity Card</p>
             </div>
           </div>
@@ -95,25 +97,27 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
             </div>
 
             {/* Info */}
-            <div className="flex-1 space-y-1.5">
+            <div className="flex-1 space-y-2 min-w-0">
               <div>
                 <p className="text-[10px] uppercase tracking-wider opacity-60">Name</p>
                 <p className="font-semibold text-sm truncate">{profile.full_name}</p>
               </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-wider opacity-60">Student ID</p>
-                <p className="font-mono text-xs">{studentId}</p>
-              </div>
               <div className="flex gap-4">
-                <div>
+                <div className="min-w-0">
                   <p className="text-[10px] uppercase tracking-wider opacity-60">Student ID</p>
-                  <p className="font-mono text-xs">{studentId}</p>
+                  <p className="font-mono text-xs truncate">{studentId}</p>
                 </div>
                 <div>
                   <p className="text-[10px] uppercase tracking-wider opacity-60">Member Since</p>
                   <p className="text-xs">{profile.created_at ? formatDate(profile.created_at) : 'N/A'}</p>
                 </div>
               </div>
+              {profile.email && (
+                <div className="min-w-0">
+                  <p className="text-[10px] uppercase tracking-wider opacity-60">Email</p>
+                  <p className="text-xs truncate">{profile.email}</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -129,12 +133,14 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
                 info@alphazero.com
               </span>
             </div>
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-purple-600 rounded grid grid-cols-3 gap-0.5 p-1">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className={`rounded-sm ${i % 2 === 0 ? 'bg-white' : 'bg-white/40'}`} />
-                ))}
-              </div>
+            <div className="w-11 h-11 bg-white rounded-lg flex items-center justify-center p-1 shrink-0">
+              <QRCodeSVG
+                value={`https://alphazero00.lovable.app/verify?id=${studentId}`}
+                size={40}
+                level="M"
+                bgColor="#ffffff"
+                fgColor="#0f172a"
+              />
             </div>
           </div>
         </div>
