@@ -28,7 +28,7 @@ import {
 import { format } from 'date-fns';
 
 interface EmailInboxProps {
-  language: 'en' | 'bn';
+  language: "en' | 'bn";
 }
 
 interface EmailThread {
@@ -36,7 +36,7 @@ interface EmailThread {
   subject: string;
   external_email: string;
   external_name: string | null;
-  status: 'open' | 'pending' | 'closed';
+  status: "open' | 'pending' | 'closed";
   last_message_at: string;
   created_at: string;
 }
@@ -44,7 +44,7 @@ interface EmailThread {
 interface EmailMessage {
   id: string;
   thread_id: string;
-  direction: 'inbound' | 'outbound';
+  direction: "inbound' | 'outbound";
   from_email: string;
   to_email: string;
   subject: string;
@@ -83,30 +83,30 @@ const translations = {
     unread: 'unread',
   },
   bn: {
-    inbox: 'ইমেইল ইনবক্স',
-    noThreads: 'এখনো কোনো কথোপকথন নেই',
-    noThreadsDesc: 'ইউজাররা আপনার ইমেইলে রিপ্লাই করলে এখানে দেখাবে।',
-    search: 'কথোপকথন খুঁজুন...',
-    all: 'সব',
-    open: 'খোলা',
-    pending: 'অপেক্ষমান',
-    closed: 'বন্ধ',
-    refresh: 'রিফ্রেশ',
-    back: 'ইনবক্সে ফিরুন',
-    reply: 'রিপ্লাই',
-    sending: 'পাঠানো হচ্ছে...',
-    sent: 'পাঠানো হয়েছে!',
-    replyPlaceholder: 'আপনার রিপ্লাই লিখুন...',
-    senderIdentity: 'হিসেবে পাঠান',
-    markAs: 'চিহ্নিত করুন',
-    from: 'থেকে',
-    to: 'প্রতি',
-    you: 'আপনি',
+    inbox: 'Email Inbox',
+    noThreads: 'No conversations yet',
+    noThreadsDesc: 'User replies to your emails will appear here.',
+    search: 'Search conversation...',
+    all: 'All',
+    open: 'Open',
+    pending: 'Pending',
+    closed: 'Closed',
+    refresh: 'Refresh',
+    back: 'Back to Inbox',
+    reply: 'Reply',
+    sending: 'Sending...',
+    sent: 'Sent!',
+    replyPlaceholder: 'Write your reply...',
+    senderIdentity: 'Send as',
+    markAs: 'Mark as',
+    from: 'From',
+    to: 'To',
+    you: 'You',
     webhookUrl: 'Webhook URL',
-    webhookInfo: 'Resend webhooks-এ email.received event এর জন্য এই URL দিন:',
-    copy: 'কপি',
-    copied: 'কপি হয়েছে!',
-    unread: 'অপঠিত',
+    webhookInfo: 'Use this URL for email.received event in Resend webhooks:',
+    copy: 'Copy',
+    copied: 'Copied!',
+    unread: 'Unread',
   }
 };
 

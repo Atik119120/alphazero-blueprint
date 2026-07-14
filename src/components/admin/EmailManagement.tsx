@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { Mail, Send, Loader2, CheckCircle2, User, FileText } from 'lucide-react';
 
 interface EmailManagementProps {
-  language: 'en' | 'bn';
+  language: "en' | 'bn";
 }
 
 const translations = {
@@ -35,25 +35,25 @@ const translations = {
     recentEmails: 'Email will be sent professionally with your domain branding',
   },
   bn: {
-    title: 'ইমেইল পাঠান',
-    description: 'আপনার ডোমেইন থেকে প্রফেশনাল ইমেইল পাঠান',
-    recipientEmail: 'প্রাপকের ইমেইল',
+    title: 'Send Email',
+    description: 'Send professional emails from your domain',
+    recipientEmail: "Recipient's Email",
     recipientPlaceholder: 'student@example.com',
-    subject: 'বিষয়',
-    subjectPlaceholder: 'ইমেইলের বিষয় লিখুন',
-    message: 'মেসেজ',
-    messagePlaceholder: 'আপনার মেসেজ এখানে লিখুন...',
-    senderName: 'প্রেরকের নাম (ঐচ্ছিক)',
+    subject: 'Subject',
+    subjectPlaceholder: 'Enter email subject',
+    message: 'Message',
+    messagePlaceholder: 'Write your message here...',
+    senderName: 'Sender Name (Optional)',
     senderNamePlaceholder: 'AlphaZero Academy',
-    sendEmail: 'ইমেইল পাঠান',
-    sending: 'পাঠানো হচ্ছে...',
-    success: 'ইমেইল সফলভাবে পাঠানো হয়েছে!',
-    error: 'ইমেইল পাঠাতে ব্যর্থ',
-    emailRequired: 'প্রাপকের ইমেইল দিন',
-    subjectRequired: 'বিষয় লিখুন',
-    messageRequired: 'মেসেজ লিখুন',
-    fromDomain: 'ইমেইল পাঠানো হবে: noreply@alphazero.online থেকে',
-    recentEmails: 'আপনার ডোমেইন ব্র্যান্ডিং সহ প্রফেশনালি ইমেইল পাঠানো হবে',
+    sendEmail: 'Send Email',
+    sending: 'Sending...',
+    success: 'Email sent successfully!',
+    error: 'Failed to send email',
+    emailRequired: "Enter recipient's email",
+    subjectRequired: 'Enter subject',
+    messageRequired: 'Write message',
+    fromDomain: 'Email will be sent from: noreply@alphazero.online',
+    recentEmails: 'Professional emails will be sent with your domain branding',
   }
 };
 

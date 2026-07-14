@@ -173,7 +173,7 @@ export default function PaymentApiManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold">Payment API — External Sites</h2>
-          <p className="text-sm text-muted-foreground">আপনার UddoktaPay gateway অন্য সাইটগুলোকে দিন। প্রতিটা সাইট API key দিয়ে payment নিতে পারবে।</p>
+          <p className="text-sm text-muted-foreground">Provide your UddoktaPay gateway to other sites. Each site can accept payments using an API key.</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={load}><RefreshCw className="w-4 h-4 mr-1" />Refresh</Button>
@@ -234,7 +234,7 @@ export default function PaymentApiManagement() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <code className="text-xs">{p.invoice_id}</code>
-                    <Badge variant={p.status === 'paid' ? 'default' : p.status === 'failed' ? 'destructive' : 'secondary'}>
+                    <Badge variant={p.status === "paid' ? 'default" : p.status === "failed' ? 'destructive" : 'secondary'}>
                       {p.status}
                     </Badge>
                   </div>
@@ -275,12 +275,12 @@ Content-Type: application/json
 }
 
 → { "success": true, "invoice_id": "AZ-...", "payment_url": "https://alphazero.online/pay/AZ-..." }`}</pre>
-              <p className="text-xs text-muted-foreground mt-1">User কে <code>payment_url</code> এ redirect করুন। এটা একটা <strong>branded checkout page</strong> দেখাবে (আপনার logo + brand color সহ)। Pay button এ click করলে user UddoktaPay gateway এ যাবে এবং payment শেষে আপনার <code>redirect_url</code> এ ফিরে আসবে — query parameter এ <code>invoice_id</code> ও <code>status</code> থাকবে।</p>
+              <p className="text-xs text-muted-foreground mt-1">Redirect the user to <code>payment_url</code> . This will show a <strong>branded checkout page</strong> (with your logo + brand color). When the Pay button is clicked, the user will go to the UddoktaPay gateway and return to your <code>redirect_url</code> after payment — with <code>invoice_id</code> and <code>status</code> in the query parameters.</p>
             </div>
 
             <div>
               <h3 className="font-semibold mb-1">🎨 Branding</h3>
-              <p className="text-xs text-muted-foreground">Client list থেকে <Palette className="w-3 h-3 inline" /> icon এ click করে logo, brand color, title, description set করুন। এগুলো checkout page এ দেখানো হবে।</p>
+              <p className="text-xs text-muted-foreground">From the client list, click the <Palette className="w-3 h-3 inline" /> icon to set logo, brand color, title, description. These will be shown on the checkout page.</p>
             </div>
 
             <div>
@@ -296,12 +296,12 @@ Authorization: Bearer <API_KEY>
   "transaction_id": "...",
   "paid_at": "2026-..."
 }`}</pre>
-              <p className="text-xs text-muted-foreground mt-1">User redirect এর পর server থেকে এই endpoint call করে status verify করুন। <code>status === "paid"</code> হলে access দিন।</p>
+              <p className="text-xs text-muted-foreground mt-1">After user redirect, call this endpoint from your server to verify status. <code>status === "paid"</code> If successful, grant access.</p>
             </div>
 
             <div>
               <h3 className="font-semibold mb-1">3. Webhook (Optional)</h3>
-              <p className="text-xs text-muted-foreground">Webhook URL set করা থাকলে payment complete হলে আমরা POST পাঠাব আপনার URL এ — same JSON body। <code>X-Signature</code> header এ HMAC-SHA256 থাকবে (webhook secret থাকলে)।</p>
+              <p className="text-xs text-muted-foreground">If a Webhook URL is set, we will send a POST request to your URL upon payment completion — with the same JSON body. <code>X-Signature</code> A HMAC-SHA256 signature will be included in the header (if a webhook secret is provided).</p>
             </div>
           </Card>
         </TabsContent>
@@ -321,7 +321,7 @@ Authorization: Bearer <API_KEY>
                 <Input value={form.webhook_secret} onChange={e => setForm({ ...form, webhook_secret: e.target.value })} placeholder="whsec_..." className="font-mono text-xs" />
                 <Button type="button" variant="outline" onClick={() => setForm({ ...form, webhook_secret: genSecret() })}>Generate</Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Set করলে আমরা প্রতিটি webhook এ <code>X-Signature: sha256=...</code> header পাঠাব। Client side এ এই secret দিয়ে verify করুন।</p>
+              <p className="text-xs text-muted-foreground mt-1">If set, we will send a <code>X-Signature: sha256=...</code> header with each webhook. Use this secret to verify on the client side.</p>
             </div>
           </div>
           <DialogFooter>
@@ -334,7 +334,7 @@ Authorization: Bearer <API_KEY>
       <Dialog open={!!showKey} onOpenChange={() => setShowKey(null)}>
         <DialogContent>
           <DialogHeader><DialogTitle>API Key — Save Now!</DialogTitle></DialogHeader>
-          <p className="text-sm text-muted-foreground">এই key টা আর দেখানো হবে না। এখনই copy করুন এবং নিরাপদ স্থানে রাখুন।</p>
+          <p className="text-sm text-muted-foreground">This key will not be shown again. Copy it now and keep it in a safe place.</p>
           <div className="flex gap-2">
             <Input readOnly value={showKey || ''} className="font-mono text-xs" />
             <Button onClick={() => showKey && copy(showKey)}><Copy className="w-4 h-4" /></Button>
@@ -357,7 +357,7 @@ Authorization: Bearer <API_KEY>
                 <Input value={webhookForm.webhook_secret} onChange={e => setWebhookForm({ ...webhookForm, webhook_secret: e.target.value })} placeholder="whsec_..." className="font-mono text-xs" />
                 <Button type="button" variant="outline" onClick={() => setWebhookForm({ ...webhookForm, webhook_secret: genSecret() })}>Generate</Button>
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Payment complete হলে আমরা <code>POST</code> পাঠাব এবং <code>X-Signature: sha256=HMAC(secret, body)</code> header যোগ করব।</p>
+              <p className="text-xs text-muted-foreground mt-1">Upon payment completion, we will send <code>POST</code> and add a <code>X-Signature: sha256=HMAC(secret, body)</code> header.</p>
             </div>
           </div>
           <DialogFooter>
@@ -395,7 +395,7 @@ Authorization: Bearer <API_KEY>
               <Label>Description</Label>
               <Input value={brandForm.checkout_description} onChange={e => setBrandForm({ ...brandForm, checkout_description: e.target.value })} placeholder="Complete your order" />
             </div>
-            <p className="text-xs text-muted-foreground">এই branding checkout page <code>{`/pay/<invoice_id>`}</code> এ দেখাবে।</p>
+            <p className="text-xs text-muted-foreground">This branding will be displayed on the checkout page <code>{`/pay/<invoice_id>`}</code> .</p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditBrand(null)}>Cancel</Button>

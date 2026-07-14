@@ -44,25 +44,25 @@ export default function FeedbackViewer() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold flex items-center gap-2">
-          <MessageSquare className="w-5 h-5" /> স্টুডেন্ট ফিডব্যাক
+          <MessageSquare className="w-5 h-5" /> Student Feedback
         </h2>
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-40">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">সব ({feedbacks.length})</SelectItem>
-            <SelectItem value="positive">👍 ভালো ({positiveCount})</SelectItem>
-            <SelectItem value="negative">👎 খারাপ ({negativeCount})</SelectItem>
+            <SelectItem value="all">All ({feedbacks.length})</SelectItem>
+            <SelectItem value="positive">👍 Good ({positiveCount})</SelectItem>
+            <SelectItem value="negative">👎 Bad ({negativeCount})</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{feedbacks.length}</p><p className="text-xs text-muted-foreground">মোট</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-emerald-600">{positiveCount}</p><p className="text-xs text-muted-foreground">পজিটিভ</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-red-600">{negativeCount}</p><p className="text-xs text-muted-foreground">নেগেটিভ</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{feedbacks.length}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-emerald-600">{positiveCount}</p><p className="text-xs text-muted-foreground">Positive</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-red-600">{negativeCount}</p><p className="text-xs text-muted-foreground">Negative</p></CardContent></Card>
       </div>
 
       {loading ? (
@@ -72,7 +72,7 @@ export default function FeedbackViewer() {
       ) : filtered.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-8 text-center text-muted-foreground">
-            কোনো ফিডব্যাক নেই
+            No feedback
           </CardContent>
         </Card>
       ) : (
@@ -80,7 +80,7 @@ export default function FeedbackViewer() {
           {filtered.map((fb) => (
             <Card key={fb.id}>
               <CardContent className="p-4 flex items-start gap-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${fb.sentiment === 'positive' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${fb.sentiment === "positive' ? 'bg-emerald-100 dark:bg-emerald-900/30" : 'bg-red-100 dark:bg-red-900/30'}`}>
                   {fb.sentiment === 'positive' ? <ThumbsUp className="w-4 h-4 text-emerald-600" /> : <ThumbsDown className="w-4 h-4 text-red-600" />}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -89,8 +89,8 @@ export default function FeedbackViewer() {
                     {new Date(fb.created_at).toLocaleDateString('bn-BD')}
                   </p>
                 </div>
-                <Badge variant={fb.sentiment === 'positive' ? 'default' : 'destructive'} className="text-[10px]">
-                  {fb.sentiment === 'positive' ? 'ভালো' : 'খারাপ'}
+                <Badge variant={fb.sentiment === "positive' ? 'default" : 'destructive'} className="text-[10px]">
+                  {fb.sentiment === "positive' ? 'Good" : 'Bad'}
                 </Badge>
               </CardContent>
             </Card>

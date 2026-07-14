@@ -164,11 +164,11 @@ export const TeamManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-team-members"] });
-      toast.success(editingMember ? "Team member আপডেট হয়েছে" : "নতুন Team member যোগ হয়েছে");
+      toast.success(editingMember ? "Team member updated" : "New team member added");
       resetForm();
     },
     onError: (error) => {
-      toast.error("সমস্যা হয়েছে: " + error.message);
+      toast.error("Something went wrong: " + error.message);
     },
   });
 
@@ -179,10 +179,10 @@ export const TeamManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-team-members"] });
-      toast.success("Team member ডিলিট হয়েছে");
+      toast.success("Team member deleted");
     },
     onError: (error) => {
-      toast.error("ডিলিট করতে সমস্যা: " + error.message);
+      toast.error("Failed to delete: " + error.message);
     },
   });
 
@@ -249,7 +249,7 @@ export const TeamManagement = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center py-8">লোড হচ্ছে...</div>;
+    return <div className="text-center py-8">Loading...</div>;
   }
 
   return (
@@ -260,48 +260,48 @@ export const TeamManagement = () => {
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
               <Plus className="w-4 h-4 mr-2" />
-              নতুন Member যোগ করুন
+              Add New Member
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                {editingMember ? "Member এডিট করুন" : "নতুন Member যোগ করুন"}
+                {editingMember ? "Edit Member" : "Add New Member"}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label>নাম *</Label>
+                <Label>Name *</Label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="সম্পূর্ণ নাম"
+                  placeholder="Full Name"
                   required
                 />
               </div>
 
               <div>
-                <Label>পদবি / Role *</Label>
+                <Label>Position / Role *</Label>
                 <Input
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  placeholder="যেমন: CEO, Designer, Developer"
+                  placeholder="e.g. CEO, Designer, Developer"
                   required
                 />
               </div>
 
               <div>
-                <Label>বায়ো / পরিচিতি</Label>
+                <Label>Bio / Introduction</Label>
                 <Textarea
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                  placeholder="সংক্ষিপ্ত পরিচিতি"
+                  placeholder="Short Bio"
                   rows={3}
                 />
               </div>
 
               <div>
-                <Label>প্রোফাইল ছবি URL</Label>
+                <Label>Profile Picture URL</Label>
                 <Input
                   value={formData.image_url}
                   onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
@@ -311,7 +311,7 @@ export const TeamManagement = () => {
 
               {/* Social Media Section */}
               <div className="border-t pt-4 mt-4">
-                <h4 className="font-medium mb-3 text-sm text-muted-foreground">সোশ্যাল মিডিয়া লিংক</h4>
+                <h4 className="font-medium mb-3 text-sm text-muted-foreground">Social Media Links</h4>
                 
                 <div className="grid grid-cols-1 gap-3">
                   <div className="flex items-center gap-2">
@@ -410,7 +410,7 @@ export const TeamManagement = () => {
               {/* Custom Links Section */}
               <div className="border-t pt-4 mt-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-medium text-sm text-muted-foreground">কাস্টম লিংক (অন্যান্য সাইট)</h4>
+                  <h4 className="font-medium text-sm text-muted-foreground">Custom Links (Other Sites)</h4>
                   <Button
                     type="button"
                     variant="outline"
@@ -418,7 +418,7 @@ export const TeamManagement = () => {
                     onClick={() => setCustomLinks([...customLinks, { label: '', url: '', icon_url: '' }])}
                   >
                     <Plus className="w-3 h-3 mr-1" />
-                    লিংক যোগ
+                    Add Link
                   </Button>
                 </div>
                 
@@ -435,7 +435,7 @@ export const TeamManagement = () => {
                     </Button>
                     <div className="grid grid-cols-2 gap-2">
                       <Input
-                        placeholder="লেবেল (যেমন: YouTube)"
+                        placeholder="Label (e.g. YouTube)"
                         value={link.label}
                         onChange={(e) => {
                           const updated = [...customLinks];
@@ -454,7 +454,7 @@ export const TeamManagement = () => {
                       />
                     </div>
                     <div>
-                      <Label className="text-xs text-muted-foreground">আইকন (URL বা আপলোড)</Label>
+                      <Label className="text-xs text-muted-foreground">Icon (URL or Upload)</Label>
                       <ImageUploader
                         value={link.icon_url}
                         onChange={(url) => {
@@ -463,7 +463,7 @@ export const TeamManagement = () => {
                           setCustomLinks(updated);
                         }}
                         folder="custom-icons"
-                        placeholder="আইকন URL বা আপলোড করুন"
+                        placeholder="Icon URL or Upload"
                       />
                     </div>
                   </div>
@@ -475,15 +475,15 @@ export const TeamManagement = () => {
                   checked={formData.is_active}
                   onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
                 />
-                <Label>Active (ওয়েবসাইটে দেখাবে)</Label>
+                <Label>Active (Visible on Website)</Label>
               </div>
 
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={saveMutation.isPending} className="flex-1">
-                  {saveMutation.isPending ? "সেভ হচ্ছে..." : "সেভ করুন"}
+                  {saveMutation.isPending ? "Saving..." : "Save"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  বাতিল
+                  Cancel
                 </Button>
               </div>
             </form>
@@ -514,7 +514,7 @@ export const TeamManagement = () => {
                     variant="ghost"
                     size="icon"
                     onClick={() => {
-                      if (confirm("ডিলিট করতে চান?")) {
+                      if (confirm("Confirm Deletion?")) {
                         deleteMutation.mutate(member.id);
                       }
                     }}
@@ -594,7 +594,7 @@ export const TeamManagement = () => {
 
       {(!members || members.length === 0) && (
         <div className="text-center py-12 text-muted-foreground">
-          কোন Team Member নেই। উপরের বাটনে ক্লিক করে নতুন Member যোগ করুন।
+          No team members found. Click the button above to add a new member.
         </div>
       )}
     </div>
