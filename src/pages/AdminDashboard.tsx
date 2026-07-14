@@ -1071,66 +1071,6 @@ function AdminDashboardInner() {
             </div>
           )}
 
-          {/* Agency scope: Quick Action shortcuts */}
-          {scope === 'agency' && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                  { id: 'works', icon: Briefcase, label: 'Works', desc: 'Portfolio & projects', gradient: 'from-violet-500 to-purple-500' },
-                  { id: 'team', icon: UsersRound, label: 'Team', desc: 'Members & roles', gradient: 'from-sky-500 to-cyan-500' },
-                  { id: 'services', icon: Wrench, label: 'Services', desc: 'Offerings & pricing', gradient: 'from-emerald-500 to-teal-500' },
-                  { id: 'contact', icon: Phone, label: 'Contact', desc: 'Info & socials', gradient: 'from-amber-500 to-orange-500' },
-                ].map((card) => (
-                  <button
-                    key={card.id}
-                    onClick={() => setActiveTab(card.id)}
-                    className="group text-left bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-transparent hover:shadow-lg hover:shadow-black/5 transition-all duration-300 hover:-translate-y-0.5"
-                  >
-                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center mb-3 shadow-md group-hover:scale-110 transition-transform`}>
-                      <card.icon className="w-5 h-5 text-white" />
-                    </div>
-                    <p className="text-sm font-semibold text-foreground">{card.label}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">{card.desc}</p>
-                  </button>
-                ))}
-              </div>
-
-              {/* Tips / info banner */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
-                <div className="lg:col-span-2 rounded-2xl p-5 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/5 to-transparent border border-violet-500/20">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center flex-shrink-0">
-                      <Sparkles className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-bold text-foreground mb-1">
-                        {language === 'bn' ? 'অ্যাজেন্সি সাইট পরিচালনা' : 'Manage your Agency Site'}
-                      </h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {language === 'bn'
-                          ? 'বাম পাশের Website মেনু থেকে যেকোনো পেজের কন্টেন্ট এডিট করুন — Homepage, About, Services, Works, Team, Contact ও Footer। প্রতিটি পরিবর্তন সাথে সাথে লাইভ হয়ে যাবে।'
-                          : 'Use the Website menu on the left to edit any page — Homepage, About, Services, Works, Team, Contact and Footer. Every change goes live instantly.'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setIsAssistantOpen(true)}
-                  className="text-left rounded-2xl p-5 bg-gradient-to-br from-primary/10 to-cyan-500/5 border border-primary/20 hover:border-primary/40 transition-colors group"
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-cyan-500 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="text-sm font-bold">Alpha AI</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {language === 'bn' ? 'AI দিয়ে দ্রুত কন্টেন্ট তৈরি করুন।' : 'Generate content instantly with AI.'}
-                  </p>
-                </button>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Content Area */}
