@@ -58,10 +58,11 @@ export default function PageHeroEditor({ pageName, title, subtitle, fields }: Pr
         page_name: pageName,
         content_key: f.key,
         content_en: values[f.key] ?? "",
+        site_scope: "agency",
       }));
       const { error } = await supabase
         .from("page_content")
-        .upsert(rows, { onConflict: "page_name,content_key" });
+        .upsert(rows, { onConflict: "site_scope,page_name,content_key" });
       if (error) throw error;
     },
     onSuccess: () => {
