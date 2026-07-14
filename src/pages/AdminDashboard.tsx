@@ -57,6 +57,7 @@ import {
   Sparkles,
   RotateCcw,
   Home,
+  Info,
 } from 'lucide-react';
 
 import CourseManagement from '@/components/admin/CourseManagement';
