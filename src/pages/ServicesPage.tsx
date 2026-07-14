@@ -62,12 +62,8 @@ const ServicesPage = () => {
   const hero = usePageHero("services");
   const { data: allServices, isLoading } = useServices();
 
-  // Show only these 4 services (matches home page)
-  const ALLOWED = ["website", "web ", "graphic", "seo", "brand"];
-  const services = (allServices || []).filter((s) => {
-    const title = (s.title || "").toLowerCase();
-    return ALLOWED.some((k) => title.includes(k));
-  }).slice(0, 4);
+  // Show all active services
+  const services = (allServices || []).slice(0, 4);
 
   const processSteps = [
     { step: "01", titleKey: "services.process.discover", descKey: "services.process.discoverDesc", icon: Search },
