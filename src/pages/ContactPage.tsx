@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { useState } from "react";
 import { Mail, MapPin, Send, Phone, Clock, MessageCircle, Facebook, Instagram, Twitter, Linkedin, Sparkles } from "lucide-react";
 

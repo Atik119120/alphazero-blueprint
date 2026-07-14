@@ -1,4 +1,5 @@
 import { useState } from "react";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { motion } from "framer-motion";
 import { 
   Facebook, 

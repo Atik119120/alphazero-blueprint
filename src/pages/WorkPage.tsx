@@ -1,4 +1,5 @@
 import { useMemo, useState, useRef, useEffect, useCallback } from "react";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, ZoomIn, Play, Sparkles, ExternalLink, Phone, MessageCircle,
