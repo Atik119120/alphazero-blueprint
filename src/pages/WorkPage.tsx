@@ -282,9 +282,8 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
                   </div>
                   
                 </div>
-
-                </div>
               </motion.div>
+
             );
           })}
         </div>
