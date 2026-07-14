@@ -112,7 +112,7 @@ const FooterManagement = () => {
   });
 
   const addLinkMutation = useMutation({
-    mutationFn: async (data: Omit<FooterLink, 'id' | 'is_active'>) => {
+    mutationFn: async (data: Omit<FooterLink, "id' | 'is_active">) => {
       const { error } = await supabase.from('footer_links').insert([{ ...data, is_active: true, site_scope: scope }]);
       if (error) throw error;
     },

@@ -234,7 +234,7 @@ export default function PaymentApiManagement() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <code className="text-xs">{p.invoice_id}</code>
-                    <Badge variant={p.status === 'paid' ? 'default' : p.status === 'failed' ? 'destructive' : 'secondary'}>
+                    <Badge variant={p.status === "paid' ? 'default" : p.status === "failed' ? 'destructive" : 'secondary'}>
                       {p.status}
                     </Badge>
                   </div>

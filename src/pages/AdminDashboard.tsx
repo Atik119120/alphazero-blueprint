@@ -239,7 +239,7 @@ function AdminDashboardInner() {
   // Approve enrollment request
   const approveEnrollment = async (request: typeof enrollmentRequests[0]) => {
     try {
-      toast.loading(language === 'bn' ? 'Approving...' : 'Approving...', { id: 'approve' });
+      toast.loading(language === "bn' ? 'Approving..." : 'Approving...', { id: 'approve' });
       
       // Call approve-enrollment edge function
       const { data, error } = await supabase.functions.invoke('approve-enrollment', {
@@ -248,7 +248,7 @@ function AdminDashboardInner() {
 
       if (error) {
         console.error('Approve error:', error);
-        toast.error(language === 'bn' ? 'Failed to approve' : 'Error approving enrollment', { id: 'approve' });
+        toast.error(language === "bn' ? 'Failed to approve" : 'Error approving enrollment', { id: 'approve' });
         return;
       }
 
@@ -263,12 +263,12 @@ function AdminDashboardInner() {
         .delete()
         .eq('id', request.id);
 
-      toast.success(language === 'bn' ? 'Approved! Student account created.' : 'Approved! Student account created.', { id: 'approve' });
+      toast.success(language === "bn' ? 'Approved! Student account created." : 'Approved! Student account created.', { id: 'approve' });
       fetchEnrollmentRequests();
       refetchStudents();
     } catch (error) {
       console.error('Error approving enrollment:', error);
-      toast.error(language === 'bn' ? 'Something went wrong' : 'Error approving enrollment', { id: 'approve' });
+      toast.error(language === "bn' ? 'Something went wrong" : 'Error approving enrollment', { id: 'approve' });
     }
   };
 
@@ -282,7 +282,7 @@ function AdminDashboardInner() {
     if (error) {
       toast.error('Error rejecting request');
     } else {
-      toast.success(language === 'bn' ? 'Rejected' : 'Request rejected');
+      toast.success(language === "bn' ? 'Rejected" : 'Request rejected');
       fetchEnrollmentRequests();
     }
   };
@@ -290,7 +290,7 @@ function AdminDashboardInner() {
   // Refund UddoktaPay payment
   const refundPayment = async (request: typeof enrollmentRequests[0]) => {
     if (!request.transaction_id || request.payment_method !== 'uddoktapay') {
-      toast.error(language === 'bn' ? 'Refund not possible' : 'Cannot refund this payment');
+      toast.error(language === "bn' ? 'Refund not possible" : 'Cannot refund this payment');
       return;
     }
 
@@ -301,7 +301,7 @@ function AdminDashboardInner() {
     );
     if (!confirmed) return;
 
-    toast.loading(language === 'bn' ? 'Refunding...' : 'Processing refund...', { id: 'refund' });
+    toast.loading(language === "bn' ? 'Refunding..." : 'Processing refund...', { id: 'refund' });
 
     try {
       // Extract amount from message (format: "Amount: ৳XXX")
@@ -322,18 +322,18 @@ function AdminDashboardInner() {
       });
 
       if (error || !data?.success) {
-        toast.error(language === 'bn' ? 'Refund failed' : 'Refund failed', { id: 'refund' });
+        toast.error(language === "bn' ? 'Refund failed" : 'Refund failed', { id: 'refund' });
         return;
       }
 
       // Delete the enrollment request after refund
       await supabase.from('enrollment_requests').delete().eq('id', request.id);
 
-      toast.success(language === 'bn' ? 'Refund successful!' : 'Refund successful!', { id: 'refund' });
+      toast.success(language === "bn' ? 'Refund successful!" : 'Refund successful!', { id: 'refund' });
       fetchEnrollmentRequests();
     } catch (err) {
       console.error('Refund error:', err);
-      toast.error(language === 'bn' ? 'Failed to refund' : 'Error processing refund', { id: 'refund' });
+      toast.error(language === "bn' ? 'Failed to refund" : 'Error processing refund', { id: 'refund' });
     }
   };
 
@@ -358,7 +358,7 @@ function AdminDashboardInner() {
 
   const formatDateTime = (value: string | null | undefined) => {
     if (!value) return '';
-    const locale = language === 'bn' ? 'bn-BD' : 'en-US';
+    const locale = language === "bn' ? 'bn-BD" : 'en-US';
     return new Date(value).toLocaleString(locale, {
       year: 'numeric',
       month: 'short',
@@ -451,7 +451,7 @@ function AdminDashboardInner() {
     }
 
     try {
-      toast.loading(language === 'bn' ? 'Deleting...' : 'Deleting...', { id: 'delete-student' });
+      toast.loading(language === "bn' ? 'Deleting..." : 'Deleting...', { id: 'delete-student' });
       
       const { data, error } = await supabase.functions.invoke('delete-student', {
         body: { student_ids: [profileId] }
@@ -463,14 +463,14 @@ function AdminDashboardInner() {
       }
 
       if (data?.deleted_count > 0) {
-        toast.success(language === 'bn' ? 'Successfully deleted' : 'Successfully deleted', { id: 'delete-student' });
+        toast.success(language === "bn' ? 'Successfully deleted" : 'Successfully deleted', { id: 'delete-student' });
         refetchStudents();
       } else {
         toast.error(data?.errors?.[0] || 'Failed to delete', { id: 'delete-student' });
       }
     } catch (error) {
       console.error('Delete error:', error);
-      toast.error(language === 'bn' ? 'Something went wrong' : 'Error occurred', { id: 'delete-student' });
+      toast.error(language === "bn' ? 'Something went wrong" : 'Error occurred', { id: 'delete-student' });
     }
   };
 
@@ -508,7 +508,7 @@ function AdminDashboardInner() {
       refetchStudents();
     } catch (error) {
       console.error('Bulk delete error:', error);
-      toast.error(language === 'bn' ? 'Something went wrong' : 'Error occurred', { id: 'bulk-delete' });
+      toast.error(language === "bn' ? 'Something went wrong" : 'Error occurred', { id: 'bulk-delete' });
     } finally {
       setDeletingStudents(false);
     }
@@ -804,40 +804,40 @@ function AdminDashboardInner() {
   };
 
   // Navigation items - grouped logically
-  // scopeTag: 'learn' | 'agency' | 'both' — controls visibility per selected site scope
+  // scopeTag: "learn' | 'agency' | 'both" — controls visibility per selected site scope
   const lmsCoreItemsAll = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'Course' : 'Courses', scopeTag: 'learn' as const },
-    { id: 'students', icon: Users, label: language === 'bn' ? 'Student' : 'Students', scopeTag: 'learn' as const },
-    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'Teacher' : 'Teachers', scopeTag: 'learn' as const },
-    { id: 'requests', icon: Mail, label: language === 'bn' ? 'Request' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
+    { id: 'courses', icon: BookOpen, label: language === "bn' ? 'Course" : 'Courses', scopeTag: 'learn' as const },
+    { id: 'students', icon: Users, label: language === "bn' ? 'Student" : 'Students', scopeTag: 'learn' as const },
+    { id: 'teachers', icon: GraduationCap, label: language === "bn' ? 'Teacher" : 'Teachers', scopeTag: 'learn' as const },
+    { id: 'requests', icon: Mail, label: language === "bn' ? 'Request" : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
   ];
 
   const lmsMoreItemsAll = [
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'Comment' : 'Comments', scopeTag: 'learn' as const },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'Coupon' : 'Coupons', scopeTag: 'learn' as const },
+    { id: 'analytics', icon: BarChart3, label: language === "bn' ? 'Analytics" : 'Analytics', scopeTag: 'both' as const },
+    { id: 'email', icon: Send, label: language === "bn' ? 'Email" : 'Email', scopeTag: 'both' as const },
+    { id: 'feedback', icon: FileText, label: language === "bn' ? 'Feedback" : 'Feedback', scopeTag: 'both' as const },
+    { id: 'comments', icon: FileText, label: language === "bn' ? 'Comment" : 'Comments', scopeTag: 'learn' as const },
+    { id: 'coupons', icon: Ticket, label: language === "bn' ? 'Coupon" : 'Coupons', scopeTag: 'learn' as const },
   ];
 
   const cmsItemsAll = [
-    { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
+    { id: 'homepage', icon: Home, label: language === "bn' ? 'Homepage" : 'Homepage', scopeTag: 'both' as const },
     { id: 'contact', icon: Phone, label: 'Contact', scopeTag: 'both' as const },
-    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'Landing Page' : 'Landing Page', scopeTag: 'learn' as const },
-    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'Works' : 'Works', scopeTag: 'agency' as const },
-    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'Team' : 'Team', scopeTag: 'agency' as const },
-    { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
-    { id: 'footer', icon: Link2, label: language === 'bn' ? 'Footer' : 'Footer', scopeTag: 'both' as const },
+    { id: 'landing', icon: Sparkles, label: language === "bn' ? 'Landing Page" : 'Landing Page', scopeTag: 'learn' as const },
+    { id: 'works', icon: Briefcase, label: language === "bn' ? 'Works" : 'Works', scopeTag: 'agency' as const },
+    { id: 'team', icon: UsersRound, label: language === "bn' ? 'Team" : 'Team', scopeTag: 'agency' as const },
+    { id: 'services', icon: Wrench, label: language === "bn' ? 'Service" : 'Services', scopeTag: 'agency' as const },
+    { id: 'footer', icon: Link2, label: language === "bn' ? 'Footer" : 'Footer', scopeTag: 'both' as const },
   ];
 
   const settingsItemsAll = [
-    { id: 'settings', icon: Settings, label: language === 'bn' ? 'Settings' : 'Settings', scopeTag: 'both' as const },
-    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API Key' : 'API Keys', scopeTag: 'both' as const },
-    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'Payment API' : 'Payment API', scopeTag: 'both' as const },
-    { id: 'profile', icon: User, label: language === 'bn' ? 'Admin' : 'Admins', scopeTag: 'both' as const },
+    { id: 'settings', icon: Settings, label: language === "bn' ? 'Settings" : 'Settings', scopeTag: 'both' as const },
+    { id: 'apikeys', icon: Key, label: language === "bn' ? 'API Key" : 'API Keys', scopeTag: 'both' as const },
+    { id: 'paymentapi', icon: Key, label: language === "bn' ? 'Payment API" : 'Payment API', scopeTag: 'both' as const },
+    { id: 'profile', icon: User, label: language === "bn' ? 'Admin" : 'Admins', scopeTag: 'both' as const },
   ];
 
-  const inScope = (t: 'learn' | 'agency' | 'both') => t === 'both' || t === scope;
+  const inScope = (t: "learn' | 'agency' | 'both") => t === 'both' || t === scope;
   const lmsCoreItems = lmsCoreItemsAll.filter(i => inScope(i.scopeTag));
   const lmsMoreItems = lmsMoreItemsAll.filter(i => inScope(i.scopeTag));
   const cmsItems = cmsItemsAll.filter(i => inScope(i.scopeTag));
@@ -851,7 +851,7 @@ function AdminDashboardInner() {
   // If active tab isn't visible in current scope, switch to first available
   useEffect(() => {
     if (!allNavItems.some(i => i.id === activeTab)) {
-      const fallback = scope === 'learn' ? 'courses' : 'homepage';
+      const fallback = scope === "learn' ? 'courses" : 'homepage';
       setActiveTab(fallback);
     }
   }, [scope]);
@@ -890,7 +890,7 @@ function AdminDashboardInner() {
   );
 
   return (
-    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${language === 'bn' ? 'font-bengali' : ''}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 ${language === "bn' ? 'font-bengali" : ''}`}>
       {/* Minimal Floating Sidebar */}
       <aside className="fixed left-4 top-4 bottom-4 w-16 md:w-56 bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-xl shadow-black/5 z-50 flex flex-col overflow-hidden">
         {/* Logo */}
@@ -904,8 +904,8 @@ function AdminDashboardInner() {
               />
             </div>
             <div className="hidden md:block">
-              <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
-                {language === 'bn' ? 'আলফা একাডেমি' : 'Alpha Academy'}
+              <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === "bn' ? 'font-[SabinaShorolipi]" : ''}`}>
+                {language === "bn' ? 'আলফা একাডেমি" : 'Alpha Academy'}
               </h1>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
@@ -920,7 +920,7 @@ function AdminDashboardInner() {
           {/* LMS Core */}
           <div className="mb-2">
             <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'এলএমএস' : 'LMS'}
+              {language === "bn' ? 'এলএমএস" : 'LMS'}
             </p>
             <div className="space-y-0.5">
               {lmsCoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
@@ -934,7 +934,7 @@ function AdminDashboardInner() {
               className="hidden md:flex w-full items-center gap-1.5 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest hover:text-muted-foreground transition-colors"
             >
               <svg className={`w-3 h-3 transition-transform ${expandedGroups.lms_more ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              {language === 'bn' ? 'আরো টুলস' : 'More Tools'}
+              {language === "bn' ? 'আরো টুলস" : 'More Tools'}
               <Badge variant="secondary" className="ml-auto text-[9px] h-4 px-1">{lmsMoreItems.length}</Badge>
             </button>
             {expandedGroups.lms_more && (
@@ -951,7 +951,7 @@ function AdminDashboardInner() {
           {/* CMS Section */}
           <div className="mb-2">
             <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'ওয়েবসাইট' : 'Website'}
+              {language === "bn' ? 'ওয়েবসাইট" : 'Website'}
             </p>
             <div className="space-y-0.5">
               {cmsItems.map((item) => renderNavButton(item, 'from-violet-500 to-purple-500'))}
@@ -961,7 +961,7 @@ function AdminDashboardInner() {
           {/* Settings Section */}
           <div>
             <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'Settings' : 'Settings'}
+              {language === "bn' ? 'Settings" : 'Settings'}
             </p>
             <div className="space-y-0.5">
               {settingsItems.map((item) => renderNavButton(item, 'from-amber-500 to-orange-500'))}
@@ -977,14 +977,14 @@ function AdminDashboardInner() {
           
           {/* Theme Toggle */}
           <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={() => setTheme(theme === "dark' ? 'light" : 'dark')}
             className="w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border border-amber-500/20 text-amber-600 dark:text-amber-400"
           >
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
               {theme === 'dark' ? <Sun className="w-4 h-4 text-white" /> : <Moon className="w-4 h-4 text-white" />}
             </div>
             <span className="hidden md:inline font-semibold">
-              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              {theme === "dark' ? 'Light Mode" : 'Dark Mode'}
             </span>
           </button>
           
@@ -997,7 +997,7 @@ function AdminDashboardInner() {
               <LogOut className="w-4 h-4 text-white" />
             </div>
             <span className="hidden md:inline font-semibold">
-              {language === 'bn' ? 'লগ আউট' : 'Logout'}
+              {language === "bn' ? 'লগ আউট" : 'Logout'}
             </span>
           </button>
         </div>
@@ -1011,15 +1011,15 @@ function AdminDashboardInner() {
           <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h1 className={`text-2xl font-bold text-foreground ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
-                  {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
+                <h1 className={`text-2xl font-bold text-foreground ${language === "bn' ? 'font-[SabinaShorolipi]" : ''}`}>
+                  {language === "bn' ? 'স্বাগতম" : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
                 </h1>
                 <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
-                  {scope === 'learn' ? (language === 'bn' ? 'লার্ন সাইট' : 'Learn Site') : (language === 'bn' ? 'এজেন্সি সাইট' : 'Agency Site')}
+                  {scope === "learn' ? (language === 'bn' ? 'লার্ন সাইট" : 'Learn Site') : (language === "bn' ? 'এজেন্সি সাইট" : 'Agency Site')}
                 </Badge>
               </div>
               <p className="text-sm text-muted-foreground">
-                {language === 'bn' ? 'আজ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
+                {language === "bn' ? 'আজ " : 'Today is '}{new Date().toLocaleDateString(language === "bn' ? 'bn-BD" : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
             <AdminSiteScopeSwitcher />
@@ -1054,7 +1054,7 @@ function AdminDashboardInner() {
                     {profile?.full_name?.charAt(0)}
                   </div>
                 )}
-                <span className="hidden sm:inline">{language === 'bn' ? 'প্রোফাইল' : 'Profile'}</span>
+                <span className="hidden sm:inline">{language === "bn' ? 'প্রোফাইল" : 'Profile'}</span>
               </Button>
             </div>
           </div>
@@ -1062,10 +1062,10 @@ function AdminDashboardInner() {
           {/* Quick Stats - Minimal Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
             {[
-              { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
-              { icon: Users, value: studentsList.length, label: language === 'bn' ? 'Student' : 'Students', color: 'text-emerald-500' },
-              { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
-              { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500'}, { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
+              { icon: BookOpen, value: courses.length, label: language === "bn' ? 'Course" : 'Courses', color: 'text-sky-500' },
+              { icon: Users, value: studentsList.length, label: language === "bn' ? 'Student" : 'Students', color: 'text-emerald-500' },
+              { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === "bn' ? 'প্রকাশিত" : 'Published', color: 'text-violet-500' },
+              { icon: Check, value: courses.filter(c => c.is_published).length, label: language === "bn' ? 'প্রকাশিত" : 'Published', color: 'text-amber-500'}, { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === "bn' ? 'bn-BD" : 'en-US')}`, label: language === "bn' ? 'বিক্রি" : 'Revenue', color: 'text-rose-500' },
             ].map((stat, index) => (
               <div 
                 key={index}
@@ -1076,7 +1076,7 @@ function AdminDashboardInner() {
                     <p className={`text-2xl font-bold ${stat.color}`}>
                       {stat.value}
                     </p>
-                    <p className={`text-xs text-muted-foreground mt-0.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                    <p className={`text-xs text-muted-foreground mt-0.5 ${language === "bn' ? 'font-[MahinRafid]" : ''}`}>
                       {stat.label}
                     </p>
                   </div>
@@ -1108,8 +1108,8 @@ function AdminDashboardInner() {
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'Analytics ড্যাশবোর্ড' : 'Analytics Dashboard'}
+              <h2 className={`text-xl font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>
+                {language === "bn' ? 'Analytics ড্যাশবোর্ড" : 'Analytics Dashboard'}
               </h2>
             </div>
 
@@ -1117,12 +1117,12 @@ function AdminDashboardInner() {
               {/* Enrollment Bar Chart */}
               <Card>
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <BarChart3 className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'Course অনুযায়ী Student' : 'Students by Course'}
+                    {language === "bn' ? 'Course অনুযায়ী Student" : 'Students by Course'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'প্রতিটি Courseে কতজন Student এনরোল করেছে' : 'Number of students enrolled in each course'}
+                    {language === "bn' ? 'প্রতিটি Courseে কতজন Student এনরোল করেছে" : 'Number of students enrolled in each course'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1148,7 +1148,7 @@ function AdminDashboardInner() {
                     </ResponsiveContainer>
                   ) : (
                     <div className="h-[250px] flex items-center justify-center text-muted-foreground">
-                      {language === 'bn' ? 'কোনো ডাটা নেই' : 'No data available'}
+                      {language === "bn' ? 'কোনো ডাটা নেই" : 'No data available'}
                     </div>
                   )}
                 </CardContent>
@@ -1157,12 +1157,12 @@ function AdminDashboardInner() {
               {/* Course Distribution Pie Chart */}
               <Card>
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <PieChart className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'Student বন্টন' : 'Student Distribution'}
+                    {language === "bn' ? 'Student বন্টন" : 'Student Distribution'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'কোন Courseে কত শতাংশ Student' : 'Percentage of students per course'}
+                    {language === "bn' ? 'কোন Courseে কত শতাংশ Student" : 'Percentage of students per course'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1189,7 +1189,7 @@ function AdminDashboardInner() {
                             borderRadius: '8px'
                           }}
                           formatter={(value: number, name: string) => [
-                            `${value} ${language === 'bn' ? 'জন Student' : 'students'}`,
+                            `${value} ${language === "bn' ? 'জন Student" : 'students'}`,
                             name
                           ]}
                         />
@@ -1197,7 +1197,7 @@ function AdminDashboardInner() {
                     </ResponsiveContainer>
                   ) : (
                     <div className="h-[250px] flex items-center justify-center text-muted-foreground">
-                      {language === 'bn' ? 'কোনো ডাটা নেই' : 'No data available'}
+                      {language === "bn' ? 'কোনো ডাটা নেই" : 'No data available'}
                     </div>
                   )}
                 </CardContent>
@@ -1206,12 +1206,12 @@ function AdminDashboardInner() {
               {/* Sales Bar Chart */}
               <Card>
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <Banknote className="w-5 h-5 text-amber-500" />
-                    {language === 'bn' ? 'Course অনুযায়ী বিক্রি' : 'Sales by Course'}
+                    {language === "bn' ? 'Course অনুযায়ী বিক্রি" : 'Sales by Course'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'প্রতিটি Course থেকে কত টাকা আয় হয়েছে' : 'Revenue generated from each course'}
+                    {language === "bn' ? 'প্রতিটি Course থেকে কত টাকা আয় হয়েছে" : 'Revenue generated from each course'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1231,7 +1231,7 @@ function AdminDashboardInner() {
                             border: '1px solid hsl(var(--border))',
                             borderRadius: '8px'
                           }}
-                          formatter={(value: number) => [`৳${value.toLocaleString()}`, language === 'bn' ? 'বিক্রি' : 'Sales']}
+                          formatter={(value: number) => [`৳${value.toLocaleString()}`, language === "bn' ? 'বিক্রি" : 'Sales']}
                         />
                         <Bar dataKey="sales" fill="#f59e0b" radius={[4, 4, 0, 0]} />
                       </BarChart>
@@ -1239,8 +1239,8 @@ function AdminDashboardInner() {
                   ) : (
                     <div className="h-[250px] flex items-center justify-center text-muted-foreground flex-col gap-2">
                       <Banknote className="w-12 h-12 opacity-50" />
-                      <p>{language === 'bn' ? 'এখনো কোনো বিক্রি নেই' : 'No sales yet'}</p>
-                      <p className="text-xs">{language === 'bn' ? 'Courseে দাম সেট করুন এবং Student এনরোল করুন' : 'Set course prices and enroll students'}</p>
+                      <p>{language === "bn' ? 'এখনো কোনো বিক্রি নেই" : 'No sales yet'}</p>
+                      <p className="text-xs">{language === "bn' ? 'Courseে দাম সেট করুন এবং Student এনরোল করুন" : 'Set course prices and enroll students'}</p>
                     </div>
                   )}
                 </CardContent>
@@ -1249,45 +1249,45 @@ function AdminDashboardInner() {
               {/* Quick Stats */}
               <Card>
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <TrendingUp className="w-5 h-5 text-emerald-500" />
-                    {language === 'bn' ? 'দ্রুত পরিসংখ্যান' : 'Quick Stats'}
+                    {language === "bn' ? 'দ্রুত পরিসংখ্যান" : 'Quick Stats'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-gradient-to-br from-primary/10 to-cyan-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-primary">{studentsList.length}</p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'মোট Student' : 'Total Students'}
+                      <p className={`text-sm text-muted-foreground ${language === "bn' ? 'font-[MahinRafid]" : ''}`}>
+                        {language === "bn' ? 'মোট Student" : 'Total Students'}
                       </p>
                     </div>
                     <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-emerald-600">{courses.filter(c => c.is_published).length}</p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'প্রকাশিত Course' : 'Published Courses'}
+                      <p className={`text-sm text-muted-foreground ${language === "bn' ? 'font-[MahinRafid]" : ''}`}>
+                        {language === "bn' ? 'প্রকাশিত Course" : 'Published Courses'}
                       </p>
                     </div>
                     <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-amber-600">৳{totalRevenue.toLocaleString()}</p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'মোট আয়' : 'Total Revenue'}
+                      <p className={`text-sm text-muted-foreground ${language === "bn' ? 'font-[MahinRafid]" : ''}`}>
+                        {language === "bn' ? 'মোট আয়" : 'Total Revenue'}
                       </p>
                     </div>
                     <div className="bg-gradient-to-br from-violet-500/10 to-purple-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-violet-600">
                         {courses.length > 0 ? Math.round((studentsList.length / Math.max(courses.length, 1)) * 10) / 10 : 0}
                       </p>
-                      <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'গড় Student/Course' : 'Avg Students/Course'}
+                      <p className={`text-sm text-muted-foreground ${language === "bn' ? 'font-[MahinRafid]" : ''}`}>
+                        {language === "bn' ? 'গড় Student/Course" : 'Avg Students/Course'}
                       </p>
                     </div>
                   </div>
                   
                   {/* Top Courses */}
                   <div className="pt-4 border-t">
-                    <h4 className={`text-sm font-medium mb-3 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                      {language === 'bn' ? 'জনপ্রিয় Course' : 'Top Courses'}
+                    <h4 className={`text-sm font-medium mb-3 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
+                      {language === "bn' ? 'জনপ্রিয় Course" : 'Top Courses'}
                     </h4>
                     <div className="space-y-2">
                       {courseEnrollmentStats.slice(0, 3).map((course, index) => (
@@ -1302,7 +1302,7 @@ function AdminDashboardInner() {
                             </span>
                             <span className="text-sm truncate max-w-[150px]">{course.title}</span>
                           </div>
-                          <Badge variant="secondary">{course.enrollmentCount} {language === 'bn' ? 'জন' : ''}</Badge>
+                          <Badge variant="secondary">{course.enrollmentCount} {language === "bn' ? 'জন" : ''}</Badge>
                         </div>
                       ))}
                     </div>
@@ -1320,8 +1320,8 @@ function AdminDashboardInner() {
           {/* Requests Tab */}
           <TabsContent value="requests" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'এনরোলমেন্ট Request' : 'Enrollment Requests'}
+              <h2 className={`text-xl font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>
+                {language === "bn' ? 'এনরোলমেন্ট Request" : 'Enrollment Requests'}
               </h2>
               <Button 
                 variant="outline" 
@@ -1335,7 +1335,7 @@ function AdminDashboardInner() {
                 ) : (
                   <TrendingUp className="w-4 h-4" />
                 )}
-                {language === 'bn' ? 'রিফ্রেশ' : 'Refresh'}
+                {language === "bn' ? 'রিফ্রেশ" : 'Refresh'}
               </Button>
             </div>
 
@@ -1347,23 +1347,23 @@ function AdminDashboardInner() {
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">{language === 'bn' ? 'কোনো Request নেই' : 'No enrollment requests'}</p>
+                  <p className="text-muted-foreground">{language === "bn' ? 'কোনো Request নেই" : 'No enrollment requests'}</p>
                 </CardContent>
               </Card>
             ) : (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {enrollmentRequests.map((request) => (
-                  <Card key={request.id} className={`overflow-hidden ${request.status === 'pending' ? 'border-amber-500/50' : request.status === 'approved' ? 'border-green-500/50' : 'border-red-500/50'}`}>
+                  <Card key={request.id} className={`overflow-hidden ${request.status === "pending' ? 'border-amber-500/50" : request.status === "approved' ? 'border-green-500/50" : 'border-red-500/50'}`}>
                     <CardHeader className="pb-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                            request.status === 'pending' ? 'bg-amber-500/20' : 
-                            request.status === 'approved' ? 'bg-green-500/20' : 'bg-red-500/20'
+                            request.status === "pending' ? 'bg-amber-500/20" : 
+                            request.status === "approved' ? 'bg-green-500/20" : 'bg-red-500/20'
                           }`}>
                             <span className={`font-bold ${
-                              request.status === 'pending' ? 'text-amber-600' : 
-                              request.status === 'approved' ? 'text-green-600' : 'text-red-600'
+                              request.status === "pending' ? 'text-amber-600" : 
+                              request.status === "approved' ? 'text-green-600" : 'text-red-600'
                             }`}>
                               {request.student_name?.charAt(0).toUpperCase()}
                             </span>
@@ -1373,10 +1373,10 @@ function AdminDashboardInner() {
                             <CardDescription className="truncate">{request.student_email}</CardDescription>
                           </div>
                         </div>
-                        <Badge variant={request.status === 'pending' ? 'secondary' : request.status === 'approved' ? 'default' : 'destructive'}>
-                          {request.status === 'pending' ? (language === 'bn' ? 'পেন্ডিং' : 'Pending') : 
-                           request.status === 'approved' ? (language === 'bn' ? 'অনুমোদিত' : 'Approved') : 
-                           (language === 'bn' ? 'প্রত্যাখ্যাত' : 'Rejected')}
+                        <Badge variant={request.status === "pending' ? 'secondary" : request.status === "approved' ? 'default" : 'destructive'}>
+                          {request.status === "pending' ? (language === 'bn' ? 'পেন্ডিং" : 'Pending') : 
+                           request.status === "approved' ? (language === 'bn' ? 'অনুমোদিত" : 'Approved') : 
+                           (language === "bn' ? 'প্রত্যাখ্যাত" : 'Rejected')}
                         </Badge>
                       </div>
                     </CardHeader>
@@ -1391,7 +1391,7 @@ function AdminDashboardInner() {
                       {request.phone_number && (
                         <div className="flex items-center gap-2 text-sm">
                           <Mail className="w-4 h-4 text-muted-foreground" />
-                          <span className="font-medium">{language === 'bn' ? 'ফোন:' : 'Phone:'}</span>
+                          <span className="font-medium">{language === "bn' ? 'ফোন:" : 'Phone:'}</span>
                           <span>{request.phone_number}</span>
                         </div>
                       )}
@@ -1400,9 +1400,9 @@ function AdminDashboardInner() {
                       {request.payment_method && (
                         <div className="flex items-center gap-2 text-sm">
                           <Banknote className="w-4 h-4 text-muted-foreground" />
-                          <span className="font-medium">{language === 'bn' ? 'পেমেন্ট:' : 'Payment:'}</span>
+                          <span className="font-medium">{language === "bn' ? 'পেমেন্ট:" : 'Payment:'}</span>
                           <Badge variant="outline" className="text-xs">
-                            {request.payment_method === 'bkash' ? 'বিকাশ' : 'নগদ'}
+                            {request.payment_method === "bkash' ? 'বিকাশ" : 'নগদ'}
                           </Badge>
                         </div>
                       )}
@@ -1410,7 +1410,7 @@ function AdminDashboardInner() {
                       {/* Transaction ID */}
                       {request.transaction_id && (
                         <div className="flex items-center gap-2 text-sm bg-muted/50 p-2 rounded-lg">
-                          <span className="font-medium text-primary">{language === 'bn' ? 'TxID:' : 'TxID:'}</span>
+                          <span className="font-medium text-primary">{language === "bn' ? 'TxID:" : 'TxID:'}</span>
                           <code className="text-xs font-mono flex-1">{request.transaction_id}</code>
                           <Button
                             variant="ghost"
@@ -1418,7 +1418,7 @@ function AdminDashboardInner() {
                             className="h-6 w-6 p-0"
                             onClick={() => {
                               navigator.clipboard.writeText(request.transaction_id || '');
-                              toast.success(language === 'bn' ? 'কপি হয়েছে' : 'Copied!');
+                              toast.success(language === "bn' ? 'কপি হয়েছে" : 'Copied!');
                             }}
                           >
                             <Copy className="w-3 h-3" />
@@ -1435,7 +1435,7 @@ function AdminDashboardInner() {
 
                       {/* Date */}
                       <p className="text-xs text-muted-foreground">
-                        {language === 'bn' ? 'তারিখ:' : 'Date:'} {formatDateTime(request.created_at)}
+                        {language === "bn' ? 'তারিখ:" : 'Date:'} {formatDateTime(request.created_at)}
                       </p>
 
                       {/* Action Buttons */}
@@ -1447,7 +1447,7 @@ function AdminDashboardInner() {
                             onClick={() => approveEnrollment(request)}
                           >
                             <Check className="w-3 h-3" />
-                            {language === 'bn' ? 'অনুমোদন' : 'Approve'}
+                            {language === "bn' ? 'অনুমোদন" : 'Approve'}
                           </Button>
                           <Button 
                             size="sm" 
@@ -1456,7 +1456,7 @@ function AdminDashboardInner() {
                             onClick={() => rejectEnrollment(request.id)}
                           >
                             <X className="w-3 h-3" />
-                            {language === 'bn' ? 'প্রত্যাখ্যান' : 'Reject'}
+                            {language === "bn' ? 'প্রত্যাখ্যান" : 'Reject'}
                           </Button>
                           {request.payment_method === 'uddoktapay' && request.transaction_id && (
                             <Button 
@@ -1466,7 +1466,7 @@ function AdminDashboardInner() {
                               onClick={() => refundPayment(request)}
                             >
                               <RotateCcw className="w-3 h-3" />
-                              {language === 'bn' ? 'রিফান্ড' : 'Refund'}
+                              {language === "bn' ? 'রিফান্ড" : 'Refund'}
                             </Button>
                           )}
                         </div>
@@ -1483,14 +1483,14 @@ function AdminDashboardInner() {
           {/* Students Tab */}
           <TabsContent value="students" className="space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'Student তালিকা' : 'Student List'}
+              <h2 className={`text-xl font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>
+                {language === "bn' ? 'Student তালিকা" : 'Student List'}
               </h2>
               <div className="flex items-center gap-3 w-full sm:w-auto flex-wrap">
                 <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder={language === 'bn' ? 'নাম, Email বা ফোন...' : 'Name, email or phone...'}
+                    placeholder={language === "bn' ? 'নাম, Email বা ফোন..." : 'Name, email or phone...'}
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
                     className="pl-9 w-full sm:w-64"
@@ -1498,7 +1498,7 @@ function AdminDashboardInner() {
                 </div>
                 <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2 whitespace-nowrap">
                   <UserPlus className="w-4 h-4" />
-                  <span className="hidden sm:inline">{language === 'bn' ? 'নতুন Student' : 'New Student'}</span>
+                  <span className="hidden sm:inline">{language === "bn' ? 'নতুন Student" : 'New Student'}</span>
                 </Button>
               </div>
             </div>
@@ -1515,7 +1515,7 @@ function AdminDashboardInner() {
                 <span className="text-sm text-muted-foreground">
                   {selectedStudents.length > 0 
                     ? (language === 'bn' ? `${selectedStudents.length} selected` : `${selectedStudents.length} selected`)
-                    : (language === 'bn' ? 'সব সিলেক্ট করুন' : 'Select all')}
+                    : (language === "bn' ? 'সব সিলেক্ট করুন" : 'Select all')}
                 </span>
                 {selectedStudents.length > 0 && (
                   <Button 
@@ -1537,7 +1537,7 @@ function AdminDashboardInner() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle className="text-destructive">
-                    {language === 'bn' ? '⚠️ নিশ্চিত করুন' : '⚠️ Confirm Deletion'}
+                    {language === "bn' ? '⚠️ নিশ্চিত করুন" : '⚠️ Confirm Deletion'}
                   </DialogTitle>
                   <DialogDescription>
                     {language === 'bn' 
@@ -1547,7 +1547,7 @@ function AdminDashboardInner() {
                 </DialogHeader>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
-                    {language === 'bn' ? 'বাতিল' : 'Cancel'}
+                    {language === "bn' ? 'বাতিল" : 'Cancel'}
                   </Button>
                   <Button 
                     variant="destructive" 
@@ -1555,8 +1555,8 @@ function AdminDashboardInner() {
                     disabled={deletingStudents}
                   >
                     {deletingStudents 
-                      ? (language === 'bn' ? 'Deleting...' : 'Deleting...')
-                      : (language === 'bn' ? 'হ্যাঁ, মুছে ফেলুন' : 'Yes, Delete All')}
+                      ? (language === "bn' ? 'Deleting..." : 'Deleting...')
+                      : (language === "bn' ? 'হ্যাঁ, মুছে ফেলুন" : 'Yes, Delete All')}
                   </Button>
                 </DialogFooter>
               </DialogContent>
@@ -1567,9 +1567,9 @@ function AdminDashboardInner() {
             <Card className="bg-gradient-to-r from-primary/5 to-cyan-500/5 border-primary/20">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className={`text-base flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-base flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <TrendingUp className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'Course এনরোলমেন্ট ও বিক্রি' : 'Course Enrollment & Sales'}
+                    {language === "bn' ? 'Course এনরোলমেন্ট ও বিক্রি" : 'Course Enrollment & Sales'}
                   </CardTitle>
                   <div className="flex items-center gap-2 text-sm">
                     <Banknote className="w-4 h-4 text-amber-500" />
@@ -1599,7 +1599,7 @@ function AdminDashboardInner() {
                       </p>
                       {course.totalSales > 0 && (
                         <p className="text-xs font-medium text-amber-600 mt-1">
-                          {language === 'bn'? `Sales: ৳${course.totalSales.toLocaleString('bn-BD')}` : `Sales: ৳${course.totalSales.toLocaleString()}`}
+                          {language === "bn'? `Sales: ৳${course.totalSales.toLocaleString('bn-BD")}` : `Sales: ৳${course.totalSales.toLocaleString()}`}
                         </p>
                       )}
                     </div>
@@ -1607,7 +1607,7 @@ function AdminDashboardInner() {
                 </div>
                 {courseEnrollmentStats.length === 0 && (
                   <p className="text-sm text-muted-foreground text-center py-4">
-                    {language === 'bn' ? 'কোনো Course নেই' : 'No courses'}
+                    {language === "bn' ? 'কোনো Course নেই" : 'No courses'}
                   </p>
                 )}
               </CardContent>
@@ -1619,13 +1619,13 @@ function AdminDashboardInner() {
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">
                     {studentSearch
-                      ? (language === 'bn' ? 'কোনো Student পাওয়া যায়নি' : 'No students found')
-                      : (language === 'bn' ? 'কোনো Student নেই' : 'No students')}
+                      ? (language === "bn' ? 'কোনো Student পাওয়া যায়নি" : 'No students found')
+                      : (language === "bn' ? 'কোনো Student নেই" : 'No students')}
                   </p>
                   {!studentSearch && (
                     <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
                       <UserPlus className="w-4 h-4" />
-                      {language === 'bn' ? 'প্রথম Student যোগ করুন' : 'Add First Student'}
+                      {language === "bn' ? 'প্রথম Student যোগ করুন" : 'Add First Student'}
                     </Button>
                   )}
                 </CardContent>
@@ -1643,7 +1643,7 @@ function AdminDashboardInner() {
                 {!studentSearch && unassignedStudents.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'নতুন / Course দেওয়া হয়নি' : 'New / Unassigned'}</h3>
+                      <h3 className={`text-sm font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>{language === "bn' ? 'নতুন / Course দেওয়া হয়নি" : 'New / Unassigned'}</h3>
                       <Badge variant="outline">{unassignedStudents.length}</Badge>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -1658,7 +1658,7 @@ function AdminDashboardInner() {
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
                                   <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
-                                  {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
+                                  {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === "bn' ? 'নতুন" : 'New'}</Badge>}
                                 </div>
                                 <CardDescription className="truncate">{student.email}</CardDescription>
                               </div>
@@ -1670,12 +1670,12 @@ function AdminDashboardInner() {
                           <CardContent className="pt-0 space-y-3">
                             {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
                             <div className="flex items-center justify-between text-sm">
-                              <Badge variant="outline" className="text-xs">{language === 'bn' ? 'Course নেই' : 'No course'}</Badge>
+                              <Badge variant="outline" className="text-xs">{language === "bn' ? 'Course নেই" : 'No course'}</Badge>
                               <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
-                                <Plus className="w-3 h-3" />{language === 'bn' ? 'Course যোগ' : 'Add Course'}
+                                <Plus className="w-3 h-3" />{language === "bn' ? 'Course যোগ" : 'Add Course'}
                               </Button>
                             </div>
-                            <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
+                            <p className="text-xs text-muted-foreground">{language === "bn' ? 'তৈরি:" : 'Created:'} {formatDateTime(student.created_at)}</p>
                           </CardContent>
                         </Card>
                       ))}
@@ -1687,7 +1687,7 @@ function AdminDashboardInner() {
                 <div className="space-y-3">
                   {!studentSearch && (
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'Course দেওয়া আছে' : 'Assigned'}</h3>
+                      <h3 className={`text-sm font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>{language === "bn' ? 'Course দেওয়া আছে" : 'Assigned'}</h3>
                       <Badge variant="outline">{assignedStudents.length}</Badge>
                     </div>
                   )}
@@ -1703,7 +1703,7 @@ function AdminDashboardInner() {
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2">
                                 <CardTitle className="text-base truncate">{student.full_name}</CardTitle>
-                                {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === 'bn' ? 'নতুন' : 'New'}</Badge>}
+                                {isRecent(student.created_at) && <Badge variant="secondary" className="text-xs">{language === "bn' ? 'নতুন" : 'New'}</Badge>}
                               </div>
                               <CardDescription className="truncate">{student.email}</CardDescription>
                             </div>
@@ -1715,9 +1715,9 @@ function AdminDashboardInner() {
                         <CardContent className="pt-0 space-y-3">
                           {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">{student.courses.length} {language === 'bn' ? 'Course' : 'courses'}</span>
+                            <span className="text-muted-foreground">{student.courses.length} {language === "bn' ? 'Course" : 'courses'}</span>
                             <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
-                              <Plus className="w-3 h-3" />{language === 'bn' ? 'Course যোগ' : 'Add Course'}
+                              <Plus className="w-3 h-3" />{language === "bn' ? 'Course যোগ" : 'Add Course'}
                             </Button>
                           </div>
                           {student.courses.length > 0 && (
@@ -1731,7 +1731,7 @@ function AdminDashboardInner() {
                               {student.courses.length > 3 && <Badge variant="outline" className="text-xs">+{student.courses.length - 3}</Badge>}
                             </div>
                           )}
-                          <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
+                          <p className="text-xs text-muted-foreground">{language === "bn' ? 'তৈরি:" : 'Created:'} {formatDateTime(student.created_at)}</p>
                         </CardContent>
                       </Card>
                     ))}
@@ -1822,12 +1822,12 @@ function AdminDashboardInner() {
           {/* Profile Tab */}
           <TabsContent value="profile" className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'Admin প্রোফাইল' : 'Admin Profile'}
+              <h2 className={`text-xl font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>
+                {language === "bn' ? 'Admin প্রোফাইল" : 'Admin Profile'}
               </h2>
               <Button onClick={() => setShowAddAdminDialog(true)} className="gap-2">
                 <Shield className="w-4 h-4" />
-                {language === 'bn' ? 'নতুন Admin যোগ' : 'Add New Admin'}
+                {language === "bn' ? 'নতুন Admin যোগ" : 'Add New Admin'}
               </Button>
             </div>
             
@@ -1835,9 +1835,9 @@ function AdminDashboardInner() {
               {/* Profile Info Card */}
               <Card className="md:col-span-2 lg:col-span-1">
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <User className="w-5 h-5" />
-                    {language === 'bn' ? 'প্রোফাইল তথ্য' : 'Profile Info'}
+                    {language === "bn' ? 'প্রোফাইল তথ্য" : 'Profile Info'}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1887,7 +1887,7 @@ function AdminDashboardInner() {
                     className="w-full gap-2"
                   >
                     <Edit className="w-4 h-4" />
-                    {language === 'bn' ? 'প্রোফাইল এডিট করুন' : 'Edit Profile'}
+                    {language === "bn' ? 'প্রোফাইল এডিট করুন" : 'Edit Profile'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1895,12 +1895,12 @@ function AdminDashboardInner() {
               {/* Password Change Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <Lock className="w-5 h-5" />
-                    {language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}
+                    {language === "bn' ? 'পাসওয়ার্ড" : 'Password'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন' : 'Change password to keep your account secure'}
+                    {language === "bn' ? 'অ্যাকাউন্ট সুরক্ষিত রাখতে পাসওয়ার্ড পরিবর্তন করুন" : 'Change password to keep your account secure'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1910,7 +1910,7 @@ function AdminDashboardInner() {
                     className="w-full gap-2"
                   >
                     <Lock className="w-4 h-4" />
-                    {language === 'bn' ? 'পাসওয়ার্ড পরিবর্তন' : 'Change Password'}
+                    {language === "bn' ? 'পাসওয়ার্ড পরিবর্তন" : 'Change Password'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1918,12 +1918,12 @@ function AdminDashboardInner() {
               {/* Add Admin Card */}
               <Card className="border-dashed border-2">
                 <CardHeader>
-                  <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                  <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                     <Shield className="w-5 h-5" />
-                    {language === 'bn' ? 'নতুন Admin' : 'New Admin'}
+                    {language === "bn' ? 'নতুন Admin" : 'New Admin'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'আরেকজন Admin যোগ করুন যারা সব ম্যানেজ করতে পারবে' : 'Add another admin who can manage everything'}
+                    {language === "bn' ? 'আরেকজন Admin যোগ করুন যারা সব ম্যানেজ করতে পারবে" : 'Add another admin who can manage everything'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1932,7 +1932,7 @@ function AdminDashboardInner() {
                     className="w-full gap-2"
                   >
                     <Plus className="w-4 h-4" />
-                    {language === 'bn' ? 'Admin যোগ করুন' : 'Add Admin'}
+                    {language === "bn' ? 'Admin যোগ করুন" : 'Add Admin'}
                   </Button>
                 </CardContent>
               </Card>
@@ -1943,12 +1943,12 @@ function AdminDashboardInner() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
+                    <CardTitle className={`text-lg flex items-center gap-2 ${language === "bn' ? 'font-[Aloka]" : ''}`}>
                       <Shield className="w-5 h-5" />
                       {language === 'bn' ? `All Admins (${admins.length})` : `All Admins (${admins.length})`}
                     </CardTitle>
                     <CardDescription>
-                      {language === 'bn' ? 'যারা এই প্ল্যাটফর্ম ম্যানেজ করতে পারে' : 'Those who can manage this platform'}
+                      {language === "bn' ? 'যারা এই প্ল্যাটফর্ম ম্যানেজ করতে পারে" : 'Those who can manage this platform'}
                     </CardDescription>
                   </div>
                   <Button 
@@ -1963,7 +1963,7 @@ function AdminDashboardInner() {
                     ) : (
                       <TrendingUp className="w-4 h-4" />
                     )}
-                    {language === 'bn' ? 'রিফ্রেশ' : 'Refresh'}
+                    {language === "bn' ? 'রিফ্রেশ" : 'Refresh'}
                   </Button>
                 </div>
               </CardHeader>
@@ -1975,7 +1975,7 @@ function AdminDashboardInner() {
                 ) : admins.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                    <p>{language === 'bn' ? 'কোনো Admin পাওয়া যায়নি' : 'No admins found'}</p>
+                    <p>{language === "bn' ? 'কোনো Admin পাওয়া যায়নি" : 'No admins found'}</p>
                   </div>
                 ) : (
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -2006,14 +2006,14 @@ function AdminDashboardInner() {
                             {admin.full_name}
                             {admin.user_id === user?.id && (
                               <Badge variant="secondary" className="text-xs">
-                                {language === 'bn' ? 'আপনি' : 'You'}
+                                {language === "bn' ? 'আপনি" : 'You'}
                               </Badge>
                             )}
                           </p>
                           <p className="text-sm text-muted-foreground truncate">{admin.email}</p>
                           {admin.created_at && (
                             <p className="text-xs text-muted-foreground mt-1">
-                              {language === 'bn' ? 'যোগদান' : 'Joined'}: {new Date(admin.created_at).toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US')}
+                              {language === "bn' ? 'যোগদান" : 'Joined'}: {new Date(admin.created_at).toLocaleDateString(language === "bn' ? 'bn-BD" : 'en-US')}
                             </p>
                           )}
                         </div>
@@ -2031,7 +2031,7 @@ function AdminDashboardInner() {
       <Dialog open={showAssignDialog} onOpenChange={setShowAssignDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{language === 'bn' ? 'Course যোগ করুন' : 'Add Course'}</DialogTitle>
+            <DialogTitle>{language === "bn' ? 'Course যোগ করুন" : 'Add Course'}</DialogTitle>
             <DialogDescription>
               {language === 'bn' 
                 ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code> Select a course to assign below]</>
@@ -2044,7 +2044,7 @@ function AdminDashboardInner() {
               <div className="text-center py-8">
                 <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">
-                  {language === 'bn' ? 'সব Course ইতিমধ্যে অ্যাসাইন করা হয়েছে' : 'All courses are already assigned'}
+                  {language === "bn' ? 'সব Course ইতিমধ্যে অ্যাসাইন করা হয়েছে" : 'All courses are already assigned'}
                 </p>
               </div>
             ) : (
@@ -2094,10 +2094,10 @@ function AdminDashboardInner() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAssignDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
+              {language === "bn' ? 'বাতিল" : 'Cancel'}
             </Button>
             <Button onClick={handleAssignCourse} disabled={!selectedCourseToAssign}>
-              {language === 'bn' ? 'যোগ করুন' : 'Add'}
+              {language === "bn' ? 'যোগ করুন" : 'Add'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2109,28 +2109,28 @@ function AdminDashboardInner() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UserPlus className="w-5 h-5" />
-              {language === 'bn' ? 'নতুন Student যোগ করুন' : 'Add New Student'}
+              {language === "bn' ? 'নতুন Student যোগ করুন" : 'Add New Student'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'Studentের তথ্য দিন' : 'Enter student details'}
+              {language === "bn' ? 'Studentের তথ্য দিন" : 'Enter student details'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="student-name">{language === 'bn' ? 'পুরো নাম' : 'Full Name'}</Label>
+              <Label htmlFor="student-name">{language === "bn' ? 'পুরো নাম" : 'Full Name'}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="student-name"
                   value={newStudentName}
                   onChange={(e) => setNewStudentName(e.target.value)}
-                  placeholder={language === 'bn' ? 'Studentের নাম' : 'Student name'}
+                  placeholder={language === "bn' ? 'Studentের নাম" : 'Student name'}
                   className="pl-10"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-email">{language === 'bn' ? 'Email' : 'Email'}</Label>
+              <Label htmlFor="student-email">{language === "bn' ? 'Email" : 'Email'}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -2144,7 +2144,7 @@ function AdminDashboardInner() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-password">{language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}</Label>
+              <Label htmlFor="student-password">{language === "bn' ? 'পাসওয়ার্ড" : 'Password'}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -2152,34 +2152,34 @@ function AdminDashboardInner() {
                   type="password"
                   value={newStudentPassword}
                   onChange={(e) => setNewStudentPassword(e.target.value)}
-                  placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
+                  placeholder={language === "bn' ? 'কমপক্ষে ৬ অক্ষর" : 'At least 6 characters'}
                   className="pl-10"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-passcode">{language === 'bn' ? 'ফোন নম্বর (ঐচ্ছিক)' : 'Phone Number (Optional)'}</Label>
+              <Label htmlFor="student-passcode">{language === "bn' ? 'ফোন নম্বর (ঐচ্ছিক)" : 'Phone Number (Optional)'}</Label>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="student-passcode"
                   value={newStudentPhone}
                   onChange={(e) => setNewStudentPhone(e.target.value)}
-                  placeholder={language === 'bn' ? 'ফোন নম্বর' : 'Phone number'}
+                  placeholder={language === "bn' ? 'ফোন নম্বর" : 'Phone number'}
                   className="pl-10 font-mono"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'ফোন নম্বর দিলে Student সেটার সাথে লিংক হবে' : 'Enter student phone number'}
+                {language === "bn' ? 'ফোন নম্বর দিলে Student সেটার সাথে লিংক হবে" : 'Enter student phone number'}
               </p>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddStudentDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
+              {language === "bn' ? 'বাতিল" : 'Cancel'}
             </Button>
             <Button onClick={handleAddStudent} disabled={addingStudent}>
-              {addingStudent ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'Student যোগ করুন' : 'Add Student')}
+              {addingStudent ? (language === "bn' ? 'যোগ হচ্ছে..." : 'Adding...') : (language === "bn' ? 'Student যোগ করুন" : 'Add Student')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2191,40 +2191,40 @@ function AdminDashboardInner() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Lock className="w-5 h-5" />
-              {language === 'bn' ? 'পাসওয়ার্ড পরিবর্তন' : 'Change Password'}
+              {language === "bn' ? 'পাসওয়ার্ড পরিবর্তন" : 'Change Password'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'নতুন পাসওয়ার্ড দিন' : 'Enter your new password'}
+              {language === "bn' ? 'নতুন পাসওয়ার্ড দিন" : 'Enter your new password'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="new-password">{language === 'bn' ? 'নতুন পাসওয়ার্ড' : 'New Password'}</Label>
+              <Label htmlFor="new-password">{language === "bn' ? 'নতুন পাসওয়ার্ড" : 'New Password'}</Label>
               <Input
                 id="new-password"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
+                placeholder={language === "bn' ? 'কমপক্ষে ৬ অক্ষর" : 'At least 6 characters'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirm-password">{language === 'bn' ? 'পাসওয়ার্ড নিশ্চিত করুন' : 'Confirm Password'}</Label>
+              <Label htmlFor="confirm-password">{language === "bn' ? 'পাসওয়ার্ড নিশ্চিত করুন" : 'Confirm Password'}</Label>
               <Input
                 id="confirm-password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder={language === 'bn' ? 'আবার পাসওয়ার্ড দিন' : 'Re-enter password'}
+                placeholder={language === "bn' ? 'আবার পাসওয়ার্ড দিন" : 'Re-enter password'}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowPasswordDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
+              {language === "bn' ? 'বাতিল" : 'Cancel'}
             </Button>
             <Button onClick={handleChangePassword} disabled={changingPassword}>
-              {changingPassword ? (language === 'bn' ? 'পরিবর্তন হচ্ছে...' : 'Changing...') : (language === 'bn' ? 'পাসওয়ার্ড পরিবর্তন' : 'Change Password')}
+              {changingPassword ? (language === "bn' ? 'পরিবর্তন হচ্ছে..." : 'Changing...') : (language === "bn' ? 'পাসওয়ার্ড পরিবর্তন" : 'Change Password')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2234,7 +2234,7 @@ function AdminDashboardInner() {
       <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{language === 'bn' ? 'Admin প্রোফাইল' : 'Admin Profile'}</DialogTitle>
+            <DialogTitle>{language === "bn' ? 'Admin প্রোফাইল" : 'Admin Profile'}</DialogTitle>
           </DialogHeader>
           <div className="py-4 space-y-4">
             <div className="flex items-center gap-4">
@@ -2269,7 +2269,7 @@ function AdminDashboardInner() {
                 className="flex-1 gap-2"
               >
                 <Edit className="w-4 h-4" />
-                {language === 'bn' ? 'এডিট' : 'Edit'}
+                {language === "bn' ? 'এডিট" : 'Edit'}
               </Button>
               <Button 
                 onClick={() => {
@@ -2280,13 +2280,13 @@ function AdminDashboardInner() {
                 className="flex-1 gap-2"
               >
                 <Lock className="w-4 h-4" />
-                {language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}
+                {language === "bn' ? 'পাসওয়ার্ড" : 'Password'}
               </Button>
             </div>
           </div>
           <DialogFooter>
             <Button onClick={() => setShowProfileDialog(false)}>
-              {language === 'bn' ? 'বন্ধ করুন' : 'Close'}
+              {language === "bn' ? 'বন্ধ করুন" : 'Close'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2298,42 +2298,42 @@ function AdminDashboardInner() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Edit className="w-5 h-5" />
-              {language === 'bn' ? 'প্রোফাইল এডিট' : 'Edit Profile'}
+              {language === "bn' ? 'প্রোফাইল এডিট" : 'Edit Profile'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'আপনার নাম এবং Email পরিবর্তন করুন' : 'Change your name and email'}
+              {language === "bn' ? 'আপনার নাম এবং Email পরিবর্তন করুন" : 'Change your name and email'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-name">{language === 'bn' ? 'নাম' : 'Name'}</Label>
+              <Label htmlFor="edit-name">{language === "bn' ? 'নাম" : 'Name'}</Label>
               <Input
                 id="edit-name"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
-                placeholder={language === 'bn' ? 'আপনার নাম' : 'Your name'}
+                placeholder={language === "bn' ? 'আপনার নাম" : 'Your name'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-email">{language === 'bn' ? 'Email' : 'Email'}</Label>
+              <Label htmlFor="edit-email">{language === "bn' ? 'Email" : 'Email'}</Label>
               <Input
                 id="edit-email"
                 type="email"
                 value={editEmail}
                 onChange={(e) => setEditEmail(e.target.value)}
-                placeholder={language === 'bn' ? 'আপনার Email' : 'Your email'}
+                placeholder={language === "bn' ? 'আপনার Email" : 'Your email'}
               />
               <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'Email পরিবর্তন করলে নতুন Emailে confirm করতে হবে' : 'Email change requires confirmation on new email'}
+                {language === "bn' ? 'Email পরিবর্তন করলে নতুন Emailে confirm করতে হবে" : 'Email change requires confirmation on new email'}
               </p>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowEditProfileDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
+              {language === "bn' ? 'বাতিল" : 'Cancel'}
             </Button>
             <Button onClick={handleUpdateProfile} disabled={updatingProfile}>
-              {updatingProfile ? (language === 'bn' ? 'আপডেট হচ্ছে...' : 'Updating...') : (language === 'bn' ? 'আপডেট করুন' : 'Update')}
+              {updatingProfile ? (language === "bn' ? 'আপডেট হচ্ছে..." : 'Updating...') : (language === "bn' ? 'আপডেট করুন" : 'Update')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2345,24 +2345,24 @@ function AdminDashboardInner() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Shield className="w-5 h-5" />
-              {language === 'bn' ? 'নতুন Admin যোগ করুন' : 'Add New Admin'}
+              {language === "bn' ? 'নতুন Admin যোগ করুন" : 'Add New Admin'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'নতুন Admin এর তথ্য দিন' : 'Enter new admin details'}
+              {language === "bn' ? 'নতুন Admin এর তথ্য দিন" : 'Enter new admin details'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="admin-name">{language === 'bn' ? 'নাম' : 'Name'}</Label>
+              <Label htmlFor="admin-name">{language === "bn' ? 'নাম" : 'Name'}</Label>
               <Input
                 id="admin-name"
                 value={newAdminName}
                 onChange={(e) => setNewAdminName(e.target.value)}
-                placeholder={language === 'bn' ? 'Admin এর নাম' : 'Admin name'}
+                placeholder={language === "bn' ? 'Admin এর নাম" : 'Admin name'}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="admin-email">{language === 'bn' ? 'Email' : 'Email'}</Label>
+              <Label htmlFor="admin-email">{language === "bn' ? 'Email" : 'Email'}</Label>
               <Input
                 id="admin-email"
                 type="email"
@@ -2372,22 +2372,22 @@ function AdminDashboardInner() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="admin-password">{language === 'bn' ? 'পাসওয়ার্ড' : 'Password'}</Label>
+              <Label htmlFor="admin-password">{language === "bn' ? 'পাসওয়ার্ড" : 'Password'}</Label>
               <Input
                 id="admin-password"
                 type="password"
                 value={newAdminPassword}
                 onChange={(e) => setNewAdminPassword(e.target.value)}
-                placeholder={language === 'bn' ? 'কমপক্ষে ৬ অক্ষর' : 'At least 6 characters'}
+                placeholder={language === "bn' ? 'কমপক্ষে ৬ অক্ষর" : 'At least 6 characters'}
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddAdminDialog(false)}>
-              {language === 'bn' ? 'বাতিল' : 'Cancel'}
+              {language === "bn' ? 'বাতিল" : 'Cancel'}
             </Button>
             <Button onClick={handleAddAdmin} disabled={addingAdmin}>
-              {addingAdmin ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'Admin যোগ করুন' : 'Add Admin')}
+              {addingAdmin ? (language === "bn' ? 'যোগ হচ্ছে..." : 'Adding...') : (language === "bn' ? 'Admin যোগ করুন" : 'Add Admin')}
             </Button>
           </DialogFooter>
         </DialogContent>

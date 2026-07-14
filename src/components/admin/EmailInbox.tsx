@@ -28,7 +28,7 @@ import {
 import { format } from 'date-fns';
 
 interface EmailInboxProps {
-  language: 'en' | 'bn';
+  language: "en' | 'bn";
 }
 
 interface EmailThread {
@@ -36,7 +36,7 @@ interface EmailThread {
   subject: string;
   external_email: string;
   external_name: string | null;
-  status: 'open' | 'pending' | 'closed';
+  status: "open' | 'pending' | 'closed";
   last_message_at: string;
   created_at: string;
 }
@@ -44,7 +44,7 @@ interface EmailThread {
 interface EmailMessage {
   id: string;
   thread_id: string;
-  direction: 'inbound' | 'outbound';
+  direction: "inbound' | 'outbound";
   from_email: string;
   to_email: string;
   subject: string;

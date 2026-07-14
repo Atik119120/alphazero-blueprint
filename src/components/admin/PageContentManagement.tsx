@@ -24,12 +24,12 @@ interface PageContent {
 // Human-readable labels and descriptions for content keys
 const CONTENT_KEY_INFO: Record<string, Record<string, { label: string; labelEn: string; description: string }>> = {
   home: {
-    'hero.title': { label: '🏠 Hero Title', labelEn: 'Hero Title', description: 'Home page's main top title' },
+    'hero.title': { label: '🏠 Hero Title', labelEn: 'Hero Title', description: "Home page's main top title" },
     'hero.subtitle': { label: '🔖 Hero Subtitle', labelEn: 'Hero Subtitle', description: 'Small tagline above the title' },
     'hero.description': { label: '📝 Hero Description', labelEn: 'Hero Description', description: 'Paragraph text for the hero section' },
     'hero.tagline': { label: '⚡ Tagline', labelEn: 'Tagline', description: 'Short brand tagline' },
-    'hero.cta1': { label: '🔗 Primary Button', labelEn: 'Primary CTA', description: 'Text for the hero's first button' },
-    'hero.cta2': { label: '🔗 Secondary Button', labelEn: 'Secondary CTA', description: 'Text for the hero's second button' },
+    'hero.cta1': { label: '🔗 Primary Button', labelEn: 'Primary CTA', description: "Text for the hero's first button" },
+    'hero.cta2': { label: '🔗 Secondary Button', labelEn: 'Secondary CTA', description: "Text for the hero's second button" },
     'services.title': { label: '🛠️ Service Title', labelEn: 'Services Section Title', description: 'Heading for the home page service section' },
     'services.subtitle': { label: '🛠️ Service Subtitle', labelEn: 'Services Subtitle', description: 'Short description for the service section' },
     'stats.projects': { label: '📊 Project Count', labelEn: 'Projects Count', description: 'Number of projects (e.g., 50+)' },
@@ -42,12 +42,12 @@ const CONTENT_KEY_INFO: Record<string, Record<string, { label: string; labelEn: 
     'stats.satisfaction_label': { label: '✅ Satisfaction Label', labelEn: 'Satisfaction Label', description: 'Text below satisfaction percentage' },
     'why.title': { label: '❓ Why Us Title', labelEn: 'Why Choose Us Title', description: 'Heading for the "Why choose us" section' },
     'testimonials.title': { label: '💬 Testimonial Title', labelEn: 'Testimonials Title', description: 'Heading for the review section' },
-    'cta.title': { label: '📢 CTA Title', labelEn: 'CTA Title', description: 'Title for the page's bottom CTA section' },
+    'cta.title': { label: '📢 CTA Title', labelEn: 'CTA Title', description: "Title for the page's bottom CTA section" },
     'cta.description': { label: '📢 CTA Description', labelEn: 'CTA Description', description: 'Details for the CTA section' },
     'cta.button': { label: '📢 CTA Button', labelEn: 'CTA Button Text', description: 'Text for the CTA button' },
   },
   about: {
-    'hero.title': { label: '🏢 Hero Title', labelEn: 'Hero Title', description: 'About page's main title' },
+    'hero.title': { label: '🏢 Hero Title', labelEn: 'Hero Title', description: "About page's main title" },
     'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
     'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
     'story.title': { label: '📖 Story Title', labelEn: 'Story Title', description: 'Heading for the "Our Story" section' },

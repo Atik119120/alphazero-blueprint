@@ -77,7 +77,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   // Material form state
   const [showMaterialDialog, setShowMaterialDialog] = useState(false);
   const [materialTitle, setMaterialTitle] = useState('');
-  const [materialType, setMaterialType] = useState<'pdf' | 'doc' | 'note'>('pdf');
+  const [materialType, setMaterialType] = useState<"pdf' | 'doc' | 'note'>('pdf");
   const [materialUrl, setMaterialUrl] = useState('');
   const [materialNote, setMaterialNote] = useState('');
   const [videoMaterials, setVideoMaterials] = useState<VideoMaterial[]>([]);
@@ -398,7 +398,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
     }
 
     // Normalize cloudinary_url to cloudinary for DB storage
-    const dbVideoType = videoType === 'cloudinary_url' ? 'cloudinary' : videoType;
+    const dbVideoType = videoType === "cloudinary_url' ? 'cloudinary" : videoType;
 
     const durationSeconds = videoDuration ? parseInt(videoDuration) * 60 : 0;
 
@@ -659,7 +659,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               </div>
               <div className="space-y-2">
                 <Label>Type</Label>
-                <Select value={materialType} onValueChange={(v) => setMaterialType(v as 'pdf' | 'doc' | 'note')}>
+                <Select value={materialType} onValueChange={(v) => setMaterialType(v as "pdf' | 'doc' | 'note")}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
