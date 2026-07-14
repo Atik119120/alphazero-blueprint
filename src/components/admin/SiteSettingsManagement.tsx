@@ -160,9 +160,11 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
         <div className="flex items-center gap-3">
           <Settings className="h-6 w-6 text-primary" />
           <div>
-            <h2 className="text-2xl font-bold">Site Settings</h2>
+            <h2 className="text-2xl font-bold">
+              {filter === 'payment' ? 'Payment Method' : filter === 'general' ? 'Site Settings' : 'Site Settings'}
+            </h2>
             <p className="text-muted-foreground">
-              {scope === "learn" ? "Learn Site" : "Agency Site"} — Favicon, Logo & Site name
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — {filter === 'payment' ? 'Bkash, Nagad & manual payment options' : 'Favicon, Logo & Site name'}
             </p>
           </div>
         </div>
