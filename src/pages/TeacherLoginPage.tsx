@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -73,6 +74,7 @@ export default function TeacherLoginPage() {
     if (loginAttempted && !isLoading && user) {
       if (role !== 'teacher') {
         toast.error(t.notTeacherRole);
+        supabase.auth.signOut();
         setIsSubmitting(false);
         setLoginAttempted(false);
         return;
@@ -81,6 +83,7 @@ export default function TeacherLoginPage() {
       const isApproved = (profile as any)?.teacher_approved === true;
       if (!isApproved) {
         toast.error(t.notApproved);
+        supabase.auth.signOut();
         setIsSubmitting(false);
         setLoginAttempted(false);
         return;
