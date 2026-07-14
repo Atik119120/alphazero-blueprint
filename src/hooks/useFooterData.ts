@@ -98,8 +98,9 @@ export const useFooterContent = (scopeOverride?: SiteScope) => {
   });
 };
 
-export const useFooterContentByKey = (key: string, language: 'en' | 'bn' = 'en') => {
+export const useFooterContentByKey = (key: string, _language: 'en' | 'bn' = 'en') => {
   const { data: contents } = useFooterContent();
   const content = contents?.find(c => c.content_key === key);
-  return language === 'bn' ? content?.content_bn || content?.content_en : content?.content_en;
+  return content?.content_en;
 };
+
