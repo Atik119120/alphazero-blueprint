@@ -165,6 +165,8 @@ function AppContent() {
           </Routes>
         </motion.div>
       </AnimatePresence>
+      </SiteScopeProvider>
+
     </>
   );
 }
