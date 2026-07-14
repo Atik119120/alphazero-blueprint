@@ -120,7 +120,7 @@ const LearnAboutPage = () => {
               >
                 <GraduationCap size={14} className="text-primary" />
                 <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">
-                  {t("আমাদের সম্পর্কে", "About Learn")}
+                  {cms("hero.badge.bn", "hero.badge.en", "আমাদের সম্পর্কে", "About Learn")}
                 </span>
               </motion.div>
 
@@ -139,7 +139,7 @@ const LearnAboutPage = () => {
                 transition={{ delay: 0.15 }}
                 className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-tight"
               >
-                {t("শিখুন ", "Learn with ")}
+                {cms("hero.title.bn", "hero.title.en", "শিখুন ", "Learn with ")}
                 <span className="gradient-text">AlphaZero</span>
               </motion.h1>
 
@@ -149,7 +149,7 @@ const LearnAboutPage = () => {
                 transition={{ delay: 0.25 }}
                 className="text-xl text-muted-foreground max-w-2xl mx-auto"
               >
-                {t(
+                {cms("hero.description.bn", "hero.description.en",
                   "AlphaZero-এর নিজস্ব লার্নিং প্ল্যাটফর্ম — যেখানে ডিজাইন, ডেভেলপমেন্ট, ফটোগ্রাফি ও ডিজিটাল ক্রিয়েটিভ স্কিল শেখানো হয় প্র্যাকটিকাল ও প্রফেশনাল উপায়ে।",
                   "AlphaZero's very own learning platform — teaching design, development, photography, and digital creative skills the practical, professional way."
                 )}
