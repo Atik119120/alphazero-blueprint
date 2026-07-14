@@ -6,7 +6,7 @@ import { Profile } from '@/types/lms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { QRCodeSVG } from 'qrcode.react';
-import logoImg from '/logo.png';
+const logoImg = '/logo.png';
 
 interface StudentIDCardProps {
   profile: Profile;
@@ -65,12 +65,11 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
         <div className="relative h-full p-5 flex flex-col text-white">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-11 h-11 rounded-lg bg-white flex items-center justify-center p-1.5 shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center p-1 shrink-0 shadow-md">
               <img
                 src={logoImg}
                 alt="AlphaZero"
                 className="w-full h-full object-contain"
-                crossOrigin="anonymous"
               />
             </div>
             <div>
