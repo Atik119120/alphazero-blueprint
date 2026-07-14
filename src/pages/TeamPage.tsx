@@ -15,6 +15,7 @@ import {
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePageHero } from "@/hooks/usePageHero";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
