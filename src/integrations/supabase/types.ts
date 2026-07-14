@@ -2237,6 +2237,10 @@ export type Database = {
         Args: { _member_user_id: string; _room_id: string }
         Returns: boolean
       }
+      can_current_user_add_chat_member: {
+        Args: { _member_user_id: string; _room_id: string }
+        Returns: boolean
+      }
       generate_certificate_id: { Args: never; Returns: string }
       generate_pass_code: { Args: never; Returns: string }
       generate_ticket_number: { Args: never; Returns: string }
@@ -2246,6 +2250,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_chat_room_member: {
+        Args: { _room_id: string; _user_id: string }
         Returns: boolean
       }
       is_progress_visible_to_teacher: {

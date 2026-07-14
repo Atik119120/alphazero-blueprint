@@ -144,18 +144,23 @@ export default function StudentSupportChat({ language }: Props) {
     }
 
     // Add self first
-    const { error: m1 } = await supabase.from('chat_room_members').insert({
+    const { error: m1 } = await supabase.from('chat_room_members').upsert({
       room_id: newRoom.id, user_id: user.id,
-    });
-    if (m1) console.error('add self err', m1);
+    }, { onConflict: 'room_id,user_id' });
+    if (m1) {
+      console.error('add self err', m1);
+      toast.error('Could not open chat: ' + m1.message);
+      return;
+    }
 
     // Add teacher
-    const { error: m2 } = await supabase.from('chat_room_members').insert({
+    const { error: m2 } = await supabase.from('chat_room_members').upsert({
       room_id: newRoom.id, user_id: teacher.user_id,
-    });
+    }, { onConflict: 'room_id,user_id' });
     if (m2) {
       console.error('add teacher err', m2);
       toast.error('Could not add teacher: ' + m2.message);
+      return;
     }
 
     setRoomId(newRoom.id);
