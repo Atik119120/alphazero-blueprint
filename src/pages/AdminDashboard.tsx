@@ -816,13 +816,7 @@ function AdminDashboardInner() {
     { id: 'requests', icon: Mail, label: language === 'bn' ? 'Request' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
   ];
 
-  const lmsMoreItemsAll = [
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'Comment' : 'Comments', scopeTag: 'learn' as const },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'Coupon' : 'Coupons', scopeTag: 'learn' as const },
-  ];
+  const lmsMoreItemsAll: any[] = [];
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
