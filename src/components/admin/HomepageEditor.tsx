@@ -342,39 +342,26 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
 
       {/* Section fields */}
       {showText && (
-        <FieldGroup title="Content" description="সেকশনের টেক্সট কন্টেন্ট (English + বাংলা)">
+        <FieldGroup title="Content" description="Section text content">
           <div className="grid md:grid-cols-2 gap-4">
             {has("title") && (
-              <>
-                <FieldInput label="Title (English)" value={form.title} onChange={(v) => set("title", v)} />
-                <FieldInput label="Title (বাংলা)" value={form.title_bn} onChange={(v) => set("title_bn", v)} />
-              </>
+              <FieldInput label="Title" value={form.title} onChange={(v) => set("title", v)} />
             )}
             {has("subtitle") && (
-              <>
-                <FieldInput label="Subtitle (English)" value={form.subtitle} onChange={(v) => set("subtitle", v)} />
-                <FieldInput label="Subtitle (বাংলা)" value={form.subtitle_bn} onChange={(v) => set("subtitle_bn", v)} />
-              </>
+              <FieldInput label="Subtitle" value={form.subtitle} onChange={(v) => set("subtitle", v)} />
             )}
             {has("highlight") && (
-              <>
-                <FieldInput label="Highlight (English)" placeholder="e.g. Graphic Design" value={form.highlight} onChange={(v) => set("highlight", v)} />
-                <FieldInput label="Highlight (বাংলা)" value={form.highlight_bn} onChange={(v) => set("highlight_bn", v)} />
-              </>
+              <FieldInput label="Highlight" placeholder="e.g. Graphic Design" value={form.highlight} onChange={(v) => set("highlight", v)} />
             )}
             {has("description") && (
-              <>
-                <div className="md:col-span-2">
-                  <FieldTextarea label="Description (English)" value={form.description} onChange={(v) => set("description", v)} />
-                </div>
-                <div className="md:col-span-2">
-                  <FieldTextarea label="Description (বাংলা)" value={form.description_bn} onChange={(v) => set("description_bn", v)} />
-                </div>
-              </>
+              <div className="md:col-span-2">
+                <FieldTextarea label="Description" value={form.description} onChange={(v) => set("description", v)} />
+              </div>
             )}
           </div>
         </FieldGroup>
       )}
+
 
       {showMedia && (
         <FieldGroup title="Media" description="সেকশনের জন্য ইমেজ" icon={ImagePlus}>
