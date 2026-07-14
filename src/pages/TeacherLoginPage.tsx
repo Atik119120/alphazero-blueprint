@@ -74,6 +74,7 @@ export default function TeacherLoginPage() {
     if (loginAttempted && !isLoading && user) {
       if (role !== 'teacher') {
         toast.error(t.notTeacherRole);
+        supabase.auth.signOut();
         setIsSubmitting(false);
         setLoginAttempted(false);
         return;
@@ -82,6 +83,7 @@ export default function TeacherLoginPage() {
       const isApproved = (profile as any)?.teacher_approved === true;
       if (!isApproved) {
         toast.error(t.notApproved);
+        supabase.auth.signOut();
         setIsSubmitting(false);
         setLoginAttempted(false);
         return;
