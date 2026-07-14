@@ -125,10 +125,10 @@ const ServicesPage = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
             >
-              <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{t("services.title")}</span>{" "}
-              {t("services.title2")}
+              <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{hero("hero.title", t("services.title"))}</span>{" "}
+              {hero("hero.title2", t("services.title2"))}
               <br />
-              {t("services.title3")}{" "}
+              {hero("hero.title3", t("services.title3"))}{" "}
               <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>Matter</span>
             </motion.h1>
 
@@ -138,7 +138,7 @@ const ServicesPage = () => {
               transition={{ delay: 0.2 }}
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto"
             >
-              {t("services.description")}
+              {hero("hero.description", t("services.description"))}
             </motion.p>
           </div>
         </div>
