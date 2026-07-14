@@ -285,7 +285,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             <Input
               value={formData.full_name}
               onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-              disabled={!isEditing}
+              
             />
           </div>
 
@@ -295,7 +295,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
               <Input
                 value={formData.role_title}
                 onChange={(e) => setFormData({ ...formData, role_title: e.target.value })}
-                disabled={!isEditing}
+                
                 placeholder={t.rolePlaceholder}
               />
               <p className="text-xs text-muted-foreground">{t.linkedTeamProfile}</p>
@@ -316,7 +316,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             <Input
               value={formData.phone_number}
               onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
-              disabled={!isEditing}
+              
               placeholder="+880"
             />
           </div>
@@ -326,7 +326,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             <Textarea
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              disabled={!isEditing}
+              
               placeholder={t.bioPlaceholder}
               rows={4}
             />
@@ -338,7 +338,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
               {formData.skills.map((skill) => (
                 <Badge key={skill} variant="secondary" className="gap-1">
                   {skill}
-                  {isEditing && (
+                  {true && (
                     <button onClick={() => removeSkill(skill)} className="ml-1 hover:text-destructive">
                       <X className="w-3 h-3" />
                     </button>
@@ -346,7 +346,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
                 </Badge>
               ))}
             </div>
-            {isEditing && (
+            {true && (
               <div className="flex gap-2">
                 <Input
                   value={newSkill}
