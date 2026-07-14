@@ -802,42 +802,56 @@ function AdminDashboardInner() {
   };
 
   // Navigation items - grouped logically
-  const lmsCoreItems = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
-    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students' },
-    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers' },
-    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length },
+  // scopeTag: 'learn' | 'agency' | 'both' — controls visibility per selected site scope
+  const lmsCoreItemsAll = [
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses', scopeTag: 'learn' as const },
+    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students', scopeTag: 'learn' as const },
+    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', scopeTag: 'learn' as const },
+    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
   ];
 
-  const lmsMoreItems = [
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics' },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email' },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback' },
-    
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments' },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons' },
+  const lmsMoreItemsAll = [
+    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', scopeTag: 'both' as const },
+    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', scopeTag: 'both' as const },
+    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', scopeTag: 'both' as const },
+    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments', scopeTag: 'learn' as const },
+    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons', scopeTag: 'learn' as const },
   ];
 
-  const cmsItems = [
-    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages' },
-    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page' },
-    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works' },
-    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team' },
-    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services' },
-    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer' },
+  const cmsItemsAll = [
+    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', scopeTag: 'both' as const },
+    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page', scopeTag: 'learn' as const },
+    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', scopeTag: 'agency' as const },
+    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', scopeTag: 'agency' as const },
+    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', scopeTag: 'agency' as const },
+    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', scopeTag: 'both' as const },
   ];
 
-  const settingsItems = [
-    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' },
-    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys' },
-    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'পেমেন্ট API' : 'Payment API' },
-    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins' },
+  const settingsItemsAll = [
+    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', scopeTag: 'both' as const },
+    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', scopeTag: 'both' as const },
+    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'পেমেন্ট API' : 'Payment API', scopeTag: 'both' as const },
+    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', scopeTag: 'both' as const },
   ];
+
+  const inScope = (t: 'learn' | 'agency' | 'both') => t === 'both' || t === scope;
+  const lmsCoreItems = lmsCoreItemsAll.filter(i => inScope(i.scopeTag));
+  const lmsMoreItems = lmsMoreItemsAll.filter(i => inScope(i.scopeTag));
+  const cmsItems = cmsItemsAll.filter(i => inScope(i.scopeTag));
+  const settingsItems = settingsItemsAll.filter(i => inScope(i.scopeTag));
 
   // AI Assistant panel state
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
   const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
+
+  // If active tab isn't visible in current scope, switch to first available
+  useEffect(() => {
+    if (!allNavItems.some(i => i.id === activeTab)) {
+      const fallback = scope === 'learn' ? 'courses' : 'content';
+      setActiveTab(fallback);
+    }
+  }, [scope]);
 
 
 
