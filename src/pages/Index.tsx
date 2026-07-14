@@ -65,6 +65,8 @@ const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepageSections";
+
 import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
@@ -228,6 +230,8 @@ const MemoServicePair = memo(
 const Index = () => {
   const { t, language } = useLanguage();
   const { getContent } = usePageContent('home');
+  const { section: brandsSection } = useHomepageSection('sister_brands', 'agency', 'home');
+  const { data: brandItems } = useHomepageSectionItems(brandsSection?.id);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
@@ -237,6 +241,7 @@ const Index = () => {
     const dbContent = getContent(key);
     return dbContent || t(translationKey);
   };
+
 
   const whyChooseUs = [
     { icon: Palette, title: c("why.clean", "home.why.clean"), description: c("why.cleanDesc", "home.why.cleanDesc") },
@@ -611,7 +616,7 @@ const Index = () => {
         <div className="container mx-auto px-6">
 
           {(() => {
-            const logos: { src: string; alt: string; scale?: number }[] = [
+            const defaultLogos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra" },
               { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 2.65 },
               { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 1.65 },
@@ -624,9 +629,15 @@ const Index = () => {
               { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes" },
               { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy" },
             ];
-            const half = Math.ceil(logos.length / 2);
+            const activeItems = (brandItems ?? []).filter((it) => it.is_active && it.image_url);
+            const logos: { src: string; alt: string; scale?: number }[] = activeItems.length
+              ? activeItems.map((it) => ({ src: it.image_url as string, alt: it.title || "Brand" }))
+              : defaultLogos;
+
+            const half = Math.ceil(logos.length / 2) || 1;
             const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
             const rowB = [...logos.slice(half), ...logos.slice(half)];
+
             const LogoItem = ({ logo }: { logo: typeof logos[number] }) => (
               <div className="shrink-0 mx-1.5 flex items-center justify-center h-16 w-40 sm:w-48 px-5 border border-white/[0.08] bg-white/[0.015]">
                 <img
