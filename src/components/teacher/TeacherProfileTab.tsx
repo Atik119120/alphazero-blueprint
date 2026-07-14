@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Mail, Phone, Edit, Save, Camera, Plus, X } from 'lucide-react';
+import { User, Mail, Phone, Edit, Save, Camera, Plus, X, KeyRound, AtSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -238,17 +238,10 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
           <h1 className="text-2xl font-bold text-foreground">{t.title}</h1>
           <p className="text-muted-foreground">{t.subtitle}</p>
         </div>
-        {!isEditing ? (
-          <Button onClick={() => setIsEditing(true)} variant="outline" className="gap-2">
-            <Edit className="w-4 h-4" />
-            Edit
-          </Button>
-        ) : (
-          <Button onClick={handleSave} disabled={isSaving} className="gap-2">
-            <Save className="w-4 h-4" />
-            {isSaving ? t.saving : t.save}
-          </Button>
-        )}
+        <Button onClick={handleSave} disabled={isSaving} className="gap-2">
+          <Save className="w-4 h-4" />
+          {isSaving ? t.saving : t.save}
+        </Button>
       </div>
 
       {/* Avatar Section */}
@@ -292,7 +285,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             <Input
               value={formData.full_name}
               onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-              disabled={!isEditing}
+              
             />
           </div>
 
@@ -302,7 +295,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
               <Input
                 value={formData.role_title}
                 onChange={(e) => setFormData({ ...formData, role_title: e.target.value })}
-                disabled={!isEditing}
+                
                 placeholder={t.rolePlaceholder}
               />
               <p className="text-xs text-muted-foreground">{t.linkedTeamProfile}</p>
@@ -323,7 +316,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             <Input
               value={formData.phone_number}
               onChange={(e) => setFormData({ ...formData, phone_number: e.target.value })}
-              disabled={!isEditing}
+              
               placeholder="+880"
             />
           </div>
@@ -333,7 +326,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             <Textarea
               value={formData.bio}
               onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              disabled={!isEditing}
+              
               placeholder={t.bioPlaceholder}
               rows={4}
             />
@@ -345,7 +338,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
               {formData.skills.map((skill) => (
                 <Badge key={skill} variant="secondary" className="gap-1">
                   {skill}
-                  {isEditing && (
+                  {true && (
                     <button onClick={() => removeSkill(skill)} className="ml-1 hover:text-destructive">
                       <X className="w-3 h-3" />
                     </button>
@@ -353,7 +346,7 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
                 </Badge>
               ))}
             </div>
-            {isEditing && (
+            {true && (
               <div className="flex gap-2">
                 <Input
                   value={newSkill}
@@ -369,6 +362,133 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
           </div>
         </CardContent>
       </Card>
+
+      <AccountSecurityCard language={language} currentEmail={profile.email} />
     </motion.div>
+  );
+}
+
+function AccountSecurityCard({ language, currentEmail }: { language: 'en' | 'bn'; currentEmail: string }) {
+  const { toast } = useToast();
+  const [newEmail, setNewEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [savingEmail, setSavingEmail] = useState(false);
+  const [savingPass, setSavingPass] = useState(false);
+
+  const T = language === 'bn'
+    ? {
+        title: 'অ্যাকাউন্ট সিকিউরিটি',
+        emailLabel: 'নতুন ইমেইল',
+        emailDesc: 'কনফার্ম লিংক পাঠানো হবে বর্তমান ও নতুন ইমেইলে',
+        changeEmail: 'ইমেইল পরিবর্তন',
+        newPass: 'নতুন পাসওয়ার্ড',
+        confirmPass: 'পাসওয়ার্ড কনফার্ম',
+        changePass: 'পাসওয়ার্ড পরিবর্তন',
+        emailUpdated: 'ইমেইল আপডেট রিকোয়েস্ট পাঠানো হয়েছে — ইনবক্স চেক করুন',
+        passUpdated: 'পাসওয়ার্ড পরিবর্তন হয়েছে',
+        mismatch: 'পাসওয়ার্ড মিলছে না',
+        tooShort: 'পাসওয়ার্ড অন্তত ৬ অক্ষর হতে হবে',
+        error: 'কাজ সম্পন্ন হয়নি',
+      }
+    : {
+        title: 'Account Security',
+        emailLabel: 'New Email',
+        emailDesc: 'Confirmation link will be sent to both old and new email',
+        changeEmail: 'Change Email',
+        newPass: 'New Password',
+        confirmPass: 'Confirm Password',
+        changePass: 'Change Password',
+        emailUpdated: 'Email update requested — check your inbox',
+        passUpdated: 'Password changed successfully',
+        mismatch: 'Passwords do not match',
+        tooShort: 'Password must be at least 6 characters',
+        error: 'Action failed',
+      };
+
+  const handleChangeEmail = async () => {
+    if (!newEmail.trim() || newEmail === currentEmail) return;
+    try {
+      setSavingEmail(true);
+      const { error } = await supabase.auth.updateUser({ email: newEmail.trim() });
+      if (error) throw error;
+      toast({ title: T.emailUpdated });
+      setNewEmail('');
+    } catch (e: any) {
+      toast({ title: T.error, description: e.message, variant: 'destructive' });
+    } finally {
+      setSavingEmail(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (newPassword.length < 6) {
+      toast({ title: T.tooShort, variant: 'destructive' });
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast({ title: T.mismatch, variant: 'destructive' });
+      return;
+    }
+    try {
+      setSavingPass(true);
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      toast({ title: T.passUpdated });
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (e: any) {
+      toast({ title: T.error, description: e.message, variant: 'destructive' });
+    } finally {
+      setSavingPass(false);
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <KeyRound className="w-5 h-5 text-primary" />
+          {T.title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="space-y-2">
+          <Label className="flex items-center gap-1.5"><AtSign className="w-3.5 h-3.5" />{T.emailLabel}</Label>
+          <p className="text-xs text-muted-foreground">{T.emailDesc}</p>
+          <div className="flex gap-2">
+            <Input
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              placeholder={currentEmail}
+            />
+            <Button onClick={handleChangeEmail} disabled={savingEmail || !newEmail.trim()}>
+              {T.changeEmail}
+            </Button>
+          </div>
+        </div>
+
+        <div className="space-y-2 border-t pt-4">
+          <Label className="flex items-center gap-1.5"><KeyRound className="w-3.5 h-3.5" />{T.newPass}</Label>
+          <Input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="••••••"
+          />
+          <Label className="flex items-center gap-1.5 mt-2">{T.confirmPass}</Label>
+          <Input
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="••••••"
+          />
+          <Button onClick={handleChangePassword} disabled={savingPass || !newPassword} className="mt-2">
+            {T.changePass}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
