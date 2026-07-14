@@ -527,7 +527,9 @@ const CoursesPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center mb-10">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
-              {t.popularCourses}
+              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                {t.popularCourses}
+              </span>
             </h2>
           </motion.div>
 
