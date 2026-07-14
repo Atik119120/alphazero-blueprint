@@ -83,12 +83,13 @@ const AboutPage = () => {
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Sparkles size={14} className="text-primary" />
-                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Meet The Founder</span>
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{getContent("founder.badge") || "Meet The Founder"}</span>
                 </div>
                 <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                  The Visionary Behind <span className="gradient-text">AlphaZero</span>
+                  {getContent("founder.title") || "The Visionary Behind"} <span className="gradient-text">AlphaZero</span>{getContent("founder.title2") ? ` ${getContent("founder.title2")}` : ""}
                 </h2>
               </motion.div>
+
 
               <div className="grid lg:grid-cols-5 gap-8 items-center">
                 {/* Founder Image */}
@@ -111,7 +112,7 @@ const AboutPage = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder.name}</h3>
-                        <p className="text-primary font-semibold text-sm mt-1">Photographer, Founder & Graphic Designer</p>
+                        <p className="text-primary font-semibold text-sm mt-1">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                       </div>
                     </div>
                   </div>
@@ -128,7 +129,7 @@ const AboutPage = () => {
                     <h3 className="text-2xl lg:text-3xl font-display font-bold mb-2">
                       {founder.name}
                     </h3>
-                    <p className="text-primary font-semibold mb-4">Photographer, Founder & Graphic Designer</p>
+                    <p className="text-primary font-semibold mb-4">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                     <p className="text-muted-foreground leading-relaxed text-base" itemProp="description">
                       {founder.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
                     </p>
@@ -248,7 +249,15 @@ const AboutPage = () => {
               {/* Logo + Why Choose */}
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5">
                 <div className="rounded-2xl glass-card p-8 text-center">
-                  <img src={logo} alt="AlphaZero Logo" className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6" />
+                  {(() => {
+                    const customLogo = getContent("story.logoUrl");
+                    return customLogo ? (
+                      <img src={customLogo} alt="AlphaZero" className="h-28 md:h-36 w-auto mx-auto object-contain mb-6" />
+                    ) : (
+                      <img src={logo} alt="AlphaZero Logo" className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6" />
+                    );
+                  })()}
+
                   <p className="text-primary text-lg font-semibold tracking-wide">{c("tagline", "about.tagline")}</p>
                   <div className="flex justify-center gap-3 mt-4">
                     <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium text-xs">{c("badge.agency", "about.badge.agency")}</span>

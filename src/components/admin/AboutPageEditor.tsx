@@ -8,17 +8,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
-  Save, Loader2, ChevronRight, Sparkles, BookOpen, Target, MapPin, CheckCircle,
+  Save, Loader2, ChevronRight, Sparkles, BookOpen, Target, MapPin, CheckCircle, User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ImageUploader from "./ImageUploader";
+
 
 interface Field {
   key: string;
   label: string;
   description?: string;
-  type?: "input" | "textarea";
+  type?: "input" | "textarea" | "image";
   fallback: string;
 }
+
 
 interface Section {
   id: string;
@@ -46,15 +49,29 @@ const SECTIONS: Section[] = [
     ],
   },
   {
+    id: "founder",
+    label: "Meet The Founder",
+    hint: "Top badge, heading, and role text of the founder section (image + socials edit in Team Management)",
+    icon: User,
+    gradient: "from-fuchsia-500 to-pink-600",
+    fields: [
+      { key: "founder.badge", label: "🔖 Top Badge", description: "Small uppercase chip above the heading", fallback: "Meet The Founder" },
+      { key: "founder.title", label: "📣 Heading (before AlphaZero)", fallback: "The Visionary Behind" },
+      { key: "founder.title2", label: "📣 Heading (after AlphaZero)", description: "Leave empty if not needed", fallback: "" },
+      { key: "founder.role", label: "🎯 Role Text", description: "Shown under founder name (both on image + info side)", fallback: "Photographer, Founder & Graphic Designer" },
+    ],
+  },
+  {
     id: "story",
     label: "Our Story",
-    hint: "Story section — badge, title, and the 3 cards below",
+    hint: "Story section — badge, title, logo image, and the 3 cards below",
     icon: BookOpen,
     gradient: "from-violet-500 to-purple-600",
     fields: [
       { key: "story.badge", label: "🔖 Story Badge", fallback: "Our Story" },
       { key: "story.title", label: "📖 Story Title (before AlphaZero)", fallback: "The story behind" },
       { key: "story.title2", label: "📖 Story Title (after AlphaZero)", fallback: "" },
+      { key: "story.logoUrl", label: "🖼️ Logo / Image", description: "Image shown in the tagline card (leave empty to use default AlphaZero logo)", type: "image", fallback: "" },
       { key: "story.card1.title", label: "🚀 Card 1 Title", fallback: "Launched with vision" },
       { key: "story.card1.desc", label: "🚀 Card 1 Description", type: "textarea", fallback: "Started with a bold idea and endless creativity." },
       { key: "story.card2.title", label: "⚡ Card 2 Title", fallback: "Built for impact" },
@@ -63,6 +80,7 @@ const SECTIONS: Section[] = [
       { key: "story.card3.desc", label: "❤️ Card 3 Description", type: "textarea", fallback: "Design, strategy, and passion in every pixel." },
     ],
   },
+
   {
     id: "why",
     label: "Why Choose Us (5 points)",
@@ -264,7 +282,7 @@ export default function AboutPageEditor() {
                 key={f.key}
                 className={cn(
                   "space-y-1.5",
-                  f.type === "textarea" && "md:col-span-2"
+                  (f.type === "textarea" || f.type === "image") && "md:col-span-2"
                 )}
               >
                 <Label className="font-semibold">{f.label}</Label>
@@ -279,6 +297,13 @@ export default function AboutPageEditor() {
                       setValues({ ...values, [f.key]: e.target.value })
                     }
                   />
+                ) : f.type === "image" ? (
+                  <ImageUploader
+                    value={values[f.key] ?? ""}
+                    onChange={(url) => setValues({ ...values, [f.key]: url })}
+                    folder="about-page"
+                    label=""
+                  />
                 ) : (
                   <Input
                     value={values[f.key] ?? ""}
@@ -287,6 +312,7 @@ export default function AboutPageEditor() {
                     }
                   />
                 )}
+
               </div>
             ))}
           </div>
