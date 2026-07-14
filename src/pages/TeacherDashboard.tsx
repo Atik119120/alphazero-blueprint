@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTheme } from 'next-themes';
 import { useToast } from '@/hooks/use-toast';
+import learnLogo from '@/assets/learn-with-alphazero-logo.png';
 import { 
   useTeacherStats, 
   useTeacherCourses, 
