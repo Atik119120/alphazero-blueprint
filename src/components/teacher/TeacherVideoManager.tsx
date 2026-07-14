@@ -99,13 +99,10 @@ export default function TeacherVideoManager({ course, open, onOpenChange, onChan
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>{tr.title} — {course?.title}</DialogTitle>
-        </DialogHeader>
-
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
+      <DialogContent className="max-w-3xl max-h-[90vh] flex flex-col p-0 gap-0">
+        <DialogHeader className="px-6 pt-6 pb-4 border-b shrink-0">
+          <DialogTitle className="pr-8">{tr.title} — {course?.title}</DialogTitle>
+          <div className="flex justify-between items-center pt-3">
             <p className="text-sm text-muted-foreground">{videos.length} videos</p>
             {!showForm && (
               <Button size="sm" onClick={() => setShowForm(true)} className="gap-2">
@@ -113,6 +110,9 @@ export default function TeacherVideoManager({ course, open, onOpenChange, onChan
               </Button>
             )}
           </div>
+        </DialogHeader>
+
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
 
           {showForm && (
             <div className="space-y-3 p-4 border rounded-lg bg-muted/30">
