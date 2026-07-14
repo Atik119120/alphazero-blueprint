@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Plus, Pencil, Trash2, ExternalLink, Image } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import WorkHeroEditor from "./WorkHeroEditor";
 
 interface Work {
   id: string;
