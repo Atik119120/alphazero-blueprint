@@ -149,13 +149,19 @@ const SiteSettingsManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <Settings className="h-6 w-6 text-primary" />
-        <div>
-          <h2 className="text-2xl font-bold">সাইট সেটিংস</h2>
-          <p className="text-muted-foreground">Favicon, Logo এবং সাইটের নাম পরিবর্তন করুন</p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Settings className="h-6 w-6 text-primary" />
+          <div>
+            <h2 className="text-2xl font-bold">সাইট সেটিংস</h2>
+            <p className="text-muted-foreground">
+              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — Favicon, Logo ও সাইটের নাম
+            </p>
+          </div>
         </div>
+        <AdminSiteScopeSwitcher />
       </div>
+
 
       {/* Toggle Settings - bKash/Nagad on/off */}
       {toggleSettings.length > 0 && (
@@ -173,7 +179,7 @@ const SiteSettingsManagement = () => {
                 </div>
                 <Switch
                   checked={setting.setting_value === 'true'}
-                  onCheckedChange={() => handleToggle(setting.setting_key, setting.setting_value)}
+                  onCheckedChange={() => handleToggle(setting.setting_key, setting.setting_value, setting.setting_type)}
                   disabled={updateMutation.isPending}
                 />
               </div>
