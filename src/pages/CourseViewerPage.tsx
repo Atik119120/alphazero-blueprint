@@ -247,7 +247,7 @@ export default function CourseViewerPage() {
         <div className="flex-1 flex flex-col overflow-hidden min-h-0">
           {/* Video Player - fixed, does not scroll */}
           <div
-            className="relative w-full bg-black shrink-0 overflow-hidden shadow-lg shadow-black/50 [&>div]:!h-full [&>div]:!aspect-auto [&>div]:!rounded-none"
+            className="relative w-full bg-black shrink-0 overflow-hidden [&>div]:!h-full [&>div]:!aspect-auto [&>div]:!rounded-none"
             style={{ height: videoFrameHeight }}
           >
             {selectedVideo && user && (
