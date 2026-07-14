@@ -156,29 +156,36 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
     if (!profile?.id) return;
     
     try {
-      // Get students from teacher's courses
-      const { data: passCodeCourses } = await supabase
-        .from('pass_code_courses')
+      const { data: enrollments, error } = await supabase
+        .from('student_courses')
         .select(`
-          pass_codes!inner(
-            student_id,
-            profiles:student_id(id, user_id, full_name, avatar_url)
-          ),
+          user_id,
           courses!inner(teacher_id)
         `)
+        .eq('is_active', true)
         .eq('courses.teacher_id', profile.id);
+
+      if (error) throw error;
+
+      const studentUserIds = [...new Set((enrollments || []).map((row) => row.user_id))];
+
+      if (studentUserIds.length === 0) {
+        setStudents([]);
+        return;
+      }
+
+      const { data: studentProfiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('id, user_id, full_name, avatar_url')
+        .in('user_id', studentUserIds)
+        .order('full_name', { ascending: true });
+
+      if (profilesError) throw profilesError;
       
-      const uniqueStudents = new Map();
-      passCodeCourses?.forEach(pcc => {
-        const student = (pcc.pass_codes as any)?.profiles;
-        if (student && !uniqueStudents.has(student.id)) {
-          uniqueStudents.set(student.id, student);
-        }
-      });
-      
-      setStudents(Array.from(uniqueStudents.values()));
+      setStudents(studentProfiles || []);
     } catch (err) {
       console.error('Error fetching students:', err);
+      toast.error('Failed to load students');
     }
   };
 
@@ -268,17 +275,14 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
       // If group chat for a course, add all students of that course
       if (formData.roomType === 'group' && formData.courseId) {
         const { data: courseStudents } = await supabase
-          .from('pass_code_courses')
-          .select(`
-            pass_codes!inner(
-              profiles:student_id(user_id)
-            )
-          `)
-          .eq('course_id', formData.courseId);
+          .from('student_courses')
+          .select('user_id')
+          .eq('course_id', formData.courseId)
+          .eq('is_active', true);
         
         const memberInserts = courseStudents?.map(cs => ({
           room_id: room.id,
-          user_id: (cs.pass_codes as any)?.profiles?.user_id,
+          user_id: cs.user_id,
         })).filter(m => m.user_id) || [];
         
         if (memberInserts.length > 0) {
