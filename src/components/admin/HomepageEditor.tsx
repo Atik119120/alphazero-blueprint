@@ -57,11 +57,12 @@ const SECTION_SCHEMA: Record<string, SectionSchema> = {
     itemsMode: "brands", itemLabel: "Brand",
   },
   trusted_brands: {
-    label: "Trusted Brands (47+ Global Brands marquee)", hint: "হোমপেজের 'Trusted 47+ Global Brands' মারকী সেকশনের লোগো",
+    label: "Trusted Brands", hint: "হোমপেজের 'Trusted 47+ Global Brands' মারকী সেকশনের লোগো",
     icon: Building2, gradient: "from-cyan-500 to-blue-600",
     fields: ["title", "subtitle"],
     itemsMode: "brands", itemLabel: "Brand Logo",
   },
+
 
   what_we_do: {
     label: "What We Do", hint: "সেকশন হেডিং + প্রতিটা কাজের কার্ড (২টি ইমেজ সহ)",
