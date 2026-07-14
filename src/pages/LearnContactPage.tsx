@@ -9,10 +9,12 @@ import { usePageContent } from "@/hooks/usePageContent";
 const LearnContactPage = () => {
   const { language } = useLanguage();
   const { data: footerContents } = useFooterContent();
-  const { getContent: getPageContent } = usePageContent("learn-contact");
+  const { getContent: getPageContent } = usePageContent("learn-contact", "learn");
   const [formData, setFormData] = useState({ name: "", email: "", topic: "general", message: "" });
   const isBn = language === "bn";
   const t = (bn: string, en: string) => (isBn ? bn : en);
+  const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
+    isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const LearnContactPage = () => {
   };
   const phone = getPageContent("learn.phone") || getFooterContent("phone") || "+880 1344-497808";
   const email = (getPageContent("learn.email") || "support@learn.alphazero.online").trim();
-  const address = getPageContent("learn.address") || t("ঢাকা, বাংলাদেশ", "Dhaka, Bangladesh");
+  const address = cms("learn.address", "learn.address.en", "ঢাকা, বাংলাদেশ", "Dhaka, Bangladesh");
   const waNumber = phone.replace(/\D/g, "");
 
   const topics = [
