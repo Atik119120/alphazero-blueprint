@@ -34,6 +34,8 @@ const translations = {
     updateError: 'Failed to update profile',
     linkedTeamProfile: 'Your profile is linked to the Team page',
     loading: 'Loading...',
+    roleTitle: 'Title / Role',
+    rolePlaceholder: 'e.g. Founder, Vibe Coding Expert',
   },
   bn: {
     title: 'আমার প্রোফাইল',
@@ -52,6 +54,8 @@ const translations = {
     updateError: 'প্রোফাইল আপডেট করতে সমস্যা হয়েছে',
     linkedTeamProfile: 'আপনার প্রোফাইল টিম পেজের সাথে লিংক করা আছে',
     loading: 'লোড হচ্ছে...',
+    roleTitle: 'টাইটেল / পদবি',
+    rolePlaceholder: 'যেমন: Founder, Vibe Coding Expert',
   },
 };
 
