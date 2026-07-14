@@ -1015,15 +1015,21 @@ function AdminDashboardInner() {
         {/* Top Bar with Stats */}
         <div className="mb-6">
           {/* Greeting */}
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-6 gap-4 flex-wrap">
             <div>
-              <h1 className={`text-2xl font-bold text-foreground ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
-                {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
-              </h1>
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className={`text-2xl font-bold text-foreground ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
+                  {language === 'bn' ? 'স্বাগতম' : 'Welcome'}, {profile?.full_name?.split(' ')[0]}
+                </h1>
+                <Badge variant="secondary" className="text-[10px] uppercase tracking-wider">
+                  {scope === 'learn' ? (language === 'bn' ? 'লার্ন সাইট' : 'Learn Site') : (language === 'bn' ? 'এজেন্সি সাইট' : 'Agency Site')}
+                </Badge>
+              </div>
               <p className="text-sm text-muted-foreground">
                 {language === 'bn' ? 'আজ ' : 'Today is '}{new Date().toLocaleDateString(language === 'bn' ? 'bn-BD' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long' })}
               </p>
             </div>
+            <AdminSiteScopeSwitcher />
             <div className="flex items-center gap-2">
               {/* Alpha AI Button */}
               <button
