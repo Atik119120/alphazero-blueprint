@@ -975,18 +975,8 @@ function AdminDashboardInner() {
           {/* Language toggle removed — English only */}
 
           
-          {/* Theme Toggle */}
-          <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="w-full flex items-center gap-2.5 px-2.5 md:px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border border-amber-500/20 text-amber-600 dark:text-amber-400"
-          >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center flex-shrink-0">
-              {theme === 'dark' ? <Sun className='w-4 h-4 text-white' /> : <Moon className='w-4 h-4 text-white' />}
-            </div>
-            <span className="hidden md:inline font-semibold">
-              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-            </span>
-          </button>
+          {/* Theme toggle removed */}
+
           
           {/* Logout Button */}
           <button
