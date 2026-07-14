@@ -1,6 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
+import { useSiteScope, SiteScope } from "@/contexts/SiteScopeContext";
 
 interface FooterLink {
   id: string;
@@ -10,6 +11,7 @@ interface FooterLink {
   icon: string | null;
   order_index: number;
   is_active: boolean;
+  site_scope?: string;
 }
 
 interface FooterContent {
@@ -17,19 +19,22 @@ interface FooterContent {
   content_key: string;
   content_en: string | null;
   content_bn: string | null;
+  site_scope?: string;
 }
 
-export const useFooterLinks = () => {
+export const useFooterLinks = (scopeOverride?: SiteScope) => {
   const queryClient = useQueryClient();
+  const detectedScope = useSiteScope();
+  const scope = scopeOverride ?? detectedScope;
 
   useEffect(() => {
     const channel = supabase
-      .channel('footer-links-realtime')
+      .channel(`footer-links-${scope}-realtime`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'footer_links' },
         () => {
-          queryClient.invalidateQueries({ queryKey: ['footer-links-public'] });
+          queryClient.invalidateQueries({ queryKey: ['footer-links-public', scope] });
         }
       )
       .subscribe();
@@ -37,15 +42,16 @@ export const useFooterLinks = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [queryClient, scope]);
 
   return useQuery({
-    queryKey: ['footer-links-public'],
+    queryKey: ['footer-links-public', scope],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('footer_links')
         .select('*')
         .eq('is_active', true)
+        .eq('site_scope', scope)
         .order('order_index');
       if (error) throw error;
       return data as FooterLink[];
@@ -55,17 +61,19 @@ export const useFooterLinks = () => {
   });
 };
 
-export const useFooterContent = () => {
+export const useFooterContent = (scopeOverride?: SiteScope) => {
   const queryClient = useQueryClient();
+  const detectedScope = useSiteScope();
+  const scope = scopeOverride ?? detectedScope;
 
   useEffect(() => {
     const channel = supabase
-      .channel('footer-content-realtime')
+      .channel(`footer-content-${scope}-realtime`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'footer_content' },
         () => {
-          queryClient.invalidateQueries({ queryKey: ['footer-content-public'] });
+          queryClient.invalidateQueries({ queryKey: ['footer-content-public', scope] });
         }
       )
       .subscribe();
@@ -73,14 +81,15 @@ export const useFooterContent = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [queryClient]);
+  }, [queryClient, scope]);
 
   return useQuery({
-    queryKey: ['footer-content-public'],
+    queryKey: ['footer-content-public', scope],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('footer_content')
-        .select('*');
+        .select('*')
+        .eq('site_scope', scope);
       if (error) throw error;
       return data as FooterContent[];
     },
