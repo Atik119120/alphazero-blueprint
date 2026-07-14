@@ -158,9 +158,8 @@ export default function StudentDashboard() {
           <button onClick={() => navigate('/')} className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium bg-secondary hover:bg-secondary/80 text-muted-foreground">
             <Home className="w-4 h-4" /><span className="hidden md:inline">Home</span>
           </button>
-          <button onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')} className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium bg-accent/30 hover:bg-accent/50 text-accent-foreground">
-            <Languages className="w-4 h-4" /><span className="hidden md:inline">{language === 'bn' ? 'EN' : 'বাং'}</span>
-          </button>
+          {/* Language toggle removed — English only */}
+
           <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium bg-accent/30 hover:bg-accent/50 text-accent-foreground">
             {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             <span className="hidden md:inline">{theme === 'dark' ? 'Light' : 'Dark'}</span>
