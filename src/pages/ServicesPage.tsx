@@ -145,14 +145,6 @@ const ServicesPage = () => {
       <section className="py-20 lg:py-28 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-                <Zap size={14} className="text-primary" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">What We Offer</span>
-              </div>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold">{t("services.whatWeOffer")}</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto mt-4">{t("services.whatWeOfferDesc")}</p>
-            </motion.div>
 
             {isLoading ? (
               <div className="flex items-center justify-center py-20">
@@ -269,27 +261,6 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* CTA Section — clean */}
-      <section className="py-24 lg:py-36 relative overflow-hidden">
-        <div className="absolute inset-0 mesh-bg" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-6">{t("services.cta.title")}</h2>
-            <p className="text-muted-foreground text-lg mb-10">{t("services.cta.desc")}</p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/contact"
-                className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]">
-                {t("services.cta.btn1")} <ArrowRight size={20} />
-              </Link>
-              <a href="https://wa.me/8801712345678" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
-                {t("services.cta.btn2")}
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </LayoutComponent>
   );
 };
