@@ -36,6 +36,7 @@ export default function PageHeroEditor({ pageName, title, subtitle, fields }: Pr
         .from("page_content")
         .select("content_key, content_en")
         .eq("page_name", pageName)
+        .eq("site_scope", "agency")
         .in("content_key", fields.map((f) => f.key));
       if (error) throw error;
       return data as { content_key: string; content_en: string | null }[];
