@@ -129,7 +129,7 @@ const ServicesPage = () => {
               {hero("hero.title2", t("services.title2"))}
               <br />
               {hero("hero.title3", t("services.title3"))}{" "}
-              <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>Matter</span>
+              <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{hero("hero.title4", "Matter")}</span>
             </motion.h1>
 
             <motion.p
