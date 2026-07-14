@@ -287,14 +287,15 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
     try {
       await updateSection.mutateAsync({
         id: form.id,
-        title: form.title, title_bn: form.title_bn,
-        subtitle: form.subtitle, subtitle_bn: form.subtitle_bn,
-        description: form.description, description_bn: form.description_bn,
-        highlight: form.highlight, highlight_bn: form.highlight_bn,
+        title: form.title,
+        subtitle: form.subtitle,
+        description: form.description,
+        highlight: form.highlight,
         image_url: form.image_url, image_url_2: form.image_url_2,
         button_label: form.button_label, button_url: form.button_url,
         is_active: form.is_active,
       });
+
       toast.success("সেভ হয়েছে");
       setDirty(false);
     } catch (e: any) {
