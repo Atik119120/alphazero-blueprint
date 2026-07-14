@@ -2244,6 +2244,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_student_of_current_teacher: {
+        Args: { _student_user_id: string }
+        Returns: boolean
+      }
       is_teacher: { Args: { _user_id: string }; Returns: boolean }
       make_admin: { Args: { _email: string }; Returns: boolean }
       user_has_course_access: {
