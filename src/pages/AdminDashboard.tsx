@@ -929,26 +929,6 @@ function AdminDashboardInner() {
             </div>
           </div>
 
-          {/* LMS More - Collapsible */}
-          <div className="mb-2">
-            <button
-              onClick={() => toggleGroup('lms_more')}
-              className="hidden md:flex w-full items-center gap-1.5 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest hover:text-muted-foreground transition-colors"
-            >
-              <svg className={`w-3 h-3 transition-transform ${expandedGroups.lms_more ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              {language === 'bn' ? 'আরো টুলস' : 'More Tools'}
-              <Badge variant="secondary" className="ml-auto text-[9px] h-4 px-1">{lmsMoreItems.length}</Badge>
-            </button>
-            {expandedGroups.lms_more && (
-              <div className="space-y-0.5 mt-1 hidden md:block">
-                {lmsMoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
-              </div>
-            )}
-            {/* On mobile, always show icons */}
-            <div className="md:hidden space-y-0.5">
-              {lmsMoreItems.map((item) => renderNavButton(item, 'from-sky-500 to-cyan-500'))}
-            </div>
-          </div>
 
           {/* CMS Section */}
           <div className="mb-2">
