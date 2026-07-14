@@ -261,9 +261,9 @@ const PageContentManagement = () => {
     return (
       c.content_key.toLowerCase().includes(q) ||
       info.label.toLowerCase().includes(q) ||
-      (c.content_en || '').toLowerCase().includes(q) ||
-      (c.content_bn || '').toLowerCase().includes(q)
+      (c.content_en || '').toLowerCase().includes(q)
     );
+
   });
 
   // Group by section prefix
