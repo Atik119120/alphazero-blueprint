@@ -25,7 +25,8 @@ import { Video as VideoIcon } from 'lucide-react';
 import learnLogo from '@/assets/learn-with-alphazero-logo.png';
 import StudentNoticesTab from '@/components/student/StudentNoticesTab';
 import StudentSupportChat from '@/components/student/StudentSupportChat';
-import { MessageCircle } from 'lucide-react';
+import StudentRecordedClassesTab from '@/components/student/StudentRecordedClassesTab';
+import { MessageCircle, Folder } from 'lucide-react';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
@@ -107,6 +108,7 @@ export default function StudentDashboard() {
     { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
     { id: 'live', icon: VideoIcon, label: language === 'bn' ? 'লাইভ ক্লাস' : 'Live Class' },
     { id: 'notices', icon: Bell, label: language === 'bn' ? 'নোটিশ' : 'Notices' },
+    { id: 'recorded', icon: Folder, label: language === 'bn' ? 'রেকর্ডেড' : 'Recorded' },
     { id: 'support', icon: MessageCircle, label: language === 'bn' ? 'সাপোর্ট' : 'Support' },
     { id: 'explore', icon: Search, label: language === 'bn' ? 'ব্রাউজ' : 'Browse' },
     { id: 'certificates', icon: Award, label: language === 'bn' ? 'সনদ' : 'Certificates' },
