@@ -83,12 +83,13 @@ const AboutPage = () => {
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Sparkles size={14} className="text-primary" />
-                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Meet The Founder</span>
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{getContent("founder.badge") || "Meet The Founder"}</span>
                 </div>
                 <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                  The Visionary Behind <span className="gradient-text">AlphaZero</span>
+                  {getContent("founder.title") || "The Visionary Behind"} <span className="gradient-text">AlphaZero</span>{getContent("founder.title2") ? ` ${getContent("founder.title2")}` : ""}
                 </h2>
               </motion.div>
+
 
               <div className="grid lg:grid-cols-5 gap-8 items-center">
                 {/* Founder Image */}
