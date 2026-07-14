@@ -527,8 +527,8 @@ const Index = () => {
 
 
 
-          {/* MOBILE — stacked: title + underline + link + image pair per service */}
-          <div className="lg:hidden max-w-2xl mx-auto flex flex-col gap-4">
+          {/* MOBILE — 2 per row grid: title + underline + link + image pair per service */}
+          <div className="lg:hidden max-w-2xl mx-auto grid grid-cols-2 gap-4">
             {services.map((s, i) => {
               const Icon = s.icon;
               return (
@@ -539,21 +539,21 @@ const Index = () => {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <h3 className="text-3xl sm:text-4xl font-display font-bold leading-[1.1] tracking-tight text-foreground mb-2">
+                  <h3 className="text-base sm:text-lg font-display font-bold leading-[1.15] tracking-tight text-foreground mb-1.5">
                     {s.title}
                   </h3>
-                  <div className="relative h-[2px] w-full max-w-[180px] mb-2 overflow-hidden rounded-full">
+                  <div className="relative h-[2px] w-full max-w-[100px] mb-1.5 overflow-hidden rounded-full">
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
                   </div>
                   <Link
                     to="/services"
-                    className="inline-flex items-center gap-2 font-semibold text-sm group mb-8"
+                    className="inline-flex items-center gap-1 font-semibold text-[11px] group mb-3"
                   >
                     <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
                       {t("common.learnMore") || "See More"}
                     </span>
-                    <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                    <ArrowRight size={12} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                   </Link>
                   <MemoServicePair
                     index={i}
@@ -567,6 +567,7 @@ const Index = () => {
               );
             })}
           </div>
+
 
           {/* DESKTOP — Sticky text left, scrolling image pairs right */}
           <div className="hidden lg:grid max-w-7xl mx-auto grid-cols-12 gap-16 relative">
