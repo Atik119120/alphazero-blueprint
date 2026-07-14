@@ -211,7 +211,7 @@ export default function StudentSupportChat({ language }: Props) {
               <div className="p-2 space-y-1">
                 {filtered.map(tt => (
                   <button key={tt.profile_id} onClick={() => openChat(tt)}
-                    className={`w-full flex items-center gap-3 p-2.5 rounded-xl text-left transition-all ${
+                    className={`w-full min-w-0 overflow-hidden flex items-center gap-3 p-2.5 rounded-xl text-left transition-all ${
                       selected?.profile_id === tt.profile_id
                         ? 'bg-gradient-to-r from-primary/10 to-cyan-500/10 border border-primary/20'
                         : 'hover:bg-secondary/70'
