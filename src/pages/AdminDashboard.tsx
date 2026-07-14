@@ -65,6 +65,7 @@ import { TeamManagement } from '@/components/admin/TeamManagement';
 import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
+import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
