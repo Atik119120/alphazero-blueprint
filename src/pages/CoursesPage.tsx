@@ -794,13 +794,14 @@ const CoursesPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-center mb-14 max-w-3xl mx-auto">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "আমাদের টিম" : "Our Team"}
+              {cms("instructors.badge.bn", "instructors.badge.en", "আমাদের টিম", "Our Team")}
             </span>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
-              {isBn ? "এক্সপার্ট" : "Expert"} <span className="gradient-text">{isBn ? "ইনস্ট্রাক্টর" : "Instructors"}</span>
+            <h2 className="text-3xl lg:the-5xl font-display font-bold leading-tight">
+              {cms("instructors.title1.bn", "instructors.title1.en", "এক্সপার্ট", "Expert")}{" "}
+              <span className="gradient-text">{cms("instructors.title2.bn", "instructors.title2.en", "ইনস্ট্রাক্টর", "Instructors")}</span>
             </h2>
             <p className="text-muted-foreground mt-4">
-              {isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।" : "Learn directly from industry experts."}
+              {cms("instructors.desc.bn", "instructors.desc.en", "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।", "Learn directly from industry experts.")}
             </p>
           </motion.div>
           <div className="max-w-6xl mx-auto">
