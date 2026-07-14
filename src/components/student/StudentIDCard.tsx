@@ -6,7 +6,7 @@ import { Profile } from '@/types/lms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { QRCodeSVG } from 'qrcode.react';
-const logoImg = '/logo.png';
+import logoImg from '@/assets/learn-with-alphazero-logo.png';
 
 interface StudentIDCardProps {
   profile: Profile;
