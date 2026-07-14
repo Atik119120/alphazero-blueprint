@@ -65,13 +65,12 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
         <div className="relative h-full p-5 flex flex-col text-white">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center p-1 shrink-0 shadow-md">
-              <img
-                src={logoImg}
-                alt="AlphaZero"
-                className="w-full h-full object-contain"
-              />
-            </div>
+            <img
+              src={logoImg}
+              alt="AlphaZero"
+              className="h-14 w-auto object-contain shrink-0"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
             <p className="text-xs uppercase tracking-[0.2em] opacity-90 font-semibold">Student Identity Card</p>
           </div>
 
