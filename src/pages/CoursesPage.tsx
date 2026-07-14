@@ -195,6 +195,9 @@ const CoursesPage = () => {
   const navigate = useNavigate();
   const t = translations[language];
   const isBn = language === "bn";
+  const { getContent: getPageContent } = usePageContent("courses", "learn");
+  const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
+    isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
   const { courses: dbCourses, isLoading: coursesLoading } = usePublicCourses();
 
   // Enrollment modal state
