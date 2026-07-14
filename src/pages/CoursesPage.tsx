@@ -520,7 +520,7 @@ const CoursesPage = () => {
                     href="#courses"
                     className="inline-flex rounded-full text-center group items-center justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all py-4 px-10"
                   >
-                    {isBn ? "কোর্স দেখুন" : "Browse Courses"}
+                    {cms("hero.cta.bn", "hero.cta.en", "কোর্স দেখুন", "Browse Courses")}
                   </a>
                 </div>
               </span>
