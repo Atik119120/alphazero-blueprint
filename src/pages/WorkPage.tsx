@@ -557,6 +557,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
   const { t } = useLanguage();
+  const hero = usePageHero("work");
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; description?: string | null } | null>(null);
 
   const graphicsWorks = useMemo(() => works?.filter(isGraphics) || [], [works]);
