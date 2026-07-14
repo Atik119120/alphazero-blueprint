@@ -232,6 +232,9 @@ const Index = () => {
   const { getContent } = usePageContent('home');
   const { section: brandsSection } = useHomepageSection('trusted_brands', 'agency', 'home');
   const { data: brandItems } = useHomepageSectionItems(brandsSection?.id);
+  const { section: sisterSection } = useHomepageSection('sister_brands', 'agency', 'home');
+  const { data: sisterItems } = useHomepageSectionItems(sisterSection?.id);
+
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -454,14 +457,24 @@ const Index = () => {
             className="max-w-5xl mx-auto text-center mb-10"
           >
             <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
-              <span className="gradient-text">Our brand</span>{" "}
-              <span className="text-foreground relative">
-                constellation
-                <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
-              </span>
+              {(() => {
+                const t = (sisterSection?.title || 'Our brand constellation').trim();
+                const words = t.split(' ');
+                const first = words.slice(0, Math.max(1, words.length - 1)).join(' ');
+                const last = words[words.length - 1] || '';
+                return (
+                  <>
+                    <span className="gradient-text">{first}</span>{" "}
+                    <span className="text-foreground relative">
+                      {last}
+                      <span className="absolute -top-1 -right-3 text-cyan-300 text-xs animate-pulse">✦</span>
+                    </span>
+                  </>
+                );
+              })()}
             </h2>
             <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
-              A family of ventures orbiting one vision — design, learning, and craft.
+              {sisterSection?.subtitle || 'A family of ventures orbiting one vision — design, learning, and craft.'}
             </p>
           </motion.div>
           <motion.div
@@ -470,19 +483,29 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto"
           >
-            <LogoCloud
-              logos={[
-                { src: brand1.url, alt: "AlphaZero", invert: true },
-                { src: brand2.url, alt: "Sister Brand", invert: true },
-                { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
-                { src: brand4.url, alt: "Learn with AlphaZero", invert: true, large: true },
-              ]}
-
-            />
+            {(() => {
+              const activeSister = (sisterItems ?? []).filter((it) => it.is_active && it.image_url);
+              const sisterLogos = activeSister.length
+                ? activeSister.map((it, i) => ({
+                    src: it.image_url as string,
+                    alt: it.title || `Brand ${i + 1}`,
+                    href: it.url || undefined,
+                    invert: !it.url,
+                    large: i === activeSister.length - 1,
+                  }))
+                : [
+                    { src: brand1.url, alt: "AlphaZero", invert: true },
+                    { src: brand2.url, alt: "Sister Brand", invert: true },
+                    { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
+                    { src: brand4.url, alt: "Learn with AlphaZero", invert: true, large: true },
+                  ];
+              return <LogoCloud logos={sisterLogos} />;
+            })()}
 
           </motion.div>
         </div>
       </section>
+
 
 
       {/* ══════════ SERVICES — BENTO GRID ══════════ */}
