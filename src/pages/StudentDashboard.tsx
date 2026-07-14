@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { 
   BookOpen, CheckCircle, LogOut, Award, PlayCircle, User, Sun, Moon, Languages,
-  GraduationCap, Sparkles, CreditCard, IdCard, TrendingUp, Home, Search, Calendar, Clock, Lock, Play
+  GraduationCap, Sparkles, CreditCard, IdCard, TrendingUp, Home, Search, Calendar, Clock, Lock, Play, Bell
 } from 'lucide-react';
 import { CourseWithProgress, Course } from '@/types/lms';
 import { useTheme } from 'next-themes';
