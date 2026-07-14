@@ -405,6 +405,13 @@ export default function StudentDashboard() {
             </div>
           )}
 
+          {/* Tab: Notices */}
+          {activeTab === 'notices' && (
+            <div className="max-w-4xl mx-auto">
+              <StudentNoticesTab language={language as 'en' | 'bn'} />
+            </div>
+          )}
+
           {/* Tab: Profile */}
           {activeTab === 'profile' && profile && (
             <div className="max-w-2xl mx-auto space-y-4">
