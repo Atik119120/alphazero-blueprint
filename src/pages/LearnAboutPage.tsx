@@ -245,13 +245,13 @@ const LearnAboutPage = () => {
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Sparkles size={14} className="text-primary" />
                   <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">
-                    {t("প্ল্যাটফর্ম ফিচার", "Platform Features")}
+                    {cms("features.badge.bn", "features.badge.en", "প্ল্যাটফর্ম ফিচার", "Platform Features")}
                   </span>
                 </div>
                 <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                  {t("যা যা পাচ্ছেন এই ", "Everything you get on ")}
+                  {cms("features.title.bn", "features.title.en", "যা যা পাচ্ছেন এই ", "Everything you get on ")}
                   <span className="gradient-text">Learn</span>
-                  {t(" প্ল্যাটফর্মে", " platform")}
+                  {cms("features.title2.bn", "features.title2.en", " প্ল্যাটফর্মে", " platform")}
                 </h2>
               </motion.div>
 
