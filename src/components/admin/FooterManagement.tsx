@@ -154,13 +154,14 @@ const FooterManagement = () => {
 
   // Content mutations
   const updateContentMutation = useMutation({
-    mutationFn: async ({ id, content_en, content_bn }: { id: string; content_en: string; content_bn: string }) => {
+    mutationFn: async ({ id, content_en }: { id: string; content_en: string }) => {
       const { error } = await supabase
         .from('footer_content')
-        .update({ content_en, content_bn })
+        .update({ content_en })
         .eq('id', id);
       if (error) throw error;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footer-content'] });
       toast.success('কনটেন্ট আপডেট হয়েছে!');
