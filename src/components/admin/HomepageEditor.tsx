@@ -11,6 +11,7 @@ import {
   ArrowLeft, ChevronRight, Home, Plus, Trash2, Save, Loader2,
   Sparkles, Building2, Boxes, Wrench, GraduationCap, Layers,
   ExternalLink, GripVertical, ImagePlus, Eye, EyeOff, MousePointerClick,
+  MessageSquare, PhoneCall,
 } from "lucide-react";
 import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
 import ImageUploader from "@/components/admin/ImageUploader";
@@ -68,16 +69,28 @@ const SECTION_SCHEMA: Record<string, SectionSchema> = {
     itemsMode: null,
   },
   courses_preview: {
-    label: "Courses Preview", hint: "কোর্স সেকশনের হেডিং",
+    label: "Featured Courses", hint: "কোর্স সেকশনের হেডিং + CTA",
     icon: GraduationCap, gradient: "from-indigo-500 to-blue-600",
     fields: ["title", "subtitle", "button_label", "button_url"],
     itemsMode: null,
   },
   instructors: {
-    label: "Instructors", hint: "ইন্সট্রাক্টরদের কার্ড",
+    label: "Instructors", hint: "ইন্সট্রাক্টরদের নাম, রোল ও ছবি",
     icon: GraduationCap, gradient: "from-violet-500 to-purple-600",
     fields: ["title", "subtitle"],
     itemsMode: "cards", itemLabel: "Instructor",
+  },
+  testimonials: {
+    label: "Testimonials", hint: "ক্লায়েন্টদের রিভিউ",
+    icon: MessageSquare, gradient: "from-rose-500 to-pink-600",
+    fields: ["title", "subtitle", "highlight"],
+    itemsMode: "cards", itemLabel: "Testimonial",
+  },
+  contact_cta: {
+    label: "Contact / CTA", hint: "যোগাযোগের ব্লক + বাটন",
+    icon: PhoneCall, gradient: "from-amber-500 to-orange-600",
+    fields: ["title", "subtitle", "description", "button_label", "button_url"],
+    itemsMode: null,
   },
 };
 
@@ -573,6 +586,11 @@ const ItemRow = ({
       {expanded && (
         <div className="border-t p-4 space-y-4 bg-background/50">
           <div className="grid md:grid-cols-2 gap-4">
+            {mode === "brands" && (
+              <div className="md:col-span-2">
+                <FieldInput label="Brand Name" value={f.title} onChange={(v) => set("title", v)} placeholder="e.g. AlphaZero" />
+              </div>
+            )}
             {mode === "cards" && (
               <>
                 <FieldInput label="Title (English)" value={f.title} onChange={(v) => set("title", v)} />
