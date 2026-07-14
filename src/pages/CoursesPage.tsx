@@ -23,6 +23,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { usePublicCourses } from "@/hooks/usePublicCourses";
+import { usePageContent } from "@/hooks/usePageContent";
 import CourseEnrollmentModal from "@/components/student/CourseEnrollmentModal";
 import { Course } from "@/types/lms";
 
