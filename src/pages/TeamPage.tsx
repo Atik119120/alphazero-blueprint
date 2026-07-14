@@ -1,4 +1,5 @@
 import { useState } from "react";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { motion } from "framer-motion";
 import { 
   Facebook, 
@@ -63,34 +64,38 @@ const TeamPage = () => {
   };
   return (
     <Layout>
-      {/* Hero */}
-      <section className="py-28 lg:py-40 relative overflow-hidden">
-        <div className="absolute inset-0 mesh-bg" />
+      {/* Hero — Services style */}
+      <section className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
+        <div className="absolute inset-0 bg-black" />
+        <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
+          style={{ filter: "blur(16px)" }} />
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.06] backdrop-blur-sm mb-8">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{hero("hero.subtitle", t("team.subtitle"))}</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/80">{hero("hero.subtitle", t("team.subtitle"))}</span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
+              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
               {(() => {
                 const raw = hero("hero.title", `${t("team.title")} |${t("team.title2")}|`);
                 const parts = raw.split("|");
                 if (parts.length >= 3) {
-                  return <>{parts[0]}<span className="gradient-text">{parts[1]}</span>{parts.slice(2).join("|")}</>;
+                  return <>{parts[0]}<span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
                 }
                 return raw;
               })()}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto">
               {hero("hero.description", t("team.description"))}
             </motion.p>
           </div>
         </div>
       </section>
+
 
       {/* Team Grid — premium card layout */}
       <section className="py-20 lg:py-28">
