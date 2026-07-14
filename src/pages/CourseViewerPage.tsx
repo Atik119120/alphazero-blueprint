@@ -279,10 +279,10 @@ export default function CourseViewerPage() {
 
           {/* Below Video Content - scrolls independently */}
           <div className={`shrink-0 overflow-hidden p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode && !isMobile ? 'hidden' : ''}`}>
-            <div className="flex items-start justify-between gap-2 md:gap-4">
+            <div className="flex items-center gap-2 md:gap-3">
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] md:text-xs text-white/40 mb-0.5">Class {currentIndex + 1} of {course.total_videos}</p>
-                <h2 className="text-sm md:text-lg font-bold line-clamp-2">{selectedVideo?.title}</h2>
+                <h2 className="text-sm md:text-lg font-bold line-clamp-1">{selectedVideo?.title}</h2>
               </div>
               {selectedVideo?.progress?.is_completed && (
                 <Badge className="bg-emerald-600 text-white gap-1 shrink-0">
@@ -294,23 +294,26 @@ export default function CourseViewerPage() {
                   <CheckCircle className="w-3 h-3" /> সেভ হচ্ছে...
                 </Badge>
               )}
+              <div className="flex items-center gap-1 shrink-0">
+                <Button
+                  variant="ghost" size="icon"
+                  className="h-8 w-8 text-white/70 hover:text-white hover:bg-white/10 disabled:opacity-30"
+                  disabled={!prevVideo} onClick={() => prevVideo && goToVideo(prevVideo)}
+                  title={prevVideo ? `Previous: ${prevVideo.title}` : 'No previous class'}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="ghost" size="icon"
+                  className="h-8 w-8 text-white/70 hover:text-white hover:bg-white/10 disabled:opacity-30"
+                  disabled={!nextVideo || nextVideo.is_locked} onClick={() => nextVideo && goToVideo(nextVideo)}
+                  title={nextVideo ? `Next: ${nextVideo.title}` : 'No next class'}
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
 
-            <div className="flex items-center justify-between gap-2">
-              <Button variant="ghost" size="sm"
-                className="gap-1.5 text-white/60 hover:text-white hover:bg-white/10 text-xs"
-                disabled={!prevVideo} onClick={() => prevVideo && goToVideo(prevVideo)}>
-                <ArrowLeft className="w-3.5 h-3.5" /> Previous
-              </Button>
-              {nextVideo && (
-                <Button variant="ghost" size="sm"
-                  className="gap-1.5 text-white/60 hover:text-white hover:bg-white/10 text-xs max-w-[60%] truncate"
-                  disabled={nextVideo.is_locked} onClick={() => goToVideo(nextVideo)}>
-                  <span className="truncate">Next: {nextVideo.title}</span>
-                  <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-                </Button>
-              )}
-            </div>
 
             {isMobile && (
               <Accordion type="single" collapsible className="border border-white/10 rounded-xl overflow-hidden bg-slate-900/50">
