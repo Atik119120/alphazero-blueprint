@@ -97,9 +97,10 @@ const CONTENT_KEY_INFO: Record<string, Record<string, { label: string; labelEn: 
     'cta.button': { label: '📢 CTA Button', labelEn: 'CTA Button', description: 'Text for the CTA button' },
   },
   work: {
-    'hero.title': { label: '💼 Hero title', labelEn: 'Hero Title', description: 'Work page main title' },
-    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
-    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
+    'hero.subtitle': { label: '🔖 Hero Badge (top small text)', labelEn: 'Hero Badge', description: 'Small uppercase badge above title (e.g., Creative Portfolio)' },
+    'hero.title': { label: '💼 Hero Title', labelEn: 'Hero Title', description: 'Main hero title. Wrap the highlighted words with | | (e.g., Our Creative |Works & Projects|)' },
+    'hero.description': { label: '📝 Hero Description', labelEn: 'Hero Description', description: 'Paragraph text under the hero title' },
+    'hero.badge': { label: '🏷️ Hero Bottom Chip', labelEn: 'Hero Bottom Chip', description: 'Text after project count (e.g., Projects • Graphic Design • Web • Video)' },
     'web.title': { label: '🌐 Web title', labelEn: 'Web Section Title', description: 'Web category heading' },
     'graphics.title': { label: '🎨 Graphics title', labelEn: 'Graphics Section Title', description: 'Graphics category heading' },
     'video.title': { label: '🎬 Video Title', labelEn: 'Video Section Title', description: 'Video category heading' },
