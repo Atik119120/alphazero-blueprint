@@ -333,12 +333,10 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
           >
             {showDescriptions ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
             {showDescriptions ? 'Hide description' : 'Show description'}
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          </Button>
         </div>
       </div>
+
 
       {/* How it works info */}
       <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 space-y-2">
