@@ -5,7 +5,7 @@ import { Download, Phone, Mail, GraduationCap } from 'lucide-react';
 import { Profile } from '@/types/lms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { QRCodeSVG } from 'qrcode.react';
+import Barcode from 'react-barcode';
 import logoImg from '@/assets/learn-with-alphazero-logo.png';
 
 interface StudentIDCardProps {
@@ -64,14 +64,14 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
         {/* Content */}
         <div className="relative h-full p-5 flex flex-col text-white">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="mb-3">
             <img
               src={logoImg}
               alt="AlphaZero"
-              className="h-14 w-auto object-contain shrink-0"
+              className="h-12 w-auto object-contain"
               style={{ filter: 'brightness(0) invert(1)' }}
             />
-            <p className="text-xs uppercase tracking-[0.2em] opacity-90 font-semibold">Student Identity Card</p>
+            <p className="text-[9px] uppercase tracking-[0.25em] opacity-80 font-medium mt-1">Student Identity Card</p>
           </div>
 
           {/* Main Content */}
@@ -116,9 +116,9 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/20">
-            <div className="flex items-center gap-3 text-[10px] opacity-80">
+          {/* Footer with barcode */}
+          <div className="mt-3 pt-2 border-t border-white/20 space-y-2">
+            <div className="flex items-center justify-between text-[10px] opacity-80">
               <span className="flex items-center gap-1">
                 <Phone className="w-3 h-3" />
                 01776965533
@@ -128,13 +128,16 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
                 info@alphazero.com
               </span>
             </div>
-            <div className="w-11 h-11 bg-white rounded-lg flex items-center justify-center p-1 shrink-0">
-              <QRCodeSVG
-                value={`https://alphazero00.lovable.app/verify?id=${studentId}`}
-                size={40}
-                level="M"
-                bgColor="#ffffff"
-                fgColor="#0f172a"
+            <div className="bg-white rounded-md px-2 py-1 flex justify-center">
+              <Barcode
+                value={studentId}
+                format="CODE128"
+                width={1.2}
+                height={28}
+                displayValue={false}
+                margin={0}
+                background="#ffffff"
+                lineColor="#0f172a"
               />
             </div>
           </div>
