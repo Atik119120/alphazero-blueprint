@@ -203,6 +203,30 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
     deadline: '',
     assigned_to: '',
   });
+
+  // Teacher profile view dialog
+  const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
+  const [teacherCourses, setTeacherCourses] = useState<PendingCourse[]>([]);
+  const [loadingTeacherCourses, setLoadingTeacherCourses] = useState(false);
+
+  const openTeacherProfile = async (teacher: Teacher) => {
+    setViewTeacher(teacher);
+    setTeacherCourses([]);
+    setLoadingTeacherCourses(true);
+    try {
+      const { data } = await supabase
+        .from('courses')
+        .select('id, title, title_en, description, price, course_type, is_approved, is_published, created_at')
+        .eq('teacher_id', teacher.id)
+        .order('created_at', { ascending: false });
+      setTeacherCourses((data || []) as PendingCourse[]);
+    } catch (e) {
+      console.error('Error loading teacher courses:', e);
+    } finally {
+      setLoadingTeacherCourses(false);
+    }
+  };
+
   
   // Fetch all data
   const fetchData = useCallback(async () => {
@@ -647,6 +671,10 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                       </div>
                     </div>
                     <div className="flex gap-2 mt-4">
+                      <Button size="sm" variant="outline" className="flex-1 gap-1" onClick={() => openTeacherProfile(teacher)}>
+                        <Eye className="w-3 h-3" />
+                        {language === 'bn' ? 'Profile' : 'Profile'}
+                      </Button>
                       {!teacher.teacher_approved ? (
                         <Button size="sm" className="flex-1 gap-1" onClick={() => approveTeacher(teacher.id)}>
                           <UserCheck className="w-3 h-3" />
@@ -664,6 +692,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                         </Button>
                       )}
                     </div>
+
                   </CardContent>
                 </Card>
               ))}
@@ -979,6 +1008,96 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Teacher Profile Dialog */}
+      <Dialog open={!!viewTeacher} onOpenChange={(open) => !open && setViewTeacher(null)}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{language === 'bn' ? 'Teacher Profile' : 'Teacher Profile'}</DialogTitle>
+          </DialogHeader>
+          {viewTeacher && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Avatar className="w-16 h-16">
+                  <AvatarImage src={viewTeacher.avatar_url || ''} />
+                  <AvatarFallback><User className="w-6 h-6" /></AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold">{viewTeacher.full_name}</h3>
+                  <p className="text-sm text-muted-foreground">{viewTeacher.email}</p>
+                  {viewTeacher.phone_number && (
+                    <p className="text-sm text-muted-foreground">{viewTeacher.phone_number}</p>
+                  )}
+                  <Badge variant={viewTeacher.teacher_approved ? 'default' : 'secondary'} className="mt-1">
+                    {viewTeacher.teacher_approved ? t.active : t.pending}
+                  </Badge>
+                </div>
+              </div>
+
+              {viewTeacher.bio && (
+                <div>
+                  <p className="text-sm font-medium mb-1">Bio</p>
+                  <p className="text-sm text-muted-foreground">{viewTeacher.bio}</p>
+                </div>
+              )}
+
+              {viewTeacher.skills && viewTeacher.skills.length > 0 && (
+                <div>
+                  <p className="text-sm font-medium mb-2">Skills</p>
+                  <div className="flex flex-wrap gap-1">
+                    {viewTeacher.skills.map((s, i) => (
+                      <Badge key={i} variant="outline" className="text-xs">{s}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <p className="text-sm font-medium mb-2 flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  {language === 'bn' ? 'Assigned Courses' : 'Assigned Courses'}
+                  <Badge variant="secondary">{teacherCourses.length}</Badge>
+                </p>
+                {loadingTeacherCourses ? (
+                  <p className="text-sm text-muted-foreground">{t.loading}</p>
+                ) : teacherCourses.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    {language === 'bn' ? 'কোনো কোর্স assign করা নেই' : 'No courses assigned'}
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {teacherCourses.map((c) => (
+                      <div key={c.id} className="p-3 rounded-lg border bg-card">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm truncate">{c.title}</p>
+                            {c.title_en && (
+                              <p className="text-xs text-muted-foreground truncate">{c.title_en}</p>
+                            )}
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            <Badge variant={c.is_approved ? 'default' : 'secondary'} className="text-xs">
+                              {c.is_approved ? t.approved : t.pending}
+                            </Badge>
+                            {c.is_published && (
+                              <Badge variant="outline" className="text-xs">Published</Badge>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                          <span>৳{c.price}</span>
+                          <Badge variant="outline" className="text-xs">{c.course_type}</Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
+
