@@ -880,6 +880,119 @@ export type Database = {
           },
         ]
       }
+      live_class_attendance: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          join_time: string
+          live_class_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          join_time?: string
+          live_class_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          join_time?: string
+          live_class_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_class_attendance_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_class_attendance_live_class_id_fkey"
+            columns: ["live_class_id"]
+            isOneToOne: false
+            referencedRelation: "live_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_classes: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          end_time: string
+          google_meet_url: string | null
+          id: string
+          is_published: boolean
+          recording_available: boolean
+          recording_url: string | null
+          recording_video_id: string | null
+          scheduled_date: string
+          start_time: string
+          teacher_id: string
+          title: string
+          updated_at: string
+          youtube_url: string
+          youtube_video_id: string | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          end_time: string
+          google_meet_url?: string | null
+          id?: string
+          is_published?: boolean
+          recording_available?: boolean
+          recording_url?: string | null
+          recording_video_id?: string | null
+          scheduled_date: string
+          start_time: string
+          teacher_id: string
+          title: string
+          updated_at?: string
+          youtube_url: string
+          youtube_video_id?: string | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          end_time?: string
+          google_meet_url?: string | null
+          id?: string
+          is_published?: boolean
+          recording_available?: boolean
+          recording_url?: string | null
+          recording_video_id?: string | null
+          scheduled_date?: string
+          start_time?: string
+          teacher_id?: string
+          title?: string
+          updated_at?: string
+          youtube_url?: string
+          youtube_video_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_classes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notice_reads: {
         Row: {
           id: string
@@ -1215,6 +1328,60 @@ export type Database = {
             columns: ["linked_team_member_id"]
             isOneToOne: false
             referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recorded_classes: {
+        Row: {
+          course_id: string
+          created_at: string
+          description: string | null
+          id: string
+          live_class_id: string | null
+          recorded_at: string
+          title: string
+          updated_at: string
+          video_url: string
+          youtube_video_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          live_class_id?: string | null
+          recorded_at?: string
+          title: string
+          updated_at?: string
+          video_url: string
+          youtube_video_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          live_class_id?: string | null
+          recorded_at?: string
+          title?: string
+          updated_at?: string
+          video_url?: string
+          youtube_video_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recorded_classes_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recorded_classes_live_class_id_fkey"
+            columns: ["live_class_id"]
+            isOneToOne: false
+            referencedRelation: "live_classes"
             referencedColumns: ["id"]
           },
         ]
