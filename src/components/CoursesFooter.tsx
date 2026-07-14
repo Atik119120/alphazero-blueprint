@@ -1,5 +1,6 @@
 import { ArrowUp, Facebook, Instagram, MessageCircle, Mail, Phone, Youtube } from "lucide-react";
-import learnLogo from "@/assets/learn-with-alphazero-logo.png";
+import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
+const learnLogo = learnLogoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 
 const CoursesFooter = () => {

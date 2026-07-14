@@ -3,7 +3,8 @@ import { GraduationCap, BookOpen, Users, Award, PlayCircle, Sparkles, Target, Ro
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import CoursesFooter from "@/components/CoursesFooter";
-import learnLogo from "@/assets/learn-with-alphazero-logo.png";
+import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
+const learnLogo = learnLogoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { usePageContent } from "@/hooks/usePageContent";

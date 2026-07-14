@@ -2,7 +2,8 @@ import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
-import coursesHeroBg from "@/assets/courses-hero-bg.png";
+import coursesHeroBgAssetJson from "@/assets/courses-hero-bg.png.asset.json";
+const coursesHeroBg = coursesHeroBgAssetJson.url;
 import instructorHH from "@/assets/instructors/hh.png.asset.json";
 import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
 import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
@@ -14,7 +15,8 @@ import {
   ArrowRight, ArrowLeft, Users, Play
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import learnLogo from "@/assets/learn-with-alphazero-logo.png";
+import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
+const learnLogo = learnLogoAssetJson.url;
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useRef } from "react";
