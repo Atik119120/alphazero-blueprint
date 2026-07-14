@@ -204,8 +204,7 @@ const FooterManagement = () => {
   const startEditContent = (content: FooterContent) => {
     setEditingContent(content);
     setContentForm({
-      content_en: content.content_en || '',
-      content_bn: content.content_bn || ''
+      content_en: content.content_en || ''
     });
   };
 
@@ -213,10 +212,10 @@ const FooterManagement = () => {
     if (!editingContent) return;
     updateContentMutation.mutate({
       id: editingContent.id,
-      content_en: contentForm.content_en,
-      content_bn: contentForm.content_bn
+      content_en: contentForm.content_en
     });
   };
+
 
   const toggleLinkStatus = (link: FooterLink) => {
     updateLinkMutation.mutate({ id: link.id, is_active: !link.is_active });
