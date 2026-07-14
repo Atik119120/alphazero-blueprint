@@ -517,12 +517,13 @@ const ItemRow = ({
     try {
       await updateItem.mutateAsync({
         id: f.id,
-        title: f.title, title_bn: f.title_bn,
-        subtitle: f.subtitle, subtitle_bn: f.subtitle_bn,
-        description: f.description, description_bn: f.description_bn,
+        title: f.title,
+        subtitle: f.subtitle,
+        description: f.description,
         image_url: f.image_url, image_url_2: f.image_url_2,
         url: f.url, order_index: f.order_index, is_active: f.is_active,
       });
+
       toast.success("সেভ হয়েছে");
       setDirty(false);
     } catch (e: any) { toast.error(e.message); }
