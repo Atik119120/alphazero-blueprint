@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Plus, Pencil, Trash2, ExternalLink, Image } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import WorkHeroEditor from "./WorkHeroEditor";
 
 interface Work {
   id: string;
@@ -177,6 +178,8 @@ export const WorksManagement = () => {
 
   return (
     <div className="space-y-6">
+      <WorkHeroEditor />
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Works / Portfolio</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
