@@ -897,33 +897,27 @@ const translations: Record<Language, Record<string, string>> = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem("language");
-    return (saved as Language) || "en";
-  });
+  // Bangla removed — language is locked to English site-wide.
+  const [language] = useState<Language>("en");
 
-  const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    localStorage.setItem("language", lang);
+  const setLanguage = (_lang: Language) => {
+    // no-op: Bangla has been removed from the site
   };
 
   const toggleLanguage = () => {
-    setLanguage(language === 'en' ? 'bn' : 'en');
+    // no-op: Bangla has been removed from the site
   };
 
   const t = (key: string): string => {
-    return translations[language][key] || key;
+    return translations.en[key] || key;
   };
 
   useEffect(() => {
-    document.documentElement.lang = language;
-    // Apply Bengali fonts when language is Bengali
-    if (language === 'bn') {
-      document.documentElement.classList.add('font-bengali');
-    } else {
-      document.documentElement.classList.remove('font-bengali');
-    }
-  }, [language]);
+    document.documentElement.lang = "en";
+    document.documentElement.classList.remove('font-bengali');
+    try { localStorage.setItem("language", "en"); } catch {}
+  }, []);
+
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, toggleLanguage, t }}>
