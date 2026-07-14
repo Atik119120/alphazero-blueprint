@@ -189,10 +189,11 @@ const PageContentManagement = () => {
 
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, content_en, content_bn }: { id: string; content_en: string | null; content_bn: string | null }) => {
-      const { error } = await supabase.from('page_content').update({ content_en, content_bn }).eq('id', id);
+    mutationFn: async ({ id, content_en }: { id: string; content_en: string | null }) => {
+      const { error } = await supabase.from('page_content').update({ content_en }).eq('id', id);
       if (error) throw error;
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
       toast.success('কনটেন্ট আপডেট হয়েছে!');
