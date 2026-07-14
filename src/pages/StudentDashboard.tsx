@@ -424,6 +424,13 @@ export default function StudentDashboard() {
             </div>
           )}
 
+          {/* Tab: Recorded Classes */}
+          {activeTab === 'recorded' && (
+            <div className="max-w-5xl mx-auto">
+              <StudentRecordedClassesTab language={language as 'en' | 'bn'} />
+            </div>
+          )}
+
           {/* Tab: Profile */}
           {activeTab === 'profile' && profile && (
             <div className="max-w-2xl mx-auto space-y-4">
