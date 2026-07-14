@@ -185,6 +185,18 @@ export const ServicesManagement = () => {
 
   return (
     <div className="space-y-6">
+      <PageHeroEditor
+        pageName="services"
+        title="Services Page — Hero Section"
+        subtitle="Click to edit the top hero (title parts, description)"
+        fields={[
+          { key: "hero.title", label: "✨ Title Part 1 (script)", description: "First script-font word (e.g. Design)", type: "input", fallback: "Design" },
+          { key: "hero.title2", label: "💼 Title Part 2", description: "Bold continuation on the same line", type: "input", fallback: "That Works" },
+          { key: "hero.title3", label: "💼 Title Part 3", description: "Second line prefix (e.g. Ideas That)", type: "input", fallback: "Ideas That" },
+          { key: "hero.description", label: "📝 Description", description: "Paragraph shown below the title", type: "textarea", fallback: "Full-stack creative services to build and grow your digital presence." },
+        ]}
+      />
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Services</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
