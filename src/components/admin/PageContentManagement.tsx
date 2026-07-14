@@ -535,52 +535,29 @@ const PageContentManagement = () => {
                       </div>
 
                       {isEditing && ed ? (
-                        <div className="grid md:grid-cols-2 gap-3">
-                          <div className="space-y-1">
-                            <Label className="text-xs flex items-center gap-1 text-muted-foreground"><Globe className="w-3 h-3" /> English</Label>
-                            <Textarea
-                              value={ed.content_en}
-                              onChange={(e) => setEditData(prev => ({
-                                ...prev,
-                                [content.id]: { ...prev[content.id], content_en: e.target.value }
-                              }))}
-                              rows={3}
-                              className="text-sm"
-                            />
-                          </div>
-                          <div className="space-y-1">
-                            <Label className="text-xs flex items-center gap-1 text-muted-foreground"><Languages className="w-3 h-3" /> বাংলা</Label>
-                            <Textarea
-                              value={ed.content_bn}
-                              onChange={(e) => setEditData(prev => ({
-                                ...prev,
-                                [content.id]: { ...prev[content.id], content_bn: e.target.value }
-                              }))}
-                              rows={3}
-                              className="text-sm"
-                            />
-                          </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs flex items-center gap-1 text-muted-foreground"><Globe className="w-3 h-3" /> English</Label>
+                          <Textarea
+                            value={ed.content_en}
+                            onChange={(e) => setEditData(prev => ({
+                              ...prev,
+                              [content.id]: { ...prev[content.id], content_en: e.target.value }
+                            }))}
+                            rows={3}
+                            className="text-sm"
+                          />
                         </div>
                       ) : (
-                        <div className="grid md:grid-cols-2 gap-3">
-                          <div className="space-y-1">
-                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-                              <Globe className="w-3 h-3" /> English
-                            </p>
-                            <p className="text-sm bg-muted/40 p-2.5 rounded-lg min-h-[44px] leading-relaxed">
-                              {content.content_en || <span className="text-muted-foreground italic text-xs">Empty</span>}
-                            </p>
-                          </div>
-                          <div className="space-y-1">
-                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
-                              <Languages className="w-3 h-3" /> বাংলা
-                            </p>
-                            <p className="text-sm bg-muted/40 p-2.5 rounded-lg min-h-[44px] leading-relaxed">
-                              {content.content_bn || <span className="text-muted-foreground italic text-xs">খালি</span>}
-                            </p>
-                          </div>
+                        <div className="space-y-1">
+                          <p className="text-[10px] uppercase tracking-wide text-muted-foreground flex items-center gap-1">
+                            <Globe className="w-3 h-3" /> English
+                          </p>
+                          <p className="text-sm bg-muted/40 p-2.5 rounded-lg min-h-[44px] leading-relaxed">
+                            {content.content_en || <span className="text-muted-foreground italic text-xs">Empty</span>}
+                          </p>
                         </div>
                       )}
+
                     </CardContent>
                   </Card>
                 );
