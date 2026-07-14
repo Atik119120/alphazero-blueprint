@@ -1166,7 +1166,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   <Badge 
                     className="absolute top-2 left-2 bg-amber-500 hover:bg-amber-600"
                   >
-                    ৳{course.price.toLocaleString('bn-BD')}
+                    ৳{course.price.toLocaleString('en-US')}
                   </Badge>
                 )}
               </div>
@@ -1174,7 +1174,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
                   {course.price > 0 ? (
-                    <span className="text-sm font-semibold text-amber-600">৳{course.price.toLocaleString('bn-BD')}</span>
+                    <span className="text-sm font-semibold text-amber-600">৳{course.price.toLocaleString('en-US')}</span>
                   ) : (
                     <Badge variant="secondary" className="text-xs">Free</Badge>
                   )}
