@@ -796,7 +796,7 @@ const CoursesPage = () => {
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
               {cms("instructors.badge.bn", "instructors.badge.en", "আমাদের টিম", "Our Team")}
             </span>
-            <h2 className="text-3xl lg:the-5xl font-display font-bold leading-tight">
+            <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
               {cms("instructors.title1.bn", "instructors.title1.en", "এক্সপার্ট", "Expert")}{" "}
               <span className="gradient-text">{cms("instructors.title2.bn", "instructors.title2.en", "ইনস্ট্রাক্টর", "Instructors")}</span>
             </h2>
