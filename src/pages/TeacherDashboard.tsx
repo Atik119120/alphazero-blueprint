@@ -168,13 +168,26 @@ export default function TeacherDashboard() {
         animate={{ x: 0, opacity: 1 }}
         className="fixed left-4 top-4 bottom-4 w-64 bg-card/80 backdrop-blur-xl rounded-2xl border border-border/50 shadow-2xl z-50 flex flex-col overflow-hidden"
       >
-        {/* Logo */}
-        <div className="p-4 border-b border-border/50">
-          <div className="flex items-center gap-3">
-            <img src={learnLogo} alt="Learn with AlphaZero" className="h-10 w-auto object-contain dark:brightness-0 dark:invert" />
-            <div className="min-w-0">
-              <h1 className="font-bold text-foreground text-sm truncate">{t.teacherPanel}</h1>
-              <p className="text-xs text-muted-foreground truncate">{profile?.full_name}</p>
+        {/* Logo + Profile */}
+        <div className="p-3 border-b border-border/50 space-y-3">
+          <div className="flex items-center gap-2">
+            <img src={learnLogo} alt="Learn with AlphaZero" className="h-8 w-auto object-contain dark:brightness-0 dark:invert" />
+            <div>
+              <p className="text-[10px] text-muted-foreground">Teacher Dashboard</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Avatar className="w-8 h-8 border-2 border-primary/20">
+              <AvatarImage src={profile?.avatar_url || ''} />
+              <AvatarFallback className="bg-gradient-to-br from-primary to-cyan-600 text-white text-[10px] font-bold">
+                {profile?.full_name?.charAt(0) || 'T'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold truncate">{profile?.full_name}</p>
+              <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Teacher
+              </p>
             </div>
           </div>
         </div>
