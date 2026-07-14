@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { FileText, Home, Info, Phone, Plus, Save, Loader2, Trash2, Pencil, Briefcase, Users, Wrench, Globe, Languages, Search, X, CheckCircle2, HelpCircle, Tag, DollarSign, UserPlus, BookOpen, Eye, EyeOff } from "lucide-react";
+import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
+import AdminSiteScopeSwitcher from "@/components/admin/AdminSiteScopeSwitcher";
 
 interface PageContent {
   id: string;
@@ -144,6 +146,7 @@ const PAGES = [
 
 const PageContentManagement = () => {
   const queryClient = useQueryClient();
+  const { scope } = useAdminScope();
   const [selectedPage, setSelectedPage] = useState("home");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -157,11 +160,12 @@ const PageContentManagement = () => {
   const [editData, setEditData] = useState<Record<string, { content_en: string; content_bn: string }>>({});
 
   const { data: contents, isLoading } = useQuery({
-    queryKey: ['page-content'],
+    queryKey: ['page-content', scope],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('page_content')
         .select('*')
+        .eq('site_scope', scope)
         .order('page_name')
         .order('content_key');
       if (error) throw error;
@@ -171,7 +175,7 @@ const PageContentManagement = () => {
 
   const addMutation = useMutation({
     mutationFn: async (data: Omit<PageContent, 'id'>) => {
-      const { error } = await supabase.from('page_content').insert([data]);
+      const { error } = await supabase.from('page_content').insert([{ ...data, site_scope: scope }]);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -182,6 +186,7 @@ const PageContentManagement = () => {
     },
     onError: () => toast.error('কনটেন্ট যোগ করতে সমস্যা হয়েছে')
   });
+
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, content_en, content_bn }: { id: string; content_en: string | null; content_bn: string | null }) => {
@@ -311,11 +316,15 @@ const PageContentManagement = () => {
           </div>
           <div>
             <h2 className="text-xl font-bold">পেজ কনটেন্ট</h2>
-            <p className="text-sm text-muted-foreground">ওয়েবসাইটের প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন</p>
+            <p className="text-sm text-muted-foreground">
+              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          <AdminSiteScopeSwitcher />
+
           <Button 
             variant="outline" 
             size="sm" 

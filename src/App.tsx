@@ -12,6 +12,8 @@ import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollReveal from "@/components/ScrollReveal";
+import { SiteScopeProvider } from "@/contexts/SiteScopeContext";
+
 
 // Preload logos immediately
 import logoSrc from "@/assets/logo.png";
@@ -110,7 +112,9 @@ function AppContent() {
       
       <AIChatbot />
       
+      <SiteScopeProvider>
       <AnimatePresence mode="wait" initial={false}>
+
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0 }}
@@ -161,6 +165,8 @@ function AppContent() {
           </Routes>
         </motion.div>
       </AnimatePresence>
+      </SiteScopeProvider>
+
     </>
   );
 }

@@ -30,6 +30,8 @@ import {
   Phone,
   MapPin
 } from "lucide-react";
+import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
+import AdminSiteScopeSwitcher from "@/components/admin/AdminSiteScopeSwitcher";
 
 interface FooterLink {
   id: string;
@@ -63,6 +65,7 @@ const ICON_OPTIONS = [
 
 const FooterManagement = () => {
   const queryClient = useQueryClient();
+  const { scope } = useAdminScope();
   const [activeTab, setActiveTab] = useState("links");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingLink, setEditingLink] = useState<FooterLink | null>(null);
@@ -81,13 +84,13 @@ const FooterManagement = () => {
     content_bn: ''
   });
 
-  // Fetch footer links
   const { data: links, isLoading: linksLoading } = useQuery({
-    queryKey: ['footer-links'],
+    queryKey: ['footer-links', scope],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('footer_links')
         .select('*')
+        .eq('site_scope', scope)
         .order('link_type')
         .order('order_index');
       if (error) throw error;
@@ -95,23 +98,22 @@ const FooterManagement = () => {
     }
   });
 
-  // Fetch footer content
   const { data: contents, isLoading: contentsLoading } = useQuery({
-    queryKey: ['footer-content'],
+    queryKey: ['footer-content', scope],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('footer_content')
         .select('*')
+        .eq('site_scope', scope)
         .order('content_key');
       if (error) throw error;
       return data as FooterContent[];
     }
   });
 
-  // Link mutations
   const addLinkMutation = useMutation({
     mutationFn: async (data: Omit<FooterLink, 'id' | 'is_active'>) => {
-      const { error } = await supabase.from('footer_links').insert([{ ...data, is_active: true }]);
+      const { error } = await supabase.from('footer_links').insert([{ ...data, is_active: true, site_scope: scope }]);
       if (error) throw error;
     },
     onSuccess: () => {
@@ -122,6 +124,7 @@ const FooterManagement = () => {
     },
     onError: () => toast.error('লিঙ্ক যোগ করতে সমস্যা হয়েছে')
   });
+
 
   const updateLinkMutation = useMutation({
     mutationFn: async ({ id, ...data }: Partial<FooterLink> & { id: string }) => {
@@ -254,13 +257,19 @@ const FooterManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <Link2 className="h-6 w-6 text-primary" />
-        <div>
-          <h2 className="text-2xl font-bold">ফুটার ম্যানেজমেন্ট</h2>
-          <p className="text-muted-foreground">সোশ্যাল লিঙ্ক, নেভিগেশন এবং ফুটার কনটেন্ট পরিবর্তন করুন</p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Link2 className="h-6 w-6 text-primary" />
+          <div>
+            <h2 className="text-2xl font-bold">ফুটার ম্যানেজমেন্ট</h2>
+            <p className="text-muted-foreground">
+              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — সোশ্যাল লিঙ্ক, নেভিগেশন ও ফুটার কনটেন্ট
+            </p>
+          </div>
         </div>
+        <AdminSiteScopeSwitcher />
       </div>
+
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 w-full max-w-md">

@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Settings, Image, Type, Save, Loader2 } from "lucide-react";
+import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
+import AdminSiteScopeSwitcher from "@/components/admin/AdminSiteScopeSwitcher";
 
 interface SiteSetting {
   id: string;
@@ -18,29 +20,54 @@ interface SiteSetting {
 
 const SiteSettingsManagement = () => {
   const queryClient = useQueryClient();
+  const { scope } = useAdminScope();
   const [editedSettings, setEditedSettings] = useState<Record<string, string>>({});
 
   const { data: settings, isLoading } = useQuery({
-    queryKey: ['site-settings'],
+    queryKey: ['site-settings', scope],
     queryFn: async () => {
-      const { data, error } = await supabase
+      // Fetch settings for current scope. Fallback to agency template for missing keys on learn scope.
+      const { data: scopeRows, error } = await supabase
         .from('site_settings')
         .select('*')
+        .eq('site_scope', scope)
         .order('setting_key');
-      
       if (error) throw error;
-      return data as SiteSetting[];
+
+      if (scope === 'learn') {
+        // Ensure the same keys as agency are visible for editing (so admin can create learn overrides)
+        const { data: agencyRows } = await supabase
+          .from('site_settings')
+          .select('*')
+          .eq('site_scope', 'agency')
+          .order('setting_key');
+        const learnKeys = new Set((scopeRows || []).map((r: any) => r.setting_key));
+        const shims = (agencyRows || [])
+          .filter((r: any) => !learnKeys.has(r.setting_key))
+          .map((r: any) => ({ ...r, id: `shim-${r.setting_key}`, setting_value: '', site_scope: 'learn' }));
+        return [...(scopeRows || []), ...shims] as SiteSetting[];
+      }
+
+      return scopeRows as SiteSetting[];
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({ key, value }: { key: string; value: string }) => {
-      const { error } = await supabase
+    mutationFn: async ({ key, value, type }: { key: string; value: string; type: string }) => {
+      // upsert scoped row
+      const { data: existing } = await supabase
         .from('site_settings')
-        .update({ setting_value: value })
-        .eq('setting_key', key);
-      
-      if (error) throw error;
+        .select('id')
+        .eq('setting_key', key)
+        .eq('site_scope', scope)
+        .maybeSingle();
+      if (existing?.id) {
+        const { error } = await supabase.from('site_settings').update({ setting_value: value }).eq('id', existing.id);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from('site_settings').insert([{ setting_key: key, setting_value: value, setting_type: type, site_scope: scope }]);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['site-settings'] });
@@ -51,14 +78,15 @@ const SiteSettingsManagement = () => {
     }
   });
 
+
   const handleChange = (key: string, value: string) => {
     setEditedSettings(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSave = (key: string) => {
+  const handleSave = (key: string, type: string) => {
     const value = editedSettings[key];
     if (value !== undefined) {
-      updateMutation.mutate({ key, value });
+      updateMutation.mutate({ key, value, type });
       setEditedSettings(prev => {
         const newState = { ...prev };
         delete newState[key];
@@ -67,10 +95,11 @@ const SiteSettingsManagement = () => {
     }
   };
 
-  const handleToggle = (key: string, currentValue: string | null) => {
+  const handleToggle = (key: string, currentValue: string | null, type: string) => {
     const newValue = currentValue === 'true' ? 'false' : 'true';
-    updateMutation.mutate({ key, value: newValue });
+    updateMutation.mutate({ key, value: newValue, type });
   };
+
 
   const getSettingLabel = (key: string) => {
     const labels: Record<string, string> = {
@@ -120,13 +149,19 @@ const SiteSettingsManagement = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <Settings className="h-6 w-6 text-primary" />
-        <div>
-          <h2 className="text-2xl font-bold">সাইট সেটিংস</h2>
-          <p className="text-muted-foreground">Favicon, Logo এবং সাইটের নাম পরিবর্তন করুন</p>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Settings className="h-6 w-6 text-primary" />
+          <div>
+            <h2 className="text-2xl font-bold">সাইট সেটিংস</h2>
+            <p className="text-muted-foreground">
+              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — Favicon, Logo ও সাইটের নাম
+            </p>
+          </div>
         </div>
+        <AdminSiteScopeSwitcher />
       </div>
+
 
       {/* Toggle Settings - bKash/Nagad on/off */}
       {toggleSettings.length > 0 && (
@@ -144,7 +179,7 @@ const SiteSettingsManagement = () => {
                 </div>
                 <Switch
                   checked={setting.setting_value === 'true'}
-                  onCheckedChange={() => handleToggle(setting.setting_key, setting.setting_value)}
+                  onCheckedChange={() => handleToggle(setting.setting_key, setting.setting_value, setting.setting_type)}
                   disabled={updateMutation.isPending}
                 />
               </div>
@@ -194,7 +229,7 @@ const SiteSettingsManagement = () => {
                     />
                     <Button 
                       size="icon" 
-                      onClick={() => handleSave(setting.setting_key)}
+                      onClick={() => handleSave(setting.setting_key, setting.setting_type)}
                       disabled={!hasChanges || updateMutation.isPending}
                       variant={hasChanges ? "default" : "secondary"}
                     >
