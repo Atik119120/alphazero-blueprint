@@ -65,6 +65,7 @@ import { TeamManagement } from '@/components/admin/TeamManagement';
 import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
+import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
@@ -1753,7 +1754,7 @@ function AdminDashboardInner() {
 
           {/* Contact Tab */}
           <TabsContent value="contact" className="space-y-6">
-            <PageContentManagement lockedPage="contact" />
+            <ContactInfoManagement />
           </TabsContent>
 
 
