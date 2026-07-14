@@ -68,6 +68,7 @@ import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import AboutPageEditor from '@/components/admin/AboutPageEditor';
+import alphazeroLogoAsset from '@/assets/alphazero-logo.png.asset.json';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
@@ -900,16 +901,14 @@ function AdminDashboardInner() {
         {/* Logo */}
         <div className="p-3 md:p-4 border-b border-border/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-cyan-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <img 
-                src="/logo.png" 
-                alt="Logo" 
-                className="w-6 h-6 object-contain brightness-0 invert"
-              />
-            </div>
+            <img
+              src={alphazeroLogoAsset.url}
+              alt="AlphaZero Logo"
+              className="h-8 w-auto flex-shrink-0 brightness-0 dark:invert"
+            />
             <div className="hidden md:block">
               <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
-                {language === 'bn' ? 'আলফা একাডেমি' : 'Alpha Academy'}
+                {language === 'bn' ? 'আলফা ড্যাশবোর্ড' : 'Alpha Dashboard'}
               </h1>
               <p className="text-[10px] text-muted-foreground flex items-center gap-1">
                 <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
