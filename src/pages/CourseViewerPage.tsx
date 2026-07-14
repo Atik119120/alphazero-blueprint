@@ -39,6 +39,17 @@ export default function CourseViewerPage() {
   const [autoCompleting, setAutoCompleting] = useState(false);
 
   useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     if (courses.length > 0 && courseId) {
       const found = courses.find(c => c.id === courseId);
       if (found) {
@@ -142,6 +153,9 @@ export default function CourseViewerPage() {
   const currentIndex = course?.videos.findIndex(v => v.id === selectedVideo?.id) ?? -1;
   const nextVideo = course?.videos[currentIndex + 1];
   const prevVideo = currentIndex > 0 ? course?.videos[currentIndex - 1] : null;
+  const videoFrameHeight = isMobile
+    ? 'min(56.25vw, 42dvh)'
+    : 'min(calc((100vw - 20rem) * 0.5625), calc(100dvh - 11rem))';
 
   const getMaterialIcon = (type: string) => {
     switch (type) {
@@ -232,7 +246,10 @@ export default function CourseViewerPage() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden min-h-0">
           {/* Video Player - fixed, does not scroll */}
-          <div className="relative w-full bg-black shrink-0 shadow-lg shadow-black/50">
+          <div
+            className="relative w-full bg-black shrink-0 overflow-hidden shadow-lg shadow-black/50 [&>div]:!h-full [&>div]:!aspect-auto [&>div]:!rounded-none"
+            style={{ height: videoFrameHeight }}
+          >
             {selectedVideo && user && (
               <SecureVideoPlayer
                 videoUrl={selectedVideo.video_url}
