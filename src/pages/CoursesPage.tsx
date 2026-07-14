@@ -529,9 +529,6 @@ const CoursesPage = () => {
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
               {t.popularCourses}
             </h2>
-            <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-              {t.coursesDesc}
-            </p>
           </motion.div>
 
           {/* Category tabs */}
