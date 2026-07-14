@@ -872,7 +872,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                               <CheckCircle className="w-3 h-3" />
                               {t.paid}
                             </Button>
-                            <Button size="sm' variant='destructive' className='gap-1' onClick={() => processWithdrawal(withdrawal.id, 'rejected')}>
+                            <Button size="sm" variant="destructive" className="gap-1" onClick={() => processWithdrawal(withdrawal.id, 'rejected')}>
                               <XCircle className="w-3 h-3" />
                               {t.rejected}
                             </Button>
