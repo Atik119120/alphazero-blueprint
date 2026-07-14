@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, memo } from "react";
-import logo from "@/assets/logo.png";
+import logoAssetJson from "@/assets/logo.png.asset.json";
+const logo = logoAssetJson.url;
 
 // Use the same header logo with invert filter for white on black background
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {

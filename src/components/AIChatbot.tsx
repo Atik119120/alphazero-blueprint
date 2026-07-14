@@ -4,7 +4,8 @@ import { X, Send, Loader2, Sparkles, MessageCircle, Image, Video, Paperclip, Pla
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo.png";
+import logoAssetJson from "@/assets/logo.png.asset.json";
+const logo = logoAssetJson.url;
 
 interface Attachment {
   type: "image" | "video" | "audio";

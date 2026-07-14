@@ -4,7 +4,8 @@ import { Menu, X, Search, User, ArrowUpRight, LayoutGrid, Info, Users as UsersIc
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import learnLogo from "@/assets/learn-with-alphazero-logo.png";
+import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
+const learnLogo = learnLogoAssetJson.url;
 import SearchModal from "./SearchModal";
 
 const CoursesNavbar = () => {

@@ -6,7 +6,8 @@ import { Profile } from '@/types/lms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import Barcode from 'react-barcode';
-import logoImg from '@/assets/learn-with-alphazero-logo.png';
+import logoImgAssetJson from '@/assets/learn-with-alphazero-logo.png.asset.json';
+const logoImg = logoImgAssetJson.url;
 
 interface StudentIDCardProps {
   profile: Profile;

@@ -16,7 +16,8 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useTheme } from 'next-themes';
 import { useToast } from '@/hooks/use-toast';
-import learnLogo from '@/assets/learn-with-alphazero-logo.png';
+import learnLogoAssetJson from '@/assets/learn-with-alphazero-logo.png.asset.json';
+const learnLogo = learnLogoAssetJson.url;
 import { 
   useTeacherStats, 
   useTeacherCourses, 

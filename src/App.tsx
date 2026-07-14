@@ -16,7 +16,8 @@ import { SiteScopeProvider } from "@/contexts/SiteScopeContext";
 
 
 // Preload logos immediately
-import logoSrc from "@/assets/logo.png";
+import logoAssetJson from "@/assets/logo.png.asset.json";
+const logoSrc = logoAssetJson.url;
 import logoFullSrc from "@/assets/logo-full.png";
 const preloadImg = (src: string) => { const img = new Image(); img.src = src; };
 preloadImg(logoSrc);
