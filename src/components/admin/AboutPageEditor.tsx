@@ -8,9 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
-  Save, Loader2, ChevronRight, Sparkles, BookOpen, Target, MapPin, CheckCircle,
+  Save, Loader2, ChevronRight, Sparkles, BookOpen, Target, MapPin, CheckCircle, User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ImageUploader from "./ImageUploader";
+
 
 interface Field {
   key: string;
