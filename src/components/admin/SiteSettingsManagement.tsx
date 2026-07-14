@@ -146,8 +146,13 @@ const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } =
     );
   }
 
-  const toggleSettings = settings?.filter(s => s.setting_type === 'toggle') || [];
-  const otherSettings = settings?.filter(s => s.setting_type !== 'toggle') || [];
+  const filteredAll = (settings || []).filter(s => {
+    if (filter === 'payment') return PAYMENT_KEYS.has(s.setting_key);
+    if (filter === 'general') return !PAYMENT_KEYS.has(s.setting_key);
+    return true;
+  });
+  const toggleSettings = filteredAll.filter(s => s.setting_type === 'toggle');
+  const otherSettings = filteredAll.filter(s => s.setting_type !== 'toggle');
 
   return (
     <div className="space-y-6">
