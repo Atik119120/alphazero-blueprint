@@ -455,17 +455,12 @@ const FooterManagement = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <Label className="text-xs text-muted-foreground">English</Label>
-                      <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_en || '-'}</p>
-                    </div>
-                    <div className="space-y-1">
-                      <Label className="text-xs text-muted-foreground">বাংলা</Label>
-                      <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_bn || '-'}</p>
-                    </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">English</Label>
+                    <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_en || '-'}</p>
                   </div>
                 )}
+
               </CardContent>
             </Card>
           ))}
