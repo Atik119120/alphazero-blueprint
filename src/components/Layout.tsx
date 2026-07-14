@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
+import CoursesNavbar from "./CoursesNavbar";
 import Footer from "./Footer";
 import CoursesFooter from "./CoursesFooter";
 
@@ -17,7 +18,7 @@ const Layout = ({ children }: LayoutProps) => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
+      {isLearnContext ? <CoursesNavbar /> : <Navbar />}
       <main className="flex-1 pt-20">
         {children}
       </main>
@@ -27,3 +28,4 @@ const Layout = ({ children }: LayoutProps) => {
 };
 
 export default Layout;
+
