@@ -20,6 +20,8 @@ import StudentIDCard from '@/components/student/StudentIDCard';
 import ProfilePhotoUpload from '@/components/student/ProfilePhotoUpload';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CourseEnrollmentModal from '@/components/student/CourseEnrollmentModal';
+import StudentLiveClassesTab from '@/components/student/StudentLiveClassesTab';
+import { Video as VideoIcon } from 'lucide-react';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
@@ -99,6 +101,7 @@ export default function StudentDashboard() {
 
   const navItems = [
     { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
+    { id: 'live', icon: VideoIcon, label: language === 'bn' ? 'লাইভ ক্লাস' : 'Live Class' },
     { id: 'explore', icon: Search, label: language === 'bn' ? 'ব্রাউজ' : 'Browse' },
     { id: 'certificates', icon: Award, label: language === 'bn' ? 'সনদ' : 'Certificates' },
     { id: 'id-card', icon: IdCard, label: language === 'bn' ? 'আইডি' : 'ID Card' },
@@ -380,6 +383,11 @@ export default function StudentDashboard() {
                 </div>
               )}
             </div>
+          )}
+
+          {/* Tab: Live Class */}
+          {activeTab === 'live' && (
+            <StudentLiveClassesTab language={language as 'en' | 'bn'} />
           )}
 
           {/* Tab: ID Card */}
