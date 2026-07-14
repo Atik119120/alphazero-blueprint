@@ -124,9 +124,8 @@ export default function TeacherLoginPage() {
 
       {/* Top controls */}
       <div className="absolute top-4 right-4 flex items-center gap-1 z-20">
-        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl" onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}>
-          <Globe className="h-4 w-4" />
-        </Button>
+        {/* Language toggle removed — English only */}
+
         <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
           {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
         </Button>
