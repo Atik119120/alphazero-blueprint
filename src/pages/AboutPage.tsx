@@ -64,7 +64,7 @@ const AboutPage = () => {
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
-              {c("title", "about.title")}{" "}
+              <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{c("title", "about.title")}</span>{" "}
               <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>AlphaZero</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
