@@ -1131,8 +1131,6 @@ function AdminDashboardInner() {
               </div>
             </div>
           )}
-          {false && (
-            <div />
         </div>
 
         {/* Content Area */}
