@@ -1050,32 +1050,34 @@ function AdminDashboardInner() {
             </div>
           </div>
 
-          {/* Quick Stats - Minimal Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-            {[
-              { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
-              { icon: Users, value: studentsList.length, label: language === 'bn' ? 'Student' : 'Students', color: 'text-emerald-500' },
-              { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
-              { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500'}, { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
-            ].map((stat, index) => (
-              <div 
-                key={index}
-                className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-border transition-colors group"
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className={`text-2xl font-bold ${stat.color}`}>
-                      {stat.value}
-                    </p>
-                    <p className={`text-xs text-muted-foreground mt-0.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                      {stat.label}
-                    </p>
+          {/* Quick Stats - Minimal Cards (Learn scope only) */}
+          {scope === 'learn' && (
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+              {[
+                { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
+                { icon: Users, value: studentsList.length, label: language === 'bn' ? 'Student' : 'Students', color: 'text-emerald-500' },
+                { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
+                { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500'}, { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
+              ].map((stat, index) => (
+                <div 
+                  key={index}
+                  className="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-border/50 hover:border-border transition-colors group"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <p className={`text-2xl font-bold ${stat.color}`}>
+                        {stat.value}
+                      </p>
+                      <p className={`text-xs text-muted-foreground mt-0.5 ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
+                        {stat.label}
+                      </p>
+                    </div>
+                    <stat.icon className={`w-5 h-5 ${stat.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
                   </div>
-                  <stat.icon className={`w-5 h-5 ${stat.color} opacity-40 group-hover:opacity-100 transition-opacity`} />
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Content Area */}
