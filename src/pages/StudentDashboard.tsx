@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import CourseEnrollmentModal from '@/components/student/CourseEnrollmentModal';
 import StudentLiveClassesTab from '@/components/student/StudentLiveClassesTab';
 import { Video as VideoIcon } from 'lucide-react';
+import learnLogo from '@/assets/learn-with-alphazero-logo.png';
 
 export default function StudentDashboard() {
   const { user, profile, signOut, isLoading: authLoading, refreshProfile } = useAuth();
@@ -114,9 +115,8 @@ export default function StudentDashboard() {
       <aside className="fixed left-3 top-3 bottom-3 w-14 md:w-52 bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-xl shadow-black/5 z-50 flex flex-col overflow-hidden">
         <div className="p-3 border-b border-border/50 space-y-3">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="AlphaZero Academy" className="w-8 h-8 rounded-lg object-contain dark:invert" />
+            <img src={learnLogo} alt="Learn with AlphaZero" className="h-8 w-auto object-contain dark:brightness-0 dark:invert" />
             <div className="hidden md:block">
-              <p className="text-xs font-bold bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent">AlphaZero Academy</p>
               <p className="text-[10px] text-muted-foreground">Student Dashboard</p>
             </div>
           </div>
