@@ -338,15 +338,15 @@ const LearnAboutPage = () => {
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Users size={14} className="text-primary" />
                   <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">
-                    {t("আমাদের টিম", "Our Team")}
+                    {cms("linstructors.badge.bn", "linstructors.badge.en", "আমাদের টিম", "Our Team")}
                   </span>
                 </div>
                 <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                  {t("এক্সপার্ট ", "Expert ")}
-                  <span className="gradient-text">{t("ইনস্ট্রাক্টর", "Instructors")}</span>
+                  {cms("linstructors.title.bn", "linstructors.title.en", "এক্সপার্ট ", "Expert ")}
+                  <span className="gradient-text">{cms("linstructors.title2.bn", "linstructors.title2.en", "ইনস্ট্রাক্টর", "Instructors")}</span>
                 </h2>
                 <p className="text-muted-foreground mt-4 max-w-xl mx-auto">
-                  {t(
+                  {cms("linstructors.desc.bn", "linstructors.desc.en",
                     "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।",
                     "Learn directly from industry experts."
                   )}
