@@ -332,7 +332,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
             onClick={() => setShowDescriptions(!showDescriptions)}
           >
             {showDescriptions ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-            {showDescriptions ? 'Hide description' : 'Show description'Add
+            {showDescriptions ? 'Hide description' : 'Show description'}
                 </Button>
               </div>
             </DialogContent>
