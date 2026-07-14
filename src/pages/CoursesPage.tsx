@@ -527,9 +527,19 @@ const CoursesPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center mb-10">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                {t.popularCourses}
-              </span>
+              {(() => {
+                const text = t.popularCourses;
+                const idx = text.toLowerCase().indexOf("course");
+                if (idx === -1) return text;
+                return (
+                  <>
+                    <span>{text.slice(0, idx)}</span>
+                    <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                      {text.slice(idx)}
+                    </span>
+                  </>
+                );
+              })()}
             </h2>
           </motion.div>
 
