@@ -950,25 +950,12 @@ function AdminDashboardInner() {
             </div>
           </div>
 
-          {/* Settings Section - Collapsible */}
+          {/* Settings - single entry, opens Settings hub */}
           <div>
-            <button
-              onClick={() => toggleGroup('settings')}
-              className="hidden md:flex w-full items-center gap-1.5 px-2 py-1 mb-1 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest hover:text-muted-foreground transition-colors"
-            >
-              <svg className={`w-3 h-3 transition-transform ${expandedGroups.settings ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              {language === 'bn' ? 'সেটিংস' : 'Settings'}
-              <Badge variant="secondary" className="ml-auto text-[9px] h-4 px-1">{settingsItems.length}</Badge>
-            </button>
-            {expandedGroups.settings && (
-              <div className="space-y-0.5 hidden md:block bg-gradient-to-b from-amber-500/[0.03] to-transparent rounded-xl p-1.5 border border-amber-500/10">
-                {settingsItems.map((item) => renderNavButton(item, 'from-amber-500 to-orange-500'))}
-              </div>
+            {renderNavButton(
+              { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings' } as any,
+              'from-amber-500 to-orange-500'
             )}
-            {/* Mobile: icons always visible */}
-            <div className="md:hidden space-y-0.5">
-              {settingsItems.map((item) => renderNavButton(item, 'from-amber-500 to-orange-500'))}
-            </div>
           </div>
 
         </nav>
