@@ -1840,6 +1840,12 @@ function AdminDashboardInner() {
             <HomepageEditor />
           </TabsContent>
 
+          {/* Learn Pages Editor */}
+          <TabsContent value="learnpages" className="space-y-6">
+            <LearnPagesEditor />
+          </TabsContent>
+
+
           {/* Contact Tab */}
           <TabsContent value="contact" className="space-y-6">
             <ContactInfoManagement />
