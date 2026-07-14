@@ -669,23 +669,38 @@ const Index = () => {
                     <PlusMark pos="-bottom-1.5 -left-1.5" />
                     <PlusMark pos="-bottom-1.5 -right-1.5" />
 
-                    <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
-                      <div className="flex items-center gap-1.5">
-                        <span className="relative flex h-1 w-1">
-                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                          <span className="relative inline-flex rounded-full h-1 w-1 bg-primary" />
-                        </span>
-                        <span className="text-primary/90 font-semibold">// TRUSTED</span>
-                      </div>
-                      <span>[ 001 ]</span>
-                    </div>
+                    {(() => {
+                      const rawTitle = (brandsSection?.title || '47+ Global Brands').trim();
+                      const rawSubtitle = (brandsSection?.subtitle || '// TRUSTED').trim();
+                      const m = rawTitle.match(/(\d+\+?)\s*(.*)$/);
+                      const num = m?.[1] || '47+';
+                      const label = (m?.[2] || rawTitle).trim() || 'Global Brands';
+                      const numMatch = num.match(/^(\d+)(\+?)$/);
+                      const numDigits = numMatch?.[1] || '47';
+                      const numPlus = numMatch?.[2] || '+';
+                      return (
+                        <>
+                          <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
+                            <div className="flex items-center gap-1.5">
+                              <span className="relative flex h-1 w-1">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+                                <span className="relative inline-flex rounded-full h-1 w-1 bg-primary" />
+                              </span>
+                              <span className="text-primary/90 font-semibold">{rawSubtitle}</span>
+                            </div>
+                            <span>[ 001 ]</span>
+                          </div>
 
-                    <h3 className="text-4xl sm:text-[2.5rem] font-display font-semibold text-white leading-none mb-1 tracking-tight">
-                      47<span className="text-primary font-light">+</span>
-                    </h3>
-                    <p className="text-[10px] uppercase tracking-[0.28em] text-white/50 mb-4 font-mono">
-                      Global Brands
-                    </p>
+                          <h3 className="text-4xl sm:text-[2.5rem] font-display font-semibold text-white leading-none mb-1 tracking-tight">
+                            {numDigits}<span className="text-primary font-light">{numPlus}</span>
+                          </h3>
+                          <p className="text-[10px] uppercase tracking-[0.28em] text-white/50 mb-4 font-mono">
+                            {label}
+                          </p>
+                        </>
+                      );
+                    })()}
+
 
                     <div className="flex items-center justify-between pt-3 border-t border-dashed border-white/10">
                       <div className="flex gap-0.5 text-primary">
