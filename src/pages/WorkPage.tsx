@@ -281,25 +281,9 @@ const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) =
                     </div>
                   </div>
                   
-                  {/* Card footer */}
-                  <div className="px-4 py-3 bg-card">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="min-w-0">
-                        <h4 className="font-display font-bold text-xs sm:text-sm text-foreground leading-snug line-clamp-1 group-hover:text-primary transition-colors duration-300">
-                          {project.title}
-                        </h4>
-                        <div className="flex items-center gap-1.5 mt-1">
-                          <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${accent} to-primary`} />
-                          <span className="text-[10px] text-muted-foreground font-medium">By Alphazero Team</span>
-                        </div>
-                      </div>
-                      <div className="w-8 h-8 rounded-full border border-border/40 dark:border-border/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 bg-primary/5 dark:bg-primary/10 flex-shrink-0">
-                        <ArrowUpRight size={12} className="text-primary" />
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </motion.div>
+
             );
           })}
         </div>
