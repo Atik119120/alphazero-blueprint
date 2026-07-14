@@ -910,9 +910,9 @@ function AdminDashboardInner() {
         <div className="p-3 md:p-4 border-b border-border/50">
           <div className="flex flex-col items-center gap-2 md:items-start">
             <img
-              src={alphazeroLogoAsset.url}
-              alt="AlphaZero Logo"
-              className="h-8 w-auto flex-shrink-0 brightness-0 dark:invert"
+              src={scope === 'learn' ? learnLogo : alphazeroLogoAsset.url}
+              alt={scope === 'learn' ? 'Learn with AlphaZero' : 'AlphaZero Logo'}
+              className={`w-auto flex-shrink-0 ${scope === 'learn' ? 'h-9 brightness-0 dark:invert' : 'h-8 brightness-0 dark:invert'}`}
             />
             <div className="hidden md:block">
               <h1 className={`font-bold text-sm bg-gradient-to-r from-primary to-cyan-600 bg-clip-text text-transparent ${language === 'bn' ? 'font-[SabinaShorolipi]' : ''}`}>
