@@ -40,7 +40,7 @@ const Footer = () => {
   const getContent = (key: string) => {
     const content = footerContents?.find(c => c.content_key === key);
     if (!content) return null;
-    return language === 'bn' ? (content.content_bn || content.content_en) : content.content_en;
+    return content.content_en;
   };
 
   // Get social links from database
