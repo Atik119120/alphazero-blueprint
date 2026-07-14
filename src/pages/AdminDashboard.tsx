@@ -58,6 +58,7 @@ import {
   RotateCcw,
   Home,
   Info,
+  ChevronRight,
 } from 'lucide-react';
 
 import CourseManagement from '@/components/admin/CourseManagement';
