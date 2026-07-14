@@ -5,7 +5,7 @@ import { Download, Phone, Mail, GraduationCap } from 'lucide-react';
 import { Profile } from '@/types/lms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { QRCodeSVG } from 'qrcode.react';
+import Barcode from 'react-barcode';
 import logoImg from '@/assets/learn-with-alphazero-logo.png';
 
 interface StudentIDCardProps {
