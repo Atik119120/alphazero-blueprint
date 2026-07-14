@@ -1764,7 +1764,7 @@ function AdminDashboardInner() {
 
           {/* About Tab */}
           <TabsContent value="about" className="space-y-6">
-            <PageContentManagement lockedPage="about" />
+            <AboutPageEditor />
           </TabsContent>
 
 
