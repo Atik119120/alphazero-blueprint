@@ -12,6 +12,8 @@ import Preloader from "@/components/Preloader";
 import ScrollToTop from "@/components/ScrollToTop";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollReveal from "@/components/ScrollReveal";
+import { SiteScopeProvider } from "@/contexts/SiteScopeContext";
+
 
 // Preload logos immediately
 import logoSrc from "@/assets/logo.png";
