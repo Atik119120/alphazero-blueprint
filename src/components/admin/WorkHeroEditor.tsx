@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Save, Loader2, Sparkles } from "lucide-react";
+import { Save, Loader2, Sparkles, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 
 const FIELDS: Array<{
@@ -48,6 +48,7 @@ const FIELDS: Array<{
 
 export default function WorkHeroEditor() {
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
   const [values, setValues] = useState<Record<string, string>>({});
 
   const { data, isLoading } = useQuery({
@@ -94,56 +95,69 @@ export default function WorkHeroEditor() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-primary" />
-          Work Page — Hero Section
-        </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Edit the top hero text of the Work page (badge, title, description, chip).
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {isLoading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full text-left"
+      >
+        <CardHeader className="flex flex-row items-center justify-between gap-3 hover:bg-muted/40 transition-colors rounded-t-lg">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              Work Page — Hero Section
+            </CardTitle>
+            <p className="text-sm text-muted-foreground mt-1">
+              {open ? "Click to collapse" : "Click to edit the top hero (badge, title, description, chip)"}
+            </p>
           </div>
-        ) : (
-          <>
-            {FIELDS.map((f) => (
-              <div key={f.key} className="space-y-1.5">
-                <Label className="font-semibold">{f.label}</Label>
-                <p className="text-xs text-muted-foreground">{f.description}</p>
-                {f.type === "textarea" ? (
-                  <Textarea
-                    rows={3}
-                    value={values[f.key] ?? ""}
-                    onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
-                  />
-                ) : (
-                  <Input
-                    value={values[f.key] ?? ""}
-                    onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
-                  />
-                )}
-              </div>
-            ))}
-            <div className="flex justify-end pt-2">
-              <Button
-                onClick={() => saveMutation.mutate()}
-                disabled={saveMutation.isPending}
-              >
-                {saveMutation.isPending ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <Save className="w-4 h-4 mr-2" />
-                )}
-                Save Hero Section
-              </Button>
+          <ChevronDown
+            className={`w-5 h-5 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </CardHeader>
+      </button>
+      {open && (
+        <CardContent className="space-y-4">
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
             </div>
-          </>
-        )}
-      </CardContent>
+          ) : (
+            <>
+              {FIELDS.map((f) => (
+                <div key={f.key} className="space-y-1.5">
+                  <Label className="font-semibold">{f.label}</Label>
+                  <p className="text-xs text-muted-foreground">{f.description}</p>
+                  {f.type === "textarea" ? (
+                    <Textarea
+                      rows={3}
+                      value={values[f.key] ?? ""}
+                      onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
+                    />
+                  ) : (
+                    <Input
+                      value={values[f.key] ?? ""}
+                      onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
+                    />
+                  )}
+                </div>
+              ))}
+              <div className="flex justify-end pt-2">
+                <Button
+                  onClick={() => saveMutation.mutate()}
+                  disabled={saveMutation.isPending}
+                >
+                  {saveMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4 mr-2" />
+                  )}
+                  Save Hero Section
+                </Button>
+              </div>
+            </>
+          )}
+        </CardContent>
+      )}
     </Card>
   );
 }
