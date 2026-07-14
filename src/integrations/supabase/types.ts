@@ -2233,6 +2233,10 @@ export type Database = {
           teacher_share: number
         }[]
       }
+      can_current_teacher_add_chat_member: {
+        Args: { _member_user_id: string; _room_id: string }
+        Returns: boolean
+      }
       generate_certificate_id: { Args: never; Returns: string }
       generate_pass_code: { Args: never; Returns: string }
       generate_ticket_number: { Args: never; Returns: string }
