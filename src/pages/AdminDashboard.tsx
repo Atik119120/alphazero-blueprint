@@ -105,7 +105,7 @@ function AdminDashboardInner() {
   } = useStudentCourseManagement();
   
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('courses');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   // Assign course dialog
   const [showAssignDialog, setShowAssignDialog] = useState(false);
