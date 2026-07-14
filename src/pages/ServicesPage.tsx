@@ -214,7 +214,7 @@ const ServicesPage = () => {
                     </div>
                   </div>
                   <a
-                    href="https://portfolio.alphazero.online/"
+                    href="http://infolio.online/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 hover:opacity-90"
