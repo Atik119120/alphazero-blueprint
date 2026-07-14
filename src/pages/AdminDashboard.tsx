@@ -1574,7 +1574,7 @@ function AdminDashboardInner() {
                   <div className="flex items-center gap-2 text-sm">
                     <Banknote className="w-4 h-4 text-amber-500" />
                     <span className="font-semibold text-amber-600">
-                      {language === 'bn'? `Total: ৳${totalRevenue.toLocaleString('bn-BD'Total: ৳${totalRevenue.toLocaleString()}`}
+                      {`Total: ৳${totalRevenue.toLocaleString()}`}
                     </span>
                   </div>
                 </div>
