@@ -250,8 +250,58 @@ const CoursesNavbar = () => {
         </AnimatePresence>
       </nav>
 
+      {/* ═══ Mobile Bottom Navigation Bar ═══ */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden">
+        <div className="h-6 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
+        <div className="bg-background/70 dark:bg-card/70 backdrop-blur-3xl border-t border-border/30 dark:border-border/20">
+          <div className={`grid pt-1.5 pb-[calc(0.375rem+env(safe-area-inset-bottom))] px-1`} style={{ gridTemplateColumns: `repeat(${navLinks.length}, minmax(0, 1fr))` }}>
+            {navLinks.map((link) => {
+              const IconComp = link.icon;
+              const isActive = link.internal ? location.pathname === link.to : false;
+              const inner = (
+                <>
+                  {isActive && (
+                    <motion.div
+                      layoutId="courses-bottom-nav-active"
+                      className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-8 h-8 bg-primary/20 dark:bg-primary/25 rounded-full blur-md"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                    />
+                  )}
+                  <div className="relative z-10 flex flex-col items-center">
+                    <motion.div
+                      animate={isActive ? { y: -2, scale: 1.15 } : { y: 0, scale: 1 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    >
+                      <IconComp
+                        size={19}
+                        strokeWidth={isActive ? 2.5 : 1.5}
+                        className={`transition-colors duration-200 ${isActive ? "text-primary drop-shadow-[0_0_6px_hsl(var(--primary)/0.4)]" : "text-muted-foreground/70"}`}
+                      />
+                    </motion.div>
+                    <span className={`text-[9px] leading-tight mt-0.5 transition-all duration-200 ${
+                      isActive ? "font-bold text-primary" : "font-medium text-muted-foreground/60"
+                    }`}>
+                      {link.name}
+                    </span>
+                  </div>
+                </>
+              );
+              const cls = "relative flex flex-col items-center gap-0.5 py-1";
+              if (link.external) {
+                return <a key={link.name} href={link.href} className={cls}>{inner}</a>;
+              }
+              if (link.internal) {
+                return <Link key={link.name} to={link.to!} className={cls}>{inner}</Link>;
+              }
+              return <button key={link.name} onClick={() => handleNavClick(link.id!)} className={cls}>{inner}</button>;
+            })}
+          </div>
+        </div>
+      </div>
+
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>
+
   );
 };
 
