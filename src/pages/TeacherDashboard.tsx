@@ -171,12 +171,10 @@ export default function TeacherDashboard() {
         {/* Logo */}
         <div className="p-4 border-b border-border/50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="font-bold text-foreground">{t.teacherPanel}</h1>
-              <p className="text-xs text-muted-foreground">{profile?.full_name}</p>
+            <img src={learnLogo} alt="Learn with AlphaZero" className="h-10 w-auto object-contain dark:brightness-0 dark:invert" />
+            <div className="min-w-0">
+              <h1 className="font-bold text-foreground text-sm truncate">{t.teacherPanel}</h1>
+              <p className="text-xs text-muted-foreground truncate">{profile?.full_name}</p>
             </div>
           </div>
         </div>
