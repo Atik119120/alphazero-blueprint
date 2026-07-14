@@ -69,6 +69,7 @@ import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import AboutPageEditor from '@/components/admin/AboutPageEditor';
+import LearnPagesEditor from '@/components/admin/LearnPagesEditor';
 import alphazeroLogoAsset from '@/assets/alphazero-logo.png.asset.json';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
@@ -821,6 +822,7 @@ function AdminDashboardInner() {
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
+    { id: 'learnpages', icon: GraduationCap, label: language === 'bn' ? 'Learn Pages' : 'Learn Pages', scopeTag: 'learn' as const },
     { id: 'about', icon: Info, label: 'About', scopeTag: 'both' as const },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'Works' : 'Works', scopeTag: 'agency' as const },
@@ -1837,6 +1839,12 @@ function AdminDashboardInner() {
           <TabsContent value="homepage" className="space-y-6">
             <HomepageEditor />
           </TabsContent>
+
+          {/* Learn Pages Editor */}
+          <TabsContent value="learnpages" className="space-y-6">
+            <LearnPagesEditor />
+          </TabsContent>
+
 
           {/* Contact Tab */}
           <TabsContent value="contact" className="space-y-6">

@@ -23,6 +23,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { usePublicCourses } from "@/hooks/usePublicCourses";
+import { usePageContent } from "@/hooks/usePageContent";
 import CourseEnrollmentModal from "@/components/student/CourseEnrollmentModal";
 import { Course } from "@/types/lms";
 
@@ -194,6 +195,9 @@ const CoursesPage = () => {
   const navigate = useNavigate();
   const t = translations[language];
   const isBn = language === "bn";
+  const { getContent: getPageContent } = usePageContent("courses", "learn");
+  const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
+    isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
   const { courses: dbCourses, isLoading: coursesLoading } = usePublicCourses();
 
   // Enrollment modal state
@@ -309,9 +313,17 @@ const CoursesPage = () => {
   // Rotating headline words
   const rotatingTitles = useMemo(
     () => isBn
-      ? ["অসাধারণ", "নতুন", "চমৎকার", "সুন্দর", "স্মার্ট"]
-      : ["amazing", "new", "wonderful", "beautiful", "smart"],
-    [isBn]
+      ? [
+          getPageContent("hero.rotating1.bn") || "অসাধারণ",
+          getPageContent("hero.rotating2.bn") || "নতুন",
+          getPageContent("hero.rotating3.bn") || "চমৎকার",
+        ]
+      : [
+          getPageContent("hero.rotating1.en") || "amazing",
+          getPageContent("hero.rotating2.en") || "new",
+          getPageContent("hero.rotating3.en") || "wonderful",
+        ],
+    [isBn, getPageContent]
   );
   const [titleNumber, setTitleNumber] = useState(0);
   useEffect(() => {
@@ -467,7 +479,7 @@ const CoursesPage = () => {
               className="font-playfair text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 max-w-4xl leading-[1.05]"
             >
               <span className="text-foreground/95 font-normal">
-                {isBn ? "শিখুন কিছু" : "Learn something"}
+                {cms("hero.prefix.bn", "hero.prefix.en", "শিখুন কিছু", "Learn something")}
               </span>
               <br />
               <span className="relative inline-flex justify-center overflow-visible align-baseline pb-6 pt-1 h-[1.35em] w-[7ch] md:w-[8ch] leading-[1.1]">
@@ -508,7 +520,7 @@ const CoursesPage = () => {
                     href="#courses"
                     className="inline-flex rounded-full text-center group items-center justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all py-4 px-10"
                   >
-                    {isBn ? "কোর্স দেখুন" : "Browse Courses"}
+                    {cms("hero.cta.bn", "hero.cta.en", "কোর্স দেখুন", "Browse Courses")}
                   </a>
                 </div>
               </span>
@@ -528,8 +540,8 @@ const CoursesPage = () => {
             className="max-w-3xl mx-auto text-center mb-10">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
               {(() => {
-                const text = t.popularCourses;
-                const idx = text.toLowerCase().indexOf("course");
+                const text = cms("grid.title.bn", "grid.title.en", "জনপ্রিয় কোর্স", t.popularCourses);
+                const idx = text.toLowerCase().indexOf(isBn ? "কোর্স" : "course");
                 if (idx === -1) return text;
                 return (
                   <>
@@ -782,13 +794,14 @@ const CoursesPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="text-center mb-14 max-w-3xl mx-auto">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "আমাদের টিম" : "Our Team"}
+              {cms("instructors.badge.bn", "instructors.badge.en", "আমাদের টিম", "Our Team")}
             </span>
             <h2 className="text-3xl lg:text-5xl font-display font-bold leading-tight">
-              {isBn ? "এক্সপার্ট" : "Expert"} <span className="gradient-text">{isBn ? "ইনস্ট্রাক্টর" : "Instructors"}</span>
+              {cms("instructors.title1.bn", "instructors.title1.en", "এক্সপার্ট", "Expert")}{" "}
+              <span className="gradient-text">{cms("instructors.title2.bn", "instructors.title2.en", "ইনস্ট্রাক্টর", "Instructors")}</span>
             </h2>
             <p className="text-muted-foreground mt-4">
-              {isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।" : "Learn directly from industry experts."}
+              {cms("instructors.desc.bn", "instructors.desc.en", "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।", "Learn directly from industry experts.")}
             </p>
           </motion.div>
           <div className="max-w-6xl mx-auto">
@@ -823,27 +836,37 @@ const CoursesPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-10 lg:p-16">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "যোগাযোগ" : "Get in Touch"}
+              {cms("cta.badge.bn", "cta.badge.en", "যোগাযোগ", "Get in Touch")}
             </span>
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {t.startCareer} <span className="gradient-text">{t.startToday}</span>
+              {cms("cta.title.bn", "cta.title.en", "শুরু করুন আপনার ক্যারিয়ার", t.startCareer)}{" "}
+              <span className="gradient-text">{cms("cta.title2.bn", "cta.title2.en", "আজই", t.startToday)}</span>
             </h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">{t.ctaSubtitle}</p>
+            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
+              {cms("cta.subtitle.bn", "cta.subtitle.en", "নতুন স্কিল শিখুন, দক্ষতা তৈরি করুন এবং ইন্ডাস্ট্রিতে জায়গা করে নিন।", t.ctaSubtitle)}
+            </p>
 
-            <div className="grid sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto text-left">
-              <a href="tel:+8801776965533" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ফোন" : "Phone"}</p>
-                <p className="text-sm font-semibold">+880 1776-965533</p>
-              </a>
-              <a href="mailto:learn@alphazero.online" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ইমেইল" : "Email"}</p>
-                <p className="text-sm font-semibold break-all">learn@alphazero.online</p>
-              </a>
-              <a href="https://wa.me/+8801776965533" target="_blank" rel="noopener noreferrer" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">WhatsApp</p>
-                <p className="text-sm font-semibold">{isBn ? "চ্যাট করুন" : "Chat with us"}</p>
-              </a>
-            </div>
+            {(() => {
+              const phone = getPageContent("cta.phone") || "+880 1776-965533";
+              const email = getPageContent("cta.email") || "learn@alphazero.online";
+              const waNum = phone.replace(/[^\d+]/g, "");
+              return (
+                <div className="grid sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto text-left">
+                  <a href={`tel:${waNum}`} className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ফোন" : "Phone"}</p>
+                    <p className="text-sm font-semibold">{phone}</p>
+                  </a>
+                  <a href={`mailto:${email}`} className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ইমেইল" : "Email"}</p>
+                    <p className="text-sm font-semibold break-all">{email}</p>
+                  </a>
+                  <a href={`https://wa.me/${waNum}`} target="_blank" rel="noopener noreferrer" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">WhatsApp</p>
+                    <p className="text-sm font-semibold">{isBn ? "চ্যাট করুন" : "Chat with us"}</p>
+                  </a>
+                </div>
+              );
+            })()}
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a href="#courses" className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">

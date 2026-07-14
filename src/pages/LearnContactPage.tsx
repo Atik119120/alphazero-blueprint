@@ -9,10 +9,12 @@ import { usePageContent } from "@/hooks/usePageContent";
 const LearnContactPage = () => {
   const { language } = useLanguage();
   const { data: footerContents } = useFooterContent();
-  const { getContent: getPageContent } = usePageContent("learn-contact");
+  const { getContent: getPageContent } = usePageContent("learn-contact", "learn");
   const [formData, setFormData] = useState({ name: "", email: "", topic: "general", message: "" });
   const isBn = language === "bn";
   const t = (bn: string, en: string) => (isBn ? bn : en);
+  const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
+    isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +31,7 @@ const LearnContactPage = () => {
   };
   const phone = getPageContent("learn.phone") || getFooterContent("phone") || "+880 1344-497808";
   const email = (getPageContent("learn.email") || "support@learn.alphazero.online").trim();
-  const address = getPageContent("learn.address") || t("ঢাকা, বাংলাদেশ", "Dhaka, Bangladesh");
+  const address = cms("learn.address", "learn.address.en", "ঢাকা, বাংলাদেশ", "Dhaka, Bangladesh");
   const waNumber = phone.replace(/\D/g, "");
 
   const topics = [
@@ -60,16 +62,17 @@ const LearnContactPage = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 mb-6">
               <GraduationCap size={14} className="text-primary" />
               <span className="text-xs font-bold tracking-wider uppercase text-primary">
-                {t("লার্ন সাপোর্ট", "Learn Support")}
+                {cms("hero.badge.bn", "hero.badge.en", "লার্ন সাপোর্ট", "Learn Support")}
               </span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl lg:text-6xl font-display font-bold mb-5 leading-tight">
-              {t("শিখতে চান? ", "Learning? ")}<span className="gradient-text">{t("আমরা সাহায্য করব", "We're here to help")}</span>
+              {cms("hero.title.bn", "hero.title.en", "শিখতে চান? ", "Learning? ")}
+              <span className="gradient-text">{cms("hero.title2.bn", "hero.title2.en", "আমরা সাহায্য করব", "We're here to help")}</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t(
+              {cms("hero.description.bn", "hero.description.en",
                 "কোর্স, এনরোলমেন্ট বা পেমেন্ট সংক্রান্ত যেকোনো প্রশ্ন — আমাদের একাডেমী টিম ২৪ ঘন্টার মধ্যে উত্তর দেবে।",
                 "Any question about courses, enrollment or payment — our academy team responds within 24 hours."
               )}
@@ -107,9 +110,9 @@ const LearnContactPage = () => {
               className="lg:col-span-3 p-8 rounded-3xl glass-card space-y-5">
               <div>
                 <div className="inline-flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider mb-2">
-                  <Sparkles size={12} /> {t("মেসেজ পাঠান", "Send a Message")}
+                  <Sparkles size={12} /> {cms("form.badge.bn", "form.badge.en", "মেসেজ পাঠান", "Send a Message")}
                 </div>
-                <h2 className="text-2xl font-display font-bold">{t("আপনার প্রশ্ন লিখুন", "Tell us your question")}</h2>
+                <h2 className="text-2xl font-display font-bold">{cms("form.title.bn", "form.title.en", "আপনার প্রশ্ন লিখুন", "Tell us your question")}</h2>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
@@ -192,7 +195,7 @@ const LearnContactPage = () => {
                   <Clock size={18} className="text-primary shrink-0 mt-0.5" />
                   <div>
                     <div className="text-xs text-muted-foreground uppercase tracking-wide">{t("সাপোর্ট সময়", "Support Hours")}</div>
-                    <div className="text-sm font-medium">{t("শনি — বৃহস্পতি, ১০টা — ১০টা", "Sat — Thu, 10am — 10pm")}</div>
+                    <div className="text-sm font-medium">{cms("info.hours.bn", "info.hours.en", "শনি — বৃহস্পতি, ১০টা — ১০টা", "Sat — Thu, 10am — 10pm")}</div>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
