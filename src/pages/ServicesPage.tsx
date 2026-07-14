@@ -59,6 +59,7 @@ const iconMap: Record<string, typeof Sparkles> = {
 
 const ServicesPage = () => {
   const { t } = useLanguage();
+  const hero = usePageHero("services");
   const { data: allServices, isLoading } = useServices();
 
   // Show only these 4 services (matches home page)
