@@ -822,6 +822,140 @@ export type Database = {
         }
         Relationships: []
       }
+      homepage_section_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          description_bn: string | null
+          id: string
+          image_url: string | null
+          image_url_2: string | null
+          is_active: boolean
+          order_index: number
+          section_id: string
+          subtitle: string | null
+          subtitle_bn: string | null
+          title: string | null
+          title_bn: string | null
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          description_bn?: string | null
+          id?: string
+          image_url?: string | null
+          image_url_2?: string | null
+          is_active?: boolean
+          order_index?: number
+          section_id: string
+          subtitle?: string | null
+          subtitle_bn?: string | null
+          title?: string | null
+          title_bn?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          description_bn?: string | null
+          id?: string
+          image_url?: string | null
+          image_url_2?: string | null
+          is_active?: boolean
+          order_index?: number
+          section_id?: string
+          subtitle?: string | null
+          subtitle_bn?: string | null
+          title?: string | null
+          title_bn?: string | null
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "homepage_section_items_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "homepage_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      homepage_sections: {
+        Row: {
+          button_label: string | null
+          button_url: string | null
+          created_at: string
+          description: string | null
+          description_bn: string | null
+          highlight: string | null
+          highlight_bn: string | null
+          id: string
+          image_url: string | null
+          image_url_2: string | null
+          is_active: boolean
+          order_index: number
+          page_key: string
+          section_key: string
+          section_type: string
+          site_scope: string
+          subtitle: string | null
+          subtitle_bn: string | null
+          title: string | null
+          title_bn: string | null
+          updated_at: string
+        }
+        Insert: {
+          button_label?: string | null
+          button_url?: string | null
+          created_at?: string
+          description?: string | null
+          description_bn?: string | null
+          highlight?: string | null
+          highlight_bn?: string | null
+          id?: string
+          image_url?: string | null
+          image_url_2?: string | null
+          is_active?: boolean
+          order_index?: number
+          page_key?: string
+          section_key: string
+          section_type?: string
+          site_scope?: string
+          subtitle?: string | null
+          subtitle_bn?: string | null
+          title?: string | null
+          title_bn?: string | null
+          updated_at?: string
+        }
+        Update: {
+          button_label?: string | null
+          button_url?: string | null
+          created_at?: string
+          description?: string | null
+          description_bn?: string | null
+          highlight?: string | null
+          highlight_bn?: string | null
+          id?: string
+          image_url?: string | null
+          image_url_2?: string | null
+          is_active?: boolean
+          order_index?: number
+          page_key?: string
+          section_key?: string
+          section_type?: string
+          site_scope?: string
+          subtitle?: string | null
+          subtitle_bn?: string | null
+          title?: string | null
+          title_bn?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lesson_comments: {
         Row: {
           course_id: string
