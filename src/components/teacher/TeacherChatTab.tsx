@@ -40,6 +40,13 @@ interface ChatMessage {
   };
 }
 
+interface StudentContact {
+  id: string;
+  user_id: string;
+  full_name: string;
+  avatar_url: string | null;
+}
+
 const translations = {
   en: {
     title: 'Messages',
@@ -58,6 +65,8 @@ const translations = {
     noMessages: 'No messages yet',
     startConversation: 'Start the conversation!',
     selectStudent: 'Select Student',
+    students: 'Students',
+    noStudents: 'No students yet',
   },
   bn: {
     title: 'মেসেজ',
@@ -76,6 +85,8 @@ const translations = {
     noMessages: 'কোনো মেসেজ নেই',
     startConversation: 'কথোপকথন শুরু করুন!',
     selectStudent: 'স্টুডেন্ট নির্বাচন করুন',
+    students: 'স্টুডেন্টরা',
+    noStudents: 'এখনও কোনো স্টুডেন্ট নেই',
   },
 };
 
@@ -89,7 +100,7 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
   const [newMessage, setNewMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [students, setStudents] = useState<any[]>([]);
+  const [students, setStudents] = useState<StudentContact[]>([]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -182,7 +193,7 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
 
       if (profilesError) throw profilesError;
       
-      setStudents(studentProfiles || []);
+      setStudents((studentProfiles || []) as StudentContact[]);
     } catch (err) {
       console.error('Error fetching students:', err);
       toast.error('Failed to load students');
@@ -193,6 +204,81 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
     fetchRooms();
     fetchStudents();
   }, [user?.id, profile?.id]);
+
+  const findDirectRoomWithStudent = async (studentUserId: string) => {
+    if (!user?.id) return null;
+
+    const { data: myMemberships, error: myMembershipsError } = await supabase
+      .from('chat_room_members')
+      .select('room_id')
+      .eq('user_id', user.id);
+    if (myMembershipsError) throw myMembershipsError;
+
+    const myRoomIds = (myMemberships || []).map((membership) => membership.room_id);
+    if (!myRoomIds.length) return null;
+
+    const { data: sharedMemberships, error: sharedMembershipsError } = await supabase
+      .from('chat_room_members')
+      .select('room_id')
+      .eq('user_id', studentUserId)
+      .in('room_id', myRoomIds);
+    if (sharedMembershipsError) throw sharedMembershipsError;
+
+    const sharedRoomIds = (sharedMemberships || []).map((membership) => membership.room_id);
+    if (!sharedRoomIds.length) return null;
+
+    const { data: directRoom, error: directRoomError } = await supabase
+      .from('chat_rooms')
+      .select('*')
+      .in('id', sharedRoomIds)
+      .eq('room_type', 'direct')
+      .maybeSingle();
+    if (directRoomError) throw directRoomError;
+
+    return directRoom;
+  };
+
+  const openDirectChat = async (student: StudentContact) => {
+    if (!user?.id || !profile?.id) {
+      toast.error('Profile not loaded');
+      return;
+    }
+
+    try {
+      let room = await findDirectRoomWithStudent(student.user_id);
+
+      if (!room) {
+        const { data: newRoom, error: roomError } = await supabase
+          .from('chat_rooms')
+          .insert({
+            name: student.full_name,
+            room_type: 'direct',
+            created_by: profile.id,
+          })
+          .select()
+          .single();
+        if (roomError) throw roomError;
+        room = newRoom;
+
+        const { error: selfError } = await supabase
+          .from('chat_room_members')
+          .upsert({ room_id: room.id, user_id: user.id }, { onConflict: 'room_id,user_id' });
+        if (selfError) throw selfError;
+
+        const { error: studentError } = await supabase
+          .from('chat_room_members')
+          .upsert({ room_id: room.id, user_id: student.user_id }, { onConflict: 'room_id,user_id' });
+        if (studentError) throw studentError;
+      }
+
+      const directRoom = { ...room, name: student.full_name, room_type: 'direct' as const };
+      setSelectedRoom(directRoom);
+      setRooms((currentRooms) => currentRooms.some((item) => item.id === directRoom.id) ? currentRooms : [directRoom, ...currentRooms]);
+    } catch (err) {
+      console.error('Error opening direct chat:', err);
+      toast.error('Failed to open chat');
+    }
+  };
 
   useEffect(() => {
     if (selectedRoom) {
@@ -260,22 +346,24 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
       if (error) throw error;
       
       // Add teacher as member
-      await supabase
+      const { error: teacherMemberError } = await supabase
         .from('chat_room_members')
-        .insert({
+        .upsert({
           room_id: room.id,
           user_id: user?.id,
-        });
+        }, { onConflict: 'room_id,user_id' });
+      if (teacherMemberError) throw teacherMemberError;
       
       // If direct message, add the student
       if (formData.roomType === 'direct' && formData.studentId) {
         if (selectedStudent) {
-          await supabase
+          const { error: studentMemberError } = await supabase
             .from('chat_room_members')
-            .insert({
+            .upsert({
               room_id: room.id,
               user_id: selectedStudent.user_id,
-            });
+            }, { onConflict: 'room_id,user_id' });
+          if (studentMemberError) throw studentMemberError;
         }
       }
       
@@ -293,7 +381,10 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
         })).filter(m => m.user_id) || [];
         
         if (memberInserts.length > 0) {
-          await supabase.from('chat_room_members').insert(memberInserts);
+          const { error: membersError } = await supabase
+            .from('chat_room_members')
+            .upsert(memberInserts, { onConflict: 'room_id,user_id' });
+          if (membersError) throw membersError;
         }
       }
       
@@ -459,18 +550,40 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
         {/* Room List */}
         <Card className="md:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Chat Rooms</CardTitle>
+            <CardTitle className="text-base">{t.students}</CardTitle>
           </CardHeader>
           <CardContent className="p-2">
             <ScrollArea className="h-[520px]">
-              {rooms.length === 0 ? (
+              {students.length === 0 && rooms.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-8 text-center">
                   <MessageCircle className="h-12 w-12 text-muted-foreground mb-4" />
-                  <p className="text-sm text-muted-foreground">{t.noRooms}</p>
+                  <p className="text-sm text-muted-foreground">{t.noStudents}</p>
                 </div>
               ) : (
                 <div className="space-y-1">
-                  {rooms.map((room) => (
+                  {students.map((student) => (
+                    <button
+                      key={student.id}
+                      onClick={() => openDirectChat(student)}
+                      className={`w-full p-3 rounded-lg text-left transition-colors ${
+                        selectedRoom?.name === student.full_name && selectedRoom?.room_type === 'direct'
+                          ? 'bg-primary/10 border border-primary/20'
+                          : 'hover:bg-muted'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={student.avatar_url || undefined} />
+                          <AvatarFallback>{student.full_name?.[0] || 'S'}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium break-words leading-snug">{student.full_name}</p>
+                          <Badge variant="outline" className="mt-1 text-xs">{t.directMessage}</Badge>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                  {rooms.filter((room) => room.room_type === 'group').map((room) => (
                     <button
                       key={room.id}
                       onClick={() => setSelectedRoom(room)}
