@@ -80,9 +80,9 @@ const FooterManagement = () => {
   });
 
   const [contentForm, setContentForm] = useState({
-    content_en: '',
-    content_bn: ''
+    content_en: ''
   });
+
 
   const { data: links, isLoading: linksLoading } = useQuery({
     queryKey: ['footer-links', scope],
