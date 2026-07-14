@@ -778,10 +778,10 @@ const CoursesPage = () => {
               {isBn ? "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।" : "Learn directly from industry experts."}
             </p>
           </motion.div>
-          <div className="group/marquee relative overflow-hidden max-w-6xl mx-auto [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-            <div className="flex gap-4 w-max marquee-left group-hover/marquee:[animation-play-state:paused] [animation-duration:40s]">
-              {[...Object.values(trainers), ...Object.values(trainers)].map((tr, i) => (
-                <div key={`${tr.name}-${i}`} className="group w-[220px] sm:w-[240px] shrink-0">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {Object.values(trainers).map((tr, i) => (
+                <div key={`${tr.name}-${i}`} className="group">
                   <div className="glass-card rounded-2xl p-3 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.12]">
                     <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
                       <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-40 group-hover:opacity-70 transition-opacity" />
