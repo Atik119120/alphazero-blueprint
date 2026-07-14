@@ -129,12 +129,13 @@ const AboutPage = () => {
                 >
                   <div>
                     <h3 className="text-2xl lg:text-3xl font-display font-bold mb-2">
-                      {founder.name}
+                      {founder?.name || "Sofiullah Ahammad"}
                     </h3>
                     <p className="text-primary font-semibold mb-4">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                     <p className="text-muted-foreground leading-relaxed text-base" itemProp="description">
-                      {founder.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
+                      {founder?.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
                     </p>
+
                   </div>
 
                   {/* Expertise Tags */}
