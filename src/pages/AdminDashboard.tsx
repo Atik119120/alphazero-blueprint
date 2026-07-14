@@ -56,6 +56,7 @@ import {
   Ticket,
   Sparkles,
   RotateCcw,
+  Home,
 } from 'lucide-react';
 
 import CourseManagement from '@/components/admin/CourseManagement';
@@ -64,6 +65,7 @@ import { TeamManagement } from '@/components/admin/TeamManagement';
 import { ServicesManagement } from '@/components/admin/ServicesManagement';
 import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
+import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
 import TeacherManagement from '@/components/admin/TeacherManagement';
 import EmailManagement from '@/components/admin/EmailManagement';
@@ -819,6 +821,7 @@ function AdminDashboardInner() {
   ];
 
   const cmsItemsAll = [
+    { id: 'homepage', icon: Home, label: language === 'bn' ? 'হোমপেজ' : 'Homepage', scopeTag: 'both' as const },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', scopeTag: 'both' as const },
     { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page', scopeTag: 'learn' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', scopeTag: 'agency' as const },
@@ -1765,10 +1768,16 @@ function AdminDashboardInner() {
             <ServicesManagement />
           </TabsContent>
 
+          {/* Homepage Editor */}
+          <TabsContent value="homepage" className="space-y-6">
+            <HomepageEditor />
+          </TabsContent>
+
           {/* Content Tab */}
           <TabsContent value="content" className="space-y-6">
             <PageContentManagement />
           </TabsContent>
+
 
           {/* Footer Tab */}
           <TabsContent value="footer" className="space-y-6">

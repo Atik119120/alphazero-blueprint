@@ -1,86 +1,71 @@
-# আলাদা Agency + Learn কন্ট্রোল প্যানেল
+# সেকশন-ভিত্তিক হোমপেজ CMS (Agency + Learn আলাদা)
 
 ## লক্ষ্য
-এক ব্যাকএন্ড থেকেই দুই সাইট (Agency এবং Learn) সম্পূর্ণ আলাদাভাবে কন্ট্রোল করা — আলাদা পেজ, আলাদা কন্টেন্ট, আলাদা ফুটার, আলাদা কোর্স/সার্ভিস, আলাদা অ্যাডমিন ট্যাব।
+Admin panel এ scope switcher (Agency/Learn) সিলেক্ট করার পর — **Pages → Home → [Section]** এভাবে ড্রিল-ডাউন করে হোমপেজের প্রতিটা সেকশন আলাদাভাবে edit করা যাবে। প্রতিটা সেকশনের নিজস্ব fields (title, subtitle, images, button, list items) থাকবে, এবং list items (sister brands, what-we-do items) add/remove/reorder করা যাবে।
 
-## ইতিমধ্যে হয়েছে
-- আলাদা `LearnContactPage` (route: `/learn-contact`, learn subdomain এ `/contact`)
-- আলাদা `LearnAboutPage`
-- আলাদা `CoursesPage`, `CoursesNavbar`, `CoursesFooter`
-- Learn নেভবার থেকে ভাষা টগল সরানো
-
-## যা করা হবে
-
-### ১. ডেটাবেস আলাদাকরণ — `site_scope` কলাম
-নিচের CMS টেবিলগুলোতে একটা `site_scope text` কলাম যোগ হবে (`'agency'` বা `'learn'`), default `'agency'`:
-- `page_content` — পেজ টেক্সট/হিরো/সেকশন
-- `footer_content`, `footer_links` — ফুটার আলাদা
-- `site_settings` — লোগো, ব্র্যান্ড, SEO, কনট্যাক্ট আলাদা
-
-পুরনো row গুলো `agency` scope এ থাকবে। Learn এর জন্য নতুন row insert হবে `learn` scope এ।
-
-### ২. Admin Dashboard — নতুন Site Switcher
-Admin dashboard এর টপে একটা toggle: **[Agency Site] [Learn Site]**
-- সিলেক্ট করা scope সব CMS ট্যাবে (Page Content, Footer, Site Settings) filter হিসেবে যাবে
-- Save করলে সেই scope এ save হবে
-- ফলাফল: একই UI, কিন্তু দুই সাইটের কন্টেন্ট আলাদাভাবে edit
-
-### ৩. Frontend Hooks আপডেট
-`usePageContent`, `useFooterData`, site settings hook গুলো একটা `scope` parameter নেবে। Layout auto detect করবে (learn context হলে `learn`, নাহলে `agency`) — কোনো পেজে ম্যানুয়ালি কিছু বদলাতে হবে না।
-
-### ৪. আলাদা পেজ set (Learn side)
-Agency এর প্রতিটি মূল পেজের Learn version — সবই DB থেকে scope অনুযায়ী কন্টেন্ট টানবে:
-- `LearnHome` (already `CoursesPage`)
-- `LearnAbout` (already exists)
-- `LearnContact` (just added)
-- `LearnCourses` catalog
-
-Agency এর `/services`, `/work`, `/team`, `/join-team` — এগুলো শুধু agency তে থাকবে, Learn এ দেখাবে না।
-
-### ৫. Courses/Services আলাদাভাবে দেখানো
-- `courses` টেবিল ইতিমধ্যে আছে — Learn সাইটে দেখাবে
-- `services` টেবিল — শুধু Agency সাইটে দেখাবে
-কোনো schema change লাগবে না, শুধু frontend routing আটকানো।
-
-### ৬. আলাদা SEO / লোগো / ব্র্যান্ডিং
-`site_settings` scope অনুযায়ী:
-- Agency: AlphaZero logo, agency title/description
-- Learn: Learn with AlphaZero logo, academy title/description
-Index.html meta ডাইনামিক ভাবে scope অনুযায়ী update হবে।
-
-## টেকনিক্যাল ডিটেইলস
+## নেভিগেশন ফ্লো
 
 ```text
 Admin Dashboard
-├─ [Agency] [Learn]  ← scope toggle (top bar)
-├─ Page Content    → filters by scope
-├─ Footer Mgmt     → filters by scope
-├─ Site Settings   → filters by scope
-├─ Courses         → learn only
-├─ Services/Works  → agency only
-├─ Team            → shared
-└─ Students/Teachers → shared (LMS)
+└─ [Agency Site ▼] scope switcher (already exists)
+   └─ Pages tab
+      └─ Home
+         ├─ Hero              → title, subtitle, bg image, CTA button
+         ├─ Sister Brands     → list: logo image + website URL (add/remove/reorder)
+         ├─ What We Do        → title, subtitle, highlight text
+         │  └─ Items list     → item title, 2 images, description (add/remove)
+         ├─ Services Preview  → title, subtitle
+         └─ Footer            → columns, links, contact info, socials
 ```
 
-Migration:
+Learn scope সিলেক্ট করলে একই UI, কিন্তু Learn এর নিজস্ব সেকশন সেট (Hero, Courses Preview, Instructors, Footer)।
+
+## ধাপ
+
+### ১. Database — dynamic section schema
+নতুন দুইটা টেবিল (সব CMS content এর জন্য পুনর্ব্যবহারযোগ্য):
+
 ```sql
-ALTER TABLE page_content ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
-ALTER TABLE footer_content ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
-ALTER TABLE footer_links ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
-ALTER TABLE site_settings ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
-CREATE INDEX ON page_content(site_scope, page_key);
-CREATE INDEX ON footer_content(site_scope);
+homepage_sections (
+  id, site_scope, page_key, section_key, section_type,
+  title, subtitle, description, highlight, image_url, image_url_2,
+  button_label, button_url, order_index, is_active
+)
+
+homepage_section_items (
+  id, section_id (FK), title, subtitle, image_url, url, order_index, is_active
+)
 ```
 
-Frontend context detect:
-```ts
-const scope = isLearnContext ? 'learn' : 'agency';
-usePageContent('contact', scope);
-```
+- `section_type`: `hero | brands | what_we_do | services_preview | footer | custom`
+- List-type sections (sister brands, what-we-do items) items table ব্যবহার করবে।
+- Simple sections শুধু sections টেবিলেই থাকবে।
+- Existing `page_content`, `footer_content` টেবিল intact থাকবে — backward compatible।
 
-## Scope যা এই প্ল্যানে **নেই**
-- LMS (student/teacher/admin auth) শেয়ারড থাকবে — একই account দিয়ে দুই সাইটে login
-- Database structure রিরাইট না, শুধু scope column add
-- আলাদা domain deployment — সেটা DNS level এ আগে থেকেই আছে (`learn.alphazero.online`)
+### ২. Admin UI — drill-down editor
+নতুন কম্পোনেন্ট:
+- `HomepageEditor.tsx` — section list, "Edit" click করলে section-specific editor খোলে
+- `SectionEditor.tsx` — dynamic form: text fields, image uploader (existing `ImageUploader`), URL fields
+- `SectionItemsEditor.tsx` — list items grid, add/remove/reorder (drag handle)
+- Pages tab এর ভিতরে integrate — Home ক্লিক করলে editor খোলে
 
-Approve করলে ধাপে ধাপে বিল্ড করব।
+### ৩. Frontend — data-driven সেকশন
+- `useHomepageSection(sectionKey, scope?)` hook — realtime subscription সহ
+- `useHomepageSectionItems(sectionKey, scope?)` hook — list items এর জন্য
+- বিদ্যমান `Index.tsx` (agency home) আর `CoursesPage.tsx` (learn home) এর হার্ডকোডেড sections ধাপে ধাপে DB-driven করা হবে — শুরুতে Sister Brands + What We Do সেকশন থেকে।
+
+### ৪. Seed data
+Migration এ existing hardcoded content (current sister brand logos, what-we-do items) DB তে seed করা হবে যাতে migration এর পর সাইটে কিছু ভেঙে না পড়ে।
+
+## টেকনিক্যাল ডিটেইলস
+- RLS: public read (is_active), admin-only write (`has_role('admin')`)
+- Realtime enabled — admin এ save করলে সাইটে সাথে সাথে দেখাবে
+- Image upload: existing `media-uploads` bucket + `ImageUploader` component
+- Scope isolation: প্রতিটা query তে `site_scope` filter, admin edit এ selected scope এ save
+
+## এই প্ল্যানে যা **নেই**
+- বিদ্যমান UI design বদলানো — শুধু content DB থেকে টানা হবে
+- Full drag-and-drop page builder — fixed section types, শুধু items reorder
+- Multi-language field editor — existing `en/bn` pattern follow করবে
+
+Approve করলে migration + admin editor + Sister Brands / What We Do সেকশন দিয়ে শুরু করব, তারপর বাকি সেকশন যোগ করব।
