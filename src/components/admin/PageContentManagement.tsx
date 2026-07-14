@@ -182,7 +182,7 @@ const PageContentManagement = () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
       toast.success('নতুন কনটেন্ট যোগ হয়েছে!');
       setIsAddDialogOpen(false);
-      setFormData({ content_key: '', content_en: '', content_bn: '' });
+      setFormData({ content_key: '', content_en: '' });
     },
     onError: () => toast.error('কনটেন্ট যোগ করতে সমস্যা হয়েছে')
   });
