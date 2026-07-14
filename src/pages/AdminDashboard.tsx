@@ -81,9 +81,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 // Chart colors
 const CHART_COLORS = ['#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#22c55e', '#84cc16', '#eab308', '#f97316', '#ef4444', '#ec4899'];
 
-import { AdminSiteScopeProvider } from '@/contexts/AdminSiteScopeContext';
+import { AdminSiteScopeProvider, useAdminScope } from '@/contexts/AdminSiteScopeContext';
+import AdminSiteScopeSwitcher from '@/components/admin/AdminSiteScopeSwitcher';
 
 function AdminDashboardInner() {
+  const { scope } = useAdminScope();
   const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
