@@ -707,7 +707,6 @@ export type Database = {
       }
       footer_content: {
         Row: {
-          content_bn: string | null
           content_en: string | null
           content_key: string
           created_at: string
@@ -716,7 +715,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          content_bn?: string | null
           content_en?: string | null
           content_key: string
           created_at?: string
@@ -725,7 +723,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          content_bn?: string | null
           content_en?: string | null
           content_key?: string
           created_at?: string
@@ -826,7 +823,6 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
-          description_bn: string | null
           id: string
           image_url: string | null
           image_url_2: string | null
@@ -834,16 +830,13 @@ export type Database = {
           order_index: number
           section_id: string
           subtitle: string | null
-          subtitle_bn: string | null
           title: string | null
-          title_bn: string | null
           updated_at: string
           url: string | null
         }
         Insert: {
           created_at?: string
           description?: string | null
-          description_bn?: string | null
           id?: string
           image_url?: string | null
           image_url_2?: string | null
@@ -851,16 +844,13 @@ export type Database = {
           order_index?: number
           section_id: string
           subtitle?: string | null
-          subtitle_bn?: string | null
           title?: string | null
-          title_bn?: string | null
           updated_at?: string
           url?: string | null
         }
         Update: {
           created_at?: string
           description?: string | null
-          description_bn?: string | null
           id?: string
           image_url?: string | null
           image_url_2?: string | null
@@ -868,9 +858,7 @@ export type Database = {
           order_index?: number
           section_id?: string
           subtitle?: string | null
-          subtitle_bn?: string | null
           title?: string | null
-          title_bn?: string | null
           updated_at?: string
           url?: string | null
         }
@@ -890,9 +878,7 @@ export type Database = {
           button_url: string | null
           created_at: string
           description: string | null
-          description_bn: string | null
           highlight: string | null
-          highlight_bn: string | null
           id: string
           image_url: string | null
           image_url_2: string | null
@@ -903,9 +889,7 @@ export type Database = {
           section_type: string
           site_scope: string
           subtitle: string | null
-          subtitle_bn: string | null
           title: string | null
-          title_bn: string | null
           updated_at: string
         }
         Insert: {
@@ -913,9 +897,7 @@ export type Database = {
           button_url?: string | null
           created_at?: string
           description?: string | null
-          description_bn?: string | null
           highlight?: string | null
-          highlight_bn?: string | null
           id?: string
           image_url?: string | null
           image_url_2?: string | null
@@ -926,9 +908,7 @@ export type Database = {
           section_type?: string
           site_scope?: string
           subtitle?: string | null
-          subtitle_bn?: string | null
           title?: string | null
-          title_bn?: string | null
           updated_at?: string
         }
         Update: {
@@ -936,9 +916,7 @@ export type Database = {
           button_url?: string | null
           created_at?: string
           description?: string | null
-          description_bn?: string | null
           highlight?: string | null
-          highlight_bn?: string | null
           id?: string
           image_url?: string | null
           image_url_2?: string | null
@@ -949,9 +927,7 @@ export type Database = {
           section_type?: string
           site_scope?: string
           subtitle?: string | null
-          subtitle_bn?: string | null
           title?: string | null
-          title_bn?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -1236,7 +1212,6 @@ export type Database = {
       }
       page_content: {
         Row: {
-          content_bn: string | null
           content_en: string | null
           content_key: string
           created_at: string
@@ -1246,7 +1221,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          content_bn?: string | null
           content_en?: string | null
           content_key: string
           created_at?: string
@@ -1256,7 +1230,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          content_bn?: string | null
           content_en?: string | null
           content_key?: string
           created_at?: string
