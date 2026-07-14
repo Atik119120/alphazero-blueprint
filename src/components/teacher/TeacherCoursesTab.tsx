@@ -94,6 +94,7 @@ export default function TeacherCoursesTab({ courses, isLoading, refetch, languag
     course_type: 'recorded' as 'recorded' | 'live' | 'free',
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [videoManagerCourse, setVideoManagerCourse] = useState<TeacherCourse | null>(null);
 
   const resetForm = () => {
     setFormData({
