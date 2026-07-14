@@ -34,6 +34,8 @@ const translations = {
     updateError: 'Failed to update profile',
     linkedTeamProfile: 'Your profile is linked to the Team page',
     loading: 'Loading...',
+    roleTitle: 'Title / Role',
+    rolePlaceholder: 'e.g. Founder, Vibe Coding Expert',
   },
   bn: {
     title: 'আমার প্রোফাইল',
@@ -52,6 +54,8 @@ const translations = {
     updateError: 'প্রোফাইল আপডেট করতে সমস্যা হয়েছে',
     linkedTeamProfile: 'আপনার প্রোফাইল টিম পেজের সাথে লিংক করা আছে',
     loading: 'লোড হচ্ছে...',
+    roleTitle: 'টাইটেল / পদবি',
+    rolePlaceholder: 'যেমন: Founder, Vibe Coding Expert',
   },
 };
 
@@ -67,7 +71,9 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
     phone_number: '',
     bio: '',
     skills: [] as string[],
+    role_title: '',
   });
+  const [linkedTeamMemberId, setLinkedTeamMemberId] = useState<string | null>(null);
   const [newSkill, setNewSkill] = useState('');
 
   useEffect(() => {
@@ -82,17 +88,29 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('full_name, phone_number, bio, skills')
+        .select('full_name, phone_number, bio, skills, linked_team_member_id')
         .eq('id', profile.id)
         .single();
 
       if (error) throw error;
 
+      let roleTitle = '';
+      if (data.linked_team_member_id) {
+        const { data: tm } = await supabase
+          .from('team_members')
+          .select('role')
+          .eq('id', data.linked_team_member_id)
+          .single();
+        roleTitle = tm?.role || '';
+      }
+
+      setLinkedTeamMemberId(data.linked_team_member_id);
       setFormData({
         full_name: data.full_name || '',
         phone_number: data.phone_number || '',
         bio: data.bio || '',
         skills: data.skills || [],
+        role_title: roleTitle,
       });
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -117,21 +135,17 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
 
       if (error) throw error;
 
-      // If linked to team member, update there too
-      const profileData = await supabase
-        .from('profiles')
-        .select('linked_team_member_id')
-        .eq('id', profile.id)
-        .single();
-
-      if (profileData.data?.linked_team_member_id) {
+      // If linked to team member, sync name/bio/role/image
+      if (linkedTeamMemberId) {
         await supabase
           .from('team_members')
           .update({
             name: formData.full_name,
             bio: formData.bio,
+            role: formData.role_title,
+            image_url: profile.avatar_url || null,
           })
-          .eq('id', profileData.data.linked_team_member_id);
+          .eq('id', linkedTeamMemberId);
       }
 
       toast({ title: t.profileUpdated });
@@ -187,6 +201,14 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
         .eq('id', profile.id);
 
       if (updateError) throw updateError;
+
+      // Sync photo to linked team member card (Instructor profile)
+      if (linkedTeamMemberId) {
+        await supabase
+          .from('team_members')
+          .update({ image_url: urlData.publicUrl })
+          .eq('id', linkedTeamMemberId);
+      }
 
       refreshProfile();
       toast({ title: language === 'bn' ? 'ছবি আপলোড হয়েছে' : 'Photo uploaded' });
@@ -273,6 +295,19 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
               disabled={!isEditing}
             />
           </div>
+
+          {linkedTeamMemberId && (
+            <div className="space-y-2">
+              <Label>{t.roleTitle}</Label>
+              <Input
+                value={formData.role_title}
+                onChange={(e) => setFormData({ ...formData, role_title: e.target.value })}
+                disabled={!isEditing}
+                placeholder={t.rolePlaceholder}
+              />
+              <p className="text-xs text-muted-foreground">{t.linkedTeamProfile}</p>
+            </div>
+          )}
 
           <div className="space-y-2">
             <Label>{t.email}</Label>
