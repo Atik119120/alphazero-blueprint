@@ -18,9 +18,9 @@ interface FooterContent {
   id: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
   site_scope?: string;
 }
+
 
 export const useFooterLinks = (scopeOverride?: SiteScope) => {
   const queryClient = useQueryClient();
