@@ -104,15 +104,16 @@ const AboutPage = () => {
                     <div className="absolute -inset-1 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
                     <div className="relative rounded-3xl overflow-hidden border-2 border-primary/20">
                       <img
-                        src={founder.image_url || '/placeholder.svg'}
-                        alt={`${founder.name} - Founder of AlphaZero`}
+                        src={founder?.image_url || '/placeholder.svg'}
+                        alt={`${founder?.name || 'Founder'} - Founder of AlphaZero`}
                         itemProp="image"
                         className="w-full aspect-[4/5] object-cover object-top group-hover:scale-105 transition-transform duration-700"
                         loading="eager"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder.name}</h3>
+                        <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder?.name || "Sofiullah Ahammad"}</h3>
+
                         <p className="text-primary font-semibold text-sm mt-1">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                       </div>
                     </div>
