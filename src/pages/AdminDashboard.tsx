@@ -1768,10 +1768,16 @@ function AdminDashboardInner() {
             <ServicesManagement />
           </TabsContent>
 
+          {/* Homepage Editor */}
+          <TabsContent value="homepage" className="space-y-6">
+            <HomepageEditor />
+          </TabsContent>
+
           {/* Content Tab */}
           <TabsContent value="content" className="space-y-6">
             <PageContentManagement />
           </TabsContent>
+
 
           {/* Footer Tab */}
           <TabsContent value="footer" className="space-y-6">
