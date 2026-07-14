@@ -160,10 +160,6 @@ export default function StudentDashboard() {
           </button>
           {/* Language toggle removed — English only */}
 
-          <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium bg-accent/30 hover:bg-accent/50 text-accent-foreground">
-            {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            <span className="hidden md:inline">{theme === 'dark' ? 'Light' : 'Dark'}</span>
-          </button>
           <button onClick={handleLogout} className="w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-xs font-medium bg-destructive/10 hover:bg-destructive/20 text-destructive">
             <LogOut className="w-4 h-4" /><span className="hidden md:inline">Logout</span>
           </button>

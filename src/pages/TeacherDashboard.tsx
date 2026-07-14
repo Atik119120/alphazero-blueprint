@@ -214,18 +214,6 @@ export default function TeacherDashboard() {
             <Home className="w-4 h-4" />
             {t.home}
           </Button>
-          <div className="flex gap-2">
-            {/* Language toggle removed — English only */}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="flex-1"
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </Button>
-          </div>
           <Button
             variant="destructive"
             size="sm"
