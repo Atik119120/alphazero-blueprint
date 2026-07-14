@@ -65,16 +65,16 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
         <div className="relative h-full p-5 flex flex-col text-white">
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
-            <img 
-              src="/logo.png" 
-              alt="Logo" 
-              className="w-10 h-10 object-contain brightness-0 invert"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+            <div className="w-11 h-11 rounded-lg bg-white flex items-center justify-center p-1.5 shrink-0">
+              <img
+                src={logoImg}
+                alt="AlphaZero"
+                className="w-full h-full object-contain"
+                crossOrigin="anonymous"
+              />
+            </div>
             <div>
-              <h3 className="text-lg font-bold tracking-wide">AlphaZero Academy</h3>
+              <h3 className="text-lg font-bold tracking-wide leading-tight">AlphaZero Academy</h3>
               <p className="text-xs opacity-80">Student Identity Card</p>
             </div>
           </div>
