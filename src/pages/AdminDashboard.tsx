@@ -907,7 +907,7 @@ function AdminDashboardInner() {
       <aside className="fixed left-4 top-4 bottom-4 w-16 md:w-56 bg-white dark:bg-slate-900 rounded-2xl border border-border/50 shadow-xl shadow-black/5 z-50 flex flex-col overflow-hidden">
         {/* Logo */}
         <div className="p-3 md:p-4 border-b border-border/50">
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col items-center gap-2 md:items-start">
             <img
               src={alphazeroLogoAsset.url}
               alt="AlphaZero Logo"
