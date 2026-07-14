@@ -59,9 +59,10 @@ const AboutPage = () => {
           <div className="max-w-4xl mx-auto text-center">
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
-              <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{c("title", "about.title")}</span>{" "}
+              <span>{c("title", "about.title")}</span>{" "}
               <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>AlphaZero</span>
             </motion.h1>
+
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto">
               {c("description", "about.description")}
@@ -72,7 +73,7 @@ const AboutPage = () => {
 
 
       {/* Founder Section */}
-      {founder && (
+      {(
         <section className="py-24 lg:py-32 relative" itemScope itemType="https://schema.org/Person">
           <meta itemProp="name" content="Sofiullah Ahammad" />
           <meta itemProp="alternateName" content="Atik Ahmed" />
@@ -103,15 +104,16 @@ const AboutPage = () => {
                     <div className="absolute -inset-1 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
                     <div className="relative rounded-3xl overflow-hidden border-2 border-primary/20">
                       <img
-                        src={founder.image_url || '/placeholder.svg'}
-                        alt={`${founder.name} - Founder of AlphaZero`}
+                        src={founder?.image_url || '/placeholder.svg'}
+                        alt={`${founder?.name || 'Founder'} - Founder of AlphaZero`}
                         itemProp="image"
                         className="w-full aspect-[4/5] object-cover object-top group-hover:scale-105 transition-transform duration-700"
                         loading="eager"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder.name}</h3>
+                        <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder?.name || "Sofiullah Ahammad"}</h3>
+
                         <p className="text-primary font-semibold text-sm mt-1">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                       </div>
                     </div>
@@ -127,12 +129,13 @@ const AboutPage = () => {
                 >
                   <div>
                     <h3 className="text-2xl lg:text-3xl font-display font-bold mb-2">
-                      {founder.name}
+                      {founder?.name || "Sofiullah Ahammad"}
                     </h3>
                     <p className="text-primary font-semibold mb-4">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                     <p className="text-muted-foreground leading-relaxed text-base" itemProp="description">
-                      {founder.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
+                      {founder?.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
                     </p>
+
                   </div>
 
                   {/* Expertise Tags */}
@@ -175,24 +178,25 @@ const AboutPage = () => {
 
                   {/* Social Links */}
                   <div className="flex items-center gap-3">
-                    {founder.facebook_url && (
+                    {founder?.facebook_url && (
                       <a href={founder.facebook_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
                         className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
                         <Facebook size={16} className="text-muted-foreground hover:text-primary" />
                       </a>
                     )}
-                    {founder.instagram_url && (
+                    {founder?.instagram_url && (
                       <a href={founder.instagram_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
                         className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
                         <Instagram size={16} className="text-muted-foreground hover:text-primary" />
                       </a>
                     )}
-                    {founder.linkedin_url && (
+                    {founder?.linkedin_url && (
                       <a href={founder.linkedin_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
                         className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
                         <Linkedin size={16} className="text-muted-foreground hover:text-primary" />
                       </a>
                     )}
+
                     <a href="https://alphazero.online/team" className="ml-auto inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline">
                       View Full Team <ArrowRight size={14} />
                     </a>
