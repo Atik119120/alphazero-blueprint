@@ -819,6 +819,7 @@ function AdminDashboardInner() {
   ];
 
   const cmsItemsAll = [
+    { id: 'homepage', icon: Home, label: language === 'bn' ? 'হোমপেজ' : 'Homepage', scopeTag: 'both' as const },
     { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', scopeTag: 'both' as const },
     { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page', scopeTag: 'learn' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', scopeTag: 'agency' as const },
