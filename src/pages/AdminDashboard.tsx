@@ -917,7 +917,6 @@ function AdminDashboardInner() {
             </div>
           </div>
         </div>
-        </div>
 
         {/* Navigation */}
         <nav className="flex-1 p-2 md:p-3 space-y-1 overflow-y-auto scrollbar-none">
