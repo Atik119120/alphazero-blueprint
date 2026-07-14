@@ -582,16 +582,13 @@ const ItemRow = ({
             )}
             {mode === "cards" && (
               <>
-                <FieldInput label="Title (English)" value={f.title} onChange={(v) => set("title", v)} />
-                <FieldInput label="Title (বাংলা)" value={f.title_bn} onChange={(v) => set("title_bn", v)} />
+                <FieldInput label="Title" value={f.title} onChange={(v) => set("title", v)} />
                 <div className="md:col-span-2">
-                  <FieldTextarea label="Description (English)" rows={2} value={f.description} onChange={(v) => set("description", v)} />
-                </div>
-                <div className="md:col-span-2">
-                  <FieldTextarea label="Description (বাংলা)" rows={2} value={f.description_bn} onChange={(v) => set("description_bn", v)} />
+                  <FieldTextarea label="Description" rows={2} value={f.description} onChange={(v) => set("description", v)} />
                 </div>
               </>
             )}
+
             <ImageUploader
               label={mode === "brands" ? "Brand Logo" : "Image 1"}
               value={f.image_url ?? ""} onChange={(url) => set("image_url", url)}
