@@ -73,7 +73,7 @@ const AboutPage = () => {
 
 
       {/* Founder Section */}
-      {founder && (
+      {(
         <section className="py-24 lg:py-32 relative" itemScope itemType="https://schema.org/Person">
           <meta itemProp="name" content="Sofiullah Ahammad" />
           <meta itemProp="alternateName" content="Atik Ahmed" />
