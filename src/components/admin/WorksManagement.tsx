@@ -178,6 +178,8 @@ export const WorksManagement = () => {
 
   return (
     <div className="space-y-6">
+      <WorkHeroEditor />
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Works / Portfolio</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
