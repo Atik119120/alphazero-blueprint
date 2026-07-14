@@ -96,7 +96,7 @@ const SiteSettingsManagement = () => {
   };
 
   const handleToggle = (key: string, currentValue: string | null, type: string) => {
-    const newValue = currentValue === "true" ? 'false\" : 'true";
+    const newValue = currentValue === 'true' ? 'false\' : 'true';
     updateMutation.mutate({ key, value: newValue, type });
   };
 
@@ -218,14 +218,14 @@ const SiteSettingsManagement = () => {
                 
                 <div className="space-y-2">
                   <Label htmlFor={setting.setting_key}>
-                    {setting.setting_type === "image" ? 'Image URL\" : 'Value"}
+                    {setting.setting_type === 'image' ? 'Image URL\' : 'Value'}
                   </Label>
                   <div className="flex gap-2">
                     <Input
                       id={setting.setting_key}
                       value={currentValue}
                       onChange={(e) => handleChange(setting.setting_key, e.target.value)}
-                      placeholder={setting.setting_type === "image" ? 'https://example.com/image.png\" : 'Enter value"}
+                      placeholder={setting.setting_type === 'image' ? 'https://example.com/image.png\' : 'Enter value'}
                     />
                     <Button 
                       size="icon" 

@@ -80,8 +80,8 @@ export default function FeedbackViewer() {
           {filtered.map((fb) => (
             <Card key={fb.id}>
               <CardContent className="p-4 flex items-start gap-3">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${fb.sentiment === "positive' ? 'bg-emerald-100 dark:bg-emerald-900/30" : 'bg-red-100 dark:bg-red-900/30'}`}>
-                  {fb.sentiment === 'positive' ? <ThumbsUp className="w-4 h-4 text-emerald-600" /> : <ThumbsDown className="w-4 h-4 text-red-600" />}
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${fb.sentiment === 'positive' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}`}>
+                  {fb.sentiment === 'positive' ? <ThumbsUp className='w-4 h-4 text-emerald-600' /> : <ThumbsDown className='w-4 h-4 text-red-600' />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm">{fb.message}</p>
@@ -89,8 +89,8 @@ export default function FeedbackViewer() {
                     {new Date(fb.created_at).toLocaleDateString('bn-BD')}
                   </p>
                 </div>
-                <Badge variant={fb.sentiment === "positive' ? 'default" : 'destructive'} className="text-[10px]">
-                  {fb.sentiment === "positive' ? 'Good" : 'Bad'}
+                <Badge variant={fb.sentiment === 'positive' ? 'default' : 'destructive'} className='text-[10px]'>
+                  {fb.sentiment === 'positive' ? 'Good' : 'Bad'}
                 </Badge>
               </CardContent>
             </Card>

@@ -112,7 +112,7 @@ const FooterManagement = () => {
   });
 
   const addLinkMutation = useMutation({
-    mutationFn: async (data: Omit<FooterLink, "id' | 'is_active">) => {
+    mutationFn: async (data: Omit<FooterLink, 'id' | 'is_active'>) => {
       const { error } = await supabase.from('footer_links').insert([{ ...data, is_active: true, site_scope: scope }]);
       if (error) throw error;
     },
@@ -457,7 +457,7 @@ const FooterManagement = () => {
                 ) : (
                   <div className="space-y-1">
                     <Label className="text-xs text-muted-foreground">English</Label>
-                    <p className="text-sm bg-secondary/50 p-2 rounded-lg">{content.content_en || '-'}</p>
+                    <p className='text-sm bg-secondary/50 p-2 rounded-lg'>{content.content_en || '-'}</p>
                   </div>
                 )}
 
