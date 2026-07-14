@@ -851,7 +851,7 @@ function AdminDashboardInner() {
   // If active tab isn't visible in current scope, switch to first available
   useEffect(() => {
     if (!allNavItems.some(i => i.id === activeTab)) {
-      const fallback = scope === 'learn' ? 'courses' : 'content';
+      const fallback = scope === 'learn' ? 'courses' : 'homepage';
       setActiveTab(fallback);
     }
   }, [scope]);
