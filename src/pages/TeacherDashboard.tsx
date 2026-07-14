@@ -215,14 +215,8 @@ export default function TeacherDashboard() {
             {t.home}
           </Button>
           <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleLanguage}
-              className="flex-1"
-            >
-              <Globe className="w-4 h-4" />
-            </Button>
+            {/* Language toggle removed — English only */}
+
             <Button
               variant="ghost"
               size="icon"
