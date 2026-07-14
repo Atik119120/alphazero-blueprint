@@ -402,7 +402,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
           <Tag className="w-4 h-4 text-primary" />
           <span>{selectedPageInfo.description}</span>
           <span className="text-xs">•</span>
-          <span className="text-xs">{totalForPage} আইটেম</span>
+          <span className="text-xs">{totalForPage} Item</span>
         </div>
       )}
 
@@ -475,11 +475,11 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
                           {isEditing ? (
                             <>
                               <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="h-7 px-2 text-xs">
-                                বাতিল
+                                Cancel
                               </Button>
                               <Button size="sm" onClick={() => saveEdit(content.id)} disabled={updateMutation.isPending} className="h-7 px-2 text-xs gap-1">
                                 {updateMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <CheckCircle2 className="w-3 h-3" />}
-                                সেভ
+                                Save
                               </Button>
                             </>
                           ) : (

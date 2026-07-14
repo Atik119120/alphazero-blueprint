@@ -44,14 +44,14 @@ export default function FeedbackViewer() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold flex items-center gap-2">
-          <MessageSquare className="w-5 h-5" /> স্টুডেন্ট ফিডব্যাক
+          <MessageSquare className="w-5 h-5" /> Student Feedback
         </h2>
         <Select value={filter} onValueChange={setFilter}>
           <SelectTrigger className="w-40">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">সব ({feedbacks.length})</SelectItem>
+            <SelectItem value="all">All ({feedbacks.length})</SelectItem>
             <SelectItem value="positive">👍 Good ({positiveCount})</SelectItem>
             <SelectItem value="negative">👎 Bad ({negativeCount})</SelectItem>
           </SelectContent>
@@ -72,7 +72,7 @@ export default function FeedbackViewer() {
       ) : filtered.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-8 text-center text-muted-foreground">
-            কোনো ফিডব্যাক নেই
+            No feedback
           </CardContent>
         </Card>
       ) : (

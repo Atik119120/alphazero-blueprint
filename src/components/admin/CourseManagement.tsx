@@ -538,7 +538,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             className="gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            ফিরে যান
+            Go Back
           </Button>
           <div className="flex-1">
             <h2 className="text-xl font-semibold">{selectedVideo.title}</h2>
@@ -546,7 +546,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           </div>
           <Button onClick={openMaterialDialog} className="gap-2">
             <Plus className="w-4 h-4" />
-            ম্যাটেরিয়াল যোগ
+            Add Material
           </Button>
         </div>
 
@@ -575,7 +575,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
 
         {/* Materials List */}
         <div className="space-y-4">
-          <h3 className="font-medium">ম্যাটেরিয়াল ({videoMaterials.length})</h3>
+          <h3 className="font-medium">Material ({videoMaterials.length})</h3>
           
           {loadingMaterials ? (
             <div className="flex justify-center py-8">
@@ -588,7 +588,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 <p className="text-muted-foreground">No materials</p>
                 <Button onClick={openMaterialDialog} className="mt-4 gap-2">
                   <Plus className="w-4 h-4" />
-                  প্রথম ম্যাটেরিয়াল Add
+                  Add First Material
                 </Button>
               </CardContent>
             </Card>
@@ -645,7 +645,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             <DialogHeader>
               <DialogTitle>Add new material</DialogTitle>
               <DialogDescription>
-                PDF, ডকুমেন্ট বা Note Add
+                Add PDF, Document or Note
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
@@ -722,23 +722,23 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             className="gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            ফিরে যান
+            Go Back
           </Button>
           <div className="flex-1">
             <h2 className="text-xl font-semibold">{selectedCourse.title}</h2>
-            <p className="text-sm text-muted-foreground">{courseVideos.length} টি ক্লাস</p>
+            <p className="text-sm text-muted-foreground">{courseVideos.length} classes</p>
           </div>
           <Button variant="outline" onClick={() => openCourseDialog(selectedCourse)} className="gap-2">
             <Edit className="w-4 h-4" />
-            এডিট
+            Edit
           </Button>
           <Button variant="outline" onClick={() => setShowTopicDialog(true)} className="gap-2">
             <Plus className="w-4 h-4" />
-            টপিক
+            Topic
           </Button>
           <Button onClick={() => openVideoDialog()} className="gap-2">
             <Plus className="w-4 h-4" />
-            ক্লাস যোগ
+            Add Class
           </Button>
         </div>
 
@@ -803,7 +803,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 <p className="text-muted-foreground">No classes</p>
                 <Button onClick={() => openVideoDialog()} className="mt-4 gap-2">
                   <Plus className="w-4 h-4" />
-                  প্রথম ক্লাস Add
+                  Add First Class
                 </Button>
               </CardContent>
             </Card>
@@ -948,7 +948,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                     }}
                   />
                   {videoUrl && videoType === 'cloudinary' && (
-                    <p className="text-xs text-emerald-600">ফাইল সিলেক্ট করা হয়েছে: {videoUrl}</p>
+                    <p className="text-xs text-emerald-600">File selected: {videoUrl}</p>
                   )}
                   {cloudinaryUploading && (
                     <div className="space-y-2 pt-2">
@@ -1132,7 +1132,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             <p className="text-muted-foreground">No courses</p>
             <Button onClick={() => openCourseDialog()} className="mt-4 gap-2">
               <Plus className="w-4 h-4" />
-              প্রথম কোর্স Create
+              Create First Course
             </Button>
           </CardContent>
         </Card>
@@ -1210,7 +1210,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                     }}
                   >
                     <VideoIcon className="w-3 h-3" />
-                    ক্লাস
+                    Class
                   </Button>
                   <Button 
                     variant="outline" 

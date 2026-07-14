@@ -295,7 +295,7 @@ export const WorksManagement = () => {
                   {saveMutation.isPending ? "Saving..." : "Save"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  বাতিল
+                  Cancel
                 </Button>
               </div>
             </form>
@@ -370,7 +370,7 @@ export const WorksManagement = () => {
                     className="text-primary flex items-center gap-1 hover:underline"
                   >
                     <ExternalLink className="w-3 h-3" />
-                    প্রজেক্ট দেখুন
+                    View Project
                   </a>
                 )}
               </div>
@@ -381,7 +381,7 @@ export const WorksManagement = () => {
 
       {(!works || works.length === 0) && (
         <div className="text-center py-12 text-muted-foreground">
-          কোন Work নেই। উপরের বাটনে ক্লিক করে Add New Work।
+          No work. Click the button above to Add New Work.
         </div>
       )}
     </div>

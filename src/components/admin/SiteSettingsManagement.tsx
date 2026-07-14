@@ -155,7 +155,7 @@ const SiteSettingsManagement = () => {
           <div>
             <h2 className="text-2xl font-bold">Site Settings</h2>
             <p className="text-muted-foreground">
-              {scope === "learn" ? "Learn Site" : "Agency Site"} — Favicon, Logo ও Site name
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — Favicon, Logo & Site name
             </p>
           </div>
         </div>

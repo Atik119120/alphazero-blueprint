@@ -501,8 +501,8 @@ const SectionItemsEditor = ({
         ))}
         {items && !items.length && (
           <div className="text-center py-8 text-sm text-muted-foreground border-2 border-dashed rounded-lg">
-            এখনো কোন {itemLabel.toLowerCase()} যোগ করা হয়নি।<br />
-            <span className="text-xs">উপরের "Add {itemLabel}" বাটনে ক্লিক করুন।</span>
+            Still no {itemLabel.toLowerCase()} Not added.<br />
+            <span className="text-xs">Top "Add {itemLabel}" Click the button.</span>
           </div>
         )}
       </CardContent>

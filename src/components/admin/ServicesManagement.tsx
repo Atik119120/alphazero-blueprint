@@ -279,7 +279,7 @@ export const ServicesManagement = () => {
                   {saveMutation.isPending ? "Saving..." : "Save"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  বাতিল
+                  Cancel
                 </Button>
               </div>
             </form>
@@ -348,7 +348,7 @@ export const ServicesManagement = () => {
 
       {(!services || services.length === 0) && (
         <div className="text-center py-12 text-muted-foreground">
-          কোন Service নেই। উপরের বাটনে ক্লিক করে Add New Service।
+          No service. Click the button above to Add New Service.
         </div>
       )}
     </div>

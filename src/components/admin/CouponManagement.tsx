@@ -149,7 +149,7 @@ export default function CouponManagement() {
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2">
             <Ticket className="w-5 h-5 text-primary" />
-            কুপন ম্যানেজমেন্ট
+            Coupon Management
           </h2>
           <p className="text-sm text-muted-foreground mt-1">Create & manage discount coupons</p>
         </div>
@@ -158,7 +158,7 @@ export default function CouponManagement() {
           <DialogTrigger asChild>
             <Button className="gap-2" onClick={() => { resetForm(); setIsDialogOpen(true); }}>
               <Plus className="w-4 h-4" />
-              নতুন কুপন
+              New Coupon
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
@@ -242,7 +242,7 @@ export default function CouponManagement() {
 
               <Button onClick={handleCreate} disabled={saving} className="w-full gap-2">
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                কুপন তৈরি করুন
+                Create Coupon
               </Button>
             </div>
           </DialogContent>
@@ -285,7 +285,7 @@ export default function CouponManagement() {
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {coupon.discount_type === 'percentage' ? `${coupon.discount_value}% off` : `৳${coupon.discount_value} off`}
                         {' · '}{getCourseName(coupon.course_id)}
-                        {' · '}{coupon.used_count}/{coupon.max_uses || '∞'} ব্যবহার
+                        {' · '}{coupon.used_count}/{coupon.max_uses || '∞'} Usage
                       </p>
                     </div>
                   </div>

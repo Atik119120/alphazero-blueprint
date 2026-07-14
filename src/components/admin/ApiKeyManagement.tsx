@@ -269,7 +269,7 @@ const ApiKeyManagement = () => {
                       </div>
                       {configured && (
                         <Badge className="bg-emerald-500/20 text-emerald-600 border-0 text-[10px]">
-                          সক্রিয়
+                          Active
                         </Badge>
                       )}
                     </div>

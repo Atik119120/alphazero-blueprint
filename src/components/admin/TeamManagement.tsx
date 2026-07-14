@@ -418,7 +418,7 @@ export const TeamManagement = () => {
                     onClick={() => setCustomLinks([...customLinks, { label: '', url: '', icon_url: '' }])}
                   >
                     <Plus className="w-3 h-3 mr-1" />
-                    লিংক যোগ
+                    Add Link
                   </Button>
                 </div>
                 
@@ -483,7 +483,7 @@ export const TeamManagement = () => {
                   {saveMutation.isPending ? "Saving..." : "Save"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
-                  বাতিল
+                  Cancel
                 </Button>
               </div>
             </form>
@@ -594,7 +594,7 @@ export const TeamManagement = () => {
 
       {(!members || members.length === 0) && (
         <div className="text-center py-12 text-muted-foreground">
-          কোন Team Member নেই। উপরের বাটনে ক্লিক করে Add New Member।
+          No team members found. Click the button above to add a new member.
         </div>
       )}
     </div>

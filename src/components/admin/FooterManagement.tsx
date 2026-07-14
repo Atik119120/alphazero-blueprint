@@ -263,7 +263,7 @@ const FooterManagement = () => {
           <div>
             <h2 className="text-2xl font-bold">Footer Management</h2>
             <p className="text-muted-foreground">
-              {scope === "learn" ? "Learn Site" : "Agency Site"} — Social Links, Navigation ও ফুটার Content
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — Social Links, Navigation & Footer Content
             </p>
           </div>
         </div>
@@ -334,7 +334,7 @@ const FooterManagement = () => {
                   </div>
                   <Button onClick={handleAddLink} disabled={addLinkMutation.isPending} className="w-full">
                     {addLinkMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
-                    যোগ করুন
+                    Add
                   </Button>
                 </div>
               </DialogContent>
@@ -369,7 +369,7 @@ const FooterManagement = () => {
                       </Select>
                       <div className="flex gap-2">
                         <Button size="sm" onClick={handleUpdateLink} disabled={updateLinkMutation.isPending}>
-                          <Save className="h-4 w-4 mr-1" />সেভ
+                          <Save className="h-4 w-4 mr-1" />Save
                         </Button>
                         <Button size="sm" variant="outline" onClick={() => setEditingLink(null)}>Cancel</Button>
                       </div>
@@ -449,7 +449,7 @@ const FooterManagement = () => {
                     <div className="flex gap-2">
                       <Button onClick={handleUpdateContent} disabled={updateContentMutation.isPending}>
                         {updateContentMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
-                        সেভ করুন
+                        Save
                       </Button>
                       <Button variant="outline" onClick={() => setEditingContent(null)}>Cancel</Button>
                     </div>
