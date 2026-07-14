@@ -296,6 +296,19 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
             />
           </div>
 
+          {linkedTeamMemberId && (
+            <div className="space-y-2">
+              <Label>{t.roleTitle}</Label>
+              <Input
+                value={formData.role_title}
+                onChange={(e) => setFormData({ ...formData, role_title: e.target.value })}
+                disabled={!isEditing}
+                placeholder={t.rolePlaceholder}
+              />
+              <p className="text-xs text-muted-foreground">{t.linkedTeamProfile}</p>
+            </div>
+          )}
+
           <div className="space-y-2">
             <Label>{t.email}</Label>
             <Input
