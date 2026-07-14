@@ -104,6 +104,7 @@ export default function StudentDashboard() {
   const navItems = [
     { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
     { id: 'live', icon: VideoIcon, label: language === 'bn' ? 'লাইভ ক্লাস' : 'Live Class' },
+    { id: 'notices', icon: Bell, label: language === 'bn' ? 'নোটিশ' : 'Notices' },
     { id: 'explore', icon: Search, label: language === 'bn' ? 'ব্রাউজ' : 'Browse' },
     { id: 'certificates', icon: Award, label: language === 'bn' ? 'সনদ' : 'Certificates' },
     { id: 'id-card', icon: IdCard, label: language === 'bn' ? 'আইডি' : 'ID Card' },
