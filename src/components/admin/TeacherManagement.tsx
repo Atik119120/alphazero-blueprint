@@ -203,6 +203,30 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
     deadline: '',
     assigned_to: '',
   });
+
+  // Teacher profile view dialog
+  const [viewTeacher, setViewTeacher] = useState<Teacher | null>(null);
+  const [teacherCourses, setTeacherCourses] = useState<PendingCourse[]>([]);
+  const [loadingTeacherCourses, setLoadingTeacherCourses] = useState(false);
+
+  const openTeacherProfile = async (teacher: Teacher) => {
+    setViewTeacher(teacher);
+    setTeacherCourses([]);
+    setLoadingTeacherCourses(true);
+    try {
+      const { data } = await supabase
+        .from('courses')
+        .select('id, title, title_en, description, price, course_type, is_approved, is_published, created_at')
+        .eq('teacher_id', teacher.id)
+        .order('created_at', { ascending: false });
+      setTeacherCourses((data || []) as PendingCourse[]);
+    } catch (e) {
+      console.error('Error loading teacher courses:', e);
+    } finally {
+      setLoadingTeacherCourses(false);
+    }
+  };
+
   
   // Fetch all data
   const fetchData = useCallback(async () => {
