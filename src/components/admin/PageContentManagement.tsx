@@ -18,8 +18,8 @@ interface PageContent {
   page_name: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
 }
+
 
 // Human-readable labels and descriptions for content keys
 const CONTENT_KEY_INFO: Record<string, Record<string, { label: string; labelEn: string; description: string }>> = {
