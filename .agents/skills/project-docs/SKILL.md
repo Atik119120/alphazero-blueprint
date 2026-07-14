@@ -1,5 +1,5 @@
 ---
-name: docs-source-of-truth
+name: project-docs
 description: docs/ folder holds PRD, DESIGN, ARCHITECTURE, RULES, MEMORY — always consult before major changes
 type: reference
 ---
