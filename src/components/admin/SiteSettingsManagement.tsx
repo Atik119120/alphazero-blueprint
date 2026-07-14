@@ -18,7 +18,9 @@ interface SiteSetting {
   setting_type: string;
 }
 
-const SiteSettingsManagement = () => {
+const PAYMENT_KEYS = new Set(['bkash_number', 'nagad_number', 'bkash_enabled', 'nagad_enabled']);
+
+const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } = {}) => {
   const queryClient = useQueryClient();
   const { scope } = useAdminScope();
   const [editedSettings, setEditedSettings] = useState<Record<string, string>>({});
@@ -144,8 +146,13 @@ const SiteSettingsManagement = () => {
     );
   }
 
-  const toggleSettings = settings?.filter(s => s.setting_type === 'toggle') || [];
-  const otherSettings = settings?.filter(s => s.setting_type !== 'toggle') || [];
+  const filteredAll = (settings || []).filter(s => {
+    if (filter === 'payment') return PAYMENT_KEYS.has(s.setting_key);
+    if (filter === 'general') return !PAYMENT_KEYS.has(s.setting_key);
+    return true;
+  });
+  const toggleSettings = filteredAll.filter(s => s.setting_type === 'toggle');
+  const otherSettings = filteredAll.filter(s => s.setting_type !== 'toggle');
 
   return (
     <div className="space-y-6">
@@ -153,9 +160,11 @@ const SiteSettingsManagement = () => {
         <div className="flex items-center gap-3">
           <Settings className="h-6 w-6 text-primary" />
           <div>
-            <h2 className="text-2xl font-bold">Site Settings</h2>
+            <h2 className="text-2xl font-bold">
+              {filter === 'payment' ? 'Payment Method' : filter === 'general' ? 'Site Settings' : 'Site Settings'}
+            </h2>
             <p className="text-muted-foreground">
-              {scope === "learn" ? "Learn Site" : "Agency Site"} — Favicon, Logo & Site name
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — {filter === 'payment' ? 'Bkash, Nagad & manual payment options' : 'Favicon, Logo & Site name'}
             </p>
           </div>
         </div>
