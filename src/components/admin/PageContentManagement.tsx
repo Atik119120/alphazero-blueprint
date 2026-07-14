@@ -393,6 +393,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
       </div>
 
       {/* Page Selector Cards */}
+      {!lockedPage && (
       <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
         {PAGES.map(page => {
           const count = (contents || []).filter(c => c.page_name === page.id).length;
@@ -414,7 +415,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
                 <Icon className="w-4 h-4" />
               </div>
               <p className={`text-xs font-medium ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {page.label}
+                {page.labelEn}
               </p>
               {count > 0 && (
                 <Badge variant="secondary" className="mt-1 text-[10px] px-1.5 py-0">
@@ -423,13 +424,15 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
               )}
               {count === 0 && (
                 <Badge variant="outline" className="mt-1 text-[10px] px-1.5 py-0 text-orange-500 border-orange-500/30">
-                  খালি
+                  Empty
                 </Badge>
               )}
             </button>
           );
         })}
       </div>
+      )}
+
 
       {/* Selected page description */}
       {selectedPageInfo && (
