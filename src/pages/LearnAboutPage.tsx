@@ -6,13 +6,17 @@ import CoursesFooter from "@/components/CoursesFooter";
 import learnLogo from "@/assets/learn-with-alphazero-logo.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
+import { usePageContent } from "@/hooks/usePageContent";
 
 const LearnAboutPage = () => {
   const { language } = useLanguage();
   const { data: teamMembers } = useTeamMembers();
   const isBn = language === "bn";
+  const { getContent: getPageContent } = usePageContent("learn-about", "learn");
 
   const t = (bn: string, en: string) => (isBn ? bn : en);
+  const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
+    isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
 
   const features = [
     {
