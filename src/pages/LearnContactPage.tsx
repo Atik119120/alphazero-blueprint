@@ -110,9 +110,9 @@ const LearnContactPage = () => {
               className="lg:col-span-3 p-8 rounded-3xl glass-card space-y-5">
               <div>
                 <div className="inline-flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider mb-2">
-                  <Sparkles size={12} /> {t("মেসেজ পাঠান", "Send a Message")}
+                  <Sparkles size={12} /> {cms("form.badge.bn", "form.badge.en", "মেসেজ পাঠান", "Send a Message")}
                 </div>
-                <h2 className="text-2xl font-display font-bold">{t("আপনার প্রশ্ন লিখুন", "Tell us your question")}</h2>
+                <h2 className="text-2xl font-display font-bold">{cms("form.title.bn", "form.title.en", "আপনার প্রশ্ন লিখুন", "Tell us your question")}</h2>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
