@@ -836,27 +836,37 @@ const CoursesPage = () => {
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-10 lg:p-16">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {isBn ? "যোগাযোগ" : "Get in Touch"}
+              {cms("cta.badge.bn", "cta.badge.en", "যোগাযোগ", "Get in Touch")}
             </span>
             <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {t.startCareer} <span className="gradient-text">{t.startToday}</span>
+              {cms("cta.title.bn", "cta.title.en", "শুরু করুন আপনার ক্যারিয়ার", t.startCareer)}{" "}
+              <span className="gradient-text">{cms("cta.title2.bn", "cta.title2.en", "আজই", t.startToday)}</span>
             </h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">{t.ctaSubtitle}</p>
+            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
+              {cms("cta.subtitle.bn", "cta.subtitle.en", "নতুন স্কিল শিখুন, দক্ষতা তৈরি করুন এবং ইন্ডাস্ট্রিতে জায়গা করে নিন।", t.ctaSubtitle)}
+            </p>
 
-            <div className="grid sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto text-left">
-              <a href="tel:+8801776965533" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ফোন" : "Phone"}</p>
-                <p className="text-sm font-semibold">+880 1776-965533</p>
-              </a>
-              <a href="mailto:learn@alphazero.online" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ইমেইল" : "Email"}</p>
-                <p className="text-sm font-semibold break-all">learn@alphazero.online</p>
-              </a>
-              <a href="https://wa.me/+8801776965533" target="_blank" rel="noopener noreferrer" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">WhatsApp</p>
-                <p className="text-sm font-semibold">{isBn ? "চ্যাট করুন" : "Chat with us"}</p>
-              </a>
-            </div>
+            {(() => {
+              const phone = getPageContent("cta.phone") || "+880 1776-965533";
+              const email = getPageContent("cta.email") || "learn@alphazero.online";
+              const waNum = phone.replace(/[^\d+]/g, "");
+              return (
+                <div className="grid sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto text-left">
+                  <a href={`tel:${waNum}`} className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ফোন" : "Phone"}</p>
+                    <p className="text-sm font-semibold">{phone}</p>
+                  </a>
+                  <a href={`mailto:${email}`} className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ইমেইল" : "Email"}</p>
+                    <p className="text-sm font-semibold break-all">{email}</p>
+                  </a>
+                  <a href={`https://wa.me/${waNum}`} target="_blank" rel="noopener noreferrer" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">WhatsApp</p>
+                    <p className="text-sm font-semibold">{isBn ? "চ্যাট করুন" : "Chat with us"}</p>
+                  </a>
+                </div>
+              );
+            })()}
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a href="#courses" className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
