@@ -178,24 +178,25 @@ const AboutPage = () => {
 
                   {/* Social Links */}
                   <div className="flex items-center gap-3">
-                    {founder.facebook_url && (
+                    {founder?.facebook_url && (
                       <a href={founder.facebook_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
                         className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
                         <Facebook size={16} className="text-muted-foreground hover:text-primary" />
                       </a>
                     )}
-                    {founder.instagram_url && (
+                    {founder?.instagram_url && (
                       <a href={founder.instagram_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
                         className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
                         <Instagram size={16} className="text-muted-foreground hover:text-primary" />
                       </a>
                     )}
-                    {founder.linkedin_url && (
+                    {founder?.linkedin_url && (
                       <a href={founder.linkedin_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
                         className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
                         <Linkedin size={16} className="text-muted-foreground hover:text-primary" />
                       </a>
                     )}
+
                     <a href="https://alphazero.online/team" className="ml-auto inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline">
                       View Full Team <ArrowRight size={14} />
                     </a>
