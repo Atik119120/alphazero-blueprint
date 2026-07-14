@@ -357,26 +357,16 @@ const PageContentManagement = () => {
                     ফরম্যাট: section.field (যেমন hero.title, cta.button)
                   </p>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1.5">
-                    <Label className="text-xs flex items-center gap-1"><Globe className="w-3 h-3" /> English</Label>
-                    <Textarea
-                      value={formData.content_en}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content_en: e.target.value }))}
-                      placeholder="English text..."
-                      rows={4}
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label className="text-xs flex items-center gap-1"><Languages className="w-3 h-3" /> বাংলা</Label>
-                    <Textarea
-                      value={formData.content_bn}
-                      onChange={(e) => setFormData(prev => ({ ...prev, content_bn: e.target.value }))}
-                      placeholder="বাংলা টেক্সট..."
-                      rows={4}
-                    />
-                  </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs flex items-center gap-1"><Globe className="w-3 h-3" /> English</Label>
+                  <Textarea
+                    value={formData.content_en}
+                    onChange={(e) => setFormData(prev => ({ ...prev, content_en: e.target.value }))}
+                    placeholder="English text..."
+                    rows={4}
+                  />
                 </div>
+
                 <Button onClick={handleAdd} disabled={addMutation.isPending} className="w-full">
                   {addMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
                   যোগ করুন
