@@ -112,7 +112,9 @@ function AppContent() {
       
       <AIChatbot />
       
+      <SiteScopeProvider>
       <AnimatePresence mode="wait" initial={false}>
+
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0 }}
