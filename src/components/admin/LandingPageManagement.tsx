@@ -181,7 +181,7 @@ export default function LandingPageManagement() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{isBn ? 'What you'll learn' : 'What You'll Learn'}</CardTitle>
+          <CardTitle>{isBn ? "What you'll learn" : "What You'll Learn"}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {outcomes.map((o, i) => (
