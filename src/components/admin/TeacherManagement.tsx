@@ -671,6 +671,10 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                       </div>
                     </div>
                     <div className="flex gap-2 mt-4">
+                      <Button size="sm" variant="outline" className="flex-1 gap-1" onClick={() => openTeacherProfile(teacher)}>
+                        <Eye className="w-3 h-3" />
+                        {language === 'bn' ? 'Profile' : 'Profile'}
+                      </Button>
                       {!teacher.teacher_approved ? (
                         <Button size="sm" className="flex-1 gap-1" onClick={() => approveTeacher(teacher.id)}>
                           <UserCheck className="w-3 h-3" />
@@ -688,6 +692,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                         </Button>
                       )}
                     </div>
+
                   </CardContent>
                 </Card>
               ))}
