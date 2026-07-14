@@ -42,6 +42,7 @@ const ThreadsIcon = () => (
 
 const TeamPage = () => {
   const { t } = useLanguage();
+  const hero = usePageHero("team");
   const { data: teamMembers, isLoading } = useTeamMembers();
 
   // Fetch custom links for all team members
