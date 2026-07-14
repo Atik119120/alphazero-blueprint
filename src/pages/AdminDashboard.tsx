@@ -239,7 +239,7 @@ function AdminDashboardInner() {
   // Approve enrollment request
   const approveEnrollment = async (request: typeof enrollmentRequests[0]) => {
     try {
-      toast.loading(language === 'bn' ? 'অনুমোদন করা হচ্ছে...' : 'Approving...', { id: 'approve' });
+      toast.loading(language === 'bn' ? 'Approving...' : 'Approving...', { id: 'approve' });
       
       // Call approve-enrollment edge function
       const { data, error } = await supabase.functions.invoke('approve-enrollment', {
@@ -248,7 +248,7 @@ function AdminDashboardInner() {
 
       if (error) {
         console.error('Approve error:', error);
-        toast.error(language === 'bn' ? 'অনুমোদন করতে সমস্যা হয়েছে' : 'Error approving enrollment', { id: 'approve' });
+        toast.error(language === 'bn' ? 'Failed to approve' : 'Error approving enrollment', { id: 'approve' });
         return;
       }
 
@@ -263,12 +263,12 @@ function AdminDashboardInner() {
         .delete()
         .eq('id', request.id);
 
-      toast.success(language === 'bn' ? 'অনুমোদিত! Student account তৈরি হয়েছে।' : 'Approved! Student account created.', { id: 'approve' });
+      toast.success(language === 'bn' ? 'Approved! Student account created.' : 'Approved! Student account created.', { id: 'approve' });
       fetchEnrollmentRequests();
       refetchStudents();
     } catch (error) {
       console.error('Error approving enrollment:', error);
-      toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error approving enrollment', { id: 'approve' });
+      toast.error(language === 'bn' ? 'Something went wrong' : 'Error approving enrollment', { id: 'approve' });
     }
   };
 
@@ -282,7 +282,7 @@ function AdminDashboardInner() {
     if (error) {
       toast.error('Error rejecting request');
     } else {
-      toast.success(language === 'bn' ? 'প্রত্যাখ্যান করা হয়েছে' : 'Request rejected');
+      toast.success(language === 'bn' ? 'Rejected' : 'Request rejected');
       fetchEnrollmentRequests();
     }
   };
@@ -290,18 +290,18 @@ function AdminDashboardInner() {
   // Refund UddoktaPay payment
   const refundPayment = async (request: typeof enrollmentRequests[0]) => {
     if (!request.transaction_id || request.payment_method !== 'uddoktapay') {
-      toast.error(language === 'bn' ? 'রিফান্ড করা সম্ভব নয়' : 'Cannot refund this payment');
+      toast.error(language === 'bn' ? 'Refund not possible' : 'Cannot refund this payment');
       return;
     }
 
     const confirmed = window.confirm(
       language === 'bn' 
-        ? `আপনি কি নিশ্চিত যে ${request.student_name} কে রিফান্ড করতে চান?`
+        ? `Are you sure you want to refund ${request.student_name}?`
         : `Are you sure you want to refund ${request.student_name}?`
     );
     if (!confirmed) return;
 
-    toast.loading(language === 'bn' ? 'রিফান্ড প্রসেস হচ্ছে...' : 'Processing refund...', { id: 'refund' });
+    toast.loading(language === 'bn' ? 'Refunding...' : 'Processing refund...', { id: 'refund' });
 
     try {
       // Extract amount from message (format: "Amount: ৳XXX")
@@ -322,18 +322,18 @@ function AdminDashboardInner() {
       });
 
       if (error || !data?.success) {
-        toast.error(language === 'bn' ? 'রিফান্ড ব্যর্থ হয়েছে' : 'Refund failed', { id: 'refund' });
+        toast.error(language === 'bn' ? 'Refund failed' : 'Refund failed', { id: 'refund' });
         return;
       }
 
       // Delete the enrollment request after refund
       await supabase.from('enrollment_requests').delete().eq('id', request.id);
 
-      toast.success(language === 'bn' ? 'রিফান্ড সফল হয়েছে!' : 'Refund successful!', { id: 'refund' });
+      toast.success(language === 'bn' ? 'Refund successful!' : 'Refund successful!', { id: 'refund' });
       fetchEnrollmentRequests();
     } catch (err) {
       console.error('Refund error:', err);
-      toast.error(language === 'bn' ? 'রিফান্ড করতে সমস্যা হয়েছে' : 'Error processing refund', { id: 'refund' });
+      toast.error(language === 'bn' ? 'Failed to refund' : 'Error processing refund', { id: 'refund' });
     }
   };
 
@@ -425,7 +425,7 @@ function AdminDashboardInner() {
       toast.error(result.error);
       return;
     }
-    toast.success('কোর্স যোগ হয়েছে');
+    toast.success('Course added');
     setShowAssignDialog(false);
   };
 
@@ -435,7 +435,7 @@ function AdminDashboardInner() {
       toast.error(result.error);
       return;
     }
-    toast.success('কোর্স সরানো হয়েছে');
+    toast.success('Course removed');
   };
 
   const availableCoursesForAssign = assigningStudent 
@@ -445,13 +445,13 @@ function AdminDashboardInner() {
   // Delete single student
   const handleDeleteStudent = async (profileId: string, studentName: string) => {
     if (!confirm(language === 'bn' 
-      ? `"${studentName}" কে মুছে ফেলতে চান? এটা undo করা যাবে না।` 
+      ? `Delete "${studentName}"? This cannot be undone.` 
       : `Delete "${studentName}"? This cannot be undone.`)) {
       return;
     }
 
     try {
-      toast.loading(language === 'bn' ? 'মুছে ফেলা হচ্ছে...' : 'Deleting...', { id: 'delete-student' });
+      toast.loading(language === 'bn' ? 'Deleting...' : 'Deleting...', { id: 'delete-student' });
       
       const { data, error } = await supabase.functions.invoke('delete-student', {
         body: { student_ids: [profileId] }
@@ -463,14 +463,14 @@ function AdminDashboardInner() {
       }
 
       if (data?.deleted_count > 0) {
-        toast.success(language === 'bn' ? 'সফলভাবে মুছে ফেলা হয়েছে' : 'Successfully deleted', { id: 'delete-student' });
+        toast.success(language === 'bn' ? 'Successfully deleted' : 'Successfully deleted', { id: 'delete-student' });
         refetchStudents();
       } else {
         toast.error(data?.errors?.[0] || 'Failed to delete', { id: 'delete-student' });
       }
     } catch (error) {
       console.error('Delete error:', error);
-      toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error occurred', { id: 'delete-student' });
+      toast.error(language === 'bn' ? 'Something went wrong' : 'Error occurred', { id: 'delete-student' });
     }
   };
 
@@ -482,7 +482,7 @@ function AdminDashboardInner() {
     try {
       toast.loading(
         language === 'bn' 
-          ? `${selectedStudents.length} জন ছাত্র মুছে ফেলা হচ্ছে...` 
+          ? `Deleting ${selectedStudents.length} students...` 
           : `Deleting ${selectedStudents.length} students...`, 
         { id: 'bulk-delete' }
       );
@@ -498,7 +498,7 @@ function AdminDashboardInner() {
 
       toast.success(
         language === 'bn' 
-          ? `${data?.deleted_count || 0} জন ছাত্র মুছে ফেলা হয়েছে` 
+          ? `${data?.deleted_count || 0} students deleted` 
           : `${data?.deleted_count || 0} students deleted`, 
         { id: 'bulk-delete' }
       );
@@ -508,7 +508,7 @@ function AdminDashboardInner() {
       refetchStudents();
     } catch (error) {
       console.error('Bulk delete error:', error);
-      toast.error(language === 'bn' ? 'সমস্যা হয়েছে' : 'Error occurred', { id: 'bulk-delete' });
+      toast.error(language === 'bn' ? 'Something went wrong' : 'Error occurred', { id: 'bulk-delete' });
     } finally {
       setDeletingStudents(false);
     }
@@ -537,12 +537,12 @@ function AdminDashboardInner() {
   // Add student handler - using Edge Function to avoid session switch
   const handleAddStudent = async () => {
     if (!newStudentName.trim() || !newStudentEmail.trim() || !newStudentPassword.trim()) {
-      toast.error('সব তথ্য দিন');
+      toast.error('Provide all information');
       return;
     }
 
     if (newStudentPassword.length < 6) {
-      toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
@@ -560,7 +560,7 @@ function AdminDashboardInner() {
       });
 
       if (error) {
-        toast.error(error.message || 'ছাত্র তৈরি করতে সমস্যা হয়েছে');
+        toast.error(error.message || 'Failed to create student');
         setAddingStudent(false);
         return;
       }
@@ -571,7 +571,7 @@ function AdminDashboardInner() {
         return;
       }
 
-      toast.success('ছাত্র সফলভাবে যোগ হয়েছে!');
+      toast.success('Student added successfully!');
       setShowAddStudentDialog(false);
       setNewStudentName('');
       setNewStudentEmail('');
@@ -580,7 +580,7 @@ function AdminDashboardInner() {
       refetchStudents();
     } catch (error) {
       console.error('Add student error:', error);
-      toast.error('কিছু ভুল হয়েছে');
+      toast.error('Something went wrong');
     } finally {
       setAddingStudent(false);
     }
@@ -589,17 +589,17 @@ function AdminDashboardInner() {
   // Change password handler
   const handleChangePassword = async () => {
     if (!newPassword.trim() || !confirmPassword.trim()) {
-      toast.error('সব তথ্য দিন');
+      toast.error('Provide all information');
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      toast.error('পাসওয়ার্ড মিলছে না');
+      toast.error('Passwords do not match');
       return;
     }
 
@@ -616,12 +616,12 @@ function AdminDashboardInner() {
         return;
       }
 
-      toast.success('পাসওয়ার্ড পরিবর্তন হয়েছে!');
+      toast.success('Password changed!');
       setShowPasswordDialog(false);
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      toast.error('কিছু ভুল হয়েছে');
+      toast.error('Something went wrong');
     } finally {
       setChangingPassword(false);
     }
@@ -630,12 +630,12 @@ function AdminDashboardInner() {
   // Add admin handler
   const handleAddAdmin = async () => {
     if (!newAdminName.trim() || !newAdminEmail.trim() || !newAdminPassword.trim()) {
-      toast.error('সব তথ্য দিন');
+      toast.error('Provide all information');
       return;
     }
 
     if (newAdminPassword.length < 6) {
-      toast.error('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে');
+      toast.error('Password must be at least 6 characters');
       return;
     }
 
@@ -651,7 +651,7 @@ function AdminDashboardInner() {
       });
 
       if (error) {
-        toast.error(error.message || 'Admin তৈরি করতে সমস্যা হয়েছে');
+        toast.error(error.message || 'Failed to create Admin');
         return;
       }
 
@@ -660,7 +660,7 @@ function AdminDashboardInner() {
         return;
       }
 
-      toast.success('নতুন Admin সফলভাবে যোগ হয়েছে!');
+      toast.success('New Admin added successfully!');
       setShowAddAdminDialog(false);
       setNewAdminName('');
       setNewAdminEmail('');
@@ -669,7 +669,7 @@ function AdminDashboardInner() {
       setNewAdminPassword('');
     } catch (error) {
       console.error('Add admin error:', error);
-      toast.error('কিছু ভুল হয়েছে');
+      toast.error('Something went wrong');
     } finally {
       setAddingAdmin(false);
     }
@@ -678,7 +678,7 @@ function AdminDashboardInner() {
   // Update profile handler
   const handleUpdateProfile = async () => {
     if (!editName.trim()) {
-      toast.error('নাম দিন');
+      toast.error('Enter name');
       return;
     }
 
@@ -706,15 +706,15 @@ function AdminDashboardInner() {
           toast.error(emailError.message);
           return;
         }
-        toast.info('ইমেইল আপডেট করতে নতুন ইমেইলে confirm করুন');
+        toast.info('Confirm new email to update email');
       }
 
-      toast.success('প্রোফাইল আপডেট হয়েছে!');
+      toast.success('Profile updated!');
       setShowEditProfileDialog(false);
       window.location.reload();
     } catch (error) {
       console.error('Update profile error:', error);
-      toast.error('কিছু ভুল হয়েছে');
+      toast.error('Something went wrong');
     } finally {
       setUpdatingProfile(false);
     }
@@ -726,12 +726,12 @@ function AdminDashboardInner() {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      toast.error('শুধু ইমেজ ফাইল আপলোড করুন');
+      toast.error('Upload image files only');
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      toast.error('ফাইল সাইজ ২MB এর কম হতে হবে');
+      toast.error('File size must be less than 2MB');
       return;
     }
 
@@ -767,11 +767,11 @@ function AdminDashboardInner() {
         return;
       }
 
-      toast.success('প্রোফাইল ছবি আপলোড হয়েছে!');
+      toast.success('Profile picture uploaded!');
       window.location.reload();
     } catch (error) {
       console.error('Avatar upload error:', error);
-      toast.error('কিছু ভুল হয়েছে');
+      toast.error('Something went wrong');
     } finally {
       setUploadingAvatar(false);
     }
@@ -806,35 +806,35 @@ function AdminDashboardInner() {
   // Navigation items - grouped logically
   // scopeTag: 'learn' | 'agency' | 'both' — controls visibility per selected site scope
   const lmsCoreItemsAll = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses', scopeTag: 'learn' as const },
-    { id: 'students', icon: Users, label: language === 'bn' ? 'ছাত্র' : 'Students', scopeTag: 'learn' as const },
-    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'টিচার' : 'Teachers', scopeTag: 'learn' as const },
-    { id: 'requests', icon: Mail, label: language === 'bn' ? 'রিকোয়েস্ট' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'Course' : 'Courses', scopeTag: 'learn' as const },
+    { id: 'students', icon: Users, label: language === 'bn' ? 'Student' : 'Students', scopeTag: 'learn' as const },
+    { id: 'teachers', icon: GraduationCap, label: language === 'bn' ? 'Teacher' : 'Teachers', scopeTag: 'learn' as const },
+    { id: 'requests', icon: Mail, label: language === 'bn' ? 'Request' : 'Requests', badge: enrollmentRequests.filter(r => r.status === 'pending').length, scopeTag: 'learn' as const },
   ];
 
   const lmsMoreItemsAll = [
-    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'এনালাইটিক্স' : 'Analytics', scopeTag: 'both' as const },
-    { id: 'email', icon: Send, label: language === 'bn' ? 'ইমেইল' : 'Email', scopeTag: 'both' as const },
-    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'ফিডব্যাক' : 'Feedback', scopeTag: 'both' as const },
-    { id: 'comments', icon: FileText, label: language === 'bn' ? 'কমেন্ট' : 'Comments', scopeTag: 'learn' as const },
-    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'কুপন' : 'Coupons', scopeTag: 'learn' as const },
+    { id: 'analytics', icon: BarChart3, label: language === 'bn' ? 'Analytics' : 'Analytics', scopeTag: 'both' as const },
+    { id: 'email', icon: Send, label: language === 'bn' ? 'Email' : 'Email', scopeTag: 'both' as const },
+    { id: 'feedback', icon: FileText, label: language === 'bn' ? 'Feedback' : 'Feedback', scopeTag: 'both' as const },
+    { id: 'comments', icon: FileText, label: language === 'bn' ? 'Comment' : 'Comments', scopeTag: 'learn' as const },
+    { id: 'coupons', icon: Ticket, label: language === 'bn' ? 'Coupon' : 'Coupons', scopeTag: 'learn' as const },
   ];
 
   const cmsItemsAll = [
-    { id: 'homepage', icon: Home, label: language === 'bn' ? 'হোমপেজ' : 'Homepage', scopeTag: 'both' as const },
+    { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
     { id: 'contact', icon: Phone, label: 'Contact', scopeTag: 'both' as const },
-    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page', scopeTag: 'learn' as const },
-    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', scopeTag: 'agency' as const },
-    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', scopeTag: 'agency' as const },
-    { id: 'services', icon: Wrench, label: language === 'bn' ? 'সার্ভিস' : 'Services', scopeTag: 'agency' as const },
-    { id: 'footer', icon: Link2, label: language === 'bn' ? 'ফুটার' : 'Footer', scopeTag: 'both' as const },
+    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'Landing Page' : 'Landing Page', scopeTag: 'learn' as const },
+    { id: 'works', icon: Briefcase, label: language === 'bn' ? 'Works' : 'Works', scopeTag: 'agency' as const },
+    { id: 'team', icon: UsersRound, label: language === 'bn' ? 'Team' : 'Team', scopeTag: 'agency' as const },
+    { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
+    { id: 'footer', icon: Link2, label: language === 'bn' ? 'Footer' : 'Footer', scopeTag: 'both' as const },
   ];
 
   const settingsItemsAll = [
-    { id: 'settings', icon: Settings, label: language === 'bn' ? 'সেটিংস' : 'Settings', scopeTag: 'both' as const },
-    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API কী' : 'API Keys', scopeTag: 'both' as const },
-    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'পেমেন্ট API' : 'Payment API', scopeTag: 'both' as const },
-    { id: 'profile', icon: User, label: language === 'bn' ? 'এডমিন' : 'Admins', scopeTag: 'both' as const },
+    { id: 'settings', icon: Settings, label: language === 'bn' ? 'Settings' : 'Settings', scopeTag: 'both' as const },
+    { id: 'apikeys', icon: Key, label: language === 'bn' ? 'API Key' : 'API Keys', scopeTag: 'both' as const },
+    { id: 'paymentapi', icon: Key, label: language === 'bn' ? 'Payment API' : 'Payment API', scopeTag: 'both' as const },
+    { id: 'profile', icon: User, label: language === 'bn' ? 'Admin' : 'Admins', scopeTag: 'both' as const },
   ];
 
   const inScope = (t: 'learn' | 'agency' | 'both') => t === 'both' || t === scope;
@@ -961,7 +961,7 @@ function AdminDashboardInner() {
           {/* Settings Section */}
           <div>
             <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
-              {language === 'bn' ? 'সেটিংস' : 'Settings'}
+              {language === 'bn' ? 'Settings' : 'Settings'}
             </p>
             <div className="space-y-0.5">
               {settingsItems.map((item) => renderNavButton(item, 'from-amber-500 to-orange-500'))}
@@ -1062,11 +1062,10 @@ function AdminDashboardInner() {
           {/* Quick Stats - Minimal Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
             {[
-              { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'কোর্স' : 'Courses', color: 'text-sky-500' },
-              { icon: Users, value: studentsList.length, label: language === 'bn' ? 'ছাত্র' : 'Students', color: 'text-emerald-500' },
+              { icon: BookOpen, value: courses.length, label: language === 'bn' ? 'Course' : 'Courses', color: 'text-sky-500' },
+              { icon: Users, value: studentsList.length, label: language === 'bn' ? 'Student' : 'Students', color: 'text-emerald-500' },
               { icon: GraduationCap, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-violet-500' },
-              { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500' },
-              { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
+              { icon: Check, value: courses.filter(c => c.is_published).length, label: language === 'bn' ? 'প্রকাশিত' : 'Published', color: 'text-amber-500'}, { icon: Banknote, value: `৳${totalRevenue.toLocaleString(language === 'bn' ? 'bn-BD' : 'en-US')}`, label: language === 'bn' ? 'বিক্রি' : 'Revenue', color: 'text-rose-500' },
             ].map((stat, index) => (
               <div 
                 key={index}
@@ -1110,7 +1109,7 @@ function AdminDashboardInner() {
           <TabsContent value="analytics" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'এনালাইটিক্স ড্যাশবোর্ড' : 'Analytics Dashboard'}
+                {language === 'bn' ? 'Analytics ড্যাশবোর্ড' : 'Analytics Dashboard'}
               </h2>
             </div>
 
@@ -1120,10 +1119,10 @@ function AdminDashboardInner() {
                 <CardHeader>
                   <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <BarChart3 className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'কোর্স অনুযায়ী ছাত্র' : 'Students by Course'}
+                    {language === 'bn' ? 'Course অনুযায়ী Student' : 'Students by Course'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'প্রতিটি কোর্সে কতজন ছাত্র এনরোল করেছে' : 'Number of students enrolled in each course'}
+                    {language === 'bn' ? 'প্রতিটি Courseে কতজন Student এনরোল করেছে' : 'Number of students enrolled in each course'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1160,10 +1159,10 @@ function AdminDashboardInner() {
                 <CardHeader>
                   <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <PieChart className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'ছাত্র বন্টন' : 'Student Distribution'}
+                    {language === 'bn' ? 'Student বন্টন' : 'Student Distribution'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'কোন কোর্সে কত শতাংশ ছাত্র' : 'Percentage of students per course'}
+                    {language === 'bn' ? 'কোন Courseে কত শতাংশ Student' : 'Percentage of students per course'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1190,7 +1189,7 @@ function AdminDashboardInner() {
                             borderRadius: '8px'
                           }}
                           formatter={(value: number, name: string) => [
-                            `${value} ${language === 'bn' ? 'জন ছাত্র' : 'students'}`,
+                            `${value} ${language === 'bn' ? 'জন Student' : 'students'}`,
                             name
                           ]}
                         />
@@ -1209,10 +1208,10 @@ function AdminDashboardInner() {
                 <CardHeader>
                   <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <Banknote className="w-5 h-5 text-amber-500" />
-                    {language === 'bn' ? 'কোর্স অনুযায়ী বিক্রি' : 'Sales by Course'}
+                    {language === 'bn' ? 'Course অনুযায়ী বিক্রি' : 'Sales by Course'}
                   </CardTitle>
                   <CardDescription>
-                    {language === 'bn' ? 'প্রতিটি কোর্স থেকে কত টাকা আয় হয়েছে' : 'Revenue generated from each course'}
+                    {language === 'bn' ? 'প্রতিটি Course থেকে কত টাকা আয় হয়েছে' : 'Revenue generated from each course'}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -1241,7 +1240,7 @@ function AdminDashboardInner() {
                     <div className="h-[250px] flex items-center justify-center text-muted-foreground flex-col gap-2">
                       <Banknote className="w-12 h-12 opacity-50" />
                       <p>{language === 'bn' ? 'এখনো কোনো বিক্রি নেই' : 'No sales yet'}</p>
-                      <p className="text-xs">{language === 'bn' ? 'কোর্সে দাম সেট করুন এবং ছাত্র এনরোল করুন' : 'Set course prices and enroll students'}</p>
+                      <p className="text-xs">{language === 'bn' ? 'Courseে দাম সেট করুন এবং Student এনরোল করুন' : 'Set course prices and enroll students'}</p>
                     </div>
                   )}
                 </CardContent>
@@ -1260,13 +1259,13 @@ function AdminDashboardInner() {
                     <div className="bg-gradient-to-br from-primary/10 to-cyan-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-primary">{studentsList.length}</p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'মোট ছাত্র' : 'Total Students'}
+                        {language === 'bn' ? 'মোট Student' : 'Total Students'}
                       </p>
                     </div>
                     <div className="bg-gradient-to-br from-emerald-500/10 to-green-500/10 rounded-xl p-4 text-center">
                       <p className="text-3xl font-bold text-emerald-600">{courses.filter(c => c.is_published).length}</p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'প্রকাশিত কোর্স' : 'Published Courses'}
+                        {language === 'bn' ? 'প্রকাশিত Course' : 'Published Courses'}
                       </p>
                     </div>
                     <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 rounded-xl p-4 text-center">
@@ -1280,7 +1279,7 @@ function AdminDashboardInner() {
                         {courses.length > 0 ? Math.round((studentsList.length / Math.max(courses.length, 1)) * 10) / 10 : 0}
                       </p>
                       <p className={`text-sm text-muted-foreground ${language === 'bn' ? 'font-[MahinRafid]' : ''}`}>
-                        {language === 'bn' ? 'গড় ছাত্র/কোর্স' : 'Avg Students/Course'}
+                        {language === 'bn' ? 'গড় Student/Course' : 'Avg Students/Course'}
                       </p>
                     </div>
                   </div>
@@ -1288,7 +1287,7 @@ function AdminDashboardInner() {
                   {/* Top Courses */}
                   <div className="pt-4 border-t">
                     <h4 className={`text-sm font-medium mb-3 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                      {language === 'bn' ? 'জনপ্রিয় কোর্স' : 'Top Courses'}
+                      {language === 'bn' ? 'জনপ্রিয় Course' : 'Top Courses'}
                     </h4>
                     <div className="space-y-2">
                       {courseEnrollmentStats.slice(0, 3).map((course, index) => (
@@ -1322,7 +1321,7 @@ function AdminDashboardInner() {
           <TabsContent value="requests" className="space-y-6">
             <div className="flex items-center justify-between">
               <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'এনরোলমেন্ট রিকোয়েস্ট' : 'Enrollment Requests'}
+                {language === 'bn' ? 'এনরোলমেন্ট Request' : 'Enrollment Requests'}
               </h2>
               <Button 
                 variant="outline" 
@@ -1348,7 +1347,7 @@ function AdminDashboardInner() {
               <Card className="border-dashed">
                 <CardContent className="py-12 text-center">
                   <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">{language === 'bn' ? 'কোনো রিকোয়েস্ট নেই' : 'No enrollment requests'}</p>
+                  <p className="text-muted-foreground">{language === 'bn' ? 'কোনো Request নেই' : 'No enrollment requests'}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -1485,13 +1484,13 @@ function AdminDashboardInner() {
           <TabsContent value="students" className="space-y-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
-                {language === 'bn' ? 'ছাত্র তালিকা' : 'Student List'}
+                {language === 'bn' ? 'Student তালিকা' : 'Student List'}
               </h2>
               <div className="flex items-center gap-3 w-full sm:w-auto flex-wrap">
                 <div className="relative flex-1 sm:flex-initial">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    placeholder={language === 'bn' ? 'নাম, ইমেইল বা ফোন...' : 'Name, email or phone...'}
+                    placeholder={language === 'bn' ? 'নাম, Email বা ফোন...' : 'Name, email or phone...'}
                     value={studentSearch}
                     onChange={(e) => setStudentSearch(e.target.value)}
                     className="pl-9 w-full sm:w-64"
@@ -1499,7 +1498,7 @@ function AdminDashboardInner() {
                 </div>
                 <Button onClick={() => setShowAddStudentDialog(true)} className="gap-2 whitespace-nowrap">
                   <UserPlus className="w-4 h-4" />
-                  <span className="hidden sm:inline">{language === 'bn' ? 'নতুন ছাত্র' : 'New Student'}</span>
+                  <span className="hidden sm:inline">{language === 'bn' ? 'নতুন Student' : 'New Student'}</span>
                 </Button>
               </div>
             </div>
@@ -1515,7 +1514,7 @@ function AdminDashboardInner() {
                 />
                 <span className="text-sm text-muted-foreground">
                   {selectedStudents.length > 0 
-                    ? (language === 'bn' ? `${selectedStudents.length} জন সিলেক্ট করা হয়েছে` : `${selectedStudents.length} selected`)
+                    ? (language === 'bn' ? `${selectedStudents.length} selected` : `${selectedStudents.length} selected`)
                     : (language === 'bn' ? 'সব সিলেক্ট করুন' : 'Select all')}
                 </span>
                 {selectedStudents.length > 0 && (
@@ -1527,7 +1526,7 @@ function AdminDashboardInner() {
                     disabled={deletingStudents}
                   >
                     <Trash2 className="w-4 h-4" />
-                    {language === 'bn' ? `${selectedStudents.length} জন মুছুন` : `Delete ${selectedStudents.length}`}
+                    {language === 'bn' ? `Delete ${selectedStudents.length}` : `Delete ${selectedStudents.length}`}
                   </Button>
                 )}
               </div>
@@ -1542,7 +1541,7 @@ function AdminDashboardInner() {
                   </DialogTitle>
                   <DialogDescription>
                     {language === 'bn' 
-                      ? `আপনি ${selectedStudents.length} জন ছাত্র মুছে ফেলতে যাচ্ছেন। এটা undo করা যাবে না। তাদের সব ডাটা, progress, certificates মুছে যাবে।`
+                      ? `You are about to delete ${selectedStudents.length} students. This cannot be undone. All their data, progress, and certificates will be permanently removed.`
                       : `You are about to delete ${selectedStudents.length} students. This cannot be undone. All their data, progress, and certificates will be permanently removed.`}
                   </DialogDescription>
                 </DialogHeader>
@@ -1556,7 +1555,7 @@ function AdminDashboardInner() {
                     disabled={deletingStudents}
                   >
                     {deletingStudents 
-                      ? (language === 'bn' ? 'মুছে ফেলা হচ্ছে...' : 'Deleting...')
+                      ? (language === 'bn' ? 'Deleting...' : 'Deleting...')
                       : (language === 'bn' ? 'হ্যাঁ, মুছে ফেলুন' : 'Yes, Delete All')}
                   </Button>
                 </DialogFooter>
@@ -1570,12 +1569,12 @@ function AdminDashboardInner() {
                 <div className="flex items-center justify-between">
                   <CardTitle className={`text-base flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                     <TrendingUp className="w-5 h-5 text-primary" />
-                    {language === 'bn' ? 'কোর্স এনরোলমেন্ট ও বিক্রি' : 'Course Enrollment & Sales'}
+                    {language === 'bn' ? 'Course এনরোলমেন্ট ও বিক্রি' : 'Course Enrollment & Sales'}
                   </CardTitle>
                   <div className="flex items-center gap-2 text-sm">
                     <Banknote className="w-4 h-4 text-amber-500" />
                     <span className="font-semibold text-amber-600">
-                      {language === 'bn' ? `মোট: ৳${totalRevenue.toLocaleString('bn-BD')}` : `Total: ৳${totalRevenue.toLocaleString()}`}
+                      {language === 'bn' ? `Total: ৳${totalRevenue.toLocaleString('bn-BD'Total: ৳${totalRevenue.toLocaleString()}`}
                     </span>
                   </div>
                 </div>
@@ -1608,7 +1607,7 @@ function AdminDashboardInner() {
                 </div>
                 {courseEnrollmentStats.length === 0 && (
                   <p className="text-sm text-muted-foreground text-center py-4">
-                    {language === 'bn' ? 'কোনো কোর্স নেই' : 'No courses'}
+                    {language === 'bn' ? 'কোনো Course নেই' : 'No courses'}
                   </p>
                 )}
               </CardContent>
@@ -1620,13 +1619,13 @@ function AdminDashboardInner() {
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">
                     {studentSearch
-                      ? (language === 'bn' ? 'কোনো ছাত্র পাওয়া যায়নি' : 'No students found')
-                      : (language === 'bn' ? 'কোনো ছাত্র নেই' : 'No students')}
+                      ? (language === 'bn' ? 'কোনো Student পাওয়া যায়নি' : 'No students found')
+                      : (language === 'bn' ? 'কোনো Student নেই' : 'No students')}
                   </p>
                   {!studentSearch && (
                     <Button onClick={() => setShowAddStudentDialog(true)} className="mt-4 gap-2">
                       <UserPlus className="w-4 h-4" />
-                      {language === 'bn' ? 'প্রথম ছাত্র যোগ করুন' : 'Add First Student'}
+                      {language === 'bn' ? 'প্রথম Student যোগ করুন' : 'Add First Student'}
                     </Button>
                   )}
                 </CardContent>
@@ -1636,7 +1635,7 @@ function AdminDashboardInner() {
                 {studentSearch && (
                   <p className="text-sm text-muted-foreground">
                     {language === 'bn'
-                      ? `${filteredStudents.length} জন ছাত্র পাওয়া গেছে`
+                      ? `${filteredStudents.length} জন Student পাওয়া গেছে`
                       : `${filteredStudents.length} students found`}
                   </p>
                 )}
@@ -1645,7 +1644,7 @@ function AdminDashboardInner() {
                 {!studentSearch && unassignedStudents.length > 0 && (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'নতুন / কোর্স দেওয়া হয়নি' : 'New / Unassigned'}</h3>
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'নতুন / Course দেওয়া হয়নি' : 'New / Unassigned'}</h3>
                       <Badge variant="outline">{unassignedStudents.length}</Badge>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -1672,9 +1671,9 @@ function AdminDashboardInner() {
                           <CardContent className="pt-0 space-y-3">
                             {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
                             <div className="flex items-center justify-between text-sm">
-                              <Badge variant="outline" className="text-xs">{language === 'bn' ? 'কোর্স নেই' : 'No course'}</Badge>
+                              <Badge variant="outline" className="text-xs">{language === 'bn' ? 'Course নেই' : 'No course'}</Badge>
                               <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
-                                <Plus className="w-3 h-3" />{language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
+                                <Plus className="w-3 h-3" />{language === 'bn' ? 'Course যোগ' : 'Add Course'}
                               </Button>
                             </div>
                             <p className="text-xs text-muted-foreground">{language === 'bn' ? 'তৈরি:' : 'Created:'} {formatDateTime(student.created_at)}</p>
@@ -1689,7 +1688,7 @@ function AdminDashboardInner() {
                 <div className="space-y-3">
                   {!studentSearch && (
                     <div className="flex items-center justify-between">
-                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'কোর্স দেওয়া আছে' : 'Assigned'}</h3>
+                      <h3 className={`text-sm font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>{language === 'bn' ? 'Course দেওয়া আছে' : 'Assigned'}</h3>
                       <Badge variant="outline">{assignedStudents.length}</Badge>
                     </div>
                   )}
@@ -1717,9 +1716,9 @@ function AdminDashboardInner() {
                         <CardContent className="pt-0 space-y-3">
                           {student.phone_number && <p className="text-xs text-muted-foreground flex items-center gap-1"><Phone className="w-3 h-3" /> {student.phone_number}</p>}
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">{student.courses.length} {language === 'bn' ? 'কোর্স' : 'courses'}</span>
+                            <span className="text-muted-foreground">{student.courses.length} {language === 'bn' ? 'Course' : 'courses'}</span>
                             <Button variant="outline" size="sm" className="h-6 text-xs gap-1" onClick={() => openStudentAssignDialog(student)}>
-                              <Plus className="w-3 h-3" />{language === 'bn' ? 'কোর্স যোগ' : 'Add Course'}
+                              <Plus className="w-3 h-3" />{language === 'bn' ? 'Course যোগ' : 'Add Course'}
                             </Button>
                           </div>
                           {student.courses.length > 0 && (
@@ -1947,7 +1946,7 @@ function AdminDashboardInner() {
                   <div>
                     <CardTitle className={`text-lg flex items-center gap-2 ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
                       <Shield className="w-5 h-5" />
-                      {language === 'bn' ? `সকল Admin (${admins.length})` : `All Admins (${admins.length})`}
+                      {language === 'bn' ? `All Admins (${admins.length})` : `All Admins (${admins.length})`}
                     </CardTitle>
                     <CardDescription>
                       {language === 'bn' ? 'যারা এই প্ল্যাটফর্ম ম্যানেজ করতে পারে' : 'Those who can manage this platform'}
@@ -2033,10 +2032,10 @@ function AdminDashboardInner() {
       <Dialog open={showAssignDialog} onOpenChange={setShowAssignDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{language === 'bn' ? 'কোর্স যোগ করুন' : 'Add Course'}</DialogTitle>
+            <DialogTitle>{language === 'bn' ? 'Course যোগ করুন' : 'Add Course'}</DialogTitle>
             <DialogDescription>
               {language === 'bn' 
-                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code> এ কোর্স অ্যাসাইন করতে নিচে থেকে সিলেক্ট করুন</>
+                ? <><code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code> Select a course to assign below]</>
                 : <>Select a course to assign to <code className="font-mono bg-muted px-2 py-1 rounded">{assigningStudent?.full_name}</code></>
               }
             </DialogDescription>
@@ -2046,7 +2045,7 @@ function AdminDashboardInner() {
               <div className="text-center py-8">
                 <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                 <p className="text-muted-foreground">
-                  {language === 'bn' ? 'সব কোর্স ইতিমধ্যে অ্যাসাইন করা হয়েছে' : 'All courses are already assigned'}
+                  {language === 'bn' ? 'সব Course ইতিমধ্যে অ্যাসাইন করা হয়েছে' : 'All courses are already assigned'}
                 </p>
               </div>
             ) : (
@@ -2111,10 +2110,10 @@ function AdminDashboardInner() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <UserPlus className="w-5 h-5" />
-              {language === 'bn' ? 'নতুন ছাত্র যোগ করুন' : 'Add New Student'}
+              {language === 'bn' ? 'নতুন Student যোগ করুন' : 'Add New Student'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'ছাত্রের তথ্য দিন' : 'Enter student details'}
+              {language === 'bn' ? 'Studentের তথ্য দিন' : 'Enter student details'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -2126,13 +2125,13 @@ function AdminDashboardInner() {
                   id="student-name"
                   value={newStudentName}
                   onChange={(e) => setNewStudentName(e.target.value)}
-                  placeholder={language === 'bn' ? 'ছাত্রের নাম' : 'Student name'}
+                  placeholder={language === 'bn' ? 'Studentের নাম' : 'Student name'}
                   className="pl-10"
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="student-email">{language === 'bn' ? 'ইমেইল' : 'Email'}</Label>
+              <Label htmlFor="student-email">{language === 'bn' ? 'Email' : 'Email'}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -2172,7 +2171,7 @@ function AdminDashboardInner() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'ফোন নম্বর দিলে ছাত্র সেটার সাথে লিংক হবে' : 'Enter student phone number'}
+                {language === 'bn' ? 'ফোন নম্বর দিলে Student সেটার সাথে লিংক হবে' : 'Enter student phone number'}
               </p>
             </div>
           </div>
@@ -2181,7 +2180,7 @@ function AdminDashboardInner() {
               {language === 'bn' ? 'বাতিল' : 'Cancel'}
             </Button>
             <Button onClick={handleAddStudent} disabled={addingStudent}>
-              {addingStudent ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'ছাত্র যোগ করুন' : 'Add Student')}
+              {addingStudent ? (language === 'bn' ? 'যোগ হচ্ছে...' : 'Adding...') : (language === 'bn' ? 'Student যোগ করুন' : 'Add Student')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2303,7 +2302,7 @@ function AdminDashboardInner() {
               {language === 'bn' ? 'প্রোফাইল এডিট' : 'Edit Profile'}
             </DialogTitle>
             <DialogDescription>
-              {language === 'bn' ? 'আপনার নাম এবং ইমেইল পরিবর্তন করুন' : 'Change your name and email'}
+              {language === 'bn' ? 'আপনার নাম এবং Email পরিবর্তন করুন' : 'Change your name and email'}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -2317,16 +2316,16 @@ function AdminDashboardInner() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-email">{language === 'bn' ? 'ইমেইল' : 'Email'}</Label>
+              <Label htmlFor="edit-email">{language === 'bn' ? 'Email' : 'Email'}</Label>
               <Input
                 id="edit-email"
                 type="email"
                 value={editEmail}
                 onChange={(e) => setEditEmail(e.target.value)}
-                placeholder={language === 'bn' ? 'আপনার ইমেইল' : 'Your email'}
+                placeholder={language === 'bn' ? 'আপনার Email' : 'Your email'}
               />
               <p className="text-xs text-muted-foreground">
-                {language === 'bn' ? 'ইমেইল পরিবর্তন করলে নতুন ইমেইলে confirm করতে হবে' : 'Email change requires confirmation on new email'}
+                {language === 'bn' ? 'Email পরিবর্তন করলে নতুন Emailে confirm করতে হবে' : 'Email change requires confirmation on new email'}
               </p>
             </div>
           </div>
@@ -2364,7 +2363,7 @@ function AdminDashboardInner() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="admin-email">{language === 'bn' ? 'ইমেইল' : 'Email'}</Label>
+              <Label htmlFor="admin-email">{language === 'bn' ? 'Email' : 'Email'}</Label>
               <Input
                 id="admin-email"
                 type="email"

@@ -24,124 +24,124 @@ interface PageContent {
 // Human-readable labels and descriptions for content keys
 const CONTENT_KEY_INFO: Record<string, Record<string, { label: string; labelEn: string; description: string }>> = {
   home: {
-    'hero.title': { label: '🏠 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'হোম পেজের একদম উপরের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 হিরো সাবটাইটেল', labelEn: 'Hero Subtitle', description: 'টাইটেলের উপরের ছোট ট্যাগলাইন' },
-    'hero.description': { label: '📝 হিরো বর্ণনা', labelEn: 'Hero Description', description: 'হিরো সেকশনের প্যারাগ্রাফ টেক্সট' },
-    'hero.tagline': { label: '⚡ ট্যাগলাইন', labelEn: 'Tagline', description: 'ছোট ব্র্যান্ড ট্যাগলাইন' },
-    'hero.cta1': { label: '🔗 প্রাইমারি বাটন', labelEn: 'Primary CTA', description: 'হিরোর প্রথম বাটনের টেক্সট' },
-    'hero.cta2': { label: '🔗 সেকেন্ডারি বাটন', labelEn: 'Secondary CTA', description: 'হিরোর দ্বিতীয় বাটনের টেক্সট' },
-    'services.title': { label: '🛠️ সার্ভিস শিরোনাম', labelEn: 'Services Section Title', description: 'হোম পেজে সার্ভিস সেকশনের হেডিং' },
-    'services.subtitle': { label: '🛠️ সার্ভিস সাবটাইটেল', labelEn: 'Services Subtitle', description: 'সার্ভিস সেকশনের ছোট বর্ণনা' },
-    'stats.projects': { label: '📊 প্রজেক্ট সংখ্যা', labelEn: 'Projects Count', description: 'প্রজেক্টের সংখ্যা (যেমন 50+)' },
-    'stats.projects_label': { label: '📊 প্রজেক্ট লেবেল', labelEn: 'Projects Label', description: 'প্রজেক্টের নিচের টেক্সট' },
-    'stats.clients': { label: '👥 ক্লায়েন্ট সংখ্যা', labelEn: 'Clients Count', description: 'ক্লায়েন্টের সংখ্যা (যেমন 30+)' },
-    'stats.clients_label': { label: '👥 ক্লায়েন্ট লেবেল', labelEn: 'Clients Label', description: 'ক্লায়েন্টের নিচের টেক্সট' },
-    'stats.years': { label: '📅 বছর সংখ্যা', labelEn: 'Years Count', description: 'অভিজ্ঞতার বছর (যেমন 3+)' },
-    'stats.years_label': { label: '📅 বছর লেবেল', labelEn: 'Years Label', description: 'বছরের নিচের টেক্সট' },
-    'stats.satisfaction': { label: '✅ সন্তুষ্টি %', labelEn: 'Satisfaction %', description: 'ক্লায়েন্ট সন্তুষ্টি (যেমন 100%)' },
-    'stats.satisfaction_label': { label: '✅ সন্তুষ্টি লেবেল', labelEn: 'Satisfaction Label', description: 'সন্তুষ্টির নিচের টেক্সট' },
-    'why.title': { label: '❓ কেন আমরা শিরোনাম', labelEn: 'Why Choose Us Title', description: '"কেন আমাদের বেছে নিবেন" সেকশনের হেডিং' },
-    'testimonials.title': { label: '💬 টেস্টিমোনিয়াল শিরোনাম', labelEn: 'Testimonials Title', description: 'রিভিউ সেকশনের হেডিং' },
-    'cta.title': { label: '📢 CTA শিরোনাম', labelEn: 'CTA Title', description: 'পেজের নিচের CTA সেকশনের টাইটেল' },
-    'cta.description': { label: '📢 CTA বর্ণনা', labelEn: 'CTA Description', description: 'CTA সেকশনের বিস্তারিত' },
-    'cta.button': { label: '📢 CTA বাটন', labelEn: 'CTA Button Text', description: 'CTA বাটনের টেক্সট' },
+    'hero.title': { label: '🏠 Hero Title', labelEn: 'Hero Title', description: 'Home page's main top title' },
+    'hero.subtitle': { label: '🔖 Hero Subtitle', labelEn: 'Hero Subtitle', description: 'Small tagline above the title' },
+    'hero.description': { label: '📝 Hero Description', labelEn: 'Hero Description', description: 'Paragraph text for the hero section' },
+    'hero.tagline': { label: '⚡ Tagline', labelEn: 'Tagline', description: 'Short brand tagline' },
+    'hero.cta1': { label: '🔗 Primary Button', labelEn: 'Primary CTA', description: 'Text for the hero's first button' },
+    'hero.cta2': { label: '🔗 Secondary Button', labelEn: 'Secondary CTA', description: 'Text for the hero's second button' },
+    'services.title': { label: '🛠️ Service Title', labelEn: 'Services Section Title', description: 'Heading for the home page service section' },
+    'services.subtitle': { label: '🛠️ Service Subtitle', labelEn: 'Services Subtitle', description: 'Short description for the service section' },
+    'stats.projects': { label: '📊 Project Count', labelEn: 'Projects Count', description: 'Number of projects (e.g., 50+)' },
+    'stats.projects_label': { label: '📊 Project Label', labelEn: 'Projects Label', description: 'Text below project count' },
+    'stats.clients': { label: '👥 Client Count', labelEn: 'Clients Count', description: 'Number of clients (e.g., 30+)' },
+    'stats.clients_label': { label: '👥 Client Label', labelEn: 'Clients Label', description: 'Text below client count' },
+    'stats.years': { label: '📅 Years Count', labelEn: 'Years Count', description: 'Years of experience (e.g., 3+)' },
+    'stats.years_label': { label: '📅 Years Label', labelEn: 'Years Label', description: 'Text below years count' },
+    'stats.satisfaction': { label: '✅ Satisfaction %', labelEn: 'Satisfaction %', description: 'Client satisfaction (e.g., 100%)' },
+    'stats.satisfaction_label': { label: '✅ Satisfaction Label', labelEn: 'Satisfaction Label', description: 'Text below satisfaction percentage' },
+    'why.title': { label: '❓ Why Us Title', labelEn: 'Why Choose Us Title', description: 'Heading for the "Why choose us" section' },
+    'testimonials.title': { label: '💬 Testimonial Title', labelEn: 'Testimonials Title', description: 'Heading for the review section' },
+    'cta.title': { label: '📢 CTA Title', labelEn: 'CTA Title', description: 'Title for the page's bottom CTA section' },
+    'cta.description': { label: '📢 CTA Description', labelEn: 'CTA Description', description: 'Details for the CTA section' },
+    'cta.button': { label: '📢 CTA Button', labelEn: 'CTA Button Text', description: 'Text for the CTA button' },
   },
   about: {
-    'hero.title': { label: '🏢 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'About পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
-    'story.title': { label: '📖 গল্প শিরোনাম', labelEn: 'Story Title', description: 'আমাদের গল্প সেকশনের হেডিং' },
-    'story.description': { label: '📖 গল্প বর্ণনা', labelEn: 'Story Description', description: 'গল্প সেকশনের বিস্তারিত' },
-    'story.content': { label: '📖 গল্প কনটেন্ট', labelEn: 'Story Content', description: 'গল্পের মূল টেক্সট' },
-    'values.title': { label: '💎 ভ্যালু শিরোনাম', labelEn: 'Values Title', description: 'Core Values সেকশনের হেডিং' },
-    'values.creativity': { label: '🎨 ক্রিয়েটিভিটি', labelEn: 'Creativity Value', description: 'ক্রিয়েটিভিটি ভ্যালু কার্ডের শিরোনাম' },
-    'values.creativity_desc': { label: '🎨 ক্রিয়েটিভিটি বর্ণনা', labelEn: 'Creativity Desc', description: 'ক্রিয়েটিভিটির বিস্তারিত' },
-    'values.quality': { label: '⭐ কোয়ালিটি', labelEn: 'Quality Value', description: 'কোয়ালিটি ভ্যালু কার্ড' },
-    'values.quality_desc': { label: '⭐ কোয়ালিটি বর্ণনা', labelEn: 'Quality Desc', description: 'কোয়ালিটির বিস্তারিত' },
-    'values.integrity': { label: '🛡️ ইন্টেগ্রিটি', labelEn: 'Integrity Value', description: 'ইন্টেগ্রিটি ভ্যালু কার্ড' },
-    'values.integrity_desc': { label: '🛡️ ইন্টেগ্রিটি বর্ণনা', labelEn: 'Integrity Desc', description: 'ইন্টেগ্রিটির বিস্তারিত' },
-    'location.title': { label: '📍 লোকেশন শিরোনাম', labelEn: 'Location Title', description: 'লোকেশন সেকশনের হেডিং' },
-    'location.description': { label: '📍 লোকেশন বর্ণনা', labelEn: 'Location Description', description: 'ঠিকানার নিচের বিবরণ' },
-    'cta.title': { label: '📢 CTA শিরোনাম', labelEn: 'CTA Title', description: 'নিচের CTA সেকশনের টাইটেল' },
-    'cta.button': { label: '📢 CTA বাটন', labelEn: 'CTA Button', description: 'CTA বাটনের টেক্সট' },
+    'hero.title': { label: '🏢 Hero Title', labelEn: 'Hero Title', description: 'About page's main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
+    'story.title': { label: '📖 Story Title', labelEn: 'Story Title', description: 'Heading for the "Our Story" section' },
+    'story.description': { label: '📖 Story Description', labelEn: 'Story Description', description: 'Details for the story section' },
+    'story.content': { label: '📖 Story Content', labelEn: 'Story Content', description: 'Main text of the story' },
+    'values.title': { label: '💎 Value Title', labelEn: 'Values Title', description: 'Heading for the Core Values section' },
+    'values.creativity': { label: '🎨 Creativity', labelEn: 'Creativity Value', description: 'Title for the Creativity value card' },
+    'values.creativity_desc': { label: '🎨 Creativity Description', labelEn: 'Creativity Desc', description: 'Details for creativity' },
+    'values.quality': { label: '⭐ Quality', labelEn: 'Quality Value', description: 'Quality value card' },
+    'values.quality_desc': { label: '⭐ Quality description', labelEn: 'Quality Desc', description: 'Quality details' },
+    'values.integrity': { label: '🛡️ Integrity', labelEn: 'Integrity Value', description: 'Integrity value card' },
+    'values.integrity_desc': { label: '🛡️ Integrity description', labelEn: 'Integrity Desc', description: 'Integrity details' },
+    'location.title': { label: '📍 Location title', labelEn: 'Location Title', description: 'Location section heading' },
+    'location.description': { label: '📍 Location description', labelEn: 'Location Description', description: 'Address details below' },
+    'cta.title': { label: '📢 CTA Title', labelEn: 'CTA Title', description: 'Title for the CTA section below' },
+    'cta.button': { label: '📢 CTA Button', labelEn: 'CTA Button', description: 'Text for the CTA button' },
   },
   contact: {
-    'hero.title': { label: '📞 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Contact পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
-    'info.phone': { label: '📱 ফোন নম্বর', labelEn: 'Phone Number', description: 'যোগাযোগের ফোন নম্বর' },
-    'info.phone_label': { label: '📱 ফোন লেবেল', labelEn: 'Phone Label', description: '"ফোন" লেখাটি' },
-    'info.email': { label: '✉️ ইমেইল', labelEn: 'Email', description: 'যোগাযোগের ইমেইল ঠিকানা' },
-    'info.email_label': { label: '✉️ ইমেইল লেবেল', labelEn: 'Email Label', description: '"ইমেইল" লেখাটি' },
-    'info.address': { label: '🏠 ঠিকানা', labelEn: 'Address', description: 'অফিসের ঠিকানা' },
-    'info.address_label': { label: '🏠 ঠিকানা লেবেল', labelEn: 'Address Label', description: '"ঠিকানা" লেখাটি' },
-    'info.hours': { label: '🕐 কার্যসময়', labelEn: 'Working Hours', description: 'অফিসের কাজের সময়' },
-    'info.hours_label': { label: '🕐 কার্যসময় লেবেল', labelEn: 'Hours Label', description: '"কার্যসময়" লেখাটি' },
-    'info.whatsapp': { label: '💬 WhatsApp লিংক', labelEn: 'WhatsApp Link', description: 'WhatsApp নম্বর/লিংক' },
-    'info.whatsapp_display': { label: '💬 WhatsApp দেখানো নম্বর', labelEn: 'WhatsApp Display', description: 'WhatsApp বাটনে দেখানো নম্বর' },
-    'form.title': { label: '📋 ফর্ম শিরোনাম', labelEn: 'Form Title', description: 'কন্টাক্ট ফর্মের হেডিং' },
-    'form.name': { label: '📋 নাম ফিল্ড', labelEn: 'Name Field', description: 'নাম ইনপুটের লেবেল' },
-    'form.email': { label: '📋 ইমেইল ফিল্ড', labelEn: 'Email Field', description: 'ইমেইল ইনপুটের লেবেল' },
-    'form.subject': { label: '📋 সাবজেক্ট ফিল্ড', labelEn: 'Subject Field', description: 'সাবজেক্ট ইনপুটের লেবেল' },
-    'form.message': { label: '📋 মেসেজ ফিল্ড', labelEn: 'Message Field', description: 'মেসেজ ইনপুটের লেবেল' },
-    'form.submit': { label: '📋 সাবমিট বাটন', labelEn: 'Submit Button', description: 'ফর্ম সাবমিট বাটনের টেক্সট' },
-    'quick.email_btn': { label: '⚡ ইমেইল বাটন', labelEn: 'Quick Email Btn', description: 'দ্রুত ইমেইল বাটনের টেক্সট' },
-    'quick.whatsapp_btn': { label: '⚡ WhatsApp বাটন', labelEn: 'Quick WhatsApp Btn', description: 'দ্রুত WhatsApp বাটনের টেক্সট' },
+    'hero.title': { label: '📞 Hero title', labelEn: 'Hero Title', description: 'Contact page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
+    'info.phone': { label: '📱 Phone number', labelEn: 'Phone Number', description: 'Contact phone number' },
+    'info.phone_label': { label: '📱 Phone label', labelEn: 'Phone Label', description: '"Phone" text' },
+    'info.email': { label: '✉️ Email', labelEn: 'Email', description: 'Contact email address' },
+    'info.email_label': { label: '✉️ Email label', labelEn: 'Email Label', description: '"Email" text' },
+    'info.address': { label: '🏠 Address', labelEn: 'Address', description: 'Office address' },
+    'info.address_label': { label: '🏠 Address label', labelEn: 'Address Label', description: '"Address" text' },
+    'info.hours': { label: '🕐 Business hours', labelEn: 'Working Hours', description: 'Office working hours' },
+    'info.hours_label': { label: '🕐 Business hours label', labelEn: 'Hours Label', description: '"Business hours" text' },
+    'info.whatsapp': { label: '💬 WhatsApp link', labelEn: 'WhatsApp Link', description: 'WhatsApp number/link' },
+    'info.whatsapp_display': { label: '💬 WhatsApp displayed number', labelEn: 'WhatsApp Display', description: 'Number displayed on WhatsApp button' },
+    'form.title': { label: '📋 Form title', labelEn: 'Form Title', description: 'Contact form heading' },
+    'form.name': { label: '📋 Name field', labelEn: 'Name Field', description: 'Name input label' },
+    'form.email': { label: '📋 Email field', labelEn: 'Email Field', description: 'Email input label' },
+    'form.subject': { label: '📋 Subject field', labelEn: 'Subject Field', description: 'Subject input label' },
+    'form.message': { label: '📋 Message field', labelEn: 'Message Field', description: 'Message input label' },
+    'form.submit': { label: '📋 Submit button', labelEn: 'Submit Button', description: 'Form submit button text' },
+    'quick.email_btn': { label: '⚡ Email button', labelEn: 'Quick Email Btn', description: 'Quick email button text' },
+    'quick.whatsapp_btn': { label: '⚡ WhatsApp button', labelEn: 'Quick WhatsApp Btn', description: 'Quick WhatsApp button text' },
   },
   services: {
-    'hero.title': { label: '🛠️ হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Services পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
-    'process.title': { label: '🔄 প্রক্রিয়া শিরোনাম', labelEn: 'Process Title', description: '"কিভাবে কাজ করি" সেকশনের হেডিং' },
-    'cta.title': { label: '📢 CTA শিরোনাম', labelEn: 'CTA Title', description: 'নিচের CTA সেকশনের টাইটেল' },
-    'cta.button': { label: '📢 CTA বাটন', labelEn: 'CTA Button', description: 'CTA বাটনের টেক্সট' },
+    'hero.title': { label: '🛠️ Hero title', labelEn: 'Hero Title', description: 'Services page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
+    'process.title': { label: '🔄 Process title', labelEn: 'Process Title', description: '"How we work" section heading' },
+    'cta.title': { label: '📢 CTA Title', labelEn: 'CTA Title', description: 'Title for the CTA section below' },
+    'cta.button': { label: '📢 CTA Button', labelEn: 'CTA Button', description: 'Text for the CTA button' },
   },
   work: {
-    'hero.title': { label: '💼 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Work পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
-    'web.title': { label: '🌐 ওয়েব শিরোনাম', labelEn: 'Web Section Title', description: 'ওয়েব ক্যাটাগরির হেডিং' },
-    'graphics.title': { label: '🎨 গ্রাফিক্স শিরোনাম', labelEn: 'Graphics Section Title', description: 'গ্রাফিক্স ক্যাটাগরির হেডিং' },
-    'video.title': { label: '🎬 ভিডিও শিরোনাম', labelEn: 'Video Section Title', description: 'ভিডিও ক্যাটাগরির হেডিং' },
-    'cta.title': { label: '📢 CTA শিরোনাম', labelEn: 'CTA Title', description: 'নিচের CTA সেকশনের টাইটেল' },
-    'cta.button': { label: '📢 CTA বাটন', labelEn: 'CTA Button', description: 'CTA বাটনের টেক্সট' },
+    'hero.title': { label: '💼 Hero title', labelEn: 'Hero Title', description: 'Work page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
+    'web.title': { label: '🌐 Web title', labelEn: 'Web Section Title', description: 'Web category heading' },
+    'graphics.title': { label: '🎨 Graphics title', labelEn: 'Graphics Section Title', description: 'Graphics category heading' },
+    'video.title': { label: '🎬 Video Title', labelEn: 'Video Section Title', description: 'Video category heading' },
+    'cta.title': { label: '📢 CTA Title', labelEn: 'CTA Title', description: 'Title for the CTA section below' },
+    'cta.button': { label: '📢 CTA Button', labelEn: 'CTA Button', description: 'Text for the CTA button' },
   },
   team: {
-    'hero.title': { label: '👥 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Team পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
-    'join.title': { label: '🤝 জয়েন শিরোনাম', labelEn: 'Join Section Title', description: 'টিমে যোগ দিন সেকশনের হেডিং' },
-    'join.description': { label: '🤝 জয়েন বর্ণনা', labelEn: 'Join Description', description: 'জয়েন সেকশনের বিস্তারিত' },
-    'join.cta1': { label: '🔗 জয়েন বাটন ১', labelEn: 'Join CTA 1', description: 'প্রথম CTA বাটনের টেক্সট' },
-    'join.cta2': { label: '🔗 জয়েন বাটন ২', labelEn: 'Join CTA 2', description: 'দ্বিতীয় CTA বাটনের টেক্সট' },
+    'hero.title': { label: '👥 Hero Title', labelEn: 'Hero Title', description: 'Team page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
+    'join.title': { label: '🤝 Join Title', labelEn: 'Join Section Title', description: 'Join us section heading' },
+    'join.description': { label: '🤝 Join description', labelEn: 'Join Description', description: 'Join section details' },
+    'join.cta1': { label: '🔗 Join Button 1', labelEn: 'Join CTA 1', description: 'First CTA button text' },
+    'join.cta2': { label: '🔗 Join Button 2', labelEn: 'Join CTA 2', description: 'Second CTA button text' },
   },
   pricing: {
-    'hero.title': { label: '💰 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Pricing পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
+    'hero.title': { label: '💰 Hero Title', labelEn: 'Hero Title', description: 'Pricing page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
   },
   courses: {
-    'hero.title': { label: '📚 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Courses পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
+    'hero.title': { label: '📚 Hero Title', labelEn: 'Hero Title', description: 'Courses page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
   },
   'join-team': {
-    'hero.title': { label: '🤝 হিরো শিরোনাম', labelEn: 'Hero Title', description: 'Join Team পেজের বড় টাইটেল' },
-    'hero.subtitle': { label: '🔖 সাবটাইটেল', labelEn: 'Subtitle', description: 'টাইটেলের উপরে ছোট ট্যাগ' },
-    'hero.description': { label: '📝 বর্ণনা', labelEn: 'Description', description: 'হিরো সেকশনের প্যারাগ্রাফ' },
+    'hero.title': { label: '🤝 Hero Title', labelEn: 'Hero Title', description: 'Join Team page main title' },
+    'hero.subtitle': { label: '🔖 Subtitle', labelEn: 'Subtitle', description: 'Small tag above the title' },
+    'hero.description': { label: '📝 Description', labelEn: 'Description', description: 'Paragraph for the hero section' },
   },
 };
 
 const PAGES = [
-  { id: 'home', label: 'হোম', labelEn: 'Home', icon: Home, color: 'from-sky-500 to-blue-600', description: 'হোম পেজের সব টেক্সট' },
-  { id: 'about', label: 'অ্যাবাউট', labelEn: 'About', icon: Info, color: 'from-violet-500 to-purple-600', description: 'আমাদের সম্পর্কে পেজ' },
-  { id: 'contact', label: 'কন্টাক্ট', labelEn: 'Contact', icon: Phone, color: 'from-emerald-500 to-teal-600', description: 'যোগাযোগ তথ্য ও ফর্ম' },
-  { id: 'services', label: 'সার্ভিসেস', labelEn: 'Services', icon: Wrench, color: 'from-amber-500 to-orange-600', description: 'আমাদের সেবাসমূহ পেজ' },
-  { id: 'work', label: 'ওয়ার্ক', labelEn: 'Work', icon: Briefcase, color: 'from-rose-500 to-pink-600', description: 'পোর্টফোলিও পেজ' },
-  { id: 'team', label: 'টিম', labelEn: 'Team', icon: Users, color: 'from-cyan-500 to-sky-600', description: 'আমাদের টিম পেজ' },
-  { id: 'pricing', label: 'প্রাইসিং', labelEn: 'Pricing', icon: DollarSign, color: 'from-green-500 to-emerald-600', description: 'মূল্যতালিকা পেজ' },
-  { id: 'courses', label: 'কোর্স', labelEn: 'Courses', icon: BookOpen, color: 'from-indigo-500 to-blue-600', description: 'কোর্স লিস্ট পেজ' },
-  { id: 'join-team', label: 'জয়েন টিম', labelEn: 'Join Team', icon: UserPlus, color: 'from-fuchsia-500 to-pink-600', description: 'টিমে যোগ দিন পেজ' },
+  { id: 'home', label: 'Home', labelEn: 'Home', icon: Home, color: 'from-sky-500 to-blue-600', description: 'All text for homepage' },
+  { id: 'about', label: 'About', labelEn: 'About', icon: Info, color: 'from-violet-500 to-purple-600', description: 'About Us page' },
+  { id: 'contact', label: 'Contact', labelEn: 'Contact', icon: Phone, color: 'from-emerald-500 to-teal-600', description: 'Contact info & form' },
+  { id: 'services', label: 'Services', labelEn: 'Services', icon: Wrench, color: 'from-amber-500 to-orange-600', description: 'Our Services page' },
+  { id: 'work', label: 'Work', labelEn: 'Work', icon: Briefcase, color: 'from-rose-500 to-pink-600', description: 'Portfolio page' },
+  { id: 'team', label: 'Team', labelEn: 'Team', icon: Users, color: 'from-cyan-500 to-sky-600', description: 'Our Team page' },
+  { id: 'pricing', label: 'Pricing', labelEn: 'Pricing', icon: DollarSign, color: 'from-green-500 to-emerald-600', description: 'Pricing page' },
+  { id: 'courses', label: 'Course', labelEn: 'Courses', icon: BookOpen, color: 'from-indigo-500 to-blue-600', description: 'Course List page' },
+  { id: 'join-team', label: 'Join Team', labelEn: 'Join Team', icon: UserPlus, color: 'from-fuchsia-500 to-pink-600', description: 'Join Team page' },
 ];
 
 const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => {
@@ -181,11 +181,11 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
-      toast.success('নতুন কনটেন্ট যোগ হয়েছে!');
+      toast.success('New content added!');
       setIsAddDialogOpen(false);
       setFormData({ content_key: '', content_en: '' });
     },
-    onError: () => toast.error('কনটেন্ট যোগ করতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to add content')
   });
 
 
@@ -197,10 +197,10 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
-      toast.success('কনটেন্ট আপডেট হয়েছে!');
+      toast.success('Content updated!');
       setEditingId(null);
     },
-    onError: () => toast.error('আপডেট করতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to update')
   });
 
   const deleteMutation = useMutation({
@@ -210,14 +210,14 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['page-content'] });
-      toast.success('কনটেন্ট মুছে ফেলা হয়েছে!');
+      toast.success('Content deleted!');
     },
-    onError: () => toast.error('মুছতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to delete')
   });
 
   const handleAdd = () => {
     if (!formData.content_key.trim()) {
-      toast.error('Content Key দিন');
+      toast.error('Enter Content Key');
       return;
     }
     addMutation.mutate({
@@ -276,24 +276,24 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
   }, {} as Record<string, PageContent[]>);
 
   const sectionLabels: Record<string, string> = {
-    hero: '🎯 হিরো সেকশন',
-    services: '🛠️ সার্ভিস সেকশন',
-    stats: '📊 পরিসংখ্যান',
-    why: '❓ কেন আমরা',
-    testimonials: '💬 রিভিউ',
-    cta: '📢 CTA (কল টু অ্যাকশন)',
-    story: '📖 আমাদের গল্প',
-    values: '💎 মূল্যবোধ',
-    location: '📍 লোকেশন',
-    info: '📋 তথ্যাবলী',
-    form: '📝 ফর্ম ফিল্ড',
-    quick: '⚡ কুইক অ্যাকশন',
-    join: '🤝 জয়েন সেকশন',
-    process: '🔄 প্রক্রিয়া',
-    web: '🌐 ওয়েব',
-    graphics: '🎨 গ্রাফিক্স',
-    video: '🎬 ভিডিও',
-    general: '📄 সাধারণ',
+    hero: '🎯 Hero Section',
+    services: '🛠️ Service Section',
+    stats: '📊 Statistics',
+    why: '❓ Why Us',
+    testimonials: '💬 Reviews',
+    cta: '📢 CTA (Call to Action)',
+    story: '📖 Our Story',
+    values: '💎 Values',
+    location: '📍 Location',
+    info: '📋 Information',
+    form: '📝 Form Fields',
+    quick: '⚡ Quick Actions',
+    join: '🤝 Join Section',
+    process: '🔄 Process',
+    web: '🌐 Web',
+    graphics: '🎨 Graphics',
+    video: '🎬 Video',
+    general: '📄 General',
   };
 
   const totalForPage = (contents || []).filter(c => c.page_name === selectedPage).length;
@@ -315,9 +315,9 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
             <FileText className="h-5 w-5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">পেজ কনটেন্ট</h2>
+            <h2 className="text-xl font-bold">Page Content</h2>
             <p className="text-sm text-muted-foreground">
-              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন
             </p>
           </div>
         </div>
@@ -332,18 +332,18 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
             onClick={() => setShowDescriptions(!showDescriptions)}
           >
             {showDescriptions ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-            {showDescriptions ? 'বর্ণনা লুকান' : 'বর্ণনা দেখান'}
+            {showDescriptions ? 'Hide description' : 'Show description'}
           </Button>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button size="sm" className="gap-1.5">
                 <Plus className="h-4 w-4" />
-                নতুন
+                New
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg">
               <DialogHeader>
-                <DialogTitle>নতুন কনটেন্ট — {selectedPageInfo?.label}</DialogTitle>
+                <DialogTitle>New কনটেন্ট — {selectedPageInfo?.label}</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 pt-2">
                 <div className="space-y-1.5">
@@ -382,13 +382,13 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
       <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 space-y-2">
         <div className="flex items-center gap-2">
           <HelpCircle className="w-4 h-4 text-primary" />
-          <h3 className="text-sm font-semibold text-primary">কিভাবে কাজ করে?</h3>
+          <h3 className="text-sm font-semibold text-primary">How does it work?</h3>
         </div>
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>• নিচে থেকে যেকোনো পেজ সিলেক্ট করুন, তারপর সেই পেজের টেক্সট গুলো দেখবেন</p>
-          <p>• প্রতিটি আইটেমের পাশে <strong>কোথায় দেখায়</strong> সেটা লেখা আছে — তাহলে বুঝবেন কোনটা কি</p>
-          <p>• ✏️ বাটনে ক্লিক করে English ও বাংলা দুইটাই এডিট করতে পারবেন</p>
-          <p>• সেভ করলেই ওয়েবসাইটে তাৎক্ষণিক পরিবর্তন হবে ⚡</p>
+          <p>• Select any page from below, then you'll see the text of that page</p>
+          <p>• Next to each item <strong>Where it shows</strong> is written — so you'll understand what's what</p>
+          <p>• Click the ✏️ button to edit both English and Bengali</p>
+          <p>• Saving will instantly change it on the website ⚡</p>
         </div>
       </div>
 
@@ -450,7 +450,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
         <Input
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder={`${selectedPageInfo?.label} পেজে খুঁজুন...`}
+          placeholder={`Search on ${selectedPageInfo?.label} page...`}
           className="pl-9 h-9"
         />
         {searchQuery && (
@@ -467,12 +467,12 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
             <div className="space-y-3">
               <FileText className="w-10 h-10 mx-auto text-muted-foreground/30" />
               {searchQuery ? (
-                <p>কোনো ফলাফল নেই</p>
+                <p>No results found</p>
               ) : (
                 <div>
-                  <p className="font-medium">এই পেজে এখনো কোনো কনটেন্ট নেই</p>
-                  <p className="text-xs mt-1">নতুন কনটেন্ট যোগ করতে উপরের "নতুন" বাটনে ক্লিক করুন</p>
-                  <p className="text-xs mt-1 text-primary">অথবা AI Assistant কে বলুন এই পেজের কনটেন্ট তৈরি করতে!</p>
+                  <p className="font-medium">This page has no content yet</p>
+                  <p className="text-xs mt-1">Click the "New" button above to add new content</p>
+                  <p className="text-xs mt-1 text-primary">Or ask AI Assistant to create content for this page!</p>
                 </div>
               )}
             </div>
@@ -529,7 +529,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
                                 size="icon"
                                 variant="ghost"
                                 className="h-7 w-7 text-destructive hover:text-destructive"
-                                onClick={() => { if (confirm('মুছে ফেলবেন?')) deleteMutation.mutate(content.id); }}
+                                onClick={() => { if (confirm('Delete?')) deleteMutation.mutate(content.id); }}
                               >
                                 <Trash2 className="h-3.5 w-3.5" />
                               </Button>
