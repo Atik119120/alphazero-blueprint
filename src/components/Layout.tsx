@@ -9,7 +9,7 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
+const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about", "/learn-contact"];
 
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();

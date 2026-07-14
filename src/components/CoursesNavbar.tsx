@@ -22,15 +22,18 @@ const CoursesNavbar = () => {
 
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
   const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
+  const contactHref = isLearnSubdomain ? "/contact" : "/learn-contact";
+  const aboutHref = isLearnSubdomain ? "/about" : "/learn-about";
   const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
   const navLinks = [
     { name: isBn ? "হোম" : "Home", to: coursesHomeHref, id: "home", icon: Home, internal: true },
-    { name: isBn ? "সম্পর্কে" : "About Us", to: "/about", icon: Info, internal: true },
+    { name: isBn ? "সম্পর্কে" : "About Us", to: aboutHref, icon: Info, internal: true },
     { name: isBn ? "কোর্স" : "Courses", to: "/courses", id: "courses", icon: LayoutGrid, internal: true },
-    { name: isBn ? "যোগাযোগ" : "Contact", to: "/contact", id: "contact", icon: Phone, internal: true },
+    { name: isBn ? "যোগাযোগ" : "Contact", to: contactHref, id: "contact", icon: Phone, internal: true },
     { name: isBn ? "আমাদের এজেন্সি" : "Our Agency", href: agencyHref, icon: Building2, external: true },
   ];
+
 
 
   useEffect(() => { setMounted(true); }, []);
@@ -156,13 +159,6 @@ const CoursesNavbar = () => {
               >
                 <Search size={16} className="text-primary" />
               </button>
-              <button
-                onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                className="h-9 px-3 rounded-full bg-primary/15 border border-primary/25 flex items-center hover:bg-primary/25 transition-colors"
-              >
-                <span className="text-xs font-bold text-primary">{language === "en" ? "EN" : "বা"}</span>
-              </button>
-
 
               <Link
                 to="/student/login"
@@ -173,6 +169,7 @@ const CoursesNavbar = () => {
                 <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
             </div>
+
 
             {/* Mobile controls */}
             <div className="flex items-center gap-1.5 lg:hidden">
@@ -229,12 +226,6 @@ const CoursesNavbar = () => {
                 </div>
 
                 <div className="flex items-center gap-2 p-2 border-t border-border/40">
-                  <button
-                    onClick={() => setLanguage(language === "en" ? "bn" : "en")}
-                    className="flex-1 h-9 rounded-xl bg-primary/15 border border-primary/25 text-xs font-bold text-primary"
-                  >
-                    {language === "en" ? "বাংলা" : "English"}
-                  </button>
                   <Link
                     to="/student/login"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -244,6 +235,7 @@ const CoursesNavbar = () => {
                     {isBn ? "লগইন" : "Login"}
                   </Link>
                 </div>
+
               </div>
             </motion.div>
           )}

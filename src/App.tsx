@@ -52,6 +52,8 @@ import PaymentCallbackPage from "./pages/PaymentCallbackPage";
 import PaymentCancelPage from "./pages/PaymentCancelPage";
 import CustomCheckoutPage from "./pages/CustomCheckoutPage";
 import CourseLandingPage from "./pages/CourseLandingPage";
+import LearnContactPage from "./pages/LearnContactPage";
+
 
 import AIChatbot from "./components/AIChatbot";
 
@@ -125,7 +127,9 @@ function AppContent() {
             <Route path="/work" element={<WorkPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/join-team" element={<JoinTeamPage />} />
-            <Route path="/contact" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <CoursesPage /> : <ContactPage />} />
+            <Route path="/contact" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnContactPage /> : <ContactPage />} />
+            <Route path="/learn-contact" element={<LearnContactPage />} />
+
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/instructors" element={<CoursesPage />} />
             
