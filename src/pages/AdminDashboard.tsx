@@ -850,13 +850,13 @@ function AdminDashboardInner() {
   // AI Assistant panel state
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
-  const allNavItems = [...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
+  const dashboardItem = { id: 'dashboard', icon: LayoutDashboard, label: language === 'bn' ? 'Dashboard' : 'Dashboard' };
+  const allNavItems = [dashboardItem, ...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
 
-  // If active tab isn't visible in current scope, switch to first available
+  // If active tab isn't visible in current scope, switch to dashboard
   useEffect(() => {
     if (!allNavItems.some(i => i.id === activeTab)) {
-      const fallback = scope === 'learn' ? 'courses' : 'homepage';
-      setActiveTab(fallback);
+      setActiveTab('dashboard');
     }
   }, [scope]);
 
