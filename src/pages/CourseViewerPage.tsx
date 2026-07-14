@@ -39,6 +39,17 @@ export default function CourseViewerPage() {
   const [autoCompleting, setAutoCompleting] = useState(false);
 
   useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     if (courses.length > 0 && courseId) {
       const found = courses.find(c => c.id === courseId);
       if (found) {
@@ -142,6 +153,9 @@ export default function CourseViewerPage() {
   const currentIndex = course?.videos.findIndex(v => v.id === selectedVideo?.id) ?? -1;
   const nextVideo = course?.videos[currentIndex + 1];
   const prevVideo = currentIndex > 0 ? course?.videos[currentIndex - 1] : null;
+  const videoFrameHeight = isMobile
+    ? 'min(56.25vw, 42dvh)'
+    : 'min(calc((100vw - 20rem) * 0.5625), calc(100dvh - 11rem))';
 
   const getMaterialIcon = (type: string) => {
     switch (type) {
@@ -210,7 +224,7 @@ export default function CourseViewerPage() {
   );
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-white flex flex-col ${language === 'bn' ? 'font-bengali' : ''}`}>
+    <div className={`fixed inset-0 h-[100dvh] max-h-[100dvh] overflow-hidden bg-slate-950 text-white flex flex-col ${language === 'bn' ? 'font-bengali' : ''}`}>
       {/* Top Bar - always visible */}
       <header className="h-12 md:h-14 border-b border-white/10 flex items-center px-3 md:px-4 gap-2 md:gap-3 shrink-0 bg-slate-900/80 backdrop-blur-sm z-30">
         <Button variant="ghost" size="icon" className="text-white/70 hover:text-white hover:bg-white/10 shrink-0 w-8 h-8 md:w-9 md:h-9" onClick={() => navigate('/student')}>
@@ -232,7 +246,10 @@ export default function CourseViewerPage() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-hidden min-h-0">
           {/* Video Player - fixed, does not scroll */}
-          <div className="relative w-full bg-black shrink-0 shadow-lg shadow-black/50">
+          <div
+            className="relative w-full bg-black shrink-0 overflow-hidden shadow-lg shadow-black/50 [&>div]:!h-full [&>div]:!aspect-auto [&>div]:!rounded-none"
+            style={{ height: videoFrameHeight }}
+          >
             {selectedVideo && user && (
               <SecureVideoPlayer
                 videoUrl={selectedVideo.video_url}
@@ -261,7 +278,7 @@ export default function CourseViewerPage() {
           </div>
 
           {/* Below Video Content - scrolls independently */}
-          <div className={`flex-1 overflow-y-auto p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode && !isMobile ? 'hidden' : ''}`}>
+          <div className={`shrink-0 overflow-hidden p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode && !isMobile ? 'hidden' : ''}`}>
             <div className="flex items-start justify-between gap-2 md:gap-4">
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] md:text-xs text-white/40 mb-0.5">Class {currentIndex + 1} of {course.total_videos}</p>
@@ -304,7 +321,7 @@ export default function CourseViewerPage() {
                       কোর্স সিলেবাস ({course.total_videos}টি ক্লাস)
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="p-0 max-h-[400px] overflow-y-auto">
+                  <AccordionContent className="p-0 max-h-[calc(100dvh-360px)] overflow-y-auto">
                     <LessonList />
                   </AccordionContent>
                 </AccordionItem>
@@ -363,7 +380,7 @@ export default function CourseViewerPage() {
                   </button>
                 </div>
               </div>
-              <ScrollArea className="flex-1">
+              <ScrollArea className="flex-1 min-h-0">
                 <LessonList />
               </ScrollArea>
             </div>
