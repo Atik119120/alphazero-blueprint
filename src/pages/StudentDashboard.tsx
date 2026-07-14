@@ -105,12 +105,12 @@ export default function StudentDashboard() {
   const continueWatching = courses.find(c => !c.is_completed && c.progress_percent > 0);
 
   const navItems = [
-    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'কোর্স' : 'Courses' },
+    { id: 'courses', icon: BookOpen, label: language === 'bn' ? 'আমার কোর্স' : 'My Courses' },
     { id: 'live', icon: VideoIcon, label: language === 'bn' ? 'লাইভ ক্লাস' : 'Live Class' },
     { id: 'notices', icon: Bell, label: language === 'bn' ? 'নোটিশ' : 'Notices' },
     { id: 'recorded', icon: Folder, label: language === 'bn' ? 'রেকর্ডেড' : 'Recorded' },
     { id: 'support', icon: MessageCircle, label: language === 'bn' ? 'সাপোর্ট' : 'Support' },
-    { id: 'explore', icon: Search, label: language === 'bn' ? 'ব্রাউজ' : 'Browse' },
+    { id: 'explore', icon: Search, label: language === 'bn' ? 'নতুন কোর্স ব্রাউজ' : 'Browse New Courses' },
     { id: 'certificates', icon: Award, label: language === 'bn' ? 'সনদ' : 'Certificates' },
     { id: 'id-card', icon: IdCard, label: language === 'bn' ? 'আইডি' : 'ID Card' },
     { id: 'profile', icon: User, label: language === 'bn' ? 'প্রোফাইল' : 'Profile' },
