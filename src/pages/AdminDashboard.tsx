@@ -81,7 +81,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 // Chart colors
 const CHART_COLORS = ['#0ea5e9', '#06b6d4', '#14b8a6', '#10b981', '#22c55e', '#84cc16', '#eab308', '#f97316', '#ef4444', '#ec4899'];
 
-export default function AdminDashboard() {
+import { AdminSiteScopeProvider } from '@/contexts/AdminSiteScopeContext';
+
+function AdminDashboardInner() {
   const { user, profile, signOut, isAdmin, isLoading: authLoading } = useAuth();
   const { language, setLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -2374,5 +2376,13 @@ export default function AdminDashboard() {
       {/* AI Assistant Side Panel */}
       <AdminAssistant isOpen={isAssistantOpen} onToggle={() => setIsAssistantOpen(false)} />
     </div>
+  );
+}
+
+export default function AdminDashboard() {
+  return (
+    <AdminSiteScopeProvider>
+      <AdminDashboardInner />
+    </AdminSiteScopeProvider>
   );
 }
