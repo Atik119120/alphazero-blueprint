@@ -479,7 +479,7 @@ const CoursesPage = () => {
               className="font-playfair text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 max-w-4xl leading-[1.05]"
             >
               <span className="text-foreground/95 font-normal">
-                {isBn ? "শিখুন কিছু" : "Learn something"}
+                {cms("hero.prefix.bn", "hero.prefix.en", "শিখুন কিছু", "Learn something")}
               </span>
               <br />
               <span className="relative inline-flex justify-center overflow-visible align-baseline pb-6 pt-1 h-[1.35em] w-[7ch] md:w-[8ch] leading-[1.1]">
