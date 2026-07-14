@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, Globe, MessageCircle, Link as LinkIcon, X } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import PageHeroEditor from "./PageHeroEditor";
 
 // Custom icons for platforms without lucide equivalents
 const FiverrIcon = () => (
