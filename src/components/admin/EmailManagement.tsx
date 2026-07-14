@@ -49,7 +49,7 @@ const translations = {
     sending: 'Sending...',
     success: 'Email sent successfully!',
     error: 'Failed to send email',
-    emailRequired: 'Enter recipient's email',
+    emailRequired: "Enter recipient's email",
     subjectRequired: 'Enter subject',
     messageRequired: 'Write message',
     fromDomain: 'Email will be sent from: noreply@alphazero.online',
