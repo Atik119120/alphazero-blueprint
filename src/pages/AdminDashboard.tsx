@@ -2197,12 +2197,12 @@ function AdminDashboardInner() {
                 </p>
               </div>
             ) : (
-              <div className="grid gap-3 max-h-[400px] overflow-y-auto">
+              <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto pr-1">
                 {availableCoursesForAssign.map((course) => (
                   <div
                     key={course.id}
                     onClick={() => setSelectedCourseToAssign(course.id)}
-                    className={`flex items-center gap-4 p-3 rounded-lg border cursor-pointer transition-all ${
+                    className={`flex items-center gap-4 p-3 rounded-lg border cursor-pointer transition-all w-full min-w-0 overflow-hidden ${
                       selectedCourseToAssign === course.id 
                         ? 'border-primary bg-primary/5 ring-2 ring-primary/20' 
                         : 'border-border hover:bg-muted/50'
