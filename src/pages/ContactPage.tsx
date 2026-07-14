@@ -80,7 +80,7 @@ const ContactPage = () => {
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
-              {t("contact.title")} <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{t("contact.title2")}</span>
+              <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{t("contact.title")}</span> <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{t("contact.title2")}</span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto mb-10">

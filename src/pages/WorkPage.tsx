@@ -614,7 +614,7 @@ const WorkPage = () => {
                 const raw = hero("hero.title", "Our Creative |Works & Projects|");
                 const parts = raw.split("|");
                 if (parts.length >= 3) {
-                  return <>{parts[0]}<span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
+                  return <><span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[0]}</span><span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
                 }
                 return raw;
               })()}
