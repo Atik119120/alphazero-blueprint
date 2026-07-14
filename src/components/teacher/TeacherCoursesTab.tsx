@@ -326,10 +326,15 @@ export default function TeacherCoursesTab({ courses, isLoading, refetch, languag
                     <Users className="w-4 h-4" />
                     <span>{course.enrolled_students || 0} {t.students}</span>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setVideoManagerCourse(course)}
+                    className="flex items-center gap-1 hover:text-primary transition-colors cursor-pointer"
+                    title={language === 'bn' ? 'ভিডিও ম্যানেজ করুন' : 'Manage videos'}
+                  >
                     <Video className="w-4 h-4" />
                     <span>{course.videos?.length || 0} {t.videos}</span>
-                  </div>
+                  </button>
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t">
