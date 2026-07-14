@@ -230,9 +230,9 @@ export default function CourseViewerPage() {
 
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
         {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-y-auto">
-          {/* Video Player - sticky at top like YouTube mobile */}
-          <div className="relative w-full bg-black sticky top-0 z-20 shadow-lg shadow-black/50">
+        <div className="flex-1 flex flex-col overflow-hidden min-h-0">
+          {/* Video Player - fixed, does not scroll */}
+          <div className="relative w-full bg-black shrink-0 shadow-lg shadow-black/50">
             {selectedVideo && user && (
               <SecureVideoPlayer
                 videoUrl={selectedVideo.video_url}
@@ -249,7 +249,6 @@ export default function CourseViewerPage() {
               />
             )}
 
-            {/* Focus Mode Toggle - desktop only */}
             {!isMobile && (
               <Button
                 variant="ghost" size="icon"
@@ -261,9 +260,8 @@ export default function CourseViewerPage() {
             )}
           </div>
 
-          {/* Below Video Content */}
-          <div className={`p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode && !isMobile ? 'hidden' : ''}`}>
-            {/* Video Title + Status */}
+          {/* Below Video Content - scrolls independently */}
+          <div className={`flex-1 overflow-y-auto p-3 md:p-6 space-y-3 md:space-y-4 bg-slate-950 ${focusMode && !isMobile ? 'hidden' : ''}`}>
             <div className="flex items-start justify-between gap-2 md:gap-4">
               <div className="flex-1 min-w-0">
                 <p className="text-[10px] md:text-xs text-white/40 mb-0.5">Class {currentIndex + 1} of {course.total_videos}</p>
@@ -281,10 +279,6 @@ export default function CourseViewerPage() {
               )}
             </div>
 
-            {/* Progress bar */}
-            <Progress value={course.progress_percent} className="h-2" />
-
-            {/* Navigation */}
             <div className="flex items-center justify-between gap-2">
               <Button variant="ghost" size="sm"
                 className="gap-1.5 text-white/60 hover:text-white hover:bg-white/10 text-xs"
@@ -301,18 +295,6 @@ export default function CourseViewerPage() {
               )}
             </div>
 
-            {/* Comments */}
-            {selectedVideo && course && (
-              <LessonComments
-                videoId={selectedVideo.id}
-                courseId={course.id}
-                userId={user.id}
-                userName={profile?.full_name || 'Student'}
-                userAvatar={profile?.avatar_url || ''}
-              />
-            )}
-
-            {/* Mobile: Course Content Accordion (YouTube-style below video) */}
             {isMobile && (
               <Accordion type="single" collapsible className="border border-white/10 rounded-xl overflow-hidden bg-slate-900/50">
                 <AccordionItem value="syllabus" className="border-0">
@@ -329,7 +311,6 @@ export default function CourseViewerPage() {
               </Accordion>
             )}
 
-            {/* Materials */}
             {videoMaterials.length > 0 && (
               <Accordion type="single" collapsible className="border border-white/10 rounded-xl overflow-hidden">
                 <AccordionItem value="materials" className="border-0">
@@ -364,6 +345,7 @@ export default function CourseViewerPage() {
             )}
           </div>
         </div>
+
 
         {/* Right Sidebar - Desktop Only */}
         {!isMobile && !focusMode && (
