@@ -822,7 +822,7 @@ function AdminDashboardInner() {
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'হোমপেজ' : 'Homepage', scopeTag: 'both' as const },
-    { id: 'content', icon: FileText, label: language === 'bn' ? 'পেজ কনটেন্ট' : 'Pages', scopeTag: 'both' as const },
+    { id: 'contact', icon: Phone, label: 'Contact', scopeTag: 'both' as const },
     { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'ল্যান্ডিং পেজ' : 'Landing Page', scopeTag: 'learn' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'ওয়ার্কস' : 'Works', scopeTag: 'agency' as const },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'টিম' : 'Team', scopeTag: 'agency' as const },
@@ -851,7 +851,7 @@ function AdminDashboardInner() {
   // If active tab isn't visible in current scope, switch to first available
   useEffect(() => {
     if (!allNavItems.some(i => i.id === activeTab)) {
-      const fallback = scope === 'learn' ? 'courses' : 'content';
+      const fallback = scope === 'learn' ? 'courses' : 'homepage';
       setActiveTab(fallback);
     }
   }, [scope]);
@@ -1763,10 +1763,11 @@ function AdminDashboardInner() {
             <HomepageEditor />
           </TabsContent>
 
-          {/* Content Tab */}
-          <TabsContent value="content" className="space-y-6">
-            <PageContentManagement />
+          {/* Contact Tab */}
+          <TabsContent value="contact" className="space-y-6">
+            <PageContentManagement lockedPage="contact" />
           </TabsContent>
+
 
 
           {/* Footer Tab */}

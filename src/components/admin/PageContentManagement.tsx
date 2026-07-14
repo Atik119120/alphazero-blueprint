@@ -144,10 +144,11 @@ const PAGES = [
   { id: 'join-team', label: 'জয়েন টিম', labelEn: 'Join Team', icon: UserPlus, color: 'from-fuchsia-500 to-pink-600', description: 'টিমে যোগ দিন পেজ' },
 ];
 
-const PageContentManagement = () => {
+const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => {
   const queryClient = useQueryClient();
   const { scope } = useAdminScope();
-  const [selectedPage, setSelectedPage] = useState("home");
+  const [selectedPage, setSelectedPage] = useState(lockedPage ?? "home");
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -392,6 +393,7 @@ const PageContentManagement = () => {
       </div>
 
       {/* Page Selector Cards */}
+      {!lockedPage && (
       <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
         {PAGES.map(page => {
           const count = (contents || []).filter(c => c.page_name === page.id).length;
@@ -413,7 +415,7 @@ const PageContentManagement = () => {
                 <Icon className="w-4 h-4" />
               </div>
               <p className={`text-xs font-medium ${isActive ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {page.label}
+                {page.labelEn}
               </p>
               {count > 0 && (
                 <Badge variant="secondary" className="mt-1 text-[10px] px-1.5 py-0">
@@ -422,13 +424,15 @@ const PageContentManagement = () => {
               )}
               {count === 0 && (
                 <Badge variant="outline" className="mt-1 text-[10px] px-1.5 py-0 text-orange-500 border-orange-500/30">
-                  খালি
+                  Empty
                 </Badge>
               )}
             </button>
           );
         })}
       </div>
+      )}
+
 
       {/* Selected page description */}
       {selectedPageInfo && (
