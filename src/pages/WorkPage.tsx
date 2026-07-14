@@ -633,9 +633,6 @@ const WorkPage = () => {
         </div>
       ) : (
         <>
-          {/* Auto-scrolling strip — graphics + videos only */}
-          <ScrollStrip items={scrollStripItems} onItemClick={handleScrollStripClick} />
-
           {/* 1. Graphic Design */}
           <GraphicsSection items={graphicsWorks} onZoom={handleZoom} />
 
@@ -647,26 +644,6 @@ const WorkPage = () => {
         </>
       )}
 
-      {/* ═══ CTA ═══ */}
-      <section className="py-20 lg:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-background" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-            className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4 tracking-tight">{t("work.likeWhatYouSee") || "Like What You See?"}</h2>
-            <p className="text-muted-foreground text-lg mb-10 leading-relaxed">{t("work.letsCreate") || "Let's create something extraordinary together. Reach out to us now!"}</p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a href="tel:+8801410190019" className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500">
-                <Phone size={20} /> Call Us
-              </a>
-              <a href="https://wa.me/8801846484200" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-secondary text-secondary-foreground rounded-2xl font-display font-semibold text-lg transition-all duration-500">
-                <MessageCircle size={20} /> WhatsApp
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ═══ IMAGE LIGHTBOX — scroll-locked ═══ */}
       <AnimatePresence>

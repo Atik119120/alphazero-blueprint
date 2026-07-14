@@ -308,32 +308,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Location CTA */}
-      <section className="py-24 lg:py-36 relative overflow-hidden">
-        <div className="absolute inset-0 mesh-bg" />
-        <div className="container mx-auto px-6 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center">
-            <motion.div initial={{ scale: 0.9 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
-              className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-8">
-              <Globe size={28} className="text-primary" />
-            </motion.div>
-            <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">{c("location.title", "about.location.title")}</h2>
-            <p className="text-xl text-muted-foreground mb-2">{locationAddress}</p>
-            <p className="text-muted-foreground mb-10">{locationDescription}</p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/contact"
-                className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]">
-                {c("location.cta1", "about.location.cta1")} <ArrowRight size={20} />
-              </Link>
-              <a href="https://wa.me/8801410190019" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300">
-                {c("location.cta2", "about.location.cta2")}
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
       </div>
     </Layout>
   );

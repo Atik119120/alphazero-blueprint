@@ -260,38 +260,6 @@ const TeamPage = () => {
         </div>
       </section>
 
-      {/* Join Section */}
-      <section className="py-24 mesh-bg">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-6">
-              {t("team.join.title")}
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              {t("team.join.desc")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                to="/join-team"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
-              >
-                {t("team.join.cta1")} <ArrowRight size={20} />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary border border-border text-foreground rounded-xl font-medium text-lg hover:bg-secondary/80 transition-all duration-300"
-              >
-                {t("team.join.cta2")}
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </Layout>
   );
 };
