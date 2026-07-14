@@ -48,6 +48,7 @@ const FIELDS: Array<{
 
 export default function WorkHeroEditor() {
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
   const [values, setValues] = useState<Record<string, string>>({});
 
   const { data, isLoading } = useQuery({
