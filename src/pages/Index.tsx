@@ -630,9 +630,10 @@ const Index = () => {
               { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy" },
             ];
             const activeItems = (brandItems ?? []).filter((it) => it.is_active && it.image_url);
-            const logos = activeItems.length
+            const logos: { src: string; alt: string; scale?: number }[] = activeItems.length
               ? activeItems.map((it) => ({ src: it.image_url as string, alt: it.title || "Brand" }))
               : defaultLogos;
+
             const half = Math.ceil(logos.length / 2) || 1;
             const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
             const rowB = [...logos.slice(half), ...logos.slice(half)];
