@@ -7,6 +7,7 @@ import {
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePageHero } from "@/hooks/usePageHero";
 
 /* ─── Category helpers ─── */
 function isGraphics(w: Work) {
