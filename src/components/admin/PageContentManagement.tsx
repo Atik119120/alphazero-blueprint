@@ -316,11 +316,15 @@ const PageContentManagement = () => {
           </div>
           <div>
             <h2 className="text-xl font-bold">পেজ কনটেন্ট</h2>
-            <p className="text-sm text-muted-foreground">ওয়েবসাইটের প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন</p>
+            <p className="text-sm text-muted-foreground">
+              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন
+            </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          <AdminSiteScopeSwitcher />
+
           <Button 
             variant="outline" 
             size="sm" 
