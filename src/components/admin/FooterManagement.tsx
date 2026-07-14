@@ -47,8 +47,8 @@ interface FooterContent {
   id: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
 }
+
 
 const ICON_OPTIONS = [
   { value: 'Facebook', label: 'Facebook', icon: Facebook },
