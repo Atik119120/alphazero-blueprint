@@ -826,12 +826,12 @@ function AdminDashboardInner() {
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
-    { id: 'contact', icon: Phone, label: 'Contact', scopeTag: 'both' as const },
     { id: 'about', icon: Info, label: 'About', scopeTag: 'both' as const },
-    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'Landing Page' : 'Landing Page', scopeTag: 'learn' as const },
+    { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'Works' : 'Works', scopeTag: 'agency' as const },
     { id: 'team', icon: UsersRound, label: language === 'bn' ? 'Team' : 'Team', scopeTag: 'agency' as const },
-    { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
+    { id: 'contact', icon: Phone, label: 'Contact', scopeTag: 'both' as const },
+    { id: 'landing', icon: Sparkles, label: language === 'bn' ? 'Landing Page' : 'Landing Page', scopeTag: 'learn' as const },
     { id: 'footer', icon: Link2, label: language === 'bn' ? 'Footer' : 'Footer', scopeTag: 'both' as const },
   ];
 
