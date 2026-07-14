@@ -22,15 +22,18 @@ const CoursesNavbar = () => {
 
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
   const coursesHomeHref = isLearnSubdomain ? "/" : "/courses";
+  const contactHref = isLearnSubdomain ? "/contact" : "/learn-contact";
+  const aboutHref = isLearnSubdomain ? "/about" : "/learn-about";
   const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
   const navLinks = [
     { name: isBn ? "হোম" : "Home", to: coursesHomeHref, id: "home", icon: Home, internal: true },
-    { name: isBn ? "সম্পর্কে" : "About Us", to: "/about", icon: Info, internal: true },
+    { name: isBn ? "সম্পর্কে" : "About Us", to: aboutHref, icon: Info, internal: true },
     { name: isBn ? "কোর্স" : "Courses", to: "/courses", id: "courses", icon: LayoutGrid, internal: true },
-    { name: isBn ? "যোগাযোগ" : "Contact", to: "/contact", id: "contact", icon: Phone, internal: true },
+    { name: isBn ? "যোগাযোগ" : "Contact", to: contactHref, id: "contact", icon: Phone, internal: true },
     { name: isBn ? "আমাদের এজেন্সি" : "Our Agency", href: agencyHref, icon: Building2, external: true },
   ];
+
 
 
   useEffect(() => { setMounted(true); }, []);
