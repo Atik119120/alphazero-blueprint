@@ -389,15 +389,8 @@ export default function StudentLoginPage() {
               {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>
             
-            <Button 
-              variant="ghost" 
-              size="sm"
-              onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
-              className="gap-1 h-9"
-            >
-              <Globe className="w-4 h-4" />
-              {language === 'en' ? 'বাং' : 'EN'}
-            </Button>
+            {/* Language toggle removed — English only */}
+
           </div>
         </div>
 
