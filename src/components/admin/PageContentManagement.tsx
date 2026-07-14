@@ -222,8 +222,7 @@ const PageContentManagement = () => {
     addMutation.mutate({
       page_name: selectedPage,
       content_key: formData.content_key,
-      content_en: formData.content_en || null,
-      content_bn: formData.content_bn || null
+      content_en: formData.content_en || null
     });
   };
 
@@ -232,8 +231,7 @@ const PageContentManagement = () => {
     setEditData(prev => ({
       ...prev,
       [content.id]: {
-        content_en: content.content_en || '',
-        content_bn: content.content_bn || ''
+        content_en: content.content_en || ''
       }
     }));
   };
@@ -243,10 +241,10 @@ const PageContentManagement = () => {
     if (!data) return;
     updateMutation.mutate({
       id,
-      content_en: data.content_en || null,
-      content_bn: data.content_bn || null
+      content_en: data.content_en || null
     });
   };
+
 
   const selectedPageInfo = PAGES.find(p => p.id === selectedPage);
   const pageKeyInfo = CONTENT_KEY_INFO[selectedPage] || {};
