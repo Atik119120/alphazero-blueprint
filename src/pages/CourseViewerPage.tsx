@@ -192,7 +192,7 @@ export default function CourseViewerPage() {
               : <PlayCircle className="w-3.5 h-3.5" />}
             </div>
             <div className="flex-1 min-w-0">
-              <p className={`text-xs font-medium truncate ${isActive ? 'text-primary' : isComplete ? 'text-emerald-400' : ''}`}>
+              <p className={`text-xs font-medium leading-snug break-words whitespace-normal line-clamp-2 ${isActive ? 'text-primary' : isComplete ? 'text-emerald-400' : ''}`}>
                 {video.title}
               </p>
               {video.duration_seconds > 0 && (
@@ -202,7 +202,7 @@ export default function CourseViewerPage() {
                 </p>
               )}
             </div>
-            {isComplete && <Badge className="bg-emerald-500/20 text-emerald-400 text-[8px] px-1.5 py-0">✓</Badge>}
+            {isComplete && <Badge className="bg-emerald-500/20 text-emerald-400 text-[8px] px-1.5 py-0 shrink-0">✓</Badge>}
           </button>
         );
       })}
@@ -231,8 +231,8 @@ export default function CourseViewerPage() {
       <div className="flex flex-1 overflow-hidden flex-col md:flex-row">
         {/* Main Content */}
         <div className="flex-1 flex flex-col overflow-y-auto">
-          {/* Video Player */}
-          <div className="relative w-full bg-black">
+          {/* Video Player - sticky at top like YouTube mobile */}
+          <div className="relative w-full bg-black sticky top-0 z-20 shadow-lg shadow-black/50">
             {selectedVideo && user && (
               <SecureVideoPlayer
                 videoUrl={selectedVideo.video_url}
