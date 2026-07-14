@@ -112,7 +112,7 @@ const AboutPage = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder.name}</h3>
-                        <p className="text-primary font-semibold text-sm mt-1">Photographer, Founder & Graphic Designer</p>
+                        <p className="text-primary font-semibold text-sm mt-1">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
                       </div>
                     </div>
                   </div>
