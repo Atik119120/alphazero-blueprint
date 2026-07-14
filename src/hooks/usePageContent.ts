@@ -9,9 +9,9 @@ interface PageContent {
   page_name: string;
   content_key: string;
   content_en: string | null;
-  content_bn: string | null;
   site_scope?: string;
 }
+
 
 export const usePageContent = (pageName: string, scopeOverride?: SiteScope) => {
   const queryClient = useQueryClient();
