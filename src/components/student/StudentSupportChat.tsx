@@ -220,7 +220,7 @@ export default function StudentSupportChat({ language }: Props) {
               <Input value={search} onChange={e => setSearch(e.target.value)} placeholder={t.search} className="h-8 pl-8 text-xs" />
             </div>
           </div>
-          <ScrollArea className="flex-1">
+          <ScrollArea className="flex-1 w-full [&>[data-radix-scroll-area-viewport]>div]:!block">
             {loading ? (
               <div className="flex justify-center py-8">
                 <div className="w-6 h-6 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
