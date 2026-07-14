@@ -35,6 +35,7 @@ import TeacherTicketsTab from '@/components/teacher/TeacherTicketsTab';
 import TeacherProfileTab from '@/components/teacher/TeacherProfileTab';
 import TeacherNoticesTab from '@/components/teacher/TeacherNoticesTab';
 import TeacherChatTab from '@/components/teacher/TeacherChatTab';
+import TeacherLiveClassesTab from '@/components/teacher/TeacherLiveClassesTab';
 
 const translations = {
   en: {
@@ -144,6 +145,7 @@ export default function TeacherDashboard() {
   const navItems = [
     { id: 'dashboard', icon: LayoutDashboard, label: t.dashboard },
     { id: 'courses', icon: BookOpen, label: t.courses },
+    { id: 'liveClasses', icon: Video, label: language === 'bn' ? 'লাইভ ক্লাস' : 'Live Classes' },
     { id: 'students', icon: Users, label: t.students },
     { id: 'notices', icon: MessageSquare, label: language === 'bn' ? 'নোটিশ' : 'Notices' },
     { id: 'chat', icon: MessageSquare, label: language === 'bn' ? 'চ্যাট' : 'Chat' },
@@ -476,6 +478,10 @@ export default function TeacherDashboard() {
               refetch={refetchTickets}
               language={language}
             />
+          )}
+
+          {activeTab === 'liveClasses' && (
+            <TeacherLiveClassesTab courses={courses} language={language} />
           )}
 
           {activeTab === 'profile' && (
