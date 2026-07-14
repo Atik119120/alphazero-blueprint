@@ -2244,6 +2244,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_progress_visible_to_teacher: {
+        Args: { _student_user_id: string; _video_id: string }
+        Returns: boolean
+      }
       is_student_of_current_teacher: {
         Args: { _student_user_id: string }
         Returns: boolean
