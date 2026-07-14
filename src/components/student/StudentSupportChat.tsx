@@ -98,14 +98,18 @@ export default function StudentSupportChat({ language }: Props) {
 
   // Find or create direct room with a teacher
   const openChat = async (teacher: TeacherContact) => {
-    if (!user?.id || !profile?.id) return;
+    if (!user?.id || !profile?.id) {
+      toast.error('Profile not loaded');
+      return;
+    }
     setSelected(teacher);
     setMessages([]);
     setRoomId(null);
 
     // Rooms I'm a member of
-    const { data: myMemberships } = await supabase
+    const { data: myMemberships, error: mmErr } = await supabase
       .from('chat_room_members').select('room_id').eq('user_id', user.id);
+    if (mmErr) console.error('memberships err', mmErr);
     const myRoomIds = (myMemberships || []).map(m => m.room_id);
 
     let existingId: string | null = null;
@@ -133,13 +137,27 @@ export default function StudentSupportChat({ language }: Props) {
         room_type: 'direct',
         created_by: profile.id,
       }).select().single();
-    if (cErr || !newRoom) { toast.error('Could not open chat'); return; }
+    if (cErr || !newRoom) {
+      console.error('create room error', cErr);
+      toast.error('Could not open chat: ' + (cErr?.message || 'unknown'));
+      return;
+    }
 
-    const { error: mErr } = await supabase.from('chat_room_members').insert([
-      { room_id: newRoom.id, user_id: user.id },
-      { room_id: newRoom.id, user_id: teacher.user_id },
-    ]);
-    if (mErr) { toast.error('Could not add participants'); return; }
+    // Add self first
+    const { error: m1 } = await supabase.from('chat_room_members').insert({
+      room_id: newRoom.id, user_id: user.id,
+    });
+    if (m1) console.error('add self err', m1);
+
+    // Add teacher
+    const { error: m2 } = await supabase.from('chat_room_members').insert({
+      room_id: newRoom.id, user_id: teacher.user_id,
+    });
+    if (m2) {
+      console.error('add teacher err', m2);
+      toast.error('Could not add teacher: ' + m2.message);
+    }
+
     setRoomId(newRoom.id);
   };
 
@@ -164,14 +182,20 @@ export default function StudentSupportChat({ language }: Props) {
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
   const send = async () => {
-    if (!user?.id || !roomId || !input.trim()) return;
+    if (!user?.id) return;
+    if (!roomId) { toast.error('Chat not ready, click the teacher again'); return; }
+    if (!input.trim()) return;
     const msg = input.trim();
     setInput('');
     const { error } = await supabase.from('chat_messages').insert({
       room_id: roomId, sender_id: user.id, message: msg,
     });
-    if (error) toast.error('Failed to send');
+    if (error) {
+      console.error('send err', error);
+      toast.error('Failed to send: ' + error.message);
+    }
   };
+
 
   const filtered = teachers.filter(tt => tt.full_name.toLowerCase().includes(search.toLowerCase()));
 
