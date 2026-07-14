@@ -202,6 +202,14 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
 
       if (updateError) throw updateError;
 
+      // Sync photo to linked team member card (Instructor profile)
+      if (linkedTeamMemberId) {
+        await supabase
+          .from('team_members')
+          .update({ image_url: urlData.publicUrl })
+          .eq('id', linkedTeamMemberId);
+      }
+
       refreshProfile();
       toast({ title: language === 'bn' ? 'ছবি আপলোড হয়েছে' : 'Photo uploaded' });
     } catch (error) {
