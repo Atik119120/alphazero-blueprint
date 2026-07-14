@@ -83,11 +83,11 @@ export const WorksManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-works"] });
-      toast.success(editingWork ? "Work আপডেট হয়েছে" : "নতুন Work যোগ হয়েছে");
+      toast.success(editingWork ? "Work updated" : "New Work added");
       resetForm();
     },
     onError: (error) => {
-      toast.error("সমস্যা হয়েছে: " + error.message);
+      toast.error("An error occurred: " + error.message);
     },
   });
 
@@ -98,10 +98,10 @@ export const WorksManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-works"] });
-      toast.success("Work ডিলিট হয়েছে");
+      toast.success("Work deleted");
     },
     onError: (error) => {
-      toast.error("ডিলিট করতে সমস্যা: " + error.message);
+      toast.error("Problem deleting: " + error.message);
     },
   });
 
@@ -144,35 +144,35 @@ export const WorksManagement = () => {
   const getCategoryLabel = (category: string) => {
     const labels: Record<string, string> = {
       // Web
-      web: "ওয়েব ডেভেলপমেন্ট",
-      web_portfolio: "পোর্টফোলিও ওয়েবসাইট",
-      web_ecommerce: "ই-কমার্স ওয়েবসাইট",
-      web_education: "এডুকেশন ওয়েবসাইট",
-      web_agency: "এজেন্সি / অর্গানাইজেশন",
-      web_general: "অন্যান্য ওয়েবসাইট",
+      web: "Web Development",
+      web_portfolio: "Portfolio Website",
+      web_ecommerce: "E-commerce Website",
+      web_education: "Education Website",
+      web_agency: "Agency / Organization",
+      web_general: "Other Websites",
       // Graphics
-      graphics: "গ্রাফিক্স ডিজাইন",
-      design: "গ্রাফিক্স ডিজাইন",
-      graphics_social: "সোশ্যাল মিডিয়া ডিজাইন",
-      graphics_logo: "লোগো ডিজাইন",
-      graphics_vector: "ভেক্টর ডিজাইন",
-      graphics_branding: "প্রফেশনাল ব্র্যান্ডিং",
-      graphics_general: "অন্যান্য গ্রাফিক্স",
+      graphics: "Graphics Design",
+      design: "Graphics Design",
+      graphics_social: "Social Media Design",
+      graphics_logo: "Logo Design",
+      graphics_vector: "Vector Design",
+      graphics_branding: "Professional Branding",
+      graphics_general: "Other Graphics",
       // Video
-      video: "ভিডিও এডিটিং",
-      video_short: "শর্ট ভিডিও",
-      video_reels: "রিলস",
-      video_funny: "ফানি কনটেন্ট",
-      video_square: "স্কয়ার ভিডিও",
-      video_general: "অন্যান্য ভিডিও",
+      video: "Video Editing",
+      video_short: "Short Video",
+      video_reels: "Reels",
+      video_funny: "Funny Content",
+      video_square: "Square Video",
+      video_general: "Other Videos",
       // Other
-      other: "অন্যান্য",
+      other: "Other",
     };
     return labels[category] || category;
   };
 
   if (isLoading) {
-    return <div className="text-center py-8">লোড হচ্ছে...</div>;
+    return <div className="text-center py-8">Loading...</div>;
   }
 
   return (
@@ -183,38 +183,38 @@ export const WorksManagement = () => {
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
               <Plus className="w-4 h-4 mr-2" />
-              নতুন Work যোগ করুন
+              Add New Work
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-lg max-h-[90vh] flex flex-col">
             <DialogHeader>
               <DialogTitle>
-                {editingWork ? "Work এডিট করুন" : "নতুন Work যোগ করুন"}
+                {editingWork ? "Edit Work" : "Add New Work"}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4 overflow-y-auto flex-1 pr-2">
               <div>
-                <Label>শিরোনাম *</Label>
+                <Label>Title *</Label>
                 <Input
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="প্রজেক্টের নাম"
+                  placeholder="Project Name"
                   required
                 />
               </div>
 
               <div>
-                <Label>বিবরণ</Label>
+                <Label>Description</Label>
                 <Textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="প্রজেক্টের বিবরণ"
+                  placeholder="Project Description"
                   rows={3}
                 />
               </div>
 
               <div>
-                <Label>ক্যাটাগরি</Label>
+                <Label>Category</Label>
                 <Select
                   value={formData.category}
                   onValueChange={(value) => setFormData({ ...formData, category: value })}
@@ -224,32 +224,32 @@ export const WorksManagement = () => {
                   </SelectTrigger>
                   <SelectContent className="max-h-80 bg-popover z-50">
                     {/* Web Development */}
-                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50">ওয়েব ডেভেলপমেন্ট</div>
-                    <SelectItem value="web_portfolio">পোর্টফোলিও ওয়েবসাইট</SelectItem>
-                    <SelectItem value="web_ecommerce">ই-কমার্স ওয়েবসাইট</SelectItem>
-                    <SelectItem value="web_education">এডুকেশন ওয়েবসাইট</SelectItem>
-                    <SelectItem value="web_agency">এজেন্সি / অর্গানাইজেশন</SelectItem>
-                    <SelectItem value="web_general">অন্যান্য ওয়েবসাইট</SelectItem>
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50">Web Development</div>
+                    <SelectItem value="web_portfolio">Portfolio Website</SelectItem>
+                    <SelectItem value="web_ecommerce">E-commerce Website</SelectItem>
+                    <SelectItem value="web_education">Education Website</SelectItem>
+                    <SelectItem value="web_agency">Agency / Organization</SelectItem>
+                    <SelectItem value="web_general">Other Websites</SelectItem>
                     
                     {/* Graphics Design */}
-                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">গ্রাফিক্স ডিজাইন</div>
-                    <SelectItem value="graphics_social">সোশ্যাল মিডিয়া ডিজাইন</SelectItem>
-                    <SelectItem value="graphics_logo">লোগো ডিজাইন</SelectItem>
-                    <SelectItem value="graphics_vector">ভেক্টর ডিজাইন</SelectItem>
-                    <SelectItem value="graphics_branding">প্রফেশনাল ব্র্যান্ডিং</SelectItem>
-                    <SelectItem value="graphics_general">অন্যান্য গ্রাফিক্স</SelectItem>
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">Graphics Design</div>
+                    <SelectItem value="graphics_social">Social Media Design</SelectItem>
+                    <SelectItem value="graphics_logo">Logo Design</SelectItem>
+                    <SelectItem value="graphics_vector">Vector Design</SelectItem>
+                    <SelectItem value="graphics_branding">Professional Branding</SelectItem>
+                    <SelectItem value="graphics_general">Other Graphics</SelectItem>
                     
                     {/* Video Editing */}
-                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">ভিডিও এডিটিং</div>
-                    <SelectItem value="video_short">শর্ট ভিডিও</SelectItem>
-                    <SelectItem value="video_reels">রিলস</SelectItem>
-                    <SelectItem value="video_funny">ফানি কনটেন্ট</SelectItem>
-                    <SelectItem value="video_square">স্কয়ার ভিডিও</SelectItem>
-                    <SelectItem value="video_general">অন্যান্য ভিডিও</SelectItem>
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">Video Editing</div>
+                    <SelectItem value="video_short">Short Video</SelectItem>
+                    <SelectItem value="video_reels">Reels</SelectItem>
+                    <SelectItem value="video_funny">Funny Content</SelectItem>
+                    <SelectItem value="video_square">Square Video</SelectItem>
+                    <SelectItem value="video_general">Other Videos</SelectItem>
                     
                     {/* Other */}
-                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">অন্যান্য</div>
-                    <SelectItem value="other">অন্যান্য</SelectItem>
+                    <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 mt-1">Other</div>
+                    <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -258,14 +258,14 @@ export const WorksManagement = () => {
                 value={formData.image_url}
                 onChange={(url) => setFormData({ ...formData, image_url: url })}
                 folder="works"
-                label="ছবি / কনটেন্ট"
-                placeholder="URL পেস্ট করুন অথবা আপলোড করুন"
+                label="Image / Content"
+                placeholder="Paste URL or Upload"
                 aspectRatio="video"
                 maxSizeMB={10}
               />
 
               <div>
-                <Label>প্রজেক্ট লিংক</Label>
+                <Label>Project Link</Label>
                 <Input
                   value={formData.project_url}
                   onChange={(e) => setFormData({ ...formData, project_url: e.target.value })}
@@ -292,7 +292,7 @@ export const WorksManagement = () => {
 
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={saveMutation.isPending} className="flex-1">
-                  {saveMutation.isPending ? "সেভ হচ্ছে..." : "সেভ করুন"}
+                  {saveMutation.isPending ? "Saving..." : "Save"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   বাতিল
@@ -317,7 +317,7 @@ export const WorksManagement = () => {
                     variant="ghost"
                     size="icon"
                     onClick={() => {
-                      if (confirm("ডিলিট করতে চান?")) {
+                      if (confirm("Do you want to delete?")) {
                         deleteMutation.mutate(work.id);
                       }
                     }}
@@ -381,7 +381,7 @@ export const WorksManagement = () => {
 
       {(!works || works.length === 0) && (
         <div className="text-center py-12 text-muted-foreground">
-          কোন Work নেই। উপরের বাটনে ক্লিক করে নতুন Work যোগ করুন।
+          কোন Work নেই। উপরের বাটনে ক্লিক করে Add New Work।
         </div>
       )}
     </div>

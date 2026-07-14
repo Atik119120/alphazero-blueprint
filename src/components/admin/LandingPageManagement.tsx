@@ -81,11 +81,11 @@ export default function LandingPageManagement() {
       .eq('id', form.id);
     setSaving(false);
     if (error) toast.error(error.message);
-    else toast.success(isBn ? 'সেভ হয়েছে' : 'Saved');
+    else toast.success(isBn ? 'Saved' : 'Saved');
   };
 
   if (!form) {
-    return <div className="text-muted-foreground">{isBn ? 'লোড হচ্ছে...' : 'Loading...'}</div>;
+    return <div className="text-muted-foreground">{isBn ? 'Loading...' : 'Loading...'}</div>;
   }
 
   const outcomes = form.learning_outcomes ?? [];
@@ -95,17 +95,17 @@ export default function LandingPageManagement() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>{isBn ? 'কোর্স ল্যান্ডিং পেজ' : 'Course Landing Page'}</CardTitle>
+          <CardTitle>{isBn ? 'Course Landing Page' : 'Course Landing Page'}</CardTitle>
           <CardDescription>
             {isBn
-              ? 'যেকোনো কোর্সের জন্য পাবলিক ল্যান্ডিং পেজের কন্টেন্ট এডিট করুন। URL: /<slug>'
+              ? 'Edit public landing page content for any course. URL: /<slug>'
               : 'Edit public landing page content for any course. URL: /<slug>'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap gap-3 items-end">
             <div className="flex-1 min-w-[240px]">
-              <Label>{isBn ? 'কোর্স' : 'Course'}</Label>
+              <Label>{isBn ? 'Course' : 'Course'}</Label>
               <Select value={selectedId} onValueChange={setSelectedId}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -132,13 +132,13 @@ export default function LandingPageManagement() {
               placeholder="vibe-coding"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              {isBn ? 'উদাহরণ: vibe-coding → /vibe-coding' : 'Example: vibe-coding → /vibe-coding'}
+              {isBn ? 'Example: vibe-coding → /vibe-coding' : 'Example: vibe-coding → /vibe-coding'}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label>{isBn ? 'সংক্ষিপ্ত বিবরণ (বাংলা)' : 'Short Description (Bangla)'}</Label>
+              <Label>{isBn ? 'Overview (Bengali)' : 'Short Description (Bangla)'}</Label>
               <Textarea rows={3} value={form.short_description ?? ''} onChange={(e) => update({ short_description: e.target.value })} />
             </div>
             <div>
@@ -149,7 +149,7 @@ export default function LandingPageManagement() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label>{isBn ? 'ট্রেইনার বায়ো (বাংলা)' : 'Trainer Bio (Bangla)'}</Label>
+              <Label>{isBn ? 'Trainer Bio (Bengali)' : 'Trainer Bio (Bangla)'}</Label>
               <Textarea rows={4} value={form.trainer_bio ?? ''} onChange={(e) => update({ trainer_bio: e.target.value })} />
             </div>
             <div>
@@ -160,19 +160,19 @@ export default function LandingPageManagement() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div>
-              <Label>{isBn ? 'শুরুর তারিখ' : 'Start Date'}</Label>
+              <Label>{isBn ? 'Start Date' : 'Start Date'}</Label>
               <Input value={form.start_date ?? ''} onChange={(e) => update({ start_date: e.target.value })} placeholder="1 Jan 2026" />
             </div>
             <div>
-              <Label>{isBn ? 'ক্লাসের সময়' : 'Class Time'}</Label>
+              <Label>{isBn ? 'Class Time' : 'Class Time'}</Label>
               <Input value={form.class_time ?? ''} onChange={(e) => update({ class_time: e.target.value })} placeholder="9 PM" />
             </div>
             <div>
-              <Label>{isBn ? 'মোট ক্লাস' : 'Total Classes'}</Label>
+              <Label>{isBn ? 'Total Classes' : 'Total Classes'}</Label>
               <Input value={form.total_classes ?? ''} onChange={(e) => update({ total_classes: e.target.value })} placeholder="24" />
             </div>
             <div>
-              <Label>{isBn ? 'মেয়াদ' : 'Duration'}</Label>
+              <Label>{isBn ? 'Duration' : 'Duration'}</Label>
               <Input value={form.duration ?? ''} onChange={(e) => update({ duration: e.target.value })} placeholder="3 months" />
             </div>
           </div>
@@ -181,7 +181,7 @@ export default function LandingPageManagement() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{isBn ? 'যা শিখবেন' : "What You'll Learn"}</CardTitle>
+          <CardTitle>{isBn ? 'What you'll learn' : "What You'll Learn"}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           {outcomes.map((o, i) => (
@@ -200,7 +200,7 @@ export default function LandingPageManagement() {
             </div>
           ))}
           <Button variant="outline" size="sm" onClick={() => update({ learning_outcomes: [...outcomes, ''] })}>
-            <Plus className="h-4 w-4 mr-1" /> {isBn ? 'যোগ করুন' : 'Add'}
+            <Plus className="h-4 w-4 mr-1" /> {isBn ? 'Add' : 'Add'}
           </Button>
         </CardContent>
       </Card>
@@ -214,7 +214,7 @@ export default function LandingPageManagement() {
             <div key={i} className="space-y-2 p-3 border rounded-lg">
               <div className="flex gap-2">
                 <Input
-                  placeholder={isBn ? 'প্রশ্ন' : 'Question'}
+                  placeholder={isBn ? 'Question' : 'Question'}
                   value={f.question}
                   onChange={(e) => {
                     const next = [...faqs];
@@ -228,7 +228,7 @@ export default function LandingPageManagement() {
               </div>
               <Textarea
                 rows={2}
-                placeholder={isBn ? 'উত্তর' : 'Answer'}
+                placeholder={isBn ? 'Answer' : 'Answer'}
                 value={f.answer}
                 onChange={(e) => {
                   const next = [...faqs];
@@ -239,14 +239,14 @@ export default function LandingPageManagement() {
             </div>
           ))}
           <Button variant="outline" size="sm" onClick={() => update({ faqs: [...faqs, { question: '', answer: '' }] })}>
-            <Plus className="h-4 w-4 mr-1" /> {isBn ? 'FAQ যোগ করুন' : 'Add FAQ'}
+            <Plus className="h-4 w-4 mr-1" /> {isBn ? 'Add FAQ' : 'Add FAQ'}
           </Button>
         </CardContent>
       </Card>
 
       <div className="flex justify-end">
         <Button onClick={save} disabled={saving} size="lg">
-          {saving ? (isBn ? 'সেভ হচ্ছে...' : 'Saving...') : (isBn ? 'সেভ করুন' : 'Save Changes')}
+          {saving ? (isBn ? 'Saving...' : 'Saving...') : (isBn ? 'Save' : 'Save Changes')}
         </Button>
       </div>
     </div>

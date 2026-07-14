@@ -118,11 +118,11 @@ const FooterManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footer-links'] });
-      toast.success('লিঙ্ক যোগ হয়েছে!');
+      toast.success('Link added!');
       setIsAddDialogOpen(false);
       resetLinkForm();
     },
-    onError: () => toast.error('লিঙ্ক যোগ করতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to add link')
   });
 
 
@@ -133,11 +133,11 @@ const FooterManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footer-links'] });
-      toast.success('লিঙ্ক আপডেট হয়েছে!');
+      toast.success('Link updated!');
       setEditingLink(null);
       resetLinkForm();
     },
-    onError: () => toast.error('লিঙ্ক আপডেট করতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to update link')
   });
 
   const deleteLinkMutation = useMutation({
@@ -147,9 +147,9 @@ const FooterManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footer-links'] });
-      toast.success('লিঙ্ক মুছে ফেলা হয়েছে!');
+      toast.success('Link deleted!');
     },
-    onError: () => toast.error('লিঙ্ক মুছতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to delete link')
   });
 
   // Content mutations
@@ -164,10 +164,10 @@ const FooterManagement = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['footer-content'] });
-      toast.success('কনটেন্ট আপডেট হয়েছে!');
+      toast.success('Content updated!');
       setEditingContent(null);
     },
-    onError: () => toast.error('কনটেন্ট আপডেট করতে সমস্যা হয়েছে')
+    onError: () => toast.error('Failed to update content')
   });
 
   const resetLinkForm = () => {
@@ -176,7 +176,7 @@ const FooterManagement = () => {
 
   const handleAddLink = () => {
     if (!linkForm.title.trim() || !linkForm.url.trim()) {
-      toast.error('Title এবং URL দিন');
+      toast.error('Provide title and URL');
       return;
     }
     addLinkMutation.mutate(linkForm);
@@ -261,9 +261,9 @@ const FooterManagement = () => {
         <div className="flex items-center gap-3">
           <Link2 className="h-6 w-6 text-primary" />
           <div>
-            <h2 className="text-2xl font-bold">ফুটার ম্যানেজমেন্ট</h2>
+            <h2 className="text-2xl font-bold">Footer Management</h2>
             <p className="text-muted-foreground">
-              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — সোশ্যাল লিঙ্ক, নেভিগেশন ও ফুটার কনটেন্ট
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — Social Links, Navigation ও ফুটার Content
             </p>
           </div>
         </div>
@@ -273,9 +273,9 @@ const FooterManagement = () => {
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid grid-cols-3 w-full max-w-md">
-          <TabsTrigger value="links">সোশ্যাল লিঙ্ক</TabsTrigger>
-          <TabsTrigger value="nav">নেভিগেশন</TabsTrigger>
-          <TabsTrigger value="content">কনটেন্ট</TabsTrigger>
+          <TabsTrigger value="links">Social Links</TabsTrigger>
+          <TabsTrigger value="nav">Navigation</TabsTrigger>
+          <TabsTrigger value="content">Content</TabsTrigger>
         </TabsList>
 
         {/* Social Links Tab */}
@@ -283,11 +283,11 @@ const FooterManagement = () => {
           <div className="flex justify-end">
             <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
               <DialogTrigger asChild>
-                <Button><Plus className="h-4 w-4 mr-2" />নতুন সোশ্যাল লিঙ্ক</Button>
+                <Button><Plus className="h-4 w-4 mr-2" />New Social Link</Button>
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>নতুন সোশ্যাল লিঙ্ক যোগ করুন</DialogTitle>
+                  <DialogTitle>Add New Social Link</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 pt-4">
                   <div className="space-y-2">
@@ -371,7 +371,7 @@ const FooterManagement = () => {
                         <Button size="sm" onClick={handleUpdateLink} disabled={updateLinkMutation.isPending}>
                           <Save className="h-4 w-4 mr-1" />সেভ
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => setEditingLink(null)}>বাতিল</Button>
+                        <Button size="sm" variant="outline" onClick={() => setEditingLink(null)}>Cancel</Button>
                       </div>
                     </div>
                   ) : (
@@ -451,7 +451,7 @@ const FooterManagement = () => {
                         {updateContentMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
                         সেভ করুন
                       </Button>
-                      <Button variant="outline" onClick={() => setEditingContent(null)}>বাতিল</Button>
+                      <Button variant="outline" onClick={() => setEditingContent(null)}>Cancel</Button>
                     </div>
                   </div>
                 ) : (

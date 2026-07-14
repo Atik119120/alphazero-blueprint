@@ -52,17 +52,17 @@ export default function FeedbackViewer() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">সব ({feedbacks.length})</SelectItem>
-            <SelectItem value="positive">👍 ভালো ({positiveCount})</SelectItem>
-            <SelectItem value="negative">👎 খারাপ ({negativeCount})</SelectItem>
+            <SelectItem value="positive">👍 Good ({positiveCount})</SelectItem>
+            <SelectItem value="negative">👎 Bad ({negativeCount})</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{feedbacks.length}</p><p className="text-xs text-muted-foreground">মোট</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-emerald-600">{positiveCount}</p><p className="text-xs text-muted-foreground">পজিটিভ</p></CardContent></Card>
-        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-red-600">{negativeCount}</p><p className="text-xs text-muted-foreground">নেগেটিভ</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold">{feedbacks.length}</p><p className="text-xs text-muted-foreground">Total</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-emerald-600">{positiveCount}</p><p className="text-xs text-muted-foreground">Positive</p></CardContent></Card>
+        <Card><CardContent className="p-4 text-center"><p className="text-2xl font-bold text-red-600">{negativeCount}</p><p className="text-xs text-muted-foreground">Negative</p></CardContent></Card>
       </div>
 
       {loading ? (
@@ -90,7 +90,7 @@ export default function FeedbackViewer() {
                   </p>
                 </div>
                 <Badge variant={fb.sentiment === 'positive' ? 'default' : 'destructive'} className="text-[10px]">
-                  {fb.sentiment === 'positive' ? 'ভালো' : 'খারাপ'}
+                  {fb.sentiment === 'positive' ? 'Good' : 'Bad'}
                 </Badge>
               </CardContent>
             </Card>

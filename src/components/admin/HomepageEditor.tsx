@@ -45,19 +45,19 @@ interface SectionSchema {
 
 const SECTION_SCHEMA: Record<string, SectionSchema> = {
   hero: {
-    label: "Hero Section", hint: "পেজের একদম উপরের বড় ব্যানার",
+    label: "Hero Section", hint: "Large banner at the very top of the page",
     icon: Sparkles, gradient: "from-sky-500 to-blue-600",
     fields: ["title", "subtitle", "description", "image_url", "button_label", "button_url"],
     itemsMode: null,
   },
   sister_brands: {
-    label: "Sister Brands", hint: "সিস্টার ব্র্যান্ডের লোগো ও ওয়েবসাইট",
+    label: "Sister Brands", hint: "Sister brand's logo and website",
     icon: Building2, gradient: "from-amber-500 to-orange-600",
     fields: ["title", "subtitle"],
     itemsMode: "brands", itemLabel: "Brand",
   },
   trusted_brands: {
-    label: "Trusted Brands", hint: "হোমপেজের 'Trusted 47+ Global Brands' মারকী সেকশনের লোগো",
+    label: "Trusted Brands", hint: "Homepage 'Trusted 47+ Global Brands' marquee section logos",
     icon: Building2, gradient: "from-cyan-500 to-blue-600",
     fields: ["title", "subtitle"],
     itemsMode: "brands", itemLabel: "Brand Logo",
@@ -65,37 +65,37 @@ const SECTION_SCHEMA: Record<string, SectionSchema> = {
 
 
   what_we_do: {
-    label: "What We Do", hint: "সেকশন হেডিং + প্রতিটা কাজের কার্ড (২টি ইমেজ সহ)",
+    label: "What We Do", hint: "Section heading + each work card (with 2 images)",
     icon: Boxes, gradient: "from-fuchsia-500 to-pink-600",
     fields: ["title", "subtitle", "highlight"],
     itemsMode: "cards", itemLabel: "Item",
   },
   services_preview: {
-    label: "Services Preview", hint: "সার্ভিস সেকশনের হেডিং",
+    label: "Services Preview", hint: "Service section heading",
     icon: Wrench, gradient: "from-emerald-500 to-teal-600",
     fields: ["title", "subtitle", "button_label", "button_url"],
     itemsMode: null,
   },
   courses_preview: {
-    label: "Featured Courses", hint: "কোর্স সেকশনের হেডিং + CTA",
+    label: "Featured Courses", hint: "Course section heading + CTA",
     icon: GraduationCap, gradient: "from-indigo-500 to-blue-600",
     fields: ["title", "subtitle", "button_label", "button_url"],
     itemsMode: null,
   },
   instructors: {
-    label: "Instructors", hint: "ইন্সট্রাক্টরদের নাম, রোল ও ছবি",
+    label: "Instructors", hint: "Instructors' names, roles, and photos",
     icon: GraduationCap, gradient: "from-violet-500 to-purple-600",
     fields: ["title", "subtitle"],
     itemsMode: "cards", itemLabel: "Instructor",
   },
   testimonials: {
-    label: "Testimonials", hint: "ক্লায়েন্টদের রিভিউ",
+    label: "Testimonials", hint: "Clients' reviews",
     icon: MessageSquare, gradient: "from-rose-500 to-pink-600",
     fields: ["title", "subtitle", "highlight"],
     itemsMode: "cards", itemLabel: "Testimonial",
   },
   contact_cta: {
-    label: "Contact / CTA", hint: "যোগাযোগের ব্লক + বাটন",
+    label: "Contact / CTA", hint: "Contact block + button",
     icon: PhoneCall, gradient: "from-amber-500 to-orange-600",
     fields: ["title", "subtitle", "description", "button_label", "button_url"],
     itemsMode: null,
@@ -203,7 +203,7 @@ const PageList = ({ onSelect }: { onSelect: () => void }) => (
         </div>
         <div className="flex-1">
           <div className="font-semibold text-base">Home Page</div>
-          <div className="text-xs text-muted-foreground mt-0.5">হোমপেজের সব সেকশন এডিট করুন</div>
+          <div className="text-xs text-muted-foreground mt-0.5">Edit all sections on the homepage</div>
         </div>
         <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition" />
       </div>
@@ -218,7 +218,7 @@ const SectionGrid = ({
 }: { sections: HomepageSection[]; isLoading: boolean; onOpen: (id: string) => void }) => {
   if (isLoading) return <SkeletonGrid />;
   if (!sections.length) {
-    return <div className="text-center text-muted-foreground py-12">এই সাইটের জন্য কোন সেকশন নেই।</div>;
+    return <div className="text-center text-muted-foreground py-12">There are no sections for this site.</div>;
   }
   return (
     <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -307,10 +307,10 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
         is_active: form.is_active,
       });
 
-      toast.success("সেভ হয়েছে");
+      toast.success("Saved");
       setDirty(false);
     } catch (e: any) {
-      toast.error(e.message ?? "সেভ করা যায়নি");
+      toast.error(e.message ?? "Could not save");
     }
   };
 
@@ -375,7 +375,7 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
 
 
       {showMedia && (
-        <FieldGroup title="Media" description="সেকশনের জন্য ইমেজ" icon={ImagePlus}>
+        <FieldGroup title="Media" description="Image for the section" icon={ImagePlus}>
           <div className="grid md:grid-cols-2 gap-4">
             {has("image_url") && (
               <ImageUploader
@@ -398,7 +398,7 @@ const SectionEditor = ({ section, onBack }: { section: HomepageSection; onBack: 
       )}
 
       {showCta && (
-        <FieldGroup title="Call to Action" description="বাটনের টেক্সট ও লিংক" icon={MousePointerClick}>
+        <FieldGroup title="Call to Action" description="Button text and link" icon={MousePointerClick}>
           <div className="grid md:grid-cols-2 gap-4">
             <FieldInput label="Button Label" value={form.button_label} onChange={(v) => set("button_label", v)} />
             <FieldInput label="Button URL" placeholder="/services" value={form.button_url} onChange={(v) => set("button_url", v)} />
@@ -473,9 +473,9 @@ const SectionItemsEditor = ({
         order_index: nextOrder,
         is_active: true,
       });
-      toast.success("আইটেম যোগ হয়েছে");
+      toast.success("Item added");
     } catch (e: any) {
-      toast.error(e.message ?? "যোগ করা যায়নি");
+      toast.error(e.message ?? "Could not add");
     }
   };
 
@@ -485,7 +485,7 @@ const SectionItemsEditor = ({
         <div>
           <CardTitle className="text-sm font-semibold uppercase tracking-wide">{itemLabel}s</CardTitle>
           <CardDescription className="text-xs">
-            {mode === "brands" ? "প্রতিটা ব্র্যান্ডের লোগো ও ওয়েবসাইট লিংক" : "প্রতিটা আইটেমের কন্টেন্ট"}
+            {mode === "brands" ? "Logo and website link for each brand" : "Content of each item"}
           </CardDescription>
         </div>
         <Button size="sm" onClick={addItem} disabled={createItem.isPending}>
@@ -535,14 +535,14 @@ const ItemRow = ({
         url: f.url, order_index: f.order_index, is_active: f.is_active,
       });
 
-      toast.success("সেভ হয়েছে");
+      toast.success("Saved");
       setDirty(false);
     } catch (e: any) { toast.error(e.message); }
   };
 
   const del = async () => {
-    if (!confirm(`এই ${itemLabel.toLowerCase()}টি ডিলিট করবেন?`)) return;
-    try { await deleteItem.mutateAsync(f.id); toast.success("ডিলিট হয়েছে"); }
+    if (!confirm(`Delete this ${itemLabel.toLowerCase()}?`)) return;
+    try { await deleteItem.mutateAsync(f.id); toast.success("Deleted"); }
     catch (e: any) { toast.error(e.message); }
   };
 

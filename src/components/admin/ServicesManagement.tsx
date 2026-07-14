@@ -81,11 +81,11 @@ export const ServicesManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-services"] });
-      toast.success(editingService ? "Service আপডেট হয়েছে" : "নতুন Service যোগ হয়েছে");
+      toast.success(editingService ? "Service updated" : "New service added");
       resetForm();
     },
     onError: (error) => {
-      toast.error("সমস্যা হয়েছে: " + error.message);
+      toast.error("Problem occurred: " + error.message);
     },
   });
 
@@ -96,10 +96,10 @@ export const ServicesManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-services"] });
-      toast.success("Service ডিলিট হয়েছে");
+      toast.success("Service deleted");
     },
     onError: (error) => {
-      toast.error("ডিলিট করতে সমস্যা: " + error.message);
+      toast.error("Problem deleting: " + error.message);
     },
   });
 
@@ -179,7 +179,7 @@ export const ServicesManagement = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center py-8">লোড হচ্ছে...</div>;
+    return <div className="text-center py-8">Loading...</div>;
   }
 
   return (
@@ -190,32 +190,32 @@ export const ServicesManagement = () => {
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()}>
               <Plus className="w-4 h-4 mr-2" />
-              নতুন Service যোগ করুন
+              Add New Service
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                {editingService ? "Service এডিট করুন" : "নতুন Service যোগ করুন"}
+                {editingService ? "Edit Service" : "Add New Service"}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Label>শিরোনাম *</Label>
+                <Label>Title *</Label>
                 <Input
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Service এর নাম"
+                  placeholder="Service Name"
                   required
                 />
               </div>
 
               <div>
-                <Label>বিবরণ</Label>
+                <Label>Description</Label>
                 <Textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Service এর বিবরণ"
+                  placeholder="Service Details"
                   rows={3}
                 />
               </div>
@@ -244,7 +244,7 @@ export const ServicesManagement = () => {
                   <Input
                     value={newFeature}
                     onChange={(e) => setNewFeature(e.target.value)}
-                    placeholder="নতুন feature যোগ করুন"
+                    placeholder="Add new feature"
                     onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addFeature())}
                   />
                   <Button type="button" onClick={addFeature} size="icon">
@@ -271,12 +271,12 @@ export const ServicesManagement = () => {
                   checked={formData.is_active}
                   onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
                 />
-                <Label>Active (ওয়েবসাইটে দেখাবে)</Label>
+                <Label>Active (will show on website)</Label>
               </div>
 
               <div className="flex gap-2 pt-4">
                 <Button type="submit" disabled={saveMutation.isPending} className="flex-1">
-                  {saveMutation.isPending ? "সেভ হচ্ছে..." : "সেভ করুন"}
+                  {saveMutation.isPending ? "Saving..." : "Save"}
                 </Button>
                 <Button type="button" variant="outline" onClick={resetForm}>
                   বাতিল
@@ -306,7 +306,7 @@ export const ServicesManagement = () => {
                     variant="ghost"
                     size="icon"
                     onClick={() => {
-                      if (confirm("ডিলিট করতে চান?")) {
+                      if (confirm("Do you want to delete?")) {
                         deleteMutation.mutate(service.id);
                       }
                     }}
@@ -348,7 +348,7 @@ export const ServicesManagement = () => {
 
       {(!services || services.length === 0) && (
         <div className="text-center py-12 text-muted-foreground">
-          কোন Service নেই। উপরের বাটনে ক্লিক করে নতুন Service যোগ করুন।
+          কোন Service নেই। উপরের বাটনে ক্লিক করে Add New Service।
         </div>
       )}
     </div>

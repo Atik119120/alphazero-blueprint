@@ -24,7 +24,7 @@ interface ApiKeyConfig {
 const API_CATEGORIES = [
   {
     id: 'payment',
-    label: 'পেমেন্ট গেটওয়ে',
+    label: 'Payment Gateway',
     labelEn: 'Payment Gateways',
     icon: CreditCard,
     color: 'from-emerald-500 to-teal-500',
@@ -41,7 +41,7 @@ const API_CATEGORIES = [
   },
   {
     id: 'google',
-    label: 'গুগল সার্ভিস',
+    label: 'Google Service',
     labelEn: 'Google Services',
     icon: Globe,
     color: 'from-blue-500 to-cyan-500',
@@ -55,7 +55,7 @@ const API_CATEGORIES = [
   },
   {
     id: 'meta',
-    label: 'মেটা / ফেসবুক',
+    label: 'Meta / Facebook',
     labelEn: 'Meta / Facebook',
     icon: BarChart3,
     color: 'from-indigo-500 to-purple-500',
@@ -68,7 +68,7 @@ const API_CATEGORIES = [
   },
   {
     id: 'other',
-    label: 'অন্যান্য',
+    label: 'Others',
     labelEn: 'Other Services',
     icon: Settings2,
     color: 'from-amber-500 to-orange-500',
@@ -127,7 +127,7 @@ const ApiKeyManagement = () => {
     },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['api-settings'] });
-      toast.success(`${variables.key} সেভ হয়েছে!`);
+      toast.success(`${variables.key} saved!`);
       setEditedValues(prev => {
         const next = { ...prev };
         delete next[variables.key];
@@ -136,7 +136,7 @@ const ApiKeyManagement = () => {
       setSavingKey(null);
     },
     onError: () => {
-      toast.error('সেভ করতে সমস্যা হয়েছে');
+      toast.error('Failed to save');
       setSavingKey(null);
     }
   });
@@ -151,7 +151,7 @@ const ApiKeyManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['api-settings'] });
-      toast.success('API Key মুছে ফেলা হয়েছে');
+      toast.success('API Key deleted');
     }
   });
 
@@ -206,8 +206,8 @@ const ApiKeyManagement = () => {
           <Key className="h-5 w-5 text-primary" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold">API কী ম্যানেজমেন্ট</h2>
-          <p className="text-sm text-muted-foreground">পেমেন্ট গেটওয়ে, গুগল, মেটা এবং অন্যান্য API কী সেটআপ করুন</p>
+          <h2 className="text-2xl font-bold">API Key Management</h2>
+          <p className="text-sm text-muted-foreground">Set up payment gateway, Google, Meta, and other API keys</p>
         </div>
       </div>
 
@@ -284,7 +284,7 @@ const ApiKeyManagement = () => {
                               toggleVisibility(keyConfig.key);
                             }
                           }}
-                          placeholder="API Key বসান..."
+                          placeholder="Enter API Key..."
                           className="pr-10 h-9 text-sm font-mono"
                         />
                         <button
@@ -313,7 +313,7 @@ const ApiKeyManagement = () => {
                           size="sm"
                           variant="ghost"
                           onClick={() => {
-                            if (confirm('এই API Key মুছতে চান?')) {
+                            if (confirm('Are you sure you want to delete this API Key?')) {
                               deleteMutation.mutate(keyConfig.key);
                             }
                           }}
@@ -334,13 +334,13 @@ const ApiKeyManagement = () => {
       {/* Tips */}
       <Card className="border-primary/20 bg-primary/5">
         <CardHeader className="pb-2">
-          <CardTitle className="text-base">💡 গুরুত্বপূর্ণ তথ্য</CardTitle>
+          <CardTitle className="text-base">💡 Important Information</CardTitle>
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-1.5">
-          <p>• API Key সেভ করলে তা সাথে সাথে সক্রিয় হয়ে যাবে</p>
-          <p>• পেমেন্ট API সেটআপ না হলে ম্যানুয়াল বিকাশ/নগদ সিস্টেম চালু থাকবে</p>
-          <p>• Google Ads ও Meta Pixel ID দিলে ওয়েবসাইটে ট্র্যাকিং কোড অটো যুক্ত হবে</p>
-          <p>• API Key ভুল দিলে সংশ্লিষ্ট সার্ভিস কাজ করবে না</p>
+          <p>• Saving an API Key will activate it immediately</p>
+          <p>• If the Payment API is not set up, manual bKash/Nagad system will remain active</p>
+          <p>• Providing Google Ads and Meta Pixel ID will automatically add tracking codes to the website</p>
+          <p>• If an incorrect API Key is provided, the respective service will not work</p>
         </CardContent>
       </Card>
     </div>

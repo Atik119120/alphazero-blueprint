@@ -71,10 +71,10 @@ const SiteSettingsManagement = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['site-settings'] });
-      toast.success('সেটিং আপডেট হয়েছে!');
+      toast.success('Settings updated!');
     },
     onError: () => {
-      toast.error('সেটিং আপডেট করতে সমস্যা হয়েছে');
+      toast.error('Failed to update settings');
     }
   });
 
@@ -106,23 +106,23 @@ const SiteSettingsManagement = () => {
       'favicon_url': 'Favicon URL',
       'logo_url': 'Logo URL',
       'site_name': 'Site Name',
-      'bkash_number': 'বিকাশ নাম্বার',
-      'nagad_number': 'নগদ নাম্বার',
-      'bkash_enabled': 'বিকাশ পেমেন্ট',
-      'nagad_enabled': 'নগদ পেমেন্ট',
+      'bkash_number': 'Bkash Number',
+      'nagad_number': 'Nagad Number',
+      'bkash_enabled': 'Bkash Payment',
+      'nagad_enabled': 'Nagad Payment',
     };
     return labels[key] || key;
   };
 
   const getSettingDescription = (key: string) => {
     const descriptions: Record<string, string> = {
-      'favicon_url': 'ব্রাউজার ট্যাবে দেখানো ছোট আইকন (URL দিন)',
-      'logo_url': 'সাইটের মূল লোগো (URL দিন)',
-      'site_name': 'সাইটের নাম',
-      'bkash_number': 'কোর্স পেমেন্টের জন্য বিকাশ নাম্বার',
-      'nagad_number': 'কোর্স পেমেন্টের জন্য নগদ নাম্বার',
-      'bkash_enabled': 'বিকাশ ম্যানুয়াল পেমেন্ট অপশন চালু/বন্ধ করুন',
-      'nagad_enabled': 'নগদ ম্যানুয়াল পেমেন্ট অপশন চালু/বন্ধ করুন',
+      'favicon_url': 'Small icon shown on browser tab (URL)',
+      'logo_url': 'Site main logo (URL)',
+      'site_name': 'Site name',
+      'bkash_number': 'Bkash number for course payments',
+      'nagad_number': 'Nagad number for course payments',
+      'bkash_enabled': 'Toggle Bkash manual payment option',
+      'nagad_enabled': 'Toggle Nagad manual payment option',
     };
     return descriptions[key] || '';
   };
@@ -153,9 +153,9 @@ const SiteSettingsManagement = () => {
         <div className="flex items-center gap-3">
           <Settings className="h-6 w-6 text-primary" />
           <div>
-            <h2 className="text-2xl font-bold">সাইট সেটিংস</h2>
+            <h2 className="text-2xl font-bold">Site Settings</h2>
             <p className="text-muted-foreground">
-              {scope === "learn" ? "Learn সাইট" : "Agency সাইট"} — Favicon, Logo ও সাইটের নাম
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — Favicon, Logo ও Site name
             </p>
           </div>
         </div>
@@ -167,8 +167,8 @@ const SiteSettingsManagement = () => {
       {toggleSettings.length > 0 && (
         <Card className="border-border/50">
           <CardHeader className="pb-3">
-            <CardTitle className="text-lg">💳 পেমেন্ট অপশন</CardTitle>
-            <CardDescription>ম্যানুয়াল পেমেন্ট মেথড চালু/বন্ধ করুন</CardDescription>
+            <CardTitle className="text-lg">💳 Payment Options</CardTitle>
+            <CardDescription>Toggle manual payment method</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {toggleSettings.map((setting) => (
@@ -249,12 +249,12 @@ const SiteSettingsManagement = () => {
 
       <Card className="border-primary/20 bg-primary/5">
         <CardHeader>
-          <CardTitle className="text-lg">💡 টিপস</CardTitle>
+          <CardTitle className="text-lg">💡 Tips</CardTitle>
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground space-y-2">
-          <p>• Favicon এর জন্য .ico, .png বা .svg ফাইল ব্যবহার করুন (32x32 বা 64x64 পিক্সেল)</p>
-          <p>• Logo এর জন্য transparent PNG ব্যবহার করুন</p>
-          <p>• Image URL দেওয়ার আগে নিশ্চিত হন যে লিঙ্কটি publicly accessible</p>
+          <p>• For favicon, use .ico, .png or .svg files (32x32 or 64x64 pixels)</p>
+          <p>• For logo, use transparent PNG</p>
+          <p>• Before providing image URL, ensure the link is publicly accessible</p>
         </CardContent>
       </Card>
     </div>

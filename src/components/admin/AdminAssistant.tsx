@@ -21,13 +21,13 @@ interface Message {
 }
 
 const capabilities = [
-  { icon: Palette, labelBn: "Works ম্যানেজ", labelEn: "Manage Works", color: "from-pink-500 to-rose-500" },
-  { icon: FileText, labelBn: "পেজ এডিট ✨", labelEn: "Edit Pages ✨", color: "from-blue-500 to-cyan-500" },
-  { icon: Users, labelBn: "Team ম্যানেজ", labelEn: "Team Members", color: "from-emerald-500 to-green-500" },
+  { icon: Palette, labelBn: "Manage Works", labelEn: "Manage Works", color: "from-pink-500 to-rose-500" },
+  { icon: FileText, labelBn: "Edit Page ✨", labelEn: "Edit Pages ✨", color: "from-blue-500 to-cyan-500" },
+  { icon: Users, labelBn: "Manage Team", labelEn: "Team Members", color: "from-emerald-500 to-green-500" },
   { icon: BookOpen, labelBn: "Courses", labelEn: "Courses", color: "from-violet-500 to-purple-500" },
   { icon: Database, labelBn: "Services", labelEn: "Services", color: "from-amber-500 to-orange-500" },
-  { icon: MessageSquare, labelBn: "যোগাযোগ ও Footer", labelEn: "Contact & Footer", color: "from-sky-500 to-blue-500" },
-  { icon: Zap, labelBn: "সাইট সেটিংস", labelEn: "Site Settings", color: "from-red-500 to-orange-500" },
+  { icon: MessageSquare, labelBn: "Contact & Footer", labelEn: "Contact & Footer", color: "from-sky-500 to-blue-500" },
+  { icon: Zap, labelBn: "Site Settings", labelEn: "Site Settings", color: "from-red-500 to-orange-500" },
   { icon: Sparkles, labelBn: "Vibe Coding 🎨", labelEn: "Vibe Coding 🎨", color: "from-fuchsia-500 to-pink-500" },
 ];
 
@@ -152,7 +152,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
 
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.message || "কিছু সমস্যা হয়েছে।",
+        content: data.message || "Something went wrong.",
         actions: data.actions_executed,
         timestamp: new Date(),
       };
@@ -160,7 +160,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
       setMessages((prev) => [...prev, assistantMessage]);
 
       if (data.has_actions && data.actions_executed?.some((a: any) => a.success)) {
-        toast.success(language === "bn" ? "✅ অ্যাকশন সফল!" : "✅ Action completed!");
+        toast.success(language === "bn" ? "✅ Action successful!" : "✅ Action completed!");
       }
     } catch (error: any) {
       console.error("Assistant error:", error);
@@ -169,7 +169,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
         {
           role: "assistant",
           content: language === "bn"
-            ? "দুঃখিত, কিছু সমস্যা হয়েছে। আবার চেষ্টা করুন।"
+            ? "Sorry, something went wrong. Please try again."
             : "Sorry, something went wrong. Please try again.",
           timestamp: new Date(),
         },
@@ -187,7 +187,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
   };
 
   const quickActions = language === "bn"
-    ? ["হোম পেজে কি কি আছে?", "হোম পেজের টাইটেল বদলাও", "নতুন Work যোগ করো", "সব Services দেখাও", "Contact info আপডেট", "About পেজ এডিট"]
+    ? ["What's on the homepage?", "Change homepage title", "Add new Work", "Show all Services", "Update Contact info", "Edit About page"]
     : ["What's on Home page?", "Change Home title", "Add new Work", "Show Services", "Update Contact", "Edit About page"];
 
   if (!isOpen) return null;
@@ -206,7 +206,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
             Alpha Assistant
           </h2>
           <p className="text-[10px] text-muted-foreground truncate">
-            {language === "bn" ? "AI দিয়ে সাইট ম্যানেজ করুন" : "Manage your site with AI"}
+            {language === "bn" ? "Manage site with AI" : "Manage your site with AI"}
           </p>
         </div>
         <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-[10px] h-5">
@@ -230,11 +230,11 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
               <Sparkles className="w-7 h-7 text-white" />
             </div>
             <h3 className="text-lg font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent mb-2">
-              {language === "bn" ? "আমি কি সাহায্য করতে পারি?" : "How can I help?"}
+              {language === "bn" ? "How can I help?" : "How can I help?"}
             </h3>
             <p className="text-xs text-muted-foreground text-center mb-5 max-w-[260px]">
               {language === "bn"
-                ? "আমাকে বলুন — পেজের টেক্সট বদলান, Works যোগ করুন, ছবি দিন — সবই পারি ⚡🎨"
+                ? "Tell me what to do — change page text, add Works, upload images — I can do it all ⚡🎨"
                 : "Tell me — edit page text, add works, upload images — I can do it all ⚡🎨"}
             </p>
 
@@ -362,7 +362,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
                 <div className="bg-muted/50 border border-border/50 rounded-2xl rounded-bl-md px-3 py-2">
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Loader2 className="w-3 h-3 animate-spin" />
-                    {language === "bn" ? "চিন্তা করছি..." : "Thinking..."}
+                    {language === "bn" ? "Thinking..." : "Thinking..."}
                   </div>
                 </div>
               </div>
@@ -415,7 +415,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
             className="rounded-lg flex-shrink-0 h-8 w-8"
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
-            title={language === "bn" ? "ফাইল/ছবি যোগ করুন" : "Attach files/images"}
+            title={language === "bn" ? "Add file/image" : "Attach files/images"}
           >
             {isUploading ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -430,7 +430,7 @@ export default function AdminAssistant({ isOpen, onToggle }: AdminAssistantProps
             onKeyDown={handleKeyDown}
             placeholder={
               language === "bn"
-                ? "আমাকে বলুন কি করতে হবে..."
+                ? "Tell me what to do..."
                 : "Tell me what to do..."
             }
             className="min-h-[36px] max-h-[100px] border-0 resize-none focus-visible:ring-0 text-xs bg-transparent py-2"

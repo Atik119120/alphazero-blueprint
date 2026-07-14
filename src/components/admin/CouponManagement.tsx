@@ -75,7 +75,7 @@ export default function CouponManagement() {
 
   const handleCreate = async () => {
     if (!code || !discountValue) {
-      toast.error('কোড এবং ডিসকাউন্ট ভ্যালু দিন');
+      toast.error('Enter code and discount value');
       return;
     }
 
@@ -91,12 +91,12 @@ export default function CouponManagement() {
 
     if (error) {
       if (error.code === '23505') {
-        toast.error('এই কোড আগে থেকে আছে');
+        toast.error('This code already exists');
       } else {
-        toast.error('কুপন তৈরি করতে ব্যর্থ');
+        toast.error('Failed to create coupon');
       }
     } else {
-      toast.success('কুপন তৈরি হয়েছে!');
+      toast.success('Coupon created!');
       setIsDialogOpen(false);
       resetForm();
       fetchCoupons();
@@ -108,7 +108,7 @@ export default function CouponManagement() {
     const { error } = await supabase.from('coupons').update({ is_active: !isActive }).eq('id', id);
     if (!error) {
       setCoupons(prev => prev.map(c => c.id === id ? { ...c, is_active: !isActive } : c));
-      toast.success(isActive ? 'কুপন নিষ্ক্রিয় করা হয়েছে' : 'কুপন সক্রিয় করা হয়েছে');
+      toast.success(isActive ? 'Coupon deactivated' : 'Coupon activated');
     }
   };
 
@@ -116,13 +116,13 @@ export default function CouponManagement() {
     const { error } = await supabase.from('coupons').delete().eq('id', id);
     if (!error) {
       setCoupons(prev => prev.filter(c => c.id !== id));
-      toast.success('কুপন ডিলিট হয়েছে');
+      toast.success('Coupon deleted');
     }
   };
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast.success('কোড কপি হয়েছে!');
+    toast.success('Code copied!');
   };
 
   const resetForm = () => {
@@ -135,7 +135,7 @@ export default function CouponManagement() {
   };
 
   const getCourseName = (courseId: string | null) => {
-    if (!courseId) return 'সব কোর্স';
+    if (!courseId) return 'All Courses';
     return courses.find(c => c.id === courseId)?.title || 'Unknown';
   };
 
@@ -151,7 +151,7 @@ export default function CouponManagement() {
             <Ticket className="w-5 h-5 text-primary" />
             কুপন ম্যানেজমেন্ট
           </h2>
-          <p className="text-sm text-muted-foreground mt-1">ডিসকাউন্ট কুপন তৈরি ও পরিচালনা করুন</p>
+          <p className="text-sm text-muted-foreground mt-1">Create & manage discount coupons</p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -163,11 +163,11 @@ export default function CouponManagement() {
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle>নতুন কুপন তৈরি করুন</DialogTitle>
+              <DialogTitle>Create new coupon</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 mt-4">
               <div className="space-y-2">
-                <Label>কুপন কোড</Label>
+                <Label>Coupon Code</Label>
                 <div className="flex gap-2">
                   <Input 
                     value={code} 
@@ -183,19 +183,19 @@ export default function CouponManagement() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>ডিসকাউন্ট টাইপ</Label>
+                  <Label>Discount Type</Label>
                   <Select value={discountType} onValueChange={setDiscountType}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="percentage">শতাংশ (%)</SelectItem>
-                      <SelectItem value="fixed">নির্দিষ্ট (৳)</SelectItem>
+                      <SelectItem value="percentage">Percentage (%)</SelectItem>
+                      <SelectItem value="fixed">Fixed (৳)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>ডিসকাউন্ট ভ্যালু</Label>
+                  <Label>Discount Value</Label>
                   <Input 
                     type="number" 
                     value={discountValue} 
@@ -206,13 +206,13 @@ export default function CouponManagement() {
               </div>
 
               <div className="space-y-2">
-                <Label>কোর্স (ঐচ্ছিক)</Label>
+                <Label>Course (optional)</Label>
                 <Select value={courseId} onValueChange={setCourseId}>
                   <SelectTrigger>
-                    <SelectValue placeholder="সব কোর্সে প্রযোজ্য" />
+                    <SelectValue placeholder="Applicable to all courses" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">সব কোর্স</SelectItem>
+                    <SelectItem value="all">All Courses</SelectItem>
                     {courses.map(c => (
                       <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>
                     ))}
@@ -222,16 +222,16 @@ export default function CouponManagement() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <Label>সর্বোচ্চ ব্যবহার</Label>
+                  <Label>Max Usage</Label>
                   <Input 
                     type="number" 
                     value={maxUses} 
                     onChange={(e) => setMaxUses(e.target.value)} 
-                    placeholder="সীমাহীন"
+                    placeholder="Unlimited"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>মেয়াদ শেষ</Label>
+                  <Label>Expires on</Label>
                   <Input 
                     type="date" 
                     value={expiresAt} 
@@ -253,7 +253,7 @@ export default function CouponManagement() {
         <Card>
           <CardContent className="py-12 text-center">
             <Ticket className="w-12 h-12 mx-auto text-muted-foreground/30 mb-4" />
-            <p className="text-muted-foreground">কোনো কুপন নেই</p>
+            <p className="text-muted-foreground">No coupons found</p>
           </CardContent>
         </Card>
       ) : (
@@ -279,11 +279,11 @@ export default function CouponManagement() {
                           <Copy className="w-3 h-3" />
                         </button>
                         <Badge variant={coupon.is_active ? 'default' : 'secondary'} className="text-[10px]">
-                          {coupon.is_active ? 'সক্রিয়' : 'নিষ্ক্রিয়'}
+                          {coupon.is_active ? 'Active' : 'Inactive'}
                         </Badge>
                       </div>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {coupon.discount_type === 'percentage' ? `${coupon.discount_value}% ছাড়` : `৳${coupon.discount_value} ছাড়`}
+                        {coupon.discount_type === 'percentage' ? `${coupon.discount_value}% off` : `৳${coupon.discount_value} off`}
                         {' · '}{getCourseName(coupon.course_id)}
                         {' · '}{coupon.used_count}/{coupon.max_uses || '∞'} ব্যবহার
                       </p>
