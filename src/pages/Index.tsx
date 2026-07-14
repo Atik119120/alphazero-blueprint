@@ -65,6 +65,8 @@ const seoTablet = { url: `${SERVICE_IMG}/seo-tablet.png` };
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
+import { useHomepageSection, useHomepageSectionItems } from "@/hooks/useHomepageSections";
+
 import { memo, useRef, useState, useEffect, type ReactNode } from "react";
 import { useTheme } from "next-themes";
 import heroBgAsset from "@/assets/hero-bg.jpg.asset.json";
