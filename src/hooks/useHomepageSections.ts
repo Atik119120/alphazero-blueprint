@@ -10,13 +10,9 @@ export interface HomepageSection {
   section_key: string;
   section_type: string;
   title: string | null;
-  title_bn: string | null;
   subtitle: string | null;
-  subtitle_bn: string | null;
   description: string | null;
-  description_bn: string | null;
   highlight: string | null;
-  highlight_bn: string | null;
   image_url: string | null;
   image_url_2: string | null;
   button_label: string | null;
@@ -29,17 +25,15 @@ export interface HomepageSectionItem {
   id: string;
   section_id: string;
   title: string | null;
-  title_bn: string | null;
   subtitle: string | null;
-  subtitle_bn: string | null;
   description: string | null;
-  description_bn: string | null;
   image_url: string | null;
   image_url_2: string | null;
   url: string | null;
   order_index: number;
   is_active: boolean;
 }
+
 
 export const useHomepageSections = (
   scopeOverride?: SiteScope,
