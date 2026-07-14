@@ -228,6 +228,8 @@ const MemoServicePair = memo(
 const Index = () => {
   const { t, language } = useLanguage();
   const { getContent } = usePageContent('home');
+  const { section: brandsSection } = useHomepageSection('sister_brands', 'agency', 'home');
+  const { data: brandItems } = useHomepageSectionItems(brandsSection?.id);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
@@ -237,6 +239,7 @@ const Index = () => {
     const dbContent = getContent(key);
     return dbContent || t(translationKey);
   };
+
 
   const whyChooseUs = [
     { icon: Palette, title: c("why.clean", "home.why.clean"), description: c("why.cleanDesc", "home.why.cleanDesc") },
