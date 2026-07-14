@@ -851,7 +851,12 @@ function AdminDashboardInner() {
   const [isAssistantOpen, setIsAssistantOpen] = useState(false);
 
   const dashboardItem = { id: 'dashboard', icon: LayoutDashboard, label: language === 'bn' ? 'Dashboard' : 'Dashboard' };
-  const allNavItems = [dashboardItem, ...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems];
+  // Hidden settings sub-tabs (accessible only via the Settings hub cards)
+  const settingsHubChildren = [
+    { id: 'sitesettings', icon: Settings, label: 'Site Settings' },
+    { id: 'paymentmethod', icon: Banknote, label: 'Payment Method' },
+  ];
+  const allNavItems = [dashboardItem, ...lmsCoreItems, ...lmsMoreItems, ...cmsItems, ...settingsItems, ...settingsHubChildren];
 
   // If active tab isn't visible in current scope, switch to dashboard
   useEffect(() => {
