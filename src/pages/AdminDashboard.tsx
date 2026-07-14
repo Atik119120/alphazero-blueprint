@@ -1754,7 +1754,7 @@ function AdminDashboardInner() {
 
           {/* Contact Tab */}
           <TabsContent value="contact" className="space-y-6">
-            <PageContentManagement lockedPage="contact" />
+            <ContactInfoManagement />
           </TabsContent>
 
 
