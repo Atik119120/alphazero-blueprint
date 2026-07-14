@@ -7,6 +7,7 @@ import {
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePageHero } from "@/hooks/usePageHero";
 
 /* ─── Category helpers ─── */
 function isGraphics(w: Work) {
@@ -556,6 +557,7 @@ const VideoSection = ({ items }: { items: Work[] }) => {
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
   const { t } = useLanguage();
+  const hero = usePageHero("work");
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; description?: string | null } | null>(null);
 
   const graphicsWorks = useMemo(() => works?.filter(isGraphics) || [], [works]);
@@ -600,12 +602,12 @@ const WorkPage = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
               <Sparkles size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("work.hero.subtitle") || "Creative Portfolio"}</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{hero("hero.subtitle", "Creative Portfolio")}</span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tight leading-tight mb-6">
               {(() => {
-                const raw = t("work.hero.title") || "Our Creative |Works & Projects|";
+                const raw = hero("hero.title", "Our Creative |Works & Projects|");
                 const parts = raw.split("|");
                 if (parts.length >= 3) {
                   return <>{parts[0]}<span className="gradient-text">{parts[1]}</span>{parts.slice(2).join("|")}</>;
@@ -615,11 +617,11 @@ const WorkPage = () => {
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-8">
-              {t("work.hero.description") || t("work.description") || "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion."}
+              {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
             </motion.p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card text-sm text-muted-foreground font-medium">
-              ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} {t("work.hero.badge") || "Projects • Graphic Design • Web • Video"}
+              ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} {hero("hero.badge", "Projects • Graphic Design • Web • Video")}
             </motion.div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Plus, Pencil, Trash2, Facebook, Instagram, Linkedin, Twitter, Mail, Globe, MessageCircle, Link as LinkIcon, X } from "lucide-react";
 import { toast } from "sonner";
 import ImageUploader from "./ImageUploader";
+import PageHeroEditor from "./PageHeroEditor";
 
 // Custom icons for platforms without lucide equivalents
 const FiverrIcon = () => (
@@ -254,6 +255,17 @@ export const TeamManagement = () => {
 
   return (
     <div className="space-y-6">
+      <PageHeroEditor
+        pageName="team"
+        title="Team Page — Hero Section"
+        subtitle="Click to edit the top hero (badge, title, description)"
+        fields={[
+          { key: "hero.subtitle", label: "🔖 Top Badge", description: "Small uppercase text above the title", type: "input", fallback: "Our Team" },
+          { key: "hero.title", label: "👥 Hero Title", description: "Wrap highlighted words with | | — e.g. Meet the |Creators|", type: "input", fallback: "Meet the |Creators|" },
+          { key: "hero.description", label: "📝 Description", description: "Paragraph shown below the title", type: "textarea", fallback: "The creative minds behind AlphaZero." },
+        ]}
+      />
+
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Team Members</h2>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
