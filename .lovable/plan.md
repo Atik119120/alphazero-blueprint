@@ -1,49 +1,86 @@
-# Payment Gateway API (Reseller System)
+# আলাদা Agency + Learn কন্ট্রোল প্যানেল
 
-আপনার AlphaZero সাইটের UddoktaPay gateway ব্যবহার করে অন্য ওয়েবসাইটগুলো payment নিতে পারবে। প্রতিটা client website একটা **API key** পাবে — সেই key দিয়ে payment session তৈরি করবে, user আপনার সাইটে এসে pay করবে, success হলে client site verification করে access দেবে।
+## লক্ষ্য
+এক ব্যাকএন্ড থেকেই দুই সাইট (Agency এবং Learn) সম্পূর্ণ আলাদাভাবে কন্ট্রোল করা — আলাদা পেজ, আলাদা কন্টেন্ট, আলাদা ফুটার, আলাদা কোর্স/সার্ভিস, আলাদা অ্যাডমিন ট্যাব।
 
-## Flow
+## ইতিমধ্যে হয়েছে
+- আলাদা `LearnContactPage` (route: `/learn-contact`, learn subdomain এ `/contact`)
+- আলাদা `LearnAboutPage`
+- আলাদা `CoursesPage`, `CoursesNavbar`, `CoursesFooter`
+- Learn নেভবার থেকে ভাষা টগল সরানো
 
+## যা করা হবে
+
+### ১. ডেটাবেস আলাদাকরণ — `site_scope` কলাম
+নিচের CMS টেবিলগুলোতে একটা `site_scope text` কলাম যোগ হবে (`'agency'` বা `'learn'`), default `'agency'`:
+- `page_content` — পেজ টেক্সট/হিরো/সেকশন
+- `footer_content`, `footer_links` — ফুটার আলাদা
+- `site_settings` — লোগো, ব্র্যান্ড, SEO, কনট্যাক্ট আলাদা
+
+পুরনো row গুলো `agency` scope এ থাকবে। Learn এর জন্য নতুন row insert হবে `learn` scope এ।
+
+### ২. Admin Dashboard — নতুন Site Switcher
+Admin dashboard এর টপে একটা toggle: **[Agency Site] [Learn Site]**
+- সিলেক্ট করা scope সব CMS ট্যাবে (Page Content, Footer, Site Settings) filter হিসেবে যাবে
+- Save করলে সেই scope এ save হবে
+- ফলাফল: একই UI, কিন্তু দুই সাইটের কন্টেন্ট আলাদাভাবে edit
+
+### ৩. Frontend Hooks আপডেট
+`usePageContent`, `useFooterData`, site settings hook গুলো একটা `scope` parameter নেবে। Layout auto detect করবে (learn context হলে `learn`, নাহলে `agency`) — কোনো পেজে ম্যানুয়ালি কিছু বদলাতে হবে না।
+
+### ৪. আলাদা পেজ set (Learn side)
+Agency এর প্রতিটি মূল পেজের Learn version — সবই DB থেকে scope অনুযায়ী কন্টেন্ট টানবে:
+- `LearnHome` (already `CoursesPage`)
+- `LearnAbout` (already exists)
+- `LearnContact` (just added)
+- `LearnCourses` catalog
+
+Agency এর `/services`, `/work`, `/team`, `/join-team` — এগুলো শুধু agency তে থাকবে, Learn এ দেখাবে না।
+
+### ৫. Courses/Services আলাদাভাবে দেখানো
+- `courses` টেবিল ইতিমধ্যে আছে — Learn সাইটে দেখাবে
+- `services` টেবিল — শুধু Agency সাইটে দেখাবে
+কোনো schema change লাগবে না, শুধু frontend routing আটকানো।
+
+### ৬. আলাদা SEO / লোগো / ব্র্যান্ডিং
+`site_settings` scope অনুযায়ী:
+- Agency: AlphaZero logo, agency title/description
+- Learn: Learn with AlphaZero logo, academy title/description
+Index.html meta ডাইনামিক ভাবে scope অনুযায়ী update হবে।
+
+## টেকনিক্যাল ডিটেইলস
+
+```text
+Admin Dashboard
+├─ [Agency] [Learn]  ← scope toggle (top bar)
+├─ Page Content    → filters by scope
+├─ Footer Mgmt     → filters by scope
+├─ Site Settings   → filters by scope
+├─ Courses         → learn only
+├─ Services/Works  → agency only
+├─ Team            → shared
+└─ Students/Teachers → shared (LMS)
 ```
-Client Site → POST /api-create-payment (API key + amount + redirect_url)
-            ← { payment_url, invoice_id }
-User → আপনার hosted UddoktaPay checkout এ pay করে
-     → success হলে redirect → client site (with invoice_id)
-Client Site → GET /api-verify-payment?invoice_id=... (API key)
-            ← { status: "paid", amount, customer, paid_at }
+
+Migration:
+```sql
+ALTER TABLE page_content ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
+ALTER TABLE footer_content ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
+ALTER TABLE footer_links ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
+ALTER TABLE site_settings ADD COLUMN site_scope text NOT NULL DEFAULT 'agency';
+CREATE INDEX ON page_content(site_scope, page_key);
+CREATE INDEX ON footer_content(site_scope);
 ```
 
-## Database (new tables)
+Frontend context detect:
+```ts
+const scope = isLearnContext ? 'learn' : 'agency';
+usePageContent('contact', scope);
+```
 
-- **api_clients** — id, name, owner_email, api_key (hashed), is_active, created_at
-- **api_payments** — id, client_id, invoice_id (unique), amount, currency, customer_name, customer_email, status (pending/paid/failed), uddoktapay_invoice_id, metadata (jsonb), redirect_url, webhook_url, paid_at, created_at
+## Scope যা এই প্ল্যানে **নেই**
+- LMS (student/teacher/admin auth) শেয়ারড থাকবে — একই account দিয়ে দুই সাইটে login
+- Database structure রিরাইট না, শুধু scope column add
+- আলাদা domain deployment — সেটা DNS level এ আগে থেকেই আছে (`learn.alphazero.online`)
 
-RLS: শুধু admin দেখতে/manage করতে পারবে। Edge functions service_role দিয়ে কাজ করবে।
-
-## Edge Functions (3 টি, public — verify_jwt off)
-
-1. **api-create-payment** — API key validate → UddoktaPay checkout তৈরি → payment_url return
-2. **api-verify-payment** — API key + invoice_id দিয়ে status return
-3. **api-payment-callback** — UddoktaPay থেকে callback → DB update → optional webhook fire to client site
-
-## Admin UI (AdminDashboard এ নতুন tab)
-
-- **API Clients** management — নতুন client add, API key generate (একবার দেখাবে), enable/disable, revoke
-- **API Payments** log — সব transaction দেখা, filter by client
-
-## Security
-
-- API key SHA-256 hash করে store, request এ `Authorization: Bearer <key>` header
-- Rate limiting handled by Supabase
-- Webhook signature (HMAC) optional — client site verify করতে পারবে
-- Amount + currency server-side validate
-
-## Docs page
-
-`/api-docs` route — Bengali + English এ usage examples (curl, JS) দেখাবে যাতে client sites সহজে integrate করতে পারে।
-
-## Technical details
-
-- UddoktaPay integration reuse from existing `uddoktapay-checkout` / `uddoktapay-verify` functions
-- `metadata` জুড়ে `api_client_id` ও `external_invoice_id` রাখা হবে যাতে callback এ chain করা যায়
-- Client redirect URL এ `?invoice_id=...&status=paid` query append হবে
+Approve করলে ধাপে ধাপে বিল্ড করব।
