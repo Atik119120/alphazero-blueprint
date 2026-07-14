@@ -313,9 +313,17 @@ const CoursesPage = () => {
   // Rotating headline words
   const rotatingTitles = useMemo(
     () => isBn
-      ? ["অসাধারণ", "নতুন", "চমৎকার", "সুন্দর", "স্মার্ট"]
-      : ["amazing", "new", "wonderful", "beautiful", "smart"],
-    [isBn]
+      ? [
+          getPageContent("hero.rotating1.bn") || "অসাধারণ",
+          getPageContent("hero.rotating2.bn") || "নতুন",
+          getPageContent("hero.rotating3.bn") || "চমৎকার",
+        ]
+      : [
+          getPageContent("hero.rotating1.en") || "amazing",
+          getPageContent("hero.rotating2.en") || "new",
+          getPageContent("hero.rotating3.en") || "wonderful",
+        ],
+    [isBn, getPageContent]
   );
   const [titleNumber, setTitleNumber] = useState(0);
   useEffect(() => {
