@@ -69,6 +69,7 @@ import SiteSettingsManagement from '@/components/admin/SiteSettingsManagement';
 import PageContentManagement from '@/components/admin/PageContentManagement';
 import ContactInfoManagement from '@/components/admin/ContactInfoManagement';
 import AboutPageEditor from '@/components/admin/AboutPageEditor';
+import LearnPagesEditor from '@/components/admin/LearnPagesEditor';
 import alphazeroLogoAsset from '@/assets/alphazero-logo.png.asset.json';
 import HomepageEditor from '@/components/admin/HomepageEditor';
 import FooterManagement from '@/components/admin/FooterManagement';
