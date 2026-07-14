@@ -232,6 +232,7 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
       .select('*')
       .in('id', sharedRoomIds)
       .eq('room_type', 'direct')
+      .limit(1)
       .maybeSingle();
     if (directRoomError) throw directRoomError;
 
