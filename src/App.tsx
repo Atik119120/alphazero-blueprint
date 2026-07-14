@@ -110,7 +110,7 @@ function AppContent() {
       {!isLmsRoute && <ScrollReveal />}
       <ScrollToTop />
       
-      <AIChatbot />
+      
       
       <SiteScopeProvider>
       <AnimatePresence mode="wait" initial={false}>
