@@ -822,6 +822,7 @@ function AdminDashboardInner() {
 
   const cmsItemsAll = [
     { id: 'homepage', icon: Home, label: language === 'bn' ? 'Homepage' : 'Homepage', scopeTag: 'both' as const },
+    { id: 'learnpages', icon: GraduationCap, label: language === 'bn' ? 'Learn Pages' : 'Learn Pages', scopeTag: 'learn' as const },
     { id: 'about', icon: Info, label: 'About', scopeTag: 'both' as const },
     { id: 'services', icon: Wrench, label: language === 'bn' ? 'Service' : 'Services', scopeTag: 'agency' as const },
     { id: 'works', icon: Briefcase, label: language === 'bn' ? 'Works' : 'Works', scopeTag: 'agency' as const },
