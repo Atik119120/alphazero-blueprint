@@ -712,6 +712,7 @@ export type Database = {
           content_key: string
           created_at: string
           id: string
+          site_scope: string
           updated_at: string
         }
         Insert: {
@@ -720,6 +721,7 @@ export type Database = {
           content_key: string
           created_at?: string
           id?: string
+          site_scope?: string
           updated_at?: string
         }
         Update: {
@@ -728,6 +730,7 @@ export type Database = {
           content_key?: string
           created_at?: string
           id?: string
+          site_scope?: string
           updated_at?: string
         }
         Relationships: []
@@ -740,6 +743,7 @@ export type Database = {
           is_active: boolean | null
           link_type: string
           order_index: number | null
+          site_scope: string
           title: string
           updated_at: string
           url: string
@@ -751,6 +755,7 @@ export type Database = {
           is_active?: boolean | null
           link_type: string
           order_index?: number | null
+          site_scope?: string
           title: string
           updated_at?: string
           url: string
@@ -762,6 +767,7 @@ export type Database = {
           is_active?: boolean | null
           link_type?: string
           order_index?: number | null
+          site_scope?: string
           title?: string
           updated_at?: string
           url?: string
@@ -989,6 +995,7 @@ export type Database = {
           created_at: string
           id: string
           page_name: string
+          site_scope: string
           updated_at: string
         }
         Insert: {
@@ -998,6 +1005,7 @@ export type Database = {
           created_at?: string
           id?: string
           page_name: string
+          site_scope?: string
           updated_at?: string
         }
         Update: {
@@ -1007,6 +1015,7 @@ export type Database = {
           created_at?: string
           id?: string
           page_name?: string
+          site_scope?: string
           updated_at?: string
         }
         Relationships: []
@@ -1362,6 +1371,7 @@ export type Database = {
           setting_key: string
           setting_type: string
           setting_value: string | null
+          site_scope: string
           updated_at: string
         }
         Insert: {
@@ -1370,6 +1380,7 @@ export type Database = {
           setting_key: string
           setting_type?: string
           setting_value?: string | null
+          site_scope?: string
           updated_at?: string
         }
         Update: {
@@ -1378,6 +1389,7 @@ export type Database = {
           setting_key?: string
           setting_type?: string
           setting_value?: string | null
+          site_scope?: string
           updated_at?: string
         }
         Relationships: []
