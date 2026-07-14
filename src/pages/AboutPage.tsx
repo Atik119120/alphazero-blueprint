@@ -249,7 +249,15 @@ const AboutPage = () => {
               {/* Logo + Why Choose */}
               <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5">
                 <div className="rounded-2xl glass-card p-8 text-center">
-                  <img src={logo} alt="AlphaZero Logo" className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6" />
+                  {(() => {
+                    const customLogo = getContent("story.logoUrl");
+                    return customLogo ? (
+                      <img src={customLogo} alt="AlphaZero" className="h-28 md:h-36 w-auto mx-auto object-contain mb-6" />
+                    ) : (
+                      <img src={logo} alt="AlphaZero Logo" className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6" />
+                    );
+                  })()}
+
                   <p className="text-primary text-lg font-semibold tracking-wide">{c("tagline", "about.tagline")}</p>
                   <div className="flex justify-center gap-3 mt-4">
                     <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium text-xs">{c("badge.agency", "about.badge.agency")}</span>
