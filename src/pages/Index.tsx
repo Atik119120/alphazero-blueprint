@@ -232,6 +232,9 @@ const Index = () => {
   const { getContent } = usePageContent('home');
   const { section: brandsSection } = useHomepageSection('trusted_brands', 'agency', 'home');
   const { data: brandItems } = useHomepageSectionItems(brandsSection?.id);
+  const { section: sisterSection } = useHomepageSection('sister_brands', 'agency', 'home');
+  const { data: sisterItems } = useHomepageSectionItems(sisterSection?.id);
+
 
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
