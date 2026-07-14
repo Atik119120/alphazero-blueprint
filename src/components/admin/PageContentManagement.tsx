@@ -144,10 +144,11 @@ const PAGES = [
   { id: 'join-team', label: 'জয়েন টিম', labelEn: 'Join Team', icon: UserPlus, color: 'from-fuchsia-500 to-pink-600', description: 'টিমে যোগ দিন পেজ' },
 ];
 
-const PageContentManagement = () => {
+const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => {
   const queryClient = useQueryClient();
   const { scope } = useAdminScope();
-  const [selectedPage, setSelectedPage] = useState("home");
+  const [selectedPage, setSelectedPage] = useState(lockedPage ?? "home");
+
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
