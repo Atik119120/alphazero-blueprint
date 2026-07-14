@@ -71,15 +71,22 @@ const TeamPage = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] backdrop-blur-sm mb-8">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{t("team.subtitle")}</span>
+              <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{hero("hero.subtitle", t("team.subtitle"))}</span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl lg:text-7xl font-display font-bold mb-6 leading-tight">
-              {t("team.title")} <span className="gradient-text">{t("team.title2")}</span>
+              {(() => {
+                const raw = hero("hero.title", `${t("team.title")} |${t("team.title2")}|`);
+                const parts = raw.split("|");
+                if (parts.length >= 3) {
+                  return <>{parts[0]}<span className="gradient-text">{parts[1]}</span>{parts.slice(2).join("|")}</>;
+                }
+                return raw;
+              })()}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t("team.description")}
+              {hero("hero.description", t("team.description"))}
             </motion.p>
           </div>
         </div>
