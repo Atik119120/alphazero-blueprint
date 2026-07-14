@@ -223,7 +223,7 @@ const SiteSettingsManagement = () => {
                     />
                     <Button 
                       size="icon" 
-                      onClick={() => handleSave(setting.setting_key)}
+                      onClick={() => handleSave(setting.setting_key, setting.setting_type)}
                       disabled={!hasChanges || updateMutation.isPending}
                       variant={hasChanges ? "default" : "secondary"}
                     >
