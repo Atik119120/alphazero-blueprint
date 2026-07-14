@@ -85,7 +85,7 @@ export default function LandingPageManagement() {
   };
 
   if (!form) {
-    return <div className="text-muted-foreground">{isBn ? 'Loading...' : 'Loading...'}</div>;
+    return <div className='text-muted-foreground'>{isBn ? 'Loading...' : 'Loading...'}</div>;
   }
 
   const outcomes = form.learning_outcomes ?? [];
@@ -161,19 +161,19 @@ export default function LandingPageManagement() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div>
               <Label>{isBn ? 'Start Date' : 'Start Date'}</Label>
-              <Input value={form.start_date ?? ''} onChange={(e) => update({ start_date: e.target.value })} placeholder="1 Jan 2026" />
+              <Input value={form.start_date ?? ''} onChange={(e) => update({ start_date: e.target.value })} placeholder='1 Jan 2026' />
             </div>
             <div>
               <Label>{isBn ? 'Class Time' : 'Class Time'}</Label>
-              <Input value={form.class_time ?? ''} onChange={(e) => update({ class_time: e.target.value })} placeholder="9 PM" />
+              <Input value={form.class_time ?? ''} onChange={(e) => update({ class_time: e.target.value })} placeholder='9 PM' />
             </div>
             <div>
               <Label>{isBn ? 'Total Classes' : 'Total Classes'}</Label>
-              <Input value={form.total_classes ?? ''} onChange={(e) => update({ total_classes: e.target.value })} placeholder="24" />
+              <Input value={form.total_classes ?? ''} onChange={(e) => update({ total_classes: e.target.value })} placeholder='24' />
             </div>
             <div>
               <Label>{isBn ? 'Duration' : 'Duration'}</Label>
-              <Input value={form.duration ?? ''} onChange={(e) => update({ duration: e.target.value })} placeholder="3 months" />
+              <Input value={form.duration ?? ''} onChange={(e) => update({ duration: e.target.value })} placeholder='3 months' />
             </div>
           </div>
         </CardContent>
@@ -199,8 +199,8 @@ export default function LandingPageManagement() {
               </Button>
             </div>
           ))}
-          <Button variant="outline" size="sm" onClick={() => update({ learning_outcomes: [...outcomes, ''] })}>
-            <Plus className="h-4 w-4 mr-1" /> {isBn ? 'Add' : 'Add'}
+          <Button variant='outline' size='sm' onClick={() => update({ learning_outcomes: [...outcomes, ''] })}>
+            <Plus className='h-4 w-4 mr-1' /> {isBn ? 'Add' : 'Add'}
           </Button>
         </CardContent>
       </Card>
@@ -238,8 +238,8 @@ export default function LandingPageManagement() {
               />
             </div>
           ))}
-          <Button variant="outline" size="sm" onClick={() => update({ faqs: [...faqs, { question: '', answer: '' }] })}>
-            <Plus className="h-4 w-4 mr-1" /> {isBn ? 'Add FAQ' : 'Add FAQ'}
+          <Button variant='outline' size='sm' onClick={() => update({ faqs: [...faqs, { question: '', answer: '' }] })}>
+            <Plus className='h-4 w-4 mr-1' /> {isBn ? 'Add FAQ' : 'Add FAQ'}
           </Button>
         </CardContent>
       </Card>

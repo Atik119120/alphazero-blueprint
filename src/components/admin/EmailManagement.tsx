@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { Mail, Send, Loader2, CheckCircle2, User, FileText } from 'lucide-react';
 
 interface EmailManagementProps {
-  language: "en' | 'bn";
+  language: 'en' | 'bn';
 }
 
 const translations = {

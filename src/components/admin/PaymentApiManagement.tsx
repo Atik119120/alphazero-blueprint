@@ -234,7 +234,7 @@ export default function PaymentApiManagement() {
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <code className="text-xs">{p.invoice_id}</code>
-                    <Badge variant={p.status === "paid' ? 'default" : p.status === "failed' ? 'destructive" : 'secondary'}>
+                    <Badge variant={p.status === 'paid' ? 'default' : p.status === 'failed' ? 'destructive' : 'secondary'}>
                       {p.status}
                     </Badge>
                   </div>
@@ -336,7 +336,7 @@ Authorization: Bearer <API_KEY>
           <DialogHeader><DialogTitle>API Key — Save Now!</DialogTitle></DialogHeader>
           <p className="text-sm text-muted-foreground">This key will not be shown again. Copy it now and keep it in a safe place.</p>
           <div className="flex gap-2">
-            <Input readOnly value={showKey || ''} className="font-mono text-xs" />
+            <Input readOnly value={showKey || ''} className='font-mono text-xs' />
             <Button onClick={() => showKey && copy(showKey)}><Copy className="w-4 h-4" /></Button>
           </div>
           <DialogFooter><Button onClick={() => setShowKey(null)}>Done</Button></DialogFooter>

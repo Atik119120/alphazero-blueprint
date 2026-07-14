@@ -77,7 +77,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   // Material form state
   const [showMaterialDialog, setShowMaterialDialog] = useState(false);
   const [materialTitle, setMaterialTitle] = useState('');
-  const [materialType, setMaterialType] = useState<"pdf' | 'doc' | 'note'>('pdf");
+  const [materialType, setMaterialType] = useState<'pdf' | 'doc' | 'note'>('pdf');
   const [materialUrl, setMaterialUrl] = useState('');
   const [materialNote, setMaterialNote] = useState('');
   const [videoMaterials, setVideoMaterials] = useState<VideoMaterial[]>([]);
@@ -398,7 +398,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
     }
 
     // Normalize cloudinary_url to cloudinary for DB storage
-    const dbVideoType = videoType === "cloudinary_url' ? 'cloudinary" : videoType;
+    const dbVideoType = videoType === 'cloudinary_url' ? 'cloudinary' : videoType;
 
     const durationSeconds = videoDuration ? parseInt(videoDuration) * 60 : 0;
 
@@ -599,9 +599,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   <CardContent className="p-4">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                        {material.material_type === 'pdf' && <FileText className="w-5 h-5 text-red-500" />}
-                        {material.material_type === 'doc' && <FileIcon className="w-5 h-5 text-blue-500" />}
-                        {material.material_type === 'note' && <StickyNote className="w-5 h-5 text-yellow-500" />}
+                        {material.material_type === 'pdf' && <FileText className='w-5 h-5 text-red-500' />}
+                        {material.material_type === 'doc' && <FileIcon className='w-5 h-5 text-blue-500' />}
+                        {material.material_type === 'note' && <StickyNote className='w-5 h-5 text-yellow-500' />}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium">{material.title}</p>
@@ -659,7 +659,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               </div>
               <div className="space-y-2">
                 <Label>Type</Label>
-                <Select value={materialType} onValueChange={(v) => setMaterialType(v as "pdf' | 'doc' | 'note")}>
+                <Select value={materialType} onValueChange={(v) => setMaterialType(v as 'pdf' | 'doc' | 'note')}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -825,7 +825,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 ];
                 return sections.map(section => (
                   section.videos.length > 0 && (
-                    <div key={section.id || 'other'} className="space-y-2">
+                    <div key={section.id || 'other'} className='space-y-2'>
                       <Badge variant="outline" className="text-xs">{section.label} ({section.videos.length})</Badge>
                       {section.videos.map((video, idx) => (
                         <Card key={video.id} className="cursor-pointer hover:bg-muted/50 transition-colors" onClick={() => setSelectedVideo(video)}>
@@ -1174,7 +1174,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg line-clamp-1">{course.title}</CardTitle>
                   {course.price > 0 ? (
-                    <span className="text-sm font-semibold text-amber-600">৳{course.price.toLocaleString('en-US')}</span>
+                    <span className='text-sm font-semibold text-amber-600'>৳{course.price.toLocaleString('en-US')}</span>
                   ) : (
                     <Badge variant="secondary" className="text-xs">Free</Badge>
                   )}

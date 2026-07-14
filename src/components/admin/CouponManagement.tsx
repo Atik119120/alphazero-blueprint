@@ -200,7 +200,7 @@ export default function CouponManagement() {
                     type="number" 
                     value={discountValue} 
                     onChange={(e) => setDiscountValue(e.target.value)} 
-                    placeholder={discountType === "percentage' ? '20" : '100'}
+                    placeholder={discountType === 'percentage' ? '20' : '100'}
                   />
                 </div>
               </div>
@@ -264,7 +264,7 @@ export default function CouponManagement() {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                      coupon.discount_type === "percentage' ? 'bg-primary/10" : 'bg-emerald-500/10'
+                      coupon.discount_type === 'percentage' ? 'bg-primary/10' : 'bg-emerald-500/10'
                     }`}>
                       {coupon.discount_type === 'percentage' ? (
                         <Percent className="w-5 h-5 text-primary" />
@@ -278,7 +278,7 @@ export default function CouponManagement() {
                         <button onClick={() => copyCode(coupon.code)} className="text-muted-foreground hover:text-foreground">
                           <Copy className="w-3 h-3" />
                         </button>
-                        <Badge variant={coupon.is_active ? 'default' : 'secondary'} className="text-[10px]">
+                        <Badge variant={coupon.is_active ? 'default' : 'secondary'} className='text-[10px]'>
                           {coupon.is_active ? 'Active' : 'Inactive'}
                         </Badge>
                       </div>

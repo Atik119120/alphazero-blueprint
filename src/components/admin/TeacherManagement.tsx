@@ -83,7 +83,7 @@ interface RevenueRecord {
 }
 
 interface TeacherManagementProps {
-  language: "en' | 'bn";
+  language: 'en' | 'bn';
 }
 
 const translations = {
@@ -335,11 +335,11 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
         }, { onConflict: 'user_id,role' });
       }
       
-      toast.success(language === "bn' ? 'Teacher Approved" : 'Teacher approved');
+      toast.success(language === 'bn' ? 'Teacher Approved' : 'Teacher approved');
       fetchData();
     } catch (error) {
       console.error('Error approving teacher:', error);
-      toast.error(language === "bn' ? 'Error occurred" : 'Error occurred');
+      toast.error(language === 'bn' ? 'Error occurred' : 'Error occurred');
     }
   };
   
@@ -369,13 +369,13 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
       }
       
       toast.success(block 
-        ? (language === "bn' ? 'Teacher blocked" : 'Teacher blocked')
-        : (language === "bn' ? 'Teacher activated" : 'Teacher activated')
+        ? (language === 'bn' ? 'Teacher blocked' : 'Teacher blocked')
+        : (language === 'bn' ? 'Teacher activated' : 'Teacher activated')
       );
       fetchData();
     } catch (error) {
       console.error('Error updating teacher:', error);
-      toast.error(language === "bn' ? 'Error occurred" : 'Error occurred');
+      toast.error(language === 'bn' ? 'Error occurred' : 'Error occurred');
     }
   };
   
@@ -392,20 +392,20 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
       
       if (error) throw error;
       toast.success(approve 
-        ? (language === "bn' ? 'Course approved" : 'Course approved')
-        : (language === "bn' ? 'Course rejected" : 'Course rejected')
+        ? (language === 'bn' ? 'Course approved' : 'Course approved')
+        : (language === 'bn' ? 'Course rejected' : 'Course rejected')
       );
       fetchData();
     } catch (error) {
       console.error('Error updating course:', error);
-      toast.error(language === "bn' ? 'Error occurred" : 'Error occurred');
+      toast.error(language === 'bn' ? 'Error occurred' : 'Error occurred');
     }
   };
   
   // Paid work actions
   const createPaidWork = async () => {
     if (!workForm.title || !workForm.total_amount) {
-      toast.error(language === "bn' ? 'Provide all information" : 'Fill all required fields');
+      toast.error(language === 'bn' ? 'Provide all information' : 'Fill all required fields');
       return;
     }
     
@@ -439,18 +439,18 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
         });
       }
       
-      toast.success(language === "bn' ? 'Paid work created" : 'Paid work created');
+      toast.success(language === 'bn' ? 'Paid work created' : 'Paid work created');
       setShowCreateWorkDialog(false);
       setWorkForm({ title: '', description: '', category: 'design', total_amount: 0, deadline: '', assigned_to: '' });
       fetchData();
     } catch (error) {
       console.error('Error creating work:', error);
-      toast.error(language === "bn' ? 'Error occurred" : 'Error occurred');
+      toast.error(language === 'bn' ? 'Error occurred' : 'Error occurred');
     }
   };
   
   // Withdrawal actions
-  const processWithdrawal = async (withdrawalId: string, status: "paid' | 'rejected") => {
+  const processWithdrawal = async (withdrawalId: string, status: 'paid' | 'rejected') => {
     try {
       const { error } = await supabase
         .from('withdrawal_requests')
@@ -462,13 +462,13 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
       
       if (error) throw error;
       toast.success(status === 'paid' 
-        ? (language === "bn' ? 'Payment completed" : 'Payment completed')
-        : (language === "bn' ? 'Rejected" : 'Rejected')
+        ? (language === 'bn' ? 'Payment completed' : 'Payment completed')
+        : (language === 'bn' ? 'Rejected' : 'Rejected')
       );
       fetchData();
     } catch (error) {
       console.error('Error processing withdrawal:', error);
-      toast.error(language === "bn' ? 'Error occurred" : 'Error occurred');
+      toast.error(language === 'bn' ? 'Error occurred' : 'Error occurred');
     }
   };
   
@@ -481,11 +481,11 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
         .eq('id', revenueId);
       
       if (error) throw error;
-      toast.success(language === "bn' ? 'Revenue approved" : 'Revenue approved');
+      toast.success(language === 'bn' ? 'Revenue approved' : 'Revenue approved');
       fetchData();
     } catch (error) {
       console.error('Error approving revenue:', error);
-      toast.error(language === "bn' ? 'Error occurred" : 'Error occurred');
+      toast.error(language === 'bn' ? 'Error occurred' : 'Error occurred');
     }
   };
   
@@ -514,7 +514,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className={`text-xl font-semibold ${language === "bn' ? 'font-[Aloka]" : ''}`}>
+        <h2 className={`text-xl font-semibold ${language === 'bn' ? 'font-[Aloka]' : ''}`}>
           {t.title}
         </h2>
       </div>
@@ -752,7 +752,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                         <h3 className="font-medium">{work.title}</h3>
                         <Badge variant="outline" className="mt-1">{work.category}</Badge>
                       </div>
-                      <Badge variant={work.status === "completed' ? 'default" : 'secondary'}>
+                      <Badge variant={work.status === 'completed' ? 'default' : 'secondary'}>
                         {work.status}
                       </Badge>
                     </div>
@@ -815,7 +815,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge variant={record.status === "approved' ? 'default" : 'secondary'}>
+                        <Badge variant={record.status === 'approved' ? 'default' : 'secondary'}>
                           {record.status}
                         </Badge>
                         {record.status === 'pending' && (
@@ -844,7 +844,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
           ) : (
             <div className="space-y-3">
               {withdrawals.map((withdrawal) => (
-                <Card key={withdrawal.id} className={withdrawal.status === "pending' ? 'border-amber-500/50" : ''}>
+                <Card key={withdrawal.id} className={withdrawal.status === 'pending' ? 'border-amber-500/50' : ''}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -868,7 +868,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                       <div className="flex items-center gap-2">
                         {withdrawal.status === 'pending' ? (
                           <>
-                            <Button size="sm" className="gap-1" onClick={() => processWithdrawal(withdrawal.id, 'paid')}>
+                            <Button size='sm' className='gap-1' onClick={() => processWithdrawal(withdrawal.id, 'paid')}>
                               <CheckCircle className="w-3 h-3" />
                               {t.paid}
                             </Button>
@@ -878,7 +878,7 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
                             </Button>
                           </>
                         ) : (
-                          <Badge variant={withdrawal.status === "paid' ? 'default" : 'destructive'}>
+                          <Badge variant={withdrawal.status === 'paid' ? 'default' : 'destructive'}>
                             {withdrawal.status === 'paid' ? t.paid : t.rejected}
                           </Badge>
                         )}
