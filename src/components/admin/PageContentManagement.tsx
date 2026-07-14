@@ -317,7 +317,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
           <div>
             <h2 className="text-xl font-bold">Page Content</h2>
             <p className="text-sm text-muted-foreground">
-              {scope === "learn" ? "Learn Site" : "Agency Site"} — প্রতিটি পেজের টেক্সট এখান থেকে চেঞ্জ করুন
+              {scope === "learn" ? "Learn Site" : "Agency Site"} — Change each page's text from here
             </p>
           </div>
         </div>
@@ -332,45 +332,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
             onClick={() => setShowDescriptions(!showDescriptions)}
           >
             {showDescriptions ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
-            {showDescriptions ? 'Hide description' : 'Show description'}
-          </Button>
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm" className="gap-1.5">
-                <Plus className="h-4 w-4" />
-                New
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-lg">
-              <DialogHeader>
-                <DialogTitle>New কনটেন্ট — {selectedPageInfo?.label}</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 pt-2">
-                <div className="space-y-1.5">
-                  <Label className="text-xs">Content Key</Label>
-                  <Input
-                    value={formData.content_key}
-                    onChange={(e) => setFormData(prev => ({ ...prev, content_key: e.target.value }))}
-                    placeholder="hero.title"
-                    className="font-mono text-sm"
-                  />
-                  <p className="text-[10px] text-muted-foreground">
-                    ফরম্যাট: section.field (যেমন hero.title, cta.button)
-                  </p>
-                </div>
-                <div className="space-y-1.5">
-                  <Label className="text-xs flex items-center gap-1"><Globe className="w-3 h-3" /> English</Label>
-                  <Textarea
-                    value={formData.content_en}
-                    onChange={(e) => setFormData(prev => ({ ...prev, content_en: e.target.value }))}
-                    placeholder="English text..."
-                    rows={4}
-                  />
-                </div>
-
-                <Button onClick={handleAdd} disabled={addMutation.isPending} className="w-full">
-                  {addMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Plus className="h-4 w-4 mr-2" />}
-                  যোগ করুন
+            {showDescriptions ? 'Hide description' : 'Show description'Add
                 </Button>
               </div>
             </DialogContent>

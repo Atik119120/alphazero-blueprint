@@ -1574,7 +1574,7 @@ function AdminDashboardInner() {
                   <div className="flex items-center gap-2 text-sm">
                     <Banknote className="w-4 h-4 text-amber-500" />
                     <span className="font-semibold text-amber-600">
-                      {language === 'bn' ? `Total: ৳${totalRevenue.toLocaleString('bn-BD'Total: ৳${totalRevenue.toLocaleString()}`}
+                      {language === 'bn'? `Total: ৳${totalRevenue.toLocaleString('bn-BD'Total: ৳${totalRevenue.toLocaleString()}`}
                     </span>
                   </div>
                 </div>
@@ -1599,7 +1599,7 @@ function AdminDashboardInner() {
                       </p>
                       {course.totalSales > 0 && (
                         <p className="text-xs font-medium text-amber-600 mt-1">
-                          {language === 'bn' ? `বিক্রি: ৳${course.totalSales.toLocaleString('bn-BD')}` : `Sales: ৳${course.totalSales.toLocaleString()}`}
+                          {language === 'bn'? `Sales: ৳${course.totalSales.toLocaleString('bn-BD')}` : `Sales: ৳${course.totalSales.toLocaleString()}`}
                         </p>
                       )}
                     </div>
@@ -1634,8 +1634,7 @@ function AdminDashboardInner() {
               <div className="space-y-6">
                 {studentSearch && (
                   <p className="text-sm text-muted-foreground">
-                    {language === 'bn'
-                      ? `${filteredStudents.length} জন Student পাওয়া গেছে`
+                    {language === 'bn'? `${filteredStudents.length} Students found`
                       : `${filteredStudents.length} students found`}
                   </p>
                 )}
