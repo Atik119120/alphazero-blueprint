@@ -158,5 +158,6 @@ export default function WorkHeroEditor() {
           )}
         </CardContent>
       )}
+    </Card>
   );
 }
