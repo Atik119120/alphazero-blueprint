@@ -933,7 +933,7 @@ function AdminDashboardInner() {
               onClick={() => toggleGroup('lms_more')}
               className="hidden md:flex w-full items-center gap-1.5 px-2 py-1 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest hover:text-muted-foreground transition-colors"
             >
-              <svg className={`w-3 h-3 transition-transform ${expandedGroups.lms_more ? 'rotate-90' : ''}`} fill='none' viewBox='0 0 24 24' stroke='currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              <svg className={`w-3 h-3 transition-transform ${expandedGroups.lms_more ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
               {language === 'bn' ? 'আরো টুলস' : 'More Tools'}
               <Badge variant="secondary" className="ml-auto text-[9px] h-4 px-1">{lmsMoreItems.length}</Badge>
             </button>
