@@ -18,7 +18,9 @@ interface SiteSetting {
   setting_type: string;
 }
 
-const SiteSettingsManagement = () => {
+const PAYMENT_KEYS = new Set(['bkash_number', 'nagad_number', 'bkash_enabled', 'nagad_enabled']);
+
+const SiteSettingsManagement = ({ filter }: { filter?: 'general' | 'payment' } = {}) => {
   const queryClient = useQueryClient();
   const { scope } = useAdminScope();
   const [editedSettings, setEditedSettings] = useState<Record<string, string>>({});
