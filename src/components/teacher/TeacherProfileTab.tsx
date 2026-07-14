@@ -238,17 +238,10 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
           <h1 className="text-2xl font-bold text-foreground">{t.title}</h1>
           <p className="text-muted-foreground">{t.subtitle}</p>
         </div>
-        {!isEditing ? (
-          <Button onClick={() => setIsEditing(true)} variant="outline" className="gap-2">
-            <Edit className="w-4 h-4" />
-            Edit
-          </Button>
-        ) : (
-          <Button onClick={handleSave} disabled={isSaving} className="gap-2">
-            <Save className="w-4 h-4" />
-            {isSaving ? t.saving : t.save}
-          </Button>
-        )}
+        <Button onClick={handleSave} disabled={isSaving} className="gap-2">
+          <Save className="w-4 h-4" />
+          {isSaving ? t.saving : t.save}
+        </Button>
       </div>
 
       {/* Avatar Section */}
