@@ -238,14 +238,14 @@ const SectionCard = ({ section, onOpen }: { section: HomepageSection; onOpen: ()
   return (
     <button
       onClick={onOpen}
-      className="group text-left rounded-xl border bg-card hover:bg-accent/30 hover:border-primary/40 transition overflow-hidden"
+      className="group text-left rounded-xl border bg-card hover:bg-accent/30 hover:border-primary/40 transition overflow-hidden h-full min-h-[132px] flex flex-col"
     >
       <div className={cn("h-1 bg-gradient-to-r", sch.gradient)} />
-      <div className="p-4 flex items-start gap-3">
+      <div className="p-4 flex items-start gap-3 flex-1">
         <div className={cn("w-11 h-11 rounded-lg bg-gradient-to-br flex items-center justify-center text-white shrink-0 shadow-md", sch.gradient)}>
           <Icon className="w-5 h-5" />
         </div>
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 flex flex-col h-full">
           <div className="flex items-center gap-2">
             <div className="font-semibold truncate">{sch.label}</div>
             {!section.is_active && (
@@ -255,17 +255,20 @@ const SectionCard = ({ section, onOpen }: { section: HomepageSection; onOpen: ()
             )}
           </div>
           <div className="text-xs text-muted-foreground line-clamp-2 mt-0.5">{sch.hint}</div>
-          {sch.itemsMode && (
-            <div className="text-[11px] mt-2 inline-flex items-center gap-1 text-muted-foreground">
-              <Layers className="w-3 h-3" /> {itemCount} {sch.itemLabel ?? "item"}{itemCount !== 1 ? "s" : ""}
-            </div>
-          )}
+          <div className="text-[11px] mt-auto pt-2 inline-flex items-center gap-1 text-muted-foreground">
+            {sch.itemsMode ? (
+              <><Layers className="w-3 h-3" /> {itemCount} {sch.itemLabel ?? "item"}{itemCount !== 1 ? "s" : ""}</>
+            ) : (
+              <span className="opacity-0">.</span>
+            )}
+          </div>
         </div>
         <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition mt-1" />
       </div>
     </button>
   );
 };
+
 
 const SkeletonGrid = () => (
   <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
