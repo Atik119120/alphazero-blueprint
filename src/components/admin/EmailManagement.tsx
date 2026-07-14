@@ -37,7 +37,7 @@ const translations = {
   bn: {
     title: 'Send Email',
     description: 'Send professional emails from your domain',
-    recipientEmail: 'Recipient's Email',
+    recipientEmail: "Recipient's Email",
     recipientPlaceholder: 'student@example.com',
     subject: 'Subject',
     subjectPlaceholder: 'Enter email subject',
