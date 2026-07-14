@@ -125,7 +125,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
 
   const addTopic = async () => {
     if (!selectedCourse || !newTopicTitle.trim()) {
-      toast.error('টপিক নাম দিন');
+      toast.error('Enter topic name');
       return;
     }
     const nextOrder = courseTopics.length + 1;
@@ -135,23 +135,23 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       order_index: nextOrder,
     });
     if (error) {
-      toast.error('টপিক যোগ করতে সমস্যা');
+      toast.error('Error adding topic');
       return;
     }
-    toast.success('টপিক যোগ হয়েছে');
+    toast.success('Topic added');
     setNewTopicTitle('');
     setShowTopicDialog(false);
     loadCourseTopics(selectedCourse.id);
   };
 
   const deleteTopic = async (topicId: string) => {
-    if (!confirm('এই টপিক মুছতে চান? ক্লাসগুলো আনঅ্যাসাইন হবে।')) return;
+    if (!confirm('Delete this topic? Classes will be unassigned.')) return;
     const { error } = await supabase.from('course_topics').delete().eq('id', topicId);
     if (error) {
-      toast.error('মুছতে সমস্যা হয়েছে');
+      toast.error('Error deleting');
       return;
     }
-    toast.success('টপিক মুছে ফেলা হয়েছে');
+    toast.success('Topic deleted');
     if (selectedCourse) loadCourseTopics(selectedCourse.id);
   };
 
@@ -201,7 +201,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
 
   const saveCourse = async () => {
     if (!courseTitle.trim()) {
-      toast.error('কোর্সের নাম দিন');
+      toast.error('Enter course name');
       return;
     }
 
@@ -223,10 +223,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         .eq('id', editingCourse.id);
 
       if (error) {
-        toast.error('আপডেট করতে সমস্যা হয়েছে');
+        toast.error('Error updating');
         return;
       }
-      toast.success('কোর্স আপডেট হয়েছে');
+      toast.success('Course updated');
     } else {
       const { error } = await supabase
         .from('courses')
@@ -244,10 +244,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         });
 
       if (error) {
-        toast.error('কোর্স তৈরি করতে সমস্যা হয়েছে');
+        toast.error('Error creating course');
         return;
       }
-      toast.success('কোর্স তৈরি হয়েছে');
+      toast.success('Course created');
     }
 
     setShowCourseDialog(false);
@@ -255,7 +255,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   };
 
   const deleteCourse = async (courseId: string) => {
-    if (!confirm('এই কোর্স মুছতে চান?')) return;
+    if (!confirm('Delete this course?')) return;
 
     const { error } = await supabase
       .from('courses')
@@ -263,10 +263,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       .eq('id', courseId);
 
     if (error) {
-      toast.error('মুছতে সমস্যা হয়েছে');
+      toast.error('Error deleting');
       return;
     }
-    toast.success('কোর্স মুছে ফেলা হয়েছে');
+    toast.success('Course deleted');
     refetchCourses();
   };
 
@@ -277,10 +277,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       .eq('id', course.id);
 
     if (error) {
-      toast.error('আপডেট করতে সমস্যা হয়েছে');
+      toast.error('Error updating');
       return;
     }
-    toast.success(course.is_published ? 'কোর্স আনপাবলিশ হয়েছে' : 'কোর্স পাবলিশ হয়েছে');
+    toast.success(course.is_published ? 'Course unpublished' : 'Course published');
     refetchCourses();
   };
 
@@ -306,7 +306,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
 
   const saveVideo = async () => {
     if (!selectedCourse || !videoTitle.trim()) {
-      toast.error('টাইটেল দিন');
+      toast.error('Enter title');
       return;
     }
 
@@ -314,7 +314,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
     if (videoType === 'cloudinary' && !editingVideo) {
       const file = (window as any).__pendingVideoFile as File | undefined;
       if (!file) {
-        toast.error('ভিডিও ফাইল সিলেক্ট করুন');
+        toast.error('Select video file');
         return;
       }
 
@@ -333,7 +333,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           },
           body: JSON.stringify({ folder: `courses/${selectedCourse.id}` }),
         });
-        if (!signRes.ok) throw new Error('সাইন করতে সমস্যা');
+        if (!signRes.ok) throw new Error('Error signing');
         const { cloudName, apiKey, timestamp, signature, folder } = await signRes.json();
 
         // Step 2: Upload directly to Cloudinary
@@ -354,10 +354,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             try {
               const data = JSON.parse(xhr.responseText);
               if (xhr.status >= 200 && xhr.status < 300) resolve(data);
-              else reject(new Error(data?.error?.message || 'Cloudinary আপলোড ব্যর্থ'));
-            } catch { reject(new Error('রেসপন্স পার্স সমস্যা')); }
+              else reject(new Error(data?.error?.message || 'Cloudinary upload failed'));
+            } catch { reject(new Error('Response parse error')); }
           });
-          xhr.addEventListener('error', () => reject(new Error('নেটওয়ার্ক সমস্যা')));
+          xhr.addEventListener('error', () => reject(new Error('Network error')));
           xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/video/upload`);
           xhr.send(cloudForm);
         });
@@ -379,12 +379,12 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           topic_id: videoTopicId || null,
         });
 
-        toast.success('ভিডিও আপলোড সম্পন্ন!');
+        toast.success('Video upload complete!');
         (window as any).__pendingVideoFile = undefined;
         setShowVideoDialog(false);
         loadCourseVideos(selectedCourse.id);
       } catch (error: any) {
-        toast.error(error.message || 'আপলোড ব্যর্থ হয়েছে');
+        toast.error(error.message || 'Upload failed');
       } finally {
         setCloudinaryUploading(false);
         setCloudinaryProgress(0);
@@ -393,7 +393,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
     }
 
     if (!videoUrl.trim() && videoType !== 'cloudinary') {
-      toast.error('URL দিন');
+      toast.error('Enter URL');
       return;
     }
 
@@ -415,10 +415,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         .eq('id', editingVideo.id);
 
       if (error) {
-        toast.error('আপডেট করতে সমস্যা হয়েছে');
+        toast.error('Error updating');
         return;
       }
-      toast.success('ভিডিও আপডেট হয়েছে');
+      toast.success('Video updated');
     } else {
       const nextOrder = courseVideos.length + 1;
       const { error } = await supabase
@@ -434,10 +434,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         });
 
       if (error) {
-        toast.error('ভিডিও যোগ করতে সমস্যা হয়েছে');
+        toast.error('Error adding video');
         return;
       }
-      toast.success('ভিডিও যোগ হয়েছে');
+      toast.success('Video added');
     }
 
     setShowVideoDialog(false);
@@ -445,7 +445,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   };
 
   const deleteVideo = async (videoId: string) => {
-    if (!confirm('এই ভিডিও মুছতে চান?')) return;
+    if (!confirm('Delete this video?')) return;
 
     const { error } = await supabase
       .from('videos')
@@ -453,12 +453,12 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       .eq('id', videoId);
 
     if (error) {
-      toast.error('মুছতে সমস্যা হয়েছে');
+      toast.error('Error deleting');
       return;
     }
     
     setCourseVideos(prev => prev.filter(v => v.id !== videoId));
-    toast.success('ভিডিও মুছে ফেলা হয়েছে');
+    toast.success('Video deleted');
   };
 
   // Material CRUD
@@ -472,17 +472,17 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
 
   const saveMaterial = async () => {
     if (!selectedVideo || !materialTitle.trim()) {
-      toast.error('টাইটেল দিন');
+      toast.error('Enter title');
       return;
     }
 
     if (materialType !== 'note' && !materialUrl.trim()) {
-      toast.error('URL দিন');
+      toast.error('Enter URL');
       return;
     }
 
     if (materialType === 'note' && !materialNote.trim()) {
-      toast.error('নোট লিখুন');
+      toast.error('Write note');
       return;
     }
 
@@ -499,17 +499,17 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       });
 
     if (error) {
-      toast.error('যোগ করতে সমস্যা হয়েছে');
+      toast.error('Error adding');
       return;
     }
 
-    toast.success('ম্যাটেরিয়াল যোগ হয়েছে');
+    toast.success('Material added');
     setShowMaterialDialog(false);
     loadVideoMaterials(selectedVideo.id);
   };
 
   const deleteMaterial = async (materialId: string) => {
-    if (!confirm('এই ম্যাটেরিয়াল মুছতে চান?')) return;
+    if (!confirm('Delete this material?')) return;
 
     const { error } = await supabase
       .from('video_materials')
@@ -517,12 +517,12 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       .eq('id', materialId);
 
     if (error) {
-      toast.error('মুছতে সমস্যা হয়েছে');
+      toast.error('Error deleting');
       return;
     }
     
     setVideoMaterials(prev => prev.filter(m => m.id !== materialId));
-    toast.success('ম্যাটেরিয়াল মুছে ফেলা হয়েছে');
+    toast.success('Material deleted');
   };
 
   // Render video materials view
@@ -558,7 +558,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 <VideoIcon className="w-6 h-6 text-primary" />
               </div>
               <div className="flex-1">
-                <p className="text-sm text-muted-foreground">ভিডিও লিংক</p>
+                <p className="text-sm text-muted-foreground">Video Link</p>
                 <a 
                   href={selectedVideo.video_url} 
                   target="_blank" 
@@ -585,10 +585,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             <Card className="border-dashed">
               <CardContent className="py-8 text-center">
                 <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">কোনো ম্যাটেরিয়াল নেই</p>
+                <p className="text-muted-foreground">No materials</p>
                 <Button onClick={openMaterialDialog} className="mt-4 gap-2">
                   <Plus className="w-4 h-4" />
-                  প্রথম ম্যাটেরিয়াল যোগ করুন
+                  প্রথম ম্যাটেরিয়াল Add
                 </Button>
               </CardContent>
             </Card>
@@ -643,22 +643,22 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         <Dialog open={showMaterialDialog} onOpenChange={setShowMaterialDialog}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>নতুন ম্যাটেরিয়াল যোগ করুন</DialogTitle>
+              <DialogTitle>Add new material</DialogTitle>
               <DialogDescription>
-                PDF, ডকুমেন্ট বা নোট যোগ করুন
+                PDF, ডকুমেন্ট বা Note Add
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>টাইটেল</Label>
+                <Label>Title</Label>
                 <Input
                   value={materialTitle}
                   onChange={(e) => setMaterialTitle(e.target.value)}
-                  placeholder="ম্যাটেরিয়ালের নাম"
+                  placeholder="Material name"
                 />
               </div>
               <div className="space-y-2">
-                <Label>টাইপ</Label>
+                <Label>Type</Label>
                 <Select value={materialType} onValueChange={(v) => setMaterialType(v as 'pdf' | 'doc' | 'note')}>
                   <SelectTrigger>
                     <SelectValue />
@@ -685,11 +685,11 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Label>নোট</Label>
+                  <Label>Note</Label>
                   <Textarea
                     value={materialNote}
                     onChange={(e) => setMaterialNote(e.target.value)}
-                    placeholder="নোট লিখুন..."
+                    placeholder="Write a note..."
                     rows={5}
                   />
                 </div>
@@ -697,10 +697,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setShowMaterialDialog(false)}>
-                বাতিল
+                Cancel
               </Button>
               <Button onClick={saveMaterial}>
-                যোগ করুন
+                Add
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -760,21 +760,21 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         <Dialog open={showTopicDialog} onOpenChange={setShowTopicDialog}>
           <DialogContent className="max-w-sm">
             <DialogHeader>
-              <DialogTitle>নতুন টপিক যোগ করুন</DialogTitle>
+              <DialogTitle>Add new topic</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-2">
               <div className="space-y-2">
-                <Label>টপিক নাম</Label>
+                <Label>Topic Name</Label>
                 <Input
                   value={newTopicTitle}
                   onChange={(e) => setNewTopicTitle(e.target.value)}
-                  placeholder="যেমন: HTML Basics"
+                  placeholder="e.g., HTML Basics"
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setShowTopicDialog(false)}>বাতিল</Button>
-              <Button onClick={addTopic}>যোগ করুন</Button>
+              <Button variant="outline" onClick={() => setShowTopicDialog(false)}>Cancel</Button>
+              <Button onClick={addTopic}>Add</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -790,7 +790,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
 
         {/* Video List */}
         <div className="space-y-4">
-          <h3 className="font-medium">ক্লাস তালিকা</h3>
+          <h3 className="font-medium">Class List</h3>
           
           {loadingVideos ? (
             <div className="flex justify-center py-8">
@@ -800,10 +800,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             <Card className="border-dashed">
               <CardContent className="py-8 text-center">
                 <VideoIcon className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">কোনো ক্লাস নেই</p>
+                <p className="text-muted-foreground">No classes</p>
                 <Button onClick={() => openVideoDialog()} className="mt-4 gap-2">
                   <Plus className="w-4 h-4" />
-                  প্রথম ক্লাস যোগ করুন
+                  প্রথম ক্লাস Add
                 </Button>
               </CardContent>
             </Card>
@@ -821,7 +821,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 });
                 const sections = [
                   ...courseTopics.map(t => ({ id: t.id, label: t.title, videos: grouped[t.id] || [] })),
-                  ...(grouped[''].length > 0 ? [{ id: '', label: 'অন্যান্য', videos: grouped[''] }] : [])
+                  ...(grouped[''].length > 0 ? [{ id: '', label: 'Others', videos: grouped[''] }] : [])
                 ];
                 return sections.map(section => (
                   section.videos.length > 0 && (
@@ -907,34 +907,34 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         <Dialog open={showVideoDialog} onOpenChange={setShowVideoDialog}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{editingVideo ? 'ক্লাস এডিট' : 'নতুন ক্লাস যোগ করুন'}</DialogTitle>
+              <DialogTitle>{editingVideo ? 'Edit class' : 'Add new class'}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>ক্লাস টাইটেল</Label>
+                <Label>Class Title</Label>
                 <Input
                   value={videoTitle}
                   onChange={(e) => setVideoTitle(e.target.value)}
-                  placeholder="ক্লাস ১ - পরিচিতি"
+                  placeholder="Class 1 - Introduction"
                 />
               </div>
               <div className="space-y-2">
-                <Label>ভিডিও টাইপ</Label>
+                <Label>Video Type</Label>
                 <Select value={videoType} onValueChange={setVideoType}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="cloudinary">ডাইরেক্ট আপলোড</SelectItem>
-                    <SelectItem value="cloudinary_url">ভিডিও URL (লিংক পেস্ট)</SelectItem>
-                    <SelectItem value="youtube">YouTube লিংক</SelectItem>
+                    <SelectItem value="cloudinary">Direct Upload</SelectItem>
+                    <SelectItem value="cloudinary_url">Video URL (paste link)</SelectItem>
+                    <SelectItem value="youtube">YouTube Link</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               {videoType === 'cloudinary' ? (
                 <div className="space-y-2">
-                  <Label>ভিডিও ফাইল আপলোড করুন</Label>
-                  <p className="text-xs text-muted-foreground">MP4, WebM, MOV — সর্বোচ্চ ১ জিবি</p>
+                  <Label>Upload Video File</Label>
+                  <p className="text-xs text-muted-foreground">MP4, WebM, MOV — max 1 GB</p>
                   <Input
                     type="file"
                     accept="video/mp4,video/webm,video/quicktime"
@@ -953,39 +953,39 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   {cloudinaryUploading && (
                     <div className="space-y-2 pt-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-muted-foreground">আপলোড হচ্ছে...</span>
+                        <span className="text-muted-foreground">Uploading...</span>
                         <span className="font-mono font-semibold">{cloudinaryProgress}%</span>
                       </div>
                       <Progress value={cloudinaryProgress} className="h-3" />
                       {cloudinaryProgress === 100 && (
-                        <p className="text-xs text-muted-foreground">Cloudinary-তে প্রসেস হচ্ছে...</p>
+                        <p className="text-xs text-muted-foreground">Processing on Cloudinary...</p>
                       )}
                     </div>
                   )}
                 </div>
               ) : videoType === 'cloudinary_url' ? (
                 <div className="space-y-2">
-                  <Label>Cloudinary ভিডিও URL</Label>
+                  <Label>Cloudinary Video URL</Label>
                   <Input
                     value={videoUrl}
                     onChange={(e) => setVideoUrl(e.target.value)}
                     placeholder="https://res.cloudinary.com/..."
                   />
-                  <p className="text-xs text-muted-foreground">Gallery থেকে লিংক কপি করে এখানে পেস্ট করুন</p>
+                  <p className="text-xs text-muted-foreground">Copy link from Gallery and paste here</p>
                 </div>
               ) : videoType === 'youtube' ? (
                 <div className="space-y-2">
-                  <Label>YouTube ভিডিও লিংক</Label>
+                  <Label>YouTube Video Link</Label>
                   <Input
                     value={videoUrl}
                     onChange={(e) => setVideoUrl(e.target.value)}
-                    placeholder="https://www.youtube.com/watch?v=... অথবা https://youtu.be/..."
+                    placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
                   />
-                  <p className="text-xs text-muted-foreground">YouTube ভিডিওর লিংক পেস্ট করুন</p>
+                  <p className="text-xs text-muted-foreground">Paste YouTube video link</p>
                 </div>
               ) : null}
               <div className="space-y-2">
-                <Label>সময়কাল (মিনিট)</Label>
+                <Label>Duration (minutes)</Label>
                 <Input
                   type="number"
                   value={videoDuration}
@@ -995,13 +995,13 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               </div>
               {courseTopics.length > 0 && (
                 <div className="space-y-2">
-                  <Label>টপিক (ঐচ্ছিক)</Label>
+                  <Label>Topic (optional)</Label>
                   <Select value={videoTopicId} onValueChange={setVideoTopicId}>
                     <SelectTrigger>
-                      <SelectValue placeholder="টপিক সিলেক্ট করুন" />
+                      <SelectValue placeholder="Select topic" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">কোনো টপিক নেই</SelectItem>
+                      <SelectItem value="none">No topics</SelectItem>
                       {courseTopics.map(topic => (
                         <SelectItem key={topic.id} value={topic.id}>{topic.title}</SelectItem>
                       ))}
@@ -1012,10 +1012,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setShowVideoDialog(false)} disabled={cloudinaryUploading}>
-                বাতিল
+                Cancel
               </Button>
               <Button onClick={saveVideo} disabled={cloudinaryUploading}>
-                {cloudinaryUploading ? 'আপলোড হচ্ছে...' : editingVideo ? 'আপডেট' : 'যোগ করুন'}
+                {cloudinaryUploading ? 'Uploading...' : editingVideo ? 'Update' : 'Add'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -1025,23 +1025,23 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         <Dialog open={showCourseDialog} onOpenChange={setShowCourseDialog}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>কোর্স এডিট</DialogTitle>
+              <DialogTitle>Edit course</DialogTitle>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label>কোর্সের নাম</Label>
+                <Label>Course Name</Label>
                 <Input
                   value={courseTitle}
                   onChange={(e) => setCourseTitle(e.target.value)}
-                  placeholder="কোর্সের নাম লিখুন"
+                  placeholder="Enter course name"
                 />
               </div>
               <div className="space-y-2">
-                <Label>বিবরণ</Label>
+                <Label>Description</Label>
                 <Textarea
                   value={courseDescription}
                   onChange={(e) => setCourseDescription(e.target.value)}
-                  placeholder="কোর্সের বিস্তারিত বিবরণ লিখুন..."
+                  placeholder="Enter course details..."
                   rows={4}
                 />
               </div>
@@ -1049,12 +1049,12 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                 value={courseThumbnail}
                 onChange={setCourseThumbnail}
                 folder="course-thumbnails"
-                label="থাম্বনেইল"
+                label="Thumbnail"
                 aspectRatio="video"
                 maxSizeMB={5}
               />
               <div className="space-y-2">
-                <Label>মূল্য (টাকা)</Label>
+                <Label>Price (BDT)</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
@@ -1065,15 +1065,15 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                     className="pl-10"
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">ফ্রি কোর্সের জন্য ০ রাখুন</p>
+                <p className="text-xs text-muted-foreground">Enter 0 for free courses</p>
               </div>
             </div>
             <DialogFooter>
               <Button variant="outline" onClick={() => setShowCourseDialog(false)}>
-                বাতিল
+                Cancel
               </Button>
               <Button onClick={saveCourse}>
-                আপডেট
+                Update
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -1086,7 +1086,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold">সব কোর্স</h2>
+        <h2 className="text-xl font-semibold">All Courses</h2>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           {/* Quick Course Selector Dropdown */}
           {courses.length > 0 && (
@@ -1095,7 +1095,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               if (course) setSelectedCourse(course);
             }}>
               <SelectTrigger className="w-full sm:w-[250px] bg-card">
-                <SelectValue placeholder="কোর্স সিলেক্ট করুন" />
+                <SelectValue placeholder="Select course" />
               </SelectTrigger>
               <SelectContent className="bg-card border-border z-50">
                 {courses.map((course) => (
@@ -1104,9 +1104,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                       <BookOpen className="w-4 h-4 text-muted-foreground" />
                       <span className="truncate">{course.title}</span>
                       {course.is_published ? (
-                        <Badge variant="default" className="ml-auto text-[10px] px-1.5">পাবলিশড</Badge>
+                        <Badge variant="default" className="ml-auto text-[10px] px-1.5">Published</Badge>
                       ) : (
-                        <Badge variant="secondary" className="ml-auto text-[10px] px-1.5">ড্রাফট</Badge>
+                        <Badge variant="secondary" className="ml-auto text-[10px] px-1.5">Draft</Badge>
                       )}
                     </div>
                   </SelectItem>
@@ -1116,7 +1116,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           )}
           <Button onClick={() => openCourseDialog()} className="gap-2 whitespace-nowrap">
             <Plus className="w-4 h-4" />
-            নতুন কোর্স
+            New course
           </Button>
         </div>
       </div>
@@ -1129,10 +1129,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
         <Card className="border-dashed">
           <CardContent className="py-12 text-center">
             <BookOpen className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">কোনো কোর্স নেই</p>
+            <p className="text-muted-foreground">No courses</p>
             <Button onClick={() => openCourseDialog()} className="mt-4 gap-2">
               <Plus className="w-4 h-4" />
-              প্রথম কোর্স তৈরি করুন
+              প্রথম কোর্স Create
             </Button>
           </CardContent>
         </Card>
@@ -1160,7 +1160,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   className="absolute top-2 right-2"
                   variant={course.is_published ? 'default' : 'secondary'}
                 >
-                  {course.is_published ? 'পাবলিশড' : 'ড্রাফট'}
+                  {course.is_published ? 'Published' : 'Draft'}
                 </Badge>
                 {course.price > 0 && (
                   <Badge 
@@ -1176,7 +1176,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   {course.price > 0 ? (
                     <span className="text-sm font-semibold text-amber-600">৳{course.price.toLocaleString('bn-BD')}</span>
                   ) : (
-                    <Badge variant="secondary" className="text-xs">ফ্রি</Badge>
+                    <Badge variant="secondary" className="text-xs">Free</Badge>
                   )}
                 </div>
                 {course.description && (
@@ -1187,7 +1187,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               </CardHeader>
               <CardContent className="pt-0 space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">পাবলিশ</span>
+                  <span className="text-muted-foreground">Publish</span>
                   <Switch
                     checked={course.is_published}
                     onCheckedChange={(checked) => {
@@ -1243,16 +1243,16 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
       <Dialog open={showCourseDialog} onOpenChange={setShowCourseDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editingCourse ? 'কোর্স এডিট' : 'নতুন কোর্স'}</DialogTitle>
+            <DialogTitle>{editingCourse ? 'Edit course' : 'New course'}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
             {/* Bengali Title */}
             <div className="space-y-2">
-              <Label>কোর্সের নাম (বাংলা) *</Label>
+              <Label>Course Name (Bangla) *</Label>
               <Input
                 value={courseTitle}
                 onChange={(e) => setCourseTitle(e.target.value)}
-                placeholder="বাংলায় কোর্সের নাম লিখুন"
+                placeholder="Enter course name in Bangla"
               />
             </div>
             
@@ -1268,11 +1268,11 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             
             {/* Bengali Description */}
             <div className="space-y-2">
-              <Label>বিবরণ (বাংলা)</Label>
+              <Label>Description (Bangla)</Label>
               <Textarea
                 value={courseDescription}
                 onChange={(e) => setCourseDescription(e.target.value)}
-                placeholder="বাংলায় কোর্সের বিবরণ লিখুন..."
+                placeholder="Enter course description in Bangla..."
                 rows={3}
               />
             </div>
@@ -1289,7 +1289,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             </div>
             
             <div className="space-y-2">
-              <Label>থাম্বনেইল URL</Label>
+              <Label>Thumbnail URL</Label>
               <Input
                 value={courseThumbnail}
                 onChange={(e) => setCourseThumbnail(e.target.value)}
@@ -1297,7 +1297,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
               />
             </div>
             <div className="space-y-2">
-              <Label>মূল্য (টাকা)</Label>
+              <Label>Price (BDT)</Label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -1308,29 +1308,29 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   className="pl-10"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">ফ্রি কোর্সের জন্য ০ রাখুন</p>
+              <p className="text-xs text-muted-foreground">Enter 0 for free courses</p>
             </div>
             
             {/* Trainer Section */}
             <div className="border-t pt-4 mt-4">
-              <h4 className="font-medium mb-4">ট্রেইনার তথ্য</h4>
+              <h4 className="font-medium mb-4">Trainer Info</h4>
               
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label>ট্রেইনার নাম</Label>
+                  <Label>Trainer Name</Label>
                   <Input
                     value={trainerName}
                     onChange={(e) => setTrainerName(e.target.value)}
-                    placeholder="ট্রেইনারের নাম লিখুন"
+                    placeholder="Enter trainer name"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label>ট্রেইনার পদবি</Label>
+                  <Label>Trainer Designation</Label>
                   <Input
                     value={trainerDesignation}
                     onChange={(e) => setTrainerDesignation(e.target.value)}
-                    placeholder="যেমন: Graphic Designer, Web Developer"
+                    placeholder="e.g., Graphic Designer, Web Developer"
                   />
                 </div>
                 
@@ -1338,7 +1338,7 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
                   value={trainerImage}
                   onChange={setTrainerImage}
                   folder="trainers"
-                  label="ট্রেইনার ছবি"
+                  label="Trainer image"
                   aspectRatio="square"
                   maxSizeMB={2}
                 />
@@ -1348,9 +1348,9 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
             {/* Publish Toggle */}
             <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 border">
               <div>
-                <Label className="text-base font-medium">পাবলিশ করুন</Label>
+                <Label className="text-base font-medium">Publish</Label>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {coursePublished ? 'কোর্সটি ওয়েবসাইটে দেখাবে' : 'কোর্সটি ড্রাফট হিসেবে থাকবে'}
+                  {coursePublished ? 'Show course on website' : 'Course will be a draft'}
                 </p>
               </div>
               <Switch
@@ -1361,10 +1361,10 @@ export default function CourseManagement({ courses, coursesLoading, refetchCours
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowCourseDialog(false)}>
-              বাতিল
+              Cancel
             </Button>
             <Button onClick={saveCourse}>
-              {editingCourse ? 'আপডেট' : 'তৈরি করুন'}
+              {editingCourse ? 'Update' : 'Create'}
             </Button>
           </DialogFooter>
         </DialogContent>
