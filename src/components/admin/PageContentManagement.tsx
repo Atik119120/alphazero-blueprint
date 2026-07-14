@@ -154,10 +154,10 @@ const PageContentManagement = () => {
   const [showDescriptions, setShowDescriptions] = useState(true);
   const [formData, setFormData] = useState({
     content_key: '',
-    content_en: '',
-    content_bn: ''
+    content_en: ''
   });
-  const [editData, setEditData] = useState<Record<string, { content_en: string; content_bn: string }>>({});
+  const [editData, setEditData] = useState<Record<string, { content_en: string }>>({});
+
 
   const { data: contents, isLoading } = useQuery({
     queryKey: ['page-content', scope],
