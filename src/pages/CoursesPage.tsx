@@ -543,31 +543,35 @@ const CoursesPage = () => {
             </h2>
           </motion.div>
 
-          {/* Category tabs */}
-          <div className="max-w-7xl mx-auto mb-12 border-b border-border/40">
-            <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 overflow-x-auto no-scrollbar">
+          {/* Category pills */}
+          <div className="max-w-5xl mx-auto mb-12">
+            <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3">
               {categories.map((cat) => {
                 const isActive = activeCategory === cat.id;
                 return (
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`relative py-4 text-sm md:text-base font-semibold whitespace-nowrap transition-colors ${
-                      isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                    className={`relative px-4 md:px-5 py-2 md:py-2.5 rounded-full text-sm md:text-base font-medium whitespace-nowrap transition-all duration-300 ${
+                      isActive
+                        ? "text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground border border-border/50 hover:border-border"
                     }`}
                   >
-                    {cat.label}
                     {isActive && (
                       <motion.span
-                        layoutId="activeCatUnderline"
-                        className="absolute left-0 right-0 -bottom-px h-[3px] bg-primary rounded-full"
+                        layoutId="activeCatPill"
+                        className="absolute inset-0 rounded-full bg-primary shadow-lg shadow-primary/30"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
+                    <span className="relative z-10">{cat.label}</span>
                   </button>
                 );
               })}
             </div>
           </div>
+
 
 
           {coursesLoading && (
