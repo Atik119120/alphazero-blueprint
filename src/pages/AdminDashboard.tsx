@@ -919,6 +919,11 @@ function AdminDashboardInner() {
 
         {/* Navigation */}
         <nav className="flex-1 p-2 md:p-3 space-y-1 overflow-y-auto scrollbar-none">
+          {/* Dashboard */}
+          <div className="mb-2">
+            {renderNavButton(dashboardItem as any, 'from-fuchsia-500 to-pink-500')}
+          </div>
+
           {/* LMS Core */}
           <div className="mb-2">
             <p className="hidden md:block text-[10px] font-medium text-muted-foreground/60 uppercase tracking-widest px-2 mb-1.5">
