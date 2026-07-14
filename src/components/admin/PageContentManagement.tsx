@@ -317,7 +317,7 @@ const PageContentManagement = ({ lockedPage }: { lockedPage?: string } = {}) => 
           <div>
             <h2 className="text-xl font-bold">Page Content</h2>
             <p className="text-sm text-muted-foreground">
-              {scope === "learn' ? 'Learn Site' : 'Agency Site'} — Change each page's text from here
+              {scope === 'learn' ? 'Learn Site' : 'Agency Site'} — Change each page's text from here
             </p>
           </div>
         </div>
