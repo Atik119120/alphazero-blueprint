@@ -77,36 +77,6 @@ const Footer = () => {
     <footer className="relative">
       {/* Main Footer Content */}
       <div className="border-t border-border">
-        {/* CTA Section */}
-        <div className="container mx-auto px-5 sm:px-6 py-6 sm:py-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-4 sm:gap-12 items-end">
-              <div>
-                <span className="text-[10px] sm:text-sm text-primary font-medium tracking-wider uppercase mb-2 sm:mb-4 block">
-                  {t("footer.ready")}
-                </span>
-                <h2 className="text-xl sm:text-4xl lg:text-6xl font-display font-bold leading-tight">
-                  {t("footer.letsCreate")}
-                  <br />
-                  <span className="gradient-text">{t("footer.together")}</span>
-                </h2>
-              </div>
-              <div className="flex lg:justify-end">
-                <Link
-                  to="/contact"
-                  className="group inline-flex items-center gap-2 sm:gap-4 text-sm sm:text-lg font-medium"
-                >
-                  <span className="px-5 sm:px-8 py-2.5 sm:py-4 bg-primary text-primary-foreground rounded-full transition-all duration-300 group-hover:shadow-xl group-hover:shadow-primary/20">
-                    {t("nav.startProject")}
-                  </span>
-                  <span className="w-9 sm:w-14 h-9 sm:h-14 rounded-full bg-foreground text-background flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <ArrowUpRight size={16} />
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Links Grid - Compact on mobile */}
         <div className="border-t border-border">
