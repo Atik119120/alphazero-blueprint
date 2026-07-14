@@ -403,10 +403,10 @@ const LearnAboutPage = () => {
                 <GraduationCap size={28} className="text-primary" />
               </div>
               <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-                {t("আজই শুরু করুন আপনার শেখার যাত্রা", "Start your learning journey today")}
+                {cms("lcta.title.bn", "lcta.title.en", "আজই শুরু করুন আপনার শেখার যাত্রা", "Start your learning journey today")}
               </h2>
               <p className="text-xl text-muted-foreground mb-10">
-                {t(
+                {cms("lcta.desc.bn", "lcta.desc.en",
                   "AlphaZero এর সাথে শিখুন, তৈরি করুন এবং আপনার ক্যারিয়ার এগিয়ে নিন।",
                   "Learn with AlphaZero, build real work, and grow your career."
                 )}
@@ -416,7 +416,7 @@ const LearnAboutPage = () => {
                   to="/courses"
                   className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]"
                 >
-                  {t("সব কোর্স দেখুন", "Browse Courses")} <ArrowRight size={20} />
+                  {cms("lcta.btn1.bn", "lcta.btn1.en", "সব কোর্স দেখুন", "Browse Courses")} <ArrowRight size={20} />
                 </Link>
                 <a
                   href="https://wa.me/8801776965533"
@@ -424,7 +424,7 @@ const LearnAboutPage = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
                 >
-                  {t("যোগাযোগ করুন", "Contact Us")}
+                  {cms("lcta.btn2.bn", "lcta.btn2.en", "যোগাযোগ করুন", "Contact Us")}
                 </a>
               </div>
             </motion.div>
