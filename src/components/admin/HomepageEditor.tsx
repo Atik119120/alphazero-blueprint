@@ -11,6 +11,7 @@ import {
   ArrowLeft, ChevronRight, Home, Plus, Trash2, Save, Loader2,
   Sparkles, Building2, Boxes, Wrench, GraduationCap, Layers,
   ExternalLink, GripVertical, ImagePlus, Eye, EyeOff, MousePointerClick,
+  MessageSquare, PhoneCall,
 } from "lucide-react";
 import { useAdminScope } from "@/contexts/AdminSiteScopeContext";
 import ImageUploader from "@/components/admin/ImageUploader";
