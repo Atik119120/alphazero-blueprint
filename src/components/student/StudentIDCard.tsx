@@ -72,10 +72,7 @@ export default function StudentIDCard({ profile }: StudentIDCardProps) {
                 className="w-full h-full object-contain"
               />
             </div>
-            <div>
-              <h3 className="text-lg font-bold tracking-wide leading-tight">AlphaZero Academy</h3>
-              <p className="text-xs opacity-80">Student Identity Card</p>
-            </div>
+            <p className="text-xs uppercase tracking-[0.2em] opacity-90 font-semibold">Student Identity Card</p>
           </div>
 
           {/* Main Content */}
