@@ -1763,10 +1763,11 @@ function AdminDashboardInner() {
             <HomepageEditor />
           </TabsContent>
 
-          {/* Content Tab */}
-          <TabsContent value="content" className="space-y-6">
-            <PageContentManagement />
+          {/* Contact Tab */}
+          <TabsContent value="contact" className="space-y-6">
+            <PageContentManagement lockedPage="contact" />
           </TabsContent>
+
 
 
           {/* Footer Tab */}
