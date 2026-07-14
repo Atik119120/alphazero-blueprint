@@ -540,8 +540,8 @@ const CoursesPage = () => {
             className="max-w-3xl mx-auto text-center mb-10">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-tight mb-5">
               {(() => {
-                const text = t.popularCourses;
-                const idx = text.toLowerCase().indexOf("course");
+                const text = cms("grid.title.bn", "grid.title.en", "জনপ্রিয় কোর্স", t.popularCourses);
+                const idx = text.toLowerCase().indexOf(isBn ? "কোর্স" : "course");
                 if (idx === -1) return text;
                 return (
                   <>
