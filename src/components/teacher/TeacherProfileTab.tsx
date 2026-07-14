@@ -71,7 +71,9 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
     phone_number: '',
     bio: '',
     skills: [] as string[],
+    role_title: '',
   });
+  const [linkedTeamMemberId, setLinkedTeamMemberId] = useState<string | null>(null);
   const [newSkill, setNewSkill] = useState('');
 
   useEffect(() => {
@@ -86,17 +88,29 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('full_name, phone_number, bio, skills')
+        .select('full_name, phone_number, bio, skills, linked_team_member_id')
         .eq('id', profile.id)
         .single();
 
       if (error) throw error;
 
+      let roleTitle = '';
+      if (data.linked_team_member_id) {
+        const { data: tm } = await supabase
+          .from('team_members')
+          .select('role')
+          .eq('id', data.linked_team_member_id)
+          .single();
+        roleTitle = tm?.role || '';
+      }
+
+      setLinkedTeamMemberId(data.linked_team_member_id);
       setFormData({
         full_name: data.full_name || '',
         phone_number: data.phone_number || '',
         bio: data.bio || '',
         skills: data.skills || [],
+        role_title: roleTitle,
       });
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -121,21 +135,17 @@ export default function TeacherProfileTab({ language }: TeacherProfileTabProps) 
 
       if (error) throw error;
 
-      // If linked to team member, update there too
-      const profileData = await supabase
-        .from('profiles')
-        .select('linked_team_member_id')
-        .eq('id', profile.id)
-        .single();
-
-      if (profileData.data?.linked_team_member_id) {
+      // If linked to team member, sync name/bio/role/image
+      if (linkedTeamMemberId) {
         await supabase
           .from('team_members')
           .update({
             name: formData.full_name,
             bio: formData.bio,
+            role: formData.role_title,
+            image_url: profile.avatar_url || null,
           })
-          .eq('id', profileData.data.linked_team_member_id);
+          .eq('id', linkedTeamMemberId);
       }
 
       toast({ title: t.profileUpdated });
