@@ -51,10 +51,19 @@ const AboutPage = () => {
     <Layout>
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
-      <section className="relative overflow-hidden -mt-20 pt-32 pb-16 lg:pt-44 lg:pb-24 rounded-b-[2.5rem] min-h-[70vh] flex items-center">
-        <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
-          className="absolute inset-0 w-full h-full object-cover object-center" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+      <section className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
+        {/* Dark base */}
+        <div className="absolute inset-0 bg-black" />
+        {/* Uploaded background image — blurred */}
+        <img
+          src={servicesHeroBg.url}
+          alt=""
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
+          style={{ filter: "blur(16px)" }}
+        />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
