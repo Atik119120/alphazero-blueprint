@@ -54,7 +54,7 @@ const AboutPage = () => {
       <section className="relative overflow-hidden -mt-20 pt-32 pb-16 lg:pt-44 lg:pb-24 rounded-b-[2.5rem] min-h-[70vh] flex items-center">
         <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
           className="absolute inset-0 w-full h-full object-cover object-center" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
