@@ -51,7 +51,7 @@ const AboutPage = () => {
     <Layout>
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
-      <section className="relative overflow-hidden -mt-20 pt-24 pb-12 lg:pt-28 lg:pb-16 rounded-b-[2.5rem]">
+      <section className="relative overflow-hidden -mt-20 pt-32 pb-12 lg:pt-40 lg:pb-16 rounded-b-[2.5rem]">
         <div className="absolute inset-0 bg-black" />
         <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
           className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
