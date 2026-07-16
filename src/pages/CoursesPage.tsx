@@ -468,7 +468,7 @@ const CoursesPage = () => {
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto flex flex-col items-start text-left relative">
+          <div className="mr-auto flex flex-col items-start text-left relative pl-0">
 
 
 
