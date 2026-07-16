@@ -832,7 +832,7 @@ const CoursesPage = () => {
             <Carousel opts={{ align: "start", loop: true }} className="w-full">
               <CarouselContent className="-ml-4">
                 {Object.values(trainers).map((tr, i) => (
-                  <CarouselItem key={`${tr.name}-${i}`} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/5">
+                  <CarouselItem key={`${tr.name}-${i}`} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/6">
                     <div className="group">
                       <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
                         <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
