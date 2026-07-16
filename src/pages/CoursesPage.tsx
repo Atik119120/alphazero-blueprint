@@ -467,7 +467,7 @@ const CoursesPage = () => {
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
-        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="w-full px-6 md:px-10 relative z-10">
+        <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="w-full px-6 md:px-20 lg:px-32 relative z-10">
           <div className="mr-auto flex flex-col items-start text-left relative pl-0">
 
 
