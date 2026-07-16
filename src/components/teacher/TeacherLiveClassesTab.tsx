@@ -8,10 +8,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Pencil, Trash2, Users, ExternalLink, Video, Calendar, Clock } from 'lucide-react';
+import { Plus, Pencil, Trash2, Users, ExternalLink, Video, Calendar, Clock, Film } from 'lucide-react';
 import { toast } from 'sonner';
-import { useTeacherLiveClasses, useLiveClassAttendance, LiveClass } from '@/hooks/useLiveClasses';
+import { useTeacherLiveClasses, useLiveClassAttendance, LiveClass, parseYoutubeId } from '@/hooks/useLiveClasses';
 import LiveStatusBadge from '@/components/live/LiveStatusBadge';
+import { supabase } from '@/integrations/supabase/client';
 import { TeacherCourse } from '@/types/teacher';
 
 interface Props {
