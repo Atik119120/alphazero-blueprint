@@ -455,7 +455,7 @@ const CoursesPage = () => {
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${coursesHeroBg})`,
-            filter: "blur(8px)",
+            filter: "blur(6.4px)",
             transform: "scale(1.05)",
             maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 100%)",
