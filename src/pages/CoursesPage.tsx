@@ -9,6 +9,7 @@ import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
 import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
 import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
 import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
+import instructorPrantik from "@/assets/instructors/prantik.png.asset.json";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -61,7 +62,7 @@ const trainers = {
     name: "Prantik Saha",
     qualificationEn: "Microsoft Office Expert, IT Support",
     qualificationBn: "মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
-    image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
+    image: instructorPrantik.url
   },
   papiya: {
     name: "Papiya Rahman",
