@@ -1487,7 +1487,7 @@ export type Database = {
           {
             foreignKeyName: "recorded_classes_live_class_id_fkey"
             columns: ["live_class_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "live_classes"
             referencedColumns: ["id"]
           },
