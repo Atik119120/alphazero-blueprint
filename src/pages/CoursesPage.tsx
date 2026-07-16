@@ -810,13 +810,12 @@ const CoursesPage = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {Object.values(trainers).map((tr, i) => (
                 <div key={`${tr.name}-${i}`} className="group">
-                  <div className="glass-card rounded-2xl p-3 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.12]">
+                  <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
                     <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
                       
                       <img src={tr.image} alt={tr.name}
-                        className="relative w-full h-full object-cover rounded-xl ring-1 ring-primary/20 group-hover:scale-105 transition-transform duration-500"
+                        className="relative w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
                     <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
