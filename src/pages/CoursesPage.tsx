@@ -11,6 +11,7 @@ import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
 import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
 import instructorPrantik from "@/assets/instructors/prantik.png.asset.json";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
