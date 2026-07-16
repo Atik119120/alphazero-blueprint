@@ -828,25 +828,31 @@ const CoursesPage = () => {
             </p>
           </motion.div>
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {Object.values(trainers).map((tr, i) => (
-                <div key={`${tr.name}-${i}`} className="group">
-                  <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
-                    <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
-                      
-                      <img src={tr.image} alt={tr.name}
-                        className="relative w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
-                        onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+            <Carousel opts={{ align: "start", loop: true }} className="w-full">
+              <CarouselContent className="-ml-4">
+                {Object.values(trainers).map((tr, i) => (
+                  <CarouselItem key={`${tr.name}-${i}`} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/5">
+                    <div className="group">
+                      <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
+                        <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
+                          <img src={tr.image} alt={tr.name}
+                            className="relative w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
+                        </div>
+                        <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
+                        <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
+                          {isBn ? tr.qualificationBn : tr.qualificationEn}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
-                    <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
-                      {isBn ? tr.qualificationBn : tr.qualificationEn}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden sm:flex -left-4" />
+              <CarouselNext className="hidden sm:flex -right-4" />
+            </Carousel>
           </div>
+
         </div>
       </section>
 
