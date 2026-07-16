@@ -95,7 +95,7 @@ const CoursesNavbar = () => {
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
             className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 ${
               isScrolled
-                ? "bg-background/60 dark:bg-card/50 backdrop-blur-xl shadow-[0_8px_32px_-12px_hsl(var(--primary)/0.25)] border border-primary/15"
+                ? "bg-background/60 dark:bg-card/50 backdrop-blur-xl border border-primary/15"
                 : "bg-background/30 dark:bg-card/20 backdrop-blur-md border border-primary/10"
             }`}
           >
