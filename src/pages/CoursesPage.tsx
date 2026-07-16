@@ -828,7 +828,7 @@ const CoursesPage = () => {
               {cms("instructors.desc.bn", "instructors.desc.en", "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।", "Learn directly from industry experts.")}
             </p>
           </motion.div>
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto px-12 sm:px-16 relative">
             <Carousel opts={{ align: "start", loop: true }} className="w-full">
               <CarouselContent className="-ml-4">
                 {Object.values(trainers).map((tr, i) => (
@@ -849,10 +849,11 @@ const CoursesPage = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="hidden sm:flex -left-4" />
-              <CarouselNext className="hidden sm:flex -right-4" />
+              <CarouselPrevious className="hidden sm:flex left-0" />
+              <CarouselNext className="hidden sm:flex right-0" />
             </Carousel>
           </div>
+
 
         </div>
       </section>
