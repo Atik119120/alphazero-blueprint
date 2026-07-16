@@ -1,0 +1,1 @@
+ALTER TABLE public.recorded_classes ADD CONSTRAINT recorded_classes_live_class_id_key UNIQUE (live_class_id);
