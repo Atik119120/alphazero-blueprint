@@ -11,6 +11,7 @@ import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
 import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
 import instructorPrantik from "@/assets/instructors/prantik.png.asset.json";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -829,7 +830,7 @@ const CoursesPage = () => {
             </p>
           </motion.div>
           <div className="max-w-7xl mx-auto relative">
-            <Carousel opts={{ align: "start", loop: true }} className="w-full">
+            <Carousel opts={{ align: "start", loop: true }} plugins={[Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })]} className="w-full">
               <CarouselContent className="-ml-4">
                 {Object.values(trainers).map((tr, i) => (
                   <CarouselItem key={`${tr.name}-${i}`} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/6">
