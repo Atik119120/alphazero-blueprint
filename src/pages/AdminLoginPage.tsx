@@ -27,12 +27,15 @@ export default function AdminLoginPage() {
     if (!authLoading && user && role) {
       if (role === 'admin') {
         navigate('/admin');
+      } else if (role === 'teacher') {
+        navigate('/teacher');
       } else {
-        toast.error('আপনি Admin নন');
+        toast.error('আপনি Admin বা Teacher নন');
         navigate('/student/login');
       }
     }
   }, [user, role, authLoading, navigate]);
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
