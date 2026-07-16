@@ -122,7 +122,7 @@ const CoursesNavbar = () => {
                     {active && (
                       <motion.div
                         layoutId="courses-nav-pill"
-                        className="absolute inset-0 bg-primary rounded-full"
+                        className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] rounded-full"
                         transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                       />
                     )}
@@ -163,7 +163,7 @@ const CoursesNavbar = () => {
 
               <Link
                 to="/student/login"
-                className="ml-1 group px-5 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm flex items-center gap-1.5 hover:bg-primary/90 transition-colors"
+                className="ml-1 group px-5 py-2 bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] text-primary-foreground rounded-full font-semibold text-sm flex items-center gap-1.5 hover:opacity-90 transition-opacity"
               >
                 <User size={14} />
                 <span>{isBn ? "স্টুডেন্ট লগইন" : "Student Login"}</span>
