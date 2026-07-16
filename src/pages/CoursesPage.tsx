@@ -833,7 +833,7 @@ const CoursesPage = () => {
           <div className="max-w-7xl mx-auto relative overflow-hidden">
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
-            <div className="flex marquee-left w-max gap-4 py-2">
+            <div className="flex marquee-left w-max gap-4 py-2 [animation-duration:40s] hover:[animation-play-state:paused]">">
               {[...Object.values(trainers), ...Object.values(trainers)].map((tr, i) => (
                 <div key={`${tr.name}-${i}`} className="group w-[200px] sm:w-[220px] shrink-0">
                   <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
