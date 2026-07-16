@@ -473,22 +473,35 @@ const CoursesPage = () => {
 
 
 
-            {/* Static headline */}
+            {/* Eyebrow */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full border border-primary/25 bg-primary/5 backdrop-blur-sm"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs md:text-sm font-medium tracking-wide text-foreground/80">
+                {cms("hero.eyebrow.bn", "hero.eyebrow.en", "ডিজিটাল স্কিল একাডেমি", "Digital Skill Academy")}
+              </span>
+            </motion.div>
+
+            {/* Editorial headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-4xl md:text-6xl lg:text-7xl tracking-tight mb-6 max-w-5xl leading-[1.05]"
+              className="font-playfair text-[2.75rem] md:text-6xl lg:text-7xl tracking-tight mb-8 max-w-5xl leading-[1.02]"
             >
-              <span className="text-foreground/95 font-normal">
-                {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One Platform.")}
+              <span className="text-foreground font-normal">
+                {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One platform.")}
               </span>{" "}
-              <span className="text-foreground/95 font-normal">
-                {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "Every Digital Skill.")}
+              <span className="text-foreground/70 font-normal italic">
+                {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "every digital skill.")}
               </span>
               <br />
-              <span className="font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]">
-                {cms("hero.title3.bn", "hero.title3.en", "অসীম সম্ভাবনা।", "Endless Opportunities.")}
+              <span className="italic font-semibold bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+                {cms("hero.title3.bn", "hero.title3.en", "অসীম সম্ভাবনা।", "Endless opportunities.")}
               </span>
             </motion.h1>
 
@@ -497,15 +510,16 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="text-base md:text-lg lg:text-xl text-foreground/70 max-w-3xl mb-8 leading-relaxed"
+              className="text-base md:text-lg text-foreground/65 max-w-2xl mb-10 leading-[1.7]"
             >
               {cms(
                 "hero.subtitle.bn",
                 "hero.subtitle.en",
                 "AI ও গ্রাফিক ডিজাইন থেকে প্রোগ্রামিং, ওয়েব ডেভেলপমেন্ট, ডিজিটাল মার্কেটিং, ভিডিও এডিটিং, ফটোগ্রাফি এবং ফ্রিল্যান্সিং—সফল ডিজিটাল ক্যারিয়ার গড়তে যা প্রয়োজন সব শিখুন।",
-                "From AI and Graphic Design to Programming, Web Development, Digital Marketing, Video Editing, Photography, and Freelancing—learn everything you need to build a successful digital career."
+                "From AI and graphic design to programming, web development, digital marketing, video editing, photography and freelancing — everything you need to build a thriving digital career."
               )}
             </motion.p>
+
 
 
 
