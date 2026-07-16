@@ -107,7 +107,7 @@ const CoursesNavbar = () => {
               <img
                 src={learnLogo}
                 alt="Learn with AlphaZero"
-                className="h-8 sm:h-9 w-auto dark:brightness-0 dark:invert transition-all"
+                className="h-8 sm:h-9 w-auto brightness-0 dark:brightness-0 dark:invert transition-all"
                 loading="eager"
               />
             </button>
