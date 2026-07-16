@@ -579,9 +579,10 @@ const CoursesPage = () => {
                 return (
                   <>
                     <span>{text.slice(0, idx)}</span>
-                    <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
                       {text.slice(idx)}
                     </span>
+
                   </>
                 );
               })()}
