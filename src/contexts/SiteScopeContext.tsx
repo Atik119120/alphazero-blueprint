@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, ReactNode } from "react";
 import { useLocation } from "react-router-dom";
+import { useTheme } from "next-themes";
 
 export type SiteScope = "agency" | "learn";
 
