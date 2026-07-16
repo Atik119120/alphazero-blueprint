@@ -62,6 +62,12 @@ const trainers = {
     qualificationEn: "Microsoft Office Expert, IT Support",
     qualificationBn: "মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
     image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
+  },
+  papiya: {
+    name: "Papiya Rahman",
+    qualificationEn: "Graphic Designer",
+    qualificationBn: "গ্রাফিক ডিজাইনার",
+    image: instructorPapiya.url
   }
 };
 
