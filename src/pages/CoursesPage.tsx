@@ -512,11 +512,13 @@ const CoursesPage = () => {
               transition={{ delay: 0.35 }}
               className="font-playfair text-3xl md:text-4xl lg:text-5xl tracking-tight mb-8 max-w-4xl leading-[1.1]"
             >
-              <span className="text-foreground font-normal">
-                {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One platform.")}
-              </span>{" "}
-              <span className="text-foreground/70 font-normal">
-                {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "every digital skill.")}
+              <span className="whitespace-nowrap">
+                <span className="text-foreground font-normal">
+                  {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One platform.")}
+                </span>{" "}
+                <span className="text-foreground/70 font-normal">
+                  {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "every digital skill.")}
+                </span>
               </span>
               <br />
               <span className="font-semibold bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
