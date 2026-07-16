@@ -637,31 +637,26 @@ const CoursesPage = () => {
                 return (
                   <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group">
-                    <div className={`relative flex flex-col rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-border/30 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.08] ${metadata.isSpecial ? 'ring-1 ring-primary/20' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
+                    <div className={`relative flex flex-col rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isSpecial ? '' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
                       
                       {/* Thumbnail with editorial number */}
                       {(() => {
                         const thumbnailUrl = course.thumbnail_url;
                         if (thumbnailUrl) {
                           return (
-                            <div className="relative h-44 overflow-hidden">
+                            <div className="relative h-48 overflow-hidden rounded-[20px]">
                               <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
-                              {/* Editorial index */}
-                              <span className="absolute bottom-2 right-3 text-[4rem] font-display font-black text-white/[0.08] leading-none select-none">
-                                {String(index + 1).padStart(2, '0')}
-                              </span>
                               {/* Badges */}
                               <div className="absolute top-3 left-3 flex gap-1.5">
                                 {metadata.isSpecial && (
-                                  <span className="px-2.5 py-1 rounded-full bg-primary/90 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
+                                  <span className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
                                     <Sparkles className="w-3 h-3" />{t.special}
                                   </span>
                                 )}
                                 {metadata.isUpcoming && (
-                                  <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
+                                  <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
                                     <Clock className="w-3 h-3" />{t.upcoming}
                                   </span>
                                 )}
@@ -670,18 +665,18 @@ const CoursesPage = () => {
                           );
                         }
                         return (
-                          <div className={`relative h-36 bg-gradient-to-br ${metadata.color} overflow-hidden`}>
+                          <div className={`relative h-48 bg-gradient-to-br ${metadata.color} overflow-hidden rounded-[20px]`}>
                             <span className="absolute -bottom-4 -right-2 text-[5rem] font-display font-black text-white/[0.08] leading-none select-none">
                               {String(index + 1).padStart(2, '0')}
                             </span>
                             <div className="absolute top-3 left-3 flex gap-1.5">
                               {metadata.isSpecial && (
-                                <span className="px-2.5 py-1 rounded-full bg-white/25 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
+                                <span className="px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
                                   <Sparkles className="w-3 h-3" />{t.special}
                                 </span>
                               )}
                               {metadata.isUpcoming && (
-                                <span className="px-2.5 py-1 rounded-full bg-amber-500/90 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
+                                <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1">
                                   <Clock className="w-3 h-3" />{t.upcoming}
                                 </span>
                               )}
@@ -696,8 +691,8 @@ const CoursesPage = () => {
                       })()}
 
                       {/* Body */}
-                      <div className="flex flex-col p-5 gap-3">
-                        <h3 className="text-base font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                      <div className="flex flex-col px-3 pt-4 pb-3 gap-2.5">
+                        <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
                         <p className={`text-xs text-muted-foreground leading-relaxed ${expandedCards.has(course.id) ? '' : 'line-clamp-2'}`}>
@@ -707,7 +702,7 @@ const CoursesPage = () => {
                         {/* Read More toggle */}
                         <button
                           onClick={(e) => { e.stopPropagation(); toggleExpand(course.id); }}
-                          className="text-[11px] text-primary font-medium hover:underline self-start -mt-1 flex items-center gap-1"
+                          className="text-[11px] text-primary font-semibold hover:underline self-start flex items-center gap-1"
                         >
                           {expandedCards.has(course.id) ? t.readLess : t.readMore}
                           <ArrowRight className={`w-3 h-3 transition-transform ${expandedCards.has(course.id) ? 'rotate-90' : ''}`} />
@@ -717,7 +712,6 @@ const CoursesPage = () => {
                         {expandedCards.has(course.id) && (
                           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
                             className="space-y-3 overflow-hidden">
-                            {/* Features */}
                             <div className="flex flex-wrap gap-1.5">
                               {(isBn ? metadata.featuresBn : metadata.featuresEn).map((feature, idx) => (
                                 <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20">
@@ -725,7 +719,6 @@ const CoursesPage = () => {
                                 </span>
                               ))}
                             </div>
-                            {/* Special content */}
                             {metadata.isSpecial && metadata.specialContentBn && metadata.specialContentEn && (
                               <div className="p-3 rounded-xl bg-primary/[0.05] border border-primary/10">
                                 <h4 className="font-semibold text-primary text-xs mb-1.5 flex items-center gap-1">
@@ -741,7 +734,6 @@ const CoursesPage = () => {
                                 </ul>
                               </div>
                             )}
-                            {/* Trainer */}
                             {trainerName && (
                               <div className="flex items-center gap-2">
                                 <img src={trainerImage || '/placeholder.svg'}
@@ -757,17 +749,20 @@ const CoursesPage = () => {
                           </motion.div>
                         )}
 
+                        {/* Divider */}
+                        <div className="h-px bg-border/40 mt-1" />
+
                         {/* Price + Enroll row */}
-                        <div className="flex items-center gap-3 pt-3 mt-auto border-t border-border/20">
-                          <span className={`text-lg font-display font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
+                        <div className="flex items-center gap-3 pt-1">
+                          <span className={`text-xl font-display font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
                             {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
                           </span>
                           <button
                             onClick={() => handleEnrollClick(course)}
-                            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
+                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-xs transition-all duration-300 ${
                               metadata.isUpcoming 
                                 ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 hover:scale-[1.02]'
+                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02]'
                             }`}
                             disabled={metadata.isUpcoming}
                           >
@@ -779,9 +774,6 @@ const CoursesPage = () => {
                           </button>
                         </div>
                       </div>
-
-                      {/* Hover accent line */}
-                      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary via-purple-500 to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                     </div>
                   </motion.div>
                 );
