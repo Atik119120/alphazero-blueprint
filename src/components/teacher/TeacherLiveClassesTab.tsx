@@ -171,6 +171,9 @@ export default function TeacherLiveClassesTab({ courses, language }: Props) {
                   <Button size="sm" variant="outline" onClick={() => setAttendanceOf(lc)} className="gap-1">
                     <Users className="w-3.5 h-3.5" /> {t('উপস্থিতি', 'Attendance')}
                   </Button>
+                  <Button size="sm" variant="outline" onClick={() => openRecord(lc)} className="gap-1">
+                    <Film className="w-3.5 h-3.5" /> {t('রেকর্ডিং', 'Recording')}
+                  </Button>
                   <a href={lc.youtube_url} target="_blank" rel="noreferrer">
                     <Button size="sm" variant="outline" className="gap-1"><ExternalLink className="w-3.5 h-3.5" /> YouTube</Button>
                   </a>
