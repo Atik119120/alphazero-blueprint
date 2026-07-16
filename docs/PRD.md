@@ -1,72 +1,81 @@
-# Product Requirements Document (PRD)
+# Product Requirements Document — AlphaZero BD
 
-## Product Name
-**AlphaZero** — Bilingual Digital Agency + Learning Management System (LMS)
+## 1. Vision
+Build Bangladesh's most trusted bilingual creative-agency + learning platform where local students, entrepreneurs and businesses can hire the agency **and** learn its craft — all under one brand.
 
-## Vision
-AlphaZero একটি bilingual (বাংলা + English) platform যেখানে একদিকে digital agency services (branding, marketing, web/app development) এবং অন্যদিকে একটি complete LMS (recorded + live courses, certificates, teacher panel) থাকে।
+## 2. Mission
+Deliver premium branding, web and marketing services while simultaneously teaching those same skills through a fully-featured LMS in Bangla and English.
 
-## Target Users
-1. **Students** — যারা course কিনে শিখবে (recorded/live)।
-2. **Teachers/Trainers** — যারা course এর video, materials, live class, chat manage করবে।
-3. **Admins** — যারা platform, users, payments, content সব manage করবে।
-4. **Agency Clients** — যারা service কিনবে।
+## 3. Target Users
+| Segment | Needs |
+|---|---|
+| Bangladeshi students & aspiring designers/developers | Affordable, native-language courses, certificates, community |
+| Small businesses & entrepreneurs | Branding, web design, social-media assets |
+| Freelance teachers | Platform to sell recorded/live courses with revenue share |
+| Agency admins | Central CMS to run marketing site, LMS content, payments, communications |
 
-## Core Features
+## 4. Business Goals
+- Combine service revenue (agency projects) with recurring LMS revenue.
+- Retain platform independence from Lovable subscription (decoupled architecture).
+- Scale to unlimited teachers/courses without engineering intervention.
 
-### Public Site
-- Bilingual landing page (Bangla / English toggle)
-- Services / Pricing / Team / Entrepreneurs showcase
-- Contact + WhatsApp integration
-- SEO optimized (JSON-LD, canonical, sitemap)
+## 5. Learning Goals
+- Complete video courses with progression gates (90 %).
+- Auto-issued certificates for paid courses.
+- Threaded Q&A per lesson, teacher-student chat, thumbs feedback.
 
-### Authentication
-- Phone-mandatory signup
-- Email OTP verification
-- Google OAuth
-- Role hierarchy: Admin > Teacher > Student
-- Turnstile bot protection
+## 6. Problems Solved
+- No trusted Bangla-first LMS with integrated local payments (bKash/Nagad via UddoktaPay).
+- Agencies rarely offer both service delivery and skill training in one product.
+- Course platforms in BD lack anti-piracy video controls.
 
-### LMS (Student)
-- Course browse + enroll (direct DB enrollment, UddoktaPay checkout)
-- Course viewer: fixed video top + scrollable class list sidebar
-- Secure YouTube video (anti-forward seek, 90% completion threshold)
-- Course materials (PDF viewer)
-- Comment/Q&A per lesson
-- Post-video feedback (thumbs up/down)
-- Certificate generation (free vs paid logic)
-- Support chat with teachers (single-room per teacher-student pair)
+## 7. Modules
+Marketing site · CMS (Homepage, Footer, Landing, Hero, Services, Works, Team) · Auth (student/teacher/admin) · Course catalog · Direct enrollment + payment · Course viewer · Live classes · Chat & Notices · Support tickets · Certificates · Teacher earnings · Admin AI Assistant · Analytics.
 
-### LMS (Teacher)
-- Assigned courses only (data isolation)
-- Upload video, materials, live class
-- View enrolled students (read-only details)
-- Chat with own students only
-- Revenue split visibility
+## 8. User Journeys
+### Visitor
+Landing → Explore services/works → Contact **or** switch to Learn → Browse courses → Enroll → Pay → Learn.
 
-### LMS (Admin)
-- Full CRUD on courses, modules, videos, materials
-- Assign trainers to courses
-- Manage students (delete via secure Edge Function)
-- Payment/API key management
-- CMS for dynamic bilingual content
-- Team management (unlimited social links)
-- Alpha Assistant (Gemini vibe coding + vision metadata)
-- Email support system (Resend)
-- Telegram enrollment notifications
+### Student
+Signup (phone + OTP + Turnstile) → Dashboard → Watch videos (90 % gate) → Ask questions → Attend live classes → Earn certificate → Verify.
 
-### Payments
-- UddoktaPay (primary, BDT)
-- Revenue split: Recorded, Live, Agency projects (different formulas)
+### Teacher
+Login → Manage assigned courses → Upload videos (Cloudinary) → Schedule live classes → Reply to Q&A/tickets → View earnings (auto revenue split).
 
-## Success Metrics
-- Student course completion rate (via 90% watched)
-- Enrollment conversion (checkout success)
-- Teacher activity (uploads, chat responses)
-- Platform uptime + video security (no leak)
+### Admin
+Login → Dashboard → Create/assign courses → Manage teachers, team, coupons, APIs → Edit homepage/landing content → Approve enrollments → Broadcast notices → Use Alpha Assistant for content ops.
 
-## Non-Goals
-- No anonymous signup
-- No re-adding pass-code enrollment system
-- No re-adding video gallery module
-- No floating chatbot widget in student area
+## 9. Non-Goals (Do Not Build)
+- Pass-code enrollment (removed — direct DB assignment only)
+- Video gallery module (removed)
+- Anonymous signups
+- Storing roles on `profiles` table (must use `user_roles`)
+- Floating AIChatbot inside student area
+
+## 10. Success Metrics
+- Course completion rate ≥ 60 %
+- Certificate issuance / paid enrollment ≥ 90 %
+- Checkout success ≥ 95 %
+- LCP < 2.5 s on marketing pages
+- Support ticket first-response < 24 h
+
+## 11. Monetization
+- Recorded courses: 40 % teacher / 60 % agency
+- Live classes: 70 % teacher / 30 % agency
+- Paid work / agency projects: 80 % teacher / 20 % agency
+- Free courses: no split
+Coupons + UddoktaPay handle discounts and local BD payment rails.
+
+## 12. Scalability
+- Serverless (Supabase + Edge Functions) → no server ops.
+- RLS-based multi-tenant isolation (teacher/student data).
+- Cloudinary handles video delivery at any volume.
+
+## 13. Roadmap
+- ✔ Direct enrollment (v2 shipped)
+- ✔ Dual-language courses
+- ✔ Alpha Assistant (Gemini 2.5)
+- ○ Mobile app wrapper
+- ○ Bulk teacher onboarding
+- ○ Advanced analytics dashboard
+- ○ Group live classes with attendance analytics
