@@ -764,7 +764,7 @@ const CoursesPage = () => {
 
                         {/* Price + Enroll row */}
                         <div className="flex items-center gap-3 pt-1">
-                          <span className={`text-xl font-display font-bold ${isFree ? 'text-emerald-500' : 'text-primary'}`}>
+                          <span className={`text-xl font-display font-bold bg-clip-text text-transparent ${isFree ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' : 'bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]'}`}>
                             {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
                           </span>
                           <button
@@ -772,8 +772,9 @@ const CoursesPage = () => {
                             className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-xs transition-all duration-300 ${
                               metadata.isUpcoming 
                                 ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
-                                : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02]'
+                                : 'bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] text-primary-foreground hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02]'
                             }`}
+
                             disabled={metadata.isUpcoming}
                           >
                             {metadata.isUpcoming ? (
