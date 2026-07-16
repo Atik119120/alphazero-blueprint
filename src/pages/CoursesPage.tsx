@@ -5,6 +5,7 @@ import learnOgImage from "@/assets/learn-og-image.jpg.asset.json";
 import coursesHeroBgAssetJson from "@/assets/courses-hero-bg.png.asset.json";
 const coursesHeroBg = coursesHeroBgAssetJson.url;
 import instructorHH from "@/assets/instructors/hh.png.asset.json";
+import heroIllustration from "@/assets/hero-illustration.png.asset.json";
 import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
 import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
 import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
@@ -485,7 +486,8 @@ const CoursesPage = () => {
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="w-full container mx-auto px-6 relative z-10">
-          <div className="mr-auto flex flex-col items-start text-left relative pl-0">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="flex flex-col items-start text-left relative pl-0">
 
 
 
@@ -567,6 +569,21 @@ const CoursesPage = () => {
 
 
 
+          </div>
+
+            {/* Hero illustration - right side */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.7 }}
+              className="hidden lg:flex justify-center items-center"
+            >
+              <img
+                src={heroIllustration.url}
+                alt="Learning illustration"
+                className="w-full max-w-lg h-auto object-contain drop-shadow-xl"
+              />
+            </motion.div>
           </div>
         </motion.div>
       </section>
