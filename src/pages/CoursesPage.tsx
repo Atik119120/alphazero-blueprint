@@ -97,7 +97,7 @@ const getCourseMetadata = (title: string): CourseMetadata => {
       featuresEn: ["MS Word Mastery", "Excel Formulas & Data Analysis", "PowerPoint Presentations", "Office Automation"] };
   }
   if (lowerTitle.includes('graphic') || lowerTitle.includes('গ্রাফিক')) {
-    return { icon: Palette, color: "from-purple-500 to-pink-500", trainer: trainers.adib,
+    return { icon: Palette, color: "from-purple-500 to-pink-500", trainer: trainers.papiya,
       featuresBn: ["Adobe Photoshop", "Adobe Illustrator", "লোগো ও ব্র্যান্ডিং", "সোশ্যাল মিডিয়া ডিজাইন"],
       featuresEn: ["Adobe Photoshop", "Adobe Illustrator", "Logo & Branding", "Social Media Design"] };
   }
