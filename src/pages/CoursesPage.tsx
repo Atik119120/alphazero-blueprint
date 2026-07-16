@@ -831,7 +831,7 @@ const CoursesPage = () => {
             </p>
           </motion.div>
           <div className="max-w-7xl mx-auto relative">
-            <Carousel opts={{ align: "start", loop: true }} plugins={[Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true })]} className="w-full">
+            <Carousel opts={{ align: "start", loop: true }} plugins={[autoplayPlugin.current]} className="w-full">
               <CarouselContent className="-ml-4">
                 {Object.values(trainers).map((tr, i) => (
                   <CarouselItem key={`${tr.name}-${i}`} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/6">
