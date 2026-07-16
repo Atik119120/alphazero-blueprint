@@ -607,7 +607,7 @@ const CoursesPage = () => {
                     {isActive && (
                       <motion.span
                         layoutId="activeCatPill"
-                        className="absolute inset-0 rounded-full bg-primary shadow-lg shadow-primary/30"
+                        className="absolute inset-0 rounded-full bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] shadow-lg shadow-primary/30"
                         transition={{ type: "spring", stiffness: 400, damping: 30 }}
                       />
                     )}
