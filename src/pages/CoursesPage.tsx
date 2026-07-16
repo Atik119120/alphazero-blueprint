@@ -511,7 +511,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="text-base md:text-lg text-foreground/65 max-w-2xl mb-10 leading-[1.7]"
+              className="text-sm md:text-base text-foreground/65 max-w-xl mb-10 leading-[1.7]"
             >
               {cms(
                 "hero.subtitle.bn",
