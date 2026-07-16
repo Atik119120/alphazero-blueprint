@@ -122,7 +122,7 @@ const CoursesNavbar = () => {
                     {active && (
                       <motion.div
                         layoutId="courses-nav-pill"
-                        className="absolute inset-0 bg-primary rounded-full"
+                        className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] rounded-full"
                         transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                       />
                     )}
