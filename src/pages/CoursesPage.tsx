@@ -69,8 +69,15 @@ const trainers = {
     qualificationEn: "Graphic Designer",
     qualificationBn: "গ্রাফিক ডিজাইনার",
     image: instructorPapiya.url
+  },
+  rashadul: {
+    name: "Rashadul Islam Naime",
+    qualificationEn: "Digital Marketer, SEO Expert",
+    qualificationBn: "ডিজিটাল মার্কেটার, এসইও এক্সপার্ট",
+    image: "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/team/rashadul-islam-naime.png"
   }
 };
+
 
 interface CourseMetadata {
   icon: LucideIcon;
