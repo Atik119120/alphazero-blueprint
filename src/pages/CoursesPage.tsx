@@ -8,6 +8,7 @@ import instructorHH from "@/assets/instructors/hh.png.asset.json";
 import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
 import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
 import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
+import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -61,6 +62,12 @@ const trainers = {
     qualificationEn: "Microsoft Office Expert, IT Support",
     qualificationBn: "মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট",
     image: "https://github.com/Atik119120/sfdvgvsdfzgvz/blob/main/bac0fdd4-96e3-44d6-b020-416e0fee72b3.jpg?raw=true"
+  },
+  papiya: {
+    name: "Papiya Rahman",
+    qualificationEn: "Graphic Designer",
+    qualificationBn: "গ্রাফিক ডিজাইনার",
+    image: instructorPapiya.url
   }
 };
 
@@ -90,7 +97,7 @@ const getCourseMetadata = (title: string): CourseMetadata => {
       featuresEn: ["MS Word Mastery", "Excel Formulas & Data Analysis", "PowerPoint Presentations", "Office Automation"] };
   }
   if (lowerTitle.includes('graphic') || lowerTitle.includes('গ্রাফিক')) {
-    return { icon: Palette, color: "from-purple-500 to-pink-500", trainer: trainers.adib,
+    return { icon: Palette, color: "from-purple-500 to-pink-500", trainer: trainers.papiya,
       featuresBn: ["Adobe Photoshop", "Adobe Illustrator", "লোগো ও ব্র্যান্ডিং", "সোশ্যাল মিডিয়া ডিজাইন"],
       featuresEn: ["Adobe Photoshop", "Adobe Illustrator", "Logo & Branding", "Social Media Design"] };
   }
