@@ -853,10 +853,6 @@ const CoursesPage = () => {
           </div>
 
 
-            </Carousel>
-          </div>
-
-
         </div>
       </section>
 
