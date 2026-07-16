@@ -62,6 +62,9 @@ export default function TeacherLoginPage() {
   const [loginAttempted, setLoginAttempted] = useState(false);
 
   useEffect(() => {
+    if (!isLoading && user && role === 'admin') {
+      navigate('/admin');
+    }
     if (!isLoading && user && role === 'teacher' && !loginAttempted) {
       const isApproved = (profile as any)?.teacher_approved === true;
       if (isApproved) {
@@ -72,6 +75,10 @@ export default function TeacherLoginPage() {
 
   useEffect(() => {
     if (loginAttempted && !isLoading && user) {
+      if (role === 'admin') {
+        navigate('/admin');
+        return;
+      }
       if (role !== 'teacher') {
         toast.error(t.notTeacherRole);
         supabase.auth.signOut();
@@ -92,6 +99,7 @@ export default function TeacherLoginPage() {
       navigate('/teacher');
     }
   }, [loginAttempted, isLoading, user, role, profile, navigate, t]);
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
