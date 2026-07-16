@@ -812,7 +812,7 @@ const CoursesPage = () => {
                 <div key={`${tr.name}-${i}`} className="group">
                   <div className="glass-card rounded-2xl p-3 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.12]">
                     <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
-                      <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-40 group-hover:opacity-70 transition-opacity" />
+                      
                       <img src={tr.image} alt={tr.name}
                         className="relative w-full h-full object-cover rounded-xl ring-1 ring-primary/20 group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
