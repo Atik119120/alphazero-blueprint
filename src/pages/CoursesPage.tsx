@@ -576,7 +576,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.7 }}
-              className="hidden lg:flex justify-center items-start -mt-8"
+              className="hidden lg:flex justify-center items-center"
             >
               <img
                 src={heroIllustration.url}
