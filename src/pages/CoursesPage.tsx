@@ -500,7 +500,7 @@ const CoursesPage = () => {
               className="inline-flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full border border-primary/25 bg-primary/5 backdrop-blur-sm"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs md:text-sm font-medium tracking-wide text-foreground/80">
+              <span className="text-sm md:text-base font-medium tracking-wide text-foreground/80">
                 {cms("hero.eyebrow.bn", "hero.eyebrow.en", "ডিজিটাল স্কিল একাডেমি", "Digital Skill Academy")}
               </span>
             </motion.div>
@@ -510,7 +510,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-3xl md:text-4xl lg:text-5xl tracking-tight mb-8 max-w-4xl leading-[1.1]"
+              className="font-playfair text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 max-w-4xl leading-[1.1]"
             >
               <span className="whitespace-nowrap">
                 <span className="text-foreground font-normal">
@@ -533,7 +533,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="text-sm md:text-base text-foreground/65 max-w-xl mb-10 leading-[1.7]"
+              className="text-base md:text-lg text-foreground/65 max-w-xl mb-10 leading-[1.7]"
             >
               {cms(
                 "hero.subtitle.bn",
