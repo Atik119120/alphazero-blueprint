@@ -218,6 +218,7 @@ const CoursesPage = () => {
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const autoplayPlugin = useRef(Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true }));
 
   const categories = useMemo(() => ([
     { id: "all", label: t.catAll, match: null as RegExp | null },
