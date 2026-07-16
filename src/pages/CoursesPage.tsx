@@ -54,7 +54,7 @@ const trainers = {
     name: "Md. Shafiul Haque",
     qualificationEn: "Video Editor, Cinematographer",
     qualificationBn: "ভিডিও এডিটর, সিনেমাটোগ্রাফার",
-    image: "https://github.com/Atik119120/alphazero-blueprint/blob/main/FB_IMG_1749736012792.jpg?raw=true"
+    image: instructorShafiul.url
   },
   prantik: {
     name: "Prantik Saha",
