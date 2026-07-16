@@ -7,6 +7,7 @@ const coursesHeroBg = coursesHeroBgAssetJson.url;
 import instructorHH from "@/assets/instructors/hh.png.asset.json";
 import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
 import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
+import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
