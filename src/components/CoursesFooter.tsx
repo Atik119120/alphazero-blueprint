@@ -38,7 +38,7 @@ const CoursesFooter = () => {
             <img
               src={learnLogo}
               alt="Learn with AlphaZero"
-              className="h-10 w-auto dark:brightness-0 dark:invert mb-4"
+              className="h-10 w-auto brightness-0 dark:brightness-0 dark:invert mb-4"
             />
             <p className="text-sm text-muted-foreground leading-relaxed">
               {isBn
