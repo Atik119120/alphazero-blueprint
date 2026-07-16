@@ -244,6 +244,35 @@ export default function TeacherLiveClassesTab({ courses, language }: Props) {
 
       {/* Attendance dialog */}
       <AttendanceDialog lc={attendanceOf} onClose={() => setAttendanceOf(null)} language={language} />
+
+      {/* Add Recording dialog */}
+      <Dialog open={!!recordOf} onOpenChange={(o) => !o && setRecordOf(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t('রেকর্ডিং যোগ করুন', 'Add Recording')} — {recordOf?.title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            <p className="text-xs text-muted-foreground">
+              {t('YouTube ভিডিও URL পেস্ট করুন। Live class শেষ হলে সেই YouTube URL দিলেই সব students এর কাছে recording চলে যাবে।',
+                 'Paste the YouTube video URL. After the live ends, this recording appears for all enrolled students.')}
+            </p>
+            <div>
+              <Label>YouTube URL *</Label>
+              <Input
+                placeholder="https://youtube.com/watch?v=..."
+                value={recordUrl}
+                onChange={e => setRecordUrl(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRecordOf(null)}>{t('বাতিল', 'Cancel')}</Button>
+            <Button onClick={submitRecording} disabled={recordSaving}>
+              {recordSaving ? t('সংরক্ষণ...', 'Saving...') : t('সংরক্ষণ', 'Save')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
