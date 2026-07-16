@@ -468,12 +468,12 @@ const CoursesPage = () => {
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="container mx-auto px-6 relative z-10">
-          <div className="max-w-5xl mx-auto flex flex-col items-center text-center relative">
+          <div className="max-w-5xl mx-auto flex flex-col items-start text-left relative">
 
 
 
 
-            {/* Animated rotating headline */}
+            {/* Static headline */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -484,24 +484,8 @@ const CoursesPage = () => {
                 {cms("hero.prefix.bn", "hero.prefix.en", "শিখুন কিছু", "Learn something")}
               </span>
               <br />
-              <span className="relative inline-flex justify-center overflow-visible align-baseline pb-6 pt-1 h-[1.35em] w-[7ch] md:w-[8ch] leading-[1.1]">
-                {rotatingTitles.map((title, index) => (
-                  <motion.span
-                    key={title}
-                    className="absolute font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]"
-                    initial={{ opacity: 0, y: 60 }}
-                    transition={{ type: "spring", stiffness: 50 }}
-                    animate={
-                      titleNumber === index
-                        ? { y: 0, opacity: 1 }
-                        : { y: titleNumber > index ? -100 : 100, opacity: 0 }
-                    }
-                  >
-                    {title}
-                  </motion.span>
-                ))}
-
-
+              <span className="font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]">
+                {rotatingTitles[0]}
               </span>
             </motion.h1>
 
@@ -513,7 +497,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
-              className="flex items-center justify-center mb-7"
+              className="flex items-center justify-start mb-7"
             >
               <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
                 <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
@@ -527,6 +511,8 @@ const CoursesPage = () => {
                 </div>
               </span>
             </motion.div>
+
+
 
 
           </div>
