@@ -510,9 +510,10 @@ const CoursesPage = () => {
                 {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "every digital skill.")}
               </span>
               <br />
-              <span className="font-semibold bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+              <span className="font-semibold bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
                 {cms("hero.title3.bn", "hero.title3.en", "অসীম সম্ভাবনা।", "Endless opportunities.")}
               </span>
+
 
             </motion.h1>
 
