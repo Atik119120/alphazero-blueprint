@@ -849,8 +849,9 @@ const CoursesPage = () => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="hidden sm:flex left-0" />
-              <CarouselNext className="hidden sm:flex right-0" />
+              <CarouselPrevious className="hidden sm:flex left-2 z-10" />
+              <CarouselNext className="hidden sm:flex right-2 z-10" />
+
             </Carousel>
           </div>
 
