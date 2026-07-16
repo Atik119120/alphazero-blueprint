@@ -47,9 +47,38 @@ export default function TeacherLiveClassesTab({ courses, language }: Props) {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [saving, setSaving] = useState(false);
   const [attendanceOf, setAttendanceOf] = useState<LiveClass | null>(null);
+  const [recordOf, setRecordOf] = useState<LiveClass | null>(null);
+  const [recordUrl, setRecordUrl] = useState('');
+  const [recordSaving, setRecordSaving] = useState(false);
 
   const isBn = language === 'bn';
   const t = (bn: string, en: string) => (isBn ? bn : en);
+
+  const openRecord = (lc: LiveClass) => {
+    setRecordOf(lc);
+    setRecordUrl(lc.youtube_url || '');
+  };
+
+  const submitRecording = async () => {
+    if (!recordOf) return;
+    const vid = parseYoutubeId(recordUrl);
+    if (!vid) { toast.error(t('সঠিক YouTube URL দিন', 'Enter a valid YouTube URL')); return; }
+    setRecordSaving(true);
+    const { error } = await supabase.from('recorded_classes').upsert({
+      course_id: recordOf.course_id,
+      live_class_id: recordOf.id,
+      title: recordOf.title,
+      description: recordOf.description,
+      youtube_video_id: vid,
+      video_url: `https://www.youtube.com/watch?v=${vid}`,
+      recorded_at: recordOf.end_time || new Date().toISOString(),
+    }, { onConflict: 'live_class_id' });
+    setRecordSaving(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success(t('রেকর্ডিং যোগ হয়েছে', 'Recording added'));
+    setRecordOf(null);
+    setRecordUrl('');
+  };
 
   const publishedCourses = useMemo(() => courses.filter(c => c.is_approved !== false), [courses]);
 
