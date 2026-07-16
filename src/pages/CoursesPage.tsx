@@ -564,7 +564,7 @@ const CoursesPage = () => {
       </section>
 
       {/* Courses Grid */}
-      <section className="py-20 border-t border-border/40" id="courses">
+      <section className="pt-8 pb-20 border-t border-border/40" id="courses">
 
         <div className="container mx-auto px-6">
           {/* Centered header — Popular Courses */}
