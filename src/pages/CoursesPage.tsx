@@ -491,7 +491,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-[2.75rem] md:text-6xl lg:text-7xl tracking-tight mb-8 max-w-5xl leading-[1.02]"
+              className="font-playfair text-3xl md:text-4xl lg:text-5xl tracking-tight mb-8 max-w-4xl leading-[1.1]"
             >
               <span className="text-foreground font-normal">
                 {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One platform.")}
@@ -511,7 +511,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.45 }}
-              className="text-base md:text-lg text-foreground/65 max-w-2xl mb-10 leading-[1.7]"
+              className="text-sm md:text-base text-foreground/65 max-w-xl mb-10 leading-[1.7]"
             >
               {cms(
                 "hero.subtitle.bn",
