@@ -496,13 +496,14 @@ const CoursesPage = () => {
               <span className="text-foreground font-normal">
                 {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One platform.")}
               </span>{" "}
-              <span className="text-foreground/70 font-normal italic">
+              <span className="text-foreground/70 font-normal">
                 {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "every digital skill.")}
               </span>
               <br />
-              <span className="italic font-semibold bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
+              <span className="font-semibold bg-gradient-to-br from-primary via-primary to-primary/70 bg-clip-text text-transparent">
                 {cms("hero.title3.bn", "hero.title3.en", "অসীম সম্ভাবনা।", "Endless opportunities.")}
               </span>
+
             </motion.h1>
 
             {/* Subtitle */}
