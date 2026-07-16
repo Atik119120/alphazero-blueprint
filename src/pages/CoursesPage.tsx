@@ -486,8 +486,8 @@ const CoursesPage = () => {
           style={{ background: "radial-gradient(ellipse 60% 50% at 50% 40%, hsl(var(--primary) / 0.15), transparent 70%)" }} />
 
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }} className="w-full container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div className="flex flex-col items-start text-left relative pl-0">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="flex flex-col items-start text-left relative pl-0 lg:justify-self-start">
 
 
 
@@ -576,7 +576,7 @@ const CoursesPage = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4, duration: 0.7 }}
-              className="hidden lg:flex justify-center items-center"
+              className="hidden lg:flex justify-end items-center lg:justify-self-end"
             >
               <img
                 src={heroIllustration.url}
