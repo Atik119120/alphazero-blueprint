@@ -478,16 +478,35 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-5xl md:text-7xl lg:text-8xl tracking-tight mb-6 max-w-4xl leading-[1.05]"
+              className="font-playfair text-4xl md:text-6xl lg:text-7xl tracking-tight mb-6 max-w-5xl leading-[1.05]"
             >
               <span className="text-foreground/95 font-normal">
-                {cms("hero.prefix.bn", "hero.prefix.en", "শিখুন কিছু", "Learn something")}
+                {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One Platform.")}
+              </span>{" "}
+              <span className="text-foreground/95 font-normal">
+                {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "Every Digital Skill.")}
               </span>
               <br />
               <span className="font-bold bg-gradient-to-br from-primary via-primary to-primary/60 bg-clip-text text-transparent drop-shadow-[0_0_30px_hsl(var(--primary)/0.35)]">
-                {rotatingTitles[0]}
+                {cms("hero.title3.bn", "hero.title3.en", "অসীম সম্ভাবনা।", "Endless Opportunities.")}
               </span>
             </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45 }}
+              className="text-base md:text-lg lg:text-xl text-foreground/70 max-w-3xl mb-8 leading-relaxed"
+            >
+              {cms(
+                "hero.subtitle.bn",
+                "hero.subtitle.en",
+                "AI ও গ্রাফিক ডিজাইন থেকে প্রোগ্রামিং, ওয়েব ডেভেলপমেন্ট, ডিজিটাল মার্কেটিং, ভিডিও এডিটিং, ফটোগ্রাফি এবং ফ্রিল্যান্সিং—সফল ডিজিটাল ক্যারিয়ার গড়তে যা প্রয়োজন সব শিখুন।",
+                "From AI and Graphic Design to Programming, Web Development, Digital Marketing, Video Editing, Photography, and Freelancing—learn everything you need to build a successful digital career."
+              )}
+            </motion.p>
+
 
 
 
