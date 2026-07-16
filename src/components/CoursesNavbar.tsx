@@ -104,12 +104,22 @@ const CoursesNavbar = () => {
               onClick={() => handleNavClick("home")}
               className="flex items-center gap-2 group shrink-0"
             >
-              <img
-                src={learnLogo}
-                alt="Learn with AlphaZero"
-                className="h-8 sm:h-9 w-auto brightness-0 dark:brightness-0 dark:invert transition-all"
-                loading="eager"
+              <div
+                aria-label="Learn with AlphaZero"
+                className="h-8 sm:h-9 w-32 sm:w-36 transition-all"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)))`,
+                  WebkitMaskImage: `url(${learnLogo})`,
+                  maskImage: `url(${learnLogo})`,
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'left center',
+                  maskPosition: 'left center',
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                }}
               />
+
             </button>
 
             {/* Desktop nav */}
