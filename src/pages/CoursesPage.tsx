@@ -10,8 +10,6 @@ import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
 import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
 import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
 import instructorPrantik from "@/assets/instructors/prantik.png.asset.json";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { 
@@ -218,7 +216,7 @@ const CoursesPage = () => {
   const [showEnrollmentModal, setShowEnrollmentModal] = useState(false);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const autoplayPlugin = useRef(Autoplay({ delay: 2500, stopOnInteraction: false, stopOnMouseEnter: true }));
+  
 
   const categories = useMemo(() => ([
     { id: "all", label: t.catAll, match: null as RegExp | null },
@@ -830,31 +828,26 @@ const CoursesPage = () => {
               {cms("instructors.desc.bn", "instructors.desc.en", "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।", "Learn directly from industry experts.")}
             </p>
           </motion.div>
-          <div className="max-w-7xl mx-auto relative">
-            <Carousel opts={{ align: "start", loop: true }} plugins={[autoplayPlugin.current]} className="w-full">
-              <CarouselContent className="-ml-4">
-                {Object.values(trainers).map((tr, i) => (
-                  <CarouselItem key={`${tr.name}-${i}`} className="pl-4 basis-1/2 sm:basis-1/3 lg:basis-1/6">
-                    <div className="group">
-                      <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
-                        <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
-                          <img src={tr.image} alt={tr.name}
-                            className="relative w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
-                            onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                        </div>
-                        <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
-                        <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
-                          {isBn ? tr.qualificationBn : tr.qualificationEn}
-                        </p>
-                      </div>
+          <div className="max-w-7xl mx-auto relative overflow-hidden">
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
+            <div className="flex marquee-left w-max gap-4 py-2 [animation-duration:40s] hover:[animation-play-state:paused]">
+              {[...Object.values(trainers), ...Object.values(trainers)].map((tr, i) => (
+                <div key={`${tr.name}-${i}`} className="group w-[200px] sm:w-[220px] shrink-0">
+                  <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
+                    <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
+                      <img src={tr.image} alt={tr.name}
+                        className="relative w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
                     </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="hidden sm:flex left-2 z-10" />
-              <CarouselNext className="hidden sm:flex right-2 z-10" />
-
-            </Carousel>
+                    <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">{tr.name}</h3>
+                    <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
+                      {isBn ? tr.qualificationBn : tr.qualificationEn}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
 
