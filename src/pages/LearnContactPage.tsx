@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Mail, Phone, MessageCircle, Send, GraduationCap, HelpCircle, BookOpen, Clock, MapPin, Sparkles } from "lucide-react";
-import Layout from "@/components/Layout";
+import CoursesNavbar from "@/components/CoursesNavbar";
+import CoursesFooter from "@/components/CoursesFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFooterContent } from "@/hooks/useFooterData";
 import { usePageContent } from "@/hooks/usePageContent";
@@ -44,12 +45,14 @@ const LearnContactPage = () => {
 
   const quickHelp = [
     { icon: BookOpen, title: t("কোর্স ব্রাউজ", "Browse Courses"), desc: t("আমাদের সমস্ত কোর্স দেখুন", "Explore all our courses"), href: "/courses" },
-    { icon: HelpCircle, title: t("সাধারণ প্রশ্ন", "FAQ"), desc: t("দ্রুত উত্তর পান", "Get quick answers"), href: "/about" },
+    { icon: HelpCircle, title: t("সাধারণ প্রশ্ন", "FAQ"), desc: t("দ্রুত উত্তর পান", "Get quick answers"), href: "/learn-about" },
     { icon: GraduationCap, title: t("স্টুডেন্ট লগইন", "Student Login"), desc: t("আপনার ড্যাশবোর্ডে প্রবেশ করুন", "Access your dashboard"), href: "/student/login" },
   ];
 
   return (
-    <Layout>
+    <>
+      <CoursesNavbar />
+      <main className="min-h-screen bg-background pt-20">
       {/* Hero */}
       <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-primary/[0.04]" />
@@ -210,7 +213,9 @@ const LearnContactPage = () => {
           </div>
         </div>
       </section>
-    </Layout>
+      </main>
+      <CoursesFooter />
+    </>
   );
 };
 
