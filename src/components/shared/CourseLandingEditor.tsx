@@ -106,11 +106,17 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
 
   const save = async () => {
     if (!form) return;
+    if (!form.title || !form.title.trim()) {
+      toast.error(isBn ? 'Title আবশ্যক' : 'Title is required');
+      return;
+    }
     setSaving(true);
     try {
       const { error } = await supabase
         .from('courses')
         .update({
+          title: form.title,
+          title_en: form.title_en || null,
           landing_slug: form.landing_slug || null,
           thumbnail_url: form.thumbnail_url || null,
           intro_video_url: form.intro_video_url || null,
@@ -253,7 +259,30 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
             </Button>
           )}
 
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label>{isBn ? 'কোর্স টাইটেল (বাংলা)' : 'Course Title (Bangla)'} *</Label>
+              <Input
+                value={form.title ?? ''}
+                onChange={(e) => update({ title: e.target.value })}
+                placeholder={isBn ? 'যেমন: গ্রাফিক ডিজাইন মাস্টারক্লাস' : 'e.g. Graphic Design Masterclass'}
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                {isBn ? 'কোর্স ম্যানেজমেন্ট আর ল্যান্ডিং পেজ — দুই জায়গাতেই একসাথে আপডেট হবে।' : 'Syncs with Course Management and the landing page.'}
+              </p>
+            </div>
+            <div>
+              <Label>Course Title (English)</Label>
+              <Input
+                value={form.title_en ?? ''}
+                onChange={(e) => update({ title_en: e.target.value })}
+                placeholder="e.g. Graphic Design Masterclass"
+              />
+            </div>
+          </div>
+
           <div>
+
             <Label>{isBn ? 'URL Slug' : 'URL Slug'} *</Label>
             <div className="flex gap-2">
               <Input
