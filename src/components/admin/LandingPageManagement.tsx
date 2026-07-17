@@ -237,6 +237,34 @@ export default function LandingPageManagement() {
 
       <Card>
         <CardHeader>
+          <CardTitle>{isBn ? 'Why Learn (কেন শিখব)' : 'Why Learn'}</CardTitle>
+          <CardDescription>{isBn ? 'কেন এই কোর্স শিখবেন সেগুলো লিখুন' : 'Reasons to take this course'}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {whyList.map((w, i) => (
+            <div key={i} className="flex gap-2">
+              <Input
+                value={w}
+                onChange={(e) => {
+                  const next = [...whyList];
+                  next[i] = e.target.value;
+                  update({ why_learn: next });
+                }}
+              />
+              <Button variant="ghost" size="icon" onClick={() => update({ why_learn: whyList.filter((_, j) => j !== i) })}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          <Button variant='outline' size='sm' onClick={() => update({ why_learn: [...whyList, ''] })}>
+            <Plus className='h-4 w-4 mr-1' /> {isBn ? 'Add' : 'Add'}
+          </Button>
+        </CardContent>
+      </Card>
+
+
+      <Card>
+        <CardHeader>
           <CardTitle>FAQ</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
