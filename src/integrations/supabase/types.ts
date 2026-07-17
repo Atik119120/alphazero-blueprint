@@ -457,8 +457,10 @@ export type Database = {
           duration: string | null
           faqs: Json
           id: string
+          intro_video_url: string | null
           is_approved: boolean | null
           is_published: boolean | null
+          landing_enabled: boolean
           landing_slug: string | null
           learning_outcomes: Json
           price: number | null
@@ -477,6 +479,7 @@ export type Database = {
           trainer_image: string | null
           trainer_name: string | null
           updated_at: string | null
+          why_learn: Json
         }
         Insert: {
           class_time?: string | null
@@ -487,8 +490,10 @@ export type Database = {
           duration?: string | null
           faqs?: Json
           id?: string
+          intro_video_url?: string | null
           is_approved?: boolean | null
           is_published?: boolean | null
+          landing_enabled?: boolean
           landing_slug?: string | null
           learning_outcomes?: Json
           price?: number | null
@@ -507,6 +512,7 @@ export type Database = {
           trainer_image?: string | null
           trainer_name?: string | null
           updated_at?: string | null
+          why_learn?: Json
         }
         Update: {
           class_time?: string | null
@@ -517,8 +523,10 @@ export type Database = {
           duration?: string | null
           faqs?: Json
           id?: string
+          intro_video_url?: string | null
           is_approved?: boolean | null
           is_published?: boolean | null
+          landing_enabled?: boolean
           landing_slug?: string | null
           learning_outcomes?: Json
           price?: number | null
@@ -537,6 +545,7 @@ export type Database = {
           trainer_image?: string | null
           trainer_name?: string | null
           updated_at?: string | null
+          why_learn?: Json
         }
         Relationships: [
           {

@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -9,13 +9,18 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   CheckCircle2, Calendar, Clock, Users, GraduationCap,
-  PlayCircle, Sparkles, BookOpen, ArrowRight, AlertCircle,
+  PlayCircle, Sparkles, BookOpen, ArrowRight, AlertCircle, Target,
 } from 'lucide-react';
 
-const SLUG = 'vibe-coding';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const API_URL = `${SUPABASE_URL}/functions/v1/public-course-info?slug=${SLUG}`;
+
+// Extract YouTube video ID from various YouTube URL formats
+function getYouTubeId(url?: string | null): string | null {
+  if (!url) return null;
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
 
 type Module = { id: string; title: string; description: string | null; order_index: number };
 type FAQ = { question: string; answer: string };
@@ -42,6 +47,8 @@ type CourseData = {
     total_classes?: string;
     duration?: string;
     learning_outcomes?: string[];
+    why_learn?: string[];
+    intro_video_url?: string | null;
     faqs?: FAQ[];
   };
   modules: Module[];
@@ -52,6 +59,8 @@ export default function CourseLandingPage() {
   const { language } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const params = useParams<{ slug: string }>();
+  const slug = params.slug || 'vibe-coding';
   const isBn = language === 'bn';
   const [data, setData] = useState<CourseData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -59,11 +68,14 @@ export default function CourseLandingPage() {
 
   useEffect(() => {
     let alive = true;
+    setLoading(true);
+    setError(null);
     (async () => {
       try {
-        const res = await fetch(API_URL, {
-          headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
-        });
+        const res = await fetch(
+          `${SUPABASE_URL}/functions/v1/public-course-info?slug=${encodeURIComponent(slug)}`,
+          { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } },
+        );
         const j = await res.json();
         if (!alive) return;
         if (!res.ok || !j.success) throw new Error(j.error || 'Failed');
@@ -75,7 +87,7 @@ export default function CourseLandingPage() {
       }
     })();
     return () => { alive = false; };
-  }, []);
+  }, [slug]);
 
   const c = data?.course;
   const title = isBn ? c?.title : (c?.title_en || c?.title);
@@ -83,7 +95,9 @@ export default function CourseLandingPage() {
   const shortDesc = isBn ? c?.short_description : (c?.short_description_en || c?.short_description);
   const bio = isBn ? c?.trainer_bio : (c?.trainer_bio_en || c?.trainer_bio);
   const outcomes = c?.learning_outcomes ?? [];
+  const whyLearn = c?.why_learn ?? [];
   const faqs = c?.faqs ?? [];
+  const videoId = getYouTubeId(c?.intro_video_url);
 
   const seoTitle = useMemo(
     () => title ? `${title} | AlphaZero` : 'Course | AlphaZero',
@@ -111,7 +125,7 @@ export default function CourseLandingPage() {
       el.setAttribute(attr, value);
     };
     setMeta('meta[name="description"]', 'content', seoDesc);
-    setMeta('link[rel="canonical"]', 'href', `https://alphazero.online/${SLUG}`);
+    setMeta('link[rel="canonical"]', 'href', `https://alphazero.online/courses/${slug}`);
     setMeta('meta[property="og:title"]', 'content', seoTitle);
     setMeta('meta[property="og:description"]', 'content', seoDesc);
     if (c.thumbnail_url) setMeta('meta[property="og:image"]', 'content', c.thumbnail_url);
@@ -191,6 +205,23 @@ export default function CourseLandingPage() {
         </div>
       </header>
 
+      {/* INTRO VIDEO */}
+      {videoId && (
+        <section className="container mx-auto px-4 pt-10 lg:pt-14">
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-card rounded-2xl overflow-hidden border border-border/50 aspect-video shadow-2xl">
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                title={title || 'Course intro'}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* HERO */}
       <section className="container mx-auto px-4 pt-12 pb-16 lg:pt-20 lg:pb-24">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -260,6 +291,23 @@ export default function CourseLandingPage() {
               <div key={i} className="glass-card p-4 rounded-xl flex gap-3">
                 <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <span className="text-sm md:text-base">{o}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* WHY LEARN */}
+      {whyLearn.length > 0 && (
+        <section className="container mx-auto px-4 py-16">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
+            {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            {whyLearn.map((w, i) => (
+              <div key={i} className="glass-card p-5 rounded-xl flex gap-3">
+                <Target className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <span className="text-sm md:text-base">{w}</span>
               </div>
             ))}
           </div>

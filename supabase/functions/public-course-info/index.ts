@@ -70,6 +70,8 @@ Deno.serve(async (req) => {
         total_classes: course.total_classes,
         duration: course.duration,
         learning_outcomes: course.learning_outcomes ?? [],
+        why_learn: course.why_learn ?? [],
+        intro_video_url: course.intro_video_url ?? null,
         faqs: course.faqs ?? [],
       },
       modules: modules ?? [],

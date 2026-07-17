@@ -24,8 +24,13 @@ type CourseRow = {
   total_classes: string | null;
   duration: string | null;
   learning_outcomes: string[] | null;
+  why_learn: string[] | null;
+  intro_video_url: string | null;
   faqs: { question: string; answer: string }[] | null;
 };
+
+const slugify = (s: string) =>
+  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
 
 export default function LandingPageManagement() {
   const { language } = useLanguage();
@@ -39,7 +44,7 @@ export default function LandingPageManagement() {
     (async () => {
       const { data } = await supabase
         .from('courses')
-        .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,faqs')
+        .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,why_learn,intro_video_url,faqs')
         .order('created_at', { ascending: false });
       const rows = (data ?? []) as any as CourseRow[];
       setCourses(rows);
@@ -53,6 +58,7 @@ export default function LandingPageManagement() {
       setForm({
         ...c,
         learning_outcomes: Array.isArray(c.learning_outcomes) ? c.learning_outcomes : [],
+        why_learn: Array.isArray(c.why_learn) ? c.why_learn : [],
         faqs: Array.isArray(c.faqs) ? c.faqs : [],
       });
     }
@@ -67,6 +73,7 @@ export default function LandingPageManagement() {
       .from('courses')
       .update({
         landing_slug: form.landing_slug || null,
+        intro_video_url: form.intro_video_url || null,
         short_description: form.short_description,
         short_description_en: form.short_description_en,
         trainer_bio: form.trainer_bio,
@@ -76,6 +83,7 @@ export default function LandingPageManagement() {
         total_classes: form.total_classes,
         duration: form.duration,
         learning_outcomes: form.learning_outcomes ?? [],
+        why_learn: form.why_learn ?? [],
         faqs: form.faqs ?? [],
       } as any)
       .eq('id', form.id);
@@ -89,6 +97,7 @@ export default function LandingPageManagement() {
   }
 
   const outcomes = form.learning_outcomes ?? [];
+  const whyList = form.why_learn ?? [];
   const faqs = form.faqs ?? [];
 
   return (
@@ -117,8 +126,8 @@ export default function LandingPageManagement() {
             </div>
             {form.landing_slug && (
               <Button variant="outline" asChild>
-                <a href={`/${form.landing_slug}`} target="_blank" rel="noreferrer">
-                  <ExternalLink className="h-4 w-4 mr-2" /> /{form.landing_slug}
+                <a href={`/courses/${form.landing_slug}`} target="_blank" rel="noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-2" /> /courses/{form.landing_slug}
                 </a>
               </Button>
             )}
@@ -126,13 +135,34 @@ export default function LandingPageManagement() {
 
           <div>
             <Label>{isBn ? 'URL Slug' : 'URL Slug'} *</Label>
+            <div className="flex gap-2">
+              <Input
+                value={form.landing_slug ?? ''}
+                onChange={(e) => update({ landing_slug: e.target.value.trim() })}
+                placeholder="graphic-design-masterclass"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => update({ landing_slug: slugify(form.title_en || form.title) })}
+              >
+                {isBn ? 'Auto' : 'Auto'}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              /courses/{form.landing_slug || 'your-slug'}
+            </p>
+          </div>
+
+          <div>
+            <Label>{isBn ? 'YouTube Intro Video URL' : 'YouTube Intro Video URL'}</Label>
             <Input
-              value={form.landing_slug ?? ''}
-              onChange={(e) => update({ landing_slug: e.target.value.trim() })}
-              placeholder="vibe-coding"
+              value={form.intro_video_url ?? ''}
+              onChange={(e) => update({ intro_video_url: e.target.value })}
+              placeholder="https://www.youtube.com/watch?v=..."
             />
             <p className="text-xs text-muted-foreground mt-1">
-              {isBn ? 'Example: vibe-coding → /vibe-coding' : 'Example: vibe-coding → /vibe-coding'}
+              {isBn ? 'ল্যান্ডিং পেজের একদম উপরে দেখাবে।' : 'Shown at the top of the landing page.'}
             </p>
           </div>
 
@@ -204,6 +234,34 @@ export default function LandingPageManagement() {
           </Button>
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{isBn ? 'Why Learn (কেন শিখব)' : 'Why Learn'}</CardTitle>
+          <CardDescription>{isBn ? 'কেন এই কোর্স শিখবেন সেগুলো লিখুন' : 'Reasons to take this course'}</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {whyList.map((w, i) => (
+            <div key={i} className="flex gap-2">
+              <Input
+                value={w}
+                onChange={(e) => {
+                  const next = [...whyList];
+                  next[i] = e.target.value;
+                  update({ why_learn: next });
+                }}
+              />
+              <Button variant="ghost" size="icon" onClick={() => update({ why_learn: whyList.filter((_, j) => j !== i) })}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+          <Button variant='outline' size='sm' onClick={() => update({ why_learn: [...whyList, ''] })}>
+            <Plus className='h-4 w-4 mr-1' /> {isBn ? 'Add' : 'Add'}
+          </Button>
+        </CardContent>
+      </Card>
+
 
       <Card>
         <CardHeader>
