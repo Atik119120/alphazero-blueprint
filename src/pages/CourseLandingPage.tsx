@@ -205,6 +205,23 @@ export default function CourseLandingPage() {
         </div>
       </header>
 
+      {/* INTRO VIDEO */}
+      {videoId && (
+        <section className="container mx-auto px-4 pt-10 lg:pt-14">
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-card rounded-2xl overflow-hidden border border-border/50 aspect-video shadow-2xl">
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                title={title || 'Course intro'}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* HERO */}
       <section className="container mx-auto px-4 pt-12 pb-16 lg:pt-20 lg:pb-24">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
