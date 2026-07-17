@@ -198,22 +198,31 @@ export default function CourseLandingPage() {
       {/* Minimal top bar */}
       <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center" aria-label="Learn with AlphaZero">
-            <div
-              className="h-9 w-36"
-              style={{
-                backgroundImage: `linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)))`,
-                WebkitMaskImage: `url(${learnLogo.url})`,
-                maskImage: `url(${learnLogo.url})`,
-                WebkitMaskRepeat: 'no-repeat',
-                maskRepeat: 'no-repeat',
-                WebkitMaskPosition: 'left center',
-                maskPosition: 'left center',
-                WebkitMaskSize: 'contain',
-                maskSize: 'contain',
-              }}
-            />
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => (window.history.length > 1 ? navigate(-1) : navigate('/courses'))}
+              aria-label={isBn ? 'পিছনে যান' : 'Go back'}
+              className="p-2 rounded-lg hover:bg-slate-100 text-slate-700"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <Link to="/" className="flex items-center" aria-label="Learn with AlphaZero">
+              <div
+                className="h-9 w-36"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)))`,
+                  WebkitMaskImage: `url(${learnLogo.url})`,
+                  maskImage: `url(${learnLogo.url})`,
+                  WebkitMaskRepeat: 'no-repeat',
+                  maskRepeat: 'no-repeat',
+                  WebkitMaskPosition: 'left center',
+                  maskPosition: 'left center',
+                  WebkitMaskSize: 'contain',
+                  maskSize: 'contain',
+                }}
+              />
+            </Link>
+          </div>
           <div className="flex items-center gap-2">
             <a href={loginHref} className="text-sm font-semibold text-slate-700 hover:text-cyan-600 px-3 py-1.5">{isBn ? 'লগইন' : 'Login'}</a>
             <button onClick={handleEnroll} className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-sm">
