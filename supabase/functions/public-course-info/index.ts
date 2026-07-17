@@ -46,44 +46,63 @@ Deno.serve(async (req) => {
         .eq('course_id', course.id).order('order_index'),
     ]);
 
-    // Resolve multiple instructors by splitting trainer_name and matching team_members
-    const rawName: string = course.trainer_name ?? '';
-    const parts = rawName
-      .split(/\s*(?:&|,| and | ও | এবং )\s*/i)
-      .map((s: string) => s.trim())
-      .filter(Boolean);
-
     let instructors: Array<{ name: string; designation: string | null; image: string | null; bio: string | null }> = [];
-    if (parts.length > 0) {
-      // Fetch all active team members and match client-side by token overlap (robust to prefixes/suffixes like "MD.", "Ahmed")
-      const { data: tm } = await supabase
-        .from('team_members')
-        .select('name,role,image_url,bio')
-        .eq('is_active', true);
 
-      const normalize = (s: string) =>
-        s.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF\s]/g, ' ').replace(/\s+/g, ' ').trim();
-      const tokens = (s: string) =>
-        normalize(s).split(' ').filter((t) => t.length >= 3 && !['md', 'mrs', 'mr', 'dr'].includes(t));
+    // Prefer explicit course_instructors join table
+    const { data: ciRows } = await supabase
+      .from('course_instructors')
+      .select('order_index, role, team_members:instructor_id(name,role,image_url,bio)')
+      .eq('course_id', course.id)
+      .order('order_index');
 
-      instructors = parts.map((p) => {
-        const pTokens = tokens(p);
-        let best: any = null;
-        let bestScore = 0;
-        for (const t of tm ?? []) {
-          const tTokens = tokens(t.name || '');
-          const score = pTokens.filter((x) => tTokens.includes(x)).length;
-          if (score > bestScore) { bestScore = score; best = t; }
-        }
-        const match = bestScore > 0 ? best : null;
-        return {
-          name: match?.name || p,
-          designation: match?.role || (parts.length === 1 ? course.trainer_designation : null),
-          image: match?.image_url || (parts.length === 1 ? course.trainer_image : null),
-          bio: match?.bio || (parts.length === 1 ? course.trainer_bio : null),
-        };
-      });
+    if (ciRows && ciRows.length > 0) {
+      instructors = ciRows.map((r: any) => ({
+        name: r.team_members?.name ?? '',
+        designation: r.team_members?.role ?? null,
+        image: r.team_members?.image_url ?? null,
+        bio: r.team_members?.bio ?? null,
+      })).filter((i) => i.name);
     }
+
+    // Fallback: parse trainer_name and match team_members by token overlap
+    if (instructors.length === 0) {
+      const rawName: string = course.trainer_name ?? '';
+      const parts = rawName
+        .split(/\s*(?:&|,| and | ও | এবং )\s*/i)
+        .map((s: string) => s.trim())
+        .filter(Boolean);
+
+      if (parts.length > 0) {
+        const { data: tm } = await supabase
+          .from('team_members')
+          .select('name,role,image_url,bio')
+          .eq('is_active', true);
+
+        const normalize = (s: string) =>
+          s.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF\s]/g, ' ').replace(/\s+/g, ' ').trim();
+        const tokens = (s: string) =>
+          normalize(s).split(' ').filter((t) => t.length >= 3 && !['md', 'mrs', 'mr', 'dr'].includes(t));
+
+        instructors = parts.map((p) => {
+          const pTokens = tokens(p);
+          let best: any = null;
+          let bestScore = 0;
+          for (const t of tm ?? []) {
+            const tTokens = tokens(t.name || '');
+            const score = pTokens.filter((x) => tTokens.includes(x)).length;
+            if (score > bestScore) { bestScore = score; best = t; }
+          }
+          const match = bestScore > 0 ? best : null;
+          return {
+            name: match?.name || p,
+            designation: match?.role || (parts.length === 1 ? course.trainer_designation : null),
+            image: match?.image_url || (parts.length === 1 ? course.trainer_image : null),
+            bio: match?.bio || (parts.length === 1 ? course.trainer_bio : null),
+          };
+        });
+      }
+    }
+
 
 
 

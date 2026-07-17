@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Trash2, Plus, ExternalLink } from 'lucide-react';
+import { Trash2, Plus, ExternalLink, ArrowUp, ArrowDown } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 type CourseRow = {
@@ -29,6 +29,10 @@ type CourseRow = {
   faqs: { question: string; answer: string }[] | null;
 };
 
+type TeamMember = { id: string; name: string; role: string | null; image_url: string | null };
+type CourseInstructor = { id?: string; instructor_id: string; role: 'owner' | 'co_instructor'; order_index: number };
+
+
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
 
@@ -39,18 +43,42 @@ export default function LandingPageManagement() {
   const [selectedId, setSelectedId] = useState<string>('');
   const [form, setForm] = useState<CourseRow | null>(null);
   const [saving, setSaving] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [instructors, setInstructors] = useState<CourseInstructor[]>([]);
+  const [addPick, setAddPick] = useState<string>('');
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from('courses')
-        .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,why_learn,intro_video_url,faqs')
-        .order('created_at', { ascending: false });
-      const rows = (data ?? []) as any as CourseRow[];
+      const [{ data: courseData }, { data: tmData }] = await Promise.all([
+        supabase
+          .from('courses')
+          .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,why_learn,intro_video_url,faqs')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('team_members')
+          .select('id,name,role,image_url,site_scope,is_active')
+          .eq('is_active', true)
+          .order('order_index'),
+      ]);
+      const rows = (courseData ?? []) as any as CourseRow[];
       setCourses(rows);
       if (rows[0]) setSelectedId(rows[0].id);
+      const tm = ((tmData ?? []) as any[]).filter((t) => !t.site_scope || t.site_scope === 'learn' || t.site_scope === 'both');
+      setTeamMembers(tm);
     })();
   }, []);
+  useEffect(() => {
+    if (!selectedId) return;
+    (async () => {
+      const { data } = await supabase
+        .from('course_instructors')
+        .select('id,instructor_id,role,order_index')
+        .eq('course_id', selectedId)
+        .order('order_index');
+      setInstructors((data ?? []) as any as CourseInstructor[]);
+    })();
+  }, [selectedId]);
+
 
   useEffect(() => {
     const c = courses.find((x) => x.id === selectedId);
@@ -87,10 +115,57 @@ export default function LandingPageManagement() {
         faqs: form.faqs ?? [],
       } as any)
       .eq('id', form.id);
+    if (error) {
+      setSaving(false);
+      toast.error(error.message);
+      return;
+    }
+
+    // Persist instructors: replace-all strategy
+    const del = await supabase.from('course_instructors').delete().eq('course_id', form.id);
+    if (del.error) {
+      setSaving(false);
+      toast.error(del.error.message);
+      return;
+    }
+    if (instructors.length > 0) {
+      const payload = instructors.map((r, idx) => ({
+        course_id: form.id,
+        instructor_id: r.instructor_id,
+        role: r.role,
+        order_index: idx,
+      }));
+      const ins = await supabase.from('course_instructors').insert(payload);
+      if (ins.error) {
+        setSaving(false);
+        toast.error(ins.error.message);
+        return;
+      }
+    }
+
     setSaving(false);
-    if (error) toast.error(error.message);
-    else toast.success(isBn ? 'Saved' : 'Saved');
+    toast.success(isBn ? 'Saved' : 'Saved');
   };
+
+  const addInstructor = () => {
+    if (!addPick) return;
+    if (instructors.some((i) => i.instructor_id === addPick)) {
+      toast.error(isBn ? 'Already added' : 'Already added');
+      return;
+    }
+    const nextRole: 'owner' | 'co_instructor' = instructors.length === 0 ? 'owner' : 'co_instructor';
+    setInstructors([...instructors, { instructor_id: addPick, role: nextRole, order_index: instructors.length }]);
+    setAddPick('');
+  };
+
+  const move = (idx: number, dir: -1 | 1) => {
+    const next = [...instructors];
+    const j = idx + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[idx], next[j]] = [next[j], next[idx]];
+    setInstructors(next);
+  };
+
 
   if (!form) {
     return <div className='text-muted-foreground'>{isBn ? 'Loading...' : 'Loading...'}</div>;
@@ -259,6 +334,86 @@ export default function LandingPageManagement() {
           <Button variant='outline' size='sm' onClick={() => update({ why_learn: [...whyList, ''] })}>
             <Plus className='h-4 w-4 mr-1' /> {isBn ? 'Add' : 'Add'}
           </Button>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{isBn ? 'Instructors' : 'Instructors'}</CardTitle>
+          <CardDescription>
+            {isBn
+              ? 'ল্যান্ডিং পেজে দেখানো instructor list। প্রথম জন Owner হবে (co-instructors ও এই কোর্সের সব কিছু access করতে পারবেন)।'
+              : 'Instructors shown on the landing page. The first entry is Owner; co-instructors also get full teacher access to this course.'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {instructors.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              {isBn ? 'এখনো কোনো instructor assign করা হয়নি।' : 'No instructors assigned yet.'}
+            </p>
+          )}
+          {instructors.map((ci, idx) => {
+            const tm = teamMembers.find((t) => t.id === ci.instructor_id);
+            return (
+              <div key={ci.instructor_id} className="flex items-center gap-2 p-2 border rounded-lg">
+                {tm?.image_url ? (
+                  <img src={tm.image_url} alt={tm.name} className="h-10 w-10 rounded-full object-cover" />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-muted" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium truncate">{tm?.name ?? ci.instructor_id}</div>
+                  <div className="text-xs text-muted-foreground truncate">{tm?.role ?? ''}</div>
+                </div>
+                <Select
+                  value={ci.role}
+                  onValueChange={(v) => {
+                    const next = [...instructors];
+                    next[idx] = { ...next[idx], role: v as 'owner' | 'co_instructor' };
+                    setInstructors(next);
+                  }}
+                >
+                  <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="owner">Owner</SelectItem>
+                    <SelectItem value="co_instructor">Co-instructor</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button variant="ghost" size="icon" onClick={() => move(idx, -1)} disabled={idx === 0}>
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => move(idx, 1)} disabled={idx === instructors.length - 1}>
+                  <ArrowDown className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setInstructors(instructors.filter((_, j) => j !== idx))}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            );
+          })}
+          <div className="flex gap-2">
+            <Select value={addPick} onValueChange={setAddPick}>
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder={isBn ? 'Team member নির্বাচন করুন' : 'Select a team member'} />
+              </SelectTrigger>
+              <SelectContent>
+                {teamMembers
+                  .filter((t) => !instructors.some((i) => i.instructor_id === t.id))
+                  .map((t) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {t.name}{t.role ? ` — ${t.role}` : ''}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" onClick={addInstructor} disabled={!addPick}>
+              <Plus className="h-4 w-4 mr-1" /> {isBn ? 'Add' : 'Add'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
