@@ -674,8 +674,8 @@ const CoursesPage = () => {
                 
                 return (
                   <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group">
-                    <div className={`relative flex flex-col rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isSpecial ? '' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
+                    viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group h-full">
+                    <div className={`relative flex flex-col h-full rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isSpecial ? '' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
                       
                       {/* Thumbnail with editorial number */}
                       {(() => {
@@ -729,7 +729,7 @@ const CoursesPage = () => {
                       })()}
 
                       {/* Body */}
-                      <div className="flex flex-col px-3 pt-4 pb-3 gap-2.5">
+                      <div className="flex flex-col flex-1 px-3 pt-4 pb-3 gap-2.5">
                         <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
@@ -788,7 +788,7 @@ const CoursesPage = () => {
                         )}
 
                         {/* Divider */}
-                        <div className="h-px bg-border/40 mt-1" />
+                        <div className="h-px bg-border/40 mt-auto" />
 
                         {/* Price + Enroll row */}
                         <div className="flex items-center gap-3 pt-1">
