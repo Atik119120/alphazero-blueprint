@@ -32,7 +32,7 @@ const CoursesNavbar = () => {
     { name: isBn ? "সম্পর্কে" : "About Us", to: aboutHref, icon: Info, internal: true },
     { name: isBn ? "কোর্স" : "Courses", to: "/courses/all", id: "courses", icon: LayoutGrid, internal: true },
     { name: isBn ? "যোগাযোগ" : "Contact", to: contactHref, id: "contact", icon: Phone, internal: true },
-    { name: isBn ? "আমাদের এজেন্সি" : "Our Agency", href: agencyHref, icon: Building2, external: true },
+    
   ];
 
 
