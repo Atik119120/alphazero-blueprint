@@ -8,6 +8,22 @@ const learnLogo = learnLogoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { usePageContent } from "@/hooks/usePageContent";
+import instructorHH from "@/assets/instructors/hh.png.asset.json";
+import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
+import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
+import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
+import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
+import instructorPrantik from "@/assets/instructors/prantik.png.asset.json";
+
+const STATIC_TRAINERS = [
+  { name: "Sofiullah Ahammad", roleEn: "Graphics Designer, Vibe Coding Expert", roleBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট", image: instructorAtik.url },
+  { name: "Adib Sarkar", roleEn: "Lead Designer, Entrepreneur", roleBn: "লিড ডিজাইনার, উদ্যোক্তা", image: instructorHH.url },
+  { name: "Md Nayeem Ahmed", roleEn: "Digital Marketer", roleBn: "ডিজিটাল মার্কেটার", image: instructorNayeem.url },
+  { name: "Md. Shafiul Haque", roleEn: "Video Editor, Cinematographer", roleBn: "ভিডিও এডিটর, সিনেমাটোগ্রাফার", image: instructorShafiul.url },
+  { name: "Prantik Saha", roleEn: "Microsoft Office Expert, IT Support", roleBn: "মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট", image: instructorPrantik.url },
+  { name: "Papiya Rahman", roleEn: "Graphic Designer", roleBn: "গ্রাফিক ডিজাইনার", image: instructorPapiya.url },
+  { name: "Rashadul Islam Naime", roleEn: "Digital Marketer, SEO Expert", roleBn: "ডিজিটাল মার্কেটার, এসইও এক্সপার্ট", image: "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/team/rashadul-islam-naime.png" },
+];
 
 const LearnAboutPage = () => {
   const { language } = useLanguage();
