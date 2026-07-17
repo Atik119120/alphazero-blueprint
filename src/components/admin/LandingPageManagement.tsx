@@ -44,7 +44,7 @@ export default function LandingPageManagement() {
     (async () => {
       const { data } = await supabase
         .from('courses')
-        .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,faqs')
+        .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,why_learn,intro_video_url,faqs')
         .order('created_at', { ascending: false });
       const rows = (data ?? []) as any as CourseRow[];
       setCourses(rows);
