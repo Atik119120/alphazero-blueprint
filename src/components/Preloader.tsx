@@ -2,12 +2,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, memo } from "react";
 import logoAssetJson from "@/assets/logo.png.asset.json";
 import learnIconJson from "@/assets/learn-preloader-icon.png.asset.json";
-import { useSiteScope } from "@/contexts/SiteScopeContext";
 const logo = logoAssetJson.url;
 const learnIcon = learnIconJson.url;
+const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about", "/learn-contact"];
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
-  const scope = useSiteScope();
-  const isLearn = scope === "learn";
+  const isLearn = typeof window !== "undefined" && (
+    window.location.hostname.startsWith("learn.") ||
+    LEARN_ROUTES.some((r) => window.location.pathname.startsWith(r))
+  );
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
