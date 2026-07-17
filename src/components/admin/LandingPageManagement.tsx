@@ -115,10 +115,57 @@ export default function LandingPageManagement() {
         faqs: form.faqs ?? [],
       } as any)
       .eq('id', form.id);
+    if (error) {
+      setSaving(false);
+      toast.error(error.message);
+      return;
+    }
+
+    // Persist instructors: replace-all strategy
+    const del = await supabase.from('course_instructors').delete().eq('course_id', form.id);
+    if (del.error) {
+      setSaving(false);
+      toast.error(del.error.message);
+      return;
+    }
+    if (instructors.length > 0) {
+      const payload = instructors.map((r, idx) => ({
+        course_id: form.id,
+        instructor_id: r.instructor_id,
+        role: r.role,
+        order_index: idx,
+      }));
+      const ins = await supabase.from('course_instructors').insert(payload);
+      if (ins.error) {
+        setSaving(false);
+        toast.error(ins.error.message);
+        return;
+      }
+    }
+
     setSaving(false);
-    if (error) toast.error(error.message);
-    else toast.success(isBn ? 'Saved' : 'Saved');
+    toast.success(isBn ? 'Saved' : 'Saved');
   };
+
+  const addInstructor = () => {
+    if (!addPick) return;
+    if (instructors.some((i) => i.instructor_id === addPick)) {
+      toast.error(isBn ? 'Already added' : 'Already added');
+      return;
+    }
+    const nextRole: 'owner' | 'co_instructor' = instructors.length === 0 ? 'owner' : 'co_instructor';
+    setInstructors([...instructors, { instructor_id: addPick, role: nextRole, order_index: instructors.length }]);
+    setAddPick('');
+  };
+
+  const move = (idx: number, dir: -1 | 1) => {
+    const next = [...instructors];
+    const j = idx + dir;
+    if (j < 0 || j >= next.length) return;
+    [next[idx], next[j]] = [next[j], next[idx]];
+    setInstructors(next);
+  };
+
 
   if (!form) {
     return <div className='text-muted-foreground'>{isBn ? 'Loading...' : 'Loading...'}</div>;
