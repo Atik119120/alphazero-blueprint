@@ -51,6 +51,7 @@ type CourseData = {
     why_learn?: string[];
     intro_video_url?: string | null;
     faqs?: FAQ[];
+    instructors?: Array<{ name: string; designation: string | null; image: string | null; bio: string | null }>;
   };
   modules: Module[];
   lesson_count: number;
