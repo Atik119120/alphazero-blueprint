@@ -43,9 +43,31 @@ export default function LandingPageManagement() {
   const [selectedId, setSelectedId] = useState<string>('');
   const [form, setForm] = useState<CourseRow | null>(null);
   const [saving, setSaving] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [instructors, setInstructors] = useState<CourseInstructor[]>([]);
+  const [addPick, setAddPick] = useState<string>('');
 
   useEffect(() => {
     (async () => {
+      const [{ data: courseData }, { data: tmData }] = await Promise.all([
+        supabase
+          .from('courses')
+          .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,why_learn,intro_video_url,faqs')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('team_members')
+          .select('id,name,role,image_url,site_scope,is_active')
+          .eq('is_active', true)
+          .order('order_index'),
+      ]);
+      const rows = (courseData ?? []) as any as CourseRow[];
+      setCourses(rows);
+      if (rows[0]) setSelectedId(rows[0].id);
+      const tm = ((tmData ?? []) as any[]).filter((t) => !t.site_scope || t.site_scope === 'learn' || t.site_scope === 'both');
+      setTeamMembers(tm);
+    })();
+  }, []);
+
       const { data } = await supabase
         .from('courses')
         .select('id,title,title_en,landing_slug,short_description,short_description_en,trainer_bio,trainer_bio_en,start_date,class_time,total_classes,duration,learning_outcomes,why_learn,intro_video_url,faqs')
