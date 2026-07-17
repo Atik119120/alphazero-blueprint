@@ -679,6 +679,7 @@ const CoursesPage = () => {
 
 
         <div className="container mx-auto px-6">
+          {!isAllCoursesRoute && (<>
           {/* Centered header — Popular Courses */}
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center mb-10">
@@ -728,6 +729,21 @@ const CoursesPage = () => {
               })}
             </div>
           </div>
+          </>)}
+
+          {isAllCoursesRoute && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="max-w-7xl mx-auto mb-10 text-center">
+              <h1 className="text-3xl md:text-5xl font-display font-bold mb-3">
+                <span className="bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
+                  {isBn ? "সব কোর্স" : "All Courses"}
+                </span>
+              </h1>
+              <p className="text-muted-foreground text-sm md:text-base">
+                {isBn ? "ক্যাটাগরি অনুযায়ী সাজানো — পছন্দের কোর্স বেছে নিন" : "Browse by category and pick what fits you"}
+              </p>
+            </motion.div>
+          )}
 
 
 
