@@ -354,38 +354,58 @@ const LearnAboutPage = () => {
                 </p>
               </motion.div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                {(teamMembers || []).map((tr, i) => (
-                  <motion.div
-                    key={tr.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 }}
-                    className="group"
-                  >
-                    <div className="glass-card rounded-2xl p-4 text-center hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08]">
-                      <div className="relative w-24 h-24 mx-auto mb-3">
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/40 to-purple-500/40 blur-lg opacity-50 group-hover:opacity-80 transition-opacity" />
-                        <img
-                          src={tr.image_url || "/placeholder.svg"}
-                          alt={tr.name}
-                          className="relative w-24 h-24 rounded-full object-cover ring-2 ring-primary/20"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "/placeholder.svg";
-                          }}
-                        />
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {(() => {
+                  const list = (teamMembers || []).filter(
+                    (m: any) => !m.site_scope || m.site_scope === "learn"
+                  );
+                  const seen = new Set<string>();
+                  const unique = list.filter((m) => {
+                    const k = (m.name || "").trim().toLowerCase();
+                    if (!k || seen.has(k)) return false;
+                    seen.add(k);
+                    return true;
+                  });
+                  return unique.map((tr, i) => (
+                    <motion.div
+                      key={tr.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.05 }}
+                      className="group"
+                    >
+                      <div className="glass-card rounded-2xl overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08] flex flex-col h-full">
+                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-primary/10 to-purple-500/10">
+                          {tr.image_url ? (
+                            <img
+                              src={tr.image_url}
+                              alt={tr.name}
+                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center text-4xl font-display font-bold text-primary/60">
+                              {(tr.name || "?").charAt(0)}
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-4 text-center">
+                          <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">
+                            {tr.name}
+                          </h3>
+                          <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2">
+                            {tr.role}
+                          </p>
+                        </div>
                       </div>
-                      <h3 className="font-display font-bold text-sm mb-1 group-hover:text-primary transition-colors">
-                        {tr.name}
-                      </h3>
-                      <p className="text-[10px] text-muted-foreground leading-snug line-clamp-3">
-                        {tr.role}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ));
+                })()}
               </div>
+
             </div>
           </div>
         </section>
