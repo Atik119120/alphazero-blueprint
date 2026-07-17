@@ -729,7 +729,7 @@ const CoursesPage = () => {
                       })()}
 
                       {/* Body */}
-                      <div className="flex flex-col px-3 pt-4 pb-3 gap-2.5">
+                      <div className="flex flex-col flex-1 px-3 pt-4 pb-3 gap-2.5">
                         <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
                           {isBn ? course.titleBn : course.titleEn}
                         </h3>
