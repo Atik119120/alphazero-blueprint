@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { GraduationCap, BookOpen, Users, Award, PlayCircle, Sparkles, Target, Rocket, Globe, CheckCircle, ArrowRight, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
-import Navbar from "@/components/Navbar";
+import CoursesNavbar from "@/components/CoursesNavbar";
 import CoursesFooter from "@/components/CoursesFooter";
 import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
 const learnLogo = learnLogoAssetJson.url;
@@ -107,7 +107,7 @@ const LearnAboutPage = () => {
 
   return (
     <>
-      <Navbar />
+      <CoursesNavbar />
       <div className="overflow-x-hidden bg-background">
         {/* Hero */}
         <section className="pt-32 pb-24 lg:pt-40 lg:pb-32 relative overflow-hidden">
