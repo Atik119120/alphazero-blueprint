@@ -54,7 +54,7 @@ const LearnContactPage = () => {
       <CoursesNavbar />
       <main className="min-h-screen bg-background pt-20">
       {/* Hero */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
+      <section className="relative pt-10 pb-8 lg:pt-14 lg:pb-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.05] via-background to-background" />
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
