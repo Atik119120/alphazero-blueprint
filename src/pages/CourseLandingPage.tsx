@@ -580,9 +580,7 @@ export default function CourseLandingPage() {
         </button>
       </div>
 
-      <footer className="border-t border-slate-200 py-8 text-center text-sm text-slate-500 bg-white lg:pb-8 pb-24">
-        © {new Date().getFullYear()} AlphaZero · <Link to="/" className="hover:text-cyan-600">Home</Link>
-      </footer>
+      <CoursesFooter />
     </div>
   );
 }
