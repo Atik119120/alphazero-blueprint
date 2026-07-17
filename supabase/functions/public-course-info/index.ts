@@ -103,6 +103,7 @@ Deno.serve(async (req) => {
         why_learn: course.why_learn ?? [],
         intro_video_url: course.intro_video_url ?? null,
         faqs: course.faqs ?? [],
+        instructors,
       },
       modules: modules ?? [],
       topics: topics ?? [],
