@@ -164,21 +164,43 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
   };
 
   const fetchStudents = async () => {
-    if (!profile?.id) return;
-    
+    if (!profile?.id || !user?.id) return;
+
     try {
+      // 1. Owner courses (courses.teacher_id = my profile id)
+      const { data: ownerCourses } = await supabase
+        .from('courses')
+        .select('id')
+        .eq('teacher_id', profile.id);
+      const ownerCourseIds = (ownerCourses || []).map((c: any) => c.id);
+
+      // 2. Co-instructor courses (course_instructors -> team_members -> my linked profile)
+      let coCourseIds: string[] = [];
+      if (profile.linked_team_member_id) {
+        const { data: ciRows } = await supabase
+          .from('course_instructors')
+          .select('course_id')
+          .eq('instructor_id', profile.linked_team_member_id);
+        coCourseIds = (ciRows || []).map((r: any) => r.course_id);
+      }
+
+      const courseIds = [...new Set([...ownerCourseIds, ...coCourseIds])];
+      if (courseIds.length === 0) {
+        setStudents([]);
+        return;
+      }
+
       const { data: enrollments, error } = await supabase
         .from('student_courses')
-        .select(`
-          user_id,
-          courses!inner(teacher_id)
-        `)
+        .select('user_id')
         .eq('is_active', true)
-        .eq('courses.teacher_id', profile.id);
+        .in('course_id', courseIds);
 
       if (error) throw error;
 
-      const studentUserIds = [...new Set((enrollments || []).map((row) => row.user_id))];
+      const studentUserIds = [...new Set((enrollments || []).map((row) => row.user_id))].filter(
+        (id) => id && id !== user.id,
+      );
 
       if (studentUserIds.length === 0) {
         setStudents([]);
@@ -192,7 +214,7 @@ export default function TeacherChatTab({ courses, language }: TeacherChatTabProp
         .order('full_name', { ascending: true });
 
       if (profilesError) throw profilesError;
-      
+
       setStudents((studentProfiles || []) as StudentContact[]);
     } catch (err) {
       console.error('Error fetching students:', err);
