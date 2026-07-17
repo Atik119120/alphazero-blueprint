@@ -73,6 +73,7 @@ export default function LandingPageManagement() {
       .from('courses')
       .update({
         landing_slug: form.landing_slug || null,
+        intro_video_url: form.intro_video_url || null,
         short_description: form.short_description,
         short_description_en: form.short_description_en,
         trainer_bio: form.trainer_bio,
@@ -82,6 +83,7 @@ export default function LandingPageManagement() {
         total_classes: form.total_classes,
         duration: form.duration,
         learning_outcomes: form.learning_outcomes ?? [],
+        why_learn: form.why_learn ?? [],
         faqs: form.faqs ?? [],
       } as any)
       .eq('id', form.id);
