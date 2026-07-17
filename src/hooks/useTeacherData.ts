@@ -122,16 +122,31 @@ export function useTeacherCourses() {
     try {
       setIsLoading(true);
 
+      // Also include courses where this teacher is a co-instructor (course_instructors)
+      let coInstructorCourseIds: string[] = [];
+      if (profile.linked_team_member_id) {
+        const { data: ciRows } = await supabase
+          .from('course_instructors')
+          .select('course_id')
+          .eq('instructor_id', profile.linked_team_member_id);
+        coInstructorCourseIds = (ciRows || []).map((r: any) => r.course_id);
+      }
+
+      const orFilter = coInstructorCourseIds.length
+        ? `teacher_id.eq.${profile.id},id.in.(${coInstructorCourseIds.join(',')})`
+        : `teacher_id.eq.${profile.id}`;
+
       const { data, error: fetchError } = await supabase
         .from('courses')
         .select(`
           *,
           videos:videos(id)
         `)
-        .eq('teacher_id', profile.id)
+        .or(orFilter)
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
+
 
       // Get enrolled students count for each course
       const coursesWithStats = await Promise.all(
