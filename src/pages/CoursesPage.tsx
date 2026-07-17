@@ -178,7 +178,7 @@ const translations = {
     beginnerFriendly: "Beginner-Friendly", certificate: "Certificate Provided", expertTrainer: "Expert Trainers",
     aboutTitle: "About", aboutDesc: "Learn with AlphaZero teaches practical, job-ready and AI-powered skills so students can build websites, brands, and digital careers without needing deep technical knowledge. All courses are 100% online-based, designed for beginners and affordable for Bangladesh market.",
     ourCourses: "Our", coursesTitle: "Courses", coursesSubtitle: "Professional Online Courses - Start Your Career Today",
-    popularCourses: "Popular Courses",
+    popularCourses: "AlphaZero Academy",
     coursesDesc: "We have designed our courses with the most demanding professional skills. The knowledge, experience, and expertise gained through the program will ensure your desired career in the global market. From the list below you can enroll in any online or offline course at any time.",
     catAll: "All Course", catGraphic: "Graphic & Multimedia", catWeb: "Web & Software", catMarketing: "Digital Marketing", cat3D: "3D Animation & Visualization",
     special: "Special", upcoming: "Coming Soon", trainer: "Trainer", courseFee: "Course Fee",
