@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -9,13 +9,18 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   CheckCircle2, Calendar, Clock, Users, GraduationCap,
-  PlayCircle, Sparkles, BookOpen, ArrowRight, AlertCircle,
+  PlayCircle, Sparkles, BookOpen, ArrowRight, AlertCircle, Target,
 } from 'lucide-react';
 
-const SLUG = 'vibe-coding';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const API_URL = `${SUPABASE_URL}/functions/v1/public-course-info?slug=${SLUG}`;
+
+// Extract YouTube video ID from various YouTube URL formats
+function getYouTubeId(url?: string | null): string | null {
+  if (!url) return null;
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
 
 type Module = { id: string; title: string; description: string | null; order_index: number };
 type FAQ = { question: string; answer: string };
