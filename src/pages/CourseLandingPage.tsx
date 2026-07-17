@@ -356,14 +356,27 @@ export default function CourseLandingPage() {
                   {isBn ? 'ইন্সট্রাক্টর' : 'Instructor'}
                 </h2>
                 <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
-                  {c.trainer_image && (
-                    <img
-                      src={c.trainer_image}
-                      alt={c.trainer_name}
-                      className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg shrink-0"
-                      loading="lazy"
-                    />
-                  )}
+                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-lg shrink-0 bg-gradient-to-br from-teal-100 to-slate-100 flex items-center justify-center">
+                    {c.trainer_image ? (
+                      <img
+                        src={c.trainer_image}
+                        alt={c.trainer_name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        crossOrigin="anonymous"
+                        onError={(e) => {
+                          const t = e.currentTarget;
+                          t.onerror = null;
+                          t.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.trainer_name || 'Instructor')}&background=0d9488&color=fff&size=256&bold=true`;
+                        }}
+                      />
+                    ) : (
+                      <span className="text-4xl font-bold text-teal-700">
+                        {(c.trainer_name || '?').charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
                   <div className="text-center md:text-left">
                     <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-1">{c.trainer_name}</h3>
                     {c.trainer_designation && (
