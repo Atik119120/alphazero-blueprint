@@ -42,36 +42,39 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
-          className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center"
+          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center ${isLearn ? "bg-white" : "bg-black"}`}
         >
-          {/* Logo - Same as header but inverted to white for black background */}
+          {/* Logo */}
           <div className="relative z-10">
-            <img
-              src={logo}
+            <motion.img
+              src={isLearn ? learnIcon : logo}
               alt="AlphaZero"
               width={96}
               height={96}
-              className="h-20 md:h-24 w-auto invert"
+              className={`h-20 md:h-24 w-auto ${isLearn ? "" : "invert"}`}
               loading="eager"
               fetchPriority="high"
               decoding="sync"
+              initial={{ scale: 0.85, opacity: 0.6 }}
+              animate={{ scale: [0.9, 1.05, 0.95, 1], opacity: 1 }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
 
-          {/* Tagline - faster animation */}
+          {/* Tagline */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.2 }}
-            className="mt-4 text-base md:text-lg text-white font-display tracking-wide font-medium"
+            className={`mt-4 text-base md:text-lg font-display tracking-wide font-medium ${isLearn ? "text-slate-800" : "text-white"}`}
           >
-            From <span className="text-primary">zero</span> to impact
+            From <span className={isLearn ? "bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent" : "text-primary"}>zero</span> to impact
           </motion.p>
 
-          {/* Progress bar - minimal */}
-          <div className="mt-4 w-32 h-0.5 bg-white/20 rounded-full overflow-hidden">
+          {/* Progress bar */}
+          <div className={`mt-4 w-32 h-0.5 rounded-full overflow-hidden ${isLearn ? "bg-slate-200" : "bg-white/20"}`}>
             <motion.div
-              className="h-full bg-primary rounded-full"
+              className={`h-full rounded-full ${isLearn ? "bg-gradient-to-r from-cyan-500 to-blue-600" : "bg-primary"}`}
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.02, ease: "linear" }}
