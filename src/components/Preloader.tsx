@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, memo } from "react";
 import logoAssetJson from "@/assets/logo.png.asset.json";
+import learnIconJson from "@/assets/learn-preloader-icon.png.asset.json";
+import { useSiteScope } from "@/contexts/SiteScopeContext";
 const logo = logoAssetJson.url;
-
-// Use the same header logo with invert filter for white on black background
+const learnIcon = learnIconJson.url;
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
