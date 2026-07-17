@@ -374,6 +374,51 @@ export type Database = {
           },
         ]
       }
+      course_instructors: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          instructor_id: string
+          order_index: number
+          role: Database["public"]["Enums"]["course_instructor_role"]
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          instructor_id: string
+          order_index?: number
+          role?: Database["public"]["Enums"]["course_instructor_role"]
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          instructor_id?: string
+          order_index?: number
+          role?: Database["public"]["Enums"]["course_instructor_role"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_instructors_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_instructors_instructor_id_fkey"
+            columns: ["instructor_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_modules: {
         Row: {
           course_id: string
@@ -1828,6 +1873,7 @@ export type Database = {
           portfolio_url: string | null
           role: string
           show_on_homepage: boolean | null
+          site_scope: string
           threads_url: string | null
           twitter_url: string | null
           updated_at: string
@@ -1850,6 +1896,7 @@ export type Database = {
           portfolio_url?: string | null
           role: string
           show_on_homepage?: boolean | null
+          site_scope?: string
           threads_url?: string | null
           twitter_url?: string | null
           updated_at?: string
@@ -1872,6 +1919,7 @@ export type Database = {
           portfolio_url?: string | null
           role?: string
           show_on_homepage?: boolean | null
+          site_scope?: string
           threads_url?: string | null
           twitter_url?: string | null
           updated_at?: string
@@ -2265,6 +2313,10 @@ export type Database = {
         Args: { _room_id: string; _user_id: string }
         Returns: boolean
       }
+      is_course_instructor: {
+        Args: { _course_id: string; _owner_only?: boolean; _user_id: string }
+        Returns: boolean
+      }
       is_progress_visible_to_teacher: {
         Args: { _student_user_id: string; _video_id: string }
         Returns: boolean
@@ -2286,6 +2338,7 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "student" | "teacher"
+      course_instructor_role: "owner" | "co_instructor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2414,6 +2467,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "student", "teacher"],
+      course_instructor_role: ["owner", "co_instructor"],
     },
   },
 } as const
