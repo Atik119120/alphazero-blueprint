@@ -835,7 +835,7 @@ const CoursesPage = () => {
         <div className="container mx-auto px-6 relative z-10">
 
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center mb-14 max-w-3xl mx-auto">
+            className="text-center mb-6 max-w-3xl mx-auto">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
               {cms("instructors.badge.bn", "instructors.badge.en", "আমাদের টিম", "Our Team")}
             </span>
