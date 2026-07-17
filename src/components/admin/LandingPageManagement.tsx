@@ -126,8 +126,8 @@ export default function LandingPageManagement() {
             </div>
             {form.landing_slug && (
               <Button variant="outline" asChild>
-                <a href={`/${form.landing_slug}`} target="_blank" rel="noreferrer">
-                  <ExternalLink className="h-4 w-4 mr-2" /> /{form.landing_slug}
+                <a href={`/courses/${form.landing_slug}`} target="_blank" rel="noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-2" /> /courses/{form.landing_slug}
                 </a>
               </Button>
             )}
@@ -135,13 +135,34 @@ export default function LandingPageManagement() {
 
           <div>
             <Label>{isBn ? 'URL Slug' : 'URL Slug'} *</Label>
+            <div className="flex gap-2">
+              <Input
+                value={form.landing_slug ?? ''}
+                onChange={(e) => update({ landing_slug: e.target.value.trim() })}
+                placeholder="graphic-design-masterclass"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => update({ landing_slug: slugify(form.title_en || form.title) })}
+              >
+                {isBn ? 'Auto' : 'Auto'}
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              /courses/{form.landing_slug || 'your-slug'}
+            </p>
+          </div>
+
+          <div>
+            <Label>{isBn ? 'YouTube Intro Video URL' : 'YouTube Intro Video URL'}</Label>
             <Input
-              value={form.landing_slug ?? ''}
-              onChange={(e) => update({ landing_slug: e.target.value.trim() })}
-              placeholder="vibe-coding"
+              value={form.intro_video_url ?? ''}
+              onChange={(e) => update({ intro_video_url: e.target.value })}
+              placeholder="https://www.youtube.com/watch?v=..."
             />
             <p className="text-xs text-muted-foreground mt-1">
-              {isBn ? 'Example: vibe-coding → /vibe-coding' : 'Example: vibe-coding → /vibe-coding'}
+              {isBn ? 'ল্যান্ডিং পেজের একদম উপরে দেখাবে।' : 'Shown at the top of the landing page.'}
             </p>
           </div>
 
