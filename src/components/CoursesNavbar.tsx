@@ -27,7 +27,7 @@ const CoursesNavbar = () => {
   const aboutHref = "/learn-about";
   const agencyHref = isLearnSubdomain ? "https://alphazero.online" : "/";
 
-  const navLinks = [
+  const navLinks: Array<{ name: string; to?: string; href?: string; id?: string; icon: any; internal?: boolean; external?: boolean }> = [
     { name: isBn ? "হোম" : "Home", to: coursesHomeHref, id: "home", icon: Home, internal: true },
     { name: isBn ? "সম্পর্কে" : "About Us", to: aboutHref, icon: Info, internal: true },
     { name: isBn ? "কোর্স" : "Courses", to: "/courses/all", id: "courses", icon: LayoutGrid, internal: true },
