@@ -198,10 +198,25 @@ export default function CourseLandingPage() {
       {/* Minimal top bar */}
       <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <Link to="/" className="flex items-center"><img src={learnLogo.url} alt="Learn with AlphaZero" className="h-9 w-auto" /></Link>
+          <Link to="/" className="flex items-center" aria-label="Learn with AlphaZero">
+            <div
+              className="h-9 w-36"
+              style={{
+                backgroundImage: `linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-mid)), hsl(var(--gradient-end)))`,
+                WebkitMaskImage: `url(${learnLogo.url})`,
+                maskImage: `url(${learnLogo.url})`,
+                WebkitMaskRepeat: 'no-repeat',
+                maskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'left center',
+                maskPosition: 'left center',
+                WebkitMaskSize: 'contain',
+                maskSize: 'contain',
+              }}
+            />
+          </Link>
           <div className="flex items-center gap-2">
-            <a href={loginHref} className="text-sm font-semibold text-slate-700 hover:text-teal-600 px-3 py-1.5">{isBn ? 'লগইন' : 'Login'}</a>
-            <button onClick={handleEnroll} className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-sm">
+            <a href={loginHref} className="text-sm font-semibold text-slate-700 hover:text-cyan-600 px-3 py-1.5">{isBn ? 'লগইন' : 'Login'}</a>
+            <button onClick={handleEnroll} className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-sm">
               {isBn ? 'এনরোল' : 'Enroll'}
             </button>
           </div>
@@ -210,12 +225,12 @@ export default function CourseLandingPage() {
 
       {/* HERO BANNER */}
       <section className="bg-[#0B1120] text-white py-12 lg:py-20 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-cyan-500/10 blur-[120px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             <div className="lg:col-span-7">
               <div className="flex items-center gap-3 mb-6 flex-wrap">
-                <span className="bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">
+                <span className="bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">
                   AlphaZero Academy
                 </span>
                 {c.course_type && (
@@ -235,8 +250,8 @@ export default function CourseLandingPage() {
               <div className="flex flex-wrap gap-6">
                 {c.duration && (
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-                      <Clock className="w-6 h-6 text-teal-400" />
+                    <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                      <Clock className="w-6 h-6 text-cyan-400" />
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">{isBn ? 'সময়কাল' : 'Duration'}</p>
@@ -246,8 +261,8 @@ export default function CourseLandingPage() {
                 )}
                 {c.total_classes && (
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-                      <GraduationCap className="w-6 h-6 text-teal-400" />
+                    <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                      <GraduationCap className="w-6 h-6 text-cyan-400" />
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">{isBn ? 'মোট ক্লাস' : 'Classes'}</p>
@@ -257,8 +272,8 @@ export default function CourseLandingPage() {
                 )}
                 {c.start_date && (
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
-                      <Calendar className="w-6 h-6 text-teal-400" />
+                    <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
+                      <Calendar className="w-6 h-6 text-cyan-400" />
                     </div>
                     <div>
                       <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">{isBn ? 'শুরু' : 'Start'}</p>
@@ -271,7 +286,7 @@ export default function CourseLandingPage() {
 
             <div className="lg:col-span-5">
               <div className="relative group">
-                <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000" />
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000" />
                 <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-800 border border-white/10 shadow-2xl">
                   {videoId ? (
                     <iframe
@@ -306,7 +321,7 @@ export default function CourseLandingPage() {
             {desc && (
               <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'কোর্স সম্পর্কে' : 'About this Course'}
                 </h2>
                 <p className="text-slate-600 leading-relaxed whitespace-pre-line">{desc}</p>
@@ -330,7 +345,7 @@ export default function CourseLandingPage() {
               return (
                 <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                   <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                    <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                     {isBn ? (isMulti ? 'ইন্সট্রাক্টররা' : 'ইন্সট্রাক্টর') : (isMulti ? 'Instructors' : 'Instructor')}
                   </h2>
                   <div className={isMulti ? 'grid sm:grid-cols-2 gap-5' : 'flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start'}>
@@ -343,7 +358,7 @@ export default function CourseLandingPage() {
                             : 'flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start w-full'
                         }
                       >
-                        <div className={`${isMulti ? 'w-20 h-20' : 'w-32 h-32 md:w-40 md:h-40'} rounded-2xl overflow-hidden shadow-md shrink-0 bg-gradient-to-br from-teal-100 to-slate-100 flex items-center justify-center`}>
+                        <div className={`${isMulti ? 'w-20 h-20' : 'w-32 h-32 md:w-40 md:h-40'} rounded-2xl overflow-hidden shadow-md shrink-0 bg-gradient-to-br from-cyan-100 to-slate-100 flex items-center justify-center`}>
                           {ins.image ? (
                             <img
                               src={ins.image}
@@ -358,7 +373,7 @@ export default function CourseLandingPage() {
                               }}
                             />
                           ) : (
-                            <span className={`${isMulti ? 'text-2xl' : 'text-4xl'} font-bold text-teal-700`}>
+                            <span className={`${isMulti ? 'text-2xl' : 'text-4xl'} font-bold text-cyan-700`}>
                               {ins.name.charAt(0).toUpperCase()}
                             </span>
                           )}
@@ -368,7 +383,7 @@ export default function CourseLandingPage() {
                             {ins.name}
                           </h3>
                           {ins.designation && (
-                            <p className={`text-teal-600 font-semibold ${isMulti ? 'text-sm mb-0' : 'mb-3'}`}>
+                            <p className={`text-cyan-600 font-semibold ${isMulti ? 'text-sm mb-0' : 'mb-3'}`}>
                               {ins.designation}
                             </p>
                           )}
@@ -387,13 +402,13 @@ export default function CourseLandingPage() {
             {whyLearn.length > 0 && (
               <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
                   {whyLearn.map((w, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <Target className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <Target className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
                       <span className="text-slate-600">{w}</span>
                     </div>
                   ))}
@@ -405,7 +420,7 @@ export default function CourseLandingPage() {
             {data!.modules.length > 0 && (
               <section id="syllabus">
                 <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'কোর্স সিলেবাস' : 'Course Syllabus'}
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
@@ -413,11 +428,11 @@ export default function CourseLandingPage() {
                     <AccordionItem
                       key={m.id}
                       value={`mod-${m.id}`}
-                      className="bg-white rounded-xl border border-slate-200 overflow-hidden data-[state=open]:border-teal-500 data-[state=open]:shadow-md"
+                      className="bg-white rounded-xl border border-slate-200 overflow-hidden data-[state=open]:border-cyan-500 data-[state=open]:shadow-md"
                     >
-                      <AccordionTrigger className="px-5 py-4 hover:bg-slate-50 hover:no-underline data-[state=open]:bg-teal-50 data-[state=open]:text-teal-900">
+                      <AccordionTrigger className="px-5 py-4 hover:bg-slate-50 hover:no-underline data-[state=open]:bg-cyan-50 data-[state=open]:text-cyan-900">
                         <div className="flex items-center gap-3 text-left">
-                          <span className="h-8 w-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center text-sm font-bold shrink-0">
+                          <span className="h-8 w-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center text-sm font-bold shrink-0">
                             {String(i + 1).padStart(2, '0')}
                           </span>
                           <span className="font-bold text-slate-800">{m.title}</span>
@@ -438,13 +453,13 @@ export default function CourseLandingPage() {
             {outcomes.length > 0 && (
               <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'এই কোর্স থেকে যা শিখবেন' : "What You'll Learn"}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
                   {outcomes.map((o, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0 mt-0.5" />
                       <span className="text-slate-600">{o}</span>
                     </div>
                   ))}
@@ -456,7 +471,7 @@ export default function CourseLandingPage() {
             {faqs.length > 0 && (
               <section>
                 <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'সাধারণ প্রশ্ন' : 'Frequently Asked Questions'}
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
@@ -484,7 +499,7 @@ export default function CourseLandingPage() {
 
                 <button
                   onClick={handleEnroll}
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white py-4 rounded-xl font-bold text-lg mb-6 shadow-lg shadow-teal-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white py-4 rounded-xl font-bold text-lg mb-6 shadow-lg shadow-cyan-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   {isBn ? 'কোর্সটি এনরোল করুন' : 'Enroll Now'}
                   <ArrowRight className="w-5 h-5" />
@@ -497,37 +512,37 @@ export default function CourseLandingPage() {
                   <ul className="space-y-3">
                     {c.total_classes && (
                       <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                        <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
-                          <PlayCircle className="w-4 h-4 text-teal-600" />
+                        <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
+                          <PlayCircle className="w-4 h-4 text-cyan-600" />
                         </div>
                         {c.total_classes} {isBn ? 'ক্লাস' : 'Classes'}
                       </li>
                     )}
                     {c.duration && (
                       <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                        <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
-                          <Clock className="w-4 h-4 text-teal-600" />
+                        <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
+                          <Clock className="w-4 h-4 text-cyan-600" />
                         </div>
                         {c.duration}
                       </li>
                     )}
                     {c.class_time && (
                       <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                        <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
-                          <Calendar className="w-4 h-4 text-teal-600" />
+                        <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
+                          <Calendar className="w-4 h-4 text-cyan-600" />
                         </div>
                         {c.class_time}
                       </li>
                     )}
                     <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                      <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
-                        <GraduationCap className="w-4 h-4 text-teal-600" />
+                      <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
+                        <GraduationCap className="w-4 h-4 text-cyan-600" />
                       </div>
                       {isBn ? 'কোর্স সার্টিফিকেট' : 'Course Certificate'}
                     </li>
                     <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                      <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
-                        <Users className="w-4 h-4 text-teal-600" />
+                      <div className="w-8 h-8 bg-cyan-50 rounded-lg flex items-center justify-center shrink-0">
+                        <Users className="w-4 h-4 text-cyan-600" />
                       </div>
                       {isBn ? '২৪/৭ সাপোর্ট' : '24/7 Support'}
                     </li>
@@ -535,7 +550,7 @@ export default function CourseLandingPage() {
                 </div>
 
                 <div className="mt-6 pt-5 border-t border-slate-100">
-                  <a href={signupHref} className="block text-center text-sm font-semibold text-teal-700 hover:text-teal-900">
+                  <a href={signupHref} className="block text-center text-sm font-semibold text-cyan-700 hover:text-cyan-900">
                     {isBn ? 'নতুন? সাইন আপ করুন →' : 'New here? Sign up →'}
                   </a>
                 </div>
@@ -551,13 +566,13 @@ export default function CourseLandingPage() {
           <div className="text-lg font-black text-slate-900 leading-none">৳{Number(c.price).toLocaleString()}</div>
           <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{isBn ? 'কোর্স ফি' : 'Course Fee'}</div>
         </div>
-        <button onClick={handleEnroll} className="flex-1 bg-teal-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2">
+        <button onClick={handleEnroll} className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2">
           {isBn ? 'এনরোল' : 'Enroll'} <ArrowRight className="w-4 h-4" />
         </button>
       </div>
 
       <footer className="border-t border-slate-200 py-8 text-center text-sm text-slate-500 bg-white lg:pb-8 pb-24">
-        © {new Date().getFullYear()} AlphaZero · <Link to="/" className="hover:text-teal-600">Home</Link>
+        © {new Date().getFullYear()} AlphaZero · <Link to="/" className="hover:text-cyan-600">Home</Link>
       </footer>
     </div>
   );
