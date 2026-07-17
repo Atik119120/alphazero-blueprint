@@ -904,58 +904,83 @@ const CoursesPage = () => {
       )}
 
 
-      {/* Contact / CTA Section */}
+      {/* Student Feedback Section */}
       {!isAllCoursesRoute && (
-      <section id="contact" className="py-10 relative overflow-hidden border-t border-border/40">
-
+      <section id="feedback" className="py-16 relative overflow-hidden border-t border-border/40">
         <div className="absolute inset-0 mesh-bg opacity-50" />
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-10 lg:p-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-3xl mx-auto text-center mb-10"
+          >
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
-              {cms("cta.badge.bn", "cta.badge.en", "যোগাযোগ", "Get in Touch")}
+              {isBn ? "স্টুডেন্ট রিভিউ" : "Student Reviews"}
             </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold mb-4">
-              {cms("cta.title.bn", "cta.title.en", "শুরু করুন আপনার ক্যারিয়ার", t.startCareer)}{" "}
-              <span className="gradient-text">{cms("cta.title2.bn", "cta.title2.en", "আজই", t.startToday)}</span>
+            <h2 className="text-3xl lg:text-4xl font-display font-bold">
+              {isBn ? "আমাদের শিক্ষার্থীরা কী " : "What our students "}
+              <span className="gradient-text">{isBn ? "বলছেন" : "say"}</span>
             </h2>
-            <p className="text-muted-foreground text-lg mb-8 max-w-xl mx-auto">
-              {cms("cta.subtitle.bn", "cta.subtitle.en", "নতুন স্কিল শিখুন, দক্ষতা তৈরি করুন এবং ইন্ডাস্ট্রিতে জায়গা করে নিন।", t.ctaSubtitle)}
+            <p className="text-muted-foreground mt-3">
+              {isBn
+                ? "সত্যিকারের অভিজ্ঞতা, সত্যিকারের ফলাফল।"
+                : "Real experiences, real results from our learners."}
             </p>
-
-            {(() => {
-              const phone = getPageContent("cta.phone") || "+880 1776-965533";
-              const email = getPageContent("cta.email") || "learn@alphazero.online";
-              const waNum = phone.replace(/[^\d+]/g, "");
-              return (
-                <div className="grid sm:grid-cols-3 gap-4 mb-8 max-w-2xl mx-auto text-left">
-                  <a href={`tel:${waNum}`} className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ফোন" : "Phone"}</p>
-                    <p className="text-sm font-semibold">{phone}</p>
-                  </a>
-                  <a href={`mailto:${email}`} className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">{isBn ? "ইমেইল" : "Email"}</p>
-                    <p className="text-sm font-semibold break-all">{email}</p>
-                  </a>
-                  <a href={`https://wa.me/${waNum}`} target="_blank" rel="noopener noreferrer" className="glass-card rounded-xl p-4 hover:border-primary/40 transition-all">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">WhatsApp</p>
-                    <p className="text-sm font-semibold">{isBn ? "চ্যাট করুন" : "Chat with us"}</p>
-                  </a>
-                </div>
-              );
-            })()}
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="#courses" className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20">
-                <GraduationCap className="w-5 h-5" />{t.enrollButton}
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a href="https://wa.me/+8801776965533" target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 glass-card text-foreground rounded-xl font-medium text-lg hover:border-primary/30 transition-all duration-300">
-                {t.whatsappContact}
-              </a>
-            </div>
           </motion.div>
+
+          <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
+            {[
+              {
+                name: isBn ? "রাফিদ হাসান" : "Rafid Hasan",
+                role: isBn ? "গ্রাফিক ডিজাইন শিক্ষার্থী" : "Graphic Design Student",
+                quote: isBn
+                  ? "ইনস্ট্রাক্টররা অনেক হেল্পফুল। প্র্যাকটিকাল প্রজেক্টগুলো ক্যারিয়ার গড়তে সাহায্য করেছে।"
+                  : "The instructors are super helpful. The practical projects genuinely helped me start freelancing.",
+              },
+              {
+                name: isBn ? "সাদিয়া আক্তার" : "Sadia Akter",
+                role: isBn ? "ডিজিটাল মার্কেটিং" : "Digital Marketing",
+                quote: isBn
+                  ? "কোর্সের কারিকুলাম একদম আপডেটেড। SEO আর মেটা মার্কেটিং একদম হাতে-কলমে শিখেছি।"
+                  : "The curriculum is up-to-date. I learned SEO and Meta marketing hands-on, step by step.",
+              },
+              {
+                name: isBn ? "তানভীর আহমেদ" : "Tanvir Ahmed",
+                role: isBn ? "ভাইব কোডিং" : "Vibe Coding",
+                quote: isBn
+                  ? "AlphaZero-এর টিচিং স্টাইল অসাধারণ। প্রথম মাসেই নিজে একটা ওয়েবসাইট বানাতে পেরেছি।"
+                  : "AlphaZero's teaching style is amazing. I built my own website within the first month.",
+              },
+            ].map((f, i) => (
+              <motion.div
+                key={f.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all hover:-translate-y-1"
+              >
+                <div className="flex gap-1 mb-4 text-primary">
+                  {"★★★★★".split("").map((s, idx) => (
+                    <span key={idx} className="text-sm">{s}</span>
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                  "{f.quote}"
+                </p>
+                <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
+                    {f.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-sm">{f.name}</p>
+                    <p className="text-[11px] text-muted-foreground">{f.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
       )}
