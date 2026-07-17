@@ -24,8 +24,13 @@ type CourseRow = {
   total_classes: string | null;
   duration: string | null;
   learning_outcomes: string[] | null;
+  why_learn: string[] | null;
+  intro_video_url: string | null;
   faqs: { question: string; answer: string }[] | null;
 };
+
+const slugify = (s: string) =>
+  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
 
 export default function LandingPageManagement() {
   const { language } = useLanguage();
