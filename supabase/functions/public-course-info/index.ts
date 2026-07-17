@@ -55,17 +55,27 @@ Deno.serve(async (req) => {
 
     let instructors: Array<{ name: string; designation: string | null; image: string | null; bio: string | null }> = [];
     if (parts.length > 0) {
-      const orExpr = parts.map((p) => `name.ilike.%${p.replace(/[%,()]/g, '')}%`).join(',');
+      // Fetch all active team members and match client-side by token overlap (robust to prefixes/suffixes like "MD.", "Ahmed")
       const { data: tm } = await supabase
         .from('team_members')
         .select('name,role,image_url,bio')
-        .or(orExpr);
+        .eq('is_active', true);
+
+      const normalize = (s: string) =>
+        s.toLowerCase().replace(/[^a-z0-9\u0980-\u09FF\s]/g, ' ').replace(/\s+/g, ' ').trim();
+      const tokens = (s: string) =>
+        normalize(s).split(' ').filter((t) => t.length >= 3 && !['md', 'mrs', 'mr', 'dr'].includes(t));
 
       instructors = parts.map((p) => {
-        const match = (tm ?? []).find((t: any) =>
-          (t.name || '').toLowerCase().includes(p.toLowerCase()) ||
-          p.toLowerCase().includes((t.name || '').toLowerCase())
-        );
+        const pTokens = tokens(p);
+        let best: any = null;
+        let bestScore = 0;
+        for (const t of tm ?? []) {
+          const tTokens = tokens(t.name || '');
+          const score = pTokens.filter((x) => tTokens.includes(x)).length;
+          if (score > bestScore) { bestScore = score; best = t; }
+        }
+        const match = bestScore > 0 ? best : null;
         return {
           name: match?.name || p,
           designation: match?.role || (parts.length === 1 ? course.trainer_designation : null),
@@ -74,6 +84,7 @@ Deno.serve(async (req) => {
         };
       });
     }
+
 
 
     return json({
