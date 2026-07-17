@@ -192,255 +192,328 @@ export default function CourseLandingPage() {
   }
 
   return (
-    <div className="min-h-screen mesh-bg text-foreground">
-
+    <div className="min-h-screen bg-slate-50 text-slate-900">
 
       {/* Minimal top bar */}
-      <header className="border-b border-border/40 backdrop-blur-md bg-background/60 sticky top-0 z-50">
-        <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+      <header className="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center"><img src={learnLogo.url} alt="Learn with AlphaZero" className="h-9 w-auto" /></Link>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" asChild><a href={loginHref}>{isBn ? 'লগইন' : 'Login'}</a></Button>
-            <Button size="sm" onClick={handleEnroll}>{isBn ? 'এনরোল' : 'Enroll'}</Button>
+            <a href={loginHref} className="text-sm font-semibold text-slate-700 hover:text-teal-600 px-3 py-1.5">{isBn ? 'লগইন' : 'Login'}</a>
+            <button onClick={handleEnroll} className="bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold px-4 py-2 rounded-lg shadow-sm">
+              {isBn ? 'এনরোল' : 'Enroll'}
+            </button>
           </div>
         </div>
       </header>
 
-      {/* INTRO VIDEO */}
-      {videoId && (
-        <section className="container mx-auto px-4 pt-10 lg:pt-14">
-          <div className="max-w-4xl mx-auto">
-            <div className="glass-card rounded-2xl overflow-hidden border border-border/50 aspect-video shadow-2xl">
-              <iframe
-                src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
-                title={title || 'Course intro'}
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* HERO */}
-      <section className="container mx-auto px-4 pt-12 pb-16 lg:pt-20 lg:pb-24">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          <div className="space-y-6">
-            <Badge variant="secondary" className="gap-1.5">
-              <Sparkles className="h-3 w-3" /> {isBn ? 'প্রিমিয়াম কোর্স' : 'Premium Course'}
-            </Badge>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              {title}
-            </h1>
-            {shortDesc && (
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">{shortDesc}</p>
-            )}
-            <div className="flex items-baseline gap-3">
-              <span className="font-display text-4xl font-bold text-primary">৳{Number(c.price).toLocaleString()}</span>
-              {c.course_type && (
-                <Badge variant="outline" className="capitalize">{c.course_type.replace('_', ' ')}</Badge>
+      {/* HERO BANNER */}
+      <section className="bg-[#0B1120] text-white py-12 lg:py-20 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-teal-500/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="flex items-center gap-3 mb-6 flex-wrap">
+                <span className="bg-teal-500/20 text-teal-300 border border-teal-500/30 px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase">
+                  AlphaZero Academy
+                </span>
+                {c.course_type && (
+                  <span className="bg-white/5 text-slate-300 border border-white/10 px-3 py-1 rounded-full text-xs font-semibold capitalize">
+                    {c.course_type.replace('_', ' ')}
+                  </span>
+                )}
+              </div>
+              <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold mb-5 leading-tight text-white">
+                {title}
+              </h1>
+              {shortDesc && (
+                <p className="text-base md:text-lg text-slate-300 mb-8 max-w-2xl leading-relaxed">
+                  {shortDesc}
+                </p>
               )}
+              <div className="flex flex-wrap gap-6">
+                {c.duration && (
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+                      <Clock className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">{isBn ? 'সময়কাল' : 'Duration'}</p>
+                      <p className="text-sm font-semibold">{c.duration}</p>
+                    </div>
+                  </div>
+                )}
+                {c.total_classes && (
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+                      <GraduationCap className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">{isBn ? 'মোট ক্লাস' : 'Classes'}</p>
+                      <p className="text-sm font-semibold">{c.total_classes}</p>
+                    </div>
+                  </div>
+                )}
+                {c.start_date && (
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center">
+                      <Calendar className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-wider font-bold">{isBn ? 'শুরু' : 'Start'}</p>
+                      <p className="text-sm font-semibold">{c.start_date}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex flex-wrap gap-3 pt-2">
-              <Button size="lg" onClick={handleEnroll} className="text-base">
-                {isBn ? 'এখনই এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href="#syllabus">{isBn ? 'সিলেবাস দেখুন' : 'View Syllabus'}</a>
-              </Button>
-            </div>
-          </div>
 
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-accent/30 blur-3xl rounded-full" />
-            <div className="relative glass-card rounded-2xl overflow-hidden border border-border/50 aspect-video">
-              {c.thumbnail_url ? (
-                <img src={c.thumbnail_url} alt={title || 'Course'} className="w-full h-full object-cover" loading="eager" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-muted">
-                  <BookOpen className="h-20 w-20 text-muted-foreground" />
+            <div className="lg:col-span-5">
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000" />
+                <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-800 border border-white/10 shadow-2xl">
+                  {videoId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                      title={title || 'Course intro'}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : c.thumbnail_url ? (
+                    <img src={c.thumbnail_url} alt={title || 'Course'} className="w-full h-full object-cover" loading="eager" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-800">
+                      <BookOpen className="h-20 w-20 text-slate-600" />
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ABOUT */}
-      {desc && (
-        <section className="container mx-auto px-4 py-16">
-          <div className="max-w-3xl mx-auto space-y-4">
-            <h2 className="font-display text-3xl md:text-4xl font-bold">
-              {isBn ? 'কোর্স সম্পর্কে' : 'About this Course'}
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg leading-relaxed whitespace-pre-line">
-              {desc}
-            </p>
-          </div>
-        </section>
-      )}
+      {/* MAIN CONTENT AREA */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
 
-      {/* WHAT YOU'LL LEARN */}
-      {outcomes.length > 0 && (
-        <section className="container mx-auto px-4 py-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
-            {isBn ? 'আপনি যা শিখবেন' : "What You'll Learn"}
-          </h2>
-          <div className="grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-            {outcomes.map((o, i) => (
-              <div key={i} className="glass-card p-4 rounded-xl flex gap-3">
-                <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-sm md:text-base">{o}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+          {/* LEFT COLUMN */}
+          <div className="lg:col-span-8 space-y-8">
 
-      {/* WHY LEARN */}
-      {whyLearn.length > 0 && (
-        <section className="container mx-auto px-4 py-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
-            {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            {whyLearn.map((w, i) => (
-              <div key={i} className="glass-card p-5 rounded-xl flex gap-3">
-                <Target className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                <span className="text-sm md:text-base">{w}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
+            {/* About */}
+            {desc && (
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'কোর্স সম্পর্কে' : 'About this Course'}
+                </h2>
+                <p className="text-slate-600 leading-relaxed whitespace-pre-line">{desc}</p>
+              </section>
+            )}
 
-      {/* MODULES */}
-      {data!.modules.length > 0 && (
-        <section id="syllabus" className="container mx-auto px-4 py-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
-            {isBn ? 'কোর্স মডিউল' : 'Course Modules'}
-          </h2>
-          <div className="max-w-3xl mx-auto space-y-3">
-            {data!.modules.map((m, i) => (
-              <Card key={m.id} className="glass-card">
-                <CardContent className="p-5 flex gap-4 items-start">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-display font-bold shrink-0">
-                    {String(i + 1).padStart(2, '0')}
+            {/* What you'll learn */}
+            {outcomes.length > 0 && (
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'এই কোর্স থেকে যা শিখবেন' : "What You'll Learn"}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                  {outcomes.map((o, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-600">{o}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Why learn */}
+            {whyLearn.length > 0 && (
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                  {whyLearn.map((w, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <Target className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-600">{w}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Instructor */}
+            {c.trainer_name && (
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'ইন্সট্রাক্টর' : 'Instructor'}
+                </h2>
+                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
+                  {c.trainer_image && (
+                    <img
+                      src={c.trainer_image}
+                      alt={c.trainer_name}
+                      className="w-32 h-32 md:w-40 md:h-40 rounded-2xl object-cover shadow-lg shrink-0"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="text-center md:text-left">
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-1">{c.trainer_name}</h3>
+                    {c.trainer_designation && (
+                      <p className="text-teal-600 font-bold mb-3">{c.trainer_designation}</p>
+                    )}
+                    {bio && <p className="text-slate-600 leading-relaxed">{bio}</p>}
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg">{m.title}</h3>
-                    {m.description && <p className="text-sm text-muted-foreground mt-1">{m.description}</p>}
-                  </div>
-                  <PlayCircle className="h-5 w-5 text-muted-foreground shrink-0" />
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-      )}
+                </div>
+              </section>
+            )}
 
-      {/* INSTRUCTOR */}
-      {c.trainer_name && (
-        <section className="container mx-auto px-4 py-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
-            {isBn ? 'আপনার ইন্সট্রাক্টর' : 'Your Instructor'}
-          </h2>
-          <Card className="glass-card max-w-3xl mx-auto">
-            <CardContent className="p-6 md:p-8 flex flex-col md:flex-row gap-6 items-center md:items-start">
-              {c.trainer_image && (
-                <img
-                  src={c.trainer_image}
-                  alt={c.trainer_name}
-                  className="h-32 w-32 md:h-40 md:w-40 rounded-2xl object-cover border border-border/50 shrink-0"
-                  loading="lazy"
-                />
+            {/* Syllabus / Modules */}
+            {data!.modules.length > 0 && (
+              <section id="syllabus">
+                <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'কোর্স সিলেবাস' : 'Course Syllabus'}
+                </h2>
+                <Accordion type="single" collapsible className="space-y-3">
+                  {data!.modules.map((m, i) => (
+                    <AccordionItem
+                      key={m.id}
+                      value={`mod-${m.id}`}
+                      className="bg-white rounded-xl border border-slate-200 overflow-hidden data-[state=open]:border-teal-500 data-[state=open]:shadow-md"
+                    >
+                      <AccordionTrigger className="px-5 py-4 hover:bg-slate-50 hover:no-underline data-[state=open]:bg-teal-50 data-[state=open]:text-teal-900">
+                        <div className="flex items-center gap-3 text-left">
+                          <span className="h-8 w-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center text-sm font-bold shrink-0">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                          <span className="font-bold text-slate-800">{m.title}</span>
+                        </div>
+                      </AccordionTrigger>
+                      {m.description && (
+                        <AccordionContent className="px-5 pb-5 pt-1 text-slate-600 border-t border-slate-100">
+                          {m.description}
+                        </AccordionContent>
+                      )}
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </section>
+            )}
+
+            {/* FAQ */}
+            {faqs.length > 0 && (
+              <section>
+                <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'সাধারণ প্রশ্ন' : 'Frequently Asked Questions'}
+                </h2>
+                <Accordion type="single" collapsible className="space-y-3">
+                  {faqs.map((f, i) => (
+                    <AccordionItem key={i} value={`faq-${i}`} className="bg-white rounded-xl border border-slate-200 px-5">
+                      <AccordionTrigger className="text-left font-semibold hover:no-underline">{f.question}</AccordionTrigger>
+                      <AccordionContent className="text-slate-600">{f.answer}</AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </section>
+            )}
+          </div>
+
+          {/* RIGHT STICKY SIDEBAR */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-20">
+            <div className="bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+              {c.thumbnail_url && !videoId && (
+                <img src={c.thumbnail_url} alt="" className="w-full aspect-video object-cover" />
               )}
-              <div className="flex-1 text-center md:text-left space-y-2">
-                <h3 className="font-display text-2xl font-bold">{c.trainer_name}</h3>
-                {c.trainer_designation && (
-                  <p className="text-primary font-medium">{c.trainer_designation}</p>
-                )}
-                {bio && <p className="text-muted-foreground leading-relaxed pt-2">{bio}</p>}
+              <div className="p-6">
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-3xl md:text-4xl font-black text-slate-900">৳{Number(c.price).toLocaleString()}</span>
+                </div>
+
+                <button
+                  onClick={handleEnroll}
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white py-4 rounded-xl font-bold text-lg mb-6 shadow-lg shadow-teal-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                >
+                  {isBn ? 'কোর্সটি এনরোল করুন' : 'Enroll Now'}
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+
+                <div className="space-y-4">
+                  <h4 className="font-bold text-slate-800 text-xs uppercase tracking-widest">
+                    {isBn ? 'এই কোর্সে যা যা থাকছে:' : "What's Included:"}
+                  </h4>
+                  <ul className="space-y-3">
+                    {c.total_classes && (
+                      <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                        <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
+                          <PlayCircle className="w-4 h-4 text-teal-600" />
+                        </div>
+                        {c.total_classes} {isBn ? 'ক্লাস' : 'Classes'}
+                      </li>
+                    )}
+                    {c.duration && (
+                      <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                        <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
+                          <Clock className="w-4 h-4 text-teal-600" />
+                        </div>
+                        {c.duration}
+                      </li>
+                    )}
+                    {c.class_time && (
+                      <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                        <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
+                          <Calendar className="w-4 h-4 text-teal-600" />
+                        </div>
+                        {c.class_time}
+                      </li>
+                    )}
+                    <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                      <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
+                        <GraduationCap className="w-4 h-4 text-teal-600" />
+                      </div>
+                      {isBn ? 'কোর্স সার্টিফিকেট' : 'Course Certificate'}
+                    </li>
+                    <li className="flex items-center gap-3 text-sm font-medium text-slate-600">
+                      <div className="w-8 h-8 bg-teal-50 rounded-lg flex items-center justify-center shrink-0">
+                        <Users className="w-4 h-4 text-teal-600" />
+                      </div>
+                      {isBn ? '২৪/৭ সাপোর্ট' : '24/7 Support'}
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="mt-6 pt-5 border-t border-slate-100">
+                  <a href={signupHref} className="block text-center text-sm font-semibold text-teal-700 hover:text-teal-900">
+                    {isBn ? 'নতুন? সাইন আপ করুন →' : 'New here? Sign up →'}
+                  </a>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </section>
-      )}
-
-      {/* SCHEDULE */}
-      {(c.start_date || c.class_time || c.total_classes || c.duration) && (
-        <section className="container mx-auto px-4 py-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
-            {isBn ? 'কোর্স শিডিউল' : 'Course Schedule'}
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {[
-              { icon: Calendar, label: isBn ? 'শুরুর তারিখ' : 'Start Date', value: c.start_date },
-              { icon: Clock, label: isBn ? 'ক্লাসের সময়' : 'Class Time', value: c.class_time },
-              { icon: Users, label: isBn ? 'মোট ক্লাস' : 'Total Classes', value: c.total_classes },
-              { icon: GraduationCap, label: isBn ? 'মেয়াদ' : 'Duration', value: c.duration },
-            ].filter(x => x.value).map(({ icon: Icon, label, value }) => (
-              <Card key={label} className="glass-card text-center">
-                <CardContent className="p-5 space-y-2">
-                  <Icon className="h-6 w-6 text-primary mx-auto" />
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">{label}</div>
-                  <div className="font-semibold">{value}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* FAQ */}
-      {faqs.length > 0 && (
-        <section className="container mx-auto px-4 py-16">
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
-            {isBn ? 'সাধারণ প্রশ্ন' : 'Frequently Asked Questions'}
-          </h2>
-          <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="space-y-2">
-              {faqs.map((f, i) => (
-                <AccordionItem key={i} value={`faq-${i}`} className="glass-card rounded-xl border-0 px-5">
-                  <AccordionTrigger className="text-left font-semibold">{f.question}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">{f.answer}</AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </section>
-      )}
-
-      {/* FINAL CTA */}
-      <section className="container mx-auto px-4 py-20">
-        <Card className="glass-card max-w-4xl mx-auto overflow-hidden">
-          <CardContent className="p-8 md:p-14 text-center space-y-6 bg-gradient-to-br from-primary/10 via-transparent to-accent/10">
-            <h2 className="font-display text-3xl md:text-5xl font-bold leading-tight">
-              {isBn ? 'আজই আপনার যাত্রা শুরু করুন' : 'Start Your Journey Today'}
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              {isBn
-                ? 'এনরোল করুন বা একাউন্ট তৈরি করে শুরু করুন। ইতিমধ্যে একাউন্ট আছে? লগইন করুন।'
-                : 'Enroll now or create an account to get started. Already have an account? Log in.'}
-            </p>
-            <div className="flex flex-wrap justify-center gap-3 pt-2">
-              <Button size="lg" onClick={handleEnroll} className="text-base">
-                {isBn ? 'এনরোল করুন' : 'Enroll Now'} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <a href={signupHref}>{isBn ? 'সাইন আপ' : 'Sign Up'}</a>
-              </Button>
-              <Button size="lg" variant="ghost" asChild>
-                <a href={loginHref}>{isBn ? 'লগইন' : 'Login'}</a>
-              </Button>
             </div>
-          </CardContent>
-        </Card>
-      </section>
+          </aside>
+        </div>
+      </div>
 
-      <footer className="border-t border-border/40 py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} AlphaZero · <Link to="/" className="hover:text-foreground">Home</Link>
+      {/* Mobile sticky enroll bar */}
+      <div className="lg:hidden fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-3 flex items-center gap-3 z-40 shadow-2xl">
+        <div className="flex-1">
+          <div className="text-lg font-black text-slate-900 leading-none">৳{Number(c.price).toLocaleString()}</div>
+          <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{isBn ? 'কোর্স ফি' : 'Course Fee'}</div>
+        </div>
+        <button onClick={handleEnroll} className="flex-1 bg-teal-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-teal-500/20 flex items-center justify-center gap-2">
+          {isBn ? 'এনরোল' : 'Enroll'} <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+
+      <footer className="border-t border-slate-200 py-8 text-center text-sm text-slate-500 bg-white lg:pb-8 pb-24">
+        © {new Date().getFullYear()} AlphaZero · <Link to="/" className="hover:text-teal-600">Home</Link>
       </footer>
     </div>
   );
