@@ -87,7 +87,7 @@ const LearnContactPage = () => {
               )}
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
+              className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
               <div className="inline-flex items-center gap-1.5"><Clock size={12} className="text-primary" /> {t("২৪ ঘন্টায় জবাব", "24h response")}</div>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
               <div className="inline-flex items-center gap-1.5"><MessageCircle size={12} className="text-primary" /> {t("লাইভ WhatsApp", "Live WhatsApp")}</div>
