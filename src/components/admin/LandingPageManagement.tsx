@@ -29,6 +29,10 @@ type CourseRow = {
   faqs: { question: string; answer: string }[] | null;
 };
 
+type TeamMember = { id: string; name: string; role: string | null; image_url: string | null };
+type CourseInstructor = { id?: string; instructor_id: string; role: 'owner' | 'co_instructor'; order_index: number };
+
+
 const slugify = (s: string) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
 
