@@ -321,7 +321,7 @@ export default function CourseLandingPage() {
             {desc && (
               <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-cyan-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'কোর্স সম্পর্কে' : 'About this Course'}
                 </h2>
                 <p className="text-slate-600 leading-relaxed whitespace-pre-line">{desc}</p>
@@ -345,7 +345,7 @@ export default function CourseLandingPage() {
               return (
                 <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                   <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                    <span className="w-2 h-8 bg-cyan-500 rounded-full" />
+                    <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                     {isBn ? (isMulti ? 'ইন্সট্রাক্টররা' : 'ইন্সট্রাক্টর') : (isMulti ? 'Instructors' : 'Instructor')}
                   </h2>
                   <div className={isMulti ? 'grid sm:grid-cols-2 gap-5' : 'flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start'}>
@@ -402,7 +402,7 @@ export default function CourseLandingPage() {
             {whyLearn.length > 0 && (
               <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-cyan-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
@@ -420,7 +420,7 @@ export default function CourseLandingPage() {
             {data!.modules.length > 0 && (
               <section id="syllabus">
                 <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-cyan-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'কোর্স সিলেবাস' : 'Course Syllabus'}
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
@@ -453,7 +453,7 @@ export default function CourseLandingPage() {
             {outcomes.length > 0 && (
               <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
                 <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-cyan-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'এই কোর্স থেকে যা শিখবেন' : "What You'll Learn"}
                 </h2>
                 <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
@@ -471,7 +471,7 @@ export default function CourseLandingPage() {
             {faqs.length > 0 && (
               <section>
                 <h2 className="text-2xl font-bold mb-5 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-cyan-500 rounded-full" />
+                  <span className="w-2 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full" />
                   {isBn ? 'সাধারণ প্রশ্ন' : 'Frequently Asked Questions'}
                 </h2>
                 <Accordion type="single" collapsible className="space-y-3">
@@ -499,7 +499,7 @@ export default function CourseLandingPage() {
 
                 <button
                   onClick={handleEnroll}
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-4 rounded-xl font-bold text-lg mb-6 shadow-lg shadow-cyan-500/20 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 text-white py-4 rounded-xl font-bold text-lg mb-6 shadow-lg shadow-cyan-500/30 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   {isBn ? 'কোর্সটি এনরোল করুন' : 'Enroll Now'}
                   <ArrowRight className="w-5 h-5" />
@@ -566,7 +566,7 @@ export default function CourseLandingPage() {
           <div className="text-lg font-black text-slate-900 leading-none">৳{Number(c.price).toLocaleString()}</div>
           <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">{isBn ? 'কোর্স ফি' : 'Course Fee'}</div>
         </div>
-        <button onClick={handleEnroll} className="flex-1 bg-cyan-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2">
+        <button onClick={handleEnroll} className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-cyan-500/30 flex items-center justify-center gap-2">
           {isBn ? 'এনরোল' : 'Enroll'} <ArrowRight className="w-4 h-4" />
         </button>
       </div>
