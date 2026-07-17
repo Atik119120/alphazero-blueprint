@@ -73,7 +73,7 @@ const LearnContactPage = () => {
               </span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight">
+              className="text-3xl lg:text-5xl font-display font-bold mb-3 leading-[1.1] tracking-tight">
               {cms("hero.title.bn", "hero.title.en", "শিখতে চান? ", "Learning? ")}
               <span className="bg-gradient-to-r from-cyan-400 via-primary to-blue-500 bg-clip-text text-transparent">
                 {cms("hero.title2.bn", "hero.title2.en", "আমরা সাহায্য করব", "We're here to help")}
