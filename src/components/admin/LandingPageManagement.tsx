@@ -97,6 +97,7 @@ export default function LandingPageManagement() {
   }
 
   const outcomes = form.learning_outcomes ?? [];
+  const whyList = form.why_learn ?? [];
   const faqs = form.faqs ?? [];
 
   return (
