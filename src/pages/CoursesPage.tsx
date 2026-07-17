@@ -788,7 +788,7 @@ const CoursesPage = () => {
                         )}
 
                         {/* Divider */}
-                        <div className="h-px bg-border/40 mt-1" />
+                        <div className="h-px bg-border/40 mt-auto" />
 
                         {/* Price + Enroll row */}
                         <div className="flex items-center gap-3 pt-1">
