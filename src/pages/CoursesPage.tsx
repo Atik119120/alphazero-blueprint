@@ -245,18 +245,21 @@ const CoursesPage = () => {
     });
   };
 
-  const displayCourses = useMemo(() => {
-    const mapped = dbCourses.map(course => ({
+  const allMapped = useMemo(() => (
+    dbCourses.map(course => ({
       ...course,
       titleBn: course.title,
       titleEn: course.title_en || course.title,
       descriptionBn: course.description || '',
       descriptionEn: course.description_en || course.description || '',
-    }));
+    }))
+  ), [dbCourses]);
+
+  const displayCourses = useMemo(() => {
     const activeCat = categories.find(c => c.id === activeCategory);
-    if (!activeCat?.match) return mapped;
-    return mapped.filter(c => activeCat.match!.test(c.titleEn));
-  }, [dbCourses, activeCategory, categories]);
+    if (!activeCat?.match) return allMapped;
+    return allMapped.filter(c => activeCat.match!.test(c.titleEn));
+  }, [allMapped, activeCategory, categories]);
 
   const handleEnrollClick = (course: typeof displayCourses[0]) => {
     const metadata = getCourseMetadata(course.titleEn);
@@ -382,6 +385,80 @@ const CoursesPage = () => {
       window.scrollTo({ top: 0, behavior: "auto" });
     }
   }, [location.pathname]);
+
+  const renderCourseCard = (course: typeof allMapped[0], index: number) => {
+    const metadata = getCourseMetadata(course.titleEn);
+    const CourseIcon = metadata.icon;
+    const coursePrice = course.price || 0;
+    const isFree = coursePrice === 0;
+    const trainerName = course.trainer_name || metadata.trainer?.name;
+    const trainerImage = course.trainer_image || metadata.trainer?.image;
+    const trainerDesig = course.trainer_designation || (isBn ? metadata.trainer?.qualificationBn : metadata.trainer?.qualificationEn);
+    const thumbnailUrl = course.thumbnail_url;
+    return (
+      <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group h-full">
+        <div className={`relative flex flex-col h-full rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
+          {thumbnailUrl ? (
+            <div className="relative h-44 overflow-hidden rounded-[20px]">
+              <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              <div className="absolute top-3 left-3 flex gap-1.5">
+                {metadata.isSpecial && (
+                  <span className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
+                    <Sparkles className="w-3 h-3" />{t.special}
+                  </span>
+                )}
+                {metadata.isUpcoming && (
+                  <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
+                    <Clock className="w-3 h-3" />{t.upcoming}
+                  </span>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={`relative h-44 bg-gradient-to-br ${metadata.color} overflow-hidden rounded-[20px]`}>
+              <div className="absolute top-1/2 left-5 -translate-y-1/2">
+                <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                  <CourseIcon className="w-7 h-7 text-white" />
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-col flex-1 px-3 pt-4 pb-3 gap-2">
+            <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
+              {isBn ? course.titleBn : course.titleEn}
+            </h3>
+            {trainerName && (
+              <p className="text-xs text-muted-foreground truncate">{trainerName}</p>
+            )}
+            <div className="h-px bg-border/40 mt-auto" />
+            <div className="flex items-center gap-3 pt-1">
+              <span className={`text-lg font-display font-bold bg-clip-text text-transparent ${isFree ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' : 'bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]'}`}>
+                {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
+              </span>
+              <button
+                onClick={() => handleEnrollClick(course)}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-full font-semibold text-xs transition-all duration-300 ${
+                  metadata.isUpcoming
+                    ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] text-primary-foreground hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02]'
+                }`}
+                disabled={metadata.isUpcoming}
+              >
+                {metadata.isUpcoming ? (
+                  <><Clock className="w-3.5 h-3.5" />{t.upcoming}</>
+                ) : (
+                  <><ArrowRight className="w-3.5 h-3.5" />{t.enrollNow}</>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
 
   return (
     <Layout>
@@ -602,6 +679,7 @@ const CoursesPage = () => {
 
 
         <div className="container mx-auto px-6">
+          {!isAllCoursesRoute && (<>
           {/* Centered header — Popular Courses */}
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center mb-10">
@@ -651,6 +729,21 @@ const CoursesPage = () => {
               })}
             </div>
           </div>
+          </>)}
+
+          {isAllCoursesRoute && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="max-w-7xl mx-auto mb-10 text-center">
+              <h1 className="text-3xl md:text-5xl font-display font-bold mb-3">
+                <span className="bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
+                  {isBn ? "সব কোর্স" : "All Courses"}
+                </span>
+              </h1>
+              <p className="text-muted-foreground text-sm md:text-base">
+                {isBn ? "ক্যাটাগরি অনুযায়ী সাজানো — পছন্দের কোর্স বেছে নিন" : "Browse by category and pick what fits you"}
+              </p>
+            </motion.div>
+          )}
 
 
 
@@ -669,166 +762,53 @@ const CoursesPage = () => {
             </div>
           )}
 
-          {!coursesLoading && displayCourses.length > 0 && (
+          {!coursesLoading && displayCourses.length > 0 && !isAllCoursesRoute && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-7xl mx-auto">
-              {displayCourses.map((course, index) => {
-                const metadata = getCourseMetadata(course.titleEn);
-                const CourseIcon = metadata.icon;
-                const coursePrice = course.price || 0;
-                const isFree = coursePrice === 0;
-                const trainerName = course.trainer_name || metadata.trainer?.name;
-                const trainerImage = course.trainer_image || metadata.trainer?.image;
-                const trainerDesig = course.trainer_designation || (isBn ? metadata.trainer?.qualificationBn : metadata.trainer?.qualificationEn);
-                
-                return (
-                  <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group h-full">
-                    <div className={`relative flex flex-col h-full rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isSpecial ? '' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
-                      
-                      {/* Thumbnail with editorial number */}
-                      {(() => {
-                        const thumbnailUrl = course.thumbnail_url;
-                        if (thumbnailUrl) {
-                          return (
-                            <div className="relative h-48 overflow-hidden rounded-[20px]">
-                              <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                              {/* Badges */}
-                              <div className="absolute top-3 left-3 flex gap-1.5">
-                                {metadata.isSpecial && (
-                                  <span className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
-                                    <Sparkles className="w-3 h-3" />{t.special}
-                                  </span>
-                                )}
-                                {metadata.isUpcoming && (
-                                  <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
-                                    <Clock className="w-3 h-3" />{t.upcoming}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        }
-                        return (
-                          <div className={`relative h-48 bg-gradient-to-br ${metadata.color} overflow-hidden rounded-[20px]`}>
-                            <span className="absolute -bottom-4 -right-2 text-[5rem] font-display font-black text-white/[0.08] leading-none select-none">
-                              {String(index + 1).padStart(2, '0')}
-                            </span>
-                            <div className="absolute top-3 left-3 flex gap-1.5">
-                              {metadata.isSpecial && (
-                                <span className="px-3 py-1.5 rounded-full bg-white/25 backdrop-blur-sm text-primary-foreground text-[10px] font-bold flex items-center gap-1">
-                                  <Sparkles className="w-3 h-3" />{t.special}
-                                </span>
-                              )}
-                              {metadata.isUpcoming && (
-                                <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />{t.upcoming}
-                                </span>
-                              )}
-                            </div>
-                            <div className="absolute top-1/2 left-5 -translate-y-1/2">
-                              <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
-                                <CourseIcon className="w-7 h-7 text-white" />
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })()}
+              {displayCourses.map((course, index) => renderCourseCard(course, index))}
+            </div>
+          )}
 
-                      {/* Body */}
-                      <div className="flex flex-col flex-1 px-3 pt-4 pb-3 gap-2.5">
-                        <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                          {isBn ? course.titleBn : course.titleEn}
-                        </h3>
-                        <p className={`text-xs text-muted-foreground leading-relaxed ${expandedCards.has(course.id) ? '' : 'line-clamp-2'}`}>
-                          {isBn ? course.descriptionBn : course.descriptionEn}
-                        </p>
-
-                        {/* Read More toggle */}
-                        <button
-                          onClick={(e) => { e.stopPropagation(); toggleExpand(course.id); }}
-                          className="text-[11px] text-primary font-semibold hover:underline self-start flex items-center gap-1"
-                        >
-                          {expandedCards.has(course.id) ? t.readLess : t.readMore}
-                          <ArrowRight className={`w-3 h-3 transition-transform ${expandedCards.has(course.id) ? 'rotate-90' : ''}`} />
-                        </button>
-
-                        {/* Expanded content */}
-                        {expandedCards.has(course.id) && (
-                          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
-                            className="space-y-3 overflow-hidden">
-                            <div className="flex flex-wrap gap-1.5">
-                              {(isBn ? metadata.featuresBn : metadata.featuresEn).map((feature, idx) => (
-                                <span key={idx} className="text-[10px] px-2.5 py-1 rounded-full bg-secondary/60 text-muted-foreground border border-border/20">
-                                  {feature}
-                                </span>
-                              ))}
-                            </div>
-                            {metadata.isSpecial && metadata.specialContentBn && metadata.specialContentEn && (
-                              <div className="p-3 rounded-xl bg-primary/[0.05] border border-primary/10">
-                                <h4 className="font-semibold text-primary text-xs mb-1.5 flex items-center gap-1">
-                                  <Zap className="w-3.5 h-3.5" />
-                                  {isBn ? metadata.specialContentBn.title : metadata.specialContentEn.title}
-                                </h4>
-                                <ul className="space-y-1">
-                                  {(isBn ? metadata.specialContentBn.points : metadata.specialContentEn.points).map((point, idx) => (
-                                    <li key={idx} className="text-[11px] text-muted-foreground flex items-start gap-1.5">
-                                      <span className="text-primary mt-0.5">•</span>{point}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                            {trainerName && (
-                              <div className="flex items-center gap-2">
-                                <img src={trainerImage || '/placeholder.svg'}
-                                  alt={trainerName}
-                                  className="w-8 h-8 rounded-full object-cover ring-2 ring-primary/10 flex-shrink-0"
-                                  onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
-                                <div className="min-w-0">
-                                  <p className="text-xs font-semibold truncate">{trainerName}</p>
-                                  <p className="text-[10px] text-muted-foreground truncate">{trainerDesig}</p>
-                                </div>
-                              </div>
-                            )}
-                          </motion.div>
-                        )}
-
-                        {/* Divider */}
-                        <div className="h-px bg-border/40 mt-auto" />
-
-                        {/* Price + Enroll row */}
-                        <div className="flex items-center gap-3 pt-1">
-                          <span className={`text-xl font-display font-bold bg-clip-text text-transparent ${isFree ? 'bg-gradient-to-r from-emerald-400 to-emerald-600' : 'bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]'}`}>
-                            {isFree ? t.free : `৳${coursePrice.toLocaleString(isBn ? 'bn-BD' : 'en-US')}`}
-                          </span>
-                          <button
-                            onClick={() => handleEnrollClick(course)}
-                            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-full font-semibold text-xs transition-all duration-300 ${
-                              metadata.isUpcoming 
-                                ? 'bg-amber-500/10 text-amber-500 cursor-not-allowed'
-                                : 'bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] text-primary-foreground hover:shadow-lg hover:shadow-primary/30 hover:scale-[1.02]'
-                            }`}
-
-                            disabled={metadata.isUpcoming}
-                          >
-                            {metadata.isUpcoming ? (
-                              <><Clock className="w-3.5 h-3.5" />{t.upcoming}</>
-                            ) : (
-                              <><ArrowRight className="w-3.5 h-3.5" />{t.enrollNow}</>
-                            )}
-                          </button>
-                        </div>
-                      </div>
+          {!coursesLoading && allMapped.length > 0 && isAllCoursesRoute && (
+            <div className="max-w-7xl mx-auto space-y-14">
+              {(() => {
+                const cats = categories.filter(c => c.id !== 'all');
+                const seen = new Set<string>();
+                const sections = cats.map(cat => {
+                  const items = allMapped.filter(c => {
+                    if (!cat.match!.test(c.titleEn)) return false;
+                    if (seen.has(c.id)) return false;
+                    seen.add(c.id);
+                    return true;
+                  });
+                  return { cat, items };
+                });
+                const others = allMapped.filter(c => !seen.has(c.id));
+                if (others.length) sections.push({ cat: { id: 'others', label: isBn ? 'অন্যান্য' : 'Others', match: null } as any, items: others });
+                return sections.map(({ cat, items }) => items.length === 0 ? null : (
+                  <div key={cat.id}>
+                    <div className="flex items-end justify-between mb-5 px-1">
+                      <h2 className="text-xl md:text-2xl lg:text-3xl font-display font-bold">
+                        {cat.label}
+                      </h2>
+                      <span className="text-xs md:text-sm text-muted-foreground">
+                        ({items.length} {isBn ? 'কোর্স' : items.length === 1 ? 'course' : 'courses'})
+                      </span>
                     </div>
-                  </motion.div>
-                );
-              })}
+                    <div className="flex gap-4 md:gap-5 overflow-x-auto pb-4 snap-x snap-mandatory -mx-6 px-6 scroll-smooth [scrollbar-width:thin]">
+                      {items.map((course, index) => (
+                        <div key={course.id} className="snap-start shrink-0 w-[260px] sm:w-[280px] md:w-[310px]">
+                          {renderCourseCard(course, index)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ));
+              })()}
             </div>
           )}
         </div>
       </section>
+
 
 
 
