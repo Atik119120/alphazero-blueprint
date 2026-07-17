@@ -816,7 +816,7 @@ const CoursesPage = () => {
 
       {/* Instructors section */}
       {!isAllCoursesRoute && (
-      <section id="instructors" className="py-20 border-t border-border/40 relative overflow-hidden">
+      <section id="instructors" className="py-10 border-t border-border/40 relative overflow-hidden">
 
         {/* Decorative background */}
         <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
@@ -835,7 +835,7 @@ const CoursesPage = () => {
         <div className="container mx-auto px-6 relative z-10">
 
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center mb-14 max-w-3xl mx-auto">
+            className="text-center mb-6 max-w-3xl mx-auto">
             <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary mb-3 block">
               {cms("instructors.badge.bn", "instructors.badge.en", "আমাদের টিম", "Our Team")}
             </span>
@@ -877,7 +877,7 @@ const CoursesPage = () => {
 
       {/* Contact / CTA Section */}
       {!isAllCoursesRoute && (
-      <section id="contact" className="py-20 relative overflow-hidden border-t border-border/40">
+      <section id="contact" className="py-10 relative overflow-hidden border-t border-border/40">
 
         <div className="absolute inset-0 mesh-bg opacity-50" />
         <div className="container mx-auto px-6 relative z-10">
