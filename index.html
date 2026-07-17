@@ -24,7 +24,8 @@
     <link rel="manifest" href="/site.webmanifest" />
     <script>
       (function(){
-        if (location.hostname.startsWith('learn.')) {
+        var p = location.pathname;
+        if (location.hostname.startsWith('learn.') || p.startsWith('/courses') || p.startsWith('/instructors') || p.startsWith('/learn-about') || p.startsWith('/learn-contact') || p.startsWith('/student') || p.startsWith('/teacher')) {
           document.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]').forEach(function(el){ el.parentNode.removeChild(el); });
           var l = document.createElement('link');
           l.rel = 'icon'; l.type = 'image/png'; l.href = '/learn-favicon.png';
