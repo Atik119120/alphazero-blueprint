@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, Phone, MessageCircle, Send, GraduationCap, HelpCircle, BookOpen, Clock, MapPin, Sparkles } from "lucide-react";
+import { Mail, Phone, MessageCircle, Send, GraduationCap, HelpCircle, BookOpen, Clock, MapPin, Sparkles, ArrowUpRight } from "lucide-react";
 import CoursesNavbar from "@/components/CoursesNavbar";
 import CoursesFooter from "@/components/CoursesFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
