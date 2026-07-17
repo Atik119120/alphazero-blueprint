@@ -1,0 +1,2 @@
+UPDATE public.profiles SET avatar_url='https://image2url.com/r2/default/images/1772020161614-7a81c8cd-d4f7-4711-a5cf-b2d8b74d2ba0.png' WHERE email='gat.nayeem@gmail.com';
+UPDATE public.profiles SET avatar_url='https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/team/rashadul-islam-naime.png' WHERE email='rashadulnaime@gmail.com';
