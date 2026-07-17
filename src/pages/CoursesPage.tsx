@@ -218,6 +218,8 @@ const CoursesPage = () => {
   const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
     isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
   const { courses: dbCourses, isLoading: coursesLoading } = usePublicCourses();
+  const routeLoc = useLocation();
+  const isAllCoursesRoute = routeLoc.pathname === "/courses/all";
 
   // Enrollment modal state
   const [enrollmentCourse, setEnrollmentCourse] = useState<Course | null>(null);
