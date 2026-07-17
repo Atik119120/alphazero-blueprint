@@ -176,7 +176,7 @@ const LearnAboutPage = () => {
         </section>
 
         {/* What is Learn with AlphaZero */}
-        <section className="py-20 lg:py-28 relative">
+        <section className="py-12 lg:py-16 relative">
           <div className="container mx-auto px-6">
             <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
               <motion.div
@@ -250,14 +250,14 @@ const LearnAboutPage = () => {
         </section>
 
         {/* Features */}
-        <section className="py-20 lg:py-28 relative mesh-bg">
+        <section className="py-12 lg:py-16 relative mesh-bg">
           <div className="container mx-auto px-6">
             <div className="max-w-6xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-center mb-14"
+                className="text-center mb-8"
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Sparkles size={14} className="text-primary" />
@@ -296,14 +296,14 @@ const LearnAboutPage = () => {
         </section>
 
         {/* Values */}
-        <section className="py-20 lg:py-28 relative">
+        <section className="py-12 lg:py-16 relative">
           <div className="container mx-auto px-6">
             <div className="max-w-6xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-center mb-14"
+                className="text-center mb-8"
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Target size={14} className="text-primary" />
@@ -343,14 +343,14 @@ const LearnAboutPage = () => {
         </section>
 
         {/* Instructors */}
-        <section id="instructors" className="py-20 lg:py-28 relative border-t border-border/40">
+        <section id="instructors" className="py-12 lg:py-16 relative border-t border-border/40">
           <div className="container mx-auto px-6">
             <div className="max-w-6xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-center mb-12"
+                className="text-center mb-8"
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
                   <Users size={14} className="text-primary" />
