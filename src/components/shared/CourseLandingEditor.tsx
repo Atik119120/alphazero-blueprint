@@ -106,11 +106,17 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
 
   const save = async () => {
     if (!form) return;
+    if (!form.title || !form.title.trim()) {
+      toast.error(isBn ? 'Title আবশ্যক' : 'Title is required');
+      return;
+    }
     setSaving(true);
     try {
       const { error } = await supabase
         .from('courses')
         .update({
+          title: form.title,
+          title_en: form.title_en || null,
           landing_slug: form.landing_slug || null,
           thumbnail_url: form.thumbnail_url || null,
           intro_video_url: form.intro_video_url || null,
@@ -130,6 +136,8 @@ export default function CourseLandingEditor({ courses, singleCourse, learnScopeO
         } as any)
         .eq('id', form.id);
       if (error) throw error;
+      // Sync local list so the dropdown label updates immediately
+      setCourses((prev) => prev.map((c) => (c.id === form.id ? { ...c, title: form.title, title_en: form.title_en, thumbnail_url: form.thumbnail_url } : c)));
 
       // Replace instructors
       const del = await supabase.from('course_instructors').delete().eq('course_id', form.id);
