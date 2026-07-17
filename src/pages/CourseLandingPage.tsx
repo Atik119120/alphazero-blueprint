@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import learnLogo from '@/assets/learn-with-alphazero-logo.png.asset.json';
+import CoursesFooter from '@/components/CoursesFooter';
 import {
   CheckCircle2, Calendar, Clock, Users, GraduationCap,
   PlayCircle, Sparkles, BookOpen, ArrowRight, AlertCircle, Target,
