@@ -106,57 +106,11 @@ const LearnContactPage = () => {
       {/* Contact form + Info */}
       <section className="py-16">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto grid lg:grid-cols-5 gap-8">
-            {/* Form */}
-            <motion.form onSubmit={handleSubmit}
-              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              className="lg:col-span-3 p-8 rounded-3xl glass-card space-y-5">
-              <div>
-                <div className="inline-flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-wider mb-2">
-                  <Sparkles size={12} /> {cms("form.badge.bn", "form.badge.en", "মেসেজ পাঠান", "Send a Message")}
-                </div>
-                <h2 className="text-2xl font-display font-bold">{cms("form.title.bn", "form.title.en", "আপনার প্রশ্ন লিখুন", "Tell us your question")}</h2>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">{t("নাম", "Name")}</label>
-                  <input required name="name" value={formData.name} onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-secondary/70 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
-                    placeholder={t("আপনার নাম", "Your name")} />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">{t("ইমেইল", "Email")}</label>
-                  <input required type="email" name="email" value={formData.email} onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl bg-secondary/70 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
-                    placeholder="you@email.com" />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">{t("বিষয়", "Topic")}</label>
-                <select name="topic" value={formData.topic} onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-secondary/70 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
-                  {topics.map((tp) => (<option key={tp.value} value={tp.value}>{tp.label}</option>))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wide">{t("মেসেজ", "Message")}</label>
-                <textarea required rows={5} name="message" value={formData.message} onChange={handleChange}
-                  className="w-full px-4 py-3 rounded-xl bg-secondary/70 border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition resize-none"
-                  placeholder={t("আপনার প্রশ্ন বিস্তারিত লিখুন...", "Describe your question in detail...")} />
-              </div>
-
-              <button type="submit"
-                className="w-full py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors">
-                <Send size={16} /> {t("পাঠান", "Send Message")}
-              </button>
-            </motion.form>
-
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-1 gap-8">
             {/* Info sidebar */}
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              className="lg:col-span-2 space-y-4">
+              className="space-y-4">
+
               <div className="p-6 rounded-3xl bg-gradient-to-br from-primary/15 via-primary/5 to-transparent border border-primary/25">
                 <h3 className="font-display font-bold text-lg mb-4">{t("দ্রুত যোগাযোগ", "Quick Contact")}</h3>
                 <div className="space-y-3">
