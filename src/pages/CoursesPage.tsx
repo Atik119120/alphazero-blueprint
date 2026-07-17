@@ -595,9 +595,11 @@ const CoursesPage = () => {
           </div>
         </motion.div>
       </section>
+      )}
 
       {/* Courses Grid */}
       <section className="pt-8 pb-20 border-t border-border/40" id="courses">
+
 
         <div className="container mx-auto px-6">
           {/* Centered header — Popular Courses */}
