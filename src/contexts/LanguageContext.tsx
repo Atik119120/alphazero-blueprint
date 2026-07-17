@@ -17,7 +17,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.services": "Services",
     "nav.work": "Work",
     "nav.team": "Team",
-    "nav.courses": "Our Academy",
+    "nav.courses": "AlphaZero Academy",
     "nav.contact": "Contact",
     "nav.startProject": "Start a Project",
     
@@ -458,7 +458,7 @@ const translations: Record<Language, Record<string, string>> = {
     "nav.services": "সেবাসমূহ",
     "nav.work": "আমাদের কাজ",
     "nav.team": "টিম",
-    "nav.courses": "আমাদের একাডেমী",
+    "nav.courses": "আলফাজিরো একাডেমী",
     "nav.contact": "যোগাযোগ",
     "nav.startProject": "প্রজেক্ট শুরু করুন",
     
