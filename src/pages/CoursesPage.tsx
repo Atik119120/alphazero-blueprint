@@ -816,7 +816,7 @@ const CoursesPage = () => {
 
       {/* Instructors section */}
       {!isAllCoursesRoute && (
-      <section id="instructors" className="py-20 border-t border-border/40 relative overflow-hidden">
+      <section id="instructors" className="py-10 border-t border-border/40 relative overflow-hidden">
 
         {/* Decorative background */}
         <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
