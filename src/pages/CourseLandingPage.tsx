@@ -313,42 +313,6 @@ export default function CourseLandingPage() {
               </section>
             )}
 
-            {/* What you'll learn */}
-            {outcomes.length > 0 && (
-              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
-                  {isBn ? 'এই কোর্স থেকে যা শিখবেন' : "What You'll Learn"}
-                </h2>
-                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
-                  {outcomes.map((o, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-600">{o}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Why learn */}
-            {whyLearn.length > 0 && (
-              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
-                  {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
-                </h2>
-                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
-                  {whyLearn.map((w, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <Target className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
-                      <span className="text-slate-600">{w}</span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
             {/* Instructors */}
             {(() => {
               const list = (c.instructors && c.instructors.length > 0)
@@ -419,6 +383,23 @@ export default function CourseLandingPage() {
               );
             })()}
 
+            {/* Why learn */}
+            {whyLearn.length > 0 && (
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                  {whyLearn.map((w, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <Target className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-600">{w}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Syllabus / Modules */}
             {data!.modules.length > 0 && (
@@ -443,13 +424,31 @@ export default function CourseLandingPage() {
                         </div>
                       </AccordionTrigger>
                       {m.description && (
-                        <AccordionContent className="px-5 pb-5 pt-1 text-slate-600 border-t border-slate-100">
+                        <AccordionContent className="px-5 pb-5 pt-1 text-slate-600 border-t border-slate-100 whitespace-pre-line">
                           {m.description}
                         </AccordionContent>
                       )}
                     </AccordionItem>
                   ))}
                 </Accordion>
+              </section>
+            )}
+
+            {/* What you'll learn */}
+            {outcomes.length > 0 && (
+              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                  {isBn ? 'এই কোর্স থেকে যা শিখবেন' : "What You'll Learn"}
+                </h2>
+                <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
+                  {outcomes.map((o, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                      <span className="text-slate-600">{o}</span>
+                    </div>
+                  ))}
+                </div>
               </section>
             )}
 
