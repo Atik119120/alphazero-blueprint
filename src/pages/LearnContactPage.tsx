@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Mail, Phone, MessageCircle, Send, GraduationCap, HelpCircle, BookOpen, Clock, MapPin, Sparkles } from "lucide-react";
+import { Mail, Phone, MessageCircle, Send, GraduationCap, HelpCircle, BookOpen, Clock, MapPin, Sparkles, ArrowUpRight } from "lucide-react";
 import CoursesNavbar from "@/components/CoursesNavbar";
 import CoursesFooter from "@/components/CoursesFooter";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -54,54 +54,75 @@ const LearnContactPage = () => {
       <CoursesNavbar />
       <main className="min-h-screen bg-background pt-20">
       {/* Hero */}
-      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.08] via-transparent to-primary/[0.04]" />
-        <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-[120px]" />
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.05] via-background to-background" />
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 mb-6">
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm mb-8 shadow-sm shadow-primary/10">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+              </span>
               <GraduationCap size={14} className="text-primary" />
-              <span className="text-xs font-bold tracking-wider uppercase text-primary">
+              <span className="text-xs font-bold tracking-[0.15em] uppercase text-primary">
                 {cms("hero.badge.bn", "hero.badge.en", "লার্ন সাপোর্ট", "Learn Support")}
               </span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-5 leading-tight">
+              className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight">
               {cms("hero.title.bn", "hero.title.en", "শিখতে চান? ", "Learning? ")}
-              <span className="gradient-text">{cms("hero.title2.bn", "hero.title2.en", "আমরা সাহায্য করব", "We're here to help")}</span>
+              <span className="bg-gradient-to-r from-cyan-400 via-primary to-blue-500 bg-clip-text text-transparent">
+                {cms("hero.title2.bn", "hero.title2.en", "আমরা সাহায্য করব", "We're here to help")}
+              </span>
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              className="text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {cms("hero.description.bn", "hero.description.en",
                 "কোর্স, এনরোলমেন্ট বা পেমেন্ট সংক্রান্ত যেকোনো প্রশ্ন — আমাদের একাডেমী টিম ২৪ ঘন্টার মধ্যে উত্তর দেবে।",
                 "Any question about courses, enrollment or payment — our academy team responds within 24 hours."
               )}
             </motion.p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
+              <div className="inline-flex items-center gap-1.5"><Clock size={12} className="text-primary" /> {t("২৪ ঘন্টায় জবাব", "24h response")}</div>
+              <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+              <div className="inline-flex items-center gap-1.5"><MessageCircle size={12} className="text-primary" /> {t("লাইভ WhatsApp", "Live WhatsApp")}</div>
+              <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
+              <div className="inline-flex items-center gap-1.5"><Sparkles size={12} className="text-primary" /> {t("বিশেষজ্ঞ টিম", "Expert team")}</div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Quick help cards */}
-      <section className="py-8">
+      <section className="pb-4">
         <div className="container mx-auto px-6">
           <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-4">
             {quickHelp.map((item, i) => (
               <motion.a key={i} href={item.href}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                className="group p-6 rounded-2xl glass-card hover:border-primary/40 hover:-translate-y-1 transition-all duration-300">
-                <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/25 transition-colors">
-                  <item.icon size={22} className="text-primary" />
+                className="group relative p-6 rounded-2xl glass-card border border-border/60 hover:border-primary/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/0 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="relative">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/25 to-primary/5 border border-primary/20 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                      <item.icon size={22} className="text-primary" />
+                    </div>
+                    <ArrowUpRight size={18} className="text-muted-foreground group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-all" />
+                  </div>
+                  <h3 className="font-display font-semibold text-lg mb-1 group-hover:text-primary transition-colors">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">{item.desc}</p>
                 </div>
-                <h3 className="font-display font-semibold text-lg mb-1">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.desc}</p>
               </motion.a>
             ))}
           </div>
         </div>
       </section>
+
 
       {/* Contact form + Info */}
       <section className="py-16">
