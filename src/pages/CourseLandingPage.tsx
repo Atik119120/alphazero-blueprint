@@ -297,6 +297,23 @@ export default function CourseLandingPage() {
         </section>
       )}
 
+      {/* WHY LEARN */}
+      {whyLearn.length > 0 && (
+        <section className="container mx-auto px-4 py-16">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-10">
+            {isBn ? 'কেন এই কোর্স শিখবেন' : 'Why Learn This Course'}
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            {whyLearn.map((w, i) => (
+              <div key={i} className="glass-card p-5 rounded-xl flex gap-3">
+                <Target className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+                <span className="text-sm md:text-base">{w}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* MODULES */}
       {data!.modules.length > 0 && (
         <section id="syllabus" className="container mx-auto px-4 py-16">
