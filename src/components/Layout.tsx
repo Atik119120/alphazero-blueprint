@@ -7,11 +7,12 @@ import CoursesFooter from "./CoursesFooter";
 
 interface LayoutProps {
   children: ReactNode;
+  flushTop?: boolean;
 }
 
 const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about", "/learn-contact"];
 
-const Layout = ({ children }: LayoutProps) => {
+const Layout = ({ children, flushTop = false }: LayoutProps) => {
   const location = useLocation();
   const isLearnSubdomain = typeof window !== "undefined" && window.location.hostname.startsWith("learn.");
   const isLearnContext = isLearnSubdomain || LEARN_ROUTES.some((r) => location.pathname.startsWith(r));
@@ -19,7 +20,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {isLearnContext ? <CoursesNavbar /> : <Navbar />}
-      <main className="flex-1 pt-20">
+      <main className={flushTop ? "flex-1" : "flex-1 pt-20"}>
         {children}
       </main>
       {isLearnContext ? <CoursesFooter /> : <Footer />}

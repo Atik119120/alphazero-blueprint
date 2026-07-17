@@ -48,10 +48,10 @@ const AboutPage = () => {
   ];
 
   return (
-    <Layout>
+    <Layout flushTop>
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
-      <section className="relative overflow-hidden -mt-20 pt-36 pb-12 lg:pt-44 lg:pb-16 rounded-b-[2.5rem]">
+      <section className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
         {/* Dark base */}
         <div className="absolute inset-0 bg-black" />
         {/* Uploaded background image */}
