@@ -47,6 +47,8 @@ type CourseData = {
     total_classes?: string;
     duration?: string;
     learning_outcomes?: string[];
+    why_learn?: string[];
+    intro_video_url?: string | null;
     faqs?: FAQ[];
   };
   modules: Module[];
@@ -57,6 +59,8 @@ export default function CourseLandingPage() {
   const { language } = useLanguage();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const params = useParams<{ slug: string }>();
+  const slug = params.slug || 'vibe-coding';
   const isBn = language === 'bn';
   const [data, setData] = useState<CourseData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,11 +68,14 @@ export default function CourseLandingPage() {
 
   useEffect(() => {
     let alive = true;
+    setLoading(true);
+    setError(null);
     (async () => {
       try {
-        const res = await fetch(API_URL, {
-          headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
-        });
+        const res = await fetch(
+          `${SUPABASE_URL}/functions/v1/public-course-info?slug=${encodeURIComponent(slug)}`,
+          { headers: { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` } },
+        );
         const j = await res.json();
         if (!alive) return;
         if (!res.ok || !j.success) throw new Error(j.error || 'Failed');
@@ -80,7 +87,7 @@ export default function CourseLandingPage() {
       }
     })();
     return () => { alive = false; };
-  }, []);
+  }, [slug]);
 
   const c = data?.course;
   const title = isBn ? c?.title : (c?.title_en || c?.title);
