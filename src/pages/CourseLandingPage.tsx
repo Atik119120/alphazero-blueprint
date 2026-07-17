@@ -125,7 +125,7 @@ export default function CourseLandingPage() {
       el.setAttribute(attr, value);
     };
     setMeta('meta[name="description"]', 'content', seoDesc);
-    setMeta('link[rel="canonical"]', 'href', `https://alphazero.online/${SLUG}`);
+    setMeta('link[rel="canonical"]', 'href', `https://alphazero.online/courses/${slug}`);
     setMeta('meta[property="og:title"]', 'content', seoTitle);
     setMeta('meta[property="og:description"]', 'content', seoDesc);
     if (c.thumbnail_url) setMeta('meta[property="og:image"]', 'content', c.thumbnail_url);
