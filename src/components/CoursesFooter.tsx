@@ -30,7 +30,7 @@ const CoursesFooter = () => {
   ];
 
   return (
-    <footer className="relative border-t border-border/40 bg-background">
+    <footer className="relative border-t border-border/40 bg-muted/30">
       <div className="container mx-auto px-5 sm:px-6 py-10 sm:py-14">
         <div className="max-w-6xl mx-auto grid gap-8 sm:gap-12 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
