@@ -95,7 +95,9 @@ export default function CourseLandingPage() {
   const shortDesc = isBn ? c?.short_description : (c?.short_description_en || c?.short_description);
   const bio = isBn ? c?.trainer_bio : (c?.trainer_bio_en || c?.trainer_bio);
   const outcomes = c?.learning_outcomes ?? [];
+  const whyLearn = c?.why_learn ?? [];
   const faqs = c?.faqs ?? [];
+  const videoId = getYouTubeId(c?.intro_video_url);
 
   const seoTitle = useMemo(
     () => title ? `${title} | AlphaZero` : 'Course | AlphaZero',
