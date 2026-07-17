@@ -58,6 +58,7 @@ export default function LandingPageManagement() {
       setForm({
         ...c,
         learning_outcomes: Array.isArray(c.learning_outcomes) ? c.learning_outcomes : [],
+        why_learn: Array.isArray(c.why_learn) ? c.why_learn : [],
         faqs: Array.isArray(c.faqs) ? c.faqs : [],
       });
     }
