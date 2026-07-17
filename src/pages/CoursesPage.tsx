@@ -245,18 +245,21 @@ const CoursesPage = () => {
     });
   };
 
-  const displayCourses = useMemo(() => {
-    const mapped = dbCourses.map(course => ({
+  const allMapped = useMemo(() => (
+    dbCourses.map(course => ({
       ...course,
       titleBn: course.title,
       titleEn: course.title_en || course.title,
       descriptionBn: course.description || '',
       descriptionEn: course.description_en || course.description || '',
-    }));
+    }))
+  ), [dbCourses]);
+
+  const displayCourses = useMemo(() => {
     const activeCat = categories.find(c => c.id === activeCategory);
-    if (!activeCat?.match) return mapped;
-    return mapped.filter(c => activeCat.match!.test(c.titleEn));
-  }, [dbCourses, activeCategory, categories]);
+    if (!activeCat?.match) return allMapped;
+    return allMapped.filter(c => activeCat.match!.test(c.titleEn));
+  }, [allMapped, activeCategory, categories]);
 
   const handleEnrollClick = (course: typeof displayCourses[0]) => {
     const metadata = getCourseMetadata(course.titleEn);
