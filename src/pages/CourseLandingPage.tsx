@@ -51,6 +51,7 @@ type CourseData = {
     why_learn?: string[];
     intro_video_url?: string | null;
     faqs?: FAQ[];
+    instructors?: Array<{ name: string; designation: string | null; image: string | null; bio: string | null }>;
   };
   modules: Module[];
   lesson_count: number;
@@ -348,45 +349,76 @@ export default function CourseLandingPage() {
               </section>
             )}
 
-            {/* Instructor */}
-            {c.trainer_name && (
-              <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
-                <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-                  <span className="w-2 h-8 bg-teal-500 rounded-full" />
-                  {isBn ? 'ইন্সট্রাক্টর' : 'Instructor'}
-                </h2>
-                <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start">
-                  <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden shadow-lg shrink-0 bg-gradient-to-br from-teal-100 to-slate-100 flex items-center justify-center">
-                    {c.trainer_image ? (
-                      <img
-                        src={c.trainer_image}
-                        alt={c.trainer_name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                        referrerPolicy="no-referrer"
-                        crossOrigin="anonymous"
-                        onError={(e) => {
-                          const t = e.currentTarget;
-                          t.onerror = null;
-                          t.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(c.trainer_name || 'Instructor')}&background=0d9488&color=fff&size=256&bold=true`;
-                        }}
-                      />
-                    ) : (
-                      <span className="text-4xl font-bold text-teal-700">
-                        {(c.trainer_name || '?').charAt(0).toUpperCase()}
-                      </span>
-                    )}
+            {/* Instructors */}
+            {(() => {
+              const list = (c.instructors && c.instructors.length > 0)
+                ? c.instructors
+                : (c.trainer_name
+                    ? [{
+                        name: c.trainer_name,
+                        designation: c.trainer_designation || null,
+                        image: c.trainer_image || null,
+                        bio: bio || null,
+                      }]
+                    : []);
+              if (list.length === 0) return null;
+              const isMulti = list.length > 1;
+              return (
+                <section className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200 shadow-sm">
+                  <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span className="w-2 h-8 bg-teal-500 rounded-full" />
+                    {isBn ? (isMulti ? 'ইন্সট্রাক্টররা' : 'ইন্সট্রাক্টর') : (isMulti ? 'Instructors' : 'Instructor')}
+                  </h2>
+                  <div className={isMulti ? 'grid sm:grid-cols-2 gap-5' : 'flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start'}>
+                    {list.map((ins, idx) => (
+                      <div
+                        key={idx}
+                        className={
+                          isMulti
+                            ? 'flex gap-4 items-center p-4 rounded-xl border border-slate-200 bg-slate-50/60'
+                            : 'flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-start w-full'
+                        }
+                      >
+                        <div className={`${isMulti ? 'w-20 h-20' : 'w-32 h-32 md:w-40 md:h-40'} rounded-2xl overflow-hidden shadow-md shrink-0 bg-gradient-to-br from-teal-100 to-slate-100 flex items-center justify-center`}>
+                          {ins.image ? (
+                            <img
+                              src={ins.image}
+                              alt={ins.name}
+                              className="w-full h-full object-cover"
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                const t = e.currentTarget;
+                                t.onerror = null;
+                                t.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(ins.name)}&background=0d9488&color=fff&size=256&bold=true`;
+                              }}
+                            />
+                          ) : (
+                            <span className={`${isMulti ? 'text-2xl' : 'text-4xl'} font-bold text-teal-700`}>
+                              {ins.name.charAt(0).toUpperCase()}
+                            </span>
+                          )}
+                        </div>
+                        <div className={isMulti ? 'flex-1 min-w-0' : 'text-center md:text-left'}>
+                          <h3 className={`${isMulti ? 'text-base md:text-lg' : 'text-xl md:text-2xl'} font-bold text-slate-800 mb-1`}>
+                            {ins.name}
+                          </h3>
+                          {ins.designation && (
+                            <p className={`text-teal-600 font-semibold ${isMulti ? 'text-sm mb-0' : 'mb-3'}`}>
+                              {ins.designation}
+                            </p>
+                          )}
+                          {!isMulti && ins.bio && (
+                            <p className="text-slate-600 leading-relaxed">{ins.bio}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="text-center md:text-left">
-                    <h3 className="text-xl md:text-2xl font-bold text-slate-800 mb-1">{c.trainer_name}</h3>
-                    {c.trainer_designation && (
-                      <p className="text-teal-600 font-bold mb-3">{c.trainer_designation}</p>
-                    )}
-                    {bio && <p className="text-slate-600 leading-relaxed">{bio}</p>}
-                  </div>
-                </div>
-              </section>
-            )}
+                </section>
+              );
+            })()}
+
 
             {/* Syllabus / Modules */}
             {data!.modules.length > 0 && (
