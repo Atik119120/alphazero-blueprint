@@ -466,7 +466,7 @@ const CoursesPage = () => {
         })}</script>
       </Helmet>
       {/* Hero - logo-forward editorial */}
-      <section id="home" ref={heroRef} className="relative flex items-center justify-center overflow-hidden pt-40 pb-8 lg:pt-52 lg:pb-12 -mt-20">
+      <section id="home" ref={heroRef} className="relative flex items-center justify-center overflow-hidden pt-28 pb-10 lg:pt-52 lg:pb-12 -mt-20">
 
         {/* Blue wave background image */}
         <div
