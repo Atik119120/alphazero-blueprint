@@ -136,7 +136,9 @@ function AppContent() {
             <Route path="/learn-contact" element={<LearnContactPage />} />
 
             <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/courses/all" element={<CoursesPage />} />
             <Route path="/instructors" element={<CoursesPage />} />
+
             
 
             {/* LMS routes */}

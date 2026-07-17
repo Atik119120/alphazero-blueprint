@@ -218,6 +218,8 @@ const CoursesPage = () => {
   const cms = (bnKey: string, enKey: string, bnFb: string, enFb: string) =>
     isBn ? (getPageContent(bnKey) || bnFb) : (getPageContent(enKey) || enFb);
   const { courses: dbCourses, isLoading: coursesLoading } = usePublicCourses();
+  const routeLoc = useLocation();
+  const isAllCoursesRoute = routeLoc.pathname === "/courses/all";
 
   // Enrollment modal state
   const [enrollmentCourse, setEnrollmentCourse] = useState<Course | null>(null);
@@ -466,7 +468,9 @@ const CoursesPage = () => {
         })}</script>
       </Helmet>
       {/* Hero - logo-forward editorial */}
+      {!isAllCoursesRoute && (
       <section id="home" ref={heroRef} className="relative flex items-center justify-center overflow-hidden pt-28 pb-10 lg:pt-52 lg:pb-12 -mt-20">
+
 
         {/* Blue wave background image */}
         <div
@@ -591,9 +595,11 @@ const CoursesPage = () => {
           </div>
         </motion.div>
       </section>
+      )}
 
       {/* Courses Grid */}
       <section className="pt-8 pb-20 border-t border-border/40" id="courses">
+
 
         <div className="container mx-auto px-6">
           {/* Centered header — Popular Courses */}
@@ -829,7 +835,9 @@ const CoursesPage = () => {
 
 
       {/* Instructors section */}
+      {!isAllCoursesRoute && (
       <section id="instructors" className="py-20 border-t border-border/40 relative overflow-hidden">
+
         {/* Decorative background */}
         <div className="absolute inset-0 mesh-bg opacity-40 pointer-events-none" />
         <div className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-primary/10 blur-[120px] pointer-events-none" />
@@ -884,10 +892,13 @@ const CoursesPage = () => {
 
         </div>
       </section>
+      )}
 
 
       {/* Contact / CTA Section */}
+      {!isAllCoursesRoute && (
       <section id="contact" className="py-20 relative overflow-hidden border-t border-border/40">
+
         <div className="absolute inset-0 mesh-bg opacity-50" />
         <div className="container mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -938,6 +949,8 @@ const CoursesPage = () => {
           </motion.div>
         </div>
       </section>
+      )}
+
 
 
       {/* Enrollment Modal */}
