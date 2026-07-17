@@ -214,12 +214,34 @@ export default function TeacherManagement({ language }: TeacherManagementProps) 
     setTeacherCourses([]);
     setLoadingTeacherCourses(true);
     try {
-      const { data } = await supabase
+      // Get linked team member id for co-instructor lookup
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('linked_team_member_id')
+        .eq('id', teacher.id)
+        .maybeSingle();
+
+      // Owner courses (via courses.teacher_id)
+      const { data: ownerCourses } = await supabase
         .from('courses')
         .select('id, title, title_en, description, price, course_type, is_approved, is_published, created_at')
-        .eq('teacher_id', teacher.id)
-        .order('created_at', { ascending: false });
-      setTeacherCourses((data || []) as PendingCourse[]);
+        .eq('teacher_id', teacher.id);
+
+      // Co-instructor courses (via course_instructors join)
+      let coCourses: any[] = [];
+      const tmId = (profile as any)?.linked_team_member_id;
+      if (tmId) {
+        const { data: ciRows } = await supabase
+          .from('course_instructors')
+          .select('course:courses(id, title, title_en, description, price, course_type, is_approved, is_published, created_at)')
+          .eq('instructor_id', tmId);
+        coCourses = (ciRows || []).map((r: any) => r.course).filter(Boolean);
+      }
+
+      const merged = [...(ownerCourses || []), ...coCourses];
+      const unique = Array.from(new Map(merged.map((c: any) => [c.id, c])).values())
+        .sort((a: any, b: any) => (b.created_at || '').localeCompare(a.created_at || ''));
+      setTeacherCourses(unique as PendingCourse[]);
     } catch (e) {
       console.error('Error loading teacher courses:', e);
     } finally {
