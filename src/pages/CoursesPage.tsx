@@ -877,7 +877,7 @@ const CoursesPage = () => {
 
       {/* Contact / CTA Section */}
       {!isAllCoursesRoute && (
-      <section id="contact" className="py-20 relative overflow-hidden border-t border-border/40">
+      <section id="contact" className="py-10 relative overflow-hidden border-t border-border/40">
 
         <div className="absolute inset-0 mesh-bg opacity-50" />
         <div className="container mx-auto px-6 relative z-10">
