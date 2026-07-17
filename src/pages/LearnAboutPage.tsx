@@ -8,6 +8,22 @@ const learnLogo = learnLogoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import { usePageContent } from "@/hooks/usePageContent";
+import instructorHH from "@/assets/instructors/hh.png.asset.json";
+import instructorNayeem from "@/assets/instructors/nayeem.png.asset.json";
+import instructorAtik from "@/assets/instructors/Atik.png.asset.json";
+import instructorShafiul from "@/assets/instructors/shafiul.png.asset.json";
+import instructorPapiya from "@/assets/instructors/papiya.png.asset.json";
+import instructorPrantik from "@/assets/instructors/prantik.png.asset.json";
+
+const STATIC_TRAINERS = [
+  { name: "Sofiullah Ahammad", roleEn: "Graphics Designer, Vibe Coding Expert", roleBn: "গ্রাফিক্স ডিজাইনার, ভাইব কোডিং এক্সপার্ট", image: instructorAtik.url },
+  { name: "Adib Sarkar", roleEn: "Lead Designer, Entrepreneur", roleBn: "লিড ডিজাইনার, উদ্যোক্তা", image: instructorHH.url },
+  { name: "Md Nayeem Ahmed", roleEn: "Digital Marketer", roleBn: "ডিজিটাল মার্কেটার", image: instructorNayeem.url },
+  { name: "Md. Shafiul Haque", roleEn: "Video Editor, Cinematographer", roleBn: "ভিডিও এডিটর, সিনেমাটোগ্রাফার", image: instructorShafiul.url },
+  { name: "Prantik Saha", roleEn: "Microsoft Office Expert, IT Support", roleBn: "মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট", image: instructorPrantik.url },
+  { name: "Papiya Rahman", roleEn: "Graphic Designer", roleBn: "গ্রাফিক ডিজাইনার", image: instructorPapiya.url },
+  { name: "Rashadul Islam Naime", roleEn: "Digital Marketer, SEO Expert", roleBn: "ডিজিটাল মার্কেটার, এসইও এক্সপার্ট", image: "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/team/rashadul-islam-naime.png" },
+];
 
 const LearnAboutPage = () => {
   const { language } = useLanguage();
@@ -356,17 +372,26 @@ const LearnAboutPage = () => {
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {(() => {
-                  const list = (teamMembers || []).filter(
+                  const dbList = (teamMembers || []).filter(
                     (m: any) => !m.site_scope || m.site_scope === "learn"
                   );
+                  const norm = (s: string) => (s || "").trim().toLowerCase().replace(/\s+/g, " ");
                   const seen = new Set<string>();
-                  const unique = list.filter((m) => {
-                    const k = (m.name || "").trim().toLowerCase();
-                    if (!k || seen.has(k)) return false;
+                  const merged: { name: string; role: string; image: string | null; id: string }[] = [];
+                  // Static first (guaranteed images + order matches Learn carousel)
+                  STATIC_TRAINERS.forEach((tr) => {
+                    const k = norm(tr.name);
+                    if (seen.has(k)) return;
                     seen.add(k);
-                    return true;
+                    merged.push({ id: `s-${k}`, name: tr.name, role: isBn ? tr.roleBn : tr.roleEn, image: tr.image });
                   });
-                  return unique.map((tr, i) => (
+                  dbList.forEach((m: any) => {
+                    const k = norm(m.name);
+                    if (!k || seen.has(k)) return;
+                    seen.add(k);
+                    merged.push({ id: m.id, name: m.name, role: m.role, image: m.image_url || null });
+                  });
+                  return merged.map((tr, i) => (
                     <motion.div
                       key={tr.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -377,9 +402,9 @@ const LearnAboutPage = () => {
                     >
                       <div className="glass-card rounded-2xl overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08] flex flex-col h-full">
                         <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-primary/10 to-purple-500/10">
-                          {tr.image_url ? (
+                          {tr.image ? (
                             <img
-                              src={tr.image_url}
+                              src={tr.image}
                               alt={tr.name}
                               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               onError={(e) => {
