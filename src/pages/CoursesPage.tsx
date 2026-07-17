@@ -395,41 +395,70 @@ const CoursesPage = () => {
     const trainerImage = course.trainer_image || metadata.trainer?.image;
     const trainerDesig = course.trainer_designation || (isBn ? metadata.trainer?.qualificationBn : metadata.trainer?.qualificationEn);
     const thumbnailUrl = course.thumbnail_url;
+    const landingHref = (course as any).landing_slug ? `/courses/${(course as any).landing_slug}` : null;
     return (
       <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group h-full">
         <div className={`relative flex flex-col h-full rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
-          {thumbnailUrl ? (
-            <div className="relative h-44 overflow-hidden rounded-[20px]">
-              <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-              <div className="absolute top-3 left-3 flex gap-1.5">
-                {metadata.isSpecial && (
-                  <span className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
-                    <Sparkles className="w-3 h-3" />{t.special}
-                  </span>
-                )}
-                {metadata.isUpcoming && (
-                  <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
-                    <Clock className="w-3 h-3" />{t.upcoming}
-                  </span>
-                )}
-              </div>
-            </div>
+          {landingHref ? (
+            <Link to={landingHref} className="block">
+              {thumbnailUrl ? (
+                <div className="relative h-44 overflow-hidden rounded-[20px]">
+                  <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  <div className="absolute top-3 left-3 flex gap-1.5">
+                    {metadata.isSpecial && (
+                      <span className="px-3 py-1.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
+                        <Sparkles className="w-3 h-3" />{t.special}
+                      </span>
+                    )}
+                    {metadata.isUpcoming && (
+                      <span className="px-3 py-1.5 rounded-full bg-amber-500 text-primary-foreground text-[10px] font-bold flex items-center gap-1 shadow-lg">
+                        <Clock className="w-3 h-3" />{t.upcoming}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className={`relative h-44 bg-gradient-to-br ${metadata.color} overflow-hidden rounded-[20px]`}>
+                  <div className="absolute top-1/2 left-5 -translate-y-1/2">
+                    <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                      <CourseIcon className="w-7 h-7 text-white" />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Link>
           ) : (
-            <div className={`relative h-44 bg-gradient-to-br ${metadata.color} overflow-hidden rounded-[20px]`}>
-              <div className="absolute top-1/2 left-5 -translate-y-1/2">
-                <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
-                  <CourseIcon className="w-7 h-7 text-white" />
+            thumbnailUrl ? (
+              <div className="relative h-44 overflow-hidden rounded-[20px]">
+                <img src={thumbnailUrl} alt={isBn ? course.titleBn : course.titleEn}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+              </div>
+            ) : (
+              <div className={`relative h-44 bg-gradient-to-br ${metadata.color} overflow-hidden rounded-[20px]`}>
+                <div className="absolute top-1/2 left-5 -translate-y-1/2">
+                  <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center">
+                    <CourseIcon className="w-7 h-7 text-white" />
+                  </div>
                 </div>
               </div>
-            </div>
+            )
           )}
           <div className="flex flex-col flex-1 px-3 pt-4 pb-3 gap-2">
-            <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
-              {isBn ? course.titleBn : course.titleEn}
-            </h3>
+            {landingHref ? (
+              <Link to={landingHref}>
+                <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                  {isBn ? course.titleBn : course.titleEn}
+                </h3>
+              </Link>
+            ) : (
+              <h3 className="text-[15px] font-display font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                {isBn ? course.titleBn : course.titleEn}
+              </h3>
+            )}
             {trainerName && (
               <p className="text-xs text-muted-foreground truncate">{trainerName}</p>
             )}
