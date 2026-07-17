@@ -54,7 +54,7 @@ const LearnContactPage = () => {
       <CoursesNavbar />
       <main className="min-h-screen bg-background pt-20">
       {/* Hero */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 overflow-hidden">
+      <section className="relative pt-10 pb-8 lg:pt-14 lg:pb-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.05] via-background to-background" />
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
@@ -62,7 +62,7 @@ const LearnContactPage = () => {
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm mb-8 shadow-sm shadow-primary/10">
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 backdrop-blur-sm mb-4 shadow-sm shadow-primary/10">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/60" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
@@ -73,7 +73,7 @@ const LearnContactPage = () => {
               </span>
             </motion.div>
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl lg:text-6xl font-display font-bold mb-6 leading-[1.1] tracking-tight">
+              className="text-3xl lg:text-5xl font-display font-bold mb-3 leading-[1.1] tracking-tight">
               {cms("hero.title.bn", "hero.title.en", "শিখতে চান? ", "Learning? ")}
               <span className="bg-gradient-to-r from-cyan-400 via-primary to-blue-500 bg-clip-text text-transparent">
                 {cms("hero.title2.bn", "hero.title2.en", "আমরা সাহায্য করব", "We're here to help")}
@@ -87,7 +87,7 @@ const LearnContactPage = () => {
               )}
             </motion.p>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="mt-8 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
+              className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs text-muted-foreground">
               <div className="inline-flex items-center gap-1.5"><Clock size={12} className="text-primary" /> {t("২৪ ঘন্টায় জবাব", "24h response")}</div>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/40" />
               <div className="inline-flex items-center gap-1.5"><MessageCircle size={12} className="text-primary" /> {t("লাইভ WhatsApp", "Live WhatsApp")}</div>
