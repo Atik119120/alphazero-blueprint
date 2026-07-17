@@ -46,6 +46,36 @@ Deno.serve(async (req) => {
         .eq('course_id', course.id).order('order_index'),
     ]);
 
+    // Resolve multiple instructors by splitting trainer_name and matching team_members
+    const rawName: string = course.trainer_name ?? '';
+    const parts = rawName
+      .split(/\s*(?:&|,| and | ও | এবং )\s*/i)
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+
+    let instructors: Array<{ name: string; designation: string | null; image: string | null; bio: string | null }> = [];
+    if (parts.length > 0) {
+      const orExpr = parts.map((p) => `name.ilike.%${p.replace(/[%,()]/g, '')}%`).join(',');
+      const { data: tm } = await supabase
+        .from('team_members')
+        .select('name,role,image_url,bio')
+        .or(orExpr);
+
+      instructors = parts.map((p) => {
+        const match = (tm ?? []).find((t: any) =>
+          (t.name || '').toLowerCase().includes(p.toLowerCase()) ||
+          p.toLowerCase().includes((t.name || '').toLowerCase())
+        );
+        return {
+          name: match?.name || p,
+          designation: match?.role || (parts.length === 1 ? course.trainer_designation : null),
+          image: match?.image_url || (parts.length === 1 ? course.trainer_image : null),
+          bio: match?.bio || (parts.length === 1 ? course.trainer_bio : null),
+        };
+      });
+    }
+
+
     return json({
       success: true,
       course: {
