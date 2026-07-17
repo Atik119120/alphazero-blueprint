@@ -372,17 +372,26 @@ const LearnAboutPage = () => {
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {(() => {
-                  const list = (teamMembers || []).filter(
+                  const dbList = (teamMembers || []).filter(
                     (m: any) => !m.site_scope || m.site_scope === "learn"
                   );
+                  const norm = (s: string) => (s || "").trim().toLowerCase().replace(/\s+/g, " ");
                   const seen = new Set<string>();
-                  const unique = list.filter((m) => {
-                    const k = (m.name || "").trim().toLowerCase();
-                    if (!k || seen.has(k)) return false;
+                  const merged: { name: string; role: string; image: string | null; id: string }[] = [];
+                  // Static first (guaranteed images + order matches Learn carousel)
+                  STATIC_TRAINERS.forEach((tr) => {
+                    const k = norm(tr.name);
+                    if (seen.has(k)) return;
                     seen.add(k);
-                    return true;
+                    merged.push({ id: `s-${k}`, name: tr.name, role: isBn ? tr.roleBn : tr.roleEn, image: tr.image });
                   });
-                  return unique.map((tr, i) => (
+                  dbList.forEach((m: any) => {
+                    const k = norm(m.name);
+                    if (!k || seen.has(k)) return;
+                    seen.add(k);
+                    merged.push({ id: m.id, name: m.name, role: m.role, image: m.image_url || null });
+                  });
+                  return merged.map((tr, i) => (
                     <motion.div
                       key={tr.id}
                       initial={{ opacity: 0, y: 20 }}
@@ -393,9 +402,9 @@ const LearnAboutPage = () => {
                     >
                       <div className="glass-card rounded-2xl overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08] flex flex-col h-full">
                         <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-primary/10 to-purple-500/10">
-                          {tr.image_url ? (
+                          {tr.image ? (
                             <img
-                              src={tr.image_url}
+                              src={tr.image}
                               alt={tr.name}
                               className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               onError={(e) => {
