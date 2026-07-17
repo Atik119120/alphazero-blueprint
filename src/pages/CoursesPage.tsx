@@ -949,6 +949,8 @@ const CoursesPage = () => {
           </motion.div>
         </div>
       </section>
+      )}
+
 
 
       {/* Enrollment Modal */}
