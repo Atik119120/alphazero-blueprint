@@ -390,47 +390,6 @@ const LearnAboutPage = () => {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-24 lg:py-32 relative overflow-hidden">
-          <div className="absolute inset-0 mesh-bg" />
-          <div className="container mx-auto px-6 relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="max-w-3xl mx-auto text-center"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-8">
-                <GraduationCap size={28} className="text-primary" />
-              </div>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold mb-4">
-                {cms("lcta.title.bn", "lcta.title.en", "আজই শুরু করুন আপনার শেখার যাত্রা", "Start your learning journey today")}
-              </h2>
-              <p className="text-xl text-muted-foreground mb-10">
-                {cms("lcta.desc.bn", "lcta.desc.en",
-                  "AlphaZero এর সাথে শিখুন, তৈরি করুন এবং আপনার ক্যারিয়ার এগিয়ে নিন।",
-                  "Learn with AlphaZero, build real work, and grow your career."
-                )}
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link
-                  to="/courses"
-                  className="inline-flex items-center gap-2 px-10 py-4 bg-primary text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 glow-primary hover:scale-[1.02]"
-                >
-                  {cms("lcta.btn1.bn", "lcta.btn1.en", "সব কোর্স দেখুন", "Browse Courses")} <ArrowRight size={20} />
-                </Link>
-                <a
-                  href="https://wa.me/8801776965533"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-10 py-4 border-2 border-border text-foreground rounded-full font-semibold text-lg hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
-                >
-                  {cms("lcta.btn2.bn", "lcta.btn2.en", "যোগাযোগ করুন", "Contact Us")}
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
       </div>
       <CoursesFooter />
     </>
