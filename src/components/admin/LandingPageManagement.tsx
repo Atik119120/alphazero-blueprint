@@ -337,6 +337,86 @@ export default function LandingPageManagement() {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle>{isBn ? 'Instructors' : 'Instructors'}</CardTitle>
+          <CardDescription>
+            {isBn
+              ? 'ল্যান্ডিং পেজে দেখানো instructor list। প্রথম জন Owner হবে (co-instructors ও এই কোর্সের সব কিছু access করতে পারবেন)।'
+              : 'Instructors shown on the landing page. The first entry is Owner; co-instructors also get full teacher access to this course.'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {instructors.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              {isBn ? 'এখনো কোনো instructor assign করা হয়নি।' : 'No instructors assigned yet.'}
+            </p>
+          )}
+          {instructors.map((ci, idx) => {
+            const tm = teamMembers.find((t) => t.id === ci.instructor_id);
+            return (
+              <div key={ci.instructor_id} className="flex items-center gap-2 p-2 border rounded-lg">
+                {tm?.image_url ? (
+                  <img src={tm.image_url} alt={tm.name} className="h-10 w-10 rounded-full object-cover" />
+                ) : (
+                  <div className="h-10 w-10 rounded-full bg-muted" />
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium truncate">{tm?.name ?? ci.instructor_id}</div>
+                  <div className="text-xs text-muted-foreground truncate">{tm?.role ?? ''}</div>
+                </div>
+                <Select
+                  value={ci.role}
+                  onValueChange={(v) => {
+                    const next = [...instructors];
+                    next[idx] = { ...next[idx], role: v as 'owner' | 'co_instructor' };
+                    setInstructors(next);
+                  }}
+                >
+                  <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="owner">Owner</SelectItem>
+                    <SelectItem value="co_instructor">Co-instructor</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button variant="ghost" size="icon" onClick={() => move(idx, -1)} disabled={idx === 0}>
+                  <ArrowUp className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => move(idx, 1)} disabled={idx === instructors.length - 1}>
+                  <ArrowDown className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setInstructors(instructors.filter((_, j) => j !== idx))}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            );
+          })}
+          <div className="flex gap-2">
+            <Select value={addPick} onValueChange={setAddPick}>
+              <SelectTrigger className="flex-1">
+                <SelectValue placeholder={isBn ? 'Team member নির্বাচন করুন' : 'Select a team member'} />
+              </SelectTrigger>
+              <SelectContent>
+                {teamMembers
+                  .filter((t) => !instructors.some((i) => i.instructor_id === t.id))
+                  .map((t) => (
+                    <SelectItem key={t.id} value={t.id}>
+                      {t.name}{t.role ? ` — ${t.role}` : ''}
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <Button variant="outline" onClick={addInstructor} disabled={!addPick}>
+              <Plus className="h-4 w-4 mr-1" /> {isBn ? 'Add' : 'Add'}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
 
       <Card>
         <CardHeader>
