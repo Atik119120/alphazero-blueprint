@@ -198,7 +198,7 @@ export default function CourseLandingPage() {
       {/* Minimal top bar */}
       <header className="border-b border-border/40 backdrop-blur-md bg-background/60 sticky top-0 z-50">
         <div className="container mx-auto px-4 h-14 flex items-center justify-between">
-          <Link to="/" className="font-display text-lg font-bold">AlphaZero</Link>
+          <Link to="/" className="flex items-center"><img src={learnLogo.url} alt="Learn with AlphaZero" className="h-9 w-auto" /></Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" asChild><a href={loginHref}>{isBn ? 'লগইন' : 'Login'}</a></Button>
             <Button size="sm" onClick={handleEnroll}>{isBn ? 'এনরোল' : 'Enroll'}</Button>
