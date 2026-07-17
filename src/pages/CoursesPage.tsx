@@ -674,8 +674,8 @@ const CoursesPage = () => {
                 
                 return (
                   <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group">
-                    <div className={`relative flex flex-col rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isSpecial ? '' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
+                    viewport={{ once: true }} transition={{ delay: index * 0.04 }} className="group h-full">
+                    <div className={`relative flex flex-col h-full rounded-[28px] overflow-hidden bg-card border border-border/40 hover:border-primary/40 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-primary/[0.12] p-2.5 ${metadata.isSpecial ? '' : ''} ${metadata.isUpcoming ? 'ring-1 ring-amber-500/20' : ''}`}>
                       
                       {/* Thumbnail with editorial number */}
                       {(() => {
