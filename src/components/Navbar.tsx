@@ -63,7 +63,7 @@ const Navbar = () => {
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
     { name: t("nav.team"), href: "/team", icon: Users },
-    { name: t("nav.courses"), href: "https://learn.alphazero.online", icon: GraduationCap },
+    
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
 
