@@ -511,9 +511,9 @@ const CoursesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="font-playfair text-4xl md:text-5xl lg:text-6xl tracking-tight mb-8 max-w-4xl leading-[1.1]"
+              className="font-playfair text-[2rem] leading-[1.15] sm:text-4xl md:text-5xl lg:text-6xl tracking-tight mb-6 md:mb-8 max-w-4xl"
             >
-              <span className="whitespace-nowrap">
+              <span className="lg:whitespace-nowrap">
                 <span className="text-foreground font-normal">
                   {cms("hero.title1.bn", "hero.title1.en", "এক প্ল্যাটফর্ম।", "One platform.")}
                 </span>{" "}
@@ -521,6 +521,7 @@ const CoursesPage = () => {
                   {cms("hero.title2.bn", "hero.title2.en", "প্রতিটি ডিজিটাল স্কিল।", "every digital skill.")}
                 </span>
               </span>
+
               <br />
               <span className="font-semibold bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] bg-clip-text text-transparent">
                 {cms("hero.title3.bn", "hero.title3.en", "অসীম সম্ভাবনা।", "Endless opportunities.")}
