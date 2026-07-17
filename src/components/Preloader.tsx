@@ -6,6 +6,8 @@ import { useSiteScope } from "@/contexts/SiteScopeContext";
 const logo = logoAssetJson.url;
 const learnIcon = learnIconJson.url;
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
+  const scope = useSiteScope();
+  const isLearn = scope === "learn";
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
