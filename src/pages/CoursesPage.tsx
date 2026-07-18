@@ -977,7 +977,7 @@ const CoursesPage = () => {
             const loop = [...feedbacks, ...feedbacks];
             return (
               <div className="relative max-w-7xl mx-auto overflow-hidden group [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-                <div className="flex gap-5 w-max animate-[marquee_45s_linear_infinite] group-hover:[animation-play-state:paused]">
+                <div className="flex gap-5 w-max animate-[marquee-scroll-left_50s_linear_infinite] group-hover:[animation-play-state:paused]">
                   {loop.map((f, i) => (
                     <div
                       key={i}
