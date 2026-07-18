@@ -21,7 +21,7 @@ const STATIC_TRAINERS = [
   { name: "Md Nayeem Ahmed", roleEn: "Digital Marketer", roleBn: "ডিজিটাল মার্কেটার", image: instructorNayeem.url },
   { name: "Md. Shafiul Haque", roleEn: "Video Editor, Cinematographer", roleBn: "ভিডিও এডিটর, সিনেমাটোগ্রাফার", image: instructorShafiul.url },
   { name: "Prantik Saha", roleEn: "Microsoft Office Expert, IT Support", roleBn: "মাইক্রোসফট অফিস এক্সপার্ট, আইটি সাপোর্ট", image: instructorPrantik.url },
-  { name: "Papiya Rahman", roleEn: "Graphic Designer", roleBn: "গ্রাফিক ডিজাইনার", image: instructorPapiya.url },
+  { name: "Papia Rahman", roleEn: "Graphic Designer", roleBn: "গ্রাফিক ডিজাইনার", image: instructorPapiya.url },
   { name: "Rashadul Islam Naime", roleEn: "Digital Marketer, SEO Expert", roleBn: "ডিজিটাল মার্কেটার, এসইও এক্সপার্ট", image: "https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/team/rashadul-islam-naime.png" },
 ];
 

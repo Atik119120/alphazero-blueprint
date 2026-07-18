@@ -67,7 +67,7 @@ const trainers = {
     image: instructorPrantik.url
   },
   papiya: {
-    name: "Papiya Rahman",
+    name: "Papia Rahman",
     qualificationEn: "Graphic Designer",
     qualificationBn: "গ্রাফিক ডিজাইনার",
     image: instructorPapiya.url
