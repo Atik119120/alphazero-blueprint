@@ -34,12 +34,12 @@ serve(async (req) => {
     const codeHash = await sha256(String(otp));
     const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
-    // Verify OTP
+    // Verify OTP — match by hash within expiry (verified flag may already be true from verify-otp step)
     const { data: row } = await supabase
       .from("otp_codes")
       .select("*")
       .eq("email", normalizedEmail)
-      .eq("verified", false)
+      .eq("code_hash", codeHash)
       .gte("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false })
       .limit(1)
@@ -47,18 +47,6 @@ serve(async (req) => {
 
     if (!row) {
       return new Response(JSON.stringify({ error: "কোডের মেয়াদ শেষ বা ভুল কোড" }), {
-        status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
-    }
-    if (row.attempts >= 5) {
-      await supabase.from("otp_codes").update({ verified: true }).eq("id", row.id);
-      return new Response(JSON.stringify({ error: "অনেক বেশি ভুল চেষ্টা" }), {
-        status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
-      });
-    }
-    if (row.code_hash !== codeHash) {
-      await supabase.from("otp_codes").update({ attempts: row.attempts + 1 }).eq("id", row.id);
-      return new Response(JSON.stringify({ error: "ভুল কোড" }), {
         status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
