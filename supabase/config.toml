@@ -41,3 +41,6 @@ verify_jwt = false
 
 [functions.public-course-info]
 verify_jwt = false
+
+[functions.reset-password-with-otp]
+verify_jwt = false
