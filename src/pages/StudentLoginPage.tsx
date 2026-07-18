@@ -118,30 +118,8 @@ export default function StudentLoginPage() {
       return;
     }
 
-    // Role check — only students may log in here
-    try {
-      const { data: sessionData } = await supabase.auth.getUser();
-      const uid = sessionData.user?.id;
-      if (uid) {
-        const { data: roles } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', uid);
-        const roleList = (roles || []).map((r: any) => r.role);
-        if (roleList.includes('admin') || roleList.includes('teacher')) {
-          await supabase.auth.signOut();
-          setIsLoading(false);
-          toast.error(
-            language === 'bn'
-              ? 'এই অ্যাকাউন্ট স্টুডেন্ট নয়। আপনার নিজের পোর্টালে লগইন করুন।'
-              : 'This account is not a student. Please use your own portal to log in.'
-          );
-          return;
-        }
-      }
-    } catch (_e) {
-      // ignore, redirect effect will handle
-    }
+    // Teacher/Admin login also allowed here — redirect handled by useEffect based on role
+
 
     setIsLoading(false);
     toast.success(t('login.loginSuccess'));
