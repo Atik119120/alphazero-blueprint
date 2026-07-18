@@ -977,33 +977,36 @@ const CoursesPage = () => {
             ];
             const loop = [...feedbacks, ...feedbacks];
             return (
-              <div className="relative max-w-7xl mx-auto overflow-hidden group [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-                <div className="flex gap-5 w-max animate-[marquee-scroll-left_120s_linear_infinite] group-hover:[animation-play-state:paused]">
-                  {loop.map((f, i) => (
-                    <div
-                      key={i}
-                      className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all w-[320px] sm:w-[360px] shrink-0"
-                    >
-                      <div className="flex gap-1 mb-4 text-primary">
-                        {"★★★★★".split("").map((s, idx) => (
-                          <span key={idx} className="text-sm">{s}</span>
-                        ))}
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-                        "{f.quote}"
-                      </p>
-                      <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
-                          {f.name.charAt(0)}
+              <div className="relative max-w-6xl mx-auto px-4 sm:px-12">
+                <Carousel opts={{ align: "start", loop: true }} className="w-full">
+                  <CarouselContent className="-ml-4">
+                    {feedbacks.map((f, i) => (
+                      <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
+                        <div className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all h-full">
+                          <div className="flex gap-1 mb-4 text-primary">
+                            {"★★★★★".split("").map((s, idx) => (
+                              <span key={idx} className="text-sm">{s}</span>
+                            ))}
+                          </div>
+                          <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                            "{f.quote}"
+                          </p>
+                          <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
+                              {f.name.charAt(0)}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-sm">{f.name}</p>
+                              <p className="text-[11px] text-muted-foreground">{f.role}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-semibold text-sm">{f.name}</p>
-                          <p className="text-[11px] text-muted-foreground">{f.role}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden sm:flex -left-2 lg:-left-6" />
+                  <CarouselNext className="hidden sm:flex -right-2 lg:-right-6" />
+                </Carousel>
               </div>
             );
           })()}
