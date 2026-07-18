@@ -13,6 +13,20 @@ const corsHeaders = {
 interface OTPRequest {
   email: string;
   name: string;
+  purpose?: "password_reset" | "signup";
+}
+
+async function findAuthUserByEmail(supabase: ReturnType<typeof createClient>, email: string) {
+  let page = 1;
+  while (page <= 50) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 200 });
+    if (error) throw error;
+    const found = data.users.find((user) => (user.email || "").toLowerCase() === email);
+    if (found) return found;
+    if (data.users.length < 200) break;
+    page++;
+  }
+  return null;
 }
 
 async function sha256(input: string): Promise<string> {
@@ -26,7 +40,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { email, name }: OTPRequest = await req.json();
+    const { email, name, purpose }: OTPRequest = await req.json();
 
     if (!email || !name) {
       return new Response(
@@ -35,15 +49,25 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
+    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (purpose === "password_reset") {
+      const authUser = await findAuthUserByEmail(supabase, normalizedEmail);
+      if (!authUser) {
+        return new Response(
+          JSON.stringify({ success: false, error: "এই ইমেইলে কোনো একাউন্ট নেই" }),
+          { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+    }
+
     if (!RESEND_API_KEY) {
       return new Response(
         JSON.stringify({ error: "Email service not configured" }),
         { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
-
-    const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
-    const normalizedEmail = email.trim().toLowerCase();
 
     // Per-email rate limit: max 3 OTPs per hour
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
@@ -62,7 +86,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Generate 6-digit OTP, store hash server-side
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const codeHash = await sha256(otp);
-    const expiresAt = new Date(Date.now() + 2 * 60 * 1000).toISOString();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000).toISOString();
 
     // Invalidate previous unverified codes for this email
     await supabase
@@ -98,7 +122,7 @@ const handler = async (req: Request): Promise<Response> => {
             <div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:2px dashed #6366f1;border-radius:12px;padding:25px;text-align:center;margin:0 0 25px;">
               <div style="font-size:36px;font-weight:bold;letter-spacing:8px;color:#6366f1;font-family:'Courier New',monospace;">${otp}</div>
             </div>
-            <p style="color:#9ca3af;font-size:13px;text-align:center;">⏰ ২ মিনিটের মধ্যে মেয়াদ উত্তীর্ণ হবে</p>
+            <p style="color:#9ca3af;font-size:13px;text-align:center;">⏰ ১০ মিনিটের মধ্যে মেয়াদ উত্তীর্ণ হবে</p>
           </div>
           <div style="background:#f9fafb;padding:20px;text-align:center;border-top:1px solid #e5e7eb;">
             <p style="color:#6b7280;font-size:12px;margin:0;">© ${new Date().getFullYear()} AlphaZero Academy</p>

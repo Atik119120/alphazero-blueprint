@@ -27,10 +27,10 @@ export default function ForgotPasswordPage() {
     if (!v.success) return toast.error(v.error.errors[0].message);
     setIsLoading(true);
     const { data, error } = await supabase.functions.invoke('send-otp', {
-      body: { email: email.trim().toLowerCase(), name: 'User' },
+      body: { email: email.trim().toLowerCase(), name: 'User', purpose: 'password_reset' },
     });
     setIsLoading(false);
-    if (error || (data as any)?.error) {
+    if (error || (data as any)?.error || (data as any)?.success === false) {
       return toast.error((data as any)?.error || 'OTP পাঠাতে সমস্যা হয়েছে');
     }
     toast.success('আপনার ইমেইলে OTP পাঠানো হয়েছে');

@@ -14,6 +14,19 @@ async function sha256(input: string): Promise<string> {
   return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+async function findAuthUserByEmail(supabase: ReturnType<typeof createClient>, email: string) {
+  let page = 1;
+  while (page <= 50) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 200 });
+    if (error) throw error;
+    const found = data.users.find((user) => (user.email || "").toLowerCase() === email);
+    if (found) return found;
+    if (data.users.length < 200) break;
+    page++;
+  }
+  return null;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -40,6 +53,7 @@ serve(async (req) => {
       .select("*")
       .eq("email", normalizedEmail)
       .eq("code_hash", codeHash)
+      .eq("verified", true)
       .gte("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false })
       .limit(1)
@@ -47,25 +61,22 @@ serve(async (req) => {
 
     if (!row) {
       return new Response(JSON.stringify({ error: "কোডের মেয়াদ শেষ বা ভুল কোড" }), {
-        status: 400, headers: { "Content-Type": "application/json", ...corsHeaders },
+        status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
 
-    // Find user by email
-    let userId: string | null = null;
-    let page = 1;
-    while (page <= 20) {
-      const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 200 });
-      if (error) break;
-      const found = data.users.find((u) => (u.email || "").toLowerCase() === normalizedEmail);
-      if (found) { userId = found.id; break; }
-      if (data.users.length < 200) break;
-      page++;
-    }
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("user_id")
+      .eq("email", normalizedEmail)
+      .maybeSingle();
+
+    const authUser = profile?.user_id ? { id: profile.user_id } : await findAuthUserByEmail(supabase, normalizedEmail);
+    const userId = authUser?.id ?? null;
 
     if (!userId) {
       return new Response(JSON.stringify({ error: "এই ইমেইলে কোনো একাউন্ট নেই" }), {
-        status: 404, headers: { "Content-Type": "application/json", ...corsHeaders },
+        status: 200, headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
 
