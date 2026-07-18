@@ -23,6 +23,7 @@ import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.jso
 const learnLogo = learnLogoAssetJson.url;
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { useRef } from "react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
