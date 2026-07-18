@@ -929,8 +929,8 @@ const CoursesPage = () => {
             </p>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-5">
-            {[
+          {(() => {
+            const feedbacks = [
               {
                 name: isBn ? "রাফিদ হাসান" : "Rafid Hasan",
                 role: isBn ? "গ্রাফিক ডিজাইন শিক্ষার্থী" : "Graphic Design Student",
@@ -952,35 +952,60 @@ const CoursesPage = () => {
                   ? "AlphaZero-এর টিচিং স্টাইল অসাধারণ। প্রথম মাসেই নিজে একটা ওয়েবসাইট বানাতে পেরেছি।"
                   : "AlphaZero's teaching style is amazing. I built my own website within the first month.",
               },
-            ].map((f, i) => (
-              <motion.div
-                key={f.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all hover:-translate-y-1"
-              >
-                <div className="flex gap-1 mb-4 text-primary">
-                  {"★★★★★".split("").map((s, idx) => (
-                    <span key={idx} className="text-sm">{s}</span>
+              {
+                name: isBn ? "মেহেদী হাসান" : "Mehedi Hasan",
+                role: isBn ? "ওয়েব ডেভেলপমেন্ট" : "Web Development",
+                quote: isBn
+                  ? "লাইভ ক্লাস আর রেকর্ডেড ভিডিও—দুইটাই দারুণ কম্বিনেশন। যেকোনো সময় রিভিশন দিতে পারি।"
+                  : "Live classes plus recorded videos is a perfect combo. I can revise anytime I want.",
+              },
+              {
+                name: isBn ? "নুসরাত জাহান" : "Nusrat Jahan",
+                role: isBn ? "ফটোগ্রাফি" : "Photography",
+                quote: isBn
+                  ? "মেন্টররা প্রতিটা কাজে ফিডব্যাক দেয়। এখন নিজেই ক্লায়েন্ট শুট করছি।"
+                  : "Mentors review every assignment. I'm now shooting for real clients on my own.",
+              },
+              {
+                name: isBn ? "ইমরান খান" : "Imran Khan",
+                role: isBn ? "ভিডিও এডিটিং" : "Video Editing",
+                quote: isBn
+                  ? "শর্টফর্ম আর লংফর্ম দুইটাই শিখেছি। ইউটিউবে নিজের চ্যানেল দাঁড় করাতে পেরেছি।"
+                  : "Learned both short-form and long-form editing. I built my own YouTube channel from scratch.",
+              },
+            ];
+            const loop = [...feedbacks, ...feedbacks];
+            return (
+              <div className="relative max-w-7xl mx-auto overflow-hidden group [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+                <div className="flex gap-5 w-max animate-[marquee-scroll-left_50s_linear_infinite] group-hover:[animation-play-state:paused]">
+                  {loop.map((f, i) => (
+                    <div
+                      key={i}
+                      className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all w-[320px] sm:w-[360px] shrink-0"
+                    >
+                      <div className="flex gap-1 mb-4 text-primary">
+                        {"★★★★★".split("").map((s, idx) => (
+                          <span key={idx} className="text-sm">{s}</span>
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                        "{f.quote}"
+                      </p>
+                      <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
+                          {f.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm">{f.name}</p>
+                          <p className="text-[11px] text-muted-foreground">{f.role}</p>
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-                  "{f.quote}"
-                </p>
-                <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
-                    {f.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm">{f.name}</p>
-                    <p className="text-[11px] text-muted-foreground">{f.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            );
+          })()}
         </div>
       </section>
       )}
