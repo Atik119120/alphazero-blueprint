@@ -309,4 +309,116 @@ const AboutPage = () => {
   );
 };
 
+type ProcessValue = { icon: any; title: string; desc: string };
+
+const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [paths, setPaths] = useState<{ d: string; x1: number; y1: number; x2: number; y2: number }[]>([]);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+
+  const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
+  const offsets = ["md:translate-y-10", "md:-translate-y-8", "md:translate-y-12"];
+  const zIndex = [10, 30, 10];
+
+  const compute = () => {
+    const container = containerRef.current;
+    if (!container) return;
+    const cRect = container.getBoundingClientRect();
+    const next: typeof paths = [];
+    for (let i = 0; i < cardRefs.current.length - 1; i++) {
+      const a = cardRefs.current[i];
+      const b = cardRefs.current[i + 1];
+      if (!a || !b) continue;
+      const ar = a.getBoundingClientRect();
+      const br = b.getBoundingClientRect();
+      const x1 = ar.right - cRect.left;
+      const y1 = ar.top + ar.height / 2 - cRect.top;
+      const x2 = br.left - cRect.left;
+      const y2 = br.top + br.height / 2 - cRect.top;
+      const dx = x2 - x1;
+      const cx1 = x1 + dx * 0.5;
+      const cy1 = y1;
+      const cx2 = x2 - dx * 0.5;
+      const cy2 = y2;
+      const d = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
+      next.push({ d, x1, y1, x2, y2 });
+    }
+    setSize({ w: container.offsetWidth, h: container.offsetHeight });
+    setPaths(next);
+  };
+
+  useLayoutEffect(() => {
+    compute();
+  }, [values.length]);
+
+  useEffect(() => {
+    const ro = new ResizeObserver(() => compute());
+    if (containerRef.current) ro.observe(containerRef.current);
+    cardRefs.current.forEach((el) => el && ro.observe(el));
+    window.addEventListener("resize", compute);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pt-16 pb-16 items-center">
+      {/* Dynamic connector overlay — behind cards, non-interactive */}
+      <svg
+        className="hidden md:block absolute inset-0 pointer-events-none"
+        width={size.w}
+        height={size.h}
+        viewBox={`0 0 ${size.w || 1} ${size.h || 1}`}
+        style={{ zIndex: 20 }}
+        fill="none"
+      >
+        {paths.map((p, i) => (
+          <g key={i}>
+            <circle cx={p.x1} cy={p.y1} r={5} stroke="#ef4444" strokeWidth={1.6} fill="#FAFAFA" />
+            <motion.path
+              d={p.d}
+              stroke="#ef4444"
+              strokeWidth={1.6}
+              fill="none"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: "easeInOut", delay: i * 0.2 }}
+            />
+            <circle cx={p.x2} cy={p.y2} r={5} stroke="#ef4444" strokeWidth={1.6} fill="#FAFAFA" />
+          </g>
+        ))}
+      </svg>
+
+      {values.map((value, index) => (
+        <motion.div
+          key={value.title}
+          ref={(el) => (cardRefs.current[index] = el)}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: index * 0.15, duration: 0.6 }}
+          whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
+          style={{ zIndex: zIndex[index] }}
+          className={`relative aspect-square bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
+        >
+          <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
+            {index + 1}
+          </div>
+          <div>
+            <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2 tracking-tight">
+              {value.title}
+            </h3>
+            <p className="text-sm text-foreground/55 leading-relaxed">{value.desc}</p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+
 export default AboutPage;
