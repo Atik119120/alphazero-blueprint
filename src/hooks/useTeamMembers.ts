@@ -22,7 +22,7 @@ export interface TeamMember {
   order_index: number;
 }
 
-export function useTeamMembers() {
+export function useTeamMembers(scope: 'agency' | 'learn' | 'all' = 'agency') {
   const queryClient = useQueryClient();
 
   // Set up realtime subscription
@@ -33,7 +33,6 @@ export function useTeamMembers() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'team_members' },
         () => {
-          // Invalidate and refetch when data changes
           queryClient.invalidateQueries({ queryKey: ['public-team-members'] });
         }
       )
@@ -45,18 +44,25 @@ export function useTeamMembers() {
   }, [queryClient]);
 
   return useQuery({
-    queryKey: ['public-team-members'],
+    queryKey: ['public-team-members', scope],
     queryFn: async () => {
-      const { data, error } = await supabase
+      let q = supabase
         .from('team_members')
         .select('*')
         .eq('is_active', true)
         .order('order_index', { ascending: true });
 
+      if (scope !== 'all') {
+        q = q.eq('site_scope', scope);
+      }
+
+      const { data, error } = await q;
+
       if (error) throw error;
       return data as TeamMember[];
     },
-    staleTime: 0, // Always refetch for realtime updates
+    staleTime: 0,
     refetchOnWindowFocus: true,
   });
 }
+
