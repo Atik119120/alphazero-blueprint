@@ -240,13 +240,45 @@ const AboutPage = () => {
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-foreground mb-8">
                   Ready to start<br />your next project?
                 </h2>
-                <Link
-                  to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
-                >
-                  Get started
-                  <ArrowRight size={16} />
-                </Link>
+                <div className="relative inline-block">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
+                  >
+                    Get started
+                    <ArrowRight size={16} />
+                  </Link>
+
+                  {/* Animated cursor + label */}
+                  <motion.div
+                    aria-hidden
+                    className="absolute -bottom-6 -right-8 pointer-events-none flex items-end gap-1"
+                    initial={{ opacity: 0, x: 30, y: 30 }}
+                    whileInView={{ opacity: 1, x: 0, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
+                  >
+                    <motion.div
+                      animate={{ scale: [1, 0.85, 1], y: [0, 2, 0] }}
+                      transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                      className="flex items-end gap-1"
+                    >
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="text-foreground drop-shadow-md">
+                        <path d="M4 2l16 10-7 2-2 7L4 2z" />
+                      </svg>
+                      <span className="px-2.5 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-[0.2em] shadow-lg">
+                        AMANDA
+                      </span>
+                    </motion.div>
+                    {/* click ripple */}
+                    <motion.span
+                      className="absolute left-0 top-0 w-6 h-6 rounded-full border-2 border-foreground"
+                      animate={{ scale: [0.5, 1.8], opacity: [0.7, 0] }}
+                      transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+                    />
+                  </motion.div>
+                </div>
+
               </div>
 
 
