@@ -227,12 +227,8 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-primary/25 via-primary/15 to-primary/30"
           >
-            {/* Decorative circles */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-60 text-primary" viewBox="0 0 1000 400" preserveAspectRatio="none" fill="none">
-              <circle cx="500" cy="-40" r="240" stroke="currentColor" strokeWidth="2" />
-              <circle cx="120" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
-              <circle cx="880" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
-            </svg>
+
+
 
 
             <div className="relative grid lg:grid-cols-2 gap-10 items-center">
