@@ -115,35 +115,30 @@ export default function TeamBento() {
     return <div className="text-center py-20 text-muted-foreground">No team members found.</div>;
   }
 
-  // Split into groups of 5: [left1, left2, featured, right1, right2]
+  // Split into groups of 3: [left, featured, right]
   const groups: any[][] = [];
-  for (let i = 0; i < members.length; i += 5) groups.push(members.slice(i, i + 5));
+  for (let i = 0; i < members.length; i += 3) groups.push(members.slice(i, i + 3));
 
   return (
     <div className="space-y-6">
       {groups.map((group, gi) => {
-        // Pad group if fewer than 5
-        const left = [group[0], group[1]].filter(Boolean);
-        const featured = group[2] || group[0];
-        const right = [group[3], group[4]].filter(Boolean);
+        const left = group[0];
+        const featured = group[1] || group[0];
+        const right = group[2];
 
         return (
           <div
             key={gi}
-            className="rounded-3xl bg-muted/30 border border-border/40 p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5"
+            className="rounded-3xl bg-muted/30 border border-border/40 p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 items-stretch"
           >
-            <div className="flex flex-col gap-4 sm:gap-5 order-2 lg:order-1">
-              {left.map((m, i) => (
-                <SmallCard key={m.id} member={m} index={i} />
-              ))}
+            <div className="order-2 lg:order-1 flex">
+              {left && <div className="w-full self-center"><SmallCard member={left} index={0} /></div>}
             </div>
             <div className="order-1 lg:order-2">
               {featured && <FeaturedCard member={featured} />}
             </div>
-            <div className="flex flex-col gap-4 sm:gap-5 order-3">
-              {right.map((m, i) => (
-                <SmallCard key={m.id} member={m} index={i} reverse />
-              ))}
+            <div className="order-3 flex">
+              {right && <div className="w-full self-center"><SmallCard member={right} index={0} reverse /></div>}
             </div>
           </div>
         );
