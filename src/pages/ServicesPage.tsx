@@ -191,19 +191,9 @@ const ServicesPage = () => {
                   </div>
                 </motion.div>
 
-                {/* Right — stacked service cards */}
                 <div className="lg:col-span-7 space-y-5">
                   {services.map((service, index) => {
                     const IconComponent = getIcon(service.icon);
-                    const palettes = [
-                      { bg: "#fff4ec", icon: "#ff5722", ring: "rgba(255,87,34,0.25)", pill: "rgba(255,87,34,0.08)", pillText: "#c2410c", pillBorder: "rgba(255,87,34,0.35)", glow: "rgba(255,87,34,0.18)" },
-                      { bg: "#eef4ff", icon: "#2563eb", ring: "rgba(37,99,235,0.25)", pill: "rgba(37,99,235,0.08)", pillText: "#1d4ed8", pillBorder: "rgba(37,99,235,0.35)", glow: "rgba(37,99,235,0.18)" },
-                      { bg: "#ecfdf5", icon: "#059669", ring: "rgba(5,150,105,0.25)", pill: "rgba(5,150,105,0.08)", pillText: "#047857", pillBorder: "rgba(5,150,105,0.35)", glow: "rgba(5,150,105,0.18)" },
-                      { bg: "#faf1ff", icon: "#9333ea", ring: "rgba(147,51,234,0.25)", pill: "rgba(147,51,234,0.08)", pillText: "#7e22ce", pillBorder: "rgba(147,51,234,0.35)", glow: "rgba(147,51,234,0.18)" },
-                      { bg: "#fff7e6", icon: "#d97706", ring: "rgba(217,119,6,0.25)", pill: "rgba(217,119,6,0.08)", pillText: "#b45309", pillBorder: "rgba(217,119,6,0.35)", glow: "rgba(217,119,6,0.18)" },
-                      { bg: "#fdecef", icon: "#e11d48", ring: "rgba(225,29,72,0.25)", pill: "rgba(225,29,72,0.08)", pillText: "#be123c", pillBorder: "rgba(225,29,72,0.35)", glow: "rgba(225,29,72,0.18)" },
-                    ];
-                    const c = palettes[index % palettes.length];
                     return (
                       <motion.div
                         key={service.id}
@@ -212,37 +202,24 @@ const ServicesPage = () => {
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.08 }}
                         whileHover={{ y: -4 }}
-                        className="group relative bg-white rounded-2xl p-7 lg:p-8 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.15)] hover:shadow-[0_24px_60px_-20px_rgba(0,0,0,0.22)] transition-all overflow-hidden"
-                        style={{ boxShadow: `0 20px 50px -28px ${c.glow}, 0 8px 24px -18px rgba(0,0,0,0.12)` }}
+                        className="group bg-white rounded-2xl p-7 lg:p-8 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.15)] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.2)] transition-all"
                       >
-                        <span
-                          className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 rounded-full blur-3xl opacity-70"
-                          style={{ background: c.glow }}
-                        />
-                        <span
-                          className="pointer-events-none absolute left-0 top-6 bottom-6 w-[3px] rounded-r"
-                          style={{ background: c.icon }}
-                        />
-                        <div className="relative flex items-start justify-between gap-4 mb-4">
+                        <div className="flex items-start justify-between gap-4 mb-4">
                           <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground">{service.title}</h3>
-                          <div
-                            className="w-11 h-11 shrink-0 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-                            style={{ background: c.bg, boxShadow: `inset 0 0 0 1px ${c.ring}` }}
-                          >
-                            <IconComponent size={20} style={{ color: c.icon }} />
+                          <div className="w-11 h-11 shrink-0 rounded-xl border border-foreground/10 bg-[#fafafa] flex items-center justify-center">
+                            <IconComponent size={20} className="text-foreground" />
                           </div>
                         </div>
-                        <div className="relative h-px mb-5" style={{ background: `linear-gradient(90deg, ${c.ring}, transparent)` }} />
-                        <p className="relative text-foreground/65 text-sm lg:text-[15px] leading-relaxed mb-6">
+                        <div className="h-px bg-foreground/10 mb-5" />
+                        <p className="text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6">
                           {service.description}
                         </p>
                         {service.features && service.features.length > 0 && (
-                          <div className="relative flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-2">
                             {service.features.slice(0, 4).map((feature, idx) => (
                               <span
                                 key={idx}
-                                className="px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.15em] uppercase"
-                                style={{ background: c.pill, color: c.pillText, border: `1px solid ${c.pillBorder}` }}
+                                className="px-4 py-1.5 rounded-full border border-foreground/15 text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70"
                               >
                                 {feature}
                               </span>
