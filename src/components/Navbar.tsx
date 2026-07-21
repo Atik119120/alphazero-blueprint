@@ -108,21 +108,39 @@ const Navbar = () => {
             {/* Faint bottom shadow line */}
             <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
 
-            {/* Logo */}
+            {/* Logo — adaptive: white over dark hero, metallic silver/dark over light content */}
             <Link to="/" className="flex items-center group relative shrink-0">
               <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <img 
-                src={brandLogo} 
-                alt="AlphaZero Logo" 
-                className="h-7 sm:h-8 w-auto relative z-10 transition-all duration-300"
-                style={{
-                  filter: "brightness(0) saturate(0) invert(0.88) drop-shadow(0 1px 2px rgba(0,0,0,0.25)) drop-shadow(0 0 6px rgba(255,255,255,0.15))",
-                }}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-              />
+              <div className="relative h-7 sm:h-8 w-[140px] sm:w-[160px] z-10">
+                {/* White logo — visible over dark hero (top of page) */}
+                <img
+                  src={brandLogo}
+                  alt="AlphaZero Logo"
+                  className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
+                  style={{
+                    opacity: isScrolled ? 0 : 1,
+                    filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
+                  }}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+                {/* Metallic silver/dark logo — visible over light content when scrolled */}
+                <img
+                  src={brandLogo}
+                  alt=""
+                  aria-hidden
+                  className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
+                  style={{
+                    opacity: isScrolled ? 1 : 0,
+                    filter: "brightness(0) saturate(0) invert(0.18) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
+                  }}
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
             </Link>
+
 
 
             {/* Desktop Navigation - Pill style (centered) */}
