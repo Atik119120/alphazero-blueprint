@@ -737,7 +737,7 @@ const Index = () => {
       
 
       {/* ══════════ TESTIMONIALS ══════════ */}
-      <section className="py-24 lg:py-32 relative">
+      <section className="py-12 lg:py-16 relative">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
