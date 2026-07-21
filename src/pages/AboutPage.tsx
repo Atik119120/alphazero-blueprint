@@ -387,22 +387,12 @@ const AboutPage = () => {
                 className="lg:col-span-5 flex flex-col gap-4"
               >
                 <div className="astryx-surface p-8 text-center">
-                  {(() => {
-                    const customLogo = getContent("story.logoUrl");
-                    return customLogo ? (
-                      <img
-                        src={customLogo}
-                        alt="AlphaZero"
-                        className="h-24 md:h-28 w-auto mx-auto object-contain mb-5"
-                      />
-                    ) : (
-                      <img
-                        src={logo}
-                        alt="AlphaZero"
-                        className="h-24 md:h-28 w-auto mx-auto object-contain mb-5"
-                      />
-                    );
-                  })()}
+                  <img
+                    src={logo}
+                    alt="AlphaZero"
+                    className="h-24 md:h-28 w-auto mx-auto object-contain mb-5"
+                  />
+
                   <p className="text-sm font-medium tracking-wide text-foreground">
                     {c("tagline", "about.tagline")}
                   </p>
