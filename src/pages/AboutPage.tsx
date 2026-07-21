@@ -4,7 +4,9 @@ import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart, C
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import logoAssetJson from "@/assets/logo.png.asset.json";
+import journeyLogoJson from "@/assets/alphazero-logo-2.png.asset.json";
 const logo = logoAssetJson.url;
+const journeyLogo = journeyLogoJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
