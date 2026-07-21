@@ -221,27 +221,57 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
     pointer-events: none;
   }
 
-  /* Glass card effect */
+  /* Astryx-style card — clean, hairline border, layered shadow */
   .glass-card {
-    background: linear-gradient(135deg, hsl(0 0% 100% / 0.85), hsl(210 30% 98% / 0.7));
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.6);
-    box-shadow: var(--shadow-card, 0 1px 3px hsl(215 25% 10% / 0.04));
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-card);
+    border-radius: var(--radius);
+    transition: box-shadow 220ms ease, border-color 220ms ease, transform 220ms ease;
   }
   .glass-card:hover {
-    box-shadow: var(--shadow-card-hover, 0 4px 12px hsl(215 25% 10% / 0.06));
-    border-color: hsl(var(--primary) / 0.15);
+    box-shadow: var(--shadow-card-hover);
+    border-color: hsl(220 13% 85%);
   }
   .dark .glass-card {
-    background: hsl(var(--card) / 0.4);
-    border-color: hsl(var(--border) / 0.3);
+    background: hsl(var(--card) / 0.6);
+    border-color: hsl(var(--border) / 0.6);
+    backdrop-filter: blur(12px);
     box-shadow: none;
   }
   .dark .glass-card:hover {
-    box-shadow: none;
-    border-color: hsl(var(--border) / 0.4);
+    border-color: hsl(var(--border));
   }
+
+  /* Astryx utilities */
+  .astryx-surface {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+  }
+  .astryx-divider {
+    background: linear-gradient(90deg, transparent, hsl(var(--border)), transparent);
+    height: 1px;
+    width: 100%;
+  }
+  .astryx-focus:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+  .astryx-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--secondary));
+    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
 
   /* Shimmer animation for loading/accent */
   .shimmer {
