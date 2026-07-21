@@ -194,13 +194,6 @@ const ServicesPage = () => {
                 <div className="lg:col-span-7 space-y-5">
                   {services.map((service, index) => {
                     const IconComponent = getIcon(service.icon);
-                    const palettes = [
-                      { from: "#22D3EE", to: "#2563EB", tint: "rgba(34,211,238,0.10)" },
-                      { from: "#A78BFA", to: "#7C3AED", tint: "rgba(167,139,250,0.10)" },
-                      { from: "#F472B6", to: "#EC4899", tint: "rgba(244,114,182,0.10)" },
-                      { from: "#F59E0B", to: "#EF4444", tint: "rgba(245,158,11,0.10)" },
-                    ];
-                    const p = palettes[index % palettes.length];
                     return (
                       <motion.div
                         key={service.id}
@@ -209,67 +202,51 @@ const ServicesPage = () => {
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.08 }}
                         whileHover={{ y: -4 }}
-                        className="group relative bg-white rounded-2xl p-7 lg:p-8 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.12)] hover:shadow-[0_28px_70px_-25px_rgba(0,0,0,0.22)] transition-all overflow-hidden border border-black/[0.04]"
+                        className="group relative bg-white rounded-[28px] p-7 lg:p-9 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.12)] hover:shadow-[0_28px_70px_-25px_rgba(0,0,0,0.2)] transition-all border border-black/[0.05] overflow-hidden"
                       >
-                        {/* accent glow */}
-                        <div
-                          className="pointer-events-none absolute -top-24 -right-24 w-64 h-64 rounded-full opacity-0 group-hover:opacity-100 blur-3xl transition-opacity duration-500"
-                          style={{ background: `radial-gradient(circle, ${p.from}, transparent 70%)` }}
-                        />
-                        {/* left accent bar */}
-                        <div
-                          className="absolute left-0 top-6 bottom-6 w-[3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          style={{ background: `linear-gradient(180deg, ${p.from}, ${p.to})` }}
-                        />
+                        {/* corner index */}
+                        <span className="absolute top-5 right-6 text-[11px] font-mono tracking-[0.25em] text-foreground/30">
+                          {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
+                        </span>
 
-                        <div className="relative flex items-start justify-between gap-4 mb-4">
-                          <div className="flex items-center gap-3">
-                            <span className="text-[11px] font-mono tracking-[0.2em] text-foreground/40">
-                              {String(index + 1).padStart(2, "0")}
-                            </span>
-                            <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground">{service.title}</h3>
+                        {/* subtle top hairline that grows on hover */}
+                        <span className="absolute top-0 left-8 right-8 h-px bg-foreground/10">
+                          <span className="block h-full w-0 group-hover:w-full bg-foreground/70 transition-[width] duration-500" />
+                        </span>
+
+                        <div className="flex items-start gap-5 mb-5">
+                          <div className="w-14 h-14 shrink-0 rounded-2xl border border-foreground/10 bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] flex items-center justify-center shadow-inner transition-transform duration-300 group-hover:-rotate-6">
+                            <IconComponent size={22} className="text-foreground" />
                           </div>
-                          <div
-                            className="w-12 h-12 shrink-0 rounded-xl flex items-center justify-center border transition-all group-hover:scale-105"
-                            style={{
-                              background: p.tint,
-                              borderColor: `${p.from}33`,
-                            }}
-                          >
-                            <IconComponent
-                              size={20}
-                              style={{ color: p.to }}
-                            />
+                          <div className="flex-1 pt-1">
+                            <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground leading-tight">
+                              {service.title}
+                            </h3>
+                            <div className="mt-2 h-px w-10 bg-foreground/30 group-hover:w-20 transition-[width] duration-300" />
                           </div>
                         </div>
 
-                        <div
-                          className="h-px mb-5"
-                          style={{
-                            background: `linear-gradient(90deg, ${p.from}55, transparent)`,
-                          }}
-                        />
-
-                        <p className="relative text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6">
+                        <p className="text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6 max-w-[52ch]">
                           {service.description}
                         </p>
+
                         {service.features && service.features.length > 0 && (
-                          <div className="relative flex flex-wrap gap-2">
+                          <div className="flex flex-wrap gap-2">
                             {service.features.slice(0, 4).map((feature, idx) => (
                               <span
                                 key={idx}
-                                className="px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-[0.15em] uppercase transition-all"
-                                style={{
-                                  border: `1px solid ${p.from}30`,
-                                  color: "rgba(0,0,0,0.65)",
-                                  background: `linear-gradient(180deg, #fff, ${p.tint})`,
-                                }}
+                                className="px-3.5 py-1.5 rounded-full border border-foreground/15 bg-[#fafafa] text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground/40 hover:text-foreground transition-colors"
                               >
                                 {feature}
                               </span>
                             ))}
                           </div>
                         )}
+
+                        {/* bottom-right arrow */}
+                        <div className="absolute bottom-6 right-6 w-9 h-9 rounded-full border border-foreground/15 flex items-center justify-center opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                          <ArrowRight size={14} className="text-foreground" />
+                        </div>
                       </motion.div>
                     );
                   })}
