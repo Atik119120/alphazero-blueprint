@@ -225,33 +225,34 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16"
-            style={{ background: "linear-gradient(135deg, #fbbf6e 0%, #f59e42 55%, #ef8b2a 100%)" }}
+            className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-primary/25 via-primary/15 to-primary/30"
           >
             {/* Decorative circles */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70" viewBox="0 0 1000 400" preserveAspectRatio="none" fill="none">
-              <circle cx="500" cy="-40" r="240" stroke="#ea7a15" strokeWidth="2" />
-              <circle cx="120" cy="440" r="220" stroke="#ea7a15" strokeWidth="2" />
-              <circle cx="880" cy="440" r="220" stroke="#ea7a15" strokeWidth="2" />
+            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-60 text-primary" viewBox="0 0 1000 400" preserveAspectRatio="none" fill="none">
+              <circle cx="500" cy="-40" r="240" stroke="currentColor" strokeWidth="2" />
+              <circle cx="120" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
+              <circle cx="880" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
             </svg>
+
 
             <div className="relative grid lg:grid-cols-2 gap-10 items-center">
               {/* Left: Heading + CTA */}
               <div>
-                <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-neutral-900/70 mb-5">
+                <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-foreground/60 mb-5">
                   Let's build something great
                 </p>
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-neutral-900 mb-8">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-foreground mb-8">
                   Ready to start<br />your next project?
                 </h2>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
                 >
                   Get started
                   <ArrowRight size={16} />
                 </Link>
               </div>
+
 
               {/* Right: Floating booking card */}
               <div className="lg:justify-self-end w-full max-w-sm">
@@ -260,54 +261,55 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.15 }}
-                  className="relative bg-white rounded-2xl p-5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]"
+                  className="relative bg-background rounded-2xl p-5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] border border-border/60"
                 >
                   {/* Status */}
                   <div className="flex items-center gap-2 mb-4">
                     <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-900 opacity-40" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-neutral-900" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-40" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
                     </span>
-                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-900">
+                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-foreground">
                       Available for project
                     </span>
                   </div>
 
                   {/* Avatars */}
                   <div className="flex items-center gap-3 mb-4 relative">
-                    <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-white shadow bg-neutral-200">
+                    <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-background shadow bg-muted">
                       <img
                         src={founder?.image_url || '/placeholder.svg'}
                         alt="Founder"
                         className="w-full h-full object-cover object-top"
                       />
                     </div>
-                    <span className="text-neutral-500 text-lg font-light">+</span>
-                    <div className="w-11 h-11 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-bold">
+                    <span className="text-muted-foreground text-lg font-light">+</span>
+                    <div className="w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                       You
                     </div>
                     <div className="ml-auto flex items-center gap-1.5">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-neutral-900"><path d="M4 2l16 10-7 2-2 7L4 2z" /></svg>
-                      <span className="px-2 py-1 rounded-md bg-neutral-900 text-white text-[10px] font-bold tracking-widest">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-foreground"><path d="M4 2l16 10-7 2-2 7L4 2z" /></svg>
+                      <span className="px-2 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-widest">
                         {(founder?.name || 'Founder').split(' ')[0].toUpperCase()}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-display font-bold text-neutral-900 mb-1">
+                  <h3 className="text-lg font-display font-bold text-foreground mb-1">
                     Quick 15-minute call
                   </h3>
-                  <p className="text-sm text-neutral-500 mb-5">
+                  <p className="text-sm text-muted-foreground mb-5">
                     Pick a time that works for you.
                   </p>
 
                   <Link
                     to="/contact"
-                    className="block w-full text-center py-3 rounded-xl bg-[#ef6820] text-white text-sm font-semibold hover:bg-[#dc5a17] transition-all"
+                    className="block w-full text-center py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all"
                   >
                     Book a free call
                   </Link>
                 </motion.div>
+
               </div>
             </div>
           </motion.div>
