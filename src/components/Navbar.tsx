@@ -52,8 +52,7 @@ const Navbar = () => {
     { name: t("nav.about"), href: "/about", num: "02" },
     { name: t("nav.services"), href: "/services", num: "03" },
     { name: t("nav.work"), href: "/work", num: "04" },
-    { name: t("nav.team"), href: "/team", num: "05" },
-    { name: t("nav.contact"), href: "/contact", num: "06" },
+    { name: t("nav.contact"), href: "/contact", num: "05" },
 
   ];
 
@@ -62,7 +61,7 @@ const Navbar = () => {
     { name: t("nav.about"), href: "/about", icon: Info },
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
-    { name: t("nav.team"), href: "/team", icon: Users },
+    
     
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
@@ -288,7 +287,6 @@ const Navbar = () => {
           { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
-          { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
 

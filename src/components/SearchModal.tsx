@@ -107,7 +107,7 @@ const staticPages: SearchItem[] = [
     titleBn: "আমাদের টিম",
     description: "Meet the creative minds behind AlphaZero - Designers, Developers",
     descriptionBn: "AlphaZero-এর পেছনের ক্রিয়েটিভ মানুষদের সাথে পরিচিত হন",
-    path: "/team",
+    path: "/about#team",
     icon: Users,
     keywords: ["team", "members", "people", "staff", "founder", "ceo", "designer", "developer", "employee", "crew", "join", "career", "টিম", "সদস্য", "মানুষ", "ফাউন্ডার", "ডিজাইনার", "ডেভেলপার", "কর্মী", "trainer", "instructor", "ট্রেইনার"],
     category: "page"
@@ -227,7 +227,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             titleBn: member.nameBn,
             description: member.role,
             descriptionBn: member.roleBn,
-            path: "/team",
+            path: "/about#team",
             icon: User,
             keywords: [...member.keywords, "team", "member", "trainer", "টিম", "ট্রেইনার", "মেম্বার"],
             category: "team"
