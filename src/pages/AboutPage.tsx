@@ -378,12 +378,18 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
         style={{ zIndex: 20 }}
         fill="none"
       >
+        <defs>
+          <linearGradient id="connectorGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#22d3ee" />
+          </linearGradient>
+        </defs>
         {paths.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x1} cy={p.y1} r={6} stroke="#3b82f6" strokeWidth={2.4} fill="#FAFAFA" />
+            <circle cx={p.x1} cy={p.y1} r={6} stroke="url(#connectorGradient)" strokeWidth={2.4} fill="#FAFAFA" />
             <motion.path
               d={p.d}
-              stroke="#3b82f6"
+              stroke="url(#connectorGradient)"
               strokeWidth={2.8}
               fill="none"
               strokeLinecap="round"
@@ -393,7 +399,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
               viewport={{ once: true }}
               transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.1 }}
             />
-            <circle cx={p.x2} cy={p.y2} r={6} stroke="#3b82f6" strokeWidth={2.4} fill="#FAFAFA" />
+            <circle cx={p.x2} cy={p.y2} r={6} stroke="url(#connectorGradient)" strokeWidth={2.4} fill="#FAFAFA" />
           </g>
         ))}
       </svg>
