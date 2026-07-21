@@ -167,9 +167,9 @@ const AboutPage = () => {
       </section>
 
       {/* Process cards — floating tilted cards with dynamically-aligned red S-curve connectors */}
-      <section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
+      <section data-process-section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
             <ProcessCards values={values} />
           </div>
         </div>
@@ -300,9 +300,9 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
 
   const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
   const positions = [
-    "md:absolute md:left-0 md:top-[150px] md:w-[300px] lg:w-[320px]",
-    "md:absolute md:left-1/2 md:top-[54px] md:w-[300px] lg:w-[320px] md:-translate-x-1/2",
-    "md:absolute md:right-0 md:top-[170px] md:w-[300px] lg:w-[320px]",
+    "md:absolute md:left-0 md:top-[158px] md:w-[285px] lg:w-[300px]",
+    "md:absolute md:left-1/2 md:top-[46px] md:w-[285px] lg:w-[300px] md:-translate-x-1/2",
+    "md:absolute md:right-0 md:top-[178px] md:w-[285px] lg:w-[300px]",
   ];
   const zIndex = [30, 30, 30];
 
@@ -325,7 +325,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       const dx = x2 - x1;
       const dy = y2 - y1;
       const direction = y2 < y1 ? -1 : 1;
-      const wave = Math.min(150, Math.max(110, Math.abs(dx) * 0.8));
+      const wave = Math.min(180, Math.max(130, Math.abs(dx) * 0.9));
       const d = `M ${x1} ${y1} C ${x1 + dx * 0.35} ${y1 + direction * wave}, ${x2 - dx * 0.35} ${y2 - direction * wave}, ${x2} ${y2}`;
       next.push({ d, x1, y1, x2, y2 });
     }
@@ -374,10 +374,10 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.4, ease: "easeInOut", delay: i * 0.2 }}
+              transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.1 }}
             />
             <circle cx={p.x2} cy={p.y2} r={6} stroke="#ef4444" strokeWidth={2.4} fill="#FAFAFA" />
           </g>
