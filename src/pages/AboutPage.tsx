@@ -52,8 +52,6 @@ const AboutPage = () => {
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
       <section className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
-        {/* Dark base */}
-        <div className="absolute inset-0 bg-black" />
         {/* Uploaded background image */}
         <img
           src={servicesHeroBg.url}
@@ -64,8 +62,6 @@ const AboutPage = () => {
           className="absolute inset-0 w-full h-full object-cover object-bottom"
           style={{ filter: "blur(4px)", transform: "scale(1.08)" }}
         />
-        {/* Soft overlay so navbar text stays readable */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40" />
 
 
         <div className="container mx-auto px-6 relative z-10">
