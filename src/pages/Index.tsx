@@ -433,14 +433,22 @@ const Index = () => {
               lightLineColor: "hsl(215 25% 70%)",
               darkLineColor: "hsl(185 60% 40%)",
             }}
-          />
+          >
+            {/* Mobile & Tablet: gallery lives inside the hero as flex-column child */}
+            <div className="lg:hidden">
+              <ProjectMarquee />
+            </div>
+          </HeroSection>
         </div>
 
       </section>
 
 
-      {/* ══════════ PROJECT MARQUEE — 2 rows opposite scroll ══════════ */}
-      <ProjectMarquee />
+      {/* ══════════ PROJECT MARQUEE — Desktop only (sibling, uses topOffset pin) ══════════ */}
+      <div className="hidden lg:block">
+        <ProjectMarquee />
+      </div>
+
 
 
       {/* ══════════ SISTER BRANDS ══════════ */}
