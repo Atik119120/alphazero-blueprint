@@ -84,8 +84,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
     --shadow-card-hover: 0 4px 12px hsl(215 25% 10% / 0.06), 0 16px 40px hsl(185 100% 38% / 0.08);
     --shadow-elevated: 0 8px 30px hsl(215 25% 10% / 0.08), 0 2px 8px hsl(185 100% 38% / 0.05);
     
-    --font-display: 'Space Grotesk', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-display: 'Poppins', sans-serif;
+    --font-body: 'Poppins', sans-serif;
     --font-display-bn: 'SabinaShorolipi', 'Aloka', sans-serif;
     --font-subtitle-bn: 'Aloka', 'Hind Siliguri', sans-serif;
     --font-body-bn: 'MahinRafid', 'Hind Siliguri', sans-serif;
