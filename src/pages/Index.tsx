@@ -746,7 +746,7 @@ const Index = () => {
                   </div>
 
                   {/* RIGHT — two-row marquee of boxed logo cards */}
-                  <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_4%,black_96%,transparent)] flex flex-col justify-center gap-2 py-1">
+                  <div className="relative overflow-hidden flex flex-col justify-center gap-2 py-1">
                     <div className="flex items-center animate-[marquee_40s_linear_infinite] w-max">
                       {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
                     </div>
