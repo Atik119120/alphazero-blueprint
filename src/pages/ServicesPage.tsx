@@ -235,7 +235,7 @@ const ServicesPage = () => {
                             {service.features.slice(0, 4).map((feature, idx) => (
                               <span
                                 key={idx}
-                                className="px-3.5 py-1.5 rounded-full border border-foreground/15 bg-[#fafafa] text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground/40 hover:text-foreground transition-colors"
+                                className="px-3.5 py-1.5 rounded-md border border-foreground/15 bg-[#fafafa] text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground/40 hover:text-foreground transition-colors"
                               >
                                 {feature}
                               </span>
