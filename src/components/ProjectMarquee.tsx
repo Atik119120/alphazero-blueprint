@@ -42,7 +42,7 @@ const HERO_CTA_GAP_PX = 80;
 
 const Card = ({ item }: { item: Item }) => {
   return (
-    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-0.5">
+    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-2 md:mx-3">
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
@@ -138,7 +138,7 @@ export default function ProjectMarquee() {
         </div>
       </div>
 
-      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-1 project-marquee-row">
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-3 md:mt-4 project-marquee-row">
         <div className="flex h-full w-max project-marquee-track project-marquee-track-right">
           {track2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
