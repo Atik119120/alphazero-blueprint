@@ -287,27 +287,16 @@ const AboutPage = () => {
                     <span className="text-muted-foreground text-lg font-light">+</span>
                     <div className="relative w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                       You
-                      {/* Animated cursor + AMANDA pill */}
+                      {/* Bouncing question mark */}
                       <motion.div
                         aria-hidden
-                        className="absolute left-[70%] top-1/2 -translate-y-1/2 pointer-events-none"
-                        initial={{ opacity: 0, x: 10, y: -6 }}
-                        whileInView={{ opacity: 1, x: 0, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+                        className="absolute -top-3 -right-3 pointer-events-none"
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
                       >
-                        <motion.div
-                          animate={{ scale: [1, 0.92, 1] }}
-                          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                          className="relative"
-                        >
-                          <span className="block pl-4 pr-3 py-1.5 rounded-full bg-foreground text-background text-[10px] font-bold tracking-[0.2em] shadow-lg whitespace-nowrap">
-                            AMANDA
-                          </span>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="absolute -top-1 -left-1 text-foreground drop-shadow">
-                            <path d="M4 2l16 10-7 2-2 7L4 2z" />
-                          </svg>
-                        </motion.div>
+                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-[#0EA5E9] text-white text-xs font-black shadow-[0_4px_12px_-2px_rgba(14,165,233,0.6)]">
+                          ?
+                        </span>
                       </motion.div>
                     </div>
 
