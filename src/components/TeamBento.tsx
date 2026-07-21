@@ -115,34 +115,39 @@ export default function TeamBento() {
     return <div className="text-center py-20 text-muted-foreground">No team members found.</div>;
   }
 
-  // Split into groups of 3: [left, featured, right]
+  // Split into groups of 7: [3 left, 1 featured, 3 right]
   const groups: any[][] = [];
-  for (let i = 0; i < members.length; i += 3) groups.push(members.slice(i, i + 3));
+  for (let i = 0; i < members.length; i += 7) groups.push(members.slice(i, i + 7));
 
   return (
     <div className="space-y-6">
       {groups.map((group, gi) => {
-        const left = group[0];
-        const featured = group[1] || group[0];
-        const right = group[2];
+        const leftMembers = group.slice(0, 3);
+        const featured = group[3] || group[0];
+        const rightMembers = group.slice(4, 7);
 
         return (
           <div
             key={gi}
             className="rounded-3xl bg-muted/30 border border-border/40 p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5 items-stretch"
           >
-            <div className="order-2 lg:order-1 flex">
-              {left && <div className="w-full self-center"><SmallCard member={left} index={0} /></div>}
+            <div className="order-2 lg:order-1 flex flex-col gap-4">
+              {leftMembers.map((m, i) => (
+                <SmallCard key={m.id || i} member={m} index={i} />
+              ))}
             </div>
             <div className="order-1 lg:order-2">
               {featured && <FeaturedCard member={featured} />}
             </div>
-            <div className="order-3 flex">
-              {right && <div className="w-full self-center"><SmallCard member={right} index={0} reverse /></div>}
+            <div className="order-3 flex flex-col gap-4">
+              {rightMembers.map((m, i) => (
+                <SmallCard key={m.id || i} member={m} index={i} reverse />
+              ))}
             </div>
           </div>
         );
       })}
     </div>
   );
+
 }
