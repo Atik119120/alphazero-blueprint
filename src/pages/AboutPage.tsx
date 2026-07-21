@@ -8,7 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import servicesHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
-import TeamGrid from "@/components/TeamGrid";
+import TeamBento from "@/components/TeamBento";
 import { Users } from "lucide-react";
 
 
