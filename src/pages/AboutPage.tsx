@@ -299,7 +299,11 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   const [size, setSize] = useState({ w: 0, h: 0 });
 
   const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
-  const offsets = ["md:translate-y-12", "md:-translate-y-10", "md:translate-y-14"];
+  const positions = [
+    "md:absolute md:left-0 md:top-[150px] md:w-[300px] lg:w-[320px]",
+    "md:absolute md:left-1/2 md:top-[54px] md:w-[300px] lg:w-[320px] md:-translate-x-1/2",
+    "md:absolute md:right-0 md:top-[170px] md:w-[300px] lg:w-[320px]",
+  ];
   const zIndex = [30, 30, 30];
 
   const compute = () => {
@@ -320,15 +324,9 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       const y2 = br.top + br.height / 2 - cRect.top;
       const dx = x2 - x1;
       const dy = y2 - y1;
-      const direction = i % 2 === 0 ? -1 : 1;
-      const wave = Math.min(120, Math.max(82, Math.abs(dx) * 0.7));
-      const midX = x1 + dx / 2;
-      // Two linked cubic segments make a bold, controlled S-curve in the gap.
-      const d = [
-        `M ${x1} ${y1}`,
-        `C ${x1 + dx * 0.18} ${y1}, ${midX - dx * 0.18} ${y1 + direction * wave}, ${midX} ${y1 + direction * wave}`,
-        `C ${midX + dx * 0.18} ${y1 + direction * wave}, ${x2 - dx * 0.18} ${y2}, ${x2} ${y2}`,
-      ].join(" ");
+      const direction = y2 < y1 ? -1 : 1;
+      const wave = Math.min(150, Math.max(110, Math.abs(dx) * 0.8));
+      const d = `M ${x1} ${y1} C ${x1 + dx * 0.35} ${y1 + direction * wave}, ${x2 - dx * 0.35} ${y2 - direction * wave}, ${x2} ${y2}`;
       next.push({ d, x1, y1, x2, y2 });
     }
     setSize({ w: container.offsetWidth, h: container.offsetHeight });
@@ -336,7 +334,12 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   };
 
   useLayoutEffect(() => {
-    compute();
+    const frame = requestAnimationFrame(compute);
+    const timer = window.setTimeout(compute, 650);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
   }, [values.length]);
 
   useEffect(() => {
@@ -351,7 +354,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pt-20 pb-20 items-center">
+    <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-20 pb-20 md:block md:min-h-[590px]">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
         className="hidden md:block absolute inset-0 pointer-events-none"
@@ -367,7 +370,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
             <motion.path
               d={p.d}
               stroke="#ef4444"
-              strokeWidth={2.6}
+              strokeWidth={2.8}
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -392,7 +395,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
           transition={{ delay: index * 0.15, duration: 0.6 }}
           whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
           style={{ zIndex: zIndex[index] }}
-          className={`relative aspect-square bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
+          className={`relative aspect-square w-full bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${positions[index]} ${rotations[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
         >
           <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
             {index + 1}
