@@ -191,40 +191,6 @@ const ServicesPage = () => {
               </div>
             )}
 
-            {/* Portfolio Builder */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="mt-12"
-            >
-              <div className="relative p-5 md:p-6 rounded-xl border border-primary/20 bg-primary/[0.03] dark:bg-primary/[0.05]">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 text-center sm:text-left">
-                    <div className="w-10 h-10 rounded-lg bg-primary/[0.1] flex items-center justify-center flex-shrink-0 border border-primary/10">
-                      <Sparkles className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-display font-semibold">
-                        {t("language") === "bn" ? "আপনার নিজের Portfolio তৈরি করুন!" : "Create Your Own Portfolio!"}
-                      </h4>
-                      <p className="text-sm text-muted-foreground">
-                        {t("language") === "bn" ? "লগইন করে সহজেই পোর্টফোলিও ওয়েবসাইট বানান" : "Login and easily build your portfolio website"}
-                      </p>
-                    </div>
-                  </div>
-                  <a
-                    href="http://infolio.online/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-full font-semibold text-sm transition-all duration-300 hover:opacity-90"
-                  >
-                    {t("language") === "bn" ? "তৈরি করুন" : "Create Now"}
-                    <ArrowRight className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>
