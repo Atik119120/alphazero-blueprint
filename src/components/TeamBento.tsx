@@ -68,21 +68,21 @@ function FeaturedCard({ member }: { member: any }) {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
-      className="group relative rounded-2xl overflow-hidden bg-primary/20 min-h-[420px] lg:min-h-full"
+      className="group relative rounded-2xl overflow-hidden bg-primary/20 h-[520px] lg:h-full lg:min-h-[520px]"
     >
       <img
         src={member.image_url || "/placeholder.svg"}
         alt={member.name}
         loading="lazy"
         referrerPolicy="no-referrer"
-        className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+        className="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700"
       />
-      <div className="absolute inset-x-4 bottom-4 rounded-xl bg-background/95 backdrop-blur-sm p-4 shadow-2xl">
-        <h3 className="font-display font-bold text-lg text-foreground leading-tight">{member.name}</h3>
-        <p className="mt-1 text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold">
+      <div className="absolute inset-x-3 bottom-3 rounded-xl bg-background/95 backdrop-blur-sm px-4 py-3 shadow-2xl">
+        <h3 className="font-display font-bold text-base text-foreground leading-tight">{member.name}</h3>
+        <p className="mt-0.5 text-[10px] uppercase tracking-[0.18em] text-muted-foreground font-semibold line-clamp-1">
           {member.role}
         </p>
-        <div className="mt-3 pt-3 border-t border-dashed border-border/60 flex items-center gap-1.5">
+        <div className="mt-2 pt-2 border-t border-dashed border-border/60 flex items-center gap-1.5">
           {socials.map((s, i) => (
             <a
               key={i}
