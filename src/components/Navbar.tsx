@@ -96,24 +96,34 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-xl backdrop-saturate-150 border border-white/20 dark:border-white/10 ${
+            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] ${
               isScrolled
-               ? "bg-background/50 dark:bg-card/30"
-               : "bg-background/20 dark:bg-background/15"
+               ? "bg-white/[0.08] dark:bg-white/[0.06]"
+               : "bg-white/[0.06] dark:bg-white/[0.04]"
             }`}
+            style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}
           >
+            {/* Soft top glass highlight */}
+            <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
+            {/* Faint bottom shadow line */}
+            <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
+
             {/* Logo */}
             <Link to="/" className="flex items-center group relative shrink-0">
               <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <img 
                 src={brandLogo} 
                 alt="AlphaZero Logo" 
-                className="h-7 sm:h-8 w-auto relative z-10 brightness-0 dark:invert transition-all duration-300"
+                className="h-7 sm:h-8 w-auto relative z-10 transition-all duration-300"
+                style={{
+                  filter: "brightness(0) saturate(0) invert(0.88) drop-shadow(0 1px 2px rgba(0,0,0,0.25)) drop-shadow(0 0 6px rgba(255,255,255,0.15))",
+                }}
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
               />
             </Link>
+
 
             {/* Desktop Navigation - Pill style (centered) */}
             <div className="hidden lg:flex items-center absolute left-1/2 -translate-x-1/2">
