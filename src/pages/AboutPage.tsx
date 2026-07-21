@@ -184,39 +184,58 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Values — Tilted cards with squiggle connectors */}
-      <section className="py-24 lg:py-32 relative bg-[#e9e9ea]">
+      {/* Process cards — floating tilted cards with animated red squiggles */}
+      <section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16 lg:mb-20">
-              <div className="flex items-center justify-center gap-4 mb-4">
-                <span className="h-px w-10 bg-foreground/30" />
-                <span className="text-sm italic font-serif text-foreground/70">Our Values, Explained</span>
-                <span className="h-px w-10 bg-foreground/30" />
-              </div>
-              <h2 className="text-4xl lg:text-6xl font-display font-semibold tracking-tight text-foreground">
-                {c("values.title", "about.values.title")}
-              </h2>
-            </motion.div>
-
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 pt-12 pb-8">
-              {/* Squiggle 1 → 2 : short curve from bottom-right of card 1 up to top of card 2 */}
-              <svg className="hidden md:block absolute z-40 pointer-events-none" style={{ left: '30%', top: '18%', width: '110px', height: '150px' }} viewBox="0 0 110 150" fill="none">
-                <circle cx="15" cy="140" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
-                <path d="M 15 140 C 15 100, 55 90, 65 40 S 90 10, 95 8" stroke="#ff5722" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-                <circle cx="95" cy="8" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 pt-16 pb-16 items-center">
+              {/* Squiggle 1 → 2 : from top of card 1 up to top-left of card 2 */}
+              <svg
+                className="hidden md:block absolute z-40 pointer-events-none"
+                style={{ left: "28%", top: "8%", width: "140px", height: "170px" }}
+                viewBox="0 0 140 170"
+                fill="none"
+              >
+                <circle cx="20" cy="160" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <motion.path
+                  d="M 20 160 C 25 110, 70 100, 85 60 S 115 15, 120 10"
+                  stroke="#ef4444"
+                  strokeWidth="1.6"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.4, ease: "easeInOut" }}
+                />
+                <circle cx="120" cy="10" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
               </svg>
+
               {/* Squiggle 2 → 3 : loopy curve from bottom of card 2 into card 3 */}
-              <svg className="hidden md:block absolute z-40 pointer-events-none" style={{ left: '58%', top: '50%', width: '160px', height: '140px' }} viewBox="0 0 160 140" fill="none">
-                <circle cx="20" cy="10" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
-                <path d="M 20 10 C 25 40, 55 45, 60 60 C 65 78, 40 78, 55 92 C 70 106, 100 92, 115 100 S 140 118, 148 118" stroke="#ff5722" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-                <circle cx="148" cy="118" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
+              <svg
+                className="hidden md:block absolute z-40 pointer-events-none"
+                style={{ left: "56%", top: "48%", width: "190px", height: "170px" }}
+                viewBox="0 0 190 170"
+                fill="none"
+              >
+                <circle cx="22" cy="12" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <motion.path
+                  d="M 22 12 C 28 45, 62 55, 68 78 C 74 100, 42 100, 58 118 C 78 138, 118 118, 138 130 S 168 148, 178 148"
+                  stroke="#ef4444"
+                  strokeWidth="1.6"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.6, ease: "easeInOut", delay: 0.3 }}
+                />
+                <circle cx="178" cy="148" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
               </svg>
 
               {values.map((value, index) => {
-                const rotations = ['-rotate-[8deg]', '-rotate-[3deg]', '-rotate-[6deg]'];
-                const offsets = ['md:translate-y-12', 'md:-translate-y-4', 'md:translate-y-16'];
-                const overlaps = ['md:mr-[-30px]', 'md:scale-[1.1]', 'md:ml-[-30px]'];
+                const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
+                const offsets = ["md:translate-y-10", "md:-translate-y-8", "md:translate-y-12"];
                 const zIndex = [10, 30, 10];
                 return (
                   <motion.div
@@ -224,17 +243,21 @@ const AboutPage = () => {
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: index * 0.12 }}
-                    whileHover={{ rotate: 0, y: -10, scale: index === 1 ? 1.14 : 1.05 }}
+                    transition={{ delay: index * 0.15, duration: 0.6 }}
+                    animate={{ y: [0, -6, 0] }}
+                    {...({ transition: { y: { duration: 4 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 } } } as any)}
+                    whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
                     style={{ zIndex: zIndex[index] }}
-                    className={`relative aspect-square bg-white rounded-2xl p-8 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.28)] flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} ${overlaps[index]} transition-transform`}
+                    className={`relative aspect-square bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
                   >
-                    <div className="text-7xl lg:text-8xl font-display font-semibold text-foreground leading-none">
+                    <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
                       {index + 1}
                     </div>
                     <div>
-                      <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2">{value.title}</h3>
-                      <p className="text-sm text-foreground/60 leading-relaxed">{value.desc}</p>
+                      <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2 tracking-tight">
+                        {value.title}
+                      </h3>
+                      <p className="text-sm text-foreground/55 leading-relaxed">{value.desc}</p>
                     </div>
                   </motion.div>
                 );
@@ -243,6 +266,7 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
 
       {/* CTA — Ready to start */}
       <section className="py-16 lg:py-24 relative">
