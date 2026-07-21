@@ -1,1 +1,0 @@
-UPDATE public.team_members SET image_url = 'https://ayqbpqgahtycrncbknvj.supabase.co/storage/v1/object/public/media-uploads/team-members/prantik-saha-v2.png', updated_at = now() WHERE name ILIKE '%prantik%';

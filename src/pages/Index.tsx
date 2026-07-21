@@ -529,129 +529,133 @@ const Index = () => {
 
 
 
-      {/* ══════════ SERVICES — ASTRYX BENTO GRID ══════════ */}
-      <section className="pt-16 pb-20 lg:pt-24 lg:pb-32 relative bg-background">
-        <div className="container mx-auto px-6 relative z-10 max-w-7xl">
-          {/* Header */}
+      {/* ══════════ SERVICES — BENTO GRID ══════════ */}
+      <section className="pt-8 pb-16 lg:pt-10 lg:pb-24 relative bg-background">
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl mb-14 lg:mb-20"
+            viewport={{ once: true }}
+            className="text-center mb-10 lg:mb-28"
           >
-            <span className="astryx-eyebrow mb-5">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-              What we do
-            </span>
-            <h2 className="text-4xl lg:text-5xl xl:text-6xl font-display font-semibold tracking-[-0.03em] leading-[1.05] text-foreground mb-5">
-              {c("whatWeDo", "home.whatWeDo")}{" "}
-              <span className="text-muted-foreground">{c("do", "home.do")}</span>
+            <h2 className="text-3xl lg:text-5xl xl:text-6xl font-display font-bold mb-4">
+              {c("whatWeDo", "home.whatWeDo")} <span className="gradient-text">{c("do", "home.do")}</span>
             </h2>
-            <p className="text-muted-foreground text-base lg:text-lg leading-relaxed max-w-xl">
-              Enterprise-grade design, engineering, and growth — delivered with the polish of Linear, Vercel, and Stripe.
+            <p className="text-muted-foreground max-w-xl mx-auto text-base lg:text-lg">
+              We craft designs, websites & brand visuals that stand out.
             </p>
           </motion.div>
 
-          {/* Bento grid — asymmetric, Linear-style */}
-          <div className="grid grid-cols-1 md:grid-cols-6 gap-4 lg:gap-5">
+
+
+          {/* MOBILE — single column: one service per row */}
+          <div className="lg:hidden max-w-2xl mx-auto grid grid-cols-1 gap-6">
             {services.map((s, i) => {
               const Icon = s.icon;
-              // Featured card = first, spans 4 cols; others span 2
-              const isFeatured = i === 0;
-              const span = isFeatured
-                ? "md:col-span-4 md:row-span-2"
-                : i === 1
-                ? "md:col-span-2 md:row-span-1"
-                : i === 2
-                ? "md:col-span-3 md:row-span-1"
-                : "md:col-span-3 md:row-span-1";
-
               return (
-                <motion.article
+                <motion.div
                   key={s.title}
                   initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-60px" }}
-                  transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                  className={`group relative astryx-surface overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[var(--shadow-card-hover)] ${span}`}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <Link to="/services" className="block h-full astryx-focus" aria-label={s.title}>
-                    {/* Media */}
-                    {s.primaryImage && (
-                      <div
-                        className={`relative overflow-hidden ${isFeatured ? "aspect-[16/10]" : "aspect-[16/9]"}`}
-                        style={{
-                          background: `linear-gradient(135deg, ${s.bg} 0%, hsl(var(--secondary)) 100%)`,
-                        }}
-                      >
-                        <img
-                          src={s.primaryImage}
-                          alt={s.title}
-                          loading={i === 0 ? "eager" : "lazy"}
-                          decoding="async"
-                          className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                        />
-                        {/* Subtle top gradient for legibility */}
-                        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/0 via-transparent to-black/5" />
-                      </div>
-                    )}
-
-                    {/* Body */}
-                    <div className="p-6 lg:p-7">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div
-                          className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-border"
-                          style={{ background: `${s.stripe}12`, color: s.stripe }}
-                        >
-                          <Icon size={16} strokeWidth={2} />
-                        </div>
-                        <span className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
-                          {s.label}
-                        </span>
-                      </div>
-
-                      <h3
-                        className={`font-display font-semibold tracking-[-0.02em] leading-[1.15] text-foreground mb-2 ${
-                          isFeatured ? "text-2xl lg:text-3xl" : "text-xl lg:text-[22px]"
-                        }`}
-                      >
-                        {s.title}
-                      </h3>
-                      <p className="text-sm lg:text-[15px] text-muted-foreground leading-relaxed mb-5 line-clamp-2">
-                        {s.description}
-                      </p>
-
-                      {/* Meta row */}
-                      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mb-5">
-                        {s.meta?.map((m) => (
-                          <div key={m.k} className="flex items-baseline gap-1.5">
-                            <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70 font-medium">
-                              {m.k}
-                            </span>
-                            <span className="text-[13px] text-foreground font-medium">{m.v}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Divider + CTA */}
-                      <div className="astryx-divider mb-4" />
-                      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground group-hover:text-primary transition-colors">
-                        Explore service
-                        <ArrowRight
-                          size={14}
-                          className="transition-transform duration-300 group-hover:translate-x-1"
-                        />
-                      </span>
-                    </div>
+                  <h3 className="text-base sm:text-lg font-display font-bold leading-[1.15] tracking-tight text-foreground mb-1.5">
+                    {s.title}
+                  </h3>
+                  <div className="relative h-[2px] w-full max-w-[100px] mb-1.5 overflow-hidden rounded-full">
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                  </div>
+                  <Link
+                    to="/services"
+                    className="inline-flex items-center gap-1 font-semibold text-[11px] group mb-5"
+                  >
+                    <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+                      {t("common.learnMore") || "See More"}
+                    </span>
+                    <ArrowRight size={12} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
                   </Link>
-                </motion.article>
+                  <MemoServicePair
+                    index={i}
+                    color={s.stripe}
+                    Icon={Icon}
+                    primaryImage={(s as any).primaryImage}
+                    secondaryImage={(s as any).secondaryImage}
+                    priority={i === 0}
+                  />
+                </motion.div>
               );
             })}
           </div>
+
+
+          {/* DESKTOP — Sticky text left, scrolling image pairs right */}
+          <div className="hidden lg:grid max-w-7xl mx-auto grid-cols-12 gap-16 relative">
+            {/* LEFT — sticky text swaps with active service */}
+            <div className="col-span-4 sticky top-32 h-[calc(100vh-8rem)] flex flex-col justify-center">
+              <div className="relative">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  {services.map((s, i) =>
+                    activeService === i ? (
+                      <motion.div
+                        key={s.title}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <h3 className="text-3xl md:text-4xl lg:text-[2.1rem] xl:text-[2.5rem] font-display font-bold mb-5 leading-[1.1] tracking-tight text-foreground max-w-full">
+                          {s.title}
+                        </h3>
+                        <div className="relative h-[2px] w-full max-w-md mb-6 overflow-hidden rounded-full">
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 blur-[2px] opacity-80" />
+                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500" />
+                        </div>
+                        <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-md">
+                          {s.description}
+                        </p>
+                        <Link
+                          to="/services"
+                          className="inline-flex items-center gap-2 font-semibold text-sm group text-cyan-300 hover:text-cyan-200 transition-colors"
+                        >
+                          <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
+                            {t("common.learnMore") || "See More"}
+                            <span className="absolute left-0 -bottom-0.5 h-[1.5px] w-full bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 origin-left" />
+                          </span>
+                          <ArrowRight size={16} className="text-cyan-300 group-hover:translate-x-1 transition-transform duration-500 ease-out" />
+                        </Link>
+                      </motion.div>
+                    ) : null
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* RIGHT — scrolling image pairs */}
+            <div className="col-span-8 flex flex-col gap-24">
+              {services.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <MemoServicePair
+                    key={s.title}
+                    index={i}
+                    color={s.stripe}
+                    Icon={Icon}
+                    primaryImage={(s as any).primaryImage}
+                    secondaryImage={(s as any).secondaryImage}
+                    priority={i === 0}
+                  />
+                );
+              })}
+            </div>
+          </div>
+
+
+
+
         </div>
       </section>
-
 
       {/* ══════════ TRUSTED BY GLOBAL BRANDS — Premium SaaS ══════════ */}
       <section className="relative py-12 lg:py-16 bg-white overflow-hidden">
