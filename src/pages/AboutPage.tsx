@@ -316,7 +316,7 @@ const faqs = [
 const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="pt-4 lg:pt-6 pb-20 lg:pb-28 relative" style={{ background: "linear-gradient(180deg, #F3F3F4 0%, #FAFAFA 100%)" }}>
+    <section className="pt-2 lg:pt-2 pb-16 lg:pb-24 relative" style={{ background: "linear-gradient(180deg, #F3F3F4 0%, #FAFAFA 100%)" }}>
       <div className="container mx-auto px-6 max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
