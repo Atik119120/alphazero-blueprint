@@ -169,7 +169,7 @@ const AboutPage = () => {
       </section>
 
       {/* Process cards — floating tilted cards with dynamically-aligned red S-curve connectors */}
-      <section data-process-section className="pt-8 lg:pt-12 pb-8 lg:pb-12 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
+      <section data-process-section className="pt-8 lg:pt-12 pb-2 lg:pb-2 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
