@@ -104,23 +104,15 @@ const AboutPage = () => {
                 transition={{ duration: 0.8 }}
                 className="relative flex items-center justify-center min-h-[320px] lg:min-h-[420px]"
               >
-                <svg viewBox="0 0 500 400" className="w-full max-w-md" fill="none">
-                  <motion.circle cx="140" cy="220" r="90" fill="hsl(var(--muted))"
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.1 }} style={{ transformOrigin: "140px 220px" }} />
-                  <motion.circle cx="300" cy="140" r="55" fill="hsl(var(--muted))"
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.25 }} style={{ transformOrigin: "300px 140px" }} />
-                  <motion.circle cx="260" cy="290" r="70" fill="hsl(var(--muted))"
-                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: 0.4 }} style={{ transformOrigin: "260px 290px" }} />
-                  <motion.path
-                    d="M 140 220 Q 220 170 300 140 M 140 220 Q 200 260 260 290"
-                    stroke="hsl(var(--muted))" strokeWidth="70" strokeLinecap="round" fill="none"
-                    initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }}
-                    viewport={{ once: true }} transition={{ duration: 1.2, delay: 0.2 }}
-                  />
-                </svg>
+                <motion.img
+                  src={logo}
+                  alt="AlphaZero"
+                  className="w-full max-w-md object-contain"
+                  initial={{ scale: 0.85, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8 }}
+                />
               </motion.div>
 
               {/* Right: label + heading + copy + button */}
