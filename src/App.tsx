@@ -30,7 +30,6 @@ import AboutPage from "./pages/AboutPage";
 import LearnAboutPage from "./pages/LearnAboutPage";
 import ServicesPage from "./pages/ServicesPage";
 import WorkPage from "./pages/WorkPage";
-import TeamPage from "./pages/TeamPage";
 import JoinTeamPage from "./pages/JoinTeamPage";
 import ContactPage from "./pages/ContactPage";
 import CoursesPage from "./pages/CoursesPage";
