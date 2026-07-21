@@ -126,7 +126,7 @@ export default function ProjectMarquee() {
   }, [items.length, topOffset]);
 
   return (
-    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-[#020617] z-20">
+    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-[#020617] z-20 rounded-b-[2rem] md:rounded-b-[3rem]">
       <div className="relative h-[130px] sm:h-[150px] md:h-[180px] project-marquee-row">
         <AppSwiper
           variant="marquee"
