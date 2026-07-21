@@ -352,22 +352,16 @@ const ServicesPage = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
                   whileHover={{ y: -6 }}
-                  className="relative rounded-2xl border border-border/60 bg-background/80 backdrop-blur-sm p-8 lg:p-10 group overflow-hidden transition-all hover:shadow-xl"
-                  style={{ ["--c" as any]: item.color }}
+                  className="relative rounded-2xl p-8 lg:p-10 group overflow-hidden transition-all hover:shadow-xl"
+                  style={{ backgroundColor: item.color }}
                 >
-                  <div
-                    className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-3xl opacity-30 group-hover:opacity-70 transition-opacity"
-                    style={{ background: `radial-gradient(circle, ${item.color}, transparent 70%)` }}
-                  />
+                  <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-3xl opacity-20 bg-white pointer-events-none" />
                   <div className="relative">
-                    <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-                      style={{ background: `linear-gradient(135deg, ${item.color}20, ${item.color}10)`, border: `1px solid ${item.color}40` }}
-                    >
-                      <item.icon size={18} style={{ color: item.color }} />
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 bg-white/20 border border-white/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
+                      <item.icon size={18} className="text-white" />
                     </div>
-                    <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                    <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2 text-white">{item.title}</h3>
+                    <p className="text-white/85 text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </motion.div>
               ))}
