@@ -400,8 +400,9 @@ const LearnAboutPage = () => {
                       transition={{ delay: i * 0.05 }}
                       className="group"
                     >
-                      <div className="glass-card rounded-2xl overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08] flex flex-col h-full">
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-muted">
+                      <div className="rounded-2xl overflow-hidden border border-border/40 bg-card hover:border-primary/40 transition-all hover:-translate-y-1 flex flex-col h-full">
+                        <div className="relative aspect-[4/5] w-full overflow-hidden">
+
                           {tr.image ? (
                             <img
                               src={tr.image}
