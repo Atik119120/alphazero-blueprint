@@ -15,7 +15,7 @@ const socialsOf = (m: any): Social[] => {
   return s.slice(0, 3);
 };
 
-function SmallCard({ member, index }: { member: any; index: number; reverse?: boolean }) {
+function SmallCard({ member, index, reverse = false }: { member: any; index: number; reverse?: boolean }) {
   const socials = socialsOf(member);
   return (
     <motion.div
@@ -23,21 +23,25 @@ function SmallCard({ member, index }: { member: any; index: number; reverse?: bo
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="group relative rounded-2xl overflow-hidden bg-primary/10 border border-border/40 hover:border-primary/30 hover:shadow-xl transition-all duration-500 aspect-[3/4]"
+      className="group flex bg-background rounded-2xl overflow-hidden border border-border/40 hover:border-primary/30 hover:shadow-xl transition-all duration-500"
     >
-      <img
-        src={member.image_url || "/placeholder.svg"}
-        alt={member.name}
-        loading="lazy"
-        referrerPolicy="no-referrer"
-        className="absolute inset-0 w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700"
-      />
-      <div className="absolute inset-x-2 bottom-2 rounded-xl bg-background/95 backdrop-blur-sm px-3 py-2 shadow-xl">
-        <h3 className="font-display font-bold text-sm text-foreground leading-tight line-clamp-1">{member.name}</h3>
-        <p className="mt-0.5 text-[9px] uppercase tracking-[0.14em] text-muted-foreground font-semibold line-clamp-1">
-          {member.role}
-        </p>
-        <div className="mt-1.5 pt-1.5 border-t border-dashed border-border/60 flex items-center gap-1">
+      <div className={`relative w-2/5 aspect-square shrink-0 overflow-hidden bg-primary/10 ${reverse ? "order-last" : ""}`}>
+        <img
+          src={member.image_url || "/placeholder.svg"}
+          alt={member.name}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+      </div>
+      <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
+        <div>
+          <h3 className="font-display font-bold text-base leading-tight text-foreground">{member.name}</h3>
+          <p className="mt-1 text-[10px] uppercase tracking-[0.14em] text-muted-foreground font-semibold line-clamp-2">
+            {member.role}
+          </p>
+        </div>
+        <div className="mt-3 pt-3 border-t border-dashed border-border/60 flex items-center gap-1.5">
           {socials.map((s, i) => (
             <a
               key={i}
@@ -45,7 +49,7 @@ function SmallCard({ member, index }: { member: any; index: number; reverse?: bo
               target={s.href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
               aria-label={s.label}
-              className="w-6 h-6 rounded-md bg-foreground text-background hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
+              className="w-7 h-7 rounded-md bg-foreground text-background hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
             >
               {s.icon}
             </a>
@@ -55,7 +59,6 @@ function SmallCard({ member, index }: { member: any; index: number; reverse?: bo
     </motion.div>
   );
 }
-
 
 function FeaturedCard({ member }: { member: any }) {
   const socials = socialsOf(member);
