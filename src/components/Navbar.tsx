@@ -61,7 +61,7 @@ const Navbar = () => {
     { name: t("nav.about"), href: "/about", icon: Info },
     { name: t("nav.services"), href: "/services", icon: Briefcase },
     { name: t("nav.work"), href: "/work", icon: FolderOpen },
-    { name: t("nav.team"), href: "/team", icon: Users },
+    
     
     { name: t("nav.contact"), href: "/contact", icon: Mail },
   ];
