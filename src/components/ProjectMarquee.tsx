@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useWorks, type Work } from "@/hooks/useWorks";
-import { AppSwiper } from "@/components/ui/app-swiper";
 
 import badam from "@/assets/marquee/badam.jpg.asset.json";
 import coconut from "@/assets/marquee/coconuct.jpg.asset.json";
@@ -91,8 +90,14 @@ export default function ProjectMarquee() {
   const row2: Item[] = [];
   items.forEach((it, i) => (i % 2 === 0 ? row1 : row2).push(it));
 
-  const dup1 = [...row1, ...row1, ...row1];
-  const dup2 = [...row2, ...row2, ...row2];
+  const buildTrack = (row: Item[]) => {
+    const repeatCount = Math.max(3, Math.ceil(18 / Math.max(row.length, 1)));
+    const half = Array.from({ length: repeatCount }, () => row).flat();
+    return [...half, ...half];
+  };
+
+  const track1 = buildTrack(row1);
+  const track2 = buildTrack(row2);
 
   useEffect(() => {
     let frame = 0;
@@ -128,37 +133,15 @@ export default function ProjectMarquee() {
   return (
     <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-[#020617] z-20">
       <div className="relative h-[130px] sm:h-[150px] md:h-[180px] project-marquee-row">
-        <AppSwiper
-          variant="marquee"
-          speed={6000}
-          autoplayDelay={0}
-          loop
-          spaceBetween={4}
-          items={row1}
-          keyExtractor={(p, i) => `r1-${p.id}-${i}`}
-          slideClassName="!w-auto h-full"
-          className="h-full"
-          allowTouchMove={false}
-          autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: false }}
-          renderItem={(p) => <Card item={p} />}
-        />
+        <div className="flex h-full w-max project-marquee-track project-marquee-track-left">
+          {track1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
+        </div>
       </div>
 
       <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-1 project-marquee-row">
-        <AppSwiper
-          variant="marquee"
-          speed={6000}
-          autoplayDelay={0}
-          loop
-          spaceBetween={4}
-          items={row2}
-          keyExtractor={(p, i) => `r2-${p.id}-${i}`}
-          slideClassName="!w-auto h-full"
-          className="h-full"
-          allowTouchMove={false}
-          autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: false, reverseDirection: true }}
-          renderItem={(p) => <Card item={p} />}
-        />
+        <div className="flex h-full w-max project-marquee-track project-marquee-track-right">
+          {track2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
+        </div>
       </div>
     </section>
 
