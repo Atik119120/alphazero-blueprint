@@ -665,17 +665,17 @@ const Index = () => {
         <div className="relative container mx-auto px-6 max-w-[1280px]">
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
-              { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.2 },
-              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 3.4 },
-              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 2.2 },
-              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 2.8 },
-              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 2.8 },
-              { src: resolveLogoUrl(clientAtix.url), alt: "Atix", scale: 1.15 },
-              { src: resolveLogoUrl(clientSA.url), alt: "SA", scale: 1.15 },
-              { src: "https://syoenzqclizidypesxqq.supabase.co/storage/v1/object/public/banners/logo-1777311397835.png", alt: "Unavailable Attire", scale: 1.1 },
-              { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Amin One", scale: 1.1 },
-              { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes", scale: 1.15 },
-              { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy", scale: 1.15 },
+              { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra", scale: 1.0 },
+              { src: resolveLogoUrl(clientAura.url), alt: "Aura Signature", scale: 3.8 },
+              { src: resolveLogoUrl(clientGreenpeak.url), alt: "GreenPeak", scale: 2.6 },
+              { src: resolveLogoUrl(clientBlackzen.url), alt: "BlackZen", scale: 3.2 },
+              { src: resolveLogoUrl(clientDarkAura.url), alt: "Dark Aura", scale: 3.2 },
+              { src: resolveLogoUrl(clientAtix.url), alt: "Atix", scale: 1.0 },
+              { src: resolveLogoUrl(clientSA.url), alt: "SA", scale: 1.35 },
+              { src: "https://syoenzqclizidypesxqq.supabase.co/storage/v1/object/public/banners/logo-1777311397835.png", alt: "Unavailable Attire", scale: 1.05 },
+              { src: "https://res.cloudinary.com/dzuex7n2u/image/upload/v1779254926/amin-one/banners/p5rstcffeky3xd7arakc.png", alt: "Amin One", scale: 0.9 },
+              { src: "https://alphazero.online/__l5e/assets-v1/0edf2ae9-ec96-4989-a03b-9449fbf1aaf6/brand-2.png", alt: "Static Vibes", scale: 1.35 },
+              { src: "https://maarifulquranacademy.com/wp-content/uploads/2025/09/final-logo-2048x401.png", alt: "Maariful Quran Academy", scale: 0.95 },
             ];
 
             const activeItems = (brandItems ?? []).filter((it) => it.is_active && it.image_url);
