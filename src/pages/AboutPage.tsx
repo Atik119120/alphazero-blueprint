@@ -8,6 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import servicesHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
+import ctaBlueWaves from "@/assets/about-cta-blue-waves.png.asset.json";
 import TeamBento from "@/components/TeamBento";
 import { Users } from "lucide-react";
 
@@ -225,14 +226,16 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-[#FFB366] via-[#FF9F4A] to-[#FF8A2B]"
+            className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16"
           >
-            {/* Decorative circles */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70 text-[#E67322]" viewBox="0 0 1000 400" preserveAspectRatio="none" fill="none">
-              <circle cx="500" cy="-40" r="240" stroke="currentColor" strokeWidth="2" />
-              <circle cx="120" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
-              <circle cx="880" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
-            </svg>
+            {/* Background image */}
+            <img
+              src={ctaBlueWaves.url}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+
 
             <div className="relative grid lg:grid-cols-2 gap-10 items-center">
               {/* Left: Heading + CTA */}
