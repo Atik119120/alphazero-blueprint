@@ -322,10 +322,10 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       const dy = y2 - y1;
       // Pronounced S-curve: push control points outward and flip vertical offset
       // to create a graceful wave regardless of vertical delta between cards.
-      const amp = Math.max(60, Math.abs(dy) * 1.2 + 40);
-      const cx1 = x1 + dx * 0.35;
+      const amp = Math.max(140, Math.abs(dy) * 1.4 + 120);
+      const cx1 = x1 + dx * 0.25;
       const cy1 = y1 - amp;
-      const cx2 = x2 - dx * 0.35;
+      const cx2 = x2 - dx * 0.25;
       const cy2 = y2 + amp;
       const d = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
       next.push({ d, x1, y1, x2, y2 });
