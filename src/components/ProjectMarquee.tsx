@@ -103,7 +103,15 @@ export default function ProjectMarquee() {
         const marquee = sectionRef.current;
         const cta = document.querySelector<HTMLElement>("[data-hero-cta]");
 
-        if (!marquee || !cta) return;
+        if (!marquee) return;
+
+        // Desktop only: pin marquee just below the hero CTA.
+        // Tablet/mobile: let it flow naturally beneath the hero.
+        const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+        if (!isDesktop || !cta) {
+          setTopOffset((current) => (current !== 0 ? 0 : current));
+          return;
+        }
 
         const desiredTop = cta.getBoundingClientRect().bottom + HERO_CTA_GAP_PX;
         const currentTop = marquee.getBoundingClientRect().top;
