@@ -109,55 +109,53 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
       <div className={cn("relative", className)} ref={innerRef} {...props}>
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
-            <div className="relative w-full">
-              <img
-                src={bottomImage.dark}
-                alt=""
-                className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover block"
-                loading="eager"
-              />
-
-
-
-
-
-
-              {/* Overlayed text + button */}
-              <div className="dark absolute inset-0 flex items-start justify-center px-4 pt-[22%] sm:pt-[15%] md:pt-[10%] text-foreground">
-                <div className="space-y-4 sm:space-y-7 max-w-6xl leading-tight lg:leading-5 mx-auto text-center">
-                  <h1 data-hero-badge className="text-[11px] sm:text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
-                    {title}
-                    <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
-                  </h1>
-                  <h2 data-hero-title className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl sm:whitespace-nowrap">
-                    <span className="bg-clip-text text-transparent bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.7)_100%)]">
-                      {splitWords(subtitle.regular)}
-                    </span>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] [text-shadow:0_0_40px_hsl(var(--gradient-mid)/0.4)]">
-                      {splitWords(subtitle.gradient)}
-                    </span>
-                  </h2>
-                  <p data-hero-desc className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
-                    {description}
-                  </p>
-
-                  <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
-                    <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
-                      <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
-                      <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
-                        <a
-                          href={ctaHref}
-                          data-hero-cta
-                          className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
-                        >
-                          {ctaText}
-                        </a>
-                      </div>
-                    </span>
-                  </div>
+            <>
+              {/* ────── Desktop (lg+): keep original layout with aspect-ratio image + absolute overlay ────── */}
+              <div className="relative w-full hidden lg:block">
+                <img
+                  src={bottomImage.dark}
+                  alt=""
+                  className="w-full [aspect-ratio:3/2] object-cover block"
+                  loading="eager"
+                />
+                <div className="dark absolute inset-0 flex items-start justify-center px-4 pt-[10%] text-foreground">
+                  <HeroContent
+                    title={title}
+                    subtitle={subtitle}
+                    description={description}
+                    ctaText={ctaText}
+                    ctaHref={ctaHref}
+                    splitWords={splitWords}
+                  />
                 </div>
               </div>
-            </div>
+
+              {/* ────── Mobile & Tablet (<lg): flex-column so gallery flows naturally under CTA ────── */}
+              <div className="relative w-full lg:hidden dark text-foreground">
+                <img
+                  src={bottomImage.dark}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                />
+                <div className="relative z-10 flex flex-col min-h-[100svh] px-4 pt-24 pb-6">
+                  <div className="flex-none">
+                    <HeroContent
+                      title={title}
+                      subtitle={subtitle}
+                      description={description}
+                      ctaText={ctaText}
+                      ctaHref={ctaHref}
+                      splitWords={splitWords}
+                    />
+                  </div>
+                  {/* Gallery slot — 24–40px gap from CTA, flows in layout (no absolute/margin hacks) */}
+                  {props.children ? (
+                    <div className="mt-8 sm:mt-10">{props.children as React.ReactNode}</div>
+                  ) : null}
+                </div>
+              </div>
+            </>
           )}
         </section>
       </div>
@@ -165,5 +163,54 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
   },
 )
 HeroSection.displayName = "HeroSection"
+
+const HeroContent = ({
+  title,
+  subtitle,
+  description,
+  ctaText,
+  ctaHref,
+  splitWords,
+}: {
+  title: string
+  subtitle: { regular: string; gradient: string }
+  description: React.ReactNode
+  ctaText: string
+  ctaHref: string
+  splitWords: (t: string) => string
+}) => (
+  <div className="space-y-4 sm:space-y-7 max-w-6xl leading-tight lg:leading-5 mx-auto text-center">
+    <h1 data-hero-badge className="text-[11px] sm:text-xs md:text-sm text-foreground/95 group font-geist mx-auto px-3 sm:px-4 py-1.5 bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent border-[2px] border-border rounded-3xl w-fit backdrop-blur-sm">
+      {title}
+      <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
+    </h1>
+    <h2 data-hero-title className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl sm:whitespace-nowrap">
+      <span className="bg-clip-text text-transparent bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.7)_100%)]">
+        {splitWords(subtitle.regular)}
+      </span>
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))] [text-shadow:0_0_40px_hsl(var(--gradient-mid)/0.4)]">
+        {splitWords(subtitle.gradient)}
+      </span>
+    </h2>
+    <p data-hero-desc className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
+      {description}
+    </p>
+    <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
+      <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
+        <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
+          <a
+            href={ctaHref}
+            data-hero-cta
+            className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
+          >
+            {ctaText}
+          </a>
+        </div>
+      </span>
+    </div>
+  </div>
+)
+
 
 export { HeroSection }
