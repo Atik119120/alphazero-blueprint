@@ -189,16 +189,16 @@ const AboutPage = () => {
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 pt-16 pb-16 items-center">
-              {/* Squiggle 1 → 2 : from top of card 1 up to top-left of card 2 */}
+              {/* Squiggle 1 → 2 : from card 1 right-inside up to above card 2 top */}
               <svg
                 className="hidden md:block absolute z-40 pointer-events-none"
-                style={{ left: "28%", top: "8%", width: "140px", height: "170px" }}
-                viewBox="0 0 140 170"
+                style={{ left: "30%", top: "0%", width: "110px", height: "180px" }}
+                viewBox="0 0 110 180"
                 fill="none"
               >
-                <circle cx="20" cy="160" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <circle cx="18" cy="170" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
                 <motion.path
-                  d="M 20 160 C 25 110, 70 100, 85 60 S 115 15, 120 10"
+                  d="M 18 170 C 30 140, 20 105, 55 85 S 90 40, 92 12"
                   stroke="#ef4444"
                   strokeWidth="1.6"
                   fill="none"
@@ -208,19 +208,19 @@ const AboutPage = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 1.4, ease: "easeInOut" }}
                 />
-                <circle cx="120" cy="10" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <circle cx="92" cy="12" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
               </svg>
 
-              {/* Squiggle 2 → 3 : loopy curve from bottom of card 2 into card 3 */}
+              {/* Squiggle 2 → 3 : from middle of card 2 down to bottom of card 3 */}
               <svg
                 className="hidden md:block absolute z-40 pointer-events-none"
-                style={{ left: "56%", top: "48%", width: "190px", height: "170px" }}
-                viewBox="0 0 190 170"
+                style={{ left: "60%", top: "40%", width: "150px", height: "170px" }}
+                viewBox="0 0 150 170"
                 fill="none"
               >
-                <circle cx="22" cy="12" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <circle cx="18" cy="18" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
                 <motion.path
-                  d="M 22 12 C 28 45, 62 55, 68 78 C 74 100, 42 100, 58 118 C 78 138, 118 118, 138 130 S 168 148, 178 148"
+                  d="M 18 18 C 40 45, 10 75, 45 95 C 80 115, 60 135, 100 145 S 130 155, 138 155"
                   stroke="#ef4444"
                   strokeWidth="1.6"
                   fill="none"
@@ -230,7 +230,7 @@ const AboutPage = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 1.6, ease: "easeInOut", delay: 0.3 }}
                 />
-                <circle cx="178" cy="148" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <circle cx="138" cy="155" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
               </svg>
 
               {values.map((value, index) => {
