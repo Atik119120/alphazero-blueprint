@@ -455,7 +455,7 @@ const Index = () => {
 
 
       {/* ══════════ SISTER BRANDS ══════════ */}
-      <section className="relative pt-0 pb-6 lg:pt-0 lg:pb-8">
+      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
