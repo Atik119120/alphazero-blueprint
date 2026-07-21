@@ -169,7 +169,7 @@ const AboutPage = () => {
       </section>
 
       {/* Process cards — floating tilted cards with dynamically-aligned red S-curve connectors */}
-      <section data-process-section className="pt-8 lg:pt-12 pb-8 lg:pb-12 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
+      <section data-process-section className="pt-8 lg:pt-12 pb-2 lg:pb-2 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
@@ -316,7 +316,7 @@ const faqs = [
 const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="pt-4 lg:pt-6 pb-20 lg:pb-28 relative" style={{ background: "linear-gradient(180deg, #F3F3F4 0%, #FAFAFA 100%)" }}>
+    <section className="pt-2 lg:pt-2 pb-16 lg:pb-24 relative" style={{ background: "linear-gradient(180deg, #F3F3F4 0%, #FAFAFA 100%)" }}>
       <div className="container mx-auto px-6 max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -443,7 +443,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-20 pb-20 md:block md:min-h-[590px]">
+    <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-8 pb-8 md:block md:min-h-[520px]">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
         className="hidden md:block absolute inset-0 pointer-events-none"
