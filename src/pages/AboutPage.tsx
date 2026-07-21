@@ -248,9 +248,11 @@ const AboutPage = () => {
                 </h2>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)] hover:shadow-[0_14px_34px_-10px_rgba(0,0,0,0.3)] hover:scale-[1.02] transition-all"
                 >
-                  Get started
+                  <span className="bg-gradient-to-r from-[#22D3EE] to-[#2563EB] bg-clip-text text-transparent">
+                    Get started
+                  </span>
                 </Link>
               </div>
 
