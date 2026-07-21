@@ -435,27 +435,18 @@ const Index = () => {
             }}
           />
         </div>
+
+        {/* Project marquee lives INSIDE the hero, pinned to the bottom on every viewport */}
+        <div className="absolute inset-x-0 bottom-0 z-[3]">
+          <ProjectMarquee />
+        </div>
       </section>
-
-
-      {/* ══════════ PROJECT MARQUEE — 2 rows opposite scroll ══════════ */}
-      <ProjectMarquee />
-
-
-
-
-
-
-
-
-
-
 
 
 
 
       {/* ══════════ SISTER BRANDS ══════════ */}
-      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8 rounded-t-lg md:rounded-t-xl -mt-8 md:-mt-10 z-30">
+      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8 rounded-t-lg md:rounded-t-xl z-30">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -463,6 +454,7 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto text-center mb-10"
           >
+
             <h2 className="font-display font-bold leading-[1.05] tracking-tight text-3xl sm:text-4xl lg:text-5xl">
               {(() => {
                 const t = (sisterSection?.title || 'Our brand constellation').trim();
