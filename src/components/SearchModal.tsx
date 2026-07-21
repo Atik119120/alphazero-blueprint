@@ -227,7 +227,7 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
             titleBn: member.nameBn,
             description: member.role,
             descriptionBn: member.roleBn,
-            path: "/team",
+            path: "/about#team",
             icon: User,
             keywords: [...member.keywords, "team", "member", "trainer", "টিম", "ট্রেইনার", "মেম্বার"],
             category: "team"
