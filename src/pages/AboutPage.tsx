@@ -305,6 +305,80 @@ const AboutPage = () => {
   );
 };
 
+const faqs = [
+  { q: "What services does AlphaZero offer?", a: "We offer branding, web development, digital marketing, video production, graphic design, and a full learning academy — everything to build a strong digital presence." },
+  { q: "Do you work with startups and small businesses?", a: "Absolutely. We tailor our approach for every stage — from early-stage founders to established brands scaling globally." },
+  { q: "How long does a typical project take?", a: "Most branding and web projects run 2–6 weeks depending on scope. We share a clear timeline before kickoff, so you always know what's next." },
+  { q: "Can I learn digital skills at AlphaZero?", a: "Yes — AlphaZero Learn offers structured courses in AI, design, programming, marketing, and freelancing, taught by industry practitioners." },
+  { q: "How do I get started?", a: "Book a free discovery call. We'll understand your goals, share a plan, and only move forward when everything feels right." },
+];
+
+const FAQSection = () => {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="py-20 lg:py-28 relative" style={{ background: "linear-gradient(180deg, #F3F3F4 0%, #FAFAFA 100%)" }}>
+      <div className="container mx-auto px-6 max-w-4xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12 lg:mb-16"
+        >
+          <div className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground tracking-widest uppercase mb-4">
+            <span>›</span> FAQ <span>‹</span>
+          </div>
+          <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">Frequently Asked Questions</h2>
+          <p className="mt-4 text-muted-foreground text-base lg:text-lg max-w-2xl mx-auto">
+            Everything you need to know before working with us — or learning with us.
+          </p>
+        </motion.div>
+
+        <div className="space-y-4">
+          {faqs.map((item, i) => {
+            const isOpen = open === i;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="bg-white rounded-2xl border border-black/5 shadow-[0_4px_20px_-8px_rgba(0,0,0,0.06)] overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-4 px-6 py-5 lg:px-8 lg:py-6 text-left"
+                >
+                  <span className="font-display text-lg lg:text-xl font-semibold">{item.q}</span>
+                  <motion.span
+                    animate={{ rotate: isOpen ? 45 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-white text-xl"
+                    style={{ background: "linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%)" }}
+                  >
+                    +
+                  </motion.span>
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-6 lg:px-8 lg:pb-7 text-muted-foreground leading-relaxed">
+                    {item.a}
+                  </div>
+                </motion.div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 type ProcessValue = { icon: any; title: string; desc: string };
 
 const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
