@@ -33,7 +33,7 @@ import SearchModal from "./SearchModal";
 const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [overDark, setOverDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
