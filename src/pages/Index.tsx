@@ -452,9 +452,27 @@ const Index = () => {
 
 
       {/* ══════════ SISTER BRANDS ══════════ */}
-      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8 rounded-t-lg md:rounded-t-xl -mt-8 md:-mt-10 z-30">
+      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8 rounded-t-lg md:rounded-t-xl -mt-8 md:-mt-10 z-30 overflow-hidden">
+        {/* Boxy grid pattern background */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 40%, hsl(var(--background)) 100%)",
+          }}
+        />
 
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-6 relative">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
