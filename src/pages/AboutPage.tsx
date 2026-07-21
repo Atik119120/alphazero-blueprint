@@ -184,36 +184,58 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Values */}
-      <section className="py-24 lg:py-32 relative mesh-bg">
+      {/* Values — Tilted cards with squiggle connectors */}
+      <section className="py-24 lg:py-32 relative bg-[#e9e9ea]">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-                <Target size={14} className="text-primary" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Core Values</span>
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16 lg:mb-20">
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <span className="h-px w-10 bg-foreground/30" />
+                <span className="text-sm italic font-serif text-foreground/70">Our Values, Explained</span>
+                <span className="h-px w-10 bg-foreground/30" />
               </div>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold">{c("values.title", "about.values.title")}</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto mt-4">{c("values.subtitle", "about.values.subtitle")}</p>
+              <h2 className="text-4xl lg:text-6xl font-display font-semibold tracking-tight text-foreground">
+                {c("values.title", "about.values.title")}
+              </h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-5">
-              {values.map((value, index) => (
-                <motion.div key={value.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: index * 0.08 }}
-                  whileHover={{ y: -6 }}
-                  className="group relative p-7 rounded-2xl glass-card overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="absolute -bottom-4 -right-2 text-[7rem] font-display font-bold text-muted-foreground/[0.04] leading-none select-none">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div className="w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <value.icon size={24} className="text-primary" />
-                  </div>
-                  <h3 className="text-lg font-display font-bold mb-2">{value.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{value.desc}</p>
-                </motion.div>
-              ))}
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 lg:gap-6 pt-8">
+              {/* Squiggle 1 → 2 */}
+              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '28%', top: '-10px', width: '220px', height: '160px' }} viewBox="0 0 220 160" fill="none">
+                <circle cx="8" cy="130" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+                <path d="M 8 130 Q 40 40, 130 30 T 210 20" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <circle cx="210" cy="20" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+              </svg>
+              {/* Squiggle 2 → 3 */}
+              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '60%', top: '180px', width: '220px', height: '180px' }} viewBox="0 0 220 180" fill="none">
+                <circle cx="10" cy="20" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+                <path d="M 10 20 Q 30 90, 90 100 Q 150 110, 120 140 Q 90 170, 160 150 T 210 130" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <circle cx="210" cy="130" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+              </svg>
+
+              {values.map((value, index) => {
+                const rotations = ['-rotate-[4deg]', 'rotate-[3deg]', '-rotate-[2deg]'];
+                const offsets = ['md:translate-y-6', 'md:-translate-y-4', 'md:translate-y-10'];
+                return (
+                  <motion.div
+                    key={value.title}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.12 }}
+                    whileHover={{ rotate: 0, y: -8 }}
+                    className={`relative aspect-square bg-white rounded-2xl p-8 shadow-[0_25px_60px_-20px_rgba(0,0,0,0.25)] flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} transition-transform`}
+                  >
+                    <div className="text-7xl lg:text-8xl font-display font-semibold text-foreground leading-none">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2">{value.title}</h3>
+                      <p className="text-sm text-foreground/60 leading-relaxed">{value.desc}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
