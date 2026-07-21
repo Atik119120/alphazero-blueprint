@@ -141,187 +141,192 @@ const ServicesPage = () => {
       </section>
 
 
-      {/* Dynamic Services Grid — editorial */}
-      <section className="py-20 lg:py-28 relative">
+      {/* Services — Astryx bento grid */}
+      <section className="py-24 lg:py-32 relative bg-background">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16"
+            >
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/40 mb-5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">Capabilities</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05]">
+                  Built for teams that <span className="text-muted-foreground">ship.</span>
+                </h2>
+              </div>
+              <p className="text-muted-foreground text-base lg:text-lg max-w-md leading-relaxed">
+                A focused suite of services engineered for speed, clarity, and enterprise-grade polish.
+              </p>
+            </motion.div>
 
             {isLoading ? (
               <div className="flex items-center justify-center py-20">
-                <Loader2 className="w-10 h-10 animate-spin text-primary" />
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
             ) : !services || services.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">No services found.</div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-px bg-border/60 rounded-3xl overflow-hidden border border-border/60">
                 {services.map((service, index) => {
                   const IconComponent = getIcon(service.icon);
+                  const spanClasses = [
+                    "lg:col-span-7",
+                    "lg:col-span-5",
+                    "lg:col-span-5",
+                    "lg:col-span-7",
+                  ];
                   return (
                     <motion.div
                       key={service.id}
-                      initial={{ opacity: 0, y: 30 }}
+                      initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.08 }}
-                      whileHover={{ y: -4 }}
-                      className="group p-5 lg:p-7 rounded-2xl glass-card hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
+                      transition={{ delay: index * 0.06 }}
+                      className={`group relative bg-background hover:bg-muted/30 transition-colors duration-300 p-8 lg:p-10 ${spanClasses[index % 4]}`}
                     >
-                      <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <div className="w-12 h-12 rounded-xl bg-primary/[0.08] dark:bg-primary/[0.1] flex items-center justify-center mb-5 border border-primary/10">
-                        <IconComponent size={22} className="text-primary" />
+                      <div className="flex items-start justify-between mb-8">
+                        <div className="w-11 h-11 rounded-xl bg-muted/60 border border-border/60 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/30 transition-all">
+                          <IconComponent size={18} className="text-foreground group-hover:text-primary transition-colors" />
+                        </div>
+                        <span className="text-[10px] font-mono font-medium text-muted-foreground/60 tracking-widest">
+                          {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
+                        </span>
                       </div>
-                      <h3 className="text-base lg:text-lg font-display font-bold mb-2">{service.title}</h3>
-                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{service.description}</p>
+                      <h3 className="text-xl lg:text-2xl font-display font-semibold tracking-tight mb-3">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm lg:text-[15px] leading-relaxed mb-6 max-w-lg">{service.description}</p>
                       {service.features && service.features.length > 0 && (
-                        <ul className="space-y-1.5 mb-4">
-                          {service.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
-                              <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 pt-6 border-t border-border/60">
+                          {service.features.slice(0, 6).map((feature, idx) => (
+                            <li key={idx} className="flex items-center gap-2 text-[13px] text-foreground/80">
+                              <CheckCircle size={12} className="text-primary shrink-0" strokeWidth={2.5} />
                               {feature}
                             </li>
                           ))}
                         </ul>
                       )}
-                      <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
                     </motion.div>
                   );
                 })}
               </div>
             )}
-
           </div>
         </div>
       </section>
 
-      {/* Process Section — editorial numbered */}
-      <section className="py-28 lg:py-40 relative mesh-bg">
-        <div className="container mx-auto px-6 relative z-10">
+      {/* Process — Astryx horizontal rail */}
+      <section className="py-24 lg:py-32 relative bg-muted/20 border-y border-border/60">
+        <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] mb-8">
-                <Zap size={16} className="text-primary" />
-                <span className="text-sm font-bold tracking-[0.25em] uppercase text-primary">Process</span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-3xl mb-16"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-background mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">Process</span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-[1.05]">{t("services.process.title")}</h2>
-              <p className="text-muted-foreground text-base lg:text-lg max-w-3xl mx-auto mt-6">{t("services.process.desc")}</p>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {processSteps.map((item, index) => (
-                <motion.div key={item.step} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: index * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -8 }}
-                  className="p-8 lg:p-10 rounded-3xl glass-card relative overflow-hidden group min-h-[280px] lg:min-h-[340px]">
-                  <span className="absolute -top-2 -right-2 text-[8rem] lg:text-[10rem] font-display font-bold text-primary/[0.06] leading-none group-hover:text-primary/[0.12] transition-colors">{item.step}</span>
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary/[0.1] flex items-center justify-center mb-6 group-hover:bg-primary/[0.18] group-hover:scale-110 transition-all">
-                      <item.icon size={26} className="text-primary" />
-                    </div>
-                    <h3 className="text-xl lg:text-2xl font-display font-bold mb-3">{t(item.titleKey)}</h3>
-                    <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">{t(item.descKey)}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why We Are Best For You */}
-      <section className="py-28 lg:py-40 relative">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-7xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-primary/20 bg-primary/[0.06] mb-8">
-                <Award size={16} className="text-primary" />
-                <span className="text-sm font-bold tracking-[0.25em] uppercase text-primary">
-                  {t("language") === "bn" ? "কেন আমরা" : "Why Us"}
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-[1.05]">
-                {t("language") === "bn" ? (
-                  <>আপনার জন্য আমরাই <span className="gradient-text">সেরা</span></>
-                ) : (
-                  <>Why We Are <span className="gradient-text">Best For You</span></>
-                )}
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05] mb-5">
+                {t("services.process.title")}
               </h2>
-              <p className="text-muted-foreground text-base lg:text-lg max-w-3xl mx-auto mt-6">
-                {t("language") === "bn"
-                  ? "মান, গতি এবং যত্ন — প্রতিটি প্রজেক্টে আমাদের প্রতিশ্রুতি।"
-                  : "Quality, speed, and care — our commitment in every project we deliver."}
+              <p className="text-muted-foreground text-base lg:text-lg leading-relaxed">
+                {t("services.process.desc")}
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {[
-                {
-                  icon: Award,
-                  title: t("language") === "bn" ? "প্রিমিয়াম কোয়ালিটি" : "Premium Quality",
-                  desc: t("language") === "bn"
-                    ? "প্রতিটি ডিজাইন ও কোড হাতে বানানো, ইন্ডাস্ট্রি স্ট্যান্ডার্ড মেনে তৈরি।"
-                    : "Every design and line of code is crafted to match global industry standards.",
-                },
-                {
-                  icon: Zap,
-                  title: t("language") === "bn" ? "দ্রুত ডেলিভারি" : "Fast Delivery",
-                  desc: t("language") === "bn"
-                    ? "সময়ের আগেই সঠিক কাজ — আপনার ডেডলাইন আমাদের কাছে সবচেয়ে গুরুত্বপূর্ণ।"
-                    : "On-time, every time. Your deadline is our top priority from day one.",
-                },
-                {
-                  icon: Shield,
-                  title: t("language") === "bn" ? "১০০% নিরাপত্তা" : "100% Secure",
-                  desc: t("language") === "bn"
-                    ? "আপনার ডেটা ও প্রজেক্ট সম্পূর্ণ সুরক্ষিত, এন্টারপ্রাইজ-গ্রেড সিকিউরিটি সহ।"
-                    : "Your data and projects are fully protected with enterprise-grade security.",
-                },
-                {
-                  icon: Heart,
-                  title: t("language") === "bn" ? "২৪/৭ সাপোর্ট" : "24/7 Support",
-                  desc: t("language") === "bn"
-                    ? "যেকোনো সময় আমাদের টিম আপনার পাশে — কল, চ্যাট বা ইমেইলে।"
-                    : "Our team stands by you anytime — over call, chat, or email.",
-                },
-                {
-                  icon: Users,
-                  title: t("language") === "bn" ? "অভিজ্ঞ টিম" : "Expert Team",
-                  desc: t("language") === "bn"
-                    ? "ডিজাইনার, ডেভেলপার ও মার্কেটার — সবাই তাদের ফিল্ডের সেরা।"
-                    : "Designers, developers, and marketers — each an expert in their craft.",
-                },
-                {
-                  icon: Star,
-                  title: t("language") === "bn" ? "সন্তুষ্ট ক্লায়েন্ট" : "Happy Clients",
-                  desc: t("language") === "bn"
-                    ? "শত শত ক্লায়েন্টের বিশ্বাস — কারণ আমরা কথা রাখি।"
-                    : "Trusted by hundreds of clients — because we keep our promises.",
-                },
-              ].map((item, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border/60">
+              {processSteps.map((item, index) => (
                 <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 40 }}
+                  key={item.step}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.08, duration: 0.5 }}
-                  whileHover={{ y: -8 }}
-                  className="p-8 lg:p-10 rounded-3xl glass-card group relative overflow-hidden"
+                  transition={{ delay: index * 0.08 }}
+                  className="bg-background hover:bg-muted/40 transition-colors p-8 lg:p-10 group relative"
                 >
-                  <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full bg-primary/[0.08] blur-3xl group-hover:bg-primary/[0.18] transition-all" />
-                  <div className="relative z-10">
-                    <div className="w-14 h-14 lg:w-16 lg:h-16 rounded-2xl bg-primary/[0.1] flex items-center justify-center mb-6 group-hover:bg-primary/[0.18] group-hover:scale-110 transition-all">
-                      <item.icon size={26} className="text-primary" />
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="text-[11px] font-mono font-semibold text-primary tracking-widest">{item.step}</span>
+                    <div className="w-9 h-9 rounded-lg bg-muted/60 border border-border/60 flex items-center justify-center group-hover:border-primary/30 transition-all">
+                      <item.icon size={15} className="text-foreground" />
                     </div>
-                    <h3 className="text-xl lg:text-2xl font-display font-bold mb-3">{item.title}</h3>
-                    <p className="text-muted-foreground text-sm lg:text-base leading-relaxed">{item.desc}</p>
                   </div>
+                  <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2">{t(item.titleKey)}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{t(item.descKey)}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </div>
       </section>
+
+      {/* Why Us — Astryx list-grid */}
+      <section className="py-24 lg:py-32 relative bg-background">
+        <div className="container mx-auto px-6">
+          <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16"
+            >
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/40 mb-5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">
+                    {t("language") === "bn" ? "কেন আমরা" : "Why Us"}
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05]">
+                  {t("language") === "bn" ? (
+                    <>আপনার জন্য <span className="text-muted-foreground">আমরাই সেরা।</span></>
+                  ) : (
+                    <>The details that <span className="text-muted-foreground">set us apart.</span></>
+                  )}
+                </h2>
+              </div>
+              <p className="text-muted-foreground text-base lg:text-lg max-w-md leading-relaxed">
+                {t("language") === "bn"
+                  ? "মান, গতি এবং যত্ন — প্রতিটি প্রজেক্টে আমাদের প্রতিশ্রুতি।"
+                  : "Quality, speed, and care — the commitments we honor on every engagement."}
+              </p>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border/60">
+              {[
+                { icon: Award, title: t("language") === "bn" ? "প্রিমিয়াম কোয়ালিটি" : "Premium Quality", desc: t("language") === "bn" ? "প্রতিটি ডিজাইন ও কোড হাতে বানানো, ইন্ডাস্ট্রি স্ট্যান্ডার্ড মেনে তৈরি।" : "Every design and line of code is crafted to match global industry standards." },
+                { icon: Zap, title: t("language") === "bn" ? "দ্রুত ডেলিভারি" : "Fast Delivery", desc: t("language") === "bn" ? "সময়ের আগেই সঠিক কাজ — আপনার ডেডলাইন আমাদের কাছে সবচেয়ে গুরুত্বপূর্ণ।" : "On-time, every time. Your deadline is our top priority from day one." },
+                { icon: Shield, title: t("language") === "bn" ? "১০০% নিরাপত্তা" : "100% Secure", desc: t("language") === "bn" ? "আপনার ডেটা ও প্রজেক্ট সম্পূর্ণ সুরক্ষিত, এন্টারপ্রাইজ-গ্রেড সিকিউরিটি সহ।" : "Data and projects are fully protected with enterprise-grade security." },
+                { icon: Heart, title: t("language") === "bn" ? "২৪/৭ সাপোর্ট" : "24/7 Support", desc: t("language") === "bn" ? "যেকোনো সময় আমাদের টিম আপনার পাশে — কল, চ্যাট বা ইমেইলে।" : "Our team stands by you anytime — over call, chat, or email." },
+                { icon: Users, title: t("language") === "bn" ? "অভিজ্ঞ টিম" : "Expert Team", desc: t("language") === "bn" ? "ডিজাইনার, ডেভেলপার ও মার্কেটার — সবাই তাদের ফিল্ডের সেরা।" : "Designers, developers, and marketers — each an expert in their craft." },
+                { icon: Star, title: t("language") === "bn" ? "সন্তুষ্ট ক্লায়েন্ট" : "Happy Clients", desc: t("language") === "bn" ? "শত শত ক্লায়েন্টের বিশ্বাস — কারণ আমরা কথা রাখি।" : "Trusted by hundreds of clients — because we keep our promises." },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                  className="bg-background hover:bg-muted/40 transition-colors p-8 lg:p-10 group"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-muted/60 border border-border/60 flex items-center justify-center mb-6 group-hover:border-primary/30 group-hover:bg-primary/5 transition-all">
+                    <item.icon size={16} className="text-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
 
 
     </LayoutComponent>
