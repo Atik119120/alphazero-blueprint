@@ -380,10 +380,10 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       >
         {paths.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x1} cy={p.y1} r={6} stroke="#ef4444" strokeWidth={2.4} fill="#FAFAFA" />
+            <circle cx={p.x1} cy={p.y1} r={6} stroke="#3b82f6" strokeWidth={2.4} fill="#FAFAFA" />
             <motion.path
               d={p.d}
-              stroke="#ef4444"
+              stroke="#3b82f6"
               strokeWidth={2.8}
               fill="none"
               strokeLinecap="round"
@@ -393,7 +393,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
               viewport={{ once: true }}
               transition={{ duration: 0.35, ease: "easeOut", delay: i * 0.1 }}
             />
-            <circle cx={p.x2} cy={p.y2} r={6} stroke="#ef4444" strokeWidth={2.4} fill="#FAFAFA" />
+            <circle cx={p.x2} cy={p.y2} r={6} stroke="#3b82f6" strokeWidth={2.4} fill="#FAFAFA" />
           </g>
         ))}
       </svg>
