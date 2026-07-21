@@ -115,9 +115,19 @@ export default function TeamBento() {
     return <div className="text-center py-20 text-muted-foreground">No team members found.</div>;
   }
 
+  // Reorder so the CEO / first member (Sofiullah) is featured in the center
+  const reordered = [...members];
+  const ceoIdx = reordered.findIndex((m: any) => /sofiullah/i.test(m.name));
+  if (ceoIdx > -1) {
+    const [ceo] = reordered.splice(ceoIdx, 1);
+    // Place at index 3 so it lands as the featured card in the first group of 7
+    reordered.splice(3, 0, ceo);
+  }
+
   // Split into groups of 7: [3 left, 1 featured, 3 right]
   const groups: any[][] = [];
-  for (let i = 0; i < members.length; i += 7) groups.push(members.slice(i, i + 7));
+  for (let i = 0; i < reordered.length; i += 7) groups.push(reordered.slice(i, i + 7));
+
 
   return (
     <div className="space-y-6">
