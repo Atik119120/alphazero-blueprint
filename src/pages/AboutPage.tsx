@@ -200,17 +200,17 @@ const AboutPage = () => {
             </motion.div>
 
             <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 lg:gap-6 pt-8">
-              {/* Squiggle 1 → 2 */}
-              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '28%', top: '-10px', width: '220px', height: '160px' }} viewBox="0 0 220 160" fill="none">
-                <circle cx="8" cy="130" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
-                <path d="M 8 130 Q 40 40, 130 30 T 210 20" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
-                <circle cx="210" cy="20" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+              {/* Squiggle 1 → 2 : from bottom-right of card 1 up to top-left of card 2 */}
+              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '26%', top: '35%', width: '220px', height: '200px' }} viewBox="0 0 220 200" fill="none">
+                <circle cx="20" cy="180" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+                <path d="M 20 180 C 20 100, 120 140, 130 70 S 190 20, 200 15" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <circle cx="200" cy="15" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
               </svg>
-              {/* Squiggle 2 → 3 */}
-              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '60%', top: '180px', width: '220px', height: '180px' }} viewBox="0 0 220 180" fill="none">
-                <circle cx="10" cy="20" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
-                <path d="M 10 20 Q 30 90, 90 100 Q 150 110, 120 140 Q 90 170, 160 150 T 210 130" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
-                <circle cx="210" cy="130" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+              {/* Squiggle 2 → 3 : from bottom of card 2 down to top-left of card 3 */}
+              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '58%', top: '40%', width: '240px', height: '220px' }} viewBox="0 0 240 220" fill="none">
+                <circle cx="30" cy="20" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+                <path d="M 30 20 C 40 100, 140 80, 130 140 S 200 200, 215 200" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <circle cx="215" cy="200" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
               </svg>
 
               {values.map((value, index) => {
