@@ -33,7 +33,7 @@ import SearchModal from "./SearchModal";
 const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [overDark, setOverDark] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -72,12 +72,34 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    let raf = 0;
+    const detect = () => {
+      raf = 0;
+      // Sample points just below the header bar to detect the section underneath
+      const y = 72;
+      const xs = [window.innerWidth * 0.15, window.innerWidth * 0.5, window.innerWidth * 0.85];
+      let dark = false;
+      for (const x of xs) {
+        const el = document.elementFromPoint(x, y) as HTMLElement | null;
+        if (!el) continue;
+        const themed = el.closest("[data-nav-theme]") as HTMLElement | null;
+        if (themed?.dataset.navTheme === "dark") { dark = true; break; }
+      }
+      setOverDark(dark);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(detect);
+    };
+    detect();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [location.pathname]);
 
   const handleNavClick = () => {
     setIsMobileMenuOpen(false);
@@ -86,8 +108,8 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? "py-2" : "py-3"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          overDark ? "py-3" : "py-2"
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6">
@@ -96,50 +118,43 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
-            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-all duration-500 backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] ${
-              isScrolled
-               ? "bg-white/[0.08] dark:bg-white/[0.06]"
-               : "bg-white/[0.06] dark:bg-white/[0.04]"
+            className={`relative flex items-center justify-between rounded-2xl px-4 sm:px-5 py-2.5 transition-colors duration-300 backdrop-blur-2xl backdrop-saturate-150 border ${
+              overDark
+                ? "bg-white/[0.06] border-white/15 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.25)]"
+                : "bg-white/80 border-black/[0.06] shadow-[0_10px_30px_-12px_rgba(0,0,0,0.12)]"
             }`}
             style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}
           >
-            {/* Soft top glass highlight */}
-            <div aria-hidden className="pointer-events-none absolute inset-x-4 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent rounded-full" />
-            {/* Faint bottom shadow line */}
-            <div aria-hidden className="pointer-events-none absolute inset-x-6 bottom-0 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/5 to-transparent" />
-
-            {/* Logo — adaptive: white over dark hero, metallic silver/dark over light content */}
+            {/* Logo — solid white over dark sections, solid black over light sections. No effects. */}
             <Link to="/" className="flex items-center group relative shrink-0">
-              <div className="absolute -inset-2 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative h-7 sm:h-8 w-[140px] sm:w-[160px] z-10">
-                {/* White logo — visible over dark hero (top of page) */}
                 <img
                   src={brandLogo}
                   alt="AlphaZero Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isScrolled ? 0 : 1,
-                    filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
+                    opacity: overDark ? 1 : 0,
+                    filter: "brightness(0) invert(1)",
                   }}
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
                 />
-                {/* Metallic silver/dark logo — visible over light content when scrolled */}
                 <img
                   src={brandLogo}
                   alt=""
                   aria-hidden
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isScrolled ? 1 : 0,
-                    filter: "brightness(0) saturate(0) invert(0.18) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
+                    opacity: overDark ? 0 : 1,
+                    filter: "brightness(0)",
                   }}
                   loading="eager"
                   decoding="async"
                 />
               </div>
             </Link>
+
 
 
 
