@@ -189,8 +189,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <FAQSection />
 
       {/* CTA — Ready to start */}
       <section className="py-16 lg:py-24 relative">
