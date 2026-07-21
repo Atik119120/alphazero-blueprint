@@ -15,7 +15,7 @@ import {
   MapPin,
 } from "lucide-react";
 import Layout from "@/components/Layout";
-import logoAssetJson from "@/assets/logo.png.asset.json";
+import logoAssetJson from "@/assets/alphazero-logo.png.asset.json";
 const logo = logoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
