@@ -108,7 +108,7 @@ function FeaturedCard({ member }: { member: any }) {
               target={s.href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
               aria-label={s.label}
-              className="w-7 h-7 rounded-md bg-foreground text-background hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
+              className={iconBtnCls(s, "md")}
             >
               {s.icon}
             </a>
