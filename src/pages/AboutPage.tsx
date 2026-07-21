@@ -26,11 +26,10 @@ const AboutPage = () => {
   const { getContent } = usePageContent("about");
   const { data: teamMembers } = useTeamMembers();
 
-  const founder = teamMembers?.find(
-    (m) =>
-      m.name.toLowerCase().includes("sofiullah") ||
-      m.role.toLowerCase().includes("founder")
-  );
+  const founder =
+    teamMembers?.find((m) => m.name.toLowerCase().includes("sofiullah")) ||
+    teamMembers?.find((m) => m.role.toLowerCase().includes("founder"));
+
 
   const c = (key: string, translationKey: string) => {
     const dbContent = getContent(key);
