@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useWorks, type Work } from "@/hooks/useWorks";
 
 import badam from "@/assets/marquee/badam.jpg.asset.json";
@@ -38,7 +38,7 @@ const extras: Item[] = [
   { id: "ex-poster-trend", image_url: posterTrend.url, title: "Poster Design Trend 2026" },
 ];
 
-
+const HERO_CTA_GAP_PX = 80;
 
 const Card = ({ item }: { item: Item }) => {
   return (
@@ -58,6 +58,8 @@ const Card = ({ item }: { item: Item }) => {
 
 export default function ProjectMarquee() {
   const { data: works } = useWorks();
+  const sectionRef = useRef<HTMLElement>(null);
+  const [topOffset, setTopOffset] = useState(0);
   const items = useMemo<Item[]>(() => {
     const g = (works || []).filter(isGraphics).map((w) => ({
       id: String(w.id),
@@ -80,8 +82,6 @@ export default function ProjectMarquee() {
     return seeded.length ? seeded : extras;
   }, [works]);
 
-  if (items.length === 0) return null;
-
   const row1: Item[] = [];
   const row2: Item[] = [];
   items.forEach((it, i) => (i % 2 === 0 ? row1 : row2).push(it));
@@ -95,20 +95,53 @@ export default function ProjectMarquee() {
   const track1 = buildTrack(row1);
   const track2 = buildTrack(row2);
 
+  useEffect(() => {
+    let frame = 0;
+    const schedulePosition = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const marquee = sectionRef.current;
+        const cta = document.querySelector<HTMLElement>("[data-hero-cta]");
+
+        if (!marquee || !cta) return;
+
+        const desiredTop = cta.getBoundingClientRect().bottom + HERO_CTA_GAP_PX;
+        const currentTop = marquee.getBoundingClientRect().top;
+        const nextOffset = Math.round(topOffset + desiredTop - currentTop);
+
+        setTopOffset((current) => (Math.abs(nextOffset - current) > 1 ? nextOffset : current));
+      });
+    };
+
+    schedulePosition();
+    const timers = [150, 500, 1000].map((delay) => window.setTimeout(schedulePosition, delay));
+    window.addEventListener("resize", schedulePosition);
+    window.addEventListener("orientationchange", schedulePosition);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      window.removeEventListener("resize", schedulePosition);
+      window.removeEventListener("orientationchange", schedulePosition);
+    };
+  }, [items.length, topOffset]);
+
+  if (items.length === 0) return null;
+
   return (
-    <section className="relative pt-0 pb-6 sm:pb-8 md:pb-14 overflow-hidden bg-transparent">
-      <div className="relative h-[110px] sm:h-[140px] md:h-[180px] project-marquee-row">
+    <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-transparent z-20">
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] project-marquee-row">
         <div className="flex h-full w-max project-marquee-track project-marquee-track-left">
           {track1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
         </div>
       </div>
 
-      <div className="relative h-[110px] sm:h-[140px] md:h-[180px] mt-1.5 md:mt-2 project-marquee-row">
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-1.5 md:mt-2 project-marquee-row">
         <div className="flex h-full w-max project-marquee-track project-marquee-track-right">
           {track2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
       </div>
     </section>
+
   );
 }
-
