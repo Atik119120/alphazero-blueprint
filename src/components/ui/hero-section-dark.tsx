@@ -149,9 +149,9 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       splitWords={splitWords}
                     />
                   </div>
-                  {/* Gallery slot — 24–40px gap from CTA, flows in layout (no absolute/margin hacks) */}
+                  {/* Gallery slot — break out of container padding so it reaches screen edges */}
                   {props.children ? (
-                    <div className="mt-8 sm:mt-10">{props.children as React.ReactNode}</div>
+                    <div className="mt-8 sm:mt-10 -mx-4">{props.children as React.ReactNode}</div>
                   ) : null}
                 </div>
               </div>
