@@ -137,7 +137,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                   src={bottomImage.dark}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover"
-                  style={{ filter: "blur(6px)" }}
+                  style={{ filter: "blur(6px)", transform: "scale(1.12)", transformOrigin: "center" }}
                   loading="eager"
                 />
                 <div className="relative z-10 flex flex-col px-4 pt-32 sm:pt-36 pb-8">
