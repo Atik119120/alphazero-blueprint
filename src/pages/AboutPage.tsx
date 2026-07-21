@@ -123,7 +123,7 @@ const AboutPage = () => {
                         className="w-full aspect-[4/5] object-cover object-top group-hover:scale-105 transition-transform duration-700"
                         loading="eager"
                       />
-                      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/90 to-transparent" />
+                      
                       <div className="absolute bottom-0 left-0 right-0 p-6">
                         <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder?.name || "Sofiullah Ahammad"}</h3>
 
