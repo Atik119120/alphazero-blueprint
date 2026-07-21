@@ -7,7 +7,7 @@ const logo = logoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
-import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
+import servicesHeroBg from "@/assets/about-hero-bg.jpg.asset.json";
 
 
 const AboutPage = () => {
