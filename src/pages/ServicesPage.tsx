@@ -206,7 +206,7 @@ const ServicesPage = () => {
                           whileInView={{ opacity: 1, y: 0 }}
                           viewport={{ once: true, amount: 0.3 }}
                           transition={{ delay: index * 0.05 }}
-                          className="group relative bg-white rounded-[28px] p-7 lg:p-9 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.18)] hover:shadow-[0_28px_70px_-25px_rgba(0,0,0,0.22)] transition-all border border-black/[0.05] overflow-hidden"
+                          className="group relative bg-white rounded-[28px] p-7 lg:p-9 shadow-[0_20px_60px_-20px_rgba(34,211,238,0.35),0_10px_30px_-15px_rgba(59,130,246,0.2)] hover:shadow-[0_28px_70px_-20px_rgba(34,211,238,0.5),0_14px_35px_-15px_rgba(59,130,246,0.3)] transition-all border border-black/[0.05] overflow-hidden"
                         >
                           <span className="absolute top-5 right-6 text-[11px] font-mono tracking-[0.25em] text-foreground/30">
                             {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
