@@ -191,66 +191,69 @@ const ServicesPage = () => {
                   </div>
                 </motion.div>
 
-                <div className="lg:col-span-7 space-y-5">
+                <div className="lg:col-span-7">
                   {services.map((service, index) => {
                     const IconComponent = getIcon(service.icon);
+                    const topOffset = 100 + index * 24;
                     return (
-                      <motion.div
+                      <div
                         key={service.id}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.08 }}
-                        whileHover={{ y: -4 }}
-                        className="group relative bg-white rounded-[28px] p-7 lg:p-9 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.12)] hover:shadow-[0_28px_70px_-25px_rgba(0,0,0,0.2)] transition-all border border-black/[0.05] overflow-hidden"
+                        className="sticky"
+                        style={{ top: `${topOffset}px`, marginBottom: '24px', zIndex: 10 + index }}
                       >
-                        {/* corner index */}
-                        <span className="absolute top-5 right-6 text-[11px] font-mono tracking-[0.25em] text-foreground/30">
-                          {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
-                        </span>
+                        <motion.div
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="group relative bg-white rounded-[28px] p-7 lg:p-9 shadow-[0_20px_60px_-25px_rgba(0,0,0,0.18)] hover:shadow-[0_28px_70px_-25px_rgba(0,0,0,0.22)] transition-all border border-black/[0.05] overflow-hidden"
+                        >
+                          <span className="absolute top-5 right-6 text-[11px] font-mono tracking-[0.25em] text-foreground/30">
+                            {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
+                          </span>
 
-                        {/* subtle top hairline that grows on hover */}
-                        <span className="absolute top-0 left-8 right-8 h-px bg-foreground/10">
-                          <span className="block h-full w-0 group-hover:w-full bg-foreground/70 transition-[width] duration-500" />
-                        </span>
+                          <span className="absolute top-0 left-8 right-8 h-px bg-foreground/10">
+                            <span className="block h-full w-0 group-hover:w-full bg-foreground/70 transition-[width] duration-500" />
+                          </span>
 
-                        <div className="flex items-start gap-5 mb-5">
-                          <div className="w-14 h-14 shrink-0 rounded-2xl border border-foreground/10 bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] flex items-center justify-center shadow-inner transition-transform duration-300 group-hover:-rotate-6">
-                            <IconComponent size={22} className="text-foreground" />
+                          <div className="flex items-start gap-5 mb-5">
+                            <div className="w-14 h-14 shrink-0 rounded-2xl border border-foreground/10 bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] flex items-center justify-center shadow-inner transition-transform duration-300 group-hover:-rotate-6">
+                              <IconComponent size={22} className="text-foreground" />
+                            </div>
+                            <div className="flex-1 pt-1">
+                              <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground leading-tight">
+                                {service.title}
+                              </h3>
+                              <div className="mt-2 h-px w-10 bg-foreground/30 group-hover:w-20 transition-[width] duration-300" />
+                            </div>
                           </div>
-                          <div className="flex-1 pt-1">
-                            <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground leading-tight">
-                              {service.title}
-                            </h3>
-                            <div className="mt-2 h-px w-10 bg-foreground/30 group-hover:w-20 transition-[width] duration-300" />
+
+                          <p className="text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6 max-w-[52ch]">
+                            {service.description}
+                          </p>
+
+                          {service.features && service.features.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {service.features.slice(0, 4).map((feature, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-3.5 py-1.5 rounded-md border border-foreground/15 bg-[#fafafa] text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground/40 hover:text-foreground transition-colors"
+                                >
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          <div className="absolute bottom-6 right-6 w-9 h-9 rounded-full border border-foreground/15 flex items-center justify-center opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
+                            <ArrowRight size={14} className="text-foreground" />
                           </div>
-                        </div>
-
-                        <p className="text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6 max-w-[52ch]">
-                          {service.description}
-                        </p>
-
-                        {service.features && service.features.length > 0 && (
-                          <div className="flex flex-wrap gap-2">
-                            {service.features.slice(0, 4).map((feature, idx) => (
-                              <span
-                                key={idx}
-                                className="px-3.5 py-1.5 rounded-md border border-foreground/15 bg-[#fafafa] text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground/40 hover:text-foreground transition-colors"
-                              >
-                                {feature}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* bottom-right arrow */}
-                        <div className="absolute bottom-6 right-6 w-9 h-9 rounded-full border border-foreground/15 flex items-center justify-center opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                          <ArrowRight size={14} className="text-foreground" />
-                        </div>
-                      </motion.div>
+                        </motion.div>
+                      </div>
                     );
                   })}
                 </div>
+
               </div>
             )}
           </div>
