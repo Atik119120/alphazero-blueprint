@@ -699,10 +699,11 @@ const Index = () => {
                   alt={logo.alt}
                   loading="lazy"
                   style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="max-h-10 lg:max-h-12 w-auto object-contain grayscale opacity-40 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-300 ease-out"
+                  className="max-h-10 lg:max-h-12 w-auto object-contain [filter:brightness(0)_saturate(100%)] opacity-70 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-300 ease-out"
                 />
               </div>
             );
+
 
             return (
               <motion.div
