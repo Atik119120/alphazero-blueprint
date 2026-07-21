@@ -311,7 +311,7 @@ const AboutPage = () => {
 
                   <Link
                     to="/contact"
-                    className="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#22D3EE] via-[#0EA5E9] to-[#2563EB] text-white text-sm font-semibold shadow-[0_8px_24px_-8px_rgba(34,211,238,0.6)] hover:shadow-[0_12px_28px_-8px_rgba(37,99,235,0.8)] hover:brightness-110 transition-all"
+                    className="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-[#7DD3FC] via-[#60A5FA] to-[#3B82F6] text-white text-sm font-semibold shadow-[0_8px_24px_-8px_rgba(96,165,250,0.6)] hover:shadow-[0_12px_28px_-8px_rgba(59,130,246,0.8)] hover:brightness-110 transition-all"
                   >
                     Book a free call
                   </Link>
