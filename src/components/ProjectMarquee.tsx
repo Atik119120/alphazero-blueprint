@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useWorks, type Work } from "@/hooks/useWorks";
+import { AppSwiper } from "@/components/ui/app-swiper";
 
 import badam from "@/assets/marquee/badam.jpg.asset.json";
 import coconut from "@/assets/marquee/coconuct.jpg.asset.json";
@@ -126,19 +127,37 @@ export default function ProjectMarquee() {
 
   return (
     <section ref={sectionRef} style={{ marginTop: topOffset }} className="relative pt-0 pb-10 md:pb-14 overflow-hidden bg-transparent z-20">
-      <div className="relative h-[130px] sm:h-[150px] md:h-[180px]">
-
-
-        <div className="flex marquee-left w-max h-full items-center">
-          {dup1.map((p, i) => <Card key={`r1-${p.id}-${i}`} item={p} />)}
-        </div>
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] project-marquee-row">
+        <AppSwiper
+          variant="marquee"
+          speed={6000}
+          autoplayDelay={0}
+          loop
+          spaceBetween={16}
+          items={row1}
+          keyExtractor={(p, i) => `r1-${p.id}-${i}`}
+          slideClassName="!w-auto h-full"
+          className="h-full"
+          renderItem={(p) => <Card item={p} />}
+        />
       </div>
 
-      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-4">
-        <div className="flex marquee-right w-max h-full items-center">
-          {dup2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
-        </div>
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-4 project-marquee-row">
+        <AppSwiper
+          variant="marquee"
+          speed={6000}
+          autoplayDelay={0}
+          loop
+          spaceBetween={16}
+          items={row2}
+          keyExtractor={(p, i) => `r2-${p.id}-${i}`}
+          slideClassName="!w-auto h-full"
+          className="h-full"
+          autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true, reverseDirection: true }}
+          renderItem={(p) => <Card item={p} />}
+        />
       </div>
     </section>
+
   );
 }
