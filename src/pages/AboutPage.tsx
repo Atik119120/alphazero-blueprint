@@ -225,11 +225,14 @@ const AboutPage = () => {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-primary/25 via-primary/15 to-primary/30"
+            className="relative max-w-6xl mx-auto rounded-[2rem] overflow-hidden p-8 sm:p-12 lg:p-16 bg-gradient-to-br from-[#FFB366] via-[#FF9F4A] to-[#FF8A2B]"
           >
-
-
-
+            {/* Decorative circles */}
+            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-70 text-[#E67322]" viewBox="0 0 1000 400" preserveAspectRatio="none" fill="none">
+              <circle cx="500" cy="-40" r="240" stroke="currentColor" strokeWidth="2" />
+              <circle cx="120" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
+              <circle cx="880" cy="440" r="220" stroke="currentColor" strokeWidth="2" />
+            </svg>
 
             <div className="relative grid lg:grid-cols-2 gap-10 items-center">
               {/* Left: Heading + CTA */}
@@ -240,45 +243,12 @@ const AboutPage = () => {
                 <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-foreground mb-8">
                   Ready to start<br />your next project?
                 </h2>
-                <div className="relative inline-block">
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
-                  >
-                    Get started
-                    <ArrowRight size={16} />
-                  </Link>
-
-                  {/* Animated cursor + label */}
-                  <motion.div
-                    aria-hidden
-                    className="absolute -bottom-6 -right-8 pointer-events-none flex items-end gap-1"
-                    initial={{ opacity: 0, x: 30, y: 30 }}
-                    whileInView={{ opacity: 1, x: 0, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-                  >
-                    <motion.div
-                      animate={{ scale: [1, 0.85, 1], y: [0, 2, 0] }}
-                      transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                      className="flex items-end gap-1"
-                    >
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" className="text-foreground drop-shadow-md">
-                        <path d="M4 2l16 10-7 2-2 7L4 2z" />
-                      </svg>
-                      <span className="px-2.5 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-[0.2em] shadow-lg">
-                        AMANDA
-                      </span>
-                    </motion.div>
-                    {/* click ripple */}
-                    <motion.span
-                      className="absolute left-0 top-0 w-6 h-6 rounded-full border-2 border-foreground"
-                      animate={{ scale: [0.5, 1.8], opacity: [0.7, 0] }}
-                      transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
-                    />
-                  </motion.div>
-                </div>
-
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
+                >
+                  Get started
+                </Link>
               </div>
 
 
@@ -294,8 +264,8 @@ const AboutPage = () => {
                   {/* Status */}
                   <div className="flex items-center gap-2 mb-4">
                     <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-40" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-foreground opacity-40" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-foreground" />
                     </span>
                     <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-foreground">
                       Available for project
@@ -312,14 +282,30 @@ const AboutPage = () => {
                       />
                     </div>
                     <span className="text-muted-foreground text-lg font-light">+</span>
-                    <div className="w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
+                    <div className="relative w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                       You
-                    </div>
-                    <div className="ml-auto flex items-center gap-1.5">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-foreground"><path d="M4 2l16 10-7 2-2 7L4 2z" /></svg>
-                      <span className="px-2 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-widest">
-                        {(founder?.name || 'Founder').split(' ')[0].toUpperCase()}
-                      </span>
+                      {/* Animated cursor + AMANDA label */}
+                      <motion.div
+                        aria-hidden
+                        className="absolute -top-2 -right-16 flex items-start gap-1 pointer-events-none"
+                        initial={{ opacity: 0, x: 20, y: -10 }}
+                        whileInView={{ opacity: 1, x: 0, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
+                      >
+                        <motion.div
+                          animate={{ scale: [1, 0.85, 1], y: [0, 2, 0] }}
+                          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+                          className="flex items-start gap-1"
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-foreground drop-shadow">
+                            <path d="M4 2l16 10-7 2-2 7L4 2z" />
+                          </svg>
+                          <span className="mt-2 px-2 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-[0.2em] shadow-lg whitespace-nowrap">
+                            AMANDA
+                          </span>
+                        </motion.div>
+                      </motion.div>
                     </div>
                   </div>
 
@@ -332,7 +318,7 @@ const AboutPage = () => {
 
                   <Link
                     to="/contact"
-                    className="block w-full text-center py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all"
+                    className="block w-full text-center py-3 rounded-xl bg-[#FF6A00] text-white text-sm font-semibold hover:bg-[#e85f00] transition-all"
                   >
                     Book a free call
                   </Link>
@@ -341,6 +327,7 @@ const AboutPage = () => {
               </div>
             </div>
           </motion.div>
+
         </div>
       </section>
 
