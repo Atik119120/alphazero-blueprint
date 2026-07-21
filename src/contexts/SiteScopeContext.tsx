@@ -43,8 +43,7 @@ export const SiteScopeProvider = ({ children, override }: { children: ReactNode;
     const observer = new MutationObserver(() => {
       const hasDark = root.classList.contains("dark");
       const hasLight = root.classList.contains("light");
-      if (target === "light" && (hasDark || !hasLight)) apply();
-      if (target === "dark" && (hasLight || !hasDark)) apply();
+      if (hasDark || !hasLight) apply();
     });
     observer.observe(root, { attributes: true, attributeFilter: ["class", "style"] });
     return () => observer.disconnect();
