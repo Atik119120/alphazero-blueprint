@@ -146,27 +146,6 @@ const AboutPage = () => {
               </motion.div>
             </div>
 
-            <div className="grid lg:grid-cols-1 gap-12 items-start">
-              {/* Logo + Why Choose */}
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5 max-w-xl mx-auto w-full">
-
-
-
-                <div className="p-6 rounded-2xl glass-card">
-                  <h4 className="text-base font-bold mb-4 flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />{c("whyChoose", "about.whyChoose")}
-                  </h4>
-                  <div className="space-y-3">
-                    {whyChoose.map((item, index) => (
-                      <div key={index} className="flex items-center gap-3 group">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-                        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            </div>
 
           </div>
         </div>
