@@ -2,18 +2,35 @@ import { motion } from "framer-motion";
 import { Facebook, Instagram, Linkedin, Twitter, Mail, Loader2, Globe } from "lucide-react";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 
-type Social = { href: string; icon: React.ReactNode; label: string };
+type Social = { href: string; icon: React.ReactNode; label: string; brand: string; shadow: string };
+
+const BRAND: Record<string, { brand: string; shadow: string }> = {
+  Instagram: { brand: "hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#bc1888]", shadow: "hover:shadow-[0_8px_20px_-6px_rgba(220,60,120,0.55)]" },
+  LinkedIn:  { brand: "hover:bg-[#0A66C2]", shadow: "hover:shadow-[0_8px_20px_-6px_rgba(10,102,194,0.55)]" },
+  Twitter:   { brand: "hover:bg-[#0f1419]", shadow: "hover:shadow-[0_8px_20px_-6px_rgba(15,20,25,0.55)]" },
+  Facebook:  { brand: "hover:bg-[#1877F2]", shadow: "hover:shadow-[0_8px_20px_-6px_rgba(24,119,242,0.55)]" },
+  Email:     { brand: "hover:bg-[#EA4335]", shadow: "hover:shadow-[0_8px_20px_-6px_rgba(234,67,53,0.55)]" },
+  Portfolio: { brand: "hover:bg-[#10B981]", shadow: "hover:shadow-[0_8px_20px_-6px_rgba(16,185,129,0.55)]" },
+};
 
 const socialsOf = (m: any): Social[] => {
   const s: Social[] = [];
-  if (m.instagram_url) s.push({ href: m.instagram_url, icon: <Instagram size={13} />, label: "Instagram" });
-  if (m.linkedin_url) s.push({ href: m.linkedin_url, icon: <Linkedin size={13} />, label: "LinkedIn" });
-  if (m.twitter_url) s.push({ href: m.twitter_url, icon: <Twitter size={13} />, label: "Twitter" });
-  if (m.facebook_url) s.push({ href: m.facebook_url, icon: <Facebook size={13} />, label: "Facebook" });
-  if (m.email) s.push({ href: `mailto:${m.email}`, icon: <Mail size={13} />, label: "Email" });
-  if (m.portfolio_url) s.push({ href: m.portfolio_url, icon: <Globe size={13} />, label: "Portfolio" });
+  const mk = (label: string, href: string, icon: React.ReactNode) => ({ href, icon, label, ...BRAND[label] });
+  if (m.instagram_url) s.push(mk("Instagram", m.instagram_url, <Instagram size={13} />));
+  if (m.linkedin_url) s.push(mk("LinkedIn", m.linkedin_url, <Linkedin size={13} />));
+  if (m.twitter_url) s.push(mk("Twitter", m.twitter_url, <Twitter size={13} />));
+  if (m.facebook_url) s.push(mk("Facebook", m.facebook_url, <Facebook size={13} />));
+  if (m.email) s.push(mk("Email", `mailto:${m.email}`, <Mail size={13} />));
+  if (m.portfolio_url) s.push(mk("Portfolio", m.portfolio_url, <Globe size={13} />));
   return s.slice(0, 3);
 };
+
+const iconBtnCls = (s: Social, size: "sm" | "md" = "sm") =>
+  `${size === "md" ? "w-9 h-9" : "w-8 h-8"} rounded-[10px] bg-white border border-border/60 text-foreground/70 ` +
+  `flex items-center justify-center transition-all duration-300 ease-out ` +
+  `hover:text-white hover:border-transparent hover:-translate-y-0.5 hover:scale-105 ` +
+  `active:scale-95 shadow-sm ${s.brand} ${s.shadow}`;
+
 
 function SmallCard({ member, index, reverse = false }: { member: any; index: number; reverse?: boolean }) {
   const socials = socialsOf(member);
@@ -49,12 +66,13 @@ function SmallCard({ member, index, reverse = false }: { member: any; index: num
               target={s.href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
               aria-label={s.label}
-              className="w-7 h-7 rounded-md bg-foreground text-background hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
+              className={iconBtnCls(s, "sm")}
             >
               {s.icon}
             </a>
           ))}
         </div>
+
       </div>
     </motion.div>
   );
@@ -90,7 +108,7 @@ function FeaturedCard({ member }: { member: any }) {
               target={s.href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
               aria-label={s.label}
-              className="w-7 h-7 rounded-md bg-foreground text-background hover:bg-primary hover:text-primary-foreground flex items-center justify-center transition-colors"
+              className={iconBtnCls(s, "md")}
             >
               {s.icon}
             </a>
