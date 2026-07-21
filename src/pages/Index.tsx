@@ -687,7 +687,7 @@ const Index = () => {
 
                 <div className="relative grid md:grid-cols-[260px_1fr] items-stretch gap-3">
                   {/* LEFT — stats card */}
-                  <div className="relative border border-white/[0.08] bg-white/[0.015] px-6 py-5 flex flex-col justify-center">
+                  <div className="relative border border-foreground/10 bg-foreground/[0.02] px-6 py-5 flex flex-col justify-center">
                     <PlusMark pos="-top-1.5 -left-1.5" />
                     <PlusMark pos="-top-1.5 -right-1.5" />
                     <PlusMark pos="-bottom-1.5 -left-1.5" />
@@ -704,7 +704,7 @@ const Index = () => {
                       const numPlus = numMatch?.[2] || '+';
                       return (
                         <>
-                          <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-white/40">
+                          <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-foreground/50">
                             <div className="flex items-center gap-1.5">
                               <span className="relative flex h-1 w-1">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
@@ -715,10 +715,10 @@ const Index = () => {
                             <span>[ 001 ]</span>
                           </div>
 
-                          <h3 className="text-4xl sm:text-[2.5rem] font-display font-semibold text-white leading-none mb-1 tracking-tight">
+                          <h3 className="text-4xl sm:text-[2.5rem] font-display font-semibold text-foreground leading-none mb-1 tracking-tight">
                             {numDigits}<span className="text-primary font-light">{numPlus}</span>
                           </h3>
-                          <p className="text-[10px] uppercase tracking-[0.28em] text-white/50 mb-4 font-mono">
+                          <p className="text-[10px] uppercase tracking-[0.28em] text-foreground/60 mb-4 font-mono">
                             {label}
                           </p>
                         </>
@@ -726,15 +726,15 @@ const Index = () => {
                     })()}
 
 
-                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-white/10">
+                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-foreground/15">
                       <div className="flex gap-0.5 text-primary">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <svg key={i} className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
                         ))}
                       </div>
-                      <span className="font-mono text-xs text-white/70">
-                        <span className="text-white">4.8</span>
-                        <span className="text-white/30">/5</span>
+                      <span className="font-mono text-xs text-foreground/70">
+                        <span className="text-foreground">4.8</span>
+                        <span className="text-foreground/40">/5</span>
                       </span>
                     </div>
                   </div>
