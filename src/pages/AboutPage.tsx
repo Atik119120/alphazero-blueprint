@@ -8,6 +8,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import servicesHeroBg from "@/assets/about-hero-blue.jpg.asset.json";
+import TeamGrid from "@/components/TeamGrid";
+import { Users } from "lucide-react";
 
 
 const AboutPage = () => {
