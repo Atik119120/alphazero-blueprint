@@ -105,145 +105,94 @@ const AboutPage = () => {
               </motion.div>
 
 
-              <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-                {/* Founder Image — editorial framed */}
+              <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+                {/* Founder Image — clean professional frame */}
                 <motion.div
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   className="lg:col-span-5"
                 >
-                  <div className="relative">
-                    {/* Offset backdrop card */}
-                    <div className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-primary/15 via-primary/5 to-transparent translate-x-4 translate-y-4 -z-10" />
-                    {/* Dotted grid decoration */}
-                    <div className="absolute -bottom-6 -left-6 w-24 h-24 opacity-40 -z-10"
-                      style={{ backgroundImage: "radial-gradient(hsl(var(--primary)/0.5) 1px, transparent 1px)", backgroundSize: "10px 10px" }} />
-                    {/* Vertical rotated tag */}
-                    <div className="hidden lg:flex absolute -left-14 top-8 items-center gap-2 -rotate-90 origin-top-left">
-                      <div className="w-8 h-px bg-primary" />
-                      <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-primary">Est · 2022</span>
-                    </div>
-
-                    <div className="relative rounded-3xl overflow-hidden">
-                      <img
-                        src={founder?.image_url || '/placeholder.svg'}
-                        alt={`${founder?.name || 'Founder'} - Founder of AlphaZero`}
-                        itemProp="image"
-                        className="w-full aspect-[4/5] object-cover object-top hover:scale-[1.03] transition-transform duration-700"
-                        loading="eager"
-                      />
-                      {/* Corner brackets */}
-                      <span className="pointer-events-none absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-primary rounded-tl-lg" />
-                      <span className="pointer-events-none absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-primary rounded-tr-lg" />
-                      <span className="pointer-events-none absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-primary rounded-bl-lg" />
-                      <span className="pointer-events-none absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-primary rounded-br-lg" />
-                    </div>
-
-                    {/* Floating signature badge */}
-                    <div className="absolute -bottom-5 -right-4 lg:-right-8 rotate-3">
-                      <div className="glass-card rounded-2xl px-4 py-3 flex items-center gap-3 shadow-lg">
-                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Sparkles size={16} className="text-primary" />
-                        </div>
-                        <div className="leading-tight">
-                          <div className="text-[10px] uppercase tracking-widest text-muted-foreground">Founder</div>
-                          <div className="text-sm font-display font-bold">Sofiullah A.</div>
-                        </div>
-                      </div>
-                    </div>
+                  <div className="relative rounded-2xl overflow-hidden border border-border/60 shadow-sm bg-muted/30">
+                    <img
+                      src={founder?.image_url || '/placeholder.svg'}
+                      alt={`${founder?.name || 'Founder'} - Founder of AlphaZero`}
+                      itemProp="image"
+                      className="w-full aspect-[4/5] object-cover object-top"
+                      loading="eager"
+                    />
                   </div>
                 </motion.div>
 
-                {/* Founder Info — editorial */}
+                {/* Founder Info — clean corporate */}
                 <motion.div
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="lg:col-span-7 space-y-8"
+                  className="lg:col-span-7 space-y-7"
                 >
-                  {/* Index + role line */}
-                  <div className="flex items-center gap-4">
-                    <span className="text-5xl font-display font-bold text-primary/20 leading-none">01</span>
-                    <div className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
-                    <span className="text-[10px] font-mono tracking-[0.25em] uppercase text-muted-foreground">Founder · CEO</span>
-                  </div>
-
                   <div>
-                    <h3 className="text-3xl lg:text-5xl font-display font-bold leading-[1.05] mb-3" itemProp="name">
+                    <p className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-3">
+                      {getContent("founder.role") || "Founder & CEO"}
+                    </p>
+                    <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-5" itemProp="name">
                       {founder?.name || "Sofiullah Ahammad"}
                     </h3>
-                    <p className="text-primary font-semibold mb-5 tracking-wide">
-                      {getContent("founder.role") || "Photographer, Founder & Graphic Designer"}
+                    <p className="text-muted-foreground leading-relaxed text-base lg:text-lg" itemProp="description">
+                      {founder?.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
                     </p>
-                    <div className="relative pl-5 border-l-2 border-primary/40">
-                      <p className="text-muted-foreground leading-relaxed text-base lg:text-lg" itemProp="description">
-                        {founder?.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
-                      </p>
-                    </div>
                   </div>
 
                   {/* Expertise Tags */}
-                  <div className="flex flex-wrap gap-2.5">
-                    {founderExpertise.map((item, i) => (
-                      <motion.div
+                  <div className="flex flex-wrap gap-2">
+                    {founderExpertise.map((item) => (
+                      <div
                         key={item.label}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.08 }}
-                        className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-primary/[0.06] border border-primary/20 hover:bg-primary/10 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted/50 border border-border/60"
                       >
-                        <item.icon size={14} className="text-primary" />
+                        <item.icon size={13} className="text-primary" />
                         <span className="text-xs font-medium">{item.label}</span>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
 
-                  {/* Stats — horizontal editorial strip */}
-                  <div className="grid grid-cols-3 divide-x divide-border/60 border-y border-border/60 py-5">
+                  {/* Stats */}
+                  <div className="grid grid-cols-3 border-t border-b border-border/60 py-5">
                     {[
                       { value: "3+", label: "Years Experience" },
-                      { value: "∞", label: "Projects Delivered" },
-                      { value: "BD", label: "Rajshahi" },
-                    ].map((stat, i) => (
-                      <motion.div
-                        key={stat.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.15 + i * 0.1 }}
-                        className="px-4 text-center first:pl-0 last:pr-0"
-                      >
-                        <div className="text-2xl lg:text-3xl font-display font-bold gradient-text">{stat.value}</div>
+                      { value: "50+", label: "Projects Delivered" },
+                      { value: "Rajshahi", label: "Based In" },
+                    ].map((stat) => (
+                      <div key={stat.label} className="px-2 text-center border-r last:border-r-0 border-border/60">
+                        <div className="text-2xl lg:text-3xl font-display font-bold text-foreground">{stat.value}</div>
                         <div className="text-[11px] tracking-wider uppercase text-muted-foreground mt-1">{stat.label}</div>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
 
                   {/* Social + CTA */}
-                  <div className="flex items-center gap-3 flex-wrap">
+                  <div className="flex items-center gap-3 flex-wrap pt-1">
                     {founder?.facebook_url && (
                       <a href={founder.facebook_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
-                        className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground text-muted-foreground transition-all">
+                        className="w-10 h-10 rounded-md border border-border/60 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground text-muted-foreground transition-all">
                         <Facebook size={15} />
                       </a>
                     )}
                     {founder?.instagram_url && (
                       <a href={founder.instagram_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
-                        className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground text-muted-foreground transition-all">
+                        className="w-10 h-10 rounded-md border border-border/60 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground text-muted-foreground transition-all">
                         <Instagram size={15} />
                       </a>
                     )}
                     {founder?.linkedin_url && (
                       <a href={founder.linkedin_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
-                        className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground text-muted-foreground transition-all">
+                        className="w-10 h-10 rounded-md border border-border/60 flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground text-muted-foreground transition-all">
                         <Linkedin size={15} />
                       </a>
                     )}
 
                     <a href="https://alphazero.online/team"
-                      className="ml-auto group inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all">
+                      className="ml-auto group inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all">
                       View Full Team
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </a>
