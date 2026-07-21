@@ -154,7 +154,7 @@ const AboutPage = () => {
       </section>
 
       {/* Team */}
-      <section id="team" className="pt-2 lg:pt-2 pb-24 lg:pb-32 relative">
+      <section id="team" className="pt-2 lg:pt-2 pb-8 lg:pb-12 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
@@ -169,7 +169,7 @@ const AboutPage = () => {
       </section>
 
       {/* Process cards — floating tilted cards with dynamically-aligned red S-curve connectors */}
-      <section data-process-section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
+      <section data-process-section className="pt-8 lg:pt-12 pb-24 lg:pb-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
