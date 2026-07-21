@@ -185,88 +185,15 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Process cards — floating tilted cards with animated red squiggles */}
+      {/* Process cards — floating tilted cards with dynamically-aligned red S-curve connectors */}
       <section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 pt-16 pb-16 items-center">
-              {/* Squiggle 1 → 2 : from top-right of card 1 arcing up and over onto top of card 2 */}
-              <svg
-                className="hidden md:block absolute z-40 pointer-events-none"
-                style={{ left: "31%", top: "-2%", width: "120px", height: "160px" }}
-                viewBox="0 0 120 160"
-                fill="none"
-              >
-                <circle cx="8" cy="150" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
-                <motion.path
-                  d="M 8 150 C 30 130, 10 90, 50 70 S 100 40, 112 10"
-                  stroke="#ef4444"
-                  strokeWidth="1.6"
-                  fill="none"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.4, ease: "easeInOut" }}
-                />
-                <circle cx="112" cy="10" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
-              </svg>
-
-              {/* Squiggle 2 → 3 : from right edge of card 2 arcing down onto left edge of card 3 */}
-              <svg
-                className="hidden md:block absolute z-40 pointer-events-none"
-                style={{ left: "63%", top: "28%", width: "120px", height: "170px" }}
-                viewBox="0 0 120 170"
-                fill="none"
-              >
-                <circle cx="8" cy="10" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
-                <motion.path
-                  d="M 8 10 C 30 40, 10 80, 55 100 S 100 140, 112 160"
-                  stroke="#ef4444"
-                  strokeWidth="1.6"
-                  fill="none"
-                  strokeLinecap="round"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.6, ease: "easeInOut", delay: 0.3 }}
-                />
-                <circle cx="112" cy="160" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
-              </svg>
-
-              {values.map((value, index) => {
-                const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
-                const offsets = ["md:translate-y-10", "md:-translate-y-8", "md:translate-y-12"];
-                const zIndex = [10, 30, 10];
-                return (
-                  <motion.div
-                    key={value.title}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.15, duration: 0.6 }}
-                    animate={{ y: [0, -6, 0] }}
-                    {...({ transition: { y: { duration: 4 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 } } } as any)}
-                    whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
-                    style={{ zIndex: zIndex[index] }}
-                    className={`relative aspect-square bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
-                  >
-                    <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
-                      {index + 1}
-                    </div>
-                    <div>
-                      <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2 tracking-tight">
-                        {value.title}
-                      </h3>
-                      <p className="text-sm text-foreground/55 leading-relaxed">{value.desc}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+            <ProcessCards values={values} />
           </div>
         </div>
       </section>
+
 
 
       {/* CTA — Ready to start */}
