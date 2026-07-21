@@ -94,15 +94,65 @@ const AboutPage = () => {
       <section className="py-24 lg:py-32 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-                <Rocket size={14} className="text-primary" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("story.badge", "about.story.badge")}</span>
-              </div>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                {c("story.title", "about.story.title")} <span className="gradient-text">AlphaZero</span> {c("story.title2", "about.story.title2")}
-              </h2>
-            </motion.div>
+            {/* Split editorial header */}
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20 lg:mb-28">
+              {/* Left: abstract blob graphic */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="relative flex items-center justify-center min-h-[320px] lg:min-h-[420px]"
+              >
+                <svg viewBox="0 0 500 400" className="w-full max-w-md" fill="none">
+                  <motion.circle cx="140" cy="220" r="90" fill="hsl(var(--muted))"
+                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.1 }} style={{ transformOrigin: "140px 220px" }} />
+                  <motion.circle cx="300" cy="140" r="55" fill="hsl(var(--muted))"
+                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.25 }} style={{ transformOrigin: "300px 140px" }} />
+                  <motion.circle cx="260" cy="290" r="70" fill="hsl(var(--muted))"
+                    initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.4 }} style={{ transformOrigin: "260px 290px" }} />
+                  <motion.path
+                    d="M 140 220 Q 220 170 300 140 M 140 220 Q 200 260 260 290"
+                    stroke="hsl(var(--muted))" strokeWidth="70" strokeLinecap="round" fill="none"
+                    initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }}
+                    viewport={{ once: true }} transition={{ duration: 1.2, delay: 0.2 }}
+                  />
+                </svg>
+              </motion.div>
+
+              {/* Right: label + heading + copy + button */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+              >
+                <div className="text-sm text-muted-foreground tracking-wide mb-6">
+                  / {(c("story.badge", "about.story.badge") || "about").toLowerCase()} /
+                </div>
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight mb-8">
+                  {c("story.title", "about.story.title")}{" "}
+                  <span className="gradient-text">AlphaZero</span>{" "}
+                  {c("story.title2", "about.story.title2")}
+                </h2>
+                <div className="space-y-5 text-muted-foreground text-base lg:text-lg leading-relaxed max-w-xl mb-10">
+                  <p>{c("story.card1.desc", "about.story.card1.desc")}</p>
+                  <p>{c("story.card2.desc", "about.story.card2.desc")}</p>
+                </div>
+                <a
+                  href="#team"
+                  className="inline-flex items-center gap-2 pl-2 pr-6 py-2 rounded-full border border-primary/40 text-sm font-medium hover:bg-primary/5 transition-colors group"
+                >
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full border border-primary/40 text-primary group-hover:translate-x-0.5 transition-transform">
+                    <ArrowRight size={14} />
+                  </span>
+                  <span className="gradient-text font-semibold">Explore more</span>
+                </a>
+              </motion.div>
+            </div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-start">
               {/* Story cards */}
