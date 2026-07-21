@@ -436,17 +436,16 @@ const Index = () => {
           />
         </div>
 
-        {/* Project marquee lives INSIDE the hero, pinned to the bottom on every viewport */}
-        <div className="absolute inset-x-0 bottom-0 z-[3]">
-          <ProjectMarquee />
-        </div>
       </section>
 
 
+      {/* ══════════ PROJECT MARQUEE — 2 rows opposite scroll ══════════ */}
+      <ProjectMarquee />
 
 
       {/* ══════════ SISTER BRANDS ══════════ */}
-      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8 rounded-t-lg md:rounded-t-xl z-30">
+      <section className="relative bg-background pt-12 pb-6 lg:pt-16 lg:pb-8 rounded-t-lg md:rounded-t-xl -mt-8 md:-mt-10 z-30">
+
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
