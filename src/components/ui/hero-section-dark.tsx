@@ -113,7 +113,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
               <img
                 src={bottomImage.dark}
                 alt=""
-                className="w-full h-[100svh] sm:h-auto sm:[aspect-ratio:3/2] object-cover block"
+                className="w-full [aspect-ratio:4/5] sm:[aspect-ratio:3/2] object-cover block"
                 loading="eager"
               />
 
