@@ -284,29 +284,30 @@ const AboutPage = () => {
                     <span className="text-muted-foreground text-lg font-light">+</span>
                     <div className="relative w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                       You
-                      {/* Animated cursor + AMANDA label */}
+                      {/* Animated cursor + AMANDA pill */}
                       <motion.div
                         aria-hidden
-                        className="absolute -top-2 -right-16 flex items-start gap-1 pointer-events-none"
-                        initial={{ opacity: 0, x: 20, y: -10 }}
+                        className="absolute left-[70%] top-1/2 -translate-y-1/2 pointer-events-none"
+                        initial={{ opacity: 0, x: 10, y: -6 }}
                         whileInView={{ opacity: 1, x: 0, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.5, duration: 0.5, ease: "easeOut" }}
                       >
                         <motion.div
-                          animate={{ scale: [1, 0.85, 1], y: [0, 2, 0] }}
+                          animate={{ scale: [1, 0.92, 1] }}
                           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                          className="flex items-start gap-1"
+                          className="relative"
                         >
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-foreground drop-shadow">
-                            <path d="M4 2l16 10-7 2-2 7L4 2z" />
-                          </svg>
-                          <span className="mt-2 px-2 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-[0.2em] shadow-lg whitespace-nowrap">
+                          <span className="block pl-4 pr-3 py-1.5 rounded-full bg-foreground text-background text-[10px] font-bold tracking-[0.2em] shadow-lg whitespace-nowrap">
                             AMANDA
                           </span>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="absolute -top-1 -left-1 text-foreground drop-shadow">
+                            <path d="M4 2l16 10-7 2-2 7L4 2z" />
+                          </svg>
                         </motion.div>
                       </motion.div>
                     </div>
+
                   </div>
 
                   <h3 className="text-lg font-display font-bold text-foreground mb-1">
