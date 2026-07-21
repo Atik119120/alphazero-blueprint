@@ -534,8 +534,8 @@ const Index = () => {
 
 
 
-          {/* MOBILE — 2 per row grid: title + underline + link + image pair per service */}
-          <div className="lg:hidden max-w-2xl mx-auto grid grid-cols-2 gap-4">
+          {/* MOBILE — single column: one service per row */}
+          <div className="lg:hidden max-w-2xl mx-auto grid grid-cols-1 gap-6">
             {services.map((s, i) => {
               const Icon = s.icon;
               return (
