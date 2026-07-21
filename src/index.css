@@ -145,14 +145,10 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; width: 0; heig
   }
 
   :root body {
-    background: linear-gradient(
-      180deg,
-      hsl(210 30% 97%) 0%,
-      hsl(200 20% 96%) 30%,
-      hsl(210 25% 97%) 60%,
-      hsl(195 15% 96%) 100%
-    );
+    background: hsl(var(--background));
+    letter-spacing: -0.011em;
   }
+
 
 
   .dark body {
