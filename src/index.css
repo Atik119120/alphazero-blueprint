@@ -390,6 +390,21 @@
 .project-marquee-row .swiper-slide {
   height: 100%;
 }
+.project-marquee-track {
+  will-change: transform;
+  animation-duration: 95s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+.project-marquee-track-left {
+  animation-name: marquee-scroll-left;
+}
+.project-marquee-track-right {
+  animation-name: marquee-scroll-right;
+}
+.project-marquee-row:hover .project-marquee-track {
+  animation-play-state: running;
+}
 .reviews-swiper .swiper-button-prev,
 .reviews-swiper .swiper-button-next {
   color: hsl(var(--primary));
