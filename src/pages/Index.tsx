@@ -502,7 +502,7 @@ const Index = () => {
                 : [
                     { src: brand1.url, alt: "AlphaZero", invert: true },
                     { src: brand2.url, alt: "Sister Brand", invert: true },
-                    { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/" },
+                    { src: brand3.url, alt: "Alpha Portfolio", href: "https://portfolio.alphazero.online/", invert: true },
                     { src: brand4.url, alt: "Learn with AlphaZero", invert: true, large: true },
                   ];
               return <LogoCloud logos={sisterLogos} />;
