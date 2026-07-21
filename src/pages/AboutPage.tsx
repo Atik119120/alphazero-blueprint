@@ -36,6 +36,8 @@ const AboutPage = () => {
     return dbContent || t(translationKey);
   };
 
+  const founderRole = founder?.role || getContent("founder.role") || "CEO, Co-Founder";
+
   const values = [
     {
       icon: Target,
@@ -161,7 +163,7 @@ const AboutPage = () => {
           <meta itemProp="alternateName" content="Atik Ahmed" />
           <meta
             itemProp="jobTitle"
-            content="Photographer, Founder & Graphic Designer"
+            content={founderRole}
           />
           <link itemProp="url" href="https://alphazero.online/about" />
 
@@ -205,8 +207,7 @@ const AboutPage = () => {
                         {founder?.name || "Sofiullah Ahammad"}
                       </h3>
                       <p className="text-xs text-muted-foreground mt-0.5">
-                        {getContent("founder.role") ||
-                          "Photographer, Founder & Graphic Designer"}
+                        {founderRole}
                       </p>
                     </div>
                     <div className="flex items-center gap-1.5">
