@@ -298,12 +298,12 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   const [paths, setPaths] = useState<{ d: string; x1: number; y1: number; x2: number; y2: number }[]>([]);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
-  const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
   const positions = [
     "md:absolute md:left-0 md:top-[158px] md:w-[285px] lg:w-[300px]",
-    "md:absolute md:left-1/2 md:top-[46px] md:w-[285px] lg:w-[300px] md:-translate-x-1/2",
+    "md:absolute md:left-[calc(50%-142px)] lg:left-[calc(50%-150px)] md:top-[46px] md:w-[285px] lg:w-[300px]",
     "md:absolute md:right-0 md:top-[178px] md:w-[285px] lg:w-[300px]",
   ];
+  const rotations = [-4, 2, 4];
   const zIndex = [30, 30, 30];
 
   const compute = () => {
@@ -389,13 +389,13 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
           key={value.title}
           ref={(el) => (cardRefs.current[index] = el)}
           data-process-card
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 40, rotate: rotations[index] }}
+          whileInView={{ opacity: 1, y: 0, rotate: rotations[index] }}
           viewport={{ once: true }}
           transition={{ delay: index * 0.15, duration: 0.6 }}
           whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
           style={{ zIndex: zIndex[index] }}
-          className={`relative aspect-square w-full bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${positions[index]} ${rotations[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
+          className={`relative aspect-square w-full bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between ${positions[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
         >
           <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
             {index + 1}
