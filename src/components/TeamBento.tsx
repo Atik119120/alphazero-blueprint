@@ -23,15 +23,15 @@ function SmallCard({ member, index, reverse = false }: { member: any; index: num
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="group flex-1 min-h-[220px] flex bg-background rounded-2xl overflow-hidden border border-border/40 hover:border-primary/30 hover:shadow-xl transition-all duration-500"
+      className="group flex bg-background rounded-2xl overflow-hidden border border-border/40 hover:border-primary/30 hover:shadow-xl transition-all duration-500"
     >
-      <div className={`relative w-2/5 shrink-0 overflow-hidden bg-primary/10 ${reverse ? "order-last" : ""}`}>
+      <div className={`relative w-2/5 aspect-square shrink-0 overflow-hidden bg-primary/10 ${reverse ? "order-last" : ""}`}>
         <img
           src={member.image_url || "/placeholder.svg"}
           alt={member.name}
           loading="lazy"
           referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-[center_20%] group-hover:scale-105 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
         />
       </div>
       <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
