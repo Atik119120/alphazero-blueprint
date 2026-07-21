@@ -93,7 +93,7 @@ const AboutPage = () => {
 
 
       {/* Story */}
-      <section className="pt-24 lg:pt-32 pb-8 lg:pb-10 relative">
+      <section className="pt-24 lg:pt-32 pb-2 lg:pb-2 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {/* Split editorial header */}
