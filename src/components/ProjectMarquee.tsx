@@ -138,7 +138,7 @@ export default function ProjectMarquee() {
         </div>
       </div>
 
-      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-3 md:mt-4 project-marquee-row">
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-1.5 md:mt-2 project-marquee-row">
         <div className="flex h-full w-max project-marquee-track project-marquee-track-right">
           {track2.map((p, i) => <Card key={`r2-${p.id}-${i}`} item={p} />)}
         </div>
