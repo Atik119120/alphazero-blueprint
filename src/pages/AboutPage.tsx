@@ -238,20 +238,21 @@ const AboutPage = () => {
             <div className="relative grid lg:grid-cols-2 gap-10 items-center">
               {/* Left: Heading + CTA */}
               <div>
-                <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-neutral-900/70 mb-5">
+                <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-foreground/60 mb-5">
                   Let's build something great
                 </p>
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-neutral-900 mb-8">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-foreground mb-8">
                   Ready to start<br />your next project?
                 </h2>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-semibold hover:bg-neutral-800 transition-all hover:scale-[1.02]"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-all hover:scale-[1.02]"
                 >
                   Get started
                   <ArrowRight size={16} />
                 </Link>
               </div>
+
 
               {/* Right: Floating booking card */}
               <div className="lg:justify-self-end w-full max-w-sm">
