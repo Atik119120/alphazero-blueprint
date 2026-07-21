@@ -299,8 +299,8 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   const [size, setSize] = useState({ w: 0, h: 0 });
 
   const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
-  const offsets = ["md:translate-y-10", "md:-translate-y-8", "md:translate-y-12"];
-  const zIndex = [10, 30, 10];
+  const offsets = ["md:translate-y-12", "md:-translate-y-10", "md:translate-y-14"];
+  const zIndex = [30, 30, 30];
 
   const compute = () => {
     const container = containerRef.current;
@@ -313,21 +313,22 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       if (!a || !b) continue;
       const ar = a.getBoundingClientRect();
       const br = b.getBoundingClientRect();
-      // Anchor slightly inside the card edge so the endpoint circles hug the card
-      const x1 = ar.right - cRect.left - 6;
+      // Anchor just outside the visible card edge so the connector never looks hidden or broken.
+      const x1 = ar.right - cRect.left + 2;
       const y1 = ar.top + ar.height / 2 - cRect.top;
-      const x2 = br.left - cRect.left + 6;
+      const x2 = br.left - cRect.left - 2;
       const y2 = br.top + br.height / 2 - cRect.top;
       const dx = x2 - x1;
       const dy = y2 - y1;
-      // Pronounced S-curve: push control points outward and flip vertical offset
-      // to create a graceful wave regardless of vertical delta between cards.
-      const amp = Math.max(140, Math.abs(dy) * 1.4 + 120);
-      const cx1 = x1 + dx * 0.25;
-      const cy1 = y1 - amp;
-      const cx2 = x2 - dx * 0.25;
-      const cy2 = y2 + amp;
-      const d = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
+      const direction = i % 2 === 0 ? -1 : 1;
+      const wave = Math.min(120, Math.max(82, Math.abs(dx) * 0.7));
+      const midX = x1 + dx / 2;
+      // Two linked cubic segments make a bold, controlled S-curve in the gap.
+      const d = [
+        `M ${x1} ${y1}`,
+        `C ${x1 + dx * 0.18} ${y1}, ${midX - dx * 0.18} ${y1 + direction * wave}, ${midX} ${y1 + direction * wave}`,
+        `C ${midX + dx * 0.18} ${y1 + direction * wave}, ${x2 - dx * 0.18} ${y2}, ${x2} ${y2}`,
+      ].join(" ");
       next.push({ d, x1, y1, x2, y2 });
     }
     setSize({ w: container.offsetWidth, h: container.offsetHeight });
@@ -350,7 +351,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pt-16 pb-16 items-center">
+    <div ref={containerRef} className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 pt-20 pb-20 items-center">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
         className="hidden md:block absolute inset-0 pointer-events-none"
@@ -362,19 +363,20 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       >
         {paths.map((p, i) => (
           <g key={i}>
-            <circle cx={p.x1} cy={p.y1} r={7} stroke="#ef4444" strokeWidth={2} fill="#FAFAFA" />
+            <circle cx={p.x1} cy={p.y1} r={6} stroke="#ef4444" strokeWidth={2.4} fill="#FAFAFA" />
             <motion.path
               d={p.d}
               stroke="#ef4444"
-              strokeWidth={2.2}
+              strokeWidth={2.6}
               fill="none"
               strokeLinecap="round"
+              strokeLinejoin="round"
               initial={{ pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1.4, ease: "easeInOut", delay: i * 0.2 }}
             />
-            <circle cx={p.x2} cy={p.y2} r={7} stroke="#ef4444" strokeWidth={2} fill="#FAFAFA" />
+            <circle cx={p.x2} cy={p.y2} r={6} stroke="#ef4444" strokeWidth={2.4} fill="#FAFAFA" />
           </g>
         ))}
       </svg>
@@ -383,6 +385,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
         <motion.div
           key={value.title}
           ref={(el) => (cardRefs.current[index] = el)}
+          data-process-card
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
