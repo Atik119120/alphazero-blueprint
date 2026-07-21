@@ -322,7 +322,7 @@ const AboutPage = () => {
 
                   <Link
                     to="/contact"
-                    className="block w-full text-center py-3 rounded-xl bg-[#FF6A00] text-white text-sm font-semibold hover:bg-[#e85f00] transition-all"
+                    className="block w-full text-center py-3 rounded-xl bg-[#0EA5E9] text-white text-sm font-semibold hover:bg-[#0284C7] transition-all"
                   >
                     Book a free call
                   </Link>
