@@ -172,6 +172,18 @@ const AboutPage = () => {
       <section data-process-section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-16 lg:mb-20"
+            >
+              <div className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
+                <span>›</span><span>VALUES</span><span>‹</span>
+              </div>
+              <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">Built on Strong Values</h2>
+            </motion.div>
             <ProcessCards values={values} />
           </div>
         </div>
