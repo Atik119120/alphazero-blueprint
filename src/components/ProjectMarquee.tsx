@@ -42,7 +42,7 @@ const HERO_CTA_GAP_PX = 80;
 
 const Card = ({ item }: { item: Item }) => {
   return (
-    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-0.5">
+    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-2 md:mx-3">
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
