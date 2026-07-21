@@ -154,36 +154,9 @@ const AboutPage = () => {
               </motion.div>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Story cards */}
-              <div className="space-y-4">
-                {[
-                  { icon: Rocket, title: c("story.card1.title", "about.story.card1.title"), desc: c("story.card1.desc", "about.story.card1.desc") },
-                  { icon: Zap, title: c("story.card2.title", "about.story.card2.title"), desc: c("story.card2.desc", "about.story.card2.desc") },
-                  { icon: Heart, title: c("story.card3.title", "about.story.card3.title"), desc: c("story.card3.desc", "about.story.card3.desc") },
-                ].map((card, index) => (
-                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: index * 0.1 }}
-                    whileHover={{ y: -4 }}
-                    className="group relative p-6 rounded-2xl glass-card overflow-hidden">
-                    <span className="absolute top-5 right-5 text-5xl font-display font-bold text-muted-foreground/[0.04] leading-none select-none">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                        <card.icon size={20} className="text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-display font-bold mb-2">{card.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
+            <div className="grid lg:grid-cols-1 gap-12 items-start">
               {/* Logo + Why Choose */}
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5">
+              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5 max-w-xl mx-auto w-full">
                 <div className="rounded-2xl glass-card p-8 text-center">
                   {(() => {
                     const customLogo = getContent("story.logoUrl");
@@ -216,6 +189,7 @@ const AboutPage = () => {
                 </div>
               </motion.div>
             </div>
+
           </div>
         </div>
       </section>
