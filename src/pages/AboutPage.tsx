@@ -1,21 +1,36 @@
 import { motion } from "framer-motion";
-import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart, Camera, Palette, Code, Instagram, Facebook, Linkedin, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  Globe,
+  Zap,
+  Target,
+  ArrowRight,
+  Rocket,
+  Heart,
+  Camera,
+  Palette,
+  Code,
+  Instagram,
+  Facebook,
+  Linkedin,
+  MapPin,
+} from "lucide-react";
 import Layout from "@/components/Layout";
 import logoAssetJson from "@/assets/logo.png.asset.json";
 const logo = logoAssetJson.url;
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
-import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
-
 
 const AboutPage = () => {
   const { t } = useLanguage();
-  const { getContent } = usePageContent('about');
+  const { getContent } = usePageContent("about");
   const { data: teamMembers } = useTeamMembers();
 
-  const founder = teamMembers?.find(m => m.name.toLowerCase().includes('sofiullah') || m.role.toLowerCase().includes('founder'));
+  const founder = teamMembers?.find(
+    (m) =>
+      m.name.toLowerCase().includes("sofiullah") ||
+      m.role.toLowerCase().includes("founder")
+  );
 
   const c = (key: string, translationKey: string) => {
     const dbContent = getContent(key);
@@ -23,23 +38,30 @@ const AboutPage = () => {
   };
 
   const values = [
-    { icon: Target, title: c("values.brandFocused", "about.values.brandFocused"), desc: c("values.brandFocusedDesc", "about.values.brandFocusedDesc") },
-    { icon: Zap, title: c("values.zeroToImpact", "about.values.zeroToImpact"), desc: c("values.zeroToImpactDesc", "about.values.zeroToImpactDesc") },
-    { icon: Globe, title: c("values.globalReach", "about.values.globalReach"), desc: c("values.globalReachDesc", "about.values.globalReachDesc") },
+    {
+      icon: Target,
+      title: c("values.brandFocused", "about.values.brandFocused"),
+      desc: c("values.brandFocusedDesc", "about.values.brandFocusedDesc"),
+    },
+    {
+      icon: Zap,
+      title: c("values.zeroToImpact", "about.values.zeroToImpact"),
+      desc: c("values.zeroToImpactDesc", "about.values.zeroToImpactDesc"),
+    },
+    {
+      icon: Globe,
+      title: c("values.globalReach", "about.values.globalReach"),
+      desc: c("values.globalReachDesc", "about.values.globalReachDesc"),
+    },
   ];
 
   const whyChoose = [
-    c("why1", "about.why1"), c("why2", "about.why2"), c("why3", "about.why3"), c("why4", "about.why4"), c("why5", "about.why5"),
+    c("why1", "about.why1"),
+    c("why2", "about.why2"),
+    c("why3", "about.why3"),
+    c("why4", "about.why4"),
+    c("why5", "about.why5"),
   ];
-
-  const locationAddress =
-    getContent("location.address") ||
-    getContent("location.description") ||
-    t("about.location.address");
-
-  const locationDescription =
-    getContent("location.desc") ||
-    t("about.location.desc");
 
   const founderExpertise = [
     { icon: Camera, label: "Photography" },
@@ -47,295 +69,413 @@ const AboutPage = () => {
     { icon: Code, label: "Web Development" },
   ];
 
+  const stats = [
+    { value: "3+", label: "Years" },
+    { value: "50+", label: "Projects" },
+    { value: "30+", label: "Clients" },
+    { value: "100%", label: "Satisfaction" },
+  ];
+
   return (
     <Layout flushTop>
-      <div className="overflow-x-hidden">
-      {/* Hero — Services style */}
-      <section className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
-        {/* Dark base */}
-        <div className="absolute inset-0 bg-black" />
-        {/* Uploaded background image */}
-        <img
-          src={servicesHeroBg.url}
-          alt=""
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          style={{ filter: "blur(12px)", transform: "scale(1.08)" }}
-        />
-        {/* Soft overlay so navbar text stays readable */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40" />
+      <div className="overflow-x-hidden bg-background text-foreground">
+        {/* ══════════ HERO — Astryx minimal ══════════ */}
+        <section className="relative pt-36 pb-20 lg:pt-44 lg:pb-28 border-b border-border">
+          {/* Subtle dotted background */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.35]"
+            style={{
+              backgroundImage:
+                "radial-gradient(hsl(var(--border)) 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+              maskImage:
+                "radial-gradient(ellipse 70% 60% at 50% 40%, black 40%, transparent 100%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 70% 60% at 50% 40%, black 40%, transparent 100%)",
+            }}
+          />
 
+          <div className="container mx-auto px-6 relative">
+            <div className="max-w-3xl">
+              <motion.span
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="astryx-eyebrow mb-6"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                About us
+              </motion.span>
 
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
-              <span>{c("title", "about.title")}</span>{" "}
-              <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>AlphaZero</span>
-            </motion.h1>
+              <motion.h1
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.05 }}
+                className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-display font-semibold tracking-[-0.03em] leading-[1.02] text-foreground mb-6"
+              >
+                {c("title", "about.title")}{" "}
+                <span className="text-muted-foreground">AlphaZero</span>
+              </motion.h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto">
-              {c("description", "about.description")}
-            </motion.p>
-          </div>
-        </div>
-      </section>
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-base lg:text-lg text-muted-foreground max-w-2xl leading-relaxed"
+              >
+                {c("description", "about.description")}
+              </motion.p>
 
-
-      {/* Founder Section */}
-      {(
-        <section className="py-24 lg:py-32 relative" itemScope itemType="https://schema.org/Person">
-          <meta itemProp="name" content="Sofiullah Ahammad" />
-          <meta itemProp="alternateName" content="Atik Ahmed" />
-          <meta itemProp="jobTitle" content="Photographer, Founder & Graphic Designer" />
-          <link itemProp="url" href="https://alphazero.online/about" />
-          <div className="container mx-auto px-6">
-            <div className="max-w-6xl mx-auto">
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-                  <Sparkles size={14} className="text-primary" />
-                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{getContent("founder.badge") || "Meet The Founder"}</span>
-                </div>
-                <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                  {getContent("founder.title") || "The Visionary Behind"} <span className="gradient-text">AlphaZero</span>{getContent("founder.title2") ? ` ${getContent("founder.title2")}` : ""}
-                </h2>
-              </motion.div>
-
-
-              <div className="grid lg:grid-cols-5 gap-8 items-center">
-                {/* Founder Image */}
-                <motion.div
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="lg:col-span-2"
-                >
-                  <div className="relative group">
-                    
-                    <div className="relative rounded-3xl overflow-hidden border-2 border-primary/20">
-                      <img
-                        src={founder?.image_url || '/placeholder.svg'}
-                        alt={`${founder?.name || 'Founder'} - Founder of AlphaZero`}
-                        itemProp="image"
-                        className="w-full aspect-[4/5] object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                        loading="eager"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-2xl font-display font-bold text-foreground" itemProp="name">{founder?.name || "Sofiullah Ahammad"}</h3>
-
-                        <p className="text-primary font-semibold text-sm mt-1">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
-                      </div>
+              {/* Stat strip */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px astryx-surface overflow-hidden bg-border"
+              >
+                {stats.map((s) => (
+                  <div
+                    key={s.label}
+                    className="bg-card p-5 lg:p-6 flex flex-col gap-1"
+                  >
+                    <div className="text-2xl lg:text-3xl font-display font-semibold tracking-[-0.02em] text-foreground">
+                      {s.value}
+                    </div>
+                    <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
+                      {s.label}
                     </div>
                   </div>
-                </motion.div>
-
-                {/* Founder Info */}
-                <motion.div
-                  initial={{ opacity: 0, x: 40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  className="lg:col-span-3 space-y-6"
-                >
-                  <div>
-                    <h3 className="text-2xl lg:text-3xl font-display font-bold mb-2">
-                      {founder?.name || "Sofiullah Ahammad"}
-                    </h3>
-                    <p className="text-primary font-semibold mb-4">{getContent("founder.role") || "Photographer, Founder & Graphic Designer"}</p>
-                    <p className="text-muted-foreground leading-relaxed text-base" itemProp="description">
-                      {founder?.bio || "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
-                    </p>
-
-                  </div>
-
-                  {/* Expertise Tags */}
-                  <div className="flex flex-wrap gap-3">
-                    {founderExpertise.map((item, i) => (
-                      <motion.div
-                        key={item.label}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-xl glass-card border border-border/30 hover:border-primary/30 transition-colors"
-                      >
-                        <item.icon size={16} className="text-primary" />
-                        <span className="text-sm font-medium">{item.label}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Stats-like highlights */}
-                  <div className="grid grid-cols-3 gap-4">
-                    {[
-                      { value: "3+", label: "Years Experience" },
-                      { value: "AlphaZero", label: "Founded" },
-                      { value: "🇧🇩", label: "Rajshahi, BD" },
-                    ].map((stat, i) => (
-                      <motion.div
-                        key={stat.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 + i * 0.1 }}
-                        className="text-center p-4 rounded-xl glass-card"
-                      >
-                        <div className="text-xl font-display font-bold text-primary">{stat.value}</div>
-                        <div className="text-xs text-muted-foreground mt-1">{stat.label}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Social Links */}
-                  <div className="flex items-center gap-3">
-                    {founder?.facebook_url && (
-                      <a href={founder.facebook_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
-                        className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
-                        <Facebook size={16} className="text-muted-foreground hover:text-primary" />
-                      </a>
-                    )}
-                    {founder?.instagram_url && (
-                      <a href={founder.instagram_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
-                        className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
-                        <Instagram size={16} className="text-muted-foreground hover:text-primary" />
-                      </a>
-                    )}
-                    {founder?.linkedin_url && (
-                      <a href={founder.linkedin_url} target="_blank" rel="noopener noreferrer" itemProp="sameAs"
-                        className="w-10 h-10 rounded-xl glass-card flex items-center justify-center hover:bg-primary/10 hover:border-primary/30 border border-border/30 transition-all">
-                        <Linkedin size={16} className="text-muted-foreground hover:text-primary" />
-                      </a>
-                    )}
-
-                    <a href="https://alphazero.online/team" className="ml-auto inline-flex items-center gap-2 text-sm text-primary font-medium hover:underline">
-                      View Full Team <ArrowRight size={14} />
-                    </a>
-                  </div>
-                </motion.div>
-              </div>
+                ))}
+              </motion.div>
             </div>
           </div>
         </section>
-      )}
 
-      {/* Story */}
-      <section className="py-24 lg:py-32 relative">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-                <Rocket size={14} className="text-primary" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">{c("story.badge", "about.story.badge")}</span>
-              </div>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold">
-                {c("story.title", "about.story.title")} <span className="gradient-text">AlphaZero</span> {c("story.title2", "about.story.title2")}
+        {/* ══════════ FOUNDER ══════════ */}
+        <section
+          className="py-20 lg:py-28 relative"
+          itemScope
+          itemType="https://schema.org/Person"
+        >
+          <meta itemProp="name" content="Sofiullah Ahammad" />
+          <meta itemProp="alternateName" content="Atik Ahmed" />
+          <meta
+            itemProp="jobTitle"
+            content="Photographer, Founder & Graphic Designer"
+          />
+          <link itemProp="url" href="https://alphazero.online/about" />
+
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="mb-12 lg:mb-16 max-w-2xl">
+              <span className="astryx-eyebrow mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                {getContent("founder.badge") || "Meet the founder"}
+              </span>
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-display font-semibold tracking-[-0.03em] leading-[1.05] text-foreground">
+                {getContent("founder.title") || "The visionary behind"}{" "}
+                <span className="text-muted-foreground">AlphaZero</span>
               </h2>
-            </motion.div>
+            </div>
 
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              {/* Story cards */}
-              <div className="space-y-4">
-                {[
-                  { icon: Rocket, title: c("story.card1.title", "about.story.card1.title"), desc: c("story.card1.desc", "about.story.card1.desc") },
-                  { icon: Zap, title: c("story.card2.title", "about.story.card2.title"), desc: c("story.card2.desc", "about.story.card2.desc") },
-                  { icon: Heart, title: c("story.card3.title", "about.story.card3.title"), desc: c("story.card3.desc", "about.story.card3.desc") },
-                ].map((card, index) => (
-                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }} transition={{ delay: index * 0.1 }}
-                    whileHover={{ y: -4 }}
-                    className="group relative p-6 rounded-2xl glass-card overflow-hidden">
-                    <span className="absolute top-5 right-5 text-5xl font-display font-bold text-muted-foreground/[0.04] leading-none select-none">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                        <card.icon size={20} className="text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-display font-bold mb-2">{card.title}</h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">{card.desc}</p>
-                      </div>
+            <div className="grid lg:grid-cols-12 gap-6 lg:gap-8">
+              {/* Portrait */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="lg:col-span-5"
+              >
+                <div className="astryx-surface overflow-hidden">
+                  <div className="relative aspect-[4/5] overflow-hidden">
+                    <img
+                      src={founder?.image_url || "/placeholder.svg"}
+                      alt={`${founder?.name || "Founder"} — Founder of AlphaZero`}
+                      itemProp="image"
+                      loading="eager"
+                      className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 hover:scale-[1.03]"
+                    />
+                  </div>
+                  <div className="p-5 border-t border-border flex items-center justify-between">
+                    <div>
+                      <h3
+                        className="font-display font-semibold text-base tracking-[-0.01em]"
+                        itemProp="name"
+                      >
+                        {founder?.name || "Sofiullah Ahammad"}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {getContent("founder.role") ||
+                          "Photographer, Founder & Graphic Designer"}
+                      </p>
                     </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Logo + Why Choose */}
-              <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-5">
-                <div className="rounded-2xl glass-card p-8 text-center">
-                  {(() => {
-                    const customLogo = getContent("story.logoUrl");
-                    return customLogo ? (
-                      <img src={customLogo} alt="AlphaZero" className="h-28 md:h-36 w-auto mx-auto object-contain mb-6" />
-                    ) : (
-                      <img src={logo} alt="AlphaZero Logo" className="h-28 md:h-36 w-auto mx-auto brightness-0 dark:invert mb-6" />
-                    );
-                  })()}
-
-                  <p className="text-primary text-lg font-semibold tracking-wide">{c("tagline", "about.tagline")}</p>
-                  <div className="flex justify-center gap-3 mt-4">
-                    <span className="px-3 py-1 rounded-full bg-primary text-primary-foreground font-medium text-xs">{c("badge.agency", "about.badge.agency")}</span>
-                    <span className="px-3 py-1 rounded-full bg-secondary border border-border font-medium text-xs">🇧🇩 Bangladesh</span>
+                    <div className="flex items-center gap-1.5">
+                      {founder?.facebook_url && (
+                        <a
+                          href={founder.facebook_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          itemProp="sameAs"
+                          className="w-8 h-8 rounded-md border border-border flex items-center justify-center hover:border-foreground/40 transition-colors astryx-focus"
+                          aria-label="Facebook"
+                        >
+                          <Facebook size={13} className="text-muted-foreground" />
+                        </a>
+                      )}
+                      {founder?.instagram_url && (
+                        <a
+                          href={founder.instagram_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          itemProp="sameAs"
+                          className="w-8 h-8 rounded-md border border-border flex items-center justify-center hover:border-foreground/40 transition-colors astryx-focus"
+                          aria-label="Instagram"
+                        >
+                          <Instagram size={13} className="text-muted-foreground" />
+                        </a>
+                      )}
+                      {founder?.linkedin_url && (
+                        <a
+                          href={founder.linkedin_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          itemProp="sameAs"
+                          className="w-8 h-8 rounded-md border border-border flex items-center justify-center hover:border-foreground/40 transition-colors astryx-focus"
+                          aria-label="LinkedIn"
+                        >
+                          <Linkedin size={13} className="text-muted-foreground" />
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
+              </motion.div>
 
-                <div className="p-6 rounded-2xl glass-card">
-                  <h4 className="text-base font-bold mb-4 flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 text-primary" />{c("whyChoose", "about.whyChoose")}
-                  </h4>
-                  <div className="space-y-3">
-                    {whyChoose.map((item, index) => (
-                      <div key={index} className="flex items-center gap-3 group">
-                        <div className="w-1.5 h-1.5 rounded-full bg-primary group-hover:scale-150 transition-transform" />
-                        <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">{item}</span>
+              {/* Bio + expertise */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.5, delay: 0.08 }}
+                className="lg:col-span-7 flex flex-col gap-8"
+              >
+                <div>
+                  <p
+                    className="text-base lg:text-lg text-foreground/85 leading-relaxed"
+                    itemProp="description"
+                  >
+                    {founder?.bio ||
+                      "Sofiullah Ahammad, professionally known as Atik Ahmed, is a Bangladeshi visual creator based in Rajshahi, Bangladesh. He works across photography, graphic design, and web development, blending technology with visual storytelling."}
+                  </p>
+                </div>
+
+                {/* Expertise */}
+                <div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-3">
+                    Expertise
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {founderExpertise.map((item) => (
+                      <div
+                        key={item.label}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md border border-border bg-card text-sm text-foreground"
+                      >
+                        <item.icon size={14} className="text-primary" />
+                        {item.label}
                       </div>
                     ))}
                   </div>
                 </div>
+
+                {/* Location + CTA */}
+                <div className="astryx-surface p-5 flex items-center justify-between gap-4 flex-wrap">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg border border-border flex items-center justify-center">
+                      <MapPin size={16} className="text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-foreground">
+                        Rajshahi, Bangladesh
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Working with clients worldwide
+                      </div>
+                    </div>
+                  </div>
+                  <a
+                    href="/team"
+                    className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground hover:text-primary transition-colors astryx-focus"
+                  >
+                    View full team
+                    <ArrowRight size={14} />
+                  </a>
+                </div>
               </motion.div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Values */}
-      <section className="py-24 lg:py-32 relative mesh-bg">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/[0.06] mb-6">
-                <Target size={14} className="text-primary" />
-                <span className="text-xs font-bold tracking-[0.2em] uppercase text-primary">Core Values</span>
+        {/* ══════════ STORY ══════════ */}
+        <section className="py-20 lg:py-28 border-t border-border relative bg-secondary/40">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="mb-14 max-w-2xl">
+              <span className="astryx-eyebrow mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                {c("story.badge", "about.story.badge")}
+              </span>
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-display font-semibold tracking-[-0.03em] leading-[1.05] text-foreground">
+                {c("story.title", "about.story.title")}{" "}
+                <span className="text-muted-foreground">AlphaZero</span>{" "}
+                {c("story.title2", "about.story.title2")}
+              </h2>
+            </div>
+
+            <div className="grid lg:grid-cols-12 gap-6">
+              {/* Story cards */}
+              <div className="lg:col-span-7 grid gap-4">
+                {[
+                  {
+                    icon: Rocket,
+                    title: c("story.card1.title", "about.story.card1.title"),
+                    desc: c("story.card1.desc", "about.story.card1.desc"),
+                  },
+                  {
+                    icon: Zap,
+                    title: c("story.card2.title", "about.story.card2.title"),
+                    desc: c("story.card2.desc", "about.story.card2.desc"),
+                  },
+                  {
+                    icon: Heart,
+                    title: c("story.card3.title", "about.story.card3.title"),
+                    desc: c("story.card3.desc", "about.story.card3.desc"),
+                  },
+                ].map((card, index) => (
+                  <motion.article
+                    key={index}
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.4, delay: index * 0.06 }}
+                    className="astryx-surface p-6 lg:p-7 flex gap-5 group hover:shadow-[var(--shadow-card)] transition-shadow"
+                  >
+                    <div className="shrink-0 w-11 h-11 rounded-lg border border-border bg-secondary flex items-center justify-center group-hover:border-primary/30 transition-colors">
+                      <card.icon size={18} className="text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="text-[11px] font-mono text-muted-foreground/70">
+                          0{index + 1}
+                        </span>
+                        <h3 className="text-lg font-display font-semibold tracking-[-0.01em] text-foreground">
+                          {card.title}
+                        </h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {card.desc}
+                      </p>
+                    </div>
+                  </motion.article>
+                ))}
               </div>
-              <h2 className="text-3xl lg:text-5xl font-display font-bold">{c("values.title", "about.values.title")}</h2>
-              <p className="text-muted-foreground max-w-lg mx-auto mt-4">{c("values.subtitle", "about.values.subtitle")}</p>
-            </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-5">
-              {values.map((value, index) => (
-                <motion.div key={value.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: index * 0.08 }}
-                  whileHover={{ y: -6 }}
-                  className="group relative p-7 rounded-2xl glass-card overflow-hidden">
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="absolute -bottom-4 -right-2 text-[7rem] font-display font-bold text-muted-foreground/[0.04] leading-none select-none">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div className="w-14 h-14 rounded-2xl bg-primary/[0.08] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <value.icon size={24} className="text-primary" />
+              {/* Right column — Logo + Why choose */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                className="lg:col-span-5 flex flex-col gap-4"
+              >
+                <div className="astryx-surface p-8 text-center">
+                  {(() => {
+                    const customLogo = getContent("story.logoUrl");
+                    return customLogo ? (
+                      <img
+                        src={customLogo}
+                        alt="AlphaZero"
+                        className="h-24 md:h-28 w-auto mx-auto object-contain mb-5"
+                      />
+                    ) : (
+                      <img
+                        src={logo}
+                        alt="AlphaZero"
+                        className="h-24 md:h-28 w-auto mx-auto brightness-0 mb-5"
+                      />
+                    );
+                  })()}
+                  <p className="text-sm font-medium tracking-wide text-foreground">
+                    {c("tagline", "about.tagline")}
+                  </p>
+                  <div className="flex justify-center gap-2 mt-4">
+                    <span className="px-2.5 py-1 rounded-md bg-foreground text-background text-[11px] font-medium">
+                      {c("badge.agency", "about.badge.agency")}
+                    </span>
+                    <span className="px-2.5 py-1 rounded-md border border-border bg-card text-[11px] font-medium text-muted-foreground">
+                      🇧🇩 Bangladesh
+                    </span>
                   </div>
-                  <h3 className="text-lg font-display font-bold mb-2">{value.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{value.desc}</p>
+                </div>
+
+                <div className="astryx-surface p-6">
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-4">
+                    {c("whyChoose", "about.whyChoose")}
+                  </div>
+                  <ul className="space-y-3">
+                    {whyChoose.map((item, index) => (
+                      <li key={index} className="flex items-start gap-3 text-sm">
+                        <span className="mt-2 w-1 h-1 rounded-full bg-primary shrink-0" />
+                        <span className="text-foreground/85 leading-relaxed">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════ VALUES ══════════ */}
+        <section className="py-20 lg:py-28 border-t border-border relative">
+          <div className="container mx-auto px-6 max-w-6xl">
+            <div className="mb-14 max-w-2xl">
+              <span className="astryx-eyebrow mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Core values
+              </span>
+              <h2 className="text-3xl lg:text-4xl xl:text-5xl font-display font-semibold tracking-[-0.03em] leading-[1.05] text-foreground">
+                {c("values.title", "about.values.title")}
+              </h2>
+              <p className="text-muted-foreground mt-4 text-base lg:text-lg max-w-xl leading-relaxed">
+                {c("values.subtitle", "about.values.subtitle")}
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-px astryx-surface overflow-hidden bg-border">
+              {values.map((value, index) => (
+                <motion.div
+                  key={value.title}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                  className="bg-card p-7 lg:p-8 group hover:bg-secondary/60 transition-colors"
+                >
+                  <div className="w-11 h-11 rounded-lg border border-border bg-secondary flex items-center justify-center mb-5 group-hover:border-primary/30 transition-colors">
+                    <value.icon size={18} className="text-primary" />
+                  </div>
+                  <h3 className="text-lg font-display font-semibold tracking-[-0.01em] mb-2 text-foreground">
+                    {value.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {value.desc}
+                  </p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
+        </section>
       </div>
     </Layout>
   );
