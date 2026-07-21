@@ -189,7 +189,7 @@ const AboutPage = () => {
                       </a>
                     )}
 
-                    <a href="https://alphazero.online/team"
+                    <a href="#team"
                       className="ml-auto group inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all">
                       View Full Team
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
