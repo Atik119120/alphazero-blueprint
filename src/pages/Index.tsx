@@ -25,6 +25,8 @@ import {
 } from "lucide-react";
 import { ContainerTextFlip } from "@/components/ui/modern-animated-multi-words";
 import { HeroSection } from "@/components/ui/hero-section-dark";
+import { Spotlight } from "@/components/ui/spotlight";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Sparkles as SparklesFx } from "@/components/ui/sparkles";
 import { Link } from "react-router-dom";
 import LayoutComponent from "@/components/Layout";
@@ -394,40 +396,44 @@ const Index = () => {
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
       <section ref={heroRef} className="relative overflow-hidden -mt-20 bg-background text-foreground">
-        <HeroSection
-          title={c("badge", "home.badge")}
-          subtitle={{
-            regular: `${c("title1", "home.title1")} `,
-            gradient: c("title2", "home.title2"),
-          }}
-          description={(() => {
-            const full = c("description", "home.description") || "";
-            const match = full.match(/^(We craft|আমরা তৈরি করি)(.*)$/);
-            if (match) {
-              return (
-                <>
-                  <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
-                    {match[1]}
-                  </span>
-                  {match[2]}
-                </>
-              );
-            }
-            return full;
-          })()}
-          ctaText={c("cta1", "home.cta1")}
-          ctaHref="/contact"
-          bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
-          gridOptions={{
-            angle: 65,
-            opacity: 0.35,
-            cellSize: 55,
-            lightLineColor: "hsl(215 25% 70%)",
-            darkLineColor: "hsl(185 60% 40%)",
-          }}
-        />
+        {/* Aceternity-style ambient FX */}
+        <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" />
+        <BackgroundBeams className="opacity-70" />
 
-        
+        <div className="relative z-[2]">
+          <HeroSection
+            title={c("badge", "home.badge")}
+            subtitle={{
+              regular: `${c("title1", "home.title1")} `,
+              gradient: c("title2", "home.title2"),
+            }}
+            description={(() => {
+              const full = c("description", "home.description") || "";
+              const match = full.match(/^(We craft|আমরা তৈরি করি)(.*)$/);
+              if (match) {
+                return (
+                  <>
+                    <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[hsl(var(--gradient-start))] via-[hsl(var(--gradient-mid))] to-[hsl(var(--gradient-end))]">
+                      {match[1]}
+                    </span>
+                    {match[2]}
+                  </>
+                );
+              }
+              return full;
+            })()}
+            ctaText={c("cta1", "home.cta1")}
+            ctaHref="/contact"
+            bottomImage={{ light: designShowcaseLight, dark: designShowcase }}
+            gridOptions={{
+              angle: 65,
+              opacity: 0.35,
+              cellSize: 55,
+              lightLineColor: "hsl(215 25% 70%)",
+              darkLineColor: "hsl(185 60% 40%)",
+            }}
+          />
+        </div>
       </section>
 
 

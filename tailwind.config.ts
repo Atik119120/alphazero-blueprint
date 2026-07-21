@@ -85,6 +85,10 @@ export default {
           "0%": { transform: "translateY(-50%)" },
           "100%": { transform: "translateY(0)" },
         },
+        "spotlight": {
+          "0%": { opacity: "0", transform: "translate(-72%, -62%) scale(0.5)" },
+          "100%": { opacity: "1", transform: "translate(-50%,-40%) scale(1)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -94,6 +98,7 @@ export default {
         "fade-up": "fade-up 0.6s ease-out forwards",
         "spin-slow": "spin-slow 3s linear infinite",
         "grid": "grid 15s linear infinite",
+        "spotlight": "spotlight 2s ease .25s 1 forwards",
       },
     },
   },
