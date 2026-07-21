@@ -240,10 +240,10 @@ const AboutPage = () => {
             <div className="relative grid lg:grid-cols-2 gap-10 items-center">
               {/* Left: Heading + CTA */}
               <div>
-                <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-foreground/60 mb-5">
+                <p className="text-[11px] font-bold tracking-[0.25em] uppercase text-white/70 mb-5">
                   Let's build something great
                 </p>
-                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-foreground mb-8">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] text-white mb-8 drop-shadow-[0_2px_12px_rgba(0,0,0,0.15)]">
                   Ready to start<br />your next project?
                 </h2>
                 <Link
