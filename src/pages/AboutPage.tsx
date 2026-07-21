@@ -8,6 +8,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageContent } from "@/hooks/usePageContent";
 import { useTeamMembers } from "@/hooks/useTeamMembers";
 import servicesHeroBg from "@/assets/about-hero-blue-orb.jpg.asset.json";
+import ctaBlueWaves from "@/assets/about-cta-blue-waves.png.asset.json";
 import TeamBento from "@/components/TeamBento";
 import { Users } from "lucide-react";
 
