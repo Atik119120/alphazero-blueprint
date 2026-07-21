@@ -171,15 +171,22 @@ const ServicesPage = () => {
                   <div className="relative inline-block">
                     <Link
                       to="/contact"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#ff5722] text-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(255,87,34,0.5)] hover:shadow-[0_14px_34px_-10px_rgba(255,87,34,0.6)] hover:scale-[1.03] transition-all"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(6,182,212,0.55)] hover:shadow-[0_14px_34px_-10px_rgba(37,99,235,0.6)] hover:scale-[1.03] transition-all"
+                      style={{ background: "linear-gradient(135deg, #06b6d4 0%, #2563eb 100%)" }}
                     >
                       Discuss your ideas
                     </Link>
                     {/* Squiggle note */}
                     <svg className="absolute -right-40 top-1/2 pointer-events-none hidden sm:block" width="150" height="60" viewBox="0 0 150 60" fill="none">
-                      <path d="M 5 5 C 20 20, 40 30, 70 35" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                      <path d="M 65 30 L 70 35 L 62 38" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      <text x="72" y="44" fill="#ff5722" style={{ fontFamily: "'Caveat', cursive", fontSize: '22px', fontWeight: 600 }}>Let's get started</text>
+                      <defs>
+                        <linearGradient id="squiggleGrad" x1="0" y1="0" x2="1" y2="0">
+                          <stop offset="0%" stopColor="#06b6d4" />
+                          <stop offset="100%" stopColor="#2563eb" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 5 5 C 20 20, 40 30, 70 35" stroke="url(#squiggleGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                      <path d="M 65 30 L 70 35 L 62 38" stroke="url(#squiggleGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                      <text x="72" y="44" fill="url(#squiggleGrad)" style={{ fontFamily: "'Caveat', cursive", fontSize: '22px', fontWeight: 600 }}>Let's get started</text>
                     </svg>
                   </div>
                 </motion.div>
