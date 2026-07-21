@@ -38,7 +38,7 @@ const extras: Item[] = [
   { id: "ex-poster-trend", image_url: posterTrend.url, title: "Poster Design Trend 2026" },
 ];
 
-const HERO_CTA_GAP_PX = 80;
+
 
 const Card = ({ item }: { item: Item }) => {
   return (
