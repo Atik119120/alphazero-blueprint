@@ -109,9 +109,9 @@ const AboutPage = () => {
                 <motion.img
                   src={journeyLogo}
                   alt="AlphaZero"
-                  className="w-full max-w-md object-contain"
+                  className="w-full max-w-md object-contain opacity-30"
                   initial={{ scale: 0.85, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
+                  whileInView={{ scale: 1, opacity: 0.3 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
                 />
