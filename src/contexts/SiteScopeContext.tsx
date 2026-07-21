@@ -19,10 +19,10 @@ export const SiteScopeProvider = ({ children, override }: { children: ReactNode;
     return "agency";
   }, [location.pathname, override]);
 
-  // Force light theme on learn site, dark elsewhere
+  // Force light theme on both learn and agency sites
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const target = scope === "learn" ? "light" : "dark";
+    const target = "light";
     const root = document.documentElement;
 
     const apply = () => {
@@ -43,8 +43,7 @@ export const SiteScopeProvider = ({ children, override }: { children: ReactNode;
     const observer = new MutationObserver(() => {
       const hasDark = root.classList.contains("dark");
       const hasLight = root.classList.contains("light");
-      if (target === "light" && (hasDark || !hasLight)) apply();
-      if (target === "dark" && (hasLight || !hasDark)) apply();
+      if (hasDark || !hasLight) apply();
     });
     observer.observe(root, { attributes: true, attributeFilter: ["class", "style"] });
     return () => observer.disconnect();
