@@ -1,0 +1,1 @@
+UPDATE public.team_members SET image_url = '/__l5e/assets-v1/778592c7-8f87-40ee-8301-91d5df16574c/sofiullah-founder.png' WHERE id = '28d1b841-65ab-48bf-b6af-7ca4478cb01b';
