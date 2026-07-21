@@ -314,8 +314,9 @@ const AboutPage = () => {
         </div>
       </section>
 
-
+      </div>
     </Layout>
+
   );
 };
 
