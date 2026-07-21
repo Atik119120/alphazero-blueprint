@@ -694,16 +694,17 @@ const Index = () => {
             const row2 = logos.filter((_, i) => i % 2 === 1);
 
             const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
-              <div className="group flex items-center justify-center h-14 sm:h-16 lg:h-20 w-32 sm:w-40 lg:w-48 px-2">
+              <div className="group flex items-center justify-center h-20 sm:h-24 lg:h-28 w-full px-2 overflow-hidden">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   loading="lazy"
                   style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="max-h-10 lg:max-h-12 w-auto object-contain [filter:brightness(0)_saturate(100%)] opacity-70 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-300 ease-out"
+                  className="max-h-12 lg:max-h-14 w-auto object-contain [filter:brightness(0)_saturate(100%)] opacity-80 group-hover:opacity-100 transition-all duration-300 ease-out"
                 />
               </div>
             );
+
 
 
             return (
