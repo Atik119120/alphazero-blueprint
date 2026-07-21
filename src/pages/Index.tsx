@@ -691,6 +691,22 @@ const Index = () => {
             // duplicated for mobile marquee
             const marqueeLogos = [...logos, ...logos];
 
+            // split into two rows so each row has a distinct set
+            const row1 = logos.filter((_, i) => i % 2 === 0);
+            const row2 = logos.filter((_, i) => i % 2 === 1);
+
+            const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
+              <div className="group flex items-center justify-center h-14 sm:h-16 lg:h-20 w-32 sm:w-40 lg:w-48 px-2">
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
+                  style={{ transform: `scale(${logo.scale ?? 1})` }}
+                  className="max-h-10 lg:max-h-12 w-auto object-contain grayscale opacity-40 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-300 ease-out"
+                />
+              </div>
+            );
+
             return (
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -698,86 +714,50 @@ const Index = () => {
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* Header row */}
-                <div className="flex flex-col items-start mb-14 lg:mb-20">
-                  <div className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.28em] text-[#666]">
-                    <span className="flex items-center gap-2">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-70" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
-                      </span>
-                      {rawSubtitle}
-                    </span>
-                    <span className="text-[#999]">[ 001 ]</span>
-                  </div>
-
-                  <h3 className="mt-5 text-6xl sm:text-7xl lg:text-8xl font-display font-semibold tracking-[-0.04em] leading-none text-[#111]">
-                    {num.replace('+', '')}<span className="text-primary font-light">+</span>
-                  </h3>
-                  <p className="mt-2 text-xs uppercase tracking-[0.32em] text-[#666] font-mono">
-                    {label}
-                  </p>
-                </div>
-
                 {/* Centered headline */}
-                <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-semibold tracking-[-0.02em] text-[#111] leading-[1.15]">
+                <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-[#111] leading-[1.2]">
                     Trusted by <span className="text-primary">200+</span> of the world's top brands
                   </h2>
-                  <p className="mt-4 text-[#666] text-base lg:text-lg">
-                    Studios, agencies and enterprises building with AlphaZero.
-                  </p>
                 </div>
 
-                {/* Desktop / tablet grid */}
-                <div className="hidden sm:grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-8 gap-y-10 lg:gap-x-12 lg:gap-y-14 items-center">
-                  {logos.map((logo, i) => (
-                    <motion.div
-                      key={`d-${i}`}
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: Math.min(i, 12) * 0.04, ease: "easeOut" }}
-                      className="group flex items-center justify-center h-16 lg:h-20"
-                    >
-                      <img
-                        src={logo.src}
-                        alt={logo.alt}
-                        loading="lazy"
-                        style={{ transform: `scale(${logo.scale ?? 1})` }}
-                        className="block max-h-10 lg:max-h-12 w-auto object-contain grayscale opacity-30 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-300 ease-out"
-                      />
-                    </motion.div>
-                  ))}
-                </div>
+                {/* Two-row marquee */}
+                <div className="relative space-y-4 lg:space-y-6">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 w-24 lg:w-40 bg-gradient-to-r from-white to-transparent z-10" />
+                  <div className="pointer-events-none absolute inset-y-0 right-0 w-24 lg:w-40 bg-gradient-to-l from-white to-transparent z-10" />
 
-                {/* Mobile marquee */}
-                <div className="sm:hidden relative overflow-hidden trusted-brands-swiper">
-                  <AppSwiper
-                    variant="marquee"
-                    speed={5000}
-                    autoplayDelay={0}
-                    loop
-                    spaceBetween={40}
-                    items={logos}
-                    keyExtractor={(l, i) => `m-${l.alt}-${i}`}
-                    slideClassName="!w-28"
-                    renderItem={(logo) => (
-                      <div className="shrink-0 flex items-center justify-center h-14 w-28">
-                        <img
-                          src={logo.src}
-                          alt={logo.alt}
-                          loading="lazy"
-                          style={{ transform: `scale(${logo.scale ?? 1})` }}
-                          className="max-h-10 w-auto object-contain grayscale opacity-40"
-                        />
-                      </div>
-                    )}
-                  />
-                </div>
+                  <div className="trusted-brands-swiper overflow-hidden">
+                    <AppSwiper
+                      variant="marquee"
+                      speed={6000}
+                      autoplayDelay={0}
+                      loop
+                      spaceBetween={24}
+                      items={row1}
+                      keyExtractor={(l, i) => `r1-${l.alt}-${i}`}
+                      slideClassName="!w-auto"
+                      renderItem={(logo) => <LogoItem logo={logo} />}
+                    />
+                  </div>
 
+                  <div className="trusted-brands-swiper overflow-hidden">
+                    <AppSwiper
+                      variant="marquee"
+                      speed={6000}
+                      autoplayDelay={0}
+                      loop
+                      spaceBetween={24}
+                      items={row2}
+                      keyExtractor={(l, i) => `r2-${l.alt}-${i}`}
+                      slideClassName="!w-auto"
+                      autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true, reverseDirection: true }}
+                      renderItem={(logo) => <LogoItem logo={logo} />}
+                    />
+                  </div>
+                </div>
               </motion.div>
             );
+
           })()}
         </div>
       </section>
