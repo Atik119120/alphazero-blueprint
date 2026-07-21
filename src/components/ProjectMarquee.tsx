@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import { useWorks, type Work } from "@/hooks/useWorks";
 
 import badam from "@/assets/marquee/badam.jpg.asset.json";
