@@ -114,7 +114,7 @@ const AboutPage = () => {
                   className="lg:col-span-2"
                 >
                   <div className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-br from-primary/30 via-primary/10 to-transparent rounded-3xl blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-700" />
+                    
                     <div className="relative rounded-3xl overflow-hidden border-2 border-primary/20">
                       <img
                         src={founder?.image_url || '/placeholder.svg'}
