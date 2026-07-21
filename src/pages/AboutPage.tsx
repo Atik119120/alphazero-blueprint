@@ -93,7 +93,7 @@ const AboutPage = () => {
 
 
       {/* Story */}
-      <section className="py-24 lg:py-32 relative">
+      <section className="pt-24 lg:pt-32 pb-8 lg:pb-10 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             {/* Split editorial header */}
@@ -154,7 +154,7 @@ const AboutPage = () => {
       </section>
 
       {/* Team */}
-      <section id="team" className="py-24 lg:py-32 relative">
+      <section id="team" className="pt-8 lg:pt-10 pb-24 lg:pb-32 relative">
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
