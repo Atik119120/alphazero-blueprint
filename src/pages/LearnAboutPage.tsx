@@ -401,7 +401,7 @@ const LearnAboutPage = () => {
                       className="group"
                     >
                       <div className="glass-card rounded-2xl overflow-hidden hover:border-primary/40 transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/[0.08] flex flex-col h-full">
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-primary/10 to-purple-500/10">
+                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-muted">
                           {tr.image ? (
                             <img
                               src={tr.image}
