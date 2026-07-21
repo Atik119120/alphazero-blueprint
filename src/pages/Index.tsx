@@ -682,11 +682,8 @@ const Index = () => {
               ? activeItems.map((it) => ({ src: it.image_url as string, alt: it.title || "Brand" }))
               : defaultLogos;
 
-            const rawTitle = (brandsSection?.title || '39+ Global Brands').trim();
-            const rawSubtitle = (brandsSection?.subtitle || '// TRUSTED').trim();
-            const m = rawTitle.match(/(\d+\+?)\s*(.*)$/);
-            const num = m?.[1] || '39+';
-            const label = ((m?.[2] || rawTitle).trim() || 'Global Brands');
+
+
 
             // duplicated for mobile marquee
             const marqueeLogos = [...logos, ...logos];
