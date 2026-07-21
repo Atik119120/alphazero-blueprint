@@ -32,7 +32,7 @@ export function LogoCloud({ className, logos = defaultLogos, ...props }: LogoClo
   return (
     <div className={cn("relative mx-auto w-full max-w-6xl", className)} {...props}>
       {/* Grid Container */}
-      <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-white/5">
+      <div className="relative grid grid-cols-4 border-t border-l border-white/5">
         {/* Corner + intersection plus markers */}
         <span aria-hidden className="absolute -top-1.5 -left-1.5 text-primary/40 text-xs font-light select-none">+</span>
         <span aria-hidden className="absolute -top-1.5 -right-1.5 text-primary/40 text-xs font-light select-none">+</span>
