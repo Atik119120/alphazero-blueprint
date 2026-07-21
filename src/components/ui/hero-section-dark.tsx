@@ -106,7 +106,7 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
     const splitWords = (text: string) => text;
 
     return (
-      <div data-nav-theme="dark" className={cn("relative", className)} ref={innerRef} {...props}>
+      <div className={cn("relative", className)} ref={innerRef} {...props}>
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <>
