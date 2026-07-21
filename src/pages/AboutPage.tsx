@@ -334,15 +334,20 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       if (!a || !b) continue;
       const ar = a.getBoundingClientRect();
       const br = b.getBoundingClientRect();
-      const x1 = ar.right - cRect.left;
+      // Anchor slightly inside the card edge so the endpoint circles hug the card
+      const x1 = ar.right - cRect.left - 6;
       const y1 = ar.top + ar.height / 2 - cRect.top;
-      const x2 = br.left - cRect.left;
+      const x2 = br.left - cRect.left + 6;
       const y2 = br.top + br.height / 2 - cRect.top;
       const dx = x2 - x1;
-      const cx1 = x1 + dx * 0.5;
-      const cy1 = y1;
-      const cx2 = x2 - dx * 0.5;
-      const cy2 = y2;
+      const dy = y2 - y1;
+      // Pronounced S-curve: push control points outward and flip vertical offset
+      // to create a graceful wave regardless of vertical delta between cards.
+      const amp = Math.max(60, Math.abs(dy) * 1.2 + 40);
+      const cx1 = x1 + dx * 0.35;
+      const cy1 = y1 - amp;
+      const cx2 = x2 - dx * 0.35;
+      const cy2 = y2 + amp;
       const d = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
       next.push({ d, x1, y1, x2, y2 });
     }
