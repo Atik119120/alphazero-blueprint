@@ -199,24 +199,24 @@ const AboutPage = () => {
               </h2>
             </motion.div>
 
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-3 lg:gap-4 pt-8">
-              {/* Squiggle 1 → 2 : bottom-right of card 1 up to top of card 2 */}
-              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '30%', top: '48%', width: '140px', height: '130px' }} viewBox="0 0 140 130" fill="none">
-                <circle cx="15" cy="115" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
-                <path d="M 15 115 C 25 70, 90 95, 95 45 S 120 15, 128 12" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <circle cx="128" cy="12" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 pt-12 pb-8">
+              {/* Squiggle 1 → 2 : short curve from bottom-right of card 1 up to top of card 2 */}
+              <svg className="hidden md:block absolute z-40 pointer-events-none" style={{ left: '30%', top: '18%', width: '110px', height: '150px' }} viewBox="0 0 110 150" fill="none">
+                <circle cx="15" cy="140" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
+                <path d="M 15 140 C 15 100, 55 90, 65 40 S 90 10, 95 8" stroke="#ff5722" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+                <circle cx="95" cy="8" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
               </svg>
-              {/* Squiggle 2 → 3 : top of card 2 area down to card 3 */}
-              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '62%', top: '48%', width: '150px', height: '140px' }} viewBox="0 0 150 140" fill="none">
-                <circle cx="20" cy="15" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
-                <path d="M 20 15 C 30 65, 95 55, 90 100 S 125 125, 135 125" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                <circle cx="135" cy="125" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
+              {/* Squiggle 2 → 3 : loopy curve from bottom of card 2 into card 3 */}
+              <svg className="hidden md:block absolute z-40 pointer-events-none" style={{ left: '58%', top: '50%', width: '160px', height: '140px' }} viewBox="0 0 160 140" fill="none">
+                <circle cx="20" cy="10" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
+                <path d="M 20 10 C 25 40, 55 45, 60 60 C 65 78, 40 78, 55 92 C 70 106, 100 92, 115 100 S 140 118, 148 118" stroke="#ff5722" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+                <circle cx="148" cy="118" r="4" stroke="#ff5722" strokeWidth="1.6" fill="none" />
               </svg>
 
               {values.map((value, index) => {
-                const rotations = ['-rotate-[6deg]', 'rotate-[4deg]', '-rotate-[5deg]'];
-                const offsets = ['md:translate-y-8', 'md:-translate-y-6', 'md:translate-y-10'];
-                const overlaps = ['md:mr-[-40px]', 'md:z-30 md:scale-[1.08]', 'md:ml-[-40px]'];
+                const rotations = ['-rotate-[8deg]', '-rotate-[3deg]', '-rotate-[6deg]'];
+                const offsets = ['md:translate-y-12', 'md:-translate-y-4', 'md:translate-y-16'];
+                const overlaps = ['md:mr-[-30px]', 'md:scale-[1.1]', 'md:ml-[-30px]'];
                 const zIndex = [10, 30, 10];
                 return (
                   <motion.div
@@ -225,7 +225,7 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.12 }}
-                    whileHover={{ rotate: 0, y: -10, scale: index === 1 ? 1.12 : 1.05 }}
+                    whileHover={{ rotate: 0, y: -10, scale: index === 1 ? 1.14 : 1.05 }}
                     style={{ zIndex: zIndex[index] }}
                     className={`relative aspect-square bg-white rounded-2xl p-8 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.28)] flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} ${overlaps[index]} transition-transform`}
                   >
