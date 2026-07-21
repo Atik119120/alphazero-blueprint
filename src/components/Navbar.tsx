@@ -287,7 +287,6 @@ const Navbar = () => {
           { name: language === "bn" ? "সম্পর্কে" : "About", href: "/about", icon: Info },
           { name: language === "bn" ? "সেবা" : "Services", href: "/services", icon: Briefcase },
           { name: language === "bn" ? "কাজ" : "Work", href: "/work", icon: FolderOpen },
-          { name: language === "bn" ? "টিম" : "Team", href: "/team", icon: Users },
           { name: language === "bn" ? "যোগাযোগ" : "Contact", href: "/contact", icon: Mail },
         ];
 
