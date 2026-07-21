@@ -141,13 +141,9 @@ const ServicesPage = () => {
       </section>
 
 
-      {/* Services — Colorful bento grid */}
-      <section className="py-24 lg:py-32 relative bg-background overflow-hidden">
-        {/* soft color blobs */}
-        <div className="absolute -top-32 -left-32 w-[420px] h-[420px] rounded-full bg-[#6366f1]/15 blur-[120px] pointer-events-none" />
-        <div className="absolute top-40 -right-32 w-[420px] h-[420px] rounded-full bg-[#ec4899]/15 blur-[120px] pointer-events-none" />
-
-        <div className="container mx-auto px-6 relative">
+      {/* Services — Astryx bento grid */}
+      <section className="py-24 lg:py-32 relative bg-background">
+        <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -156,13 +152,12 @@ const ServicesPage = () => {
               className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16"
             >
               <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#6366f1]/30 bg-gradient-to-r from-[#6366f1]/10 to-[#ec4899]/10 mb-5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#6366f1] to-[#ec4899]" />
-                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase bg-gradient-to-r from-[#6366f1] to-[#ec4899] bg-clip-text text-transparent">Capabilities</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/40 mb-5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">Capabilities</span>
                 </div>
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05]">
-                  Built for teams that{" "}
-                  <span className="bg-gradient-to-r from-[#6366f1] via-[#ec4899] to-[#f59e0b] bg-clip-text text-transparent">ship.</span>
+                  Built for teams that <span className="text-muted-foreground">ship.</span>
                 </h2>
               </div>
               <p className="text-muted-foreground text-base lg:text-lg max-w-md leading-relaxed">
@@ -177,17 +172,15 @@ const ServicesPage = () => {
             ) : !services || services.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">No services found.</div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-px bg-border/60 rounded-3xl overflow-hidden border border-border/60">
                 {services.map((service, index) => {
                   const IconComponent = getIcon(service.icon);
-                  const palettes = [
-                    { bg: "#6366f1", accent: "#ffffff" },
-                    { bg: "#ec4899", accent: "#ffffff" },
-                    { bg: "#f59e0b", accent: "#ffffff" },
-                    { bg: "#10b981", accent: "#ffffff" },
+                  const spanClasses = [
+                    "lg:col-span-7",
+                    "lg:col-span-5",
+                    "lg:col-span-5",
+                    "lg:col-span-7",
                   ];
-                  const p = palettes[index % 4];
-                  const spanClasses = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"];
                   return (
                     <motion.div
                       key={service.id}
@@ -195,37 +188,30 @@ const ServicesPage = () => {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.06 }}
-                      whileHover={{ y: -4 }}
-                      className={`group relative rounded-3xl p-8 lg:p-10 overflow-hidden transition-all ${spanClasses[index % 4]}`}
-                      style={{ backgroundColor: p.bg }}
+                      className={`group relative bg-background hover:bg-muted/30 transition-colors duration-300 p-8 lg:p-10 ${spanClasses[index % 4]}`}
                     >
-                      {/* subtle white glow */}
-                      <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl opacity-20 bg-white pointer-events-none" />
-                      <div className="relative">
-                        <div className="flex items-start justify-between mb-8">
-                          <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform backdrop-blur-sm">
-                            <IconComponent size={20} className="text-white" />
-                          </div>
-                          <span className="text-[10px] font-mono font-semibold tracking-widest text-white/80">
-                            {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
-                          </span>
+                      <div className="flex items-start justify-between mb-8">
+                        <div className="w-11 h-11 rounded-xl bg-muted/60 border border-border/60 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/30 transition-all">
+                          <IconComponent size={18} className="text-foreground group-hover:text-primary transition-colors" />
                         </div>
-                        <h3 className="text-xl lg:text-2xl font-display font-semibold tracking-tight mb-3 text-white">{service.title}</h3>
-                        <p className="text-white/85 text-sm lg:text-[15px] leading-relaxed mb-6 max-w-lg">{service.description}</p>
-                        {service.features && service.features.length > 0 && (
-                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 pt-6 border-t border-white/25">
-                            {service.features.slice(0, 6).map((feature, idx) => (
-                              <li key={idx} className="flex items-center gap-2 text-[13px] text-white/95">
-                                <CheckCircle size={12} className="text-white shrink-0" strokeWidth={2.5} />
-                                {feature}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
+                        <span className="text-[10px] font-mono font-medium text-muted-foreground/60 tracking-widest">
+                          {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
+                        </span>
                       </div>
+                      <h3 className="text-xl lg:text-2xl font-display font-semibold tracking-tight mb-3">{service.title}</h3>
+                      <p className="text-muted-foreground text-sm lg:text-[15px] leading-relaxed mb-6 max-w-lg">{service.description}</p>
+                      {service.features && service.features.length > 0 && (
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 pt-6 border-t border-border/60">
+                          {service.features.slice(0, 6).map((feature, idx) => (
+                            <li key={idx} className="flex items-center gap-2 text-[13px] text-foreground/80">
+                              <CheckCircle size={12} className="text-primary shrink-0" strokeWidth={2.5} />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </motion.div>
                   );
-
                 })}
               </div>
             )}
@@ -233,12 +219,9 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      {/* Process — Colorful rail */}
-      <section className="py-24 lg:py-32 relative overflow-hidden bg-gradient-to-br from-[#6366f1]/5 via-background to-[#ec4899]/5 border-y border-border/60">
-        <div className="absolute inset-0 opacity-[0.4] pointer-events-none" style={{
-          backgroundImage: "radial-gradient(circle at 20% 30%, #6366f120 0, transparent 40%), radial-gradient(circle at 80% 70%, #ec489920 0, transparent 40%)"
-        }} />
-        <div className="container mx-auto px-6 relative">
+      {/* Process — Astryx horizontal rail */}
+      <section className="py-24 lg:py-32 relative bg-muted/20 border-y border-border/60">
+        <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -246,9 +229,9 @@ const ServicesPage = () => {
               viewport={{ once: true }}
               className="max-w-3xl mb-16"
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#f59e0b]/30 bg-[#f59e0b]/10 mb-5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" />
-                <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#f59e0b]">Process</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-background mb-5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">Process</span>
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05] mb-5">
                 {t("services.process.title")}
@@ -258,51 +241,34 @@ const ServicesPage = () => {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-              {processSteps.map((item, index) => {
-                const palettes = [
-                  { bg: "#6366f1" },
-                  { bg: "#ec4899" },
-                  { bg: "#f59e0b" },
-                  { bg: "#10b981" },
-                ];
-                const p = palettes[index % 4];
-                return (
-                  <motion.div
-                    key={item.step}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.08 }}
-                    whileHover={{ y: -6 }}
-                    className="relative rounded-2xl p-8 lg:p-10 overflow-hidden group transition-all hover:shadow-xl"
-                    style={{ backgroundColor: p.bg }}
-                  >
-                    <div className="absolute -bottom-20 -right-20 w-48 h-48 rounded-full blur-3xl opacity-20 bg-white pointer-events-none" />
-                    <div className="relative">
-                      <div className="flex items-center justify-between mb-8">
-                        <span className="text-2xl font-display font-bold text-white">
-                          {item.step}
-                        </span>
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/20 border border-white/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
-                          <item.icon size={16} className="text-white" />
-                        </div>
-                      </div>
-                      <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2 text-white">{t(item.titleKey)}</h3>
-                      <p className="text-white/85 text-sm leading-relaxed">{t(item.descKey)}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border/60">
+              {processSteps.map((item, index) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.08 }}
+                  className="bg-background hover:bg-muted/40 transition-colors p-8 lg:p-10 group relative"
+                >
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="text-[11px] font-mono font-semibold text-primary tracking-widest">{item.step}</span>
+                    <div className="w-9 h-9 rounded-lg bg-muted/60 border border-border/60 flex items-center justify-center group-hover:border-primary/30 transition-all">
+                      <item.icon size={15} className="text-foreground" />
                     </div>
-                  </motion.div>
-                );
-              })}
+                  </div>
+                  <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2">{t(item.titleKey)}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{t(item.descKey)}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Why Us — Colorful grid */}
-      <section className="py-24 lg:py-32 relative bg-background overflow-hidden">
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#8b5cf6]/8 via-[#ec4899]/8 to-[#f59e0b]/8 blur-[140px] pointer-events-none" />
-        <div className="container mx-auto px-6 relative">
+      {/* Why Us — Astryx list-grid */}
+      <section className="py-24 lg:py-32 relative bg-background">
+        <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -311,21 +277,17 @@ const ServicesPage = () => {
               className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16"
             >
               <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#10b981]/30 bg-[#10b981]/10 mb-5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10b981]" />
-                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[#10b981]">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/40 mb-5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">
                     {t("language") === "bn" ? "কেন আমরা" : "Why Us"}
                   </span>
                 </div>
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05]">
                   {t("language") === "bn" ? (
-                    <>আপনার জন্য{" "}
-                      <span className="bg-gradient-to-r from-[#10b981] via-[#6366f1] to-[#ec4899] bg-clip-text text-transparent">আমরাই সেরা।</span>
-                    </>
+                    <>আপনার জন্য <span className="text-muted-foreground">আমরাই সেরা।</span></>
                   ) : (
-                    <>The details that{" "}
-                      <span className="bg-gradient-to-r from-[#10b981] via-[#6366f1] to-[#ec4899] bg-clip-text text-transparent">set us apart.</span>
-                    </>
+                    <>The details that <span className="text-muted-foreground">set us apart.</span></>
                   )}
                 </h2>
               </div>
@@ -336,14 +298,14 @@ const ServicesPage = () => {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-border/60 rounded-2xl overflow-hidden border border-border/60">
               {[
-                { icon: Award, color: "#6366f1", title: t("language") === "bn" ? "প্রিমিয়াম কোয়ালিটি" : "Premium Quality", desc: t("language") === "bn" ? "প্রতিটি ডিজাইন ও কোড হাতে বানানো, ইন্ডাস্ট্রি স্ট্যান্ডার্ড মেনে তৈরি।" : "Every design and line of code is crafted to match global industry standards." },
-                { icon: Zap, color: "#f59e0b", title: t("language") === "bn" ? "দ্রুত ডেলিভারি" : "Fast Delivery", desc: t("language") === "bn" ? "সময়ের আগেই সঠিক কাজ — আপনার ডেডলাইন আমাদের কাছে সবচেয়ে গুরুত্বপূর্ণ।" : "On-time, every time. Your deadline is our top priority from day one." },
-                { icon: Shield, color: "#10b981", title: t("language") === "bn" ? "১০০% নিরাপত্তা" : "100% Secure", desc: t("language") === "bn" ? "আপনার ডেটা ও প্রজেক্ট সম্পূর্ণ সুরক্ষিত, এন্টারপ্রাইজ-গ্রেড সিকিউরিটি সহ।" : "Data and projects are fully protected with enterprise-grade security." },
-                { icon: Heart, color: "#ec4899", title: t("language") === "bn" ? "২৪/৭ সাপোর্ট" : "24/7 Support", desc: t("language") === "bn" ? "যেকোনো সময় আমাদের টিম আপনার পাশে — কল, চ্যাট বা ইমেইলে।" : "Our team stands by you anytime — over call, chat, or email." },
-                { icon: Users, color: "#8b5cf6", title: t("language") === "bn" ? "অভিজ্ঞ টিম" : "Expert Team", desc: t("language") === "bn" ? "ডিজাইনার, ডেভেলপার ও মার্কেটার — সবাই তাদের ফিল্ডের সেরা।" : "Designers, developers, and marketers — each an expert in their craft." },
-                { icon: Star, color: "#14b8a6", title: t("language") === "bn" ? "সন্তুষ্ট ক্লায়েন্ট" : "Happy Clients", desc: t("language") === "bn" ? "শত শত ক্লায়েন্টের বিশ্বাস — কারণ আমরা কথা রাখি।" : "Trusted by hundreds of clients — because we keep our promises." },
+                { icon: Award, title: t("language") === "bn" ? "প্রিমিয়াম কোয়ালিটি" : "Premium Quality", desc: t("language") === "bn" ? "প্রতিটি ডিজাইন ও কোড হাতে বানানো, ইন্ডাস্ট্রি স্ট্যান্ডার্ড মেনে তৈরি।" : "Every design and line of code is crafted to match global industry standards." },
+                { icon: Zap, title: t("language") === "bn" ? "দ্রুত ডেলিভারি" : "Fast Delivery", desc: t("language") === "bn" ? "সময়ের আগেই সঠিক কাজ — আপনার ডেডলাইন আমাদের কাছে সবচেয়ে গুরুত্বপূর্ণ।" : "On-time, every time. Your deadline is our top priority from day one." },
+                { icon: Shield, title: t("language") === "bn" ? "১০০% নিরাপত্তা" : "100% Secure", desc: t("language") === "bn" ? "আপনার ডেটা ও প্রজেক্ট সম্পূর্ণ সুরক্ষিত, এন্টারপ্রাইজ-গ্রেড সিকিউরিটি সহ।" : "Data and projects are fully protected with enterprise-grade security." },
+                { icon: Heart, title: t("language") === "bn" ? "২৪/৭ সাপোর্ট" : "24/7 Support", desc: t("language") === "bn" ? "যেকোনো সময় আমাদের টিম আপনার পাশে — কল, চ্যাট বা ইমেইলে।" : "Our team stands by you anytime — over call, chat, or email." },
+                { icon: Users, title: t("language") === "bn" ? "অভিজ্ঞ টিম" : "Expert Team", desc: t("language") === "bn" ? "ডিজাইনার, ডেভেলপার ও মার্কেটার — সবাই তাদের ফিল্ডের সেরা।" : "Designers, developers, and marketers — each an expert in their craft." },
+                { icon: Star, title: t("language") === "bn" ? "সন্তুষ্ট ক্লায়েন্ট" : "Happy Clients", desc: t("language") === "bn" ? "শত শত ক্লায়েন্টের বিশ্বাস — কারণ আমরা কথা রাখি।" : "Trusted by hundreds of clients — because we keep our promises." },
               ].map((item, index) => (
                 <motion.div
                   key={item.title}
@@ -351,25 +313,19 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  whileHover={{ y: -6 }}
-                  className="relative rounded-2xl p-8 lg:p-10 group overflow-hidden transition-all hover:shadow-xl"
-                  style={{ backgroundColor: item.color }}
+                  className="bg-background hover:bg-muted/40 transition-colors p-8 lg:p-10 group"
                 >
-                  <div className="absolute -top-16 -right-16 w-40 h-40 rounded-full blur-3xl opacity-20 bg-white pointer-events-none" />
-                  <div className="relative">
-                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 bg-white/20 border border-white/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
-                      <item.icon size={18} className="text-white" />
-                    </div>
-                    <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2 text-white">{item.title}</h3>
-                    <p className="text-white/85 text-sm leading-relaxed">{item.desc}</p>
+                  <div className="w-10 h-10 rounded-lg bg-muted/60 border border-border/60 flex items-center justify-center mb-6 group-hover:border-primary/30 group-hover:bg-primary/5 transition-all">
+                    <item.icon size={16} className="text-foreground group-hover:text-primary transition-colors" />
                   </div>
+                  <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
           </div>
         </div>
       </section>
-
 
 
 
