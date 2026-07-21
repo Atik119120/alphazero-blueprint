@@ -199,18 +199,18 @@ const AboutPage = () => {
               </h2>
             </motion.div>
 
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 lg:gap-6 pt-8">
-              {/* Squiggle 1 → 2 : from bottom-right of card 1 up to top-left of card 2 */}
-              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '26%', top: '35%', width: '220px', height: '200px' }} viewBox="0 0 220 200" fill="none">
-                <circle cx="20" cy="180" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
-                <path d="M 20 180 C 20 100, 120 140, 130 70 S 190 20, 200 15" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
-                <circle cx="200" cy="15" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-3 lg:gap-4 pt-8">
+              {/* Squiggle 1 → 2 : bottom-right of card 1 up to top of card 2 */}
+              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '30%', top: '48%', width: '140px', height: '130px' }} viewBox="0 0 140 130" fill="none">
+                <circle cx="15" cy="115" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
+                <path d="M 15 115 C 25 70, 90 95, 95 45 S 120 15, 128 12" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                <circle cx="128" cy="12" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
               </svg>
-              {/* Squiggle 2 → 3 : from bottom of card 2 down to top-left of card 3 */}
-              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '58%', top: '40%', width: '240px', height: '220px' }} viewBox="0 0 240 220" fill="none">
-                <circle cx="30" cy="20" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
-                <path d="M 30 20 C 40 100, 140 80, 130 140 S 200 200, 215 200" stroke="#ff5722" strokeWidth="2" fill="none" strokeLinecap="round" />
-                <circle cx="215" cy="200" r="5" stroke="#ff5722" strokeWidth="2" fill="none" />
+              {/* Squiggle 2 → 3 : top of card 2 area down to card 3 */}
+              <svg className="hidden md:block absolute z-20 pointer-events-none" style={{ left: '62%', top: '48%', width: '150px', height: '140px' }} viewBox="0 0 150 140" fill="none">
+                <circle cx="20" cy="15" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
+                <path d="M 20 15 C 30 65, 95 55, 90 100 S 125 125, 135 125" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                <circle cx="135" cy="125" r="3.5" stroke="#ff5722" strokeWidth="1.5" fill="none" />
               </svg>
 
               {values.map((value, index) => {
