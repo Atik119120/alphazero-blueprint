@@ -70,8 +70,9 @@ const AboutPage = () => {
           <div className="max-w-4xl mx-auto text-center">
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
-              <span>{c("title", "about.title")}</span>{" "}
-              <span className="gradient-text">AlphaZero</span>
+              <span>About</span>{" "}
+              <span className="gradient-text">Us</span>
+
             </motion.h1>
 
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
