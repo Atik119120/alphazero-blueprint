@@ -443,7 +443,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-20 pb-20 md:block md:min-h-[590px]">
+    <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-8 pb-8 md:block md:min-h-[520px]">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
         className="hidden md:block absolute inset-0 pointer-events-none"
