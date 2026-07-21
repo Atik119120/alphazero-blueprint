@@ -61,8 +61,8 @@ const AboutPage = () => {
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 w-full h-full object-cover object-top"
-          style={{ filter: "blur(12px)", transform: "scale(1.08)" }}
+          className="absolute inset-0 w-full h-full object-cover object-bottom"
+          style={{ filter: "blur(4px)", transform: "scale(1.08)" }}
         />
         {/* Soft overlay so navbar text stays readable */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/40" />
