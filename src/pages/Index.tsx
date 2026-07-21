@@ -719,40 +719,13 @@ const Index = () => {
                   </h2>
                 </div>
 
-                {/* Two-row marquee */}
-                <div className="relative space-y-4 lg:space-y-6">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 w-24 lg:w-40 bg-gradient-to-r from-white to-transparent z-10" />
-                  <div className="pointer-events-none absolute inset-y-0 right-0 w-24 lg:w-40 bg-gradient-to-l from-white to-transparent z-10" />
-
-                  <div className="trusted-brands-swiper overflow-hidden">
-                    <AppSwiper
-                      variant="marquee"
-                      speed={6000}
-                      autoplayDelay={0}
-                      loop
-                      spaceBetween={24}
-                      items={row1}
-                      keyExtractor={(l, i) => `r1-${l.alt}-${i}`}
-                      slideClassName="!w-auto"
-                      renderItem={(logo) => <LogoItem logo={logo} />}
-                    />
-                  </div>
-
-                  <div className="trusted-brands-swiper overflow-hidden">
-                    <AppSwiper
-                      variant="marquee"
-                      speed={6000}
-                      autoplayDelay={0}
-                      loop
-                      spaceBetween={24}
-                      items={row2}
-                      keyExtractor={(l, i) => `r2-${l.alt}-${i}`}
-                      slideClassName="!w-auto"
-                      autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true, reverseDirection: true }}
-                      renderItem={(logo) => <LogoItem logo={logo} />}
-                    />
-                  </div>
+                {/* Responsive static grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-8 lg:gap-x-10 lg:gap-y-12 items-center justify-items-center">
+                  {logos.map((logo, i) => (
+                    <LogoItem key={`${logo.alt}-${i}`} logo={logo} />
+                  ))}
                 </div>
+
               </motion.div>
             );
 
