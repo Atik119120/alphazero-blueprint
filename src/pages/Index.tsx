@@ -555,7 +555,7 @@ const Index = () => {
                   </div>
                   <Link
                     to="/services"
-                    className="inline-flex items-center gap-1 font-semibold text-[11px] group mb-3"
+                    className="inline-flex items-center gap-1 font-semibold text-[11px] group mb-5"
                   >
                     <span className="relative bg-gradient-to-r from-cyan-300 via-sky-400 to-blue-500 bg-clip-text text-transparent">
                       {t("common.learnMore") || "See More"}
