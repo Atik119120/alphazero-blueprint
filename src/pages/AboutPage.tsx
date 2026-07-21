@@ -399,7 +399,7 @@ const AboutPage = () => {
                       <img
                         src={logo}
                         alt="AlphaZero"
-                        className="h-24 md:h-28 w-auto mx-auto brightness-0 mb-5"
+                        className="h-24 md:h-28 w-auto mx-auto object-contain mb-5"
                       />
                     );
                   })()}
