@@ -179,7 +179,7 @@ const ServicesPage = () => {
                     <svg className="absolute -right-40 top-1/2 pointer-events-none hidden sm:block" width="150" height="60" viewBox="0 0 150 60" fill="none">
                       <path d="M 5 5 C 20 20, 40 30, 70 35" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                       <path d="M 65 30 L 70 35 L 62 38" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      <text x="75" y="42" fill="#ff5722" style={{ fontFamily: "'Mea Culpa', cursive", fontSize: '18px' }}>Let's get started</text>
+                      <text x="72" y="44" fill="#ff5722" style={{ fontFamily: "'Caveat', cursive", fontSize: '22px', fontWeight: 600 }}>Let's get started</text>
                     </svg>
                   </div>
                 </motion.div>
