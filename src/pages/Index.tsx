@@ -641,7 +641,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ TRUSTED BY GLOBAL BRANDS — Premium SaaS ══════════ */}
-      <section className="relative py-24 lg:py-32 bg-white overflow-hidden">
+      <section className="relative py-12 lg:py-16 bg-white overflow-hidden">
         {/* Ambient radial glows */}
         <div
           aria-hidden
