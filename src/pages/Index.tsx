@@ -35,6 +35,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import ProjectMarquee from "@/components/ProjectMarquee";
+import { AppSwiper } from "@/components/ui/app-swiper";
 
 import { LogoCloud } from "@/components/ui/logo-cloud-2";
 import brand1 from "@/assets/brands/b1.png.asset.json";
