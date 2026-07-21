@@ -107,7 +107,7 @@ const AboutPage = () => {
                 className="relative flex items-center justify-center min-h-[320px] lg:min-h-[420px]"
               >
                 <motion.img
-                  src={logo}
+                  src={journeyLogo}
                   alt="AlphaZero"
                   className="w-full max-w-md object-contain"
                   initial={{ scale: 0.85, opacity: 0 }}
