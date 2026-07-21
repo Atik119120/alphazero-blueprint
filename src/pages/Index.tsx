@@ -496,7 +496,7 @@ const Index = () => {
                     src: it.image_url as string,
                     alt: it.title || `Brand ${i + 1}`,
                     href: it.url || undefined,
-                    invert: !it.url,
+                    invert: true,
                     large: i === activeSister.length - 1,
                   }))
                 : [
