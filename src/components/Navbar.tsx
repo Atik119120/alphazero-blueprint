@@ -72,12 +72,34 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+    let raf = 0;
+    const detect = () => {
+      raf = 0;
+      // Sample points just below the header bar to detect the section underneath
+      const y = 72;
+      const xs = [window.innerWidth * 0.15, window.innerWidth * 0.5, window.innerWidth * 0.85];
+      let dark = false;
+      for (const x of xs) {
+        const el = document.elementFromPoint(x, y) as HTMLElement | null;
+        if (!el) continue;
+        const themed = el.closest("[data-nav-theme]") as HTMLElement | null;
+        if (themed?.dataset.navTheme === "dark") { dark = true; break; }
+      }
+      setOverDark(dark);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(detect);
+    };
+    detect();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [location.pathname]);
 
   const handleNavClick = () => {
     setIsMobileMenuOpen(false);
