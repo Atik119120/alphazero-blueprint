@@ -130,16 +130,16 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                 </div>
               </div>
 
-              {/* ────── Mobile & Tablet (<lg): image only behind text; gallery on clean bg below ────── */}
-              <div className="relative w-full lg:hidden dark text-foreground bg-background">
-                <div className="relative">
-                  <img
-                    src={bottomImage.dark}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
-                    loading="eager"
-                  />
-                  <div className="relative z-10 px-4 pt-32 sm:pt-36 pb-10 sm:pb-12">
+              {/* ────── Mobile & Tablet (<lg): full-bleed hero image, gallery flows below ────── */}
+              <div className="relative w-full lg:hidden dark text-foreground">
+                <img
+                  src={bottomImage.dark}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="eager"
+                />
+                <div className="relative z-10 flex flex-col min-h-[100svh] px-4 pt-32 sm:pt-36 pb-6">
+                  <div className="flex-none">
                     <HeroContent
                       title={title}
                       subtitle={subtitle}
@@ -149,10 +149,10 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
                       splitWords={splitWords}
                     />
                   </div>
+                  {props.children ? (
+                    <div className="mt-8 sm:mt-10 -mx-4">{props.children as React.ReactNode}</div>
+                  ) : null}
                 </div>
-                {props.children ? (
-                  <div className="mt-6 sm:mt-8">{props.children as React.ReactNode}</div>
-                ) : null}
               </div>
             </>
           )}
