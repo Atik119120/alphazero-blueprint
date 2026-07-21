@@ -642,10 +642,26 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ══════════ WHY CHOOSE US — CARD GRID ══════════ */}
-      <section className="py-12 lg:py-16 relative">
-        <div className="container mx-auto px-6">
+      {/* ══════════ TRUSTED BY GLOBAL BRANDS — Premium SaaS ══════════ */}
+      <section className="relative py-24 lg:py-32 bg-white overflow-hidden">
+        {/* Ambient radial glows */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0) 70%)" }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[380px] rounded-full"
+          style={{ background: "radial-gradient(ellipse, rgba(0,0,0,0.035) 0%, rgba(0,0,0,0) 70%)" }}
+        />
 
+        <div className="relative container mx-auto px-6 max-w-[1280px]">
           {(() => {
             const defaultLogos: { src: string; alt: string; scale?: number }[] = [
               { src: resolveLogoUrl(clientAlokchitra.url), alt: "Alokchitra" },
@@ -665,107 +681,100 @@ const Index = () => {
               ? activeItems.map((it) => ({ src: it.image_url as string, alt: it.title || "Brand" }))
               : defaultLogos;
 
-            const half = Math.ceil(logos.length / 2) || 1;
-            const rowA = [...logos.slice(0, half), ...logos.slice(0, half)];
-            const rowB = [...logos.slice(half), ...logos.slice(half)];
+            const rawTitle = (brandsSection?.title || '39+ Global Brands').trim();
+            const rawSubtitle = (brandsSection?.subtitle || '// TRUSTED').trim();
+            const m = rawTitle.match(/(\d+\+?)\s*(.*)$/);
+            const num = m?.[1] || '39+';
+            const label = ((m?.[2] || rawTitle).trim() || 'Global Brands');
 
-            const LogoItem = ({ logo }: { logo: typeof logos[number] }) => (
-              <div className="shrink-0 mx-1.5 flex items-center justify-center h-16 w-40 sm:w-48 px-5 border border-black/10 bg-black/[0.02]">
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  loading="lazy"
-                  style={{ transform: `scale(${logo.scale ?? 1})` }}
-                  className="block h-auto max-h-10 sm:max-h-12 w-auto object-contain brightness-0 opacity-80 hover:opacity-100 transition-opacity duration-300"
-                />
-              </div>
-            );
-            const PlusMark = ({ pos }: { pos: string }) => (
-              <span className={`pointer-events-none absolute ${pos} text-primary/70 text-sm font-light select-none leading-none`}>+</span>
-            );
+            // duplicated for mobile marquee
+            const marqueeLogos = [...logos, ...logos];
+
             return (
-              <div className="relative max-w-7xl mx-auto">
-                {/* Outer + corners */}
-                <PlusMark pos="-top-1.5 -left-1.5" />
-                <PlusMark pos="-top-1.5 -right-1.5" />
-                <PlusMark pos="-bottom-1.5 -left-1.5" />
-                <PlusMark pos="-bottom-1.5 -right-1.5" />
-
-                <div className="relative grid md:grid-cols-[260px_1fr] items-stretch gap-3">
-                  {/* LEFT — stats card */}
-                  <div className="relative border border-foreground/10 bg-foreground/[0.02] px-6 py-5 flex flex-col justify-center">
-                    <PlusMark pos="-top-1.5 -left-1.5" />
-                    <PlusMark pos="-top-1.5 -right-1.5" />
-                    <PlusMark pos="-bottom-1.5 -left-1.5" />
-                    <PlusMark pos="-bottom-1.5 -right-1.5" />
-
-                    {(() => {
-                      const rawTitle = (brandsSection?.title || '47+ Global Brands').trim();
-                      const rawSubtitle = (brandsSection?.subtitle || '// TRUSTED').trim();
-                      const m = rawTitle.match(/(\d+\+?)\s*(.*)$/);
-                      const num = m?.[1] || '47+';
-                      const label = (m?.[2] || rawTitle).trim() || 'Global Brands';
-                      const numMatch = num.match(/^(\d+)(\+?)$/);
-                      const numDigits = numMatch?.[1] || '47';
-                      const numPlus = numMatch?.[2] || '+';
-                      return (
-                        <>
-                          <div className="flex items-center justify-between mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-foreground/50">
-                            <div className="flex items-center gap-1.5">
-                              <span className="relative flex h-1 w-1">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                                <span className="relative inline-flex rounded-full h-1 w-1 bg-primary" />
-                              </span>
-                              <span className="text-primary/90 font-semibold">{rawSubtitle}</span>
-                            </div>
-                            <span>[ 001 ]</span>
-                          </div>
-
-                          <h3 className="text-4xl sm:text-[2.5rem] font-display font-semibold text-foreground leading-none mb-1 tracking-tight">
-                            {numDigits}<span className="text-primary font-light">{numPlus}</span>
-                          </h3>
-                          <p className="text-[10px] uppercase tracking-[0.28em] text-foreground/60 mb-4 font-mono">
-                            {label}
-                          </p>
-                        </>
-                      );
-                    })()}
-
-
-                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-foreground/15">
-                      <div className="flex gap-0.5 text-primary">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <svg key={i} className="w-3 h-3 fill-current" viewBox="0 0 20 20"><path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/></svg>
-                        ))}
-                      </div>
-                      <span className="font-mono text-xs text-foreground/70">
-                        <span className="text-foreground">4.8</span>
-                        <span className="text-foreground/40">/5</span>
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {/* Header row */}
+                <div className="flex flex-col items-start mb-14 lg:mb-20">
+                  <div className="flex items-center gap-4 font-mono text-[10px] uppercase tracking-[0.28em] text-[#666]">
+                    <span className="flex items-center gap-2">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-70" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
                       </span>
-                    </div>
+                      {rawSubtitle}
+                    </span>
+                    <span className="text-[#999]">[ 001 ]</span>
                   </div>
 
-                  {/* RIGHT — two-row marquee of boxed logo cards */}
-                  <div className="relative overflow-hidden flex flex-col justify-center gap-2 py-1">
-                    <div className="flex items-center animate-[marquee_40s_linear_infinite] w-max">
-                      {rowA.map((logo, i) => <LogoItem key={`a-${i}`} logo={logo} />)}
-                    </div>
-                    <div className="flex items-center animate-[marqueeReverse_45s_linear_infinite] w-max">
-                      {rowB.map((logo, i) => <LogoItem key={`b-${i}`} logo={logo} />)}
-                    </div>
-                    <style>{`
-                      @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-                      @keyframes marqueeReverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
-                    `}</style>
-                  </div>
+                  <h3 className="mt-5 text-6xl sm:text-7xl lg:text-8xl font-display font-semibold tracking-[-0.04em] leading-none text-[#111]">
+                    {num.replace('+', '')}<span className="text-primary font-light">+</span>
+                  </h3>
+                  <p className="mt-2 text-xs uppercase tracking-[0.32em] text-[#666] font-mono">
+                    {label}
+                  </p>
                 </div>
-              </div>
+
+                {/* Centered headline */}
+                <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-semibold tracking-[-0.02em] text-[#111] leading-[1.15]">
+                    Trusted by <span className="text-primary">200+</span> of the world's top brands
+                  </h2>
+                  <p className="mt-4 text-[#666] text-base lg:text-lg">
+                    Studios, agencies and enterprises building with AlphaZero.
+                  </p>
+                </div>
+
+                {/* Desktop / tablet grid */}
+                <div className="hidden sm:grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-8 gap-y-10 lg:gap-x-12 lg:gap-y-14 items-center">
+                  {logos.map((logo, i) => (
+                    <motion.div
+                      key={`d-${i}`}
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: Math.min(i, 12) * 0.04, ease: "easeOut" }}
+                      className="group flex items-center justify-center h-16 lg:h-20"
+                    >
+                      <img
+                        src={logo.src}
+                        alt={logo.alt}
+                        loading="lazy"
+                        style={{ transform: `scale(${logo.scale ?? 1})` }}
+                        className="block max-h-10 lg:max-h-12 w-auto object-contain grayscale opacity-30 group-hover:opacity-100 group-hover:scale-[1.05] transition-all duration-300 ease-out"
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Mobile marquee */}
+                <div className="sm:hidden relative overflow-hidden">
+                  <div className="flex items-center gap-10 w-max animate-[trustedMarquee_45s_linear_infinite]">
+                    {marqueeLogos.map((logo, i) => (
+                      <div key={`m-${i}`} className="shrink-0 flex items-center justify-center h-14 w-28">
+                        <img
+                          src={logo.src}
+                          alt={logo.alt}
+                          loading="lazy"
+                          style={{ transform: `scale(${logo.scale ?? 1})` }}
+                          className="max-h-10 w-auto object-contain grayscale opacity-40"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <style>{`
+                    @keyframes trustedMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+                  `}</style>
+                </div>
+              </motion.div>
             );
           })()}
-
-
         </div>
       </section>
+
 
       {/* ══════════ OUR TEAM ══════════ */}
       
