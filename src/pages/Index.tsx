@@ -751,10 +751,18 @@ const Index = () => {
                 </div>
 
                 {/* Mobile marquee */}
-                <div className="sm:hidden relative overflow-hidden">
-                  <div className="flex items-center gap-10 w-max animate-[trustedMarquee_45s_linear_infinite]">
-                    {marqueeLogos.map((logo, i) => (
-                      <div key={`m-${i}`} className="shrink-0 flex items-center justify-center h-14 w-28">
+                <div className="sm:hidden relative overflow-hidden trusted-brands-swiper">
+                  <AppSwiper
+                    variant="marquee"
+                    speed={5000}
+                    autoplayDelay={0}
+                    loop
+                    spaceBetween={40}
+                    items={logos}
+                    keyExtractor={(l, i) => `m-${l.alt}-${i}`}
+                    slideClassName="!w-28"
+                    renderItem={(logo) => (
+                      <div className="shrink-0 flex items-center justify-center h-14 w-28">
                         <img
                           src={logo.src}
                           alt={logo.alt}
@@ -763,12 +771,10 @@ const Index = () => {
                           className="max-h-10 w-auto object-contain grayscale opacity-40"
                         />
                       </div>
-                    ))}
-                  </div>
-                  <style>{`
-                    @keyframes trustedMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-                  `}</style>
+                    )}
+                  />
                 </div>
+
               </motion.div>
             );
           })()}

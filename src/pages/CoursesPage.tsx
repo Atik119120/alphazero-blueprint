@@ -877,15 +877,22 @@ const CoursesPage = () => {
               {cms("instructors.desc.bn", "instructors.desc.en", "ইন্ডাস্ট্রি এক্সপার্টদের কাছ থেকে সরাসরি শিখুন।", "Learn directly from industry experts.")}
             </p>
           </motion.div>
-          <div className="max-w-7xl mx-auto relative overflow-hidden">
+          <div className="max-w-7xl mx-auto relative overflow-hidden trainers-swiper">
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10" />
-            <div className="flex marquee-left w-max gap-4 py-2 [animation-duration:40s] hover:[animation-play-state:paused]">
-              {[...Object.values(trainers), ...Object.values(trainers)].map((tr, i) => (
-                <div key={`${tr.name}-${i}`} className="group w-[200px] sm:w-[220px] shrink-0">
+            <AppSwiper
+              variant="marquee"
+              speed={6000}
+              autoplayDelay={0}
+              loop
+              items={Object.values(trainers)}
+              keyExtractor={(tr) => tr.name}
+              slideClassName="!w-[200px] sm:!w-[220px]"
+              renderItem={(tr) => (
+                <div className="group shrink-0">
                   <div className="glass-card rounded-2xl p-3 text-center shadow-none hover:shadow-none hover:border-primary/40 transition-all hover:-translate-y-1">
                     <div className="relative aspect-square w-full mb-3 overflow-hidden rounded-xl">
-                      <img src={tr.image} alt={tr.name}
+                      <img src={tr.image} alt={tr.name} loading="lazy"
                         className="relative w-full h-full object-cover rounded-xl group-hover:scale-105 transition-transform duration-500"
                         onError={(e) => { (e.target as HTMLImageElement).src = '/placeholder.svg'; }} />
                     </div>
@@ -895,9 +902,10 @@ const CoursesPage = () => {
                     </p>
                   </div>
                 </div>
-              ))}
-            </div>
+              )}
+            />
           </div>
+
 
 
         </div>
@@ -977,39 +985,48 @@ const CoursesPage = () => {
             ];
             const loop = [...feedbacks, ...feedbacks];
             return (
-              <div className="relative max-w-6xl mx-auto px-4 sm:px-12">
-                <Carousel opts={{ align: "start", loop: true }} className="w-full">
-                  <CarouselContent className="-ml-4">
-                    {feedbacks.map((f, i) => (
-                      <CarouselItem key={i} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                        <div className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all h-full">
-                          <div className="flex gap-1 mb-4 text-primary">
-                            {"★★★★★".split("").map((s, idx) => (
-                              <span key={idx} className="text-sm">{s}</span>
-                            ))}
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-                            "{f.quote}"
-                          </p>
-                          <div className="flex items-center gap-3 pt-4 border-t border-border/40">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
-                              {f.name.charAt(0)}
-                            </div>
-                            <div>
-                              <p className="font-semibold text-sm">{f.name}</p>
-                              <p className="text-[11px] text-muted-foreground">{f.role}</p>
-                            </div>
-                          </div>
+              <div className="relative max-w-6xl mx-auto px-4 sm:px-12 reviews-swiper">
+                <AppSwiper
+                  items={feedbacks}
+                  keyExtractor={(_, i) => i}
+                  variant="cards"
+                  showNavigation
+                  loop
+                  autoplayDelay={4000}
+                  speed={700}
+                  spaceBetween={24}
+                  breakpoints={{
+                    0: { slidesPerView: 1 },
+                    768: { slidesPerView: 2 },
+                    1024: { slidesPerView: 3 },
+                  }}
+                  slideClassName="h-auto"
+                  renderItem={(f) => (
+                    <div className="glass-card rounded-2xl p-6 flex flex-col hover:border-primary/40 transition-all h-full">
+                      <div className="flex gap-1 mb-4 text-primary">
+                        {"★★★★★".split("").map((s, idx) => (
+                          <span key={idx} className="text-sm">{s}</span>
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                        "{f.quote}"
+                      </p>
+                      <div className="flex items-center gap-3 pt-4 border-t border-border/40">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center font-display font-bold text-primary">
+                          {f.name.charAt(0)}
                         </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="hidden sm:flex -left-2 lg:-left-6" />
-                  <CarouselNext className="hidden sm:flex -right-2 lg:-right-6" />
-                </Carousel>
+                        <div>
+                          <p className="font-semibold text-sm">{f.name}</p>
+                          <p className="text-[11px] text-muted-foreground">{f.role}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                />
               </div>
             );
           })()}
+
         </div>
       </section>
       )}
