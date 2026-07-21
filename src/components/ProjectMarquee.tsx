@@ -43,7 +43,7 @@ const HERO_CTA_GAP_PX = 80;
 
 const Card = ({ item }: { item: Item }) => {
   return (
-    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-2 shadow-md bg-white">
+    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-0.5 shadow-md bg-white">
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
@@ -133,27 +133,30 @@ export default function ProjectMarquee() {
           speed={6000}
           autoplayDelay={0}
           loop
-          spaceBetween={16}
+          spaceBetween={4}
           items={row1}
           keyExtractor={(p, i) => `r1-${p.id}-${i}`}
           slideClassName="!w-auto h-full"
           className="h-full"
+          allowTouchMove={false}
+          autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: false }}
           renderItem={(p) => <Card item={p} />}
         />
       </div>
 
-      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-4 project-marquee-row">
+      <div className="relative h-[130px] sm:h-[150px] md:h-[180px] mt-1 project-marquee-row">
         <AppSwiper
           variant="marquee"
           speed={6000}
           autoplayDelay={0}
           loop
-          spaceBetween={16}
+          spaceBetween={4}
           items={row2}
           keyExtractor={(p, i) => `r2-${p.id}-${i}`}
           slideClassName="!w-auto h-full"
           className="h-full"
-          autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true, reverseDirection: true }}
+          allowTouchMove={false}
+          autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: false, reverseDirection: true }}
           renderItem={(p) => <Card item={p} />}
         />
       </div>
