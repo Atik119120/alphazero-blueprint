@@ -714,7 +714,7 @@ const Index = () => {
                 {/* Centered headline */}
                 <div className="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-semibold tracking-[-0.02em] text-[#111] leading-[1.2]">
-                    Trusted by <span className="text-primary">200+</span> of the world's top brands
+                    Trusted by <span className="text-primary">26+</span> brands
                   </h2>
                 </div>
 
