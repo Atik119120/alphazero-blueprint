@@ -719,7 +719,7 @@ const Index = () => {
                 </div>
 
                 {/* Responsive static grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-6 gap-y-8 lg:gap-x-10 lg:gap-y-12 items-center justify-items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 gap-y-3 lg:gap-x-6 lg:gap-y-4 items-center justify-items-center">
                   {logos.map((logo, i) => (
                     <LogoItem key={`${logo.alt}-${i}`} logo={logo} />
                   ))}
