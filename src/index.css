@@ -379,3 +379,29 @@
   width: 22px;
   border-radius: 999px;
 }
+
+/* Swiper marquee: linear easing for continuous scroll effect */
+.trainers-swiper .swiper-wrapper,
+.trusted-brands-swiper .swiper-wrapper,
+.project-marquee-row .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+.project-marquee-row .swiper,
+.project-marquee-row .swiper-slide {
+  height: 100%;
+}
+.reviews-swiper .swiper-button-prev,
+.reviews-swiper .swiper-button-next {
+  color: hsl(var(--primary));
+}
+.reviews-swiper .swiper-button-prev::after,
+.reviews-swiper .swiper-button-next::after {
+  font-size: 20px;
+  font-weight: 700;
+}
+.reviews-swiper .swiper-slide {
+  height: auto;
+}
+.reviews-swiper .swiper-slide > * {
+  height: 100%;
+}
