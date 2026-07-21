@@ -141,27 +141,26 @@ const ServicesPage = () => {
       </section>
 
 
-      {/* Services — Astryx bento grid */}
-      <section className="py-24 lg:py-32 relative bg-background">
+      {/* Services */}
+      <section className="py-20 lg:py-28 relative bg-background">
         <div className="container mx-auto px-6">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16"
+              className="text-center mb-14"
             >
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/40 mb-5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground">Capabilities</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-semibold tracking-tight leading-[1.05]">
-                  Built for teams that <span className="text-muted-foreground">ship.</span>
-                </h2>
-              </div>
-              <p className="text-muted-foreground text-base lg:text-lg max-w-md leading-relaxed">
-                A focused suite of services engineered for speed, clarity, and enterprise-grade polish.
+              <span className="inline-block text-xs font-semibold tracking-[0.25em] uppercase text-primary mb-4">
+                {t("language") === "bn" ? "আমরা যা করি" : "What We Do"}
+              </span>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight leading-[1.1] mb-4">
+                {t("language") === "bn" ? "আমাদের সার্ভিস" : "Our Services"}
+              </h2>
+              <p className="text-muted-foreground text-base lg:text-lg max-w-2xl mx-auto">
+                {t("language") === "bn"
+                  ? "ব্র্যান্ড থেকে ডিজিটাল প্রোডাক্ট — সব সমাধান এক ছাদের নিচে।"
+                  : "From brand identity to digital products — everything under one roof."}
               </p>
             </motion.div>
 
@@ -172,39 +171,30 @@ const ServicesPage = () => {
             ) : !services || services.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">No services found.</div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-px bg-border/60 rounded-3xl overflow-hidden border border-border/60">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 {services.map((service, index) => {
                   const IconComponent = getIcon(service.icon);
-                  const spanClasses = [
-                    "lg:col-span-7",
-                    "lg:col-span-5",
-                    "lg:col-span-5",
-                    "lg:col-span-7",
-                  ];
                   return (
                     <motion.div
                       key={service.id}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: index * 0.06 }}
-                      className={`group relative bg-background hover:bg-muted/30 transition-colors duration-300 p-8 lg:p-10 ${spanClasses[index % 4]}`}
+                      transition={{ delay: index * 0.08 }}
+                      className="group relative bg-card rounded-2xl border border-border/60 p-8 lg:p-10 hover:border-primary/40 hover:shadow-lg transition-all duration-300"
                     >
-                      <div className="flex items-start justify-between mb-8">
-                        <div className="w-11 h-11 rounded-xl bg-muted/60 border border-border/60 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/30 transition-all">
-                          <IconComponent size={18} className="text-foreground group-hover:text-primary transition-colors" />
+                      <div className="flex items-center gap-4 mb-5">
+                        <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors">
+                          <IconComponent size={24} className="text-primary" />
                         </div>
-                        <span className="text-[10px] font-mono font-medium text-muted-foreground/60 tracking-widest">
-                          {String(index + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
-                        </span>
+                        <h3 className="text-2xl font-display font-semibold tracking-tight">{service.title}</h3>
                       </div>
-                      <h3 className="text-xl lg:text-2xl font-display font-semibold tracking-tight mb-3">{service.title}</h3>
-                      <p className="text-muted-foreground text-sm lg:text-[15px] leading-relaxed mb-6 max-w-lg">{service.description}</p>
+                      <p className="text-muted-foreground leading-relaxed mb-6">{service.description}</p>
                       {service.features && service.features.length > 0 && (
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 pt-6 border-t border-border/60">
+                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
                           {service.features.slice(0, 6).map((feature, idx) => (
-                            <li key={idx} className="flex items-center gap-2 text-[13px] text-foreground/80">
-                              <CheckCircle size={12} className="text-primary shrink-0" strokeWidth={2.5} />
+                            <li key={idx} className="flex items-center gap-2 text-sm text-foreground/80">
+                              <CheckCircle size={14} className="text-primary shrink-0" strokeWidth={2.5} />
                               {feature}
                             </li>
                           ))}
@@ -218,6 +208,7 @@ const ServicesPage = () => {
           </div>
         </div>
       </section>
+
 
       {/* Process — Astryx horizontal rail */}
       <section className="py-24 lg:py-32 relative bg-muted/20 border-y border-border/60">
