@@ -167,6 +167,21 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* Team */}
+      <section id="team" className="py-24 lg:py-32 relative">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+              <div className="inline-flex items-center gap-3 mb-5 text-[10px] font-bold tracking-[0.3em] uppercase text-muted-foreground">
+                <span>›</span><span>Team</span><span>‹</span>
+              </div>
+              <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">People behind the work</h2>
+            </motion.div>
+            <TeamBento />
+          </div>
+        </div>
+      </section>
+
       {/* Values */}
       <section className="py-24 lg:py-32 relative mesh-bg">
         <div className="container mx-auto px-6">
@@ -202,20 +217,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Team */}
-      <section id="team" className="py-24 lg:py-32 relative">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-              <div className="inline-flex items-center gap-3 mb-5 text-[10px] font-bold tracking-[0.3em] uppercase text-muted-foreground">
-                <span>›</span><span>Team</span><span>‹</span>
-              </div>
-              <h2 className="text-4xl lg:text-6xl font-display font-bold tracking-tight">People behind the work</h2>
-            </motion.div>
-            <TeamBento />
-          </div>
-        </div>
-      </section>
 
       </div>
     </Layout>
