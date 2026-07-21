@@ -188,91 +188,81 @@ const AboutPage = () => {
       <section className="py-24 lg:py-36 relative overflow-hidden" style={{ background: "linear-gradient(180deg, #FAFAFA 0%, #F3F3F4 100%)" }}>
         <div className="container mx-auto px-6">
           <div className="max-w-6xl mx-auto">
-            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 pt-20 pb-20 items-center">
+            <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 pt-16 pb-16 items-center">
+              {/* Squiggle 1 → 2 : from top-right of card 1 arcing up and over onto top of card 2 */}
+              <svg
+                className="hidden md:block absolute z-40 pointer-events-none"
+                style={{ left: "31%", top: "-2%", width: "120px", height: "160px" }}
+                viewBox="0 0 120 160"
+                fill="none"
+              >
+                <circle cx="8" cy="150" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <motion.path
+                  d="M 8 150 C 30 130, 10 90, 50 70 S 100 40, 112 10"
+                  stroke="#ef4444"
+                  strokeWidth="1.6"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.4, ease: "easeInOut" }}
+                />
+                <circle cx="112" cy="10" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+              </svg>
+
+              {/* Squiggle 2 → 3 : from right edge of card 2 arcing down onto left edge of card 3 */}
+              <svg
+                className="hidden md:block absolute z-40 pointer-events-none"
+                style={{ left: "63%", top: "28%", width: "120px", height: "170px" }}
+                viewBox="0 0 120 170"
+                fill="none"
+              >
+                <circle cx="8" cy="10" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+                <motion.path
+                  d="M 8 10 C 30 40, 10 80, 55 100 S 100 140, 112 160"
+                  stroke="#ef4444"
+                  strokeWidth="1.6"
+                  fill="none"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.6, ease: "easeInOut", delay: 0.3 }}
+                />
+                <circle cx="112" cy="160" r="5" stroke="#ef4444" strokeWidth="1.6" fill="none" />
+              </svg>
+
               {values.map((value, index) => {
                 const rotations = ["md:-rotate-[4deg]", "md:rotate-[2deg]", "md:rotate-[4deg]"];
                 const offsets = ["md:translate-y-10", "md:-translate-y-8", "md:translate-y-12"];
                 const zIndex = [10, 30, 10];
                 return (
-                  <div key={value.title} className="relative" style={{ zIndex: zIndex[index] }}>
-                    {/* Squiggle from this card to the next (only on 1 & 2) */}
-                    {index < values.length - 1 && (
-                      <svg
-                        className="hidden md:block absolute pointer-events-none z-50"
-                        style={
-                          index === 0
-                            ? { right: "-18%", top: "-14%", width: "36%", height: "60%" }
-                            : { right: "-18%", bottom: "-14%", width: "36%", height: "60%" }
-                        }
-                        viewBox="0 0 100 100"
-                        preserveAspectRatio="none"
-                        fill="none"
-                      >
-                        {index === 0 ? (
-                          <>
-                            {/* start: top-right of card 1 → end: top-left of card 2 */}
-                            <circle cx="6" cy="94" r="3.2" stroke="#ef4444" strokeWidth="1.2" fill="none" vectorEffect="non-scaling-stroke" />
-                            <motion.path
-                              d="M 6 94 C 28 70, 12 40, 50 30 S 82 18, 94 6"
-                              stroke="#ef4444"
-                              strokeWidth="1.2"
-                              fill="none"
-                              strokeLinecap="round"
-                              vectorEffect="non-scaling-stroke"
-                              initial={{ pathLength: 0 }}
-                              whileInView={{ pathLength: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 1.4, ease: "easeInOut" }}
-                            />
-                            <circle cx="94" cy="6" r="3.2" stroke="#ef4444" strokeWidth="1.2" fill="none" vectorEffect="non-scaling-stroke" />
-                          </>
-                        ) : (
-                          <>
-                            {/* start: bottom-right of card 2 → end: bottom-left of card 3 */}
-                            <circle cx="6" cy="6" r="3.2" stroke="#ef4444" strokeWidth="1.2" fill="none" vectorEffect="non-scaling-stroke" />
-                            <motion.path
-                              d="M 6 6 C 28 30, 12 60, 50 70 S 82 82, 94 94"
-                              stroke="#ef4444"
-                              strokeWidth="1.2"
-                              fill="none"
-                              strokeLinecap="round"
-                              vectorEffect="non-scaling-stroke"
-                              initial={{ pathLength: 0 }}
-                              whileInView={{ pathLength: 1 }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 1.6, ease: "easeInOut", delay: 0.3 }}
-                            />
-                            <circle cx="94" cy="94" r="3.2" stroke="#ef4444" strokeWidth="1.2" fill="none" vectorEffect="non-scaling-stroke" />
-                          </>
-                        )}
-                      </svg>
-                    )}
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.15, duration: 0.6 }}
-                      animate={{ y: [0, -6, 0] }}
-                      {...({ transition: { y: { duration: 4 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 } } } as any)}
-                      whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
-                      className={`relative aspect-square bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
-                    >
-                      <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2 tracking-tight">
-                          {value.title}
-                        </h3>
-                        <p className="text-sm text-foreground/55 leading-relaxed">{value.desc}</p>
-                      </div>
-                    </motion.div>
-                  </div>
+                  <motion.div
+                    key={value.title}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.15, duration: 0.6 }}
+                    animate={{ y: [0, -6, 0] }}
+                    {...({ transition: { y: { duration: 4 + index * 0.4, repeat: Infinity, ease: "easeInOut", delay: index * 0.3 } } } as any)}
+                    whileHover={{ y: -12, rotate: 0, scale: 1.03, transition: { duration: 0.3 } }}
+                    style={{ zIndex: zIndex[index] }}
+                    className={`relative aspect-square bg-white rounded-[28px] p-8 lg:p-10 flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} shadow-[0_30px_60px_-25px_rgba(0,0,0,0.22),0_10px_30px_-15px_rgba(0,0,0,0.12)] hover:shadow-[0_40px_80px_-25px_rgba(0,0,0,0.30),0_15px_35px_-15px_rgba(0,0,0,0.15)] transition-shadow duration-300`}
+                  >
+                    <div className="text-6xl lg:text-7xl font-display font-semibold text-foreground leading-none tracking-tight">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-xl lg:text-2xl font-display font-semibold text-foreground mb-2 tracking-tight">
+                        {value.title}
+                      </h3>
+                      <p className="text-sm text-foreground/55 leading-relaxed">{value.desc}</p>
+                    </div>
+                  </motion.div>
                 );
               })}
             </div>
-
           </div>
         </div>
       </section>
