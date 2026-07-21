@@ -261,54 +261,55 @@ const AboutPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.15 }}
-                  className="relative bg-white rounded-2xl p-5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)]"
+                  className="relative bg-background rounded-2xl p-5 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] border border-border/60"
                 >
                   {/* Status */}
                   <div className="flex items-center gap-2 mb-4">
                     <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-900 opacity-40" />
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-neutral-900" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-40" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary" />
                     </span>
-                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-neutral-900">
+                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-foreground">
                       Available for project
                     </span>
                   </div>
 
                   {/* Avatars */}
                   <div className="flex items-center gap-3 mb-4 relative">
-                    <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-white shadow bg-neutral-200">
+                    <div className="w-11 h-11 rounded-full overflow-hidden ring-2 ring-background shadow bg-muted">
                       <img
                         src={founder?.image_url || '/placeholder.svg'}
                         alt="Founder"
                         className="w-full h-full object-cover object-top"
                       />
                     </div>
-                    <span className="text-neutral-500 text-lg font-light">+</span>
-                    <div className="w-11 h-11 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-bold">
+                    <span className="text-muted-foreground text-lg font-light">+</span>
+                    <div className="w-11 h-11 rounded-full bg-foreground text-background flex items-center justify-center text-xs font-bold">
                       You
                     </div>
                     <div className="ml-auto flex items-center gap-1.5">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-neutral-900"><path d="M4 2l16 10-7 2-2 7L4 2z" /></svg>
-                      <span className="px-2 py-1 rounded-md bg-neutral-900 text-white text-[10px] font-bold tracking-widest">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-foreground"><path d="M4 2l16 10-7 2-2 7L4 2z" /></svg>
+                      <span className="px-2 py-1 rounded-md bg-foreground text-background text-[10px] font-bold tracking-widest">
                         {(founder?.name || 'Founder').split(' ')[0].toUpperCase()}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="text-lg font-display font-bold text-neutral-900 mb-1">
+                  <h3 className="text-lg font-display font-bold text-foreground mb-1">
                     Quick 15-minute call
                   </h3>
-                  <p className="text-sm text-neutral-500 mb-5">
+                  <p className="text-sm text-muted-foreground mb-5">
                     Pick a time that works for you.
                   </p>
 
                   <Link
                     to="/contact"
-                    className="block w-full text-center py-3 rounded-xl bg-[#ef6820] text-white text-sm font-semibold hover:bg-[#dc5a17] transition-all"
+                    className="block w-full text-center py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-all"
                   >
                     Book a free call
                   </Link>
                 </motion.div>
+
               </div>
             </div>
           </motion.div>
