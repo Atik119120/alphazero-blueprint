@@ -754,22 +754,10 @@ const Index = () => {
             </h2>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto testimonials-swiper">
-            <Swiper
-              modules={[Autoplay, Pagination]}
-              spaceBetween={20}
-              slidesPerView={1}
-              breakpoints={{
-                640: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-              autoplay={{ delay: 4500, disableOnInteraction: false, pauseOnMouseEnter: true }}
-              loop
-              pagination={{ clickable: true }}
-              className="!pb-12"
-            >
-              {testimonials.map((testimonial) => (
-                <SwiperSlide key={testimonial.name} className="h-auto">
+          <div className="relative max-w-7xl mx-auto overflow-hidden testimonials-marquee">
+            <div className="flex w-max gap-5 testimonials-track">
+              {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testimonial, idx) => (
+                <div key={`${testimonial.name}-${idx}`} className="shrink-0 w-[320px] sm:w-[360px]">
                   <div className="group relative p-7 rounded-2xl glass-card overflow-hidden h-full">
                     <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/40 via-primary/60 to-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -792,9 +780,9 @@ const Index = () => {
                       </div>
                     </div>
                   </div>
-                </SwiperSlide>
+                </div>
               ))}
-            </Swiper>
+            </div>
           </div>
         </div>
       </section>
