@@ -480,9 +480,6 @@ const Index = () => {
                 );
               })()}
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
-              {sisterSection?.subtitle || 'A family of ventures orbiting one vision — design, learning, and craft.'}
-            </p>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
