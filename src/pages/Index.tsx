@@ -643,7 +643,7 @@ const Index = () => {
       </section>
 
       {/* ══════════ WHY CHOOSE US — CARD GRID ══════════ */}
-      <section className="py-12 lg:py-16 relative mesh-bg">
+      <section className="py-12 lg:py-16 relative">
         <div className="container mx-auto px-6">
 
           {(() => {
