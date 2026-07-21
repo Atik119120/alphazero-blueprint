@@ -177,7 +177,7 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-16 lg:mb-20"
+              className="text-center mb-4 lg:mb-6"
             >
               <div className="inline-flex items-center gap-2 text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
                 <span>›</span><span>VALUES</span><span>‹</span>
