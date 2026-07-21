@@ -214,8 +214,10 @@ const AboutPage = () => {
               </svg>
 
               {values.map((value, index) => {
-                const rotations = ['-rotate-[4deg]', 'rotate-[3deg]', '-rotate-[2deg]'];
-                const offsets = ['md:translate-y-6', 'md:-translate-y-4', 'md:translate-y-10'];
+                const rotations = ['-rotate-[6deg]', 'rotate-[4deg]', '-rotate-[5deg]'];
+                const offsets = ['md:translate-y-8', 'md:-translate-y-6', 'md:translate-y-10'];
+                const overlaps = ['md:mr-[-40px]', 'md:z-30 md:scale-[1.08]', 'md:ml-[-40px]'];
+                const zIndex = [10, 30, 10];
                 return (
                   <motion.div
                     key={value.title}
@@ -223,8 +225,9 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.12 }}
-                    whileHover={{ rotate: 0, y: -8 }}
-                    className={`relative aspect-square bg-white rounded-2xl p-8 shadow-[0_25px_60px_-20px_rgba(0,0,0,0.25)] flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} transition-transform`}
+                    whileHover={{ rotate: 0, y: -10, scale: index === 1 ? 1.12 : 1.05 }}
+                    style={{ zIndex: zIndex[index] }}
+                    className={`relative aspect-square bg-white rounded-2xl p-8 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.28)] flex flex-col justify-between transform ${rotations[index]} ${offsets[index]} ${overlaps[index]} transition-transform`}
                   >
                     <div className="text-7xl lg:text-8xl font-display font-semibold text-foreground leading-none">
                       {index + 1}
