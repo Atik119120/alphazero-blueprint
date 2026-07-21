@@ -261,10 +261,10 @@ const ServicesPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               {processSteps.map((item, index) => {
                 const palettes = [
-                  { from: "#6366f1", to: "#8b5cf6" },
-                  { from: "#ec4899", to: "#f43f5e" },
-                  { from: "#f59e0b", to: "#f97316" },
-                  { from: "#10b981", to: "#14b8a6" },
+                  { bg: "#6366f1" },
+                  { bg: "#ec4899" },
+                  { bg: "#f59e0b" },
+                  { bg: "#10b981" },
                 ];
                 const p = palettes[index % 4];
                 return (
@@ -275,33 +275,21 @@ const ServicesPage = () => {
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.08 }}
                     whileHover={{ y: -6 }}
-                    className="relative rounded-2xl border border-border/60 bg-background/80 backdrop-blur-sm p-8 lg:p-10 overflow-hidden group transition-all hover:border-transparent hover:shadow-xl"
+                    className="relative rounded-2xl p-8 lg:p-10 overflow-hidden group transition-all hover:shadow-xl"
+                    style={{ backgroundColor: p.bg }}
                   >
-                    <div
-                      className="absolute inset-x-0 top-0 h-1 rounded-t-2xl"
-                      style={{ background: `linear-gradient(90deg, ${p.from}, ${p.to})` }}
-                    />
-                    <div
-                      className="absolute -bottom-20 -right-20 w-48 h-48 rounded-full blur-3xl opacity-30 group-hover:opacity-60 transition-opacity"
-                      style={{ background: `radial-gradient(circle, ${p.from}, transparent 70%)` }}
-                    />
+                    <div className="absolute -bottom-20 -right-20 w-48 h-48 rounded-full blur-3xl opacity-20 bg-white pointer-events-none" />
                     <div className="relative">
                       <div className="flex items-center justify-between mb-8">
-                        <span
-                          className="text-2xl font-display font-bold bg-clip-text text-transparent"
-                          style={{ backgroundImage: `linear-gradient(90deg, ${p.from}, ${p.to})` }}
-                        >
+                        <span className="text-2xl font-display font-bold text-white">
                           {item.step}
                         </span>
-                        <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform"
-                          style={{ background: `linear-gradient(135deg, ${p.from}20, ${p.to}20)`, border: `1px solid ${p.from}40` }}
-                        >
-                          <item.icon size={16} style={{ color: p.from }} />
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/20 border border-white/30 backdrop-blur-sm group-hover:scale-110 transition-transform">
+                          <item.icon size={16} className="text-white" />
                         </div>
                       </div>
-                      <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2">{t(item.titleKey)}</h3>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{t(item.descKey)}</p>
+                      <h3 className="text-lg lg:text-xl font-display font-semibold tracking-tight mb-2 text-white">{t(item.titleKey)}</h3>
+                      <p className="text-white/85 text-sm leading-relaxed">{t(item.descKey)}</p>
                     </div>
                   </motion.div>
                 );
