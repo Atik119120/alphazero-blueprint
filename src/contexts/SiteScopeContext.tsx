@@ -19,10 +19,10 @@ export const SiteScopeProvider = ({ children, override }: { children: ReactNode;
     return "agency";
   }, [location.pathname, override]);
 
-  // Force light theme on learn site, dark elsewhere
+  // Force light theme on both learn and agency sites
   useEffect(() => {
     if (typeof document === "undefined") return;
-    const target = scope === "learn" ? "light" : "dark";
+    const target = "light";
     const root = document.documentElement;
 
     const apply = () => {
