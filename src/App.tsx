@@ -130,7 +130,7 @@ function AppContent() {
             <Route path="/learn-about" element={<LearnAboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/work" element={<WorkPage />} />
-            <Route path="/team" element={<TeamPage />} />
+            <Route path="/team" element={<Navigate to="/about#team" replace />} />
             <Route path="/join-team" element={<JoinTeamPage />} />
             <Route path="/contact" element={typeof window !== "undefined" && window.location.hostname.startsWith("learn.") ? <LearnContactPage /> : <ContactPage />} />
             <Route path="/learn-contact" element={<LearnContactPage />} />
