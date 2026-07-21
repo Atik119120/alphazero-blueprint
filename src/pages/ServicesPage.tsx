@@ -141,11 +141,10 @@ const ServicesPage = () => {
       </section>
 
 
-      {/* Dynamic Services Grid — editorial */}
-      <section className="py-20 lg:py-28 relative">
+      {/* Dynamic Services — Editorial split layout */}
+      <section className="py-20 lg:py-28 relative bg-[#f2f2f3]">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-
+          <div className="max-w-7xl mx-auto">
             {isLoading ? (
               <div className="flex items-center justify-center py-20">
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
@@ -153,47 +152,84 @@ const ServicesPage = () => {
             ) : !services || services.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">No services found.</div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-                {services.map((service, index) => {
-                  const IconComponent = getIcon(service.icon);
-                  return (
-                    <motion.div
-                      key={service.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.08 }}
-                      whileHover={{ y: -4 }}
-                      className="group p-5 lg:p-7 rounded-2xl glass-card hover:border-primary/30 transition-all duration-400 relative overflow-hidden"
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+                {/* Left — sticky heading + CTA */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="lg:col-span-5 lg:sticky lg:top-32"
+                >
+                  <div className="flex items-center gap-2 mb-6 text-foreground/60">
+                    <span className="text-xs">›</span>
+                    <span className="text-[11px] font-semibold tracking-[0.28em] uppercase">What We Do</span>
+                    <span className="text-xs">‹</span>
+                  </div>
+                  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight text-foreground mb-10">
+                    Services built<br />to drive impact
+                  </h2>
+                  <div className="relative inline-block">
+                    <Link
+                      to="/contact"
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#ff5722] text-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(255,87,34,0.5)] hover:shadow-[0_14px_34px_-10px_rgba(255,87,34,0.6)] hover:scale-[1.03] transition-all"
                     >
-                      <span className="absolute top-4 right-4 text-[10px] font-mono font-bold text-muted-foreground/30 tracking-wider">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <div className="w-12 h-12 rounded-xl bg-primary/[0.08] dark:bg-primary/[0.1] flex items-center justify-center mb-5 border border-primary/10">
-                        <IconComponent size={22} className="text-primary" />
-                      </div>
-                      <h3 className="text-base lg:text-lg font-display font-bold mb-2">{service.title}</h3>
-                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed">{service.description}</p>
-                      {service.features && service.features.length > 0 && (
-                        <ul className="space-y-1.5 mb-4">
-                          {service.features.map((feature, idx) => (
-                            <li key={idx} className="flex items-center gap-2 text-xs text-muted-foreground">
-                              <div className="w-1 h-1 rounded-full bg-primary shrink-0" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                      <div className="absolute bottom-0 left-6 right-6 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
-                    </motion.div>
-                  );
-                })}
+                      Discuss your ideas
+                    </Link>
+                    {/* Squiggle note */}
+                    <svg className="absolute -right-40 top-1/2 pointer-events-none hidden sm:block" width="150" height="60" viewBox="0 0 150 60" fill="none">
+                      <path d="M 5 5 C 20 20, 40 30, 70 35" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                      <path d="M 65 30 L 70 35 L 62 38" stroke="#ff5722" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                      <text x="75" y="42" fill="#ff5722" style={{ fontFamily: "'Mea Culpa', cursive", fontSize: '18px' }}>Let's get started</text>
+                    </svg>
+                  </div>
+                </motion.div>
+
+                {/* Right — stacked service cards */}
+                <div className="lg:col-span-7 space-y-5">
+                  {services.map((service, index) => {
+                    const IconComponent = getIcon(service.icon);
+                    return (
+                      <motion.div
+                        key={service.id}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.08 }}
+                        whileHover={{ y: -4 }}
+                        className="group bg-white rounded-2xl p-7 lg:p-8 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.15)] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.2)] transition-all"
+                      >
+                        <div className="flex items-start justify-between gap-4 mb-4">
+                          <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground">{service.title}</h3>
+                          <div className="w-11 h-11 shrink-0 rounded-xl border border-foreground/10 bg-[#fafafa] flex items-center justify-center">
+                            <IconComponent size={20} className="text-foreground" />
+                          </div>
+                        </div>
+                        <div className="h-px bg-foreground/10 mb-5" />
+                        <p className="text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6">
+                          {service.description}
+                        </p>
+                        {service.features && service.features.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {service.features.slice(0, 4).map((feature, idx) => (
+                              <span
+                                key={idx}
+                                className="px-4 py-1.5 rounded-full border border-foreground/15 text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70"
+                              >
+                                {feature}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </motion.div>
+                    );
+                  })}
+                </div>
               </div>
             )}
-
           </div>
         </div>
       </section>
+
 
       {/* Process Section — editorial numbered */}
       <section className="py-28 lg:py-40 relative mesh-bg">
