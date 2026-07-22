@@ -154,48 +154,6 @@ const ContactPage = () => {
               </div>
             </motion.div>
 
-            {/* Contact Form */}
-            <motion.form initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-              onSubmit={handleSubmit} className="space-y-6 p-8 rounded-2xl glass-card">
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-display font-semibold mb-2">{t("contact.formTitle")}</h3>
-                <p className="text-sm text-muted-foreground">{t("contact.formSubtitle")}</p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">{t("contact.yourName")}</label>
-                  <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required
-                    className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder={t("contact.namePlaceholder")} />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">{t("contact.yourEmail")}</label>
-                  <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required
-                    className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                    placeholder={t("contact.emailPlaceholder")} />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">{t("contact.subject")}</label>
-                <input type="text" id="subject" name="subject" value={formData.subject} onChange={handleChange} required
-                  className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors"
-                  placeholder={t("contact.subjectPlaceholder")} />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">{t("contact.message")}</label>
-                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6}
-                  className="w-full px-4 py-3 rounded-xl bg-secondary border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none"
-                  placeholder={t("contact.messagePlaceholder")} />
-              </div>
-
-              <button type="submit"
-                className="w-full py-4 bg-primary text-primary-foreground rounded-xl font-medium text-lg transition-all duration-300 glow-primary hover:scale-[1.01] flex items-center justify-center gap-2">
-                <Send size={20} />{t("contact.submitButton")}
-              </button>
-            </motion.form>
           </div>
         </div>
       </section>
