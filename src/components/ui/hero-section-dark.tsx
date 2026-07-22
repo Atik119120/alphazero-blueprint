@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils"
 import { ChevronRight } from "lucide-react"
 import gsap from "gsap"
 import AsciiMosaic from "./AsciiMosaic"
-import { AntiMetalButton } from "./anti-metal-button"
 
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -197,10 +196,19 @@ const HeroContent = ({
     <p data-hero-desc className="max-w-3xl mx-auto text-foreground/90 text-sm sm:text-lg md:text-2xl drop-shadow-lg px-2">
       {description}
     </p>
-    <div data-hero-cta className="flex items-center justify-center pt-2">
-      <a href={ctaHref} aria-label={ctaText || "Book a Call"}>
-        <AntiMetalButton label="Book a Call" />
-      </a>
+    <div className="items-center justify-center gap-x-3 space-y-3 sm:flex sm:space-y-0">
+      <span className="relative inline-block overflow-hidden rounded-full p-[1.5px]">
+        <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,hsl(var(--primary)/0.2)_0%,hsl(var(--primary))_50%,hsl(var(--primary)/0.2)_100%)]" />
+        <div className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-background/90 backdrop-blur-3xl text-xs font-medium text-foreground">
+          <a
+            href={ctaHref}
+            data-hero-cta
+            className="inline-flex rounded-full text-center group items-center w-full justify-center bg-gradient-to-tr from-primary/20 via-primary/10 to-transparent text-foreground border-input border-[1px] hover:bg-gradient-to-tr hover:from-primary/30 hover:via-primary/20 hover:to-transparent transition-all sm:w-auto py-4 px-10"
+          >
+            {ctaText}
+          </a>
+        </div>
+      </span>
     </div>
   </div>
 )
