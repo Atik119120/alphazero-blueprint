@@ -1,0 +1,1 @@
+UPDATE public.team_members SET name = 'Papiya Rahman', role = 'Graphic Designer', image_url = '/__l5e/assets-v1/0a204790-d31e-409a-91d9-234fb273511a/papiya.png' WHERE id = '8c074ed2-9263-4ce2-b78a-9940896f0fb3';
