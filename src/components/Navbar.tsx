@@ -265,10 +265,18 @@ const Navbar = () => {
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
                     const isActive = location.pathname === link.href;
+                    const baseText = isOverHero ? "text-white/90 hover:bg-white/10" : "text-neutral-800 hover:bg-black/5";
+                    const iconTone = isActive
+                      ? "text-white"
+                      : isOverHero
+                        ? "text-white/80"
+                        : "text-cyan-600/80";
                     const cls = `flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-colors ${
-                      isActive ? "bg-primary text-primary-foreground font-semibold" : "text-foreground/80 hover:bg-primary/10"
+                      isActive
+                        ? "bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600 text-white font-semibold shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
+                        : baseText
                     }`;
-                    const inner = (<><IconComp size={16} className={isActive ? "" : "text-primary/70"} />{link.name}</>);
+                    const inner = (<><IconComp size={16} className={iconTone} />{link.name}</>);
                     return link.href.startsWith("http") ? (
                       <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer" onClick={handleNavClick} className={cls}>{inner}</a>
                     ) : (
@@ -279,18 +287,23 @@ const Navbar = () => {
 
                   })}
                 </div>
-                <div className="flex items-center justify-between gap-2 p-2 border-t border-border/40">
+                <div className={`flex items-center justify-between gap-2 p-2 border-t ${isOverHero ? "border-white/15" : "border-black/10"}`}>
 
 
                   <Link
                     to="/contact"
                     onClick={handleNavClick}
-                    className="flex-1 h-9 rounded-xl bg-primary text-primary-foreground font-semibold text-xs flex items-center justify-center gap-1"
+                    className="relative flex-1 h-10 rounded-xl overflow-hidden font-semibold text-xs flex items-center justify-center gap-1 text-white shadow-[0_6px_20px_-6px_rgba(6,182,212,0.55)]"
                   >
-                    {t("nav.startProject")}
-                    <ArrowUpRight size={13} />
+                    <span className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-cyan-500 to-blue-600" />
+                    <span className="absolute inset-0 bg-gradient-to-b from-white/25 via-transparent to-black/15 opacity-60" />
+                    <span className="relative z-10 flex items-center gap-1">
+                      {t("nav.startProject")}
+                      <ArrowUpRight size={13} />
+                    </span>
                   </Link>
                 </div>
+
               </div>
             </motion.div>
           )}
