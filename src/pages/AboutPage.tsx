@@ -404,16 +404,29 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
       if (!a || !b) continue;
       const ar = a.getBoundingClientRect();
       const br = b.getBoundingClientRect();
-      // Anchor just outside the visible card edge so the connector never looks hidden or broken.
-      const x1 = ar.right - cRect.left + 2;
-      const y1 = ar.top + ar.height / 2 - cRect.top;
-      const x2 = br.left - cRect.left - 2;
-      const y2 = br.top + br.height / 2 - cRect.top;
-      const dx = x2 - x1;
-      const dy = y2 - y1;
-      const direction = y2 < y1 ? -1 : 1;
-      const wave = Math.min(180, Math.max(130, Math.abs(dx) * 0.9));
-      const d = `M ${x1} ${y1} C ${x1 + dx * 0.35} ${y1 + direction * wave}, ${x2 - dx * 0.35} ${y2 - direction * wave}, ${x2} ${y2}`;
+      const isVertical = Math.abs(br.top - ar.top) > Math.abs(br.left - ar.left);
+      let x1: number, y1: number, x2: number, y2: number, d: string;
+      if (isVertical) {
+        // Mobile: connect bottom of card i to top of card i+1 with horizontal S-curve
+        x1 = ar.left + ar.width / 2 - cRect.left;
+        y1 = ar.bottom - cRect.top + 2;
+        x2 = br.left + br.width / 2 - cRect.left;
+        y2 = br.top - cRect.top - 2;
+        const dy = y2 - y1;
+        const sway = Math.min(120, Math.max(60, dy * 0.6));
+        const side = i % 2 === 0 ? 1 : -1;
+        d = `M ${x1} ${y1} C ${x1 + side * sway} ${y1 + dy * 0.35}, ${x2 - side * sway} ${y2 - dy * 0.35}, ${x2} ${y2}`;
+      } else {
+        x1 = ar.right - cRect.left + 2;
+        y1 = ar.top + ar.height / 2 - cRect.top;
+        x2 = br.left - cRect.left - 2;
+        y2 = br.top + br.height / 2 - cRect.top;
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const direction = y2 < y1 ? -1 : 1;
+        const wave = Math.min(180, Math.max(130, Math.abs(dx) * 0.9));
+        d = `M ${x1} ${y1} C ${x1 + dx * 0.35} ${y1 + direction * wave}, ${x2 - dx * 0.35} ${y2 - direction * wave}, ${x2} ${y2}`;
+      }
       next.push({ d, x1, y1, x2, y2 });
     }
     setSize({ w: container.offsetWidth, h: container.offsetHeight });
@@ -444,7 +457,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
     <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-8 pb-8 md:block md:min-h-[520px]">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
-        className="hidden md:block absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         width={size.w}
         height={size.h}
         viewBox={`0 0 ${size.w || 1} ${size.h || 1}`}
