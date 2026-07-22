@@ -239,7 +239,7 @@ const Navbar = () => {
               transition={{ duration: 0.2 }}
               className="lg:hidden container mx-auto px-4 sm:px-6 mt-2"
             >
-              <div className="rounded-2xl bg-background/90 dark:bg-card/90 backdrop-blur-xl border border-border/50 shadow-xl overflow-hidden">
+              <div className="rounded-2xl bg-white/[0.08] dark:bg-white/[0.06] backdrop-blur-2xl backdrop-saturate-150 border border-white/15 dark:border-white/10 shadow-[0_1px_0_0_rgba(255,255,255,0.35)_inset,0_-1px_0_0_rgba(0,0,0,0.06)_inset,0_10px_30px_-12px_rgba(0,0,0,0.25)] overflow-hidden" style={{ WebkitBackdropFilter: "blur(28px) saturate(160%)", backdropFilter: "blur(28px) saturate(160%)" }}>
                 <div className="grid grid-cols-2 gap-1 p-2">
                   {navLinksWithIcons.map((link) => {
                     const IconComp = link.icon;
