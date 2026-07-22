@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { X, Play, ArrowUpRight } from "lucide-react";
 import Layout from "@/components/Layout";
