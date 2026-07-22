@@ -1,34 +1,33 @@
-import { useMemo, useState, useRef, useEffect, useCallback } from "react";
-import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  X, ZoomIn, Play, Sparkles, ExternalLink, Phone, MessageCircle,
-  Globe, ArrowUpRight, Maximize2,
-} from "lucide-react";
+import { X, Play, ArrowUpRight, Briefcase } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
-import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageHero } from "@/hooks/usePageHero";
 
 /* ─── Category helpers ─── */
-function isGraphics(w: Work) {
+const isGraphics = (w: Work) => {
   const c = w.category;
   return c === "design" || c === "graphics" || c.startsWith("graphics_");
-}
-function isWeb(w: Work) {
+};
+const isWeb = (w: Work) => {
   const c = w.category;
   return c === "web" || c.startsWith("web_");
-}
-function isVideo(w: Work) {
+};
+const isVideo = (w: Work) => {
   const c = w.category;
   return c === "video" || c.startsWith("video_");
-}
+};
+
+const categoryLabel = (w: Work) => {
+  if (isVideo(w)) return "Video & Motion";
+  if (isWeb(w)) return "Web Design";
+  return "Graphic Design";
+};
 
 function getVideoEmbed(url: string | null | undefined): string | null {
   if (!url) return null;
-  const ytMatch = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/
-  );
+  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
   if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}?rel=0&modestbranding=1&autoplay=1`;
   if (url.includes("facebook.com") || url.includes("fb.watch")) {
     return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&width=560`;
@@ -38,598 +37,214 @@ function getVideoEmbed(url: string | null | undefined): string | null {
 
 function getYouTubeThumbnail(url: string | null | undefined): string | null {
   if (!url) return null;
-  const ytMatch = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/
-  );
+  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
   if (ytMatch) return `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
   return null;
 }
 
-function findVideoUrl(w: Work): string | null {
-  return getVideoEmbed(w.project_url) ? w.project_url
-    : getVideoEmbed(w.image_url) ? w.image_url
-    : null;
-}
+const findVideoUrl = (w: Work): string | null =>
+  getVideoEmbed(w.project_url) ? w.project_url : getVideoEmbed(w.image_url) ? w.image_url : null;
 
-/* ═══════════════════════════════════════════════════════════
-   AUTO-SCROLLING STRIP — Graphics + Videos only, square, pause on hover, clickable
-   ═══════════════════════════════════════════════════════════ */
-const ScrollStrip = ({ items, onItemClick }: { items: Work[]; onItemClick: (w: Work) => void }) => {
-  const stripRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+type FilterKey = "all" | "graphics" | "web" | "video";
 
-  useEffect(() => {
-    const el = stripRef.current;
-    if (!el) return;
-    let raf: number;
-    let pos = 0;
-    const speed = 0.6;
-    const tick = () => {
-      if (!pausedRef.current) {
-        pos += speed;
-        if (pos >= el.scrollWidth / 2) pos = 0;
-        el.scrollLeft = pos;
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [items]);
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: "all", label: "All" },
+  { key: "graphics", label: "Graphic Design" },
+  { key: "web", label: "Web Design" },
+  { key: "video", label: "Video & Motion" },
+];
 
-  if (items.length === 0) return null;
-
-  const doubled = [...items, ...items];
-
-  const cardVariants = [
-    'rounded-2xl',
-    'rounded-3xl',
-    'rounded-xl',
-    'rounded-[1.5rem]',
-  ];
-
-  return (
-    <div
-      className="py-6 overflow-hidden relative"
-      onMouseEnter={() => { pausedRef.current = true; }}
-      onMouseLeave={() => { pausedRef.current = false; setHoveredIdx(null); }}
-    >
-      {/* Gradient fade edges */}
-      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
-      
-      <div
-        ref={stripRef}
-        className="flex gap-4 overflow-hidden items-end px-4"
-        style={{ scrollbarWidth: "none" }}
-      >
-        {doubled.map((project, idx) => {
-          const isVid = isVideo(project);
-          const thumb = isVid
-            ? (getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url)
-            : project.image_url;
-          const isHovered = hoveredIdx === idx;
-          const borderRadius = cardVariants[idx % cardVariants.length];
-
-          return (
-            <div
-              key={`${project.id}-${idx}`}
-              className={`flex-shrink-0 relative group cursor-pointer transition-all duration-500 ease-out ${borderRadius} overflow-hidden ${
-                isHovered 
-                  ? 'w-[180px] sm:w-[220px] h-[180px] sm:h-[220px] shadow-[0_8px_30px_hsl(185_100%_38%/0.2)] dark:shadow-[0_0_30px_hsl(185_100%_50%/0.1)] border-2 border-primary/40 z-20' 
-                  : 'w-[130px] sm:w-[160px] h-[130px] sm:h-[160px] border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.05)] dark:shadow-none'
-              } bg-card`}
-              onClick={() => onItemClick(project)}
-              onMouseEnter={() => setHoveredIdx(idx)}
-              onMouseLeave={() => setHoveredIdx(null)}
-            >
-              {thumb ? (
-                <img 
-                  src={thumb} 
-                  alt={project.title} 
-                  className={`w-full h-full object-cover transition-transform duration-700 ${isHovered ? 'scale-[1.05]' : 'scale-100'}`} 
-                />
-              ) : (
-                <div className="w-full h-full bg-secondary/40 flex items-center justify-center">
-                  <Sparkles size={24} className="text-muted-foreground" />
-                </div>
-              )}
-              
-              {/* Video play button */}
-              {isVid && (
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className={`rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-xl shadow-primary/30 transition-all duration-300 ${
-                    isHovered ? 'w-12 h-12' : 'w-9 h-9'
-                  }`}>
-                    <Play size={isHovered ? 18 : 14} className="text-primary-foreground ml-0.5" fill="currentColor" />
-                  </div>
-                </div>
-              )}
-              
-              {/* Bottom info */}
-              <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent transition-all duration-500 ${
-                isHovered ? 'p-3.5' : 'p-2'
-              }`}>
-                <p className={`text-white font-display font-bold line-clamp-1 drop-shadow-lg transition-all duration-300 ${
-                  isHovered ? 'text-sm mb-0.5' : 'text-[10px]'
-                }`}>
-                  {project.title}
-                </p>
-                {isHovered && (
-                  <span className="text-white/50 text-[10px] font-medium">
-                    {isVid ? '▶ Video' : '✦ Design'} • Alphazero
-                  </span>
-                )}
-              </div>
-
-              {/* Top-left category pill on hover */}
-              {isHovered && (
-                <div className="absolute top-2.5 left-2.5">
-                  <div className="px-2 py-0.5 rounded-full bg-primary/80 backdrop-blur-md text-[9px] font-bold text-primary-foreground uppercase tracking-wider">
-                    {isVid ? 'Video' : 'Design'}
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════
-   SECTION 1 — Graphic Design (Square grid, NO internal scroll)
-   ═══════════════════════════════════════════════════════════ */
-const GraphicsSection = ({ items, onZoom }: { items: Work[]; onZoom: (w: Work) => void }) => {
-  if (items.length === 0) return null;
-
-  // Card style variants for visual variety
-  const cardStyles = [
-    'rounded-[2rem]',        // pill-rounded
-    'rounded-2xl',           // standard
-    'rounded-3xl',           // extra round
-    'rounded-xl',            // subtle
-    'rounded-[1.5rem]',      // medium
-  ];
-
-  const accentColors = [
-    'from-[hsl(185,100%,45%)]',
-    'from-[hsl(200,100%,55%)]',
-    'from-[hsl(160,80%,45%)]',
-    'from-[hsl(215,100%,60%)]',
-    'from-[hsl(280,80%,60%)]',
-    'from-[hsl(340,80%,55%)]',
-  ];
-
-  return (
-    <section className="py-16 lg:py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="flex items-end justify-between mb-10"
-        >
-          <div>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
-              <Sparkles size={12} /> Graphic Design
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-              Our <span className="text-primary">Creative Designs</span>
-            </h2>
-          </div>
-          <span className="hidden sm:block text-7xl lg:text-8xl font-display font-bold text-muted-foreground/[0.05] leading-none select-none">
-            {String(items.length).padStart(2, '0')}
-          </span>
-        </motion.div>
-
-        {/* Dynamic masonry grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 auto-rows-fr">
-          {items.map((project, idx) => {
-            const isFeature = idx % 7 === 0;
-            const borderRadius = cardStyles[idx % cardStyles.length];
-            const accent = accentColors[idx % accentColors.length];
-            const num = String(idx + 1).padStart(2, '0');
-            
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30, scale: 0.97 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: idx * 0.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className={`group cursor-pointer ${isFeature ? 'lg:col-span-2 lg:row-span-2' : ''}`}
-                onClick={() => onZoom(project)}
-              >
-                <div className={`relative h-full ${borderRadius} overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.05)] dark:shadow-none hover:shadow-[0_12px_40px_hsl(185_100%_38%/0.12),0_4px_12px_hsl(215_25%_10%/0.08)] dark:hover:shadow-[0_0_30px_hsl(185_100%_50%/0.06)] transition-all duration-500 hover:-translate-y-2 hover:border-primary/30`}>
-                  
-                  {/* Accent gradient line at top */}
-                  <div className={`absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r ${accent} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10`} />
-                  
-                  {/* Image */}
-                  <div className="relative overflow-hidden aspect-square">
-                    <img
-                      src={project.image_url || "/placeholder.svg"}
-                      alt={project.title}
-                      loading="lazy"
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                      onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }}
-                    />
-                    
-                    {/* Number badge */}
-                    <div className="absolute top-3 left-3 z-10">
-                      <div className="w-8 h-8 rounded-lg bg-black/40 dark:bg-black/50 backdrop-blur-md flex items-center justify-center border border-white/10">
-                        <span className="text-white text-[10px] font-bold font-display">{num}</span>
-                      </div>
-                    </div>
-
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
-                    
-                    {/* Zoom icon */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="w-13 h-13 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center scale-50 group-hover:scale-100 transition-transform duration-500 shadow-xl shadow-primary/30">
-                        <ZoomIn size={22} className="text-primary-foreground" />
-                      </div>
-                    </div>
-                    
-                    {/* Bottom info on hover */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                      <p className="text-white text-sm font-display font-bold line-clamp-1 drop-shadow-lg mb-1">{project.title}</p>
-                      <span className="text-white/60 text-[10px] font-medium">Alphazero Agency</span>
-                    </div>
-                  </div>
-                  
-                </div>
-              </motion.div>
-
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════
-   SECTION 2 — Web Design (Browser-style cards)
-   ═══════════════════════════════════════════════════════════ */
-const WebSection = ({ items }: { items: Work[] }) => {
-  if (items.length === 0) return null;
-
-  return (
-    <section className="py-16 lg:py-24 relative">
-      {/* Subtle section divider */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-      
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="flex items-end justify-between mb-10"
-        >
-          <div>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
-              <Globe size={12} /> Web Design
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-              Web <span className="text-primary">Projects</span>
-            </h2>
-          </div>
-          <span className="hidden sm:block text-7xl lg:text-8xl font-display font-bold text-muted-foreground/[0.05] leading-none select-none">
-            {String(items.length).padStart(2, '0')}
-          </span>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {items.map((project, idx) => {
-            const siteUrl = project.project_url || project.image_url;
-            const domain = siteUrl ? (() => { try { return new URL(siteUrl).hostname; } catch { return siteUrl; } })() : null;
-
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: idx * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="group"
-              >
-                <a
-                  href={siteUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block relative rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_10px_hsl(215_25%_10%/0.05)] dark:shadow-none hover:shadow-[0_12px_40px_hsl(185_100%_38%/0.12),0_4px_12px_hsl(215_25%_10%/0.08)] dark:hover:shadow-[0_0_30px_hsl(185_100%_50%/0.06)] hover:border-primary/30 transition-all duration-500 hover:-translate-y-2"
-                >
-                  {/* macOS-style browser chrome */}
-                  <div className="flex items-center gap-2 px-4 py-3 bg-secondary/60 dark:bg-secondary/30 border-b border-border/30">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-[hsl(0,70%,60%)]" />
-                      <div className="w-3 h-3 rounded-full bg-[hsl(45,90%,55%)]" />
-                      <div className="w-3 h-3 rounded-full bg-[hsl(140,60%,50%)]" />
-                    </div>
-                    <div className="flex-1 mx-2 px-3 py-1.5 rounded-lg bg-background/70 dark:bg-background/30 border border-border/30 text-[11px] text-muted-foreground truncate flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full border border-primary/40 flex items-center justify-center flex-shrink-0">
-                        <Globe size={7} className="text-primary/60" />
-                      </div>
-                      {domain || "website"}
-                    </div>
-                    <ArrowUpRight size={14} className="text-muted-foreground/40 group-hover:text-primary group-hover:rotate-12 transition-all duration-300" />
-                  </div>
-
-                  <div className="relative aspect-[16/10] overflow-hidden bg-secondary/30">
-                    {project.image_url ? (
-                      <img src={project.image_url} alt={project.title} referrerPolicy="no-referrer" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" onError={(e) => { e.currentTarget.src = '/placeholder.svg'; }} />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center gap-3">
-                        <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
-                          <Globe size={32} className="text-primary/40" />
-                        </div>
-                        <span className="text-sm text-muted-foreground font-medium">{project.title}</span>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                      <div className="px-6 py-3 rounded-full bg-primary/90 backdrop-blur-sm flex items-center gap-2 scale-90 group-hover:scale-100 transition-transform duration-500 shadow-xl shadow-primary/20">
-                        <ExternalLink size={16} className="text-primary-foreground" />
-                        <span className="text-primary-foreground text-sm font-bold">Visit Site</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <h4 className="font-display font-bold text-base leading-snug group-hover:text-primary transition-colors">
-                          {project.title}
-                        </h4>
-                        {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5 leading-relaxed">{project.description}</p>}
-                      </div>
-                      <span className="text-3xl font-display font-bold text-muted-foreground/[0.06] leading-none select-none flex-shrink-0">
-                        {String(idx + 1).padStart(2, '0')}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/20">
-                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center">
-                        <Sparkles size={9} className="text-primary-foreground" />
-                      </div>
-                      <span className="text-[11px] text-muted-foreground font-medium">Alpha Zero</span>
-                      <span className="ml-auto text-[10px] text-primary/60 font-medium opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                        <ExternalLink size={8} /> Open
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════
-   SECTION 3 — Video Editing
-   ═══════════════════════════════════════════════════════════ */
-const VideoSection = ({ items }: { items: Work[] }) => {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-
-  // Lock body scroll when video modal is open
-  useEffect(() => {
-    if (activeVideo) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [activeVideo]);
-
-  if (items.length === 0) return null;
-
-  return (
-    <section className="py-16 lg:py-24">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium tracking-wide mb-3">
-            <Play size={12} /> Video Editing
-          </span>
-          <h2 className="text-3xl lg:text-4xl font-display font-bold tracking-tight">
-            Video <span className="text-primary">Productions</span>
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto">
-          {items.map((project, idx) => {
-            const videoUrl = findVideoUrl(project);
-            const embedUrl = getVideoEmbed(videoUrl);
-            const thumbnail = getYouTubeThumbnail(videoUrl) || project.image_url || "/placeholder.svg";
-
-            return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ delay: idx * 0.06, duration: 0.5 }}
-                className="group"
-              >
-                <div className="relative rounded-2xl overflow-hidden bg-card border border-border/30 dark:border-border/20 shadow-[0_2px_8px_hsl(215_25%_10%/0.04)] dark:shadow-none hover:shadow-[0_8px_30px_hsl(185_100%_38%/0.1),0_2px_8px_hsl(215_25%_10%/0.06)] dark:hover:shadow-none hover:border-primary/30 transition-all duration-500 hover:-translate-y-1">
-                  <div
-                    className="relative overflow-hidden cursor-pointer aspect-video"
-                    onClick={() => {
-                      if (embedUrl) setActiveVideo(project.id);
-                      else if (videoUrl) window.open(videoUrl, "_blank");
-                    }}
-                  >
-                    <img
-                      src={thumbnail.startsWith("http") && !getVideoEmbed(thumbnail) ? thumbnail : getYouTubeThumbnail(thumbnail) || "/placeholder.svg"}
-                      alt={project.title}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                    />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 flex items-center justify-center transition-all duration-400">
-                      <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
-                        <Play size={24} className="text-primary-foreground ml-0.5" fill="currentColor" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3.5">
-                    <h4 className="font-display font-semibold text-sm leading-snug group-hover:text-primary transition-colors line-clamp-1">{project.title}</h4>
-                    {project.description && <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{project.description}</p>}
-                    <div className="flex items-center justify-between mt-2.5">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-4 h-4 rounded-full bg-primary/80 flex items-center justify-center">
-                          <Sparkles size={8} className="text-primary-foreground" />
-                        </div>
-                        <span className="text-[10px] text-foreground/70 font-medium">Alpha Zero</span>
-                      </div>
-                      {embedUrl && (
-                        <button onClick={() => setActiveVideo(project.id)} className="text-xs text-primary hover:underline flex items-center gap-1">
-                          <Maximize2 size={10} /> Watch
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Fullscreen Video Modal */}
-      <AnimatePresence>
-        {activeVideo && (() => {
-          const vid = items.find((v) => v.id === activeVideo);
-          const embed = vid ? getVideoEmbed(findVideoUrl(vid)) : null;
-          if (!embed) return null;
-          return (
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8"
-              onClick={() => setActiveVideo(null)}
-            >
-              <button onClick={() => setActiveVideo(null)}
-                className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
-                <X size={22} className="text-white" />
-              </button>
-              <motion.div
-                initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
-                className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}
-              >
-                <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-                  <iframe src={embed} className="absolute inset-0 w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen title={vid?.title || "Video"} />
-                </div>
-                <p className="text-white/80 text-center mt-4 font-display font-semibold">{vid?.title}</p>
-              </motion.div>
-            </motion.div>
-          );
-        })()}
-      </AnimatePresence>
-    </section>
-  );
-};
-
-/* ═══════════════════════════════════════════════════════════
-   MAIN PAGE
-   ═══════════════════════════════════════════════════════════ */
 const WorkPage = () => {
   const { data: works, isLoading } = useWorks();
-  const { t } = useLanguage();
   const hero = usePageHero("work");
+  const [filter, setFilter] = useState<FilterKey>("all");
   const [lightboxImage, setLightboxImage] = useState<{ url: string; title: string; description?: string | null } | null>(null);
+  const [activeVideo, setActiveVideo] = useState<Work | null>(null);
 
-  const graphicsWorks = useMemo(() => works?.filter(isGraphics) || [], [works]);
-  const webWorks = useMemo(() => works?.filter(isWeb) || [], [works]);
-  const videoWorks = useMemo(() => works?.filter(isVideo) || [], [works]);
+  const filtered = useMemo(() => {
+    if (!works) return [];
+    if (filter === "all") return works;
+    if (filter === "graphics") return works.filter(isGraphics);
+    if (filter === "web") return works.filter(isWeb);
+    return works.filter(isVideo);
+  }, [works, filter]);
 
-  // Items for the scroll strip: graphics + videos only
-  const scrollStripItems = useMemo(() => [...graphicsWorks, ...videoWorks], [graphicsWorks, videoWorks]);
-
-  // Lock body scroll when lightbox is open
   useEffect(() => {
-    if (lightboxImage) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    const open = !!lightboxImage || !!activeVideo;
+    document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [lightboxImage]);
+  }, [lightboxImage, activeVideo]);
 
-  const handleZoom = useCallback((w: Work) => {
+  const handleCardClick = useCallback((w: Work) => {
+    if (isVideo(w)) {
+      if (getVideoEmbed(findVideoUrl(w))) setActiveVideo(w);
+      else if (w.project_url) window.open(w.project_url, "_blank");
+      return;
+    }
+    if (isWeb(w) && w.project_url) {
+      window.open(w.project_url, "_blank");
+      return;
+    }
     if (w.image_url && !getVideoEmbed(w.image_url)) {
       setLightboxImage({ url: w.image_url, title: w.title, description: w.description });
     }
   }, []);
 
-  const handleScrollStripClick = useCallback((w: Work) => {
-    if (isVideo(w)) {
-      const videoUrl = findVideoUrl(w);
-      if (videoUrl) window.open(videoUrl, "_blank");
-    } else {
-      handleZoom(w);
-    }
-  }, [handleZoom]);
-
   return (
     <Layout>
-      {/* Hero — Services style */}
-      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
-        <div className="absolute inset-0 bg-black" />
-        <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
-          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
-          style={{ filter: "blur(16px)" }} />
+      {/* Hero — light editorial */}
+      <section
+        id="site-hero"
+        className="relative overflow-hidden -mt-20 pt-32 pb-20 lg:pt-40 lg:pb-28"
+        style={{ background: "linear-gradient(180deg, #EEF0FF 0%, #F5F6FF 60%, #FFFFFF 100%)" }}
+      >
+        {/* Decorative flowing curves */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1600 700" preserveAspectRatio="none" fill="none">
+          <path d="M-100 420 C 300 320, 600 520, 900 380 S 1500 300, 1750 420" stroke="#DCDEF7" strokeWidth="2" fill="none" opacity="0.7" />
+          <path d="M-100 500 C 400 400, 700 600, 1000 460 S 1500 380, 1750 500" stroke="#E4E6FA" strokeWidth="1.5" fill="none" opacity="0.6" />
+          <circle cx="380" cy="360" r="220" stroke="#E1E3F6" strokeWidth="1.5" fill="none" opacity="0.5" />
+        </svg>
+
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
-              {(() => {
-                const raw = hero("hero.title", "Our Creative |Works & Projects|");
-                const parts = raw.split("|");
-                if (parts.length >= 3) {
-                  return <><span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[0]}</span><span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
-                }
-                return raw;
-              })()}
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto mb-8">
-              {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
-            </motion.p>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/[0.06] backdrop-blur-sm text-sm text-white/70 font-medium">
-              ✨ {graphicsWorks.length + webWorks.length + videoWorks.length} {hero("hero.badge", "Projects • Graphic Design • Web • Video")}
-            </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            className="flex justify-center mb-6"
+          >
+            <div className="inline-flex items-center gap-2 pl-1.5 pr-4 py-1.5 rounded-full bg-white shadow-[0_4px_20px_rgba(76,29,149,0.08)] border border-[#EEF0FF]">
+              <span className="w-7 h-7 rounded-full bg-white shadow-inner border border-[#EEF0FF] flex items-center justify-center">
+                <Briefcase size={13} className="text-[#6D28D9]" />
+              </span>
+              <span className="text-[13px] font-medium text-[#6D28D9] tracking-wide">Portfolio</span>
+            </div>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}
+            className="text-center font-display font-bold tracking-tight leading-[1.05] text-[#1B0F45] text-4xl sm:text-5xl lg:text-[64px]"
+          >
+            {hero("hero.title", "A Case Study of Creative")}<br />
+            <span className="text-[#1B0F45]">{hero("hero.title_2", "Design Solutions")}</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
+            className="mt-6 text-center text-[15px] lg:text-base text-[#5B5876] max-w-2xl mx-auto"
+          >
+            {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — crafted with precision and passion.")}
+          </motion.p>
+        </div>
+      </section>
+
+      {/* Filter pill bar */}
+      <section className="relative -mt-10 lg:-mt-14 z-20">
+        <div className="container mx-auto px-6">
+          <div className="mx-auto max-w-5xl bg-white rounded-full shadow-[0_20px_60px_-20px_rgba(76,29,149,0.18)] border border-[#EEF0FF] p-2 flex items-center gap-1 overflow-x-auto scrollbar-none">
+            {FILTERS.map((f) => {
+              const active = filter === f.key;
+              return (
+                <button
+                  key={f.key}
+                  onClick={() => setFilter(f.key)}
+                  className={`relative flex-1 min-w-fit whitespace-nowrap px-5 lg:px-7 py-3 rounded-full text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
+                    active
+                      ? "text-white shadow-[0_10px_30px_-8px_rgba(109,40,217,0.55)]"
+                      : "text-[#4B4869] hover:text-[#6D28D9]"
+                  }`}
+                  style={active ? { background: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)" } : undefined}
+                >
+                  <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-[#C7F358]" : "bg-[#6D28D9]/50"}`} />
+                  {f.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
 
+      {/* Grid */}
+      <section className="py-14 lg:py-20" style={{ background: "linear-gradient(180deg, #FFFFFF 0%, #F5F6FF 100%)" }}>
+        <div className="container mx-auto px-6">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-24">
+              <div className="w-8 h-8 border-2 border-[#6D28D9]/30 border-t-[#6D28D9] rounded-full animate-spin" />
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center py-24 text-[#5B5876]">No projects in this category yet.</div>
+          ) : (
+            <motion.div
+              layout
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
+            >
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, idx) => {
+                  const vid = isVideo(project);
+                  const thumb = vid
+                    ? getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url
+                    : project.image_url;
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-32">
-          <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                  return (
+                    <motion.article
+                      key={project.id}
+                      layout
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.45, delay: (idx % 9) * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                      className="group cursor-pointer"
+                      onClick={() => handleCardClick(project)}
+                    >
+                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.15)] hover:shadow-[0_24px_60px_-24px_rgba(109,40,217,0.28)] transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                        {/* Image */}
+                        <div className="relative aspect-[4/3] overflow-hidden mx-3 mt-3 rounded-2xl" style={{ background: "linear-gradient(180deg, #F4F5FC 0%, #E9EBF7 100%)" }}>
+                          {thumb ? (
+                            <img
+                              src={thumb}
+                              alt={project.title}
+                              loading="lazy"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                              onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-[#B5B3C9] text-sm">No preview</div>
+                          )}
+                          {vid && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="w-14 h-14 rounded-full bg-white/95 shadow-xl flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
+                                <Play size={22} className="text-[#6D28D9] ml-0.5" fill="currentColor" />
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Divider dashes */}
+                        <div className="mx-6 mt-5 border-t border-dashed border-[#E3E5F5]" />
+
+                        {/* Bottom label row */}
+                        <div className="flex items-center justify-between gap-4 px-6 py-5">
+                          <div className="min-w-0">
+                            <h3 className="font-display font-semibold text-[17px] text-[#1B0F45] leading-snug truncate">
+                              {project.title}
+                            </h3>
+                            <p className="text-[13px] text-[#7A778F] mt-1 truncate">
+                              {categoryLabel(project)}
+                            </p>
+                          </div>
+                          <span className="flex-shrink-0 w-11 h-11 rounded-full border border-[#E3E5F5] flex items-center justify-center text-[#6D28D9] group-hover:bg-[#6D28D9] group-hover:text-white group-hover:border-[#6D28D9] transition-all duration-300">
+                            <ArrowUpRight size={18} />
+                          </span>
+                        </div>
+                      </div>
+                    </motion.article>
+                  );
+                })}
+              </AnimatePresence>
+            </motion.div>
+          )}
         </div>
-      ) : (
-        <>
-          {/* 1. Graphic Design */}
-          <GraphicsSection items={graphicsWorks} onZoom={handleZoom} />
+      </section>
 
-          {/* 2. Web Design */}
-          <WebSection items={webWorks} />
-
-          {/* 3. Video Editing */}
-          <VideoSection items={videoWorks} />
-        </>
-      )}
-
-
-      {/* ═══ IMAGE LIGHTBOX — scroll-locked ═══ */}
+      {/* Image lightbox */}
       <AnimatePresence>
         {lightboxImage && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -644,17 +259,43 @@ const WorkPage = () => {
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
                 src={lightboxImage.url} alt={lightboxImage.title}
                 className="max-w-full max-h-[70vh] object-contain rounded-xl cursor-default" />
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                className="mt-6 text-center max-w-lg">
+              <div className="mt-6 text-center max-w-lg">
                 <p className="text-white/90 text-lg font-display font-semibold">{lightboxImage.title}</p>
                 {lightboxImage.description && (
                   <p className="text-white/60 text-sm mt-2 leading-relaxed">{lightboxImage.description}</p>
                 )}
                 <p className="text-white/40 text-xs mt-3">Designed by Alpha Zero</p>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         )}
+      </AnimatePresence>
+
+      {/* Video modal */}
+      <AnimatePresence>
+        {activeVideo && (() => {
+          const embed = getVideoEmbed(findVideoUrl(activeVideo));
+          if (!embed) return null;
+          return (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8"
+              onClick={() => setActiveVideo(null)}>
+              <button onClick={() => setActiveVideo(null)}
+                className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
+                <X size={22} className="text-white" />
+              </button>
+              <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
+                className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+                <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                  <iframe src={embed} className="absolute inset-0 w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen title={activeVideo.title} />
+                </div>
+                <p className="text-white/80 text-center mt-4 font-display font-semibold">{activeVideo.title}</p>
+              </motion.div>
+            </motion.div>
+          );
+        })()}
       </AnimatePresence>
     </Layout>
   );
