@@ -139,7 +139,7 @@ const WorkPage = () => {
             {/* sliding active pill */}
             <motion.div
               aria-hidden
-              className="absolute top-2 bottom-2 rounded-full shadow-[0_10px_30px_-8px_rgba(109,40,217,0.55)] z-0"
+              className="absolute top-2 bottom-2 rounded-full shadow-[0_10px_30px_-8px_rgba(0,0,0,0.35)] z-0"
               style={{ background: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)" }}
               initial={false}
               animate={{
@@ -155,7 +155,7 @@ const WorkPage = () => {
                   key={f.key}
                   onClick={() => setFilter(f.key)}
                   className={`relative z-10 flex-1 min-w-fit whitespace-nowrap px-5 lg:px-7 py-3 rounded-full text-sm font-medium transition-colors duration-300 flex items-center justify-center gap-2 ${
-                    active ? "text-white" : "text-[#4B4869] hover:text-[#6D28D9]"
+                    active ? "text-white" : "text-[#4A4A4A] hover:text-[#111111]"
                   }`}
                 >
                   <motion.span
@@ -182,7 +182,7 @@ const WorkPage = () => {
               <div className="w-8 h-8 border-2 border-[#6D28D9]/30 border-t-[#6D28D9] rounded-full animate-spin" />
             </div>
           ) : filtered.length === 0 ? (
-            <div className="text-center py-24 text-[#5B5876]">No projects in this category yet.</div>
+            <div className="text-center py-24 text-[#525252]">No projects in this category yet.</div>
           ) : (
             <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
@@ -219,26 +219,26 @@ const WorkPage = () => {
                           {vid && (
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                               <div className="w-14 h-14 rounded-full bg-white/95 shadow-xl flex items-center justify-center">
-                                <Play size={22} className="text-[#6D28D9] ml-0.5" fill="currentColor" />
+                                <Play size={22} className="text-[#111111] ml-0.5" fill="currentColor" />
                               </div>
                             </div>
                           )}
                         </div>
 
                         {/* Divider dashes */}
-                        <div className="mx-6 mt-5 border-t border-dashed border-[#E3E5F5]" />
+                        <div className="mx-6 mt-5 border-t border-dashed border-[#E5E5E5]" />
 
                         {/* Bottom label row */}
                         <div className="flex items-center justify-between gap-4 px-6 py-5">
                           <div className="min-w-0">
-                            <h3 className="font-display font-semibold text-[17px] text-[#1B0F45] leading-snug truncate">
+                            <h3 className="font-display font-semibold text-[17px] text-[#0A0A0A] leading-snug truncate">
                               {project.title}
                             </h3>
                             <p className="text-[13px] text-[#7A778F] mt-1 truncate">
                               {categoryLabel(project)}
                             </p>
                           </div>
-                          <span className="flex-shrink-0 w-11 h-11 rounded-full border border-[#E3E5F5] flex items-center justify-center text-[#6D28D9] group-hover:bg-[#6D28D9] group-hover:text-white group-hover:border-[#6D28D9] transition-colors duration-300">
+                          <span className="flex-shrink-0 w-11 h-11 rounded-full border border-[#E5E5E5] flex items-center justify-center text-[#111111] group-hover:bg-[#111111] group-hover:text-white group-hover:border-[#6D28D9] transition-colors duration-300">
                             <ArrowUpRight size={18} />
                           </span>
                         </div>
@@ -322,20 +322,20 @@ const FaqSection = () => {
   return (
     <section className="px-4 md:px-8 pb-20 md:pb-28">
       <div className="max-w-7xl mx-auto">
-        <div className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden" style={{ background: "linear-gradient(180deg,#F3F1FF 0%,#ECE9FF 100%)" }}>
+        <div className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden" style={{ background: "linear-gradient(180deg,#F5F5F5 0%,#EDEDED 100%)" }}>
           {/* Header */}
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-start mb-10 md:mb-14">
             <div className="relative">
-              <h2 className="font-display font-bold text-[#1B0F45] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
+              <h2 className="font-display font-bold text-[#0A0A0A] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
                 Frequently<br />Asked Question
               </h2>
               {/* lime scribble */}
             </div>
             <div className="flex flex-col gap-6">
-              <p className="text-[#4B4869] text-base md:text-[17px] leading-relaxed max-w-md">
+              <p className="text-[#4A4A4A] text-base md:text-[17px] leading-relaxed max-w-md">
                 Have questions about our design services? Here are some common queries to help you understand how we work and what you can expect.
               </p>
-              <a href="/contact" className="inline-flex w-fit items-center justify-center px-7 py-3 rounded-full text-white font-semibold shadow-[0_10px_30px_-8px_rgba(109,40,217,0.55)] transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg,#7C3AED 0%,#6D28D9 100%)" }}>
+              <a href="/contact" className="inline-flex w-fit items-center justify-center px-7 py-3 rounded-full text-white font-semibold shadow-[0_10px_30px_-8px_rgba(0,0,0,0.35)] transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg,#111111 0%,#000000 100%)" }}>
                 Get Started
               </a>
             </div>
@@ -346,10 +346,10 @@ const FaqSection = () => {
             {FAQS.map((item, i) => {
               const isOpen = open === i;
               return (
-                <div key={i} className="bg-white rounded-2xl border border-white shadow-[0_10px_30px_-20px_rgba(76,29,149,0.15)] overflow-hidden">
+                <div key={i} className="bg-white rounded-2xl border border-white shadow-[0_10px_30px_-20px_rgba(0,0,0,0.08)] overflow-hidden">
                   <button onClick={() => setOpen(isOpen ? null : i)} className="w-full flex items-center justify-between gap-6 px-6 md:px-8 py-5 md:py-6 text-left">
-                    <span className="font-display font-semibold text-[#1B0F45] text-base md:text-lg">{item.q}</span>
-                    <span className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isOpen ? "bg-[#6D28D9] text-white" : "border border-[#E3E5F5] text-[#6D28D9]"}`}>
+                    <span className="font-display font-semibold text-[#0A0A0A] text-base md:text-lg">{item.q}</span>
+                    <span className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isOpen ? "bg-[#111111] text-white" : "border border-[#E5E5E5] text-[#111111]"}`}>
                       {isOpen ? <Minus size={18} /> : <Plus size={18} />}
                     </span>
                   </button>
@@ -359,7 +359,7 @@ const FaqSection = () => {
                     transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <p className="px-6 md:px-8 pb-6 text-[#5B5876] leading-relaxed">{item.a}</p>
+                    <p className="px-6 md:px-8 pb-6 text-[#525252] leading-relaxed">{item.a}</p>
                   </motion.div>
                 </div>
               );
