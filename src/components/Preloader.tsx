@@ -1,41 +1,28 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, memo } from "react";
-import logoAssetJson from "@/assets/logo.png.asset.json";
 import learnIconJson from "@/assets/learn-preloader-icon.png.asset.json";
-const logo = logoAssetJson.url;
+import agencyLogoJson from "@/assets/alphazero-logo-3.png.asset.json";
+
 const learnIcon = learnIconJson.url;
+const agencyLogo = agencyLogoJson.url;
 const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about", "/learn-contact"];
+
 const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
   const isLearn = typeof window !== "undefined" && (
     window.location.hostname.startsWith("learn.") ||
     LEARN_ROUTES.some((r) => window.location.pathname.startsWith(r))
   );
   const [isVisible, setIsVisible] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Faster progress animation - complete in 500ms
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          return 100;
-        }
-        return prev + 20; // Even faster increment
-      });
-    }, 20); // Faster interval
-
-    // Reduced total time to 500ms for much faster LCP
     const timer = setTimeout(() => {
       setIsVisible(false);
-      setTimeout(onComplete, 150);
-    }, 500);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
+      setTimeout(onComplete, 200);
+    }, 700);
+    return () => clearTimeout(timer);
   }, [onComplete]);
+
+  const logoSrc = isLearn ? learnIcon : agencyLogo;
 
   return (
     <AnimatePresence>
@@ -43,43 +30,51 @@ const Preloader = memo(({ onComplete }: { onComplete: () => void }) => {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center ${isLearn ? "bg-white" : "bg-black"}`}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
         >
-          {/* Logo */}
+          {/* Subtle radial backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.06),transparent_60%)]" />
+
+          {/* Logo with breathing + soft glow */}
           <div className="relative z-10">
-            <motion.img
-              src={isLearn ? learnIcon : logo}
-              alt="AlphaZero"
-              width={96}
-              height={96}
-              className={`h-20 md:h-24 w-auto ${isLearn ? "" : "invert"}`}
-              loading="eager"
-              fetchPriority="high"
-              decoding="sync"
-              initial={{ scale: 0.85, opacity: 0.6 }}
-              animate={{ scale: [0.9, 1.05, 0.95, 1], opacity: 1 }}
-              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-            />
+            <motion.div
+              initial={{ scale: 0.92, opacity: 0 }}
+              animate={{ scale: [0.95, 1.04, 0.98, 1], opacity: 1 }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              className="relative"
+            >
+              <div className="absolute inset-0 blur-2xl opacity-40 bg-gradient-to-tr from-cyan-400/40 to-blue-500/40 rounded-full" />
+              <img
+                src={logoSrc}
+                alt="AlphaZero"
+                width={120}
+                height={120}
+                className="relative h-24 md:h-28 w-auto"
+                loading="eager"
+                fetchPriority="high"
+                decoding="sync"
+              />
+            </motion.div>
           </div>
 
           {/* Tagline */}
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1, duration: 0.2 }}
-            className={`mt-4 text-base md:text-lg font-display tracking-wide font-medium ${isLearn ? "text-slate-800" : "text-white"}`}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.3 }}
+            className="mt-6 text-sm md:text-base tracking-[0.25em] uppercase font-medium text-slate-700"
           >
-            From <span className={isLearn ? "bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent" : "text-primary"}>zero</span> to impact
+            From <span className="bg-gradient-to-r from-cyan-500 to-blue-600 bg-clip-text text-transparent">zero</span> to impact
           </motion.p>
 
-          {/* Progress bar */}
-          <div className={`mt-4 w-32 h-0.5 rounded-full overflow-hidden ${isLearn ? "bg-slate-200" : "bg-white/20"}`}>
+          {/* Thin indeterminate progress line */}
+          <div className="mt-6 w-40 h-[2px] rounded-full overflow-hidden bg-slate-200/70 relative">
             <motion.div
-              className={`h-full rounded-full ${isLearn ? "bg-gradient-to-r from-cyan-500 to-blue-600" : "bg-primary"}`}
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.02, ease: "linear" }}
+              className="absolute top-0 left-0 h-full w-1/3 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600"
+              initial={{ x: "-100%" }}
+              animate={{ x: "300%" }}
+              transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
             />
           </div>
         </motion.div>
