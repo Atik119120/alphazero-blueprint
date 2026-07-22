@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
+import { motion } from "framer-motion";
 import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { X, Play, ArrowUpRight } from "lucide-react";
 import Layout from "@/components/Layout";
@@ -124,21 +125,47 @@ const WorkPage = () => {
       {/* Filter pill bar */}
       <section className="relative pt-12 lg:pt-16 z-20">
         <div className="container mx-auto px-6">
-          <div className="mx-auto max-w-5xl bg-white rounded-full shadow-[0_20px_60px_-20px_rgba(76,29,149,0.18)] border border-[#EEF0FF] p-2 flex items-center gap-1 overflow-x-auto scrollbar-none">
+          <div className="mx-auto max-w-5xl bg-white rounded-full shadow-[0_20px_60px_-20px_rgba(76,29,149,0.18)] border border-[#EEF0FF] p-2 flex items-center gap-1 relative overflow-hidden">
+            {/* subtle grid backdrop */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 rounded-full opacity-[0.35]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, rgba(109,40,217,0.06) 1px, transparent 1px)",
+                backgroundSize: `${100 / FILTERS.length}% 100%`,
+              }}
+            />
+            {/* sliding active pill */}
+            <motion.div
+              aria-hidden
+              className="absolute top-2 bottom-2 rounded-full shadow-[0_10px_30px_-8px_rgba(109,40,217,0.55)] z-0"
+              style={{ background: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)" }}
+              initial={false}
+              animate={{
+                left: `calc(${(FILTERS.findIndex((f) => f.key === filter) / FILTERS.length) * 100}% + 8px)`,
+                width: `calc(${100 / FILTERS.length}% - 8px)`,
+              }}
+              transition={{ type: "spring", stiffness: 380, damping: 34, mass: 0.7 }}
+            />
             {FILTERS.map((f) => {
               const active = filter === f.key;
               return (
                 <button
                   key={f.key}
                   onClick={() => setFilter(f.key)}
-                  className={`relative flex-1 min-w-fit whitespace-nowrap px-5 lg:px-7 py-3 rounded-full text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
-                    active
-                      ? "text-white shadow-[0_10px_30px_-8px_rgba(109,40,217,0.55)]"
-                      : "text-[#4B4869] hover:text-[#6D28D9]"
+                  className={`relative z-10 flex-1 min-w-fit whitespace-nowrap px-5 lg:px-7 py-3 rounded-full text-sm font-medium transition-colors duration-300 flex items-center justify-center gap-2 ${
+                    active ? "text-white" : "text-[#4B4869] hover:text-[#6D28D9]"
                   }`}
-                  style={active ? { background: "linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)" } : undefined}
                 >
-                  <span className={`w-1.5 h-1.5 rounded-full ${active ? "bg-[#C7F358]" : "bg-[#6D28D9]/50"}`} />
+                  <motion.span
+                    className="w-1.5 h-1.5 rounded-full"
+                    animate={{
+                      backgroundColor: active ? "#C7F358" : "rgba(109,40,217,0.5)",
+                      scale: active ? 1.2 : 1,
+                    }}
+                    transition={{ duration: 0.3 }}
+                  />
                   {f.label}
                 </button>
               );
