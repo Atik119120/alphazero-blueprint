@@ -142,8 +142,8 @@ const ServicesPage = () => {
       </section>
 
 
-      {/* Dynamic Services — Editorial split layout */}
-      <section className="py-20 lg:py-28 relative bg-[#f2f2f3]">
+      {/* Dynamic Services — Musemind-style alternating editorial rows */}
+      <section className="py-20 lg:py-28 relative bg-white">
         <div className="container mx-auto px-6">
           <div className="max-w-7xl mx-auto">
             {isLoading ? (
@@ -153,113 +153,132 @@ const ServicesPage = () => {
             ) : !services || services.length === 0 ? (
               <div className="text-center py-20 text-muted-foreground">No services found.</div>
             ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-                {/* Left — sticky heading + CTA */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  className="lg:col-span-5 lg:sticky lg:top-32"
-                >
-                  <div className="flex items-center gap-2 mb-6 text-foreground/60">
-                    <span className="text-xs">›</span>
-                    <span className="text-[11px] font-semibold tracking-[0.28em] uppercase">What We Do</span>
-                    <span className="text-xs">‹</span>
-                  </div>
-                  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-[1.05] tracking-tight text-foreground mb-10">
-                    Services built<br />to drive impact
-                  </h2>
-                  <div className="relative inline-block">
-                    <Link
-                      to="/contact"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold shadow-[0_10px_30px_-10px_rgba(6,182,212,0.55)] hover:shadow-[0_14px_34px_-10px_rgba(37,99,235,0.6)] hover:scale-[1.03] transition-all"
-                      style={{ background: "linear-gradient(135deg, #06b6d4 0%, #2563eb 100%)" }}
+              <div className="space-y-28 lg:space-y-36">
+                {services.map((service, index) => {
+                  const IconComponent = getIcon(service.icon);
+                  const isEven = index % 2 === 0;
+                  const palettes = [
+                    { bg: "#EFE9FF", accent: "#7C3AED" }, // purple
+                    { bg: "#FDE4EC", accent: "#EC4899" }, // pink
+                    { bg: "#DFF5E1", accent: "#10B981" }, // green
+                    { bg: "#FEF3C7", accent: "#F59E0B" }, // amber
+                  ];
+                  const palette = palettes[index % palettes.length];
+
+                  const TextSide = (
+                    <motion.div
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.6 }}
+                      className="flex flex-col justify-center"
                     >
-                      Discuss your ideas
-                    </Link>
-                    {/* Squiggle note */}
-                    <svg className="absolute -right-40 top-1/2 pointer-events-none hidden sm:block" width="150" height="60" viewBox="0 0 150 60" fill="none">
-                      <defs>
-                        <linearGradient id="squiggleGrad" x1="0" y1="0" x2="1" y2="0">
-                          <stop offset="0%" stopColor="#06b6d4" />
-                          <stop offset="100%" stopColor="#2563eb" />
-                        </linearGradient>
-                      </defs>
-                      <path d="M 5 5 C 20 20, 40 30, 70 35" stroke="url(#squiggleGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-                      <path d="M 65 30 L 70 35 L 62 38" stroke="url(#squiggleGrad)" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      <text x="72" y="44" fill="url(#squiggleGrad)" style={{ fontFamily: "'Caveat', cursive", fontSize: '22px', fontWeight: 600 }}>Let's get started</text>
-                    </svg>
-                  </div>
-                </motion.div>
+                      <h3 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-foreground leading-[1.05] tracking-tight mb-6">
+                        {service.title}
+                      </h3>
+                      <p className="text-foreground/60 text-base lg:text-lg leading-relaxed mb-10 max-w-[52ch]">
+                        {service.description}
+                      </p>
 
-                <div className="lg:col-span-7">
-                  {services.map((service, index) => {
-                    const IconComponent = getIcon(service.icon);
-                    const topOffset = 100 + index * 24;
-                    return (
-                      <div
-                        key={service.id}
-                        className="sticky"
-                        style={{ top: `${topOffset}px`, marginBottom: '24px', zIndex: 10 + index }}
-                      >
-                        <motion.div
-                          initial={{ opacity: 0, y: 30 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, amount: 0.3 }}
-                          transition={{ delay: index * 0.05 }}
-                          className="group relative bg-white rounded-[28px] p-7 lg:p-9 shadow-[0_20px_60px_-20px_rgba(34,211,238,0.06),0_10px_30px_-15px_rgba(59,130,246,0.03)] hover:shadow-[0_28px_70px_-20px_rgba(34,211,238,0.09),0_14px_35px_-15px_rgba(59,130,246,0.05)] transition-all border border-black/[0.05] overflow-hidden"
-                        >
-                          <span className="absolute top-5 right-6 text-[11px] font-mono tracking-[0.25em] text-foreground/30">
-                            {String(index + 1).padStart(2, "0")} / {String(services.length).padStart(2, "0")}
-                          </span>
-
-                          <span className="absolute top-0 left-8 right-8 h-px bg-foreground/10">
-                            <span className="block h-full w-0 group-hover:w-full bg-foreground/70 transition-[width] duration-500" />
-                          </span>
-
-                          <div className="flex items-start gap-5 mb-5">
-                            <div className="w-14 h-14 shrink-0 rounded-2xl border border-foreground/10 bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] flex items-center justify-center shadow-inner transition-transform duration-300 group-hover:-rotate-6">
-                              <IconComponent size={22} className="text-foreground" />
-                            </div>
-                            <div className="flex-1 pt-1">
-                              <h3 className="text-xl lg:text-2xl font-display font-bold text-foreground leading-tight">
-                                {service.title}
-                              </h3>
-                              <div className="mt-2 h-px w-10 bg-foreground/30 group-hover:w-20 transition-[width] duration-300" />
-                            </div>
-                          </div>
-
-                          <p className="text-foreground/60 text-sm lg:text-[15px] leading-relaxed mb-6 max-w-[52ch]">
-                            {service.description}
-                          </p>
-
-                          {service.features && service.features.length > 0 && (
-                            <div className="flex flex-wrap gap-2">
-                              {service.features.slice(0, 4).map((feature, idx) => (
-                                <span
-                                  key={idx}
-                                  className="px-3.5 py-1.5 rounded-md border border-foreground/15 bg-[#fafafa] text-[11px] font-semibold tracking-[0.15em] uppercase text-foreground/70 hover:border-foreground/40 hover:text-foreground transition-colors"
-                                >
+                      {service.features && service.features.length > 0 && (
+                        <ul className="divide-y divide-foreground/10 border-t border-foreground/10">
+                          {service.features.slice(0, 8).map((feature, idx) => (
+                            <li
+                              key={idx}
+                              className="group flex items-center justify-between py-5 cursor-pointer"
+                            >
+                              <div className="flex items-center gap-6">
+                                <span className="text-sm font-mono text-foreground/40 tabular-nums">
+                                  {String(idx + 1).padStart(2, "0")}
+                                </span>
+                                <span className="text-lg lg:text-xl font-semibold text-foreground group-hover:translate-x-1 transition-transform">
                                   {feature}
                                 </span>
-                              ))}
-                            </div>
-                          )}
+                              </div>
+                              <ArrowRight
+                                size={20}
+                                className="text-foreground/50 group-hover:text-foreground group-hover:translate-x-1 transition-all"
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </motion.div>
+                  );
 
-                          <div className="absolute bottom-6 right-6 w-9 h-9 rounded-full border border-foreground/15 flex items-center justify-center opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                            <ArrowRight size={14} className="text-foreground" />
-                          </div>
-                        </motion.div>
+                  const VisualSide = (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.7 }}
+                      className="relative rounded-[32px] overflow-hidden aspect-[4/5] lg:aspect-[5/6] flex items-center justify-center"
+                      style={{ background: palette.bg }}
+                    >
+                      {/* soft blurred orbs */}
+                      <div
+                        className="absolute -top-16 -left-16 w-64 h-64 rounded-full blur-3xl opacity-40"
+                        style={{ background: palette.accent }}
+                      />
+                      <div
+                        className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full blur-3xl opacity-30"
+                        style={{ background: palette.accent }}
+                      />
+
+                      {/* Center icon medallion */}
+                      <div className="relative z-10 flex flex-col items-center gap-6">
+                        <div
+                          className="w-28 h-28 lg:w-36 lg:h-36 rounded-3xl bg-white shadow-[0_20px_60px_-20px_rgba(0,0,0,0.2)] flex items-center justify-center"
+                        >
+                          <IconComponent size={56} style={{ color: palette.accent }} />
+                        </div>
+                        <span
+                          className="text-xs font-bold tracking-[0.3em] uppercase"
+                          style={{ color: palette.accent }}
+                        >
+                          {String(index + 1).padStart(2, "0")} · Service
+                        </span>
                       </div>
-                    );
-                  })}
-                </div>
 
+                      {/* floating chips */}
+                      {service.features?.slice(0, 2).map((f, i) => (
+                        <div
+                          key={i}
+                          className={`absolute z-10 bg-white rounded-full px-4 py-2 shadow-lg text-xs font-semibold text-foreground/80 ${
+                            i === 0 ? "top-10 right-8" : "bottom-10 left-8"
+                          }`}
+                        >
+                          {f}
+                        </div>
+                      ))}
+                    </motion.div>
+                  );
+
+                  return (
+                    <div
+                      key={service.id}
+                      className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-stretch"
+                    >
+                      {isEven ? (
+                        <>
+                          {VisualSide}
+                          {TextSide}
+                        </>
+                      ) : (
+                        <>
+                          {TextSide}
+                          {VisualSide}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
         </div>
       </section>
+
 
 
       {/* Process Section — editorial numbered */}
