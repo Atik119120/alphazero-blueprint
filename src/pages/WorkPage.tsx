@@ -228,8 +228,8 @@ const WorkPage = () => {
                     </motion.article>
                   );
                 })}
-              </AnimatePresence>
-            </motion.div>
+            </div>
+
           )}
         </div>
       </section>
