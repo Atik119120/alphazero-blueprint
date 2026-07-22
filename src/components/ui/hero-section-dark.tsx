@@ -185,7 +185,7 @@ const HeroContent = ({
       {title}
       <ChevronRight className="inline w-3 h-3 ml-1.5 group-hover:translate-x-1 duration-300" />
     </h1>
-    <h2 data-hero-title className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter font-geist mx-auto drop-shadow-2xl sm:whitespace-nowrap">
+    <h2 data-hero-title style={{ fontFamily: "'Playfair Display', serif" }} className="text-[2rem] leading-[1.05] sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter mx-auto drop-shadow-2xl sm:whitespace-nowrap italic">
       <span className="bg-clip-text text-transparent bg-[linear-gradient(180deg,hsl(var(--foreground))_0%,hsl(var(--foreground)/0.7)_100%)]">
         {splitWords(subtitle.regular)}
       </span>
