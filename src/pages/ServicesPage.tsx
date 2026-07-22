@@ -305,7 +305,7 @@ const ServicesPage = () => {
                   className="group relative p-8 lg:p-10 min-h-[260px] hover:bg-white/[0.02] transition-colors"
                 >
                   <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors mb-8" />
-                  <h3 className="text-xl lg:text-2xl font-display font-bold mb-3 text-white">{t(item.titleKey)}</h3>
+                  <h3 className="text-xl lg:text-2xl font-display font-medium mb-3 text-white">{t(item.titleKey)}</h3>
                   <p className="text-white/50 text-sm leading-relaxed">{t(item.descKey)}</p>
                 </motion.div>
               ))}
@@ -346,7 +346,7 @@ const ServicesPage = () => {
                   className="group relative p-8 lg:p-10 min-h-[240px] hover:bg-white/[0.02] transition-colors"
                 >
                   <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors mb-8" />
-                  <h4 className="text-xl lg:text-2xl font-display font-bold mb-3 text-white">{item.title}</h4>
+                  <h4 className="text-xl lg:text-2xl font-display font-medium mb-3 text-white">{item.title}</h4>
                   <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
