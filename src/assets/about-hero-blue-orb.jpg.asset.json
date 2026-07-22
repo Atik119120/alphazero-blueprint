@@ -2,10 +2,11 @@
   "version": 1,
   "asset_id": "85377af8-bde4-4770-b360-0b9f9ac35608",
   "project_id": "22772b10-1dad-4376-b141-386642f69a6f",
-  "url": "/__l5e/assets-v1/85377af8-bde4-4770-b360-0b9f9ac35608/about-hero-blue-orb.jpg",
+  "url": "https://res.cloudinary.com/de348sqlb/image/upload/v1784724985/alphazero-assets/about-hero-blue-orb.jpg",
   "r2_key": "a/v1/22772b10-1dad-4376-b141-386642f69a6f/85377af8-bde4-4770-b360-0b9f9ac35608/about-hero-blue-orb.jpg",
   "original_filename": "about-hero-blue-orb.jpg",
   "size": 29186,
   "content_type": "image/jpeg",
-  "created_at": "2026-07-21T17:43:56Z"
+  "created_at": "2026-07-21T17:43:56Z",
+  "cloudinary_public_id": "alphazero-assets/about-hero-blue-orb"
 }

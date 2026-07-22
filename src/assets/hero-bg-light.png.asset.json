@@ -2,10 +2,11 @@
   "version": 1,
   "asset_id": "dbe89a14-357e-44d3-a226-6f990efe9c4e",
   "project_id": "22772b10-1dad-4376-b141-386642f69a6f",
-  "url": "https://alphazero.online/__l5e/assets-v1/dbe89a14-357e-44d3-a226-6f990efe9c4e/hero-bg-light.png",
+  "url": "https://res.cloudinary.com/de348sqlb/image/upload/v1784725010/alphazero-assets/hero-bg-light.png",
   "r2_key": "a/v1/22772b10-1dad-4376-b141-386642f69a6f/dbe89a14-357e-44d3-a226-6f990efe9c4e/hero-bg-light.png",
   "original_filename": "hero-bg-light.png",
   "size": 1649329,
   "content_type": "image/png",
-  "created_at": "2026-07-11T14:01:04Z"
+  "created_at": "2026-07-11T14:01:04Z",
+  "cloudinary_public_id": "alphazero-assets/hero-bg-light"
 }
