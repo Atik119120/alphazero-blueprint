@@ -55,12 +55,12 @@ const ContactPage = () => {
     `https://wa.me/${normalizePhoneForWhatsApp(phone)}`;
 
   const socialLinks = [
-    { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook },
-    { name: "WhatsApp", url: whatsappLink, icon: MessageCircle },
-    { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin },
-    { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter },
-    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon },
+    { name: "Facebook", handle: "@alphazero", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, brand: "#1877F2" },
+    { name: "WhatsApp", handle: "Chat with us", url: whatsappLink, icon: MessageCircle, brand: "#25D366" },
+    { name: "Instagram", handle: "@alphazero.online", url: "https://www.instagram.com/alphazero.online", icon: Instagram, brand: "#E4405F" },
+    { name: "LinkedIn", handle: "AlphaZero Agency", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin, brand: "#0A66C2" },
+    { name: "X", handle: "@AgencyAlphazero", url: "https://x.com/AgencyAlphazero", icon: Twitter, brand: "#0F172A" },
+    { name: "Discord", handle: "Join community", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon, brand: "#5865F2" },
   ];
 
   return (
@@ -141,48 +141,90 @@ const ContactPage = () => {
               </div>
             </motion.div>
 
-            {/* Follow Us — replaces old contact form */}
+            {/* Follow Us — premium redesign */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="relative h-full rounded-3xl p-8 lg:p-10 glass-card overflow-hidden">
-                <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-cyan-400/10 blur-3xl pointer-events-none" />
+              {/* Animated gradient border wrapper */}
+              <div className="relative h-full rounded-[2rem] p-[1.5px] overflow-hidden bg-[conic-gradient(from_var(--angle),theme(colors.cyan.400),theme(colors.primary),theme(colors.violet.400),theme(colors.cyan.400))] [--angle:0deg] animate-[spin_8s_linear_infinite]"
+                   style={{ animation: "spin 10s linear infinite" }}>
+                <div className="relative h-full rounded-[2rem] bg-white/85 backdrop-blur-2xl p-8 lg:p-10 overflow-hidden">
+                  {/* Ambient glows */}
+                  <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+                  <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-cyan-300/25 blur-3xl pointer-events-none" />
+                  <div className="absolute inset-0 opacity-[0.035] pointer-events-none"
+                       style={{ backgroundImage: "radial-gradient(circle at 1px 1px, #000 1px, transparent 0)", backgroundSize: "18px 18px" }} />
 
-                <div className="relative">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium mb-5">
-                    <Sparkles size={14} /> {t("contact.followUs")}
-                  </div>
-                  <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3 leading-tight">
-                    {t("contact.followUs")}
-                  </h2>
-                  <p className="text-muted-foreground mb-8 max-w-md">
-                    Stay connected with AlphaZero across our favourite platforms — updates, work, and behind-the-scenes.
-                  </p>
+                  <div className="relative">
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-semibold mb-6 shadow-sm">
+                      <Sparkles size={14} className="animate-pulse" /> {t("contact.followUs")}
+                    </div>
+                    <h2 className="text-4xl lg:text-5xl font-display font-bold mb-4 leading-[1.05] tracking-tight">
+                      Follow <span className="italic font-normal bg-gradient-to-r from-primary via-cyan-500 to-violet-500 bg-clip-text text-transparent">us</span>
+                    </h2>
+                    <p className="text-muted-foreground mb-8 max-w-md text-[15px] leading-relaxed">
+                      Stay connected with AlphaZero across our favourite platforms — updates, work, and behind-the-scenes.
+                    </p>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    {socialLinks.map((social, i) => (
-                      <motion.a
-                        key={social.name}
-                        href={social.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        initial={{ opacity: 0, y: 12 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.05 }}
-                        whileHover={{ y: -3 }}
-                        className="group flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-white/70 backdrop-blur-sm border border-border/60 hover:border-primary/40 hover:shadow-lg transition-all duration-300"
-                      >
-                        <span className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                          <social.icon size={16} />
-                        </span>
-                        <span className="text-sm font-semibold">{social.name}</span>
-                      </motion.a>
-                    ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {socialLinks.map((social, i) => (
+                        <motion.a
+                          key={social.name}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          initial={{ opacity: 0, y: 14 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.06, duration: 0.4, ease: "easeOut" }}
+                          whileHover={{ y: -4 }}
+                          style={{ ["--brand" as any]: social.brand }}
+                          className="group relative flex items-center gap-3 p-3.5 rounded-2xl bg-white/90 backdrop-blur-sm border border-border/70 overflow-hidden transition-all duration-300 hover:shadow-[0_10px_30px_-10px_var(--brand)] hover:border-[color:var(--brand)]/40"
+                        >
+                          {/* Shine sweep */}
+                          <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+                          {/* Brand hover tint */}
+                          <span className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                style={{ background: `radial-gradient(120% 100% at 0% 0%, ${social.brand}12, transparent 60%)` }} />
+
+                          <span
+                            className="relative w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-4deg]"
+                            style={{ backgroundColor: `${social.brand}15`, color: social.brand }}
+                          >
+                            <social.icon size={18} />
+                          </span>
+                          <div className="relative min-w-0 flex-1">
+                            <div className="text-sm font-bold leading-tight truncate">{social.name}</div>
+                            <div className="text-[11px] text-muted-foreground truncate">{social.handle}</div>
+                          </div>
+                          <svg className="relative w-4 h-4 shrink-0 text-muted-foreground/50 group-hover:text-[color:var(--brand)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+                               viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M7 17L17 7M9 7h8v8" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </motion.a>
+                      ))}
+                    </div>
+
+                    {/* Bottom stat strip */}
+                    <div className="mt-8 pt-6 border-t border-border/50 flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-2">
+                        <div className="flex -space-x-2">
+                          {socialLinks.slice(0, 4).map((s) => (
+                            <span key={s.name} className="w-7 h-7 rounded-full border-2 border-white flex items-center justify-center"
+                                  style={{ backgroundColor: `${s.brand}20`, color: s.brand }}>
+                              <s.icon size={12} />
+                            </span>
+                          ))}
+                        </div>
+                        <span className="text-xs text-muted-foreground font-medium">6 platforms</span>
+                      </div>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
+                        <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Active daily
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
