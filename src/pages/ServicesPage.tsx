@@ -46,6 +46,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageHero } from "@/hooks/usePageHero";
 import { useServices } from "@/hooks/useServices";
 import servicesHeroBg from "@/assets/services-hero-bg-5.jpg.asset.json";
+import brandIdentityImage from "@/assets/brand-identity-showcase.jpg.asset.json";
 
 
 // Icon mapping for dynamic services
