@@ -423,8 +423,15 @@ const FaqSection = () => {
   return (
     <section className="px-4 md:px-8 pb-20 md:pb-28">
       <div className="max-w-7xl mx-auto">
-        <div className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden" style={{ background: "linear-gradient(180deg,#ECFEFF 0%,#CFFAFE 100%)" }}>
-          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-start mb-10 md:mb-14">
+        <div
+          className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden"
+          style={{
+            background: "linear-gradient(180deg,#ECFEFF 0%,#D5F8FE 42%,#F5FEFF 78%,#FFFFFF 100%)",
+            boxShadow: "inset 0 -120px 110px -65px rgba(255,255,255,0.98)",
+          }}
+        >
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-white/75 to-white pointer-events-none" />
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-start mb-10 md:mb-14">
             <div className="relative">
               <h2 className="font-display font-bold text-[#083344] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
                 Frequently<br />Asked Question
@@ -440,7 +447,7 @@ const FaqSection = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="relative z-10 flex flex-col gap-4">
             {FAQS.map((item, i) => {
               const isOpen = open === i;
               return (
