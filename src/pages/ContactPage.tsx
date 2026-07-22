@@ -211,7 +211,8 @@ const ContactPage = () => {
 
             {/* Studio card with live map */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-              className="lg:col-span-5">
+              className="lg:col-span-5 h-full">
+
               <div className="relative h-full rounded-[2rem] overflow-hidden bg-black text-white flex flex-col min-h-[420px]">
                 {/* Header */}
                 <div className="relative p-8 lg:p-10 pb-6">
