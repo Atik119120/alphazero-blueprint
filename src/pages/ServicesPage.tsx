@@ -227,12 +227,19 @@ const ServicesPage = () => {
                     titleLower.includes("web") ||
                     titleLower.includes("development") ||
                     titleLower.includes("ওয়েব");
+                  const isSEO =
+                    titleLower.includes("seo") ||
+                    titleLower.includes("marketing") ||
+                    titleLower.includes("content") ||
+                    titleLower.includes("মার্কেটিং");
                   const customImage = isBrandIdentity
                     ? brandIdentityImage.url
                     : isWebDev
                     ? webDevImage.url
                     : isProductUI
                     ? productUIImage.url
+                    : isSEO
+                    ? seoMarketingImage.url
                     : null;
 
                   const VisualSide = (
