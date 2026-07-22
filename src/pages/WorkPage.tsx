@@ -1,9 +1,11 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Play, ArrowUpRight, Briefcase } from "lucide-react";
+import { X, Play, ArrowUpRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { usePageHero } from "@/hooks/usePageHero";
+
 
 /* ─── Category helpers ─── */
 const isGraphics = (w: Work) => {
