@@ -55,12 +55,12 @@ const ContactPage = () => {
     `https://wa.me/${normalizePhoneForWhatsApp(phone)}`;
 
   const socialLinks = [
-    { name: "Facebook", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook },
-    { name: "WhatsApp", url: whatsappLink, icon: MessageCircle },
-    { name: "Instagram", url: "https://www.instagram.com/alphazero.online", icon: Instagram },
-    { name: "LinkedIn", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin },
-    { name: "X", url: "https://x.com/AgencyAlphazero", icon: Twitter },
-    { name: "Discord", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon },
+    { name: "Facebook", handle: "@alphazero", url: "https://www.facebook.com/share/1Zm7yMhPtk/", icon: Facebook, brand: "#1877F2" },
+    { name: "WhatsApp", handle: "Chat with us", url: whatsappLink, icon: MessageCircle, brand: "#25D366" },
+    { name: "Instagram", handle: "@alphazero.online", url: "https://www.instagram.com/alphazero.online", icon: Instagram, brand: "#E4405F" },
+    { name: "LinkedIn", handle: "AlphaZero Agency", url: "https://www.linkedin.com/company/alphazero-agency", icon: Linkedin, brand: "#0A66C2" },
+    { name: "X", handle: "@AgencyAlphazero", url: "https://x.com/AgencyAlphazero", icon: Twitter, brand: "#0F172A" },
+    { name: "Discord", handle: "Join community", url: "https://discord.gg/uerwPXFf5", icon: DiscordIcon, brand: "#5865F2" },
   ];
 
   return (
