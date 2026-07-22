@@ -177,13 +177,16 @@ const Navbar = () => {
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
-                      <span className={`relative z-10 transition-colors duration-200 ${
+                      <span className={`relative z-10 transition-colors duration-300 ${
                         isActive
                           ? "text-cyan-400 font-semibold"
-                          : "text-muted-foreground hover:text-foreground"
+                          : isOverHero
+                            ? "text-white/90 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+                            : "text-neutral-800 hover:text-black"
                       }`}>
                         {link.name}
                       </span>
+
                     </>
                   );
                   return link.href.startsWith("http") ? (
