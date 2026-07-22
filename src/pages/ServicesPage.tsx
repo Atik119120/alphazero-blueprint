@@ -234,11 +234,11 @@ const ServicesPage = () => {
                       viewport={{ once: true, amount: 0.3 }}
                       transition={{ duration: 0.7 }}
                       className="relative rounded-[32px] overflow-hidden aspect-[4/5] lg:aspect-[5/6] flex items-center justify-center"
-                      style={{ background: isBrandIdentity ? "#0a0a0a" : palette.bg }}
+                      style={{ background: customImage ? "#0a0a0a" : palette.bg }}
                     >
-                      {isBrandIdentity ? (
+                      {customImage ? (
                         <img
-                          src={brandIdentityImage.url}
+                          src={customImage}
                           alt={service.title}
                           className="absolute inset-0 w-full h-full object-cover"
                           loading="lazy"
