@@ -122,11 +122,11 @@ const ServicesPage = () => {
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{hero("hero.title", t("services.title"))}</span>{" "}
+              {hero("hero.title", t("services.title"))}{" "}
               {hero("hero.title2", t("services.title2"))}
               <br />
               {hero("hero.title3", t("services.title3"))}{" "}
-              <span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{hero("hero.title4", "Matter")}</span>
+              <span className="gradient-text">{hero("hero.title4", "Matter")}</span>
             </motion.h1>
 
             <motion.p
