@@ -46,6 +46,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageHero } from "@/hooks/usePageHero";
 import { useServices } from "@/hooks/useServices";
 import servicesHeroBg from "@/assets/services-hero-bg-5.jpg.asset.json";
+import brandIdentityImage from "@/assets/brand-identity-showcase.jpg.asset.json";
 
 
 // Icon mapping for dynamic services
@@ -206,6 +207,14 @@ const ServicesPage = () => {
                     </motion.div>
                   );
 
+                  const titleLower = (service.title || "").toLowerCase();
+                  const isBrandIdentity =
+                    titleLower.includes("brand") ||
+                    titleLower.includes("identity") ||
+                    titleLower.includes("illustration") ||
+                    titleLower.includes("ব্র্যান্ড") ||
+                    titleLower.includes("ইলাস্ট্রেশন");
+
                   const VisualSide = (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.95 }}
@@ -213,44 +222,55 @@ const ServicesPage = () => {
                       viewport={{ once: true, amount: 0.3 }}
                       transition={{ duration: 0.7 }}
                       className="relative rounded-[32px] overflow-hidden aspect-[4/5] lg:aspect-[5/6] flex items-center justify-center"
-                      style={{ background: palette.bg }}
+                      style={{ background: isBrandIdentity ? "#0a0a0a" : palette.bg }}
                     >
-                      {/* soft blurred orbs */}
-                      <div
-                        className="absolute -top-16 -left-16 w-64 h-64 rounded-full blur-3xl opacity-40"
-                        style={{ background: palette.accent }}
-                      />
-                      <div
-                        className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full blur-3xl opacity-30"
-                        style={{ background: palette.accent }}
-                      />
+                      {isBrandIdentity ? (
+                        <img
+                          src={brandIdentityImage.url}
+                          alt={service.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <>
+                          {/* soft blurred orbs */}
+                          <div
+                            className="absolute -top-16 -left-16 w-64 h-64 rounded-full blur-3xl opacity-40"
+                            style={{ background: palette.accent }}
+                          />
+                          <div
+                            className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full blur-3xl opacity-30"
+                            style={{ background: palette.accent }}
+                          />
 
-                      {/* Center icon medallion */}
-                      <div className="relative z-10 flex flex-col items-center gap-6">
-                        <div
-                          className="w-28 h-28 lg:w-36 lg:h-36 rounded-3xl bg-white shadow-[0_20px_60px_-20px_rgba(0,0,0,0.2)] flex items-center justify-center"
-                        >
-                          <IconComponent size={56} style={{ color: palette.accent }} />
-                        </div>
-                        <span
-                          className="text-xs font-bold tracking-[0.3em] uppercase"
-                          style={{ color: palette.accent }}
-                        >
-                          {String(index + 1).padStart(2, "0")} · Service
-                        </span>
-                      </div>
+                          {/* Center icon medallion */}
+                          <div className="relative z-10 flex flex-col items-center gap-6">
+                            <div
+                              className="w-28 h-28 lg:w-36 lg:h-36 rounded-3xl bg-white shadow-[0_20px_60px_-20px_rgba(0,0,0,0.2)] flex items-center justify-center"
+                            >
+                              <IconComponent size={56} style={{ color: palette.accent }} />
+                            </div>
+                            <span
+                              className="text-xs font-bold tracking-[0.3em] uppercase"
+                              style={{ color: palette.accent }}
+                            >
+                              {String(index + 1).padStart(2, "0")} · Service
+                            </span>
+                          </div>
 
-                      {/* floating chips */}
-                      {service.features?.slice(0, 2).map((f, i) => (
-                        <div
-                          key={i}
-                          className={`absolute z-10 bg-white rounded-full px-4 py-2 shadow-lg text-xs font-semibold text-foreground/80 ${
-                            i === 0 ? "top-10 right-8" : "bottom-10 left-8"
-                          }`}
-                        >
-                          {f}
-                        </div>
-                      ))}
+                          {/* floating chips */}
+                          {service.features?.slice(0, 2).map((f, i) => (
+                            <div
+                              key={i}
+                              className={`absolute z-10 bg-white rounded-full px-4 py-2 shadow-lg text-xs font-semibold text-foreground/80 ${
+                                i === 0 ? "top-10 right-8" : "bottom-10 left-8"
+                              }`}
+                            >
+                              {f}
+                            </div>
+                          ))}
+                        </>
+                      )}
                     </motion.div>
                   );
 
