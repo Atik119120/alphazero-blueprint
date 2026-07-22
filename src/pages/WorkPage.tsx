@@ -253,9 +253,8 @@ const WorkPage = () => {
         </div>
       </section>
 
-
-
-
+      {/* FAQ */}
+      <FaqSection />
 
 
       {/* Image lightbox */}
