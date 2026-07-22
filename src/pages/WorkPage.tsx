@@ -96,7 +96,7 @@ const WorkPage = () => {
       {/* Hero — Services style */}
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
         <div className="absolute inset-0 bg-black" />
-        <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
+        <img src={servicesHeroBg.url} alt="" loading="eager" decoding="async"
           className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-110 opacity-85" />
         <div className="absolute inset-0 bg-black/35" />
         <div className="container mx-auto px-6 relative z-10">
@@ -160,7 +160,7 @@ const WorkPage = () => {
             <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
             >
-              {filtered.map((project, idx) => {
+              {filtered.map((project) => {
 
                   const vid = isVideo(project);
                   const thumb = vid
