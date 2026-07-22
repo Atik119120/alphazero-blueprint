@@ -133,24 +133,58 @@ const ContactPage = () => {
                 ))}
               </div>
 
-              {/* Social Links */}
-              <div>
-                <p className="font-semibold mb-4">{t("contact.followUs")}</p>
-                <div className="flex gap-3 flex-wrap">
-                  {socialLinks.map((social) => (
-                    <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl glass-card hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 text-sm font-medium">
-                      <social.icon size={16} />{social.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
               <div className="pt-4 border-t border-border/40">
                 <p className="text-sm text-muted-foreground mb-2">{t("contact.visitWebsite")}</p>
                 <a href="https://www.alphazero.online" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
                   www.alphazero.online
                 </a>
+              </div>
+            </motion.div>
+
+            {/* Follow Us — replaces old contact form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="relative h-full rounded-3xl p-8 lg:p-10 glass-card overflow-hidden">
+                <div className="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-cyan-400/10 blur-3xl pointer-events-none" />
+
+                <div className="relative">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium mb-5">
+                    <Sparkles size={14} /> {t("contact.followUs")}
+                  </div>
+                  <h2 className="text-3xl lg:text-4xl font-display font-bold mb-3 leading-tight">
+                    {t("contact.followUs")}
+                  </h2>
+                  <p className="text-muted-foreground mb-8 max-w-md">
+                    Stay connected with AlphaZero across our favourite platforms — updates, work, and behind-the-scenes.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    {socialLinks.map((social, i) => (
+                      <motion.a
+                        key={social.name}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        initial={{ opacity: 0, y: 12 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.05 }}
+                        whileHover={{ y: -3 }}
+                        className="group flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-white/70 backdrop-blur-sm border border-border/60 hover:border-primary/40 hover:shadow-lg transition-all duration-300"
+                      >
+                        <span className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                          <social.icon size={16} />
+                        </span>
+                        <span className="text-sm font-semibold">{social.name}</span>
+                      </motion.a>
+                    ))}
+                  </div>
+                </div>
               </div>
             </motion.div>
 
