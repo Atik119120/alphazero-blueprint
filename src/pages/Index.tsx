@@ -396,7 +396,7 @@ const Index = () => {
   return (
     <LayoutComponent>
       {/* ══════════ HERO — Retro Grid Dark ══════════ */}
-      <section ref={heroRef} className="relative overflow-hidden -mt-20 bg-background text-foreground">
+      <section id="site-hero" ref={heroRef} className="relative overflow-hidden -mt-20 bg-background text-foreground">
         {/* Aceternity-style ambient FX */}
         <Spotlight className="-top-40 left-0 md:-top-20 md:left-60" />
         <BackgroundBeams className="opacity-70" />

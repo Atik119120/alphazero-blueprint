@@ -34,9 +34,11 @@ const LEARN_ROUTES = ["/courses", "/instructors", "/learn-about"];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOverHero, setIsOverHero] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
   const location = useLocation();
   const isLearnContext = isLearnSubdomain || LEARN_ROUTES.some((r) => location.pathname.startsWith(r));
   const brandLogo = isLearnContext ? learnLogo : logoFull;
@@ -72,11 +74,26 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const y = window.scrollY;
+      setIsScrolled(y > 50);
+      const heroEl = document.getElementById("site-hero");
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        // Over hero while its bottom is still below the navbar area (~80px)
+        setIsOverHero(rect.bottom > 80);
+      } else {
+        setIsOverHero(false);
+      }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [location.pathname]);
+
 
   const handleNavClick = () => {
     setIsMobileMenuOpen(false);
@@ -117,22 +134,22 @@ const Navbar = () => {
                   alt="AlphaZero Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isScrolled ? 0 : 1,
+                    opacity: isOverHero ? 1 : 0,
                     filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
                   }}
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
                 />
-                {/* Metallic silver/dark logo — visible over light content when scrolled */}
+                {/* Dark logo — visible over light content past the hero */}
                 <img
                   src={brandLogo}
                   alt=""
                   aria-hidden
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isScrolled ? 1 : 0,
-                    filter: "brightness(0) saturate(0) invert(0.18) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
+                    opacity: isOverHero ? 0 : 1,
+                    filter: "brightness(0) saturate(0) invert(0.08) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
                   }}
                   loading="eager"
                   decoding="async"
@@ -151,6 +168,7 @@ const Navbar = () => {
 
                   const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
                   const linkInner = (
+
                     <>
                       {isActive && (
                         <motion.div
@@ -159,13 +177,16 @@ const Navbar = () => {
                           transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
                         />
                       )}
-                      <span className={`relative z-10 transition-colors duration-200 ${
+                      <span className={`relative z-10 transition-colors duration-300 ${
                         isActive
                           ? "text-cyan-400 font-semibold"
-                          : "text-muted-foreground hover:text-foreground"
+                          : isOverHero
+                            ? "text-white/90 hover:text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+                            : "text-neutral-800 hover:text-black"
                       }`}>
                         {link.name}
                       </span>
+
                     </>
                   );
                   return link.href.startsWith("http") ? (
