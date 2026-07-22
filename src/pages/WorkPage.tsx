@@ -106,17 +106,8 @@ const WorkPage = () => {
         </svg>
 
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            className="flex justify-center mb-6"
-          >
-            <div className="inline-flex items-center gap-2 pl-1.5 pr-4 py-1.5 rounded-full bg-white shadow-[0_4px_20px_rgba(76,29,149,0.08)] border border-[#EEF0FF]">
-              <span className="w-7 h-7 rounded-full bg-white shadow-inner border border-[#EEF0FF] flex items-center justify-center">
-                <Briefcase size={13} className="text-[#6D28D9]" />
-              </span>
-              <span className="text-[13px] font-medium text-[#6D28D9] tracking-wide">Portfolio</span>
-            </div>
-          </motion.div>
+
+
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}
