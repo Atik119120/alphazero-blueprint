@@ -208,35 +208,44 @@ const ContactPage = () => {
               </div>
             </motion.div>
 
-            {/* Studio card */}
+            {/* Studio card with live map */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
               className="lg:col-span-5">
-              <div className="relative h-full rounded-[2rem] overflow-hidden bg-black text-white p-8 lg:p-10 flex flex-col justify-between min-h-[420px]">
-                {/* Decorative rings */}
-                <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full border border-white/10" />
-                <div className="absolute -top-40 -right-40 w-72 h-72 rounded-full border border-white/10" />
-                <div className="absolute -top-40 -right-40 w-48 h-48 rounded-full border border-white/10" />
-                <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
-                  style={{ backgroundImage: "radial-gradient(circle at 1px 1px,#fff 1px,transparent 0)", backgroundSize: "20px 20px" }} />
-
-                <div className="relative">
-                  <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-4">Our studio</div>
-                  <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-4">
+              <div className="relative h-full rounded-[2rem] overflow-hidden bg-black text-white flex flex-col min-h-[420px]">
+                {/* Header */}
+                <div className="relative p-8 lg:p-10 pb-6">
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Our studio</div>
+                  <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-3">
                     Come say hi<br />in <span className="italic font-normal text-cyan-300">Rajshahi</span>.
                   </h3>
-                  <p className="text-white/60 leading-relaxed max-w-sm">{address}</p>
+                  <p className="text-white/60 leading-relaxed text-sm max-w-sm">{address}</p>
                 </div>
 
-                <div className="relative flex items-center justify-between pt-8 mt-8 border-t border-white/10">
-                  <div>
-                    <div className="text-xs uppercase tracking-wider text-white/40 mb-1">Website</div>
-                    <a href="https://www.alphazero.online" target="_blank" rel="noopener noreferrer"
-                      className="font-semibold text-cyan-300 hover:text-cyan-200">
-                      www.alphazero.online
-                    </a>
+                {/* Live map */}
+                <div className="relative flex-1 min-h-[220px] mx-6 lg:mx-8 rounded-2xl overflow-hidden border border-white/10 group">
+                  <iframe
+                    title="AlphaZero Studio location"
+                    src="https://www.google.com/maps?q=Hi-Tech+Park+Rajshahi+Bangladesh&output=embed"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="absolute inset-0 w-full h-full grayscale contrast-125 opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                    style={{ border: 0 }}
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse" /> Live map
                   </div>
+                </div>
+
+                {/* Footer */}
+                <div className="relative flex items-center justify-between gap-4 p-6 lg:p-8 pt-6">
+                  <a href="https://www.google.com/maps/search/?api=1&query=Hi-Tech+Park+Rajshahi+Bangladesh"
+                    target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-cyan-200 font-semibold">
+                    <MapPin size={14} /> Open in Maps
+                  </a>
                   <a href={`mailto:${email}`}
-                    className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-black font-semibold text-sm hover:bg-cyan-300 transition-colors">
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black font-semibold text-sm hover:bg-cyan-300 transition-colors">
                     Say hello <ArrowUpRight size={16} />
                   </a>
                 </div>
