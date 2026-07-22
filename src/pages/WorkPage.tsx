@@ -123,7 +123,7 @@ const WorkPage = () => {
 
 
       {/* Filter pill bar */}
-      <section className="relative -mt-10 lg:-mt-14 z-20">
+      <section className="relative pt-12 lg:pt-16 z-20">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-5xl bg-white rounded-full shadow-[0_20px_60px_-20px_rgba(76,29,149,0.18)] border border-[#EEF0FF] p-2 flex items-center gap-1 overflow-x-auto scrollbar-none">
             {FILTERS.map((f) => {
