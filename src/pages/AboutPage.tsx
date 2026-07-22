@@ -444,7 +444,7 @@ const ProcessCards = ({ values }: { values: ProcessValue[] }) => {
     <div ref={containerRef} className="relative grid grid-cols-1 gap-8 pt-8 pb-8 md:block md:min-h-[520px]">
       {/* Dynamic connector overlay — behind cards, non-interactive */}
       <svg
-        className="hidden md:block absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none"
         width={size.w}
         height={size.h}
         viewBox={`0 0 ${size.w || 1} ${size.h || 1}`}
