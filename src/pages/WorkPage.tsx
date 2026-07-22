@@ -169,17 +169,13 @@ const WorkPage = () => {
                     : project.image_url;
 
                   return (
-                    <motion.article
+                    <article
                       key={project.id}
-                      layout
-                      initial={{ opacity: 0, y: 24 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
-                      transition={{ duration: 0.45, delay: (idx % 9) * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                      className="group cursor-pointer"
+                      className="group cursor-pointer animate-fade-in"
+                      style={{ animationDelay: `${(idx % 9) * 40}ms`, animationFillMode: "backwards" }}
                       onClick={() => handleCardClick(project)}
                     >
-                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.15)] hover:shadow-[0_24px_60px_-24px_rgba(109,40,217,0.28)] transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.15)] hover:shadow-[0_24px_60px_-24px_rgba(109,40,217,0.28)] transition-shadow duration-500 overflow-hidden">
                         {/* Image */}
                         <div className="relative aspect-[4/3] overflow-hidden mx-3 mt-3 rounded-2xl" style={{ background: "linear-gradient(180deg, #F4F5FC 0%, #E9EBF7 100%)" }}>
                           {thumb ? (
@@ -187,16 +183,17 @@ const WorkPage = () => {
                               src={thumb}
                               alt={project.title}
                               loading="lazy"
+                              decoding="async"
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                               onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
                             />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-[#B5B3C9] text-sm">No preview</div>
                           )}
                           {vid && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="w-14 h-14 rounded-full bg-white/95 shadow-xl flex items-center justify-center scale-90 group-hover:scale-100 transition-transform duration-500">
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                              <div className="w-14 h-14 rounded-full bg-white/95 shadow-xl flex items-center justify-center">
                                 <Play size={22} className="text-[#6D28D9] ml-0.5" fill="currentColor" />
                               </div>
                             </div>
@@ -216,13 +213,14 @@ const WorkPage = () => {
                               {categoryLabel(project)}
                             </p>
                           </div>
-                          <span className="flex-shrink-0 w-11 h-11 rounded-full border border-[#E3E5F5] flex items-center justify-center text-[#6D28D9] group-hover:bg-[#6D28D9] group-hover:text-white group-hover:border-[#6D28D9] transition-all duration-300">
+                          <span className="flex-shrink-0 w-11 h-11 rounded-full border border-[#E3E5F5] flex items-center justify-center text-[#6D28D9] group-hover:bg-[#6D28D9] group-hover:text-white group-hover:border-[#6D28D9] transition-colors duration-300">
                             <ArrowUpRight size={18} />
                           </span>
                         </div>
                       </div>
-                    </motion.article>
+                    </article>
                   );
+
                 })}
             </div>
 
