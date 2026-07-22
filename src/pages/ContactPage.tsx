@@ -149,8 +149,7 @@ const ContactPage = () => {
               className="relative"
             >
               {/* Animated gradient border wrapper */}
-              <div className="relative h-full rounded-[2rem] p-[1.5px] overflow-hidden bg-[conic-gradient(from_var(--angle),theme(colors.cyan.400),theme(colors.primary),theme(colors.violet.400),theme(colors.cyan.400))] [--angle:0deg] animate-[spin_8s_linear_infinite]"
-                   style={{ animation: "spin 10s linear infinite" }}>
+              <div className="relative h-full rounded-[2rem] p-[1.5px] overflow-hidden bg-gradient-to-br from-cyan-300 via-primary/60 to-violet-300">
                 <div className="relative h-full rounded-[2rem] bg-white/85 backdrop-blur-2xl p-8 lg:p-10 overflow-hidden">
                   {/* Ambient glows */}
                   <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
