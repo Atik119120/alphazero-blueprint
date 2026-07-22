@@ -162,12 +162,11 @@ const WorkPage = () => {
           ) : filtered.length === 0 ? (
             <div className="text-center py-24 text-[#5B5876]">No projects in this category yet.</div>
           ) : (
-            <motion.div
-              layout
+            <div
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
             >
-              <AnimatePresence mode="popLayout">
-                {filtered.map((project, idx) => {
+              {filtered.map((project, idx) => {
+
                   const vid = isVideo(project);
                   const thumb = vid
                     ? getYouTubeThumbnail(project.project_url) || getYouTubeThumbnail(project.image_url) || project.image_url
