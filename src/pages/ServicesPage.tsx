@@ -48,6 +48,7 @@ import { useServices } from "@/hooks/useServices";
 import servicesHeroBg from "@/assets/services-hero-bg-5.jpg.asset.json";
 import brandIdentityImage from "@/assets/brand-identity-showcase.jpg.asset.json";
 import productUIImage from "@/assets/product-ui-showcase.jpg.asset.json";
+import webDevImage from "@/assets/web-dev-showcase.jpg.asset.json";
 
 
 // Icon mapping for dynamic services
