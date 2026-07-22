@@ -222,8 +222,14 @@ const ServicesPage = () => {
                     titleLower.includes("ux") ||
                     titleLower.includes("প্রোডাক্ট") ||
                     titleLower.includes("ইউআই");
+                  const isWebDev =
+                    titleLower.includes("web") ||
+                    titleLower.includes("development") ||
+                    titleLower.includes("ওয়েব");
                   const customImage = isBrandIdentity
                     ? brandIdentityImage.url
+                    : isWebDev
+                    ? webDevImage.url
                     : isProductUI
                     ? productUIImage.url
                     : null;
