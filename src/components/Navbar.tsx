@@ -134,22 +134,22 @@ const Navbar = () => {
                   alt="AlphaZero Logo"
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isScrolled ? 0 : 1,
+                    opacity: isOverHero ? 1 : 0,
                     filter: "brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.35)) drop-shadow(0 0 8px rgba(255,255,255,0.15))",
                   }}
                   loading="eager"
                   fetchPriority="high"
                   decoding="async"
                 />
-                {/* Metallic silver/dark logo — visible over light content when scrolled */}
+                {/* Dark logo — visible over light content past the hero */}
                 <img
                   src={brandLogo}
                   alt=""
                   aria-hidden
                   className="absolute inset-0 h-full w-auto object-contain object-left transition-opacity duration-300 ease-out"
                   style={{
-                    opacity: isScrolled ? 1 : 0,
-                    filter: "brightness(0) saturate(0) invert(0.18) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
+                    opacity: isOverHero ? 0 : 1,
+                    filter: "brightness(0) saturate(0) invert(0.08) drop-shadow(0 1px 1px rgba(255,255,255,0.4))",
                   }}
                   loading="eager"
                   decoding="async"
@@ -168,6 +168,7 @@ const Navbar = () => {
 
                   const linkClasses = "relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full";
                   const linkInner = (
+
                     <>
                       {isActive && (
                         <motion.div
