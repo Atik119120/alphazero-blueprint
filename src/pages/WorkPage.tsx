@@ -253,88 +253,8 @@ const WorkPage = () => {
         </div>
       </section>
 
-      {/* CTA — Let's Build Your Next Design Project */}
-      <section className="px-4 md:px-8 pb-20 md:pb-28">
-        <div className="max-w-7xl mx-auto">
-          <div
-            className="relative overflow-hidden rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16"
-            style={{
-              background:
-                "linear-gradient(135deg, #2b0a75 0%, #3b1499 45%, #5b2ee0 100%)",
-            }}
-          >
-            {/* soft decorative swoosh */}
-            <svg
-              aria-hidden
-              className="absolute inset-0 w-full h-full opacity-[0.18] pointer-events-none"
-              viewBox="0 0 1400 500"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="M900,-50 C700,180 1200,260 950,520"
-                stroke="white"
-                strokeWidth="1.5"
-                fill="none"
-              />
-            </svg>
 
-            <div className="relative grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-12 items-center">
-              {/* Left content */}
-              <div>
-                <h2 className="font-display font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
-                  Let's Build Your Next<br />Design Project
-                </h2>
 
-                <div className="mt-8 flex items-start gap-3 max-w-md">
-                  <span className="mt-1.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-white/95">
-                    <span className="w-2 h-2 rounded-full bg-[#5b2ee0]" />
-                  </span>
-                  <p className="text-white/80 text-base md:text-[17px] leading-relaxed">
-                    We create modern and user-friendly designs that help your business grow and stand out.
-                  </p>
-                </div>
-
-                <div className="mt-10">
-                  <p className="text-white font-semibold mb-4">Social Share :</p>
-                  <div className="flex items-center gap-3">
-                    {[
-                      { label: "Facebook", href: "https://facebook.com", d: "M13 22v-8h3l1-4h-4V7.5c0-1.2.3-2 2-2h2V2.1C16.6 2 15.5 2 14.4 2 11.8 2 10 3.7 10 6.8V10H7v4h3v8h3z" },
-                      { label: "Instagram", href: "https://instagram.com", d: "M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.2 2.3.4.6.2 1 .5 1.5 1s.8.9 1 1.5c.2.5.3 1.1.4 2.3.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.9-.4 2.3-.2.6-.5 1-1 1.5s-.9.8-1.5 1c-.5.2-1.1.3-2.3.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.2-2.3-.4-.6-.2-1-.5-1.5-1s-.8-.9-1-1.5c-.2-.5-.3-1.1-.4-2.3C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.9.4-2.3.2-.6.5-1 1-1.5s.9-.8 1.5-1c.5-.2 1.1-.3 2.3-.4C8.4 2.2 8.8 2.2 12 2.2M12 7a5 5 0 100 10 5 5 0 000-10m0 8.2A3.2 3.2 0 1112 8.8a3.2 3.2 0 010 6.4M17.5 6a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" },
-                      { label: "Twitter", href: "https://twitter.com", d: "M22 5.9c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.3-.8.5-1.7.8-2.6 1a4.1 4.1 0 00-7 3.7A11.6 11.6 0 013 4.7a4.1 4.1 0 001.3 5.5c-.7 0-1.3-.2-1.9-.5 0 2 1.4 3.7 3.3 4.1-.6.2-1.2.2-1.8.1.5 1.6 2 2.8 3.8 2.8A8.2 8.2 0 012 18.4 11.6 11.6 0 008.3 20c7.5 0 11.6-6.2 11.6-11.6v-.5c.8-.6 1.5-1.3 2.1-2z" },
-                      { label: "LinkedIn", href: "https://linkedin.com", d: "M6.9 8.6H3.6V20h3.3V8.6zM5.3 3.1a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zM20.4 20h-3.3v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H9.9V8.6H13v1.6h.1c.4-.8 1.5-1.8 3.1-1.8 3.3 0 4 2.2 4 5V20z" },
-                    ].map((s) => (
-                      <a
-                        key={s.label}
-                        href={s.href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        aria-label={s.label}
-                        className="w-10 h-10 rounded-full border border-white/50 text-white flex items-center justify-center hover:bg-white hover:text-[#5b2ee0] transition-colors"
-                      >
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                          <path d={s.d} />
-                        </svg>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right image */}
-              <div className="relative">
-                <div className="rounded-2xl overflow-hidden aspect-[4/3] lg:aspect-[5/4] shadow-2xl">
-                  <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=80"
-                    alt="Our design team collaborating"
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
 
 
