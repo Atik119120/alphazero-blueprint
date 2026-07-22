@@ -153,12 +153,13 @@ const ContactPage = () => {
       {/* ===== Follow Us + Map-style block ===== */}
       <section className="pb-24 lg:pb-32 bg-white">
         <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-12 gap-6">
+          <div className="grid lg:grid-cols-12 gap-6 items-stretch">
             {/* Follow Us — premium card */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-              className="lg:col-span-7">
-              <div className="relative rounded-[2rem] p-[1.5px] overflow-hidden bg-gradient-to-br from-cyan-300 via-primary/50 to-violet-300">
-                <div className="relative rounded-[2rem] bg-white p-8 lg:p-10 overflow-hidden">
+              className="lg:col-span-7 h-full">
+              <div className="relative h-full rounded-[2rem] p-[1.5px] overflow-hidden bg-gradient-to-br from-cyan-300 via-primary/50 to-violet-300">
+                <div className="relative h-full rounded-[2rem] bg-white p-8 lg:p-10 overflow-hidden flex flex-col">
+
                   <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
                   <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-cyan-300/20 blur-3xl pointer-events-none" />
 
