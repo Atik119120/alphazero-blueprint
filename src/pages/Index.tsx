@@ -708,7 +708,7 @@ const Index = () => {
             const row2 = logos.filter((_, i) => i % 2 === 1);
 
             const LogoItem = ({ logo }: { logo: { src: string; alt: string; scale?: number } }) => (
-              <div className="group flex items-center justify-center h-20 sm:h-24 lg:h-28 w-full px-2 overflow-hidden">
+              <div className="group flex items-center justify-center h-12 sm:h-14 lg:h-16 w-full px-2 overflow-hidden">
                 <img
                   src={logo.src}
                   alt={logo.alt}
