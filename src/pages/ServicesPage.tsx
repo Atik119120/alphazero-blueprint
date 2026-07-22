@@ -304,10 +304,7 @@ const ServicesPage = () => {
                   transition={{ delay: index * 0.08, duration: 0.5 }}
                   className="group relative p-8 lg:p-10 min-h-[260px] hover:bg-white/[0.02] transition-colors"
                 >
-                  <div className="flex items-start justify-between mb-8">
-                    <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors" />
-                    <span className="text-xs font-mono tracking-widest text-white/30">{item.step}</span>
-                  </div>
+                  <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors mb-8" />
                   <h3 className="text-xl lg:text-2xl font-display font-bold mb-3 text-white">{t(item.titleKey)}</h3>
                   <p className="text-white/50 text-sm leading-relaxed">{t(item.descKey)}</p>
                 </motion.div>
