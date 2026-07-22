@@ -215,6 +215,17 @@ const ServicesPage = () => {
                     titleLower.includes("illustration") ||
                     titleLower.includes("ব্র্যান্ড") ||
                     titleLower.includes("ইলাস্ট্রেশন");
+                  const isProductUI =
+                    titleLower.includes("product") ||
+                    titleLower.includes("ui") ||
+                    titleLower.includes("ux") ||
+                    titleLower.includes("প্রোডাক্ট") ||
+                    titleLower.includes("ইউআই");
+                  const customImage = isBrandIdentity
+                    ? brandIdentityImage.url
+                    : isProductUI
+                    ? productUIImage.url
+                    : null;
 
                   const VisualSide = (
                     <motion.div
