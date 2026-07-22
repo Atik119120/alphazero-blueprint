@@ -93,6 +93,7 @@ function AppContent() {
 
   // Check if current route is an LMS route
   const isLmsRoute = LMS_ROUTES.some(route => location.pathname.startsWith(route));
+  const isWorkRoute = location.pathname === "/work";
 
   // Skip preloader for LMS routes or if already shown
   useEffect(() => {
@@ -106,8 +107,8 @@ function AppContent() {
   return (
     <>
       {showPreloader && <Preloader onComplete={handlePreloaderComplete} />}
-      {!isLmsRoute && <SmoothScroll />}
-      {!isLmsRoute && <ScrollReveal />}
+      {!isLmsRoute && !isWorkRoute && <SmoothScroll />}
+      {!isLmsRoute && !isWorkRoute && <ScrollReveal />}
       <ScrollToTop />
       
       
