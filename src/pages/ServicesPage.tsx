@@ -39,8 +39,11 @@ import {
   Shield,
   Award,
   Heart,
-  Star
+  Star,
+  Plus,
+  Minus
 } from "lucide-react";
+import { useState } from "react";
 import LayoutComponent from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePageHero } from "@/hooks/usePageHero";
