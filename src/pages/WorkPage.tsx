@@ -1,9 +1,11 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
+import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Play, ArrowUpRight, Briefcase } from "lucide-react";
+import { X, Play, ArrowUpRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
 import { usePageHero } from "@/hooks/usePageHero";
+
 
 /* ─── Category helpers ─── */
 const isGraphics = (w: Work) => {
@@ -92,39 +94,33 @@ const WorkPage = () => {
 
   return (
     <Layout>
-      {/* Hero — light editorial */}
-      <section
-        id="site-hero"
-        className="relative overflow-hidden -mt-20 pt-32 pb-20 lg:pt-40 lg:pb-28"
-        style={{ background: "linear-gradient(180deg, #EEF0FF 0%, #F5F6FF 60%, #FFFFFF 100%)" }}
-      >
-        {/* Decorative flowing curves */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1600 700" preserveAspectRatio="none" fill="none">
-          <path d="M-100 420 C 300 320, 600 520, 900 380 S 1500 300, 1750 420" stroke="#DCDEF7" strokeWidth="2" fill="none" opacity="0.7" />
-          <path d="M-100 500 C 400 400, 700 600, 1000 460 S 1500 380, 1750 500" stroke="#E4E6FA" strokeWidth="1.5" fill="none" opacity="0.6" />
-          <circle cx="380" cy="360" r="220" stroke="#E1E3F6" strokeWidth="1.5" fill="none" opacity="0.5" />
-        </svg>
-
+      {/* Hero — Services style */}
+      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
+        <div className="absolute inset-0 bg-black" />
+        <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
+          style={{ filter: "blur(16px)" }} />
         <div className="container mx-auto px-6 relative z-10">
-
-
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}
-            className="text-center font-display font-bold tracking-tight leading-[1.05] text-[#1B0F45] text-4xl sm:text-5xl lg:text-[64px]"
-          >
-            {hero("hero.title", "A Case Study of Creative")}<br />
-            <span className="text-[#1B0F45]">{hero("hero.title_2", "Design Solutions")}</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
-            className="mt-6 text-center text-[15px] lg:text-base text-[#5B5876] max-w-2xl mx-auto"
-          >
-            {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — crafted with precision and passion.")}
-          </motion.p>
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
+              {(() => {
+                const raw = hero("hero.title", "Our Creative |Works & Projects|");
+                const parts = raw.split("|");
+                if (parts.length >= 3) {
+                  return <><span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[0]}</span><span className="font-normal gradient-text" style={{ fontFamily: "'Mea Culpa', cursive" }}>{parts[1]}</span>{parts.slice(2).join("|")}</>;
+                }
+                return raw;
+              })()}
+            </motion.h1>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto mb-8">
+              {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
+            </motion.p>
+          </div>
         </div>
       </section>
+
 
       {/* Filter pill bar */}
       <section className="relative -mt-10 lg:-mt-14 z-20">
