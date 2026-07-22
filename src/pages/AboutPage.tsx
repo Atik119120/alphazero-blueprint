@@ -324,14 +324,6 @@ const FaqSection = () => {
               <h2 className="font-display font-bold text-[#1B0F45] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
                 Frequently<br />Asked Question
               </h2>
-              <svg aria-hidden viewBox="0 0 260 90" className="absolute pointer-events-none" style={{ top: "18%", left: "24%", width: "min(46%, 280px)" }}>
-                <defs>
-                  <filter id="softLimeAbout"><feGaussianBlur stdDeviation="0.4" /></filter>
-                </defs>
-                <path d="M20,60 Q90,-10 240,30" stroke="#C7F358" strokeWidth="34" strokeLinecap="round" fill="none" filter="url(#softLimeAbout)" />
-                <circle cx="240" cy="30" r="5" fill="#1B0F45" />
-                <text x="70" y="52" fontFamily="Poppins, sans-serif" fontSize="14" fill="#1B0F45" transform="rotate(-14 70 52)">Questions</text>
-              </svg>
             </div>
             <div className="flex flex-col gap-6">
               <p className="text-[#4B4869] text-base md:text-[17px] leading-relaxed max-w-md">
