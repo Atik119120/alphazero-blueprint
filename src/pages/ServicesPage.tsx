@@ -332,7 +332,7 @@ const ServicesPage = () => {
 
 
       {/* Process Section — editorial numbered */}
-      <section className="py-28 lg:py-40 relative bg-white">
+      <section className="pt-4 pb-20 lg:pb-28 relative bg-white">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
