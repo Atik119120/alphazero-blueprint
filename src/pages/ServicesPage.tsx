@@ -313,13 +313,50 @@ const ServicesPage = () => {
                 </motion.div>
               ))}
             </div>
+
+            {/* Why Us grid — merged */}
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-32 mb-16">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.04] mb-6">
+                <Award size={16} className="text-white/70" />
+                <span className="text-sm font-bold tracking-[0.25em] uppercase text-white/70">
+                  {t("language") === "bn" ? "কেন আমরা" : "Why Us"}
+                </span>
+              </div>
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.1] text-white">
+                {t("language") === "bn" ? (
+                  <>আপনার জন্য আমরাই <span className="gradient-text">সেরা</span></>
+                ) : (
+                  <>Why We Are <span className="gradient-text">Best For You</span></>
+                )}
+              </h3>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.08] border border-white/[0.08] rounded-2xl overflow-hidden [&>*:nth-child(n+4)]:md:border-t [&>*:nth-child(n+4)]:md:border-white/[0.08]">
+              {[
+                { icon: Award, title: t("language") === "bn" ? "প্রিমিয়াম কোয়ালিটি" : "Premium Quality", desc: t("language") === "bn" ? "প্রতিটি ডিজাইন ও কোড হাতে বানানো, ইন্ডাস্ট্রি স্ট্যান্ডার্ড মেনে তৈরি।" : "Every design and line of code is crafted to match global industry standards." },
+                { icon: Zap, title: t("language") === "bn" ? "দ্রুত ডেলিভারি" : "Fast Delivery", desc: t("language") === "bn" ? "সময়ের আগেই সঠিক কাজ — আপনার ডেডলাইন আমাদের কাছে সবচেয়ে গুরুত্বপূর্ণ।" : "On-time, every time. Your deadline is our top priority from day one." },
+                { icon: Shield, title: t("language") === "bn" ? "১০০% নিরাপত্তা" : "100% Secure", desc: t("language") === "bn" ? "আপনার ডেটা ও প্রজেক্ট সম্পূর্ণ সুরক্ষিত, এন্টারপ্রাইজ-গ্রেড সিকিউরিটি সহ।" : "Your data and projects are fully protected with enterprise-grade security." },
+                { icon: Heart, title: t("language") === "bn" ? "২৪/৭ সাপোর্ট" : "24/7 Support", desc: t("language") === "bn" ? "যেকোনো সময় আমাদের টিম আপনার পাশে — কল, চ্যাট বা ইমেইলে।" : "Our team stands by you anytime — over call, chat, or email." },
+                { icon: Users, title: t("language") === "bn" ? "অভিজ্ঞ টিম" : "Expert Team", desc: t("language") === "bn" ? "ডিজাইনার, ডেভেলপার ও মার্কেটার — সবাই তাদের ফিল্ডের সেরা।" : "Designers, developers, and marketers — each an expert in their craft." },
+                { icon: Star, title: t("language") === "bn" ? "সন্তুষ্ট ক্লায়েন্ট" : "Happy Clients", desc: t("language") === "bn" ? "শত শত ক্লায়েন্টের বিশ্বাস — কারণ আমরা কথা রাখি।" : "Trusted by hundreds of clients — because we keep our promises." },
+              ].map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.06, duration: 0.5 }}
+                  className="group relative p-8 lg:p-10 min-h-[240px] hover:bg-white/[0.02] transition-colors"
+                >
+                  <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors mb-8" />
+                  <h4 className="text-xl lg:text-2xl font-display font-bold mb-3 text-white">{item.title}</h4>
+                  <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
-    </LayoutComponent>
-  );
-};
-
-
+      </section>
     </LayoutComponent>
   );
 };
