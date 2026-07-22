@@ -322,7 +322,7 @@ const FaqSection = () => {
   return (
     <section className="px-4 md:px-8 pb-20 md:pb-28">
       <div className="max-w-7xl mx-auto">
-        <div className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden" style={{ background: "linear-gradient(180deg,#F5F6FF 0%,#ECEEFF 60%,#FFFFFF 100%)" }}>
+        <div className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden" style={{ background: "linear-gradient(180deg,#EEF0FF 0%,#F4F5FF 40%,#FAFBFF 75%,#FFFFFF 100%)" }}>
           {/* Header */}
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-start mb-10 md:mb-14">
             <div className="relative">
