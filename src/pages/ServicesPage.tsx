@@ -120,6 +120,7 @@ const ServicesPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
+              style={{ fontFamily: "'Playfair Display', serif" }}
             >
               <span className="font-normal" style={{ fontFamily: "'Mea Culpa', cursive" }}>{hero("hero.title", t("services.title"))}</span>{" "}
               {hero("hero.title2", t("services.title2"))}
