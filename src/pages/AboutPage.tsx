@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart, Camera, Palette, Code, Instagram, Facebook, Linkedin, ExternalLink } from "lucide-react";
+import { Globe, Zap, Target, CheckCircle, ArrowRight, Sparkles, Rocket, Heart, Camera, Palette, Code, Instagram, Facebook, Linkedin, ExternalLink, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import logoAssetJson from "@/assets/logo.png.asset.json";
