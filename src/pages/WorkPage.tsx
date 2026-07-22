@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
 import servicesHeroBg from "@/assets/services-hero-bg-2.jpg.asset.json";
-import { motion, AnimatePresence } from "framer-motion";
 import { X, Play, ArrowUpRight } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useWorks, type Work } from "@/hooks/useWorks";
@@ -98,11 +97,11 @@ const WorkPage = () => {
       <section id="site-hero" className="relative overflow-hidden -mt-20 pt-28 pb-12 lg:pt-32 lg:pb-16 rounded-b-[2.5rem]">
         <div className="absolute inset-0 bg-black" />
         <img src={servicesHeroBg.url} alt="" loading="eager" fetchPriority="high" decoding="async"
-          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
-          style={{ filter: "blur(16px)" }} />
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-110 opacity-85" />
+        <div className="absolute inset-0 bg-black/35" />
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            <h1
               className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6">
               {(() => {
                 const raw = hero("hero.title", "Our Creative |Works & Projects|");
@@ -112,11 +111,11 @@ const WorkPage = () => {
                 }
                 return raw;
               })()}
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            </h1>
+            <p
               className="text-base lg:text-lg text-white/60 max-w-2xl mx-auto mb-8">
               {hero("hero.description", "Discover our finest graphic designs, web projects, and video productions — all crafted with precision and passion.")}
-            </motion.p>
+            </p>
           </div>
         </div>
       </section>
@@ -171,11 +170,10 @@ const WorkPage = () => {
                   return (
                     <article
                       key={project.id}
-                      className="group cursor-pointer animate-fade-in"
-                      style={{ animationDelay: `${(idx % 9) * 40}ms`, animationFillMode: "backwards" }}
+                      className="group cursor-pointer"
                       onClick={() => handleCardClick(project)}
                     >
-                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.15)] hover:shadow-[0_24px_60px_-24px_rgba(109,40,217,0.28)] transition-shadow duration-500 overflow-hidden">
+                      <div className="rounded-[28px] bg-white border border-[#EEF0FF] shadow-[0_10px_40px_-20px_rgba(76,29,149,0.12)] overflow-hidden">
                         {/* Image */}
                         <div className="relative aspect-[4/3] overflow-hidden mx-3 mt-3 rounded-2xl" style={{ background: "linear-gradient(180deg, #F4F5FC 0%, #E9EBF7 100%)" }}>
                           {thumb ? (
@@ -185,7 +183,7 @@ const WorkPage = () => {
                               loading="lazy"
                               decoding="async"
                               referrerPolicy="no-referrer"
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                              className="w-full h-full object-cover"
                               onError={(e) => { e.currentTarget.src = "/placeholder.svg"; }}
                             />
                           ) : (
@@ -229,9 +227,8 @@ const WorkPage = () => {
       </section>
 
       {/* Image lightbox */}
-      <AnimatePresence>
-        {lightboxImage && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      {lightboxImage && (
+          <div
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8 cursor-pointer"
             onClick={() => setLightboxImage(null)}>
             <button onClick={() => setLightboxImage(null)}
@@ -239,8 +236,7 @@ const WorkPage = () => {
               <X size={22} className="text-white" />
             </button>
             <div className="flex flex-col items-center max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
-              <motion.img initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
-                transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              <img
                 src={lightboxImage.url} alt={lightboxImage.title}
                 className="max-w-full max-h-[70vh] object-contain rounded-xl cursor-default" />
               <div className="mt-6 text-center max-w-lg">
@@ -251,24 +247,22 @@ const WorkPage = () => {
                 <p className="text-white/40 text-xs mt-3">Designed by Alpha Zero</p>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
 
       {/* Video modal */}
-      <AnimatePresence>
-        {activeVideo && (() => {
+      {activeVideo && (() => {
           const embed = getVideoEmbed(findVideoUrl(activeVideo));
           if (!embed) return null;
           return (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            <div
               className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-8"
               onClick={() => setActiveVideo(null)}>
               <button onClick={() => setActiveVideo(null)}
                 className="absolute top-6 right-6 z-10 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all">
                 <X size={22} className="text-white" />
               </button>
-              <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.85, opacity: 0 }}
+              <div
                 className="w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
                 <div className="relative w-full rounded-2xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
                   <iframe src={embed} className="absolute inset-0 w-full h-full"
@@ -276,11 +270,10 @@ const WorkPage = () => {
                     allowFullScreen title={activeVideo.title} />
                 </div>
                 <p className="text-white/80 text-center mt-4 font-display font-semibold">{activeVideo.title}</p>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           );
         })()}
-      </AnimatePresence>
     </Layout>
   );
 };
