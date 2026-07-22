@@ -57,7 +57,7 @@ const AboutPage = () => {
     <Layout flushTop>
       <div className="overflow-x-hidden">
       {/* Hero — Services style */}
-      <section className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
+      <section id="site-hero" className="relative overflow-hidden pt-32 pb-14 lg:pt-36 lg:pb-18 rounded-b-[2.5rem]">
         {/* Uploaded background image */}
         <img
           src={servicesHeroBg.url}
