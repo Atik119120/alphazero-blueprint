@@ -297,7 +297,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      <FaqSection />
+      
 
       </div>
     </Layout>
