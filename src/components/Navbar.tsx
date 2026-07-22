@@ -74,11 +74,26 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const y = window.scrollY;
+      setIsScrolled(y > 50);
+      const heroEl = document.getElementById("site-hero");
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        // Over hero while its bottom is still below the navbar area (~80px)
+        setIsOverHero(rect.bottom > 80);
+      } else {
+        setIsOverHero(false);
+      }
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [location.pathname]);
+
 
   const handleNavClick = () => {
     setIsMobileMenuOpen(false);
