@@ -297,11 +297,82 @@ const AboutPage = () => {
         </div>
       </section>
 
+      <FaqSection />
+
       </div>
     </Layout>
 
   );
 };
+
+const FAQS = [
+  { q: "How Much Does A Design Project Cost?", a: "Project pricing depends on scope, complexity, and timeline. We share a clear quote after a short discovery call — no hidden costs, no surprises." },
+  { q: "How Long Does A Project Take?", a: "Most projects are completed within a few days to a couple of weeks, depending on the requirements and revisions." },
+  { q: "What Design Services Do You Offer?", a: "Brand identity, graphic design, web design & development, UI/UX, video & motion, and SEO / content marketing — all under one roof." },
+  { q: "Do You Offer Revisions?", a: "Yes — every package includes multiple rounds of revisions so we can refine the work until it feels exactly right." },
+  { q: "How Do We Get Started?", a: "Click Get Started, share a few details about your project, and we'll reach out within 24 hours to plan the next step." },
+];
+
+const FaqSection = () => {
+  const [open, setOpen] = useState<number | null>(1);
+  return (
+    <section className="px-4 md:px-8 pb-20 md:pb-28">
+      <div className="max-w-7xl mx-auto">
+        <div className="relative rounded-[28px] md:rounded-[36px] p-8 md:p-14 lg:p-16 overflow-hidden" style={{ background: "linear-gradient(180deg,#F3F1FF 0%,#ECE9FF 100%)" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 lg:gap-12 items-start mb-10 md:mb-14">
+            <div className="relative">
+              <h2 className="font-display font-bold text-[#1B0F45] text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight">
+                Frequently<br />Asked Question
+              </h2>
+              <svg aria-hidden viewBox="0 0 260 90" className="absolute pointer-events-none" style={{ top: "18%", left: "24%", width: "min(46%, 280px)" }}>
+                <defs>
+                  <filter id="softLimeAbout"><feGaussianBlur stdDeviation="0.4" /></filter>
+                </defs>
+                <path d="M20,60 Q90,-10 240,30" stroke="#C7F358" strokeWidth="34" strokeLinecap="round" fill="none" filter="url(#softLimeAbout)" />
+                <circle cx="240" cy="30" r="5" fill="#1B0F45" />
+                <text x="70" y="52" fontFamily="Poppins, sans-serif" fontSize="14" fill="#1B0F45" transform="rotate(-14 70 52)">Questions</text>
+              </svg>
+            </div>
+            <div className="flex flex-col gap-6">
+              <p className="text-[#4B4869] text-base md:text-[17px] leading-relaxed max-w-md">
+                Have questions about our design services? Here are some common queries to help you understand how we work and what you can expect.
+              </p>
+              <Link to="/contact" className="inline-flex w-fit items-center justify-center px-7 py-3 rounded-full text-white font-semibold shadow-[0_10px_30px_-8px_rgba(109,40,217,0.55)] transition-transform hover:-translate-y-0.5" style={{ background: "linear-gradient(135deg,#7C3AED 0%,#6D28D9 100%)" }}>
+                Get Started
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-4">
+            {FAQS.map((item, i) => {
+              const isOpen = open === i;
+              return (
+                <div key={i} className="bg-white rounded-2xl border border-white shadow-[0_10px_30px_-20px_rgba(76,29,149,0.15)] overflow-hidden">
+                  <button onClick={() => setOpen(isOpen ? null : i)} className="w-full flex items-center justify-between gap-6 px-6 md:px-8 py-5 md:py-6 text-left">
+                    <span className="font-display font-semibold text-[#1B0F45] text-base md:text-lg">{item.q}</span>
+                    <span className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isOpen ? "bg-[#6D28D9] text-white" : "border border-[#E3E5F5] text-[#6D28D9]"}`}>
+                      {isOpen ? <Minus size={18} /> : <Plus size={18} />}
+                    </span>
+                  </button>
+                  <motion.div
+                    initial={false}
+                    animate={{ height: isOpen ? "auto" : 0, opacity: isOpen ? 1 : 0 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <p className="px-6 md:px-8 pb-6 text-[#5B5876] leading-relaxed">{item.a}</p>
+                  </motion.div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+
 
 const faqs = [
   { q: "What services does AlphaZero offer?", a: "We offer branding, web development, digital marketing, video production, graphic design, and a full learning academy — everything to build a strong digital presence." },
