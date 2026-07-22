@@ -49,6 +49,7 @@ import servicesHeroBg from "@/assets/services-hero-bg-5.jpg.asset.json";
 import brandIdentityImage from "@/assets/brand-identity-showcase.jpg.asset.json";
 import productUIImage from "@/assets/product-ui-showcase.jpg.asset.json";
 import webDevImage from "@/assets/web-dev-showcase.jpg.asset.json";
+import seoMarketingImage from "@/assets/seo-marketing-showcase.png.asset.json";
 
 
 // Icon mapping for dynamic services
@@ -226,12 +227,19 @@ const ServicesPage = () => {
                     titleLower.includes("web") ||
                     titleLower.includes("development") ||
                     titleLower.includes("ওয়েব");
+                  const isSEO =
+                    titleLower.includes("seo") ||
+                    titleLower.includes("marketing") ||
+                    titleLower.includes("content") ||
+                    titleLower.includes("মার্কেটিং");
                   const customImage = isBrandIdentity
                     ? brandIdentityImage.url
                     : isWebDev
                     ? webDevImage.url
                     : isProductUI
                     ? productUIImage.url
+                    : isSEO
+                    ? seoMarketingImage.url
                     : null;
 
                   const VisualSide = (
