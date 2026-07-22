@@ -329,19 +329,19 @@ const ServicesPage = () => {
 
 
       {/* Process Section — editorial numbered */}
-      <section className="py-28 lg:py-40 relative bg-[#0a0a0b]">
+      <section className="py-28 lg:py-40 relative bg-white">
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.04] mb-8">
-                <Zap size={16} className="text-white/70" />
-                <span className="text-sm font-bold tracking-[0.25em] uppercase text-white/70">Process</span>
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/10 bg-black/[0.03] mb-8">
+                <Zap size={16} className="text-black/70" />
+                <span className="text-sm font-bold tracking-[0.25em] uppercase text-black/70">Process</span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white">{t("services.process.title")}</h2>
-              <p className="text-white/50 text-base lg:text-lg max-w-3xl mx-auto mt-6">{t("services.process.desc")}</p>
+              <h2 className="text-4xl md:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-black">{t("services.process.title")}</h2>
+              <p className="text-black/50 text-base lg:text-lg max-w-3xl mx-auto mt-6">{t("services.process.desc")}</p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/[0.08] border border-white/[0.08] rounded-2xl overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-black/[0.08] border border-black/[0.08] rounded-2xl overflow-hidden">
               {processSteps.map((item, index) => (
                 <motion.div
                   key={item.step}
@@ -349,24 +349,24 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08, duration: 0.5 }}
-                  className="group relative p-8 lg:p-10 min-h-[260px] hover:bg-white/[0.02] transition-colors"
+                  className="group relative p-8 lg:p-10 min-h-[260px] hover:bg-black/[0.02] transition-colors"
                 >
-                  <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors mb-8" />
-                  <h3 className="text-xl lg:text-2xl font-display font-medium mb-3 text-white">{t(item.titleKey)}</h3>
-                  <p className="text-white/50 text-sm leading-relaxed">{t(item.descKey)}</p>
+                  <item.icon size={28} strokeWidth={1.5} className="text-black/80 group-hover:text-primary transition-colors mb-8" />
+                  <h3 className="text-xl lg:text-2xl font-display font-medium mb-3 text-black">{t(item.titleKey)}</h3>
+                  <p className="text-black/50 text-sm leading-relaxed">{t(item.descKey)}</p>
                 </motion.div>
               ))}
             </div>
 
             {/* Why Us grid — merged */}
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mt-32 mb-16">
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10 bg-white/[0.04] mb-6">
-                <Award size={16} className="text-white/70" />
-                <span className="text-sm font-bold tracking-[0.25em] uppercase text-white/70">
+              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-black/10 bg-black/[0.03] mb-6">
+                <Award size={16} className="text-black/70" />
+                <span className="text-sm font-bold tracking-[0.25em] uppercase text-black/70">
                   {t("language") === "bn" ? "কেন আমরা" : "Why Us"}
                 </span>
               </div>
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.1] text-white">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.1] text-black">
                 {t("language") === "bn" ? (
                   <>আপনার জন্য আমরাই <span className="gradient-text">সেরা</span></>
                 ) : (
@@ -375,7 +375,7 @@ const ServicesPage = () => {
               </h3>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.08] border border-white/[0.08] rounded-2xl overflow-hidden [&>*:nth-child(n+4)]:md:border-t [&>*:nth-child(n+4)]:md:border-white/[0.08]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-black/[0.08] border border-black/[0.08] rounded-2xl overflow-hidden [&>*:nth-child(n+4)]:md:border-t [&>*:nth-child(n+4)]:md:border-black/[0.08]">
               {[
                 { icon: Award, title: t("language") === "bn" ? "প্রিমিয়াম কোয়ালিটি" : "Premium Quality", desc: t("language") === "bn" ? "প্রতিটি ডিজাইন ও কোড হাতে বানানো, ইন্ডাস্ট্রি স্ট্যান্ডার্ড মেনে তৈরি।" : "Every design and line of code is crafted to match global industry standards." },
                 { icon: Zap, title: t("language") === "bn" ? "দ্রুত ডেলিভারি" : "Fast Delivery", desc: t("language") === "bn" ? "সময়ের আগেই সঠিক কাজ — আপনার ডেডলাইন আমাদের কাছে সবচেয়ে গুরুত্বপূর্ণ।" : "On-time, every time. Your deadline is our top priority from day one." },
@@ -390,11 +390,11 @@ const ServicesPage = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.06, duration: 0.5 }}
-                  className="group relative p-8 lg:p-10 min-h-[240px] hover:bg-white/[0.02] transition-colors"
+                  className="group relative p-8 lg:p-10 min-h-[240px] hover:bg-black/[0.02] transition-colors"
                 >
-                  <item.icon size={28} strokeWidth={1.5} className="text-white/80 group-hover:text-primary transition-colors mb-8" />
-                  <h4 className="text-xl lg:text-2xl font-display font-medium mb-3 text-white">{item.title}</h4>
-                  <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                  <item.icon size={28} strokeWidth={1.5} className="text-black/80 group-hover:text-primary transition-colors mb-8" />
+                  <h4 className="text-xl lg:text-2xl font-display font-medium mb-3 text-black">{item.title}</h4>
+                  <p className="text-black/50 text-sm leading-relaxed">{item.desc}</p>
                 </motion.div>
               ))}
             </div>
