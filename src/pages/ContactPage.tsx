@@ -216,8 +216,9 @@ const ContactPage = () => {
                 <div className="relative p-8 lg:p-10 pb-6">
                   <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Our studio</div>
                   <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-3">
-                    Come say hi<br />in <span className="italic font-normal text-cyan-300">Rajshahi</span>.
+                    Come say hi<br />in Rajshahi.
                   </h3>
+
                   <p className="text-white/60 leading-relaxed text-sm max-w-sm">{address}</p>
                 </div>
 
