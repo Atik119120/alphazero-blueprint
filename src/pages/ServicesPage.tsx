@@ -133,7 +133,7 @@ const ServicesPage = () => {
               {hero("hero.title2", t("services.title2"))}
               <br />
               {hero("hero.title3", t("services.title3"))}{" "}
-              <span className="gradient-text">{hero("hero.title4", "Matter")}</span>
+              <span>{hero("hero.title4", "Matter")}</span>
             </motion.h1>
 
             <motion.p
@@ -345,9 +345,9 @@ const ServicesPage = () => {
               </div>
               <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold leading-[1.1] text-black">
                 {t("language") === "bn" ? (
-                  <>আপনার জন্য আমরাই <span className="gradient-text">সেরা</span></>
+                  <>আপনার জন্য আমরাই <span>সেরা</span></>
                 ) : (
-                  <>Why We Are <span className="gradient-text">Best For You</span></>
+                  <>Why We Are <span>Best For You</span></>
                 )}
               </h3>
             </motion.div>
