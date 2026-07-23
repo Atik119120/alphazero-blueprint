@@ -66,7 +66,7 @@ const ContactPage = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Available for new projects
               </div>
               <h1 className="text-[15vw] sm:text-[11vw] lg:text-[9rem] font-display font-bold leading-[0.9] tracking-[-0.03em] text-black">
-                Let's <span className="italic font-normal bg-gradient-to-r from-primary via-cyan-500 to-violet-500 bg-clip-text text-transparent">talk.</span>
+                Let's talk.
               </h1>
               <p className="mt-6 text-base lg:text-xl text-neutral-600 max-w-xl leading-relaxed">
                 Tell us about your idea. Whether it's a rebrand, a launch, or a full digital product — we reply within 24 hours.
