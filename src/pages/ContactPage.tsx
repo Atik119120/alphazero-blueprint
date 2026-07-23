@@ -57,7 +57,7 @@ const ContactPage = () => {
         {/* Grid backdrop */}
         <div className="absolute inset-0 opacity-[0.5] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(#0000000a 1px,transparent 1px),linear-gradient(90deg,#0000000a 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-gradient-to-br from-cyan-200/40 via-primary/20 to-violet-200/40 blur-3xl pointer-events-none" />
+
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 items-end">
