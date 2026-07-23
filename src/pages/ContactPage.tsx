@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFooterContent, useFooterLinks } from "@/hooks/useFooterData";
 import { usePageContent } from "@/hooks/usePageContent";
+import servicesHeroBg from "@/assets/services-hero-bg-5.jpg.asset.json";
 
 const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -53,22 +54,37 @@ const ContactPage = () => {
   return (
     <Layout>
       {/* ===== Editorial Hero ===== */}
-      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-20 lg:pt-40 lg:pb-28 bg-[#F6F7F9]">
+      <section id="site-hero" className="relative overflow-hidden -mt-20 pt-32 pb-20 lg:pt-40 lg:pb-28 rounded-b-[2.5rem]">
+        {/* Dark base */}
+        <div className="absolute inset-0 bg-black" />
+        {/* Services hero background image */}
+        <img
+          src={servicesHeroBg.url}
+          alt=""
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
+          style={{ filter: "blur(16px)" }}
+        />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-white" />
         {/* Grid backdrop */}
-        <div className="absolute inset-0 opacity-[0.5] pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(#0000000a 1px,transparent 1px),linear-gradient(90deg,#0000000a 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
+        <div className="absolute inset-0 opacity-[0.25] pointer-events-none"
+          style={{ backgroundImage: "linear-gradient(#ffffff1a 1px,transparent 1px),linear-gradient(90deg,#ffffff1a 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
+
 
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 items-end">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-8">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-black/5 shadow-sm text-xs font-semibold tracking-wide uppercase text-primary mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Available for new projects
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 shadow-sm text-xs font-semibold tracking-wide uppercase text-white mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Available for new projects
               </div>
-              <h1 className="text-[15vw] sm:text-[11vw] lg:text-[9rem] font-display font-bold leading-[0.9] tracking-[-0.03em] text-black">
+              <h1 className="text-[15vw] sm:text-[11vw] lg:text-[9rem] font-display font-bold leading-[0.9] tracking-[-0.03em] text-white">
                 Let's talk.
               </h1>
-              <p className="mt-6 text-base lg:text-xl text-neutral-600 max-w-xl leading-relaxed">
+              <p className="mt-6 text-base lg:text-xl text-white/80 max-w-xl leading-relaxed">
                 Tell us about your idea. Whether it's a rebrand, a launch, or a full digital product — we reply within 24 hours.
               </p>
             </motion.div>
