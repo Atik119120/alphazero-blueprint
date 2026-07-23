@@ -57,7 +57,7 @@ const ContactPage = () => {
         {/* Grid backdrop */}
         <div className="absolute inset-0 opacity-[0.5] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(#0000000a 1px,transparent 1px),linear-gradient(90deg,#0000000a 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-gradient-to-br from-cyan-200/40 via-primary/20 to-violet-200/40 blur-3xl pointer-events-none" />
+
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 items-end">
@@ -130,7 +130,6 @@ const ContactPage = () => {
                       {...(c.href ? { href: c.href } : {})}
                       className="group relative block h-full p-6 rounded-3xl bg-[#F6F7F9] border border-black/5 hover:border-primary/30 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 overflow-hidden"
                     >
-                      <div className={`absolute inset-0 bg-gradient-to-br ${c.accent} opacity-0 group-hover:opacity-100 transition-opacity`} />
                       <div className="relative">
                         <div className="flex items-start justify-between mb-8">
                           <div className="w-12 h-12 rounded-2xl bg-white border border-black/5 flex items-center justify-center shadow-sm">
@@ -138,6 +137,7 @@ const ContactPage = () => {
                           </div>
                           {c.href && <ArrowUpRight className="w-5 h-5 text-neutral-400 group-hover:text-primary group-hover:rotate-45 transition-all" />}
                         </div>
+
                         <div className="text-xs uppercase tracking-wider text-neutral-500 mb-2">{c.label}</div>
                         <div className="text-lg font-semibold text-black leading-snug">{c.value}</div>
                       </div>
@@ -157,11 +157,8 @@ const ContactPage = () => {
             {/* Follow Us — premium card */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="lg:col-span-7 h-full">
-              <div className="relative h-full rounded-[2rem] p-[1.5px] overflow-hidden bg-gradient-to-br from-cyan-300 via-primary/50 to-violet-300">
-                <div className="relative h-full rounded-[2rem] bg-white p-8 lg:p-10 overflow-hidden flex flex-col">
-
-                  <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-cyan-300/20 blur-3xl pointer-events-none" />
+              <div className="relative h-full rounded-[2rem] overflow-hidden bg-white border border-black/10">
+                <div className="relative h-full p-8 lg:p-10 flex flex-col">
 
                   <div className="relative flex items-end justify-between flex-wrap gap-4 mb-8">
                     <div>
@@ -169,13 +166,14 @@ const ContactPage = () => {
                         <Sparkles size={13} /> Follow us
                       </div>
                       <h3 className="text-3xl lg:text-4xl font-display font-bold tracking-tight text-black">
-                        Around the <span className="italic font-normal bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">web</span>
+                        Around the web
                       </h3>
                     </div>
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> 6 platforms · active daily
                     </span>
                   </div>
+
 
                   <div className="relative grid sm:grid-cols-2 gap-3">
                     {socials.map((s, i) => (
@@ -192,7 +190,7 @@ const ContactPage = () => {
                         style={{ ["--brand" as any]: s.brand }}
                         className="group relative flex items-center gap-3 p-4 rounded-2xl bg-[#F6F7F9] border border-black/5 overflow-hidden hover:border-[color:var(--brand)]/40 hover:shadow-[0_10px_30px_-10px_var(--brand)] transition-all"
                       >
-                        <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+                        
                         <span className="relative w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
                           style={{ backgroundColor: `${s.brand}15`, color: s.brand }}>
                           <s.icon size={18} />
@@ -218,8 +216,9 @@ const ContactPage = () => {
                 <div className="relative p-8 lg:p-10 pb-6">
                   <div className="text-xs uppercase tracking-[0.2em] text-white/50 mb-3">Our studio</div>
                   <h3 className="text-3xl lg:text-4xl font-display font-bold leading-tight mb-3">
-                    Come say hi<br />in <span className="italic font-normal text-cyan-300">Rajshahi</span>.
+                    Come say hi<br />in Rajshahi.
                   </h3>
+
                   <p className="text-white/60 leading-relaxed text-sm max-w-sm">{address}</p>
                 </div>
 
@@ -233,7 +232,7 @@ const ContactPage = () => {
                     className="absolute inset-0 w-full h-full grayscale contrast-125 opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
                     style={{ border: 0 }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  
                   <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-semibold uppercase tracking-wider">
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-300 animate-pulse" /> Live map
                   </div>
