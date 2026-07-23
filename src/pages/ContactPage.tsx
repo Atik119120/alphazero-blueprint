@@ -78,13 +78,13 @@ const ContactPage = () => {
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 items-end">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="lg:col-span-8">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-black/5 shadow-sm text-xs font-semibold tracking-wide uppercase text-primary mb-6">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> Available for new projects
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 shadow-sm text-xs font-semibold tracking-wide uppercase text-white mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Available for new projects
               </div>
-              <h1 className="text-[15vw] sm:text-[11vw] lg:text-[9rem] font-display font-bold leading-[0.9] tracking-[-0.03em] text-black">
+              <h1 className="text-[15vw] sm:text-[11vw] lg:text-[9rem] font-display font-bold leading-[0.9] tracking-[-0.03em] text-white">
                 Let's talk.
               </h1>
-              <p className="mt-6 text-base lg:text-xl text-neutral-600 max-w-xl leading-relaxed">
+              <p className="mt-6 text-base lg:text-xl text-white/80 max-w-xl leading-relaxed">
                 Tell us about your idea. Whether it's a rebrand, a launch, or a full digital product — we reply within 24 hours.
               </p>
             </motion.div>
