@@ -4,6 +4,7 @@ import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFooterContent, useFooterLinks } from "@/hooks/useFooterData";
 import { usePageContent } from "@/hooks/usePageContent";
+import servicesHeroBg from "@/assets/services-hero-bg-5.jpg.asset.json";
 
 const DiscordIcon = ({ size = 20, className = "" }: { size?: number; className?: string }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
