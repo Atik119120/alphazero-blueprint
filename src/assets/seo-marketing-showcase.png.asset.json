@@ -2,10 +2,11 @@
   "version": 1,
   "asset_id": "6176117f-7829-47db-875c-3b027995e1bc",
   "project_id": "22772b10-1dad-4376-b141-386642f69a6f",
-  "url": "/__l5e/assets-v1/6176117f-7829-47db-875c-3b027995e1bc/seo-marketing-showcase.png",
+  "url": "https://res.cloudinary.com/de348sqlb/image/upload/v1784827430/alphazero-assets/seo-marketing-showcase.png",
   "r2_key": "a/v1/22772b10-1dad-4376-b141-386642f69a6f/6176117f-7829-47db-875c-3b027995e1bc/seo-marketing-showcase.png",
   "original_filename": "seo-marketing-showcase.png",
   "size": 1916449,
   "content_type": "image/png",
-  "created_at": "2026-07-22T18:22:25Z"
+  "created_at": "2026-07-22T18:22:25Z",
+  "cloudinary_public_id": "alphazero-assets/seo-marketing-showcase"
 }
