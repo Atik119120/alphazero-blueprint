@@ -42,13 +42,15 @@ const HERO_CTA_GAP_PX = 80;
 
 const Card = ({ item }: { item: Item }) => {
   return (
-    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-1 md:mx-1.5">
+    <div className="group relative shrink-0 h-full w-auto rounded-lg overflow-hidden mx-1 md:mx-1.5 [transform:translateZ(0)] [backface-visibility:hidden]">
       <img
         src={item.image_url || "/placeholder.svg"}
         alt={item.title}
         loading="lazy"
+        decoding="async"
         referrerPolicy="no-referrer"
-        className="block h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
+        draggable={false}
+        className="block h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105 select-none pointer-events-none [transform:translateZ(0)]"
         onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/placeholder.svg'; }}
       />
     </div>
