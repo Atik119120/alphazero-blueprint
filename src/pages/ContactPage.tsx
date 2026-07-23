@@ -190,7 +190,7 @@ const ContactPage = () => {
                         style={{ ["--brand" as any]: s.brand }}
                         className="group relative flex items-center gap-3 p-4 rounded-2xl bg-[#F6F7F9] border border-black/5 overflow-hidden hover:border-[color:var(--brand)]/40 hover:shadow-[0_10px_30px_-10px_var(--brand)] transition-all"
                       >
-                        <span className="pointer-events-none absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/70 to-transparent" />
+                        
                         <span className="relative w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110"
                           style={{ backgroundColor: `${s.brand}15`, color: s.brand }}>
                           <s.icon size={18} />
