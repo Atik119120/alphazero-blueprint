@@ -110,35 +110,43 @@ const HeroSection = React.forwardRef<HTMLDivElement, HeroSectionProps>(
         <section className="relative max-w-full mx-auto z-1">
           {bottomImage && (
             <>
-              {/* ────── Desktop (lg+): keep original layout with aspect-ratio image + absolute overlay ────── */}
-              <div className="relative w-full hidden lg:block">
-                <img
-                  src={bottomImage.dark}
-                  alt=""
-                  className="w-full [aspect-ratio:3/2] object-cover block"
-                  style={{ filter: "blur(6px)", transform: "scale(1.12)", transformOrigin: "center" }}
-                  loading="eager"
-                />
-                <div className="dark absolute inset-0 flex items-start justify-center px-4 pt-[10%] text-foreground">
-                  <HeroContent
-                    title={title}
-                    subtitle={subtitle}
-                    description={description}
-                    ctaText={ctaText}
-                    ctaHref={ctaHref}
-                    splitWords={splitWords}
+              {/* ────── Desktop (lg+): PixelGrid dark bg + hero content ────── */}
+              <div className="relative w-full hidden lg:block bg-[#05070d]">
+                <div className="w-full [aspect-ratio:3/2] relative overflow-hidden">
+                  <div className="absolute inset-0">
+                    <PixelGrid pixelColor="#22d3ee" pixelSize={3} pixelSpacing={3} glow />
+                  </div>
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at center, rgba(5,7,13,0) 0%, rgba(5,7,13,0.6) 70%, rgba(5,7,13,0.9) 100%)",
+                    }}
                   />
+                  <div className="dark absolute inset-0 flex items-start justify-center px-4 pt-[10%] text-foreground">
+                    <HeroContent
+                      title={title}
+                      subtitle={subtitle}
+                      description={description}
+                      ctaText={ctaText}
+                      ctaHref={ctaHref}
+                      splitWords={splitWords}
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* ────── Mobile & Tablet (<lg): full-bleed hero image, gallery flows below ────── */}
-              <div className="relative w-full lg:hidden dark text-foreground">
-                <img
-                  src={bottomImage.dark}
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ filter: "blur(6px)", transform: "scale(1.12)", transformOrigin: "center" }}
-                  loading="eager"
+              {/* ────── Mobile & Tablet (<lg): PixelGrid full-bleed ────── */}
+              <div className="relative w-full lg:hidden dark text-foreground bg-[#05070d]">
+                <div className="absolute inset-0">
+                  <PixelGrid pixelColor="#22d3ee" pixelSize={3} pixelSpacing={3} glow />
+                </div>
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(ellipse at center, rgba(5,7,13,0) 0%, rgba(5,7,13,0.7) 100%)",
+                  }}
                 />
                 <div className="relative z-10 flex flex-col px-4 pt-32 sm:pt-36 pb-8">
                   <div className="flex-none">
