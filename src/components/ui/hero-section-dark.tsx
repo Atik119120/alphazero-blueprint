@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils"
 import { ChevronRight } from "lucide-react"
 import gsap from "gsap"
 import AsciiMosaic from "./AsciiMosaic"
+import { PixelGrid } from "./pixel-grid"
 
 
 interface HeroSectionProps extends React.HTMLAttributes<HTMLDivElement> {
