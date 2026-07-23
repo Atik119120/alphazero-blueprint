@@ -157,11 +157,8 @@ const ContactPage = () => {
             {/* Follow Us — premium card */}
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
               className="lg:col-span-7 h-full">
-              <div className="relative h-full rounded-[2rem] p-[1.5px] overflow-hidden bg-gradient-to-br from-cyan-300 via-primary/50 to-violet-300">
-                <div className="relative h-full rounded-[2rem] bg-white p-8 lg:p-10 overflow-hidden flex flex-col">
-
-                  <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-cyan-300/20 blur-3xl pointer-events-none" />
+              <div className="relative h-full rounded-[2rem] overflow-hidden bg-white border border-black/10">
+                <div className="relative h-full p-8 lg:p-10 flex flex-col">
 
                   <div className="relative flex items-end justify-between flex-wrap gap-4 mb-8">
                     <div>
@@ -169,13 +166,14 @@ const ContactPage = () => {
                         <Sparkles size={13} /> Follow us
                       </div>
                       <h3 className="text-3xl lg:text-4xl font-display font-bold tracking-tight text-black">
-                        Around the <span className="italic font-normal bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">web</span>
+                        Around the web
                       </h3>
                     </div>
                     <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600">
                       <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" /> 6 platforms · active daily
                     </span>
                   </div>
+
 
                   <div className="relative grid sm:grid-cols-2 gap-3">
                     {socials.map((s, i) => (
