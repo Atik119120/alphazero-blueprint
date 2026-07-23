@@ -23,7 +23,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "next-themes";
 import { useLanguage } from "@/contexts/LanguageContext";
-import logoFullAsset from "@/assets/alphazero-logo.png.asset.json";
+import logoFullAsset from "@/assets/alphazero-logo-new.png.asset.json";
 import learnLogoAssetJson from "@/assets/learn-with-alphazero-logo.png.asset.json";
 const learnLogo = learnLogoAssetJson.url;
 const logoFull = logoFullAsset.url;
