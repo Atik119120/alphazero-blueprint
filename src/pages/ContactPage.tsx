@@ -106,7 +106,7 @@ const ContactPage = () => {
               <div className="sticky top-28">
                 <div className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">Get in touch</div>
                 <h2 className="text-4xl lg:text-5xl font-display font-bold leading-[1.05] tracking-tight text-black mb-5">
-                  Every great project<br />starts with a <span className="italic font-normal">hello.</span>
+                  Every great project<br />starts with a hello.
                 </h2>
                 <p className="text-neutral-600 leading-relaxed">
                   Pick the channel that suits you best — our team is spread across time zones so someone is always around.
