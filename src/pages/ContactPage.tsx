@@ -67,11 +67,10 @@ const ContactPage = () => {
           className="absolute inset-x-0 top-0 w-full h-full object-cover object-top scale-125"
           style={{ filter: "blur(16px)" }}
         />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-white" />
         {/* Grid backdrop */}
         <div className="absolute inset-0 opacity-[0.25] pointer-events-none"
           style={{ backgroundImage: "linear-gradient(#ffffff1a 1px,transparent 1px),linear-gradient(90deg,#ffffff1a 1px,transparent 1px)", backgroundSize: "56px 56px" }} />
+
 
 
 
