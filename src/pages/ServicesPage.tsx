@@ -126,8 +126,7 @@ const ServicesPage = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold leading-[1.05] text-white mb-6"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] text-white mb-6"
             >
               {hero("hero.title", t("services.title"))}{" "}
               {hero("hero.title2", t("services.title2"))}
