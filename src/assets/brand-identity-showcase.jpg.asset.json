@@ -2,10 +2,11 @@
   "version": 1,
   "asset_id": "518fce1d-50c0-40bd-b0a1-3fc09309ffe8",
   "project_id": "22772b10-1dad-4376-b141-386642f69a6f",
-  "url": "/__l5e/assets-v1/518fce1d-50c0-40bd-b0a1-3fc09309ffe8/brand-identity-showcase.jpg",
+  "url": "https://res.cloudinary.com/de348sqlb/image/upload/v1784827418/alphazero-assets/brand-identity-showcase.jpg",
   "r2_key": "a/v1/22772b10-1dad-4376-b141-386642f69a6f/518fce1d-50c0-40bd-b0a1-3fc09309ffe8/brand-identity-showcase.jpg",
   "original_filename": "brand-identity-showcase.jpg",
   "size": 84322,
   "content_type": "image/jpeg",
-  "created_at": "2026-07-22T18:19:40Z"
+  "created_at": "2026-07-22T18:19:40Z",
+  "cloudinary_public_id": "alphazero-assets/brand-identity-showcase"
 }
